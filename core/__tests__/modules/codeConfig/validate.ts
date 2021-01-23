@@ -21,8 +21,6 @@ import { Setting } from "../../../src/models/Setting";
 import { Option } from "../../../src/models/Option";
 import { Mapping } from "../../../src/models/Mapping";
 
-let actionhero;
-
 function ensureNoSavedModels() {
   return test("there should be no models created", async () => {
     expect(await App.count()).toBe(0);
@@ -41,15 +39,12 @@ function ensureNoSavedModels() {
 }
 
 describe("modules/codeConfig", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await Setting.truncate();
-    await helper.shutdown(actionhero);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
+  afterAll(async () => await Setting.truncate());
 
   describe("validate command", () => {
     beforeAll(async () => {

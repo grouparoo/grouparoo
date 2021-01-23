@@ -1,18 +1,10 @@
 import { RunCLI } from "../../src/bin/run";
 import { helper } from "@grouparoo/spec-helper";
 import { Run } from "../../src/models/Run";
-let actionhero;
 
 describe("bin/run", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   let messages = [];
   let spy;

@@ -8,18 +8,9 @@ import { Profile } from "./../../src/models/Profile";
 import { Schedule } from "./../../src/models/Schedule";
 import { Option } from "./../../src/models/Option";
 
-let actionhero;
-let app: App;
-
 describe("models/source", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let app: App;
 
   beforeAll(async () => {
     app = await helper.factories.app();

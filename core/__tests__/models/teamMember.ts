@@ -3,18 +3,9 @@ import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Log } from "./../../src/models/Log";
 
-let actionhero;
-let team;
-
 describe("models/teamMember", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let team: Team;
 
   beforeAll(async () => {
     team = new Team({ name: "test team" });

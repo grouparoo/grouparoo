@@ -1,17 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { File } from "./../../src/models/File";
 import { Log } from "./../../src/models/Log";
-let actionhero;
 
 describe("models/file", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("a file can be created", async () => {
     const file = new File({

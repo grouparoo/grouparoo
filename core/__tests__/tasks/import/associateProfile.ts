@@ -3,19 +3,10 @@ import { api, task, specHelper } from "actionhero";
 import { ProfileProperty } from "../../../src";
 import { Profile } from "../../../src/models/Profile";
 
-let actionhero;
-
 describe("tasks/import:associateProfile", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
   describe("import:associateProfile", () => {
     test("can be enqueued", async () => {

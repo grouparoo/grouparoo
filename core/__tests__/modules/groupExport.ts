@@ -6,17 +6,8 @@ import { Run } from "./../../src/models/Run";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 
-let actionhero;
-
 describe("modules/groupExport", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     await helper.factories.properties();

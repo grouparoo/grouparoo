@@ -4,24 +4,14 @@ import { internalRun } from "../../../src/modules/internalRun";
 import { Import } from "../../../src/models/Import";
 import { Property } from "../../../src/models/Property";
 import { Run } from "../../../src/models/Run";
-
-let actionhero;
-let profile;
+import { Profile } from "../../../src";
 
 describe("tasks/run:internalRun", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  let profile: Profile;
 
   describe("run:internalRun", () => {
     beforeAll(async () => {

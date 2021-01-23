@@ -16,17 +16,11 @@ import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
-let actionhero;
-
 describe("modules/codeConfig", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await Setting.truncate();
-    await helper.shutdown(actionhero);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
 
   describe("initial config", () => {

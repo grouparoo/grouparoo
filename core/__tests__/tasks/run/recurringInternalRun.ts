@@ -4,22 +4,10 @@ import { Run } from "../../../src/models/Run";
 import { Setting } from "../../../src/models/Setting";
 import { Op } from "sequelize";
 
-let actionhero;
-
 describe("tasks/run:recurringInternalRun", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
   describe("run:recurringInternalRun", () => {
     let setting: Setting;

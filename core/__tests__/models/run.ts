@@ -11,30 +11,21 @@ import { Team } from "../../src/models/Team";
 import { TeamMember } from "../../src/models/TeamMember";
 import { Profile } from "../../src/models/Profile";
 
-let actionhero;
-let schedule;
-let firstRun;
-
-const sleep = (t) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, t);
-  });
-};
-
 describe("models/run", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let schedule: Schedule;
+  let firstRun: Run;
 
   beforeAll(async () => {
     await helper.factories.properties();
     schedule = await helper.factories.schedule();
   });
+
+  const sleep = (t) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, t);
+    });
+  };
 
   test("a run can be created", async () => {
     const run = new Run({

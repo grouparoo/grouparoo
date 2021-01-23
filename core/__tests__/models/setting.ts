@@ -3,16 +3,11 @@ import { Setting } from "./../../src/models/Setting";
 import { Log } from "./../../src/models/Log";
 import { plugin } from "./../../src/modules/plugin";
 
-let actionhero;
-
 describe("models/setting", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
 
   test("a setting can be created via the helper method", async () => {

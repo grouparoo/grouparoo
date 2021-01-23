@@ -1,33 +1,27 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, Connection, specHelper } from "actionhero";
 import { Property } from "../../src/models/Property";
 import { Profile } from "../../src/models/Profile";
 import { Option } from "../../src/models/Option";
 import { Event } from "../../src/models/Event";
 import { EventData } from "../../src/models/EventData";
 
-let actionhero;
-
 describe("integration/events", () => {
-  let connection;
-  let csrfToken;
-  let appGuid;
-  let sourceGuid;
-  let propertyGuid;
-  let userIdProperty;
-  let apiKey;
-  let eventGuid;
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
+  let connection: Connection;
+  let csrfToken: string;
+  let appGuid: string;
+  let sourceGuid: string;
+  let propertyGuid: string;
+  let userIdProperty: Property;
+  let apiKey: string;
+  let eventGuid: string;
   let profile: Profile;
 
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     await api.resque.queue.connection.redis.flushdb();
     await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   test("the first user can create an account and the first team", async () => {

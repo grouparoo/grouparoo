@@ -6,18 +6,9 @@ import { Export } from "../../../src/models/Export";
 import { Run } from "../../../src/models/Run";
 import { plugin } from "../../../src";
 
-let actionhero;
-
 describe("tasks/export:enqueue", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   test("can be enqueued", async () => {
     await task.enqueue("export:enqueue", {});

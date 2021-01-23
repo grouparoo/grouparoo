@@ -6,22 +6,14 @@ import { Log } from "../../src/models/Log";
 import { plugin } from "../../src/modules/plugin";
 import { api, specHelper, config } from "actionhero";
 
-let actionhero;
-
 describe("tasks/telemetry", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  beforeEach(() => {
-    fetch.resetMocks();
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeEach(() => fetch.resetMocks());
 
   describe("telemetry", () => {
     beforeAll(async () => {

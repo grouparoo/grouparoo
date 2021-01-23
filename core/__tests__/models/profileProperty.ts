@@ -5,17 +5,8 @@ import { Profile } from "./../../src/models/Profile";
 import { ProfileProperty } from "./../../src/models/ProfileProperty";
 import { Property } from "./../../src/models/Property";
 
-let actionhero;
-
 describe("models/profileProperty", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   let source: Source;
   let profile: Profile;

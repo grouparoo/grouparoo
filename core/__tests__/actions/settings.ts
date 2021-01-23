@@ -2,17 +2,9 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Setting } from "./../../src/models/Setting";
 import { plugin } from "./../../src/modules/plugin";
-let actionhero;
 
 describe("actions/settings", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

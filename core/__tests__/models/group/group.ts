@@ -6,17 +6,8 @@ import { Group } from "../../../src/models/Group";
 import { Import } from "../../../src/models/Import";
 import { GroupMember } from "../../../src/models/GroupMember";
 
-let actionhero;
-
 describe("models/group", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("a group can be created", async () => {
     const group = new Group({ name: "test group", type: "manual" });

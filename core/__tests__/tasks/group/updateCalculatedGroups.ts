@@ -3,23 +3,12 @@ import { api, specHelper } from "actionhero";
 import { Group } from "../../../src";
 import { plugin } from "./../../../src/modules/plugin";
 
-let actionhero;
 let group: Group;
 
 describe("tasks/group:updateCalculatedGroups", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-    await group.reload();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeEach(async () => await group.reload());
 
   describe("profile:updateCalculatedGroups", () => {
     beforeAll(async () => {

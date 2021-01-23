@@ -1,16 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-let actionhero;
 
 describe("actions/navigation", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   test("returns index and about pages", async () => {
     const { navigation, navigationMode } = await specHelper.runAction(

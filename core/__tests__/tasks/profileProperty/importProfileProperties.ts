@@ -7,22 +7,10 @@ import {
   Property,
 } from "../../../src";
 
-let actionhero;
-
 describe("tasks/profileProperty:importProfileProperties", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
   describe("profileProperty:importProfileProperties", () => {
     let testPluginConnection: PluginConnection;

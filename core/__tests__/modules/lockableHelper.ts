@@ -2,19 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { Team, TeamMember } from "../../src";
 import { LockableHelper } from "../../src/modules/lockableHelper";
 
-let actionhero;
-let team: Team;
-let teamMember: TeamMember;
-
 describe("modules/lockableHelper", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let team: Team;
+  let teamMember: TeamMember;
 
   beforeAll(async () => {
     team = await Team.create({

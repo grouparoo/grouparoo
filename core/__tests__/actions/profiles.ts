@@ -5,8 +5,6 @@ import { Group } from "./../../src/models/Group";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Property } from "./../../src/models/Property";
-let actionhero;
-let guid;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -18,14 +16,8 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
 }
 
 describe("actions/profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let guid: string;
 
   beforeAll(async () => {
     await helper.factories.properties();

@@ -1,22 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { ProfileProperty, Property, Option, Source } from "../../src";
-
-let actionhero;
-let app;
-let guid;
-let propertyGuid;
+import { ProfileProperty, Property, Option, Source, App } from "../../src";
 
 describe("actions/sources", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let app: App;
+  let guid: string;
+  let propertyGuid: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

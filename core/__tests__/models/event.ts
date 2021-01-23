@@ -4,18 +4,9 @@ import { Event } from "./../../src/models/Event";
 import { Log } from "./../../src/models/Log";
 import { Property } from "../../src/models/Property";
 
-let actionhero;
-let identifyingPropertyGuid;
-
 describe("models/event", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let identifyingPropertyGuid: string;
 
   beforeAll(async () => {
     await helper.factories.properties();

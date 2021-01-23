@@ -2,18 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { ApiKey } from "./../../src/models/ApiKey";
 import { Permission } from "../../src";
-let actionhero;
-let guid;
 
 describe("actions/apiKeys", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  let guid: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

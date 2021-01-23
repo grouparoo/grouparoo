@@ -4,17 +4,9 @@ import { Option } from "../../../src/models/Option";
 import { Log } from "../../../src/models/Log";
 import { plugin } from "../../../src/modules/plugin";
 import { api, redis, utils } from "actionhero";
-let actionhero;
 
 describe("models/app", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("an app can be created and options added", async () => {
     const app = new App({

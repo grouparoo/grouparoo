@@ -2,16 +2,12 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Group, Profile, ProfileProperty, Property } from "../../../src";
 
-let actionhero;
-
 describe("tasks/profile:completeImport", () => {
-  let group: Group;
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
+  let group: Group;
 
   beforeAll(async () => {
     group = await helper.factories.group();
@@ -24,14 +20,6 @@ describe("tasks/profile:completeImport", () => {
       },
     ]);
     await group.update({ state: "ready" });
-  });
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   describe("profile:completeImport", () => {

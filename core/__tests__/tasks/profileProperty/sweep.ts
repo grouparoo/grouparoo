@@ -1,18 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, task, specHelper } from "actionhero";
+import { api, specHelper } from "actionhero";
 import { Property, ProfileProperty, Profile } from "../../../src";
 
-let actionhero;
-
 describe("tasks/profileProperties:sweep", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
+
   let emailProperty: Property;
   let mario: Profile;
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    await helper.factories.properties();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
 
   beforeAll(async () => {
     emailProperty = await Property.findOne({ where: { key: "email" } });
@@ -22,14 +18,6 @@ describe("tasks/profileProperties:sweep", () => {
       lastName: ["Mario"],
       email: ["mario@example.com"],
     });
-  });
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   test("a profile property with a missing profile", async () => {

@@ -3,27 +3,13 @@ import * as uuid from "uuid";
 import { helper } from "@grouparoo/spec-helper";
 import { objectCache, objectCacheInvalidate } from "./../../src/modules/cache";
 
-let actionhero;
-
-const objectGuid = "xyz_" + uuid.v4();
-
 describe("modules/cache", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  beforeAll(async () => await helper.factories.properties());
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
-  beforeAll(async () => {
-    await helper.factories.properties();
-  });
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
+  const objectGuid = "xyz_" + uuid.v4();
 
   describe("caching", () => {
     function checkCaching(name, cacheKey) {

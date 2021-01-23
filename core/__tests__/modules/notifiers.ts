@@ -3,17 +3,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { Notifier } from "../../src/classes/notifier";
 import { Notification } from "../../src/models/Notification";
 
-let actionhero;
-
 describe("modules/notifiers", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("it loaded the notifiers at boot", async () => {
     expect(api.notifiers.notifiers.length).toBeGreaterThanOrEqual(1);

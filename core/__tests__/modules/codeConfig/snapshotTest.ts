@@ -46,7 +46,6 @@ describe("modules/codeConfig", () => {
       });
       const snapshot = await profile.snapshot(true);
       expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
-      console.log(snapshot);
     });
   });
 });

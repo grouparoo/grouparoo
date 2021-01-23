@@ -3,19 +3,13 @@ import { api, specHelper } from "actionhero";
 import { internalRun } from "./../../src/modules/internalRun";
 import { Run } from "../../src/models/Run";
 
-let actionhero;
-
 describe("modules/internalRun", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     await helper.factories.properties();
     await api.resque.queue.connection.redis.flushdb();
     await Run.truncate();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   test("an internal run is created and enqueued", async () => {

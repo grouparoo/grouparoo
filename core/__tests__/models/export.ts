@@ -3,21 +3,13 @@ import { Destination } from "../../src/models/Destination";
 import { Profile } from "../../src/models/Profile";
 import { Export } from "../../src/models/Export";
 import { Op } from "sequelize";
-let actionhero;
 
 describe("models/export", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   let destination: Destination;
   let profile: Profile;
   let _export: Export;
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
 
   beforeAll(async () => {
     await helper.factories.properties();

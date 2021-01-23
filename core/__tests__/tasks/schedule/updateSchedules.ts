@@ -3,21 +3,12 @@ import { api, task, specHelper } from "actionhero";
 import { Schedule } from "./../../../src/models/Schedule";
 import { Run } from "./../../../src/models/Run";
 
-let actionhero;
-
 describe("tasks/schedule:updateSchedules", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
     await Run.truncate();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   describe("schedule:run", () => {

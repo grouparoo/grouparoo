@@ -1,21 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
 import { Group } from "./../../src/models/Group";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
-let actionhero;
-let connection;
-let csrfToken;
 
 describe("actions/totals", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  let connection: Connection;
+  let csrfToken: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

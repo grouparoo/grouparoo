@@ -150,49 +150,12 @@ export namespace helper {
     await api.resque.queue.connection.redis.flushdb();
   }
 
-  export async function shutdown(server1, server2?) {
-    const { api } = await import("actionhero");
-    await api.resque.queue.connection.redis.flushdb();
-    await Promise.all(
-      [server1, server2].map(async (server) => {
-        if (server) {
-          if (typeof server.close === "function") {
-            await server.close();
-          }
-          if (typeof server.stop === "function") {
-            await server.stop();
-          }
-        }
-      })
-    );
-  }
-
   export async function resetSettings() {
     const settings = await Setting.findAll();
     for (const i in settings) {
       const setting = settings[i];
       await setting.update({ value: setting.defaultValue, locked: null });
     }
-  }
-
-  export async function prepareForAPITest(options = { truncate: true }) {
-    const { Process } = await import("actionhero");
-    const actionhero = new Process();
-    await actionhero.start();
-
-    // prepare models that we are using from /src
-    plugin.mountModels();
-    // prepare models that we are using from /dist
-    try {
-      require("@grouparoo/core").plugin.mountModels();
-    } catch (error) {}
-
-    if (options.truncate) await this.truncate();
-    await this.resetSettings();
-
-    enableTestPlugin();
-
-    return { actionhero };
   }
 
   /**
@@ -204,7 +167,13 @@ export namespace helper {
       truncate?: boolean;
       enableTestPlugin?: boolean;
       resetSettings?: boolean;
-    } = { truncate: false, enableTestPlugin: false, resetSettings: false }
+      disableTestPluginImport?: boolean;
+    } = {
+      truncate: false,
+      enableTestPlugin: false,
+      resetSettings: false,
+      disableTestPluginImport: false,
+    }
   ) => {
     let actionhero;
 
@@ -222,12 +191,13 @@ export namespace helper {
 
       if (options.truncate) await helper.truncate();
       if (options.resetSettings) await helper.resetSettings();
-      if (options.enableTestPlugin) await helper.enableTestPlugin();
-    });
+      if (options.enableTestPlugin) helper.enableTestPlugin();
+      if (options.disableTestPluginImport) helper.disableTestPluginImport();
+    }, helper.setupTime);
 
     afterAll(async () => {
       await actionhero.stop();
-    });
+    }, helper.setupTime);
 
     return actionhero;
   };

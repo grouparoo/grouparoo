@@ -4,17 +4,8 @@ import { TeamMember } from "./../../src/models/TeamMember";
 import { Log } from "./../../src/models/Log";
 import { Permission } from "./../../src/models/Permission";
 
-let actionhero;
-
 describe("models/team", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("a team can be created", async () => {
     const team = new Team({ name: "test team" });

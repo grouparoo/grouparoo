@@ -5,6 +5,8 @@ import { Profile } from "../../../../src/models/Profile";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   let group: Group;
   let mario: Profile;
   let luigi: Profile;
@@ -18,10 +20,6 @@ describe("model/group", () => {
     peach = response.peach;
     toad = response.toad;
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await SharedGroupTests.afterAll();
-  });
 
   beforeEach(async () => {
     const response = await SharedGroupTests.beforeEach();

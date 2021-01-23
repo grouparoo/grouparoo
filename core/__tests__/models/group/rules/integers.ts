@@ -3,15 +3,12 @@ import { Group } from "../../../../src/models/Group";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let group: Group;
 
   beforeAll(async () => {
     const response = await SharedGroupTests.beforeAll();
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await SharedGroupTests.afterAll();
-  });
 
   beforeEach(async () => {
     const response = await SharedGroupTests.beforeEach();

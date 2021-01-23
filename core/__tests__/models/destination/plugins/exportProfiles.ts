@@ -5,18 +5,10 @@ import { Destination } from "../../../../src/models/Destination";
 import { Export } from "../../../../src/models/Export";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-let actionhero;
 
 describe("models/destination", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   describe("with custom exportProfiles plugin", () => {
     let app: App;

@@ -6,23 +6,13 @@ import { Profile } from "./../../../src/models/Profile";
 import { Source } from "./../../../src/models/Source";
 import { Property } from "./../../../src/models/Property";
 
-let actionhero;
-let profile: Profile;
-let run: Run;
-let source: Source;
-
 describe("integration/runs/internalRun", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   let property: Property;
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  let profile: Profile;
+  let run: Run;
+  let source: Source;
 
   describe("adding a new Profile Property will import and sync all profiles", () => {
     test("adding a property with a query creates a run and internalRun task", async () => {

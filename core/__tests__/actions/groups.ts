@@ -4,18 +4,10 @@ import { Group } from "./../../src/models/Group";
 import { Profile } from "./../../src/models/Profile";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
-let actionhero;
-let guid;
 
 describe("actions/groups", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let guid: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

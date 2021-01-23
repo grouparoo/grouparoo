@@ -1,21 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Log } from "./../../src/models/Log";
 
-let actionhero;
-
 describe("models/log", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  beforeAll(async () => {
-    await Log.truncate();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await Log.truncate());
 
   test("a log entry can be created and data saved to JSON", async () => {
     const log = await Log.create({

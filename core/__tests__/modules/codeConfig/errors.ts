@@ -6,18 +6,14 @@ import { api } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 import { validateConfigObjectKeys } from "../../../src/classes/codeConfig";
 
-let actionhero;
-
 describe("modules/codeConfig", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await Setting.truncate();
-    await helper.shutdown(actionhero);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
+
+  afterAll(async () => await Setting.truncate());
 
   describe("validations", () => {
     test("id is always required", async () => {

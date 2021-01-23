@@ -2,17 +2,8 @@ import { Profile, Group, Destination, GrouparooPlugin } from "../../../src"; // 
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 
-let actionhero; // the running Grouparoo process
-
 describe("test grouparoo profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     // we need to ensure that we have static results for the import to snapshot
