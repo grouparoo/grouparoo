@@ -39,7 +39,6 @@ const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
   newNock
 );
 
-let actionhero;
 let client;
 
 async function getUser(email) {
@@ -81,15 +80,8 @@ describe("integration/runs/mailchimp-export", () => {
   let destination: Destination;
   let group: Group;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
     client = await connect(appOptions);

@@ -5,8 +5,6 @@ import { specHelper } from "actionhero";
 import PluginDetails from "./../../src/utils/pluginDetails";
 const coreVersion = PluginDetails.getCoreVersion();
 
-let actionhero;
-
 describe("actions/plugins", () => {
   beforeAll(async () => {
     // --- record new nock file ---
@@ -24,14 +22,7 @@ describe("actions/plugins", () => {
     await import(nockFile);
   });
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
 
   test("can list plugins", async () => {
     // cannot actually test this without injecting some plugins at the package.json level...

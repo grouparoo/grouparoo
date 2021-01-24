@@ -14,7 +14,7 @@ const profileProperty = getConnection().methods.profileProperty;
 const { appOptions, usersTableName } = getConfig();
 let profile: Profile;
 
-let actionhero, client;
+let client;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
@@ -39,22 +39,12 @@ async function getPropertyValue(query: string) {
 }
 
 describe("mysql/query/profileProperty", () => {
-  // models defined as the sequelize ones, not the types
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
+
+  beforeAll(async () => ({ client } = await beforeData()));
 
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  beforeAll(async () => {
-    ({ client } = await beforeData());
-  });
-
-  beforeAll(async () => {
-    // all of these are in in the test plugin
-    await helper.factories.properties();
-
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
       userId: [1],
@@ -63,13 +53,7 @@ describe("mysql/query/profileProperty", () => {
     expect(profile.guid).toBeTruthy();
   });
 
-  afterAll(async () => {
-    await afterData();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  afterAll(async () => await afterData());
 
   test("can run a integer query to get a string", async () => {
     const sql = `SELECT first_name FROM ${usersTableName} WHERE id = {{ userId }}`;

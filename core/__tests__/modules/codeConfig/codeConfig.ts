@@ -16,17 +16,11 @@ import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
-let actionhero;
-
 describe("modules/codeConfig", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await Setting.truncate();
-    await helper.shutdown(actionhero);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
   });
 
   describe("initial config", () => {
@@ -113,7 +107,7 @@ describe("modules/codeConfig", () => {
         where: { directlyMapped: true },
       });
       expect(property.guid).toBe("rul_user_id");
-      expect(property.key).toBe("User Id");
+      expect(property.key).toBe("userId");
       expect(property.type).toBe("integer");
       expect(property.unique).toBe(true);
       expect(property.identifying).toBe(true);
@@ -137,10 +131,10 @@ describe("modules/codeConfig", () => {
       const rules = await Property.findAll();
       expect(rules.length).toBe(4);
       expect(rules.map((r) => r.key).sort()).toEqual([
-        "User Id",
         "email",
         "first name",
         "last name",
+        "userId",
       ]);
       expect(rules.map((r) => r.sourceGuid).sort()).toEqual([
         "src_users_table",
@@ -171,7 +165,7 @@ describe("modules/codeConfig", () => {
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
         {
-          key: "User Id",
+          key: "userId",
           match: "null",
           operation: { description: "is not equal to", op: "ne" },
           relativeMatchDirection: null,
@@ -296,7 +290,7 @@ describe("modules/codeConfig", () => {
         "Email",
         "First Name",
         "Last Name",
-        "User Id",
+        "userId",
       ]);
       expect(rules.map((r) => r.sourceGuid).sort()).toEqual([
         "src_users_table",

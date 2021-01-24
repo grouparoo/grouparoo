@@ -3,17 +3,10 @@ import { specHelper } from "actionhero";
 let actionhero;
 
 describe("actions/logs", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
       firstName: "Mario",
       lastName: "Mario",

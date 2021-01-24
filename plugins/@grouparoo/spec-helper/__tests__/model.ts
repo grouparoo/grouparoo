@@ -1,16 +1,8 @@
 import { helper } from "../src";
 import { Log } from "@grouparoo/core";
-let actionhero;
 
 describe("model/log", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("the Log model works", async () => {
     const log = await Log.create({

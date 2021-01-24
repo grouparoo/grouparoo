@@ -4,18 +4,9 @@ import { specHelper } from "actionhero";
 import fs from "fs-extra";
 import path from "path";
 
-let actionhero;
-let guid;
-
 describe("actions/files", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  let guid: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

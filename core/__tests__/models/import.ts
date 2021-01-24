@@ -2,18 +2,9 @@ import { helper } from "@grouparoo/spec-helper";
 import { Import } from "./../../src/models/Import";
 import { specHelper } from "actionhero";
 
-let actionhero;
-
 describe("models/import", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   test("creating an import enqueued a task to process it", async () => {
     const _import = await Import.create({

@@ -9,18 +9,10 @@ import { Mapping } from "../../../src/models/Mapping";
 import { Option } from "../../../src/models/Option";
 import { DestinationGroupMembership } from "../../../src/models/DestinationGroupMembership";
 import { Run } from "../../../src";
-let actionhero;
 
 describe("models/destination", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   describe("with apps", () => {
     let app: App;

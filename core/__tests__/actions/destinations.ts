@@ -7,20 +7,12 @@ import { Property } from "./../../src/models/Property";
 import { Source } from "./../../src/models/Source";
 import { Run } from "./../../src/models/Run";
 import { api } from "actionhero";
-
-let actionhero;
-let app;
-let guid;
+import { App } from "../../src";
 
 describe("actions/destinations", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let app: App;
+  let guid: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

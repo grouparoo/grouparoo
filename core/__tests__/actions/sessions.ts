@@ -5,20 +5,12 @@ import { TeamMember } from "./../../src/models/TeamMember";
 import { Permission } from "../../src/models/Permission";
 import { ApiKey } from "../../src/models/ApiKey";
 import fetch from "isomorphic-fetch";
-let actionhero;
 
 // enable the web server
 process.env.WEB_SERVER = "true";
 
 describe("session", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

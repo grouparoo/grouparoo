@@ -5,8 +5,6 @@ import { Group } from "./../../src/models/Group";
 import { Team } from "./../../src/models/Team";
 import { TeamMember } from "./../../src/models/TeamMember";
 import { Property } from "./../../src/models/Property";
-let actionhero;
-let guid;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -18,14 +16,8 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
 }
 
 describe("actions/profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let guid: string;
 
   beforeAll(async () => {
     await helper.factories.properties();
@@ -112,7 +104,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
-      expect(profile.state).toBe("pending");
+      expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -138,7 +130,7 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(profile.guid).toBeTruthy();
-      expect(profile.state).toBe("pending");
+      expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
         email: ["luigi@example.com"],
@@ -175,8 +167,8 @@ describe("actions/profiles", () => {
         profiles: pendingProfiles,
         total: pendingTotal,
       } = await specHelper.runAction("profiles:list", connection);
-      expect(pendingProfiles.length).toBe(1);
-      expect(pendingTotal).toBe(1);
+      expect(pendingProfiles.length).toBe(0);
+      expect(pendingTotal).toBe(0);
 
       connection.params = {
         csrfToken,
@@ -186,8 +178,8 @@ describe("actions/profiles", () => {
         profiles: readyProfiles,
         total: readyTotal,
       } = await specHelper.runAction("profiles:list", connection);
-      expect(readyProfiles.length).toBe(0);
-      expect(readyTotal).toBe(0);
+      expect(readyProfiles.length).toBe(1);
+      expect(readyTotal).toBe(1);
     });
 
     test("a writer can get autocomplete results from properties", async () => {

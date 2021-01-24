@@ -2,17 +2,8 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
 import { CLS } from "../../src/modules/cls";
 
-let actionhero;
-
 describe("modules/cls", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("the namespace exists", async () => {
     const namespace = await CLS.getNamespace();

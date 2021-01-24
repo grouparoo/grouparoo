@@ -10,17 +10,11 @@ import { plugin } from "../../../src/modules/plugin";
 import { PropertyFilter } from "../../../src/models/PropertyFilter";
 import { PropertyOps } from "../../../src/modules/ops/property";
 
-let actionhero;
-
 describe("models/property", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
+  beforeAll(async () => {
+    await helper.factories.properties();
   });
 
   test("creating a property for non-manual apps with options enqueued an internalRun", async () => {

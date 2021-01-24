@@ -26,22 +26,18 @@ require("./../fixtures/table-get-changed-row-count");
 
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 
-let actionhero, connection;
+let connection;
 
 describe("bigquery/table/scheduleOptions", () => {
   let app: App;
   let source: Source;
   let schedule: Schedule;
 
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     connection = await connect({ appOptions, app: null, appGuid: null });
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
 
   beforeAll(async () => {
     await helper.factories.properties();

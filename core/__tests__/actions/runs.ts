@@ -1,22 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
+import { Connection, specHelper } from "actionhero";
+import { Schedule } from "../../src";
 import { Run } from "../../src/models/Run";
 import { Source } from "../../src/models/Source";
-let actionhero;
-let connection;
-let csrfToken;
-let scheduleA, scheduleB;
-let runA, runB;
 
 describe("actions/runs", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let connection: Connection;
+  let csrfToken: string;
+  let scheduleA: Schedule, scheduleB: Schedule;
+  let runA: Run, runB: Run;
 
   beforeAll(async () => {
     await helper.factories.properties();

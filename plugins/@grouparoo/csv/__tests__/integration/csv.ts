@@ -9,18 +9,9 @@ import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
 
-let actionhero;
-
 describe("integration/runs/csv", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

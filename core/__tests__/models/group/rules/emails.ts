@@ -5,6 +5,7 @@ import { Property } from "../../../../src/models/Property";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let group: Group;
   let luigi: Profile;
   let emailProperty: Property;
@@ -17,10 +18,6 @@ describe("model/group", () => {
       where: { key: "email" },
     });
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await SharedGroupTests.afterAll();
-  });
 
   beforeEach(async () => {
     const response = await SharedGroupTests.beforeEach();

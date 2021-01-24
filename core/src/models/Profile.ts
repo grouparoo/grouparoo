@@ -89,6 +89,16 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.properties(this);
   }
 
+  async simplifiedProperties() {
+    const properties = await this.properties();
+    const simpleProperties: {
+      [key: string]: Array<string | boolean | number | Date>;
+    } = {};
+
+    for (const k in properties) simpleProperties[k] = properties[k].values;
+    return simpleProperties;
+  }
+
   async addOrUpdateProperty(properties: {
     [key: string]: Array<string | number | boolean | Date>;
   }) {
@@ -117,6 +127,26 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.markPending(this);
   }
 
+  async sync(force = true, oldGroupsOverride?: Group[]) {
+    return ProfileOps.sync(this, force, oldGroupsOverride);
+  }
+
+  async snapshot(toSync = false) {
+    if (toSync) await this.sync(); // import the profile and recalculate groups
+
+    const properties = await this.properties();
+    const groups = await this.$get("groups");
+    const groupApiData = (
+      await Promise.all(groups.map((g) => g.apiData()))
+    ).sort((a, b) => (a.name > b.name ? 1 : -1));
+    const exports = await this.export(true, [], false); // build the next exports for all groups, but to not save them
+    const exportsApiData = (
+      await Promise.all(exports.map((e) => e.apiData(false)))
+    ).sort((a, b) => (a.destinationName > b.destinationName ? 1 : -1));
+
+    return { properties, groups: groupApiData, exports: exportsApiData };
+  }
+
   async updateGroupMembership() {
     const results = {};
     const groups = await Group.scope("notDraft").findAll();
@@ -134,8 +164,8 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps._import(this, toSave, toLock);
   }
 
-  async export(force = false, oldGroupsOverride?: Group[]) {
-    return ProfileOps._export(this, force, oldGroupsOverride);
+  async export(force = false, oldGroupsOverride?: Group[], saveExports = true) {
+    return ProfileOps._export(this, force, oldGroupsOverride, saveExports);
   }
 
   async logMessage(verb: "create" | "update" | "destroy") {
@@ -177,6 +207,12 @@ export class Profile extends LoggedModel<Profile> {
     return instance;
   }
 
+  static async findOrCreateByUniqueProfileProperties(hash: {
+    [key: string]: Array<string | number | boolean | Date>;
+  }) {
+    return ProfileOps.findOrCreateByUniqueProfileProperties(hash);
+  }
+
   @BeforeSave
   static async updateState(instance: Profile) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
@@ -189,7 +225,7 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async removeFromDestinations(instance: Profile) {
-    await instance.export(false, []);
+    await instance.export();
   }
 
   @AfterDestroy

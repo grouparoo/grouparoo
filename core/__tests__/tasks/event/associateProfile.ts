@@ -4,14 +4,10 @@ import { Profile } from "../../../src/models/Profile";
 import { App } from "../../../src/models/App";
 import { Property } from "../../../src/models/Property";
 
-let actionhero;
-
 describe("tasks/event:associateProfile", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     const userIdProperty = await Property.findOne({
@@ -22,14 +18,6 @@ describe("tasks/event:associateProfile", () => {
       identifyingPropertyGuid: userIdProperty.guid,
     });
     await eventApp.update({ state: "ready" });
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
   });
 
   describe("event:associateProfile", () => {

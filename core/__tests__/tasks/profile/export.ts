@@ -9,18 +9,9 @@ import { Export } from "./../../../src/models/Export";
 import { plugin } from "../../../src/modules/plugin";
 import { Op } from "sequelize";
 
-let actionhero;
-
 describe("tasks/profile:export", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   describe("profile:export", () => {
     test("can be enqueued", async () => {

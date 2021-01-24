@@ -1,12 +1,6 @@
 import path from "path";
-process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/snowflake": { path: path.join(__dirname, "..", "..") },
-});
-
-import "../utils/mock";
-import "@grouparoo/spec-helper";
-
 import { helper } from "@grouparoo/spec-helper";
+import "../utils/mock";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { plugin, Profile, SimpleAppOptions, Property } from "@grouparoo/core";
@@ -32,8 +26,6 @@ require("./../fixtures/query-import-property");
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
 
-let actionhero;
-
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
   const connection = await connect({ appOptions, app: null, appGuid: null });
@@ -58,17 +50,7 @@ async function getPropertyValue(query: string) {
 }
 
 describe("snowflake/query/profileProperty", () => {
-  // models defined as the sequelize ones, not the types
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     // all of these are in in the test plugin

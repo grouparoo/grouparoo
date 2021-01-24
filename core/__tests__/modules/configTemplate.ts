@@ -4,28 +4,21 @@ import { api } from "actionhero";
 import os from "os";
 import fs from "fs-extra";
 
-let actionhero;
-const tmpDir = `${os.tmpdir()}/test/${
-  process.env.JEST_WORKER_ID
-}/generate/config`;
-
 describe("bin/generate", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let templates: ConfigTemplate[] = [];
+  const tmpDir = `${os.tmpdir()}/test/${
+    process.env.JEST_WORKER_ID
+  }/generate/config`;
 
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     await helper.factories.properties();
     templates = api.plugins.templates();
-  }, helper.setupTime);
+  });
 
   beforeAll(() => {
     fs.mkdirpSync(tmpDir);
     fs.emptyDirSync(tmpDir);
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   test("all the template can be loaded", async () => {

@@ -60,27 +60,13 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
 }
 
 describe("mysql/table/profiles", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
+
+  beforeAll(async () => ({ client } = await beforeData()));
+  afterAll(async () => await afterData());
 
   beforeAll(async () => {
-    ({ client } = await beforeData());
-  });
-
-  afterAll(async () => {
-    await afterData();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
-    // make the userId and email and other properties
-    await helper.factories.properties();
-
     // setup the world
     const app = await helper.factories.app({
       name: "MYSQL",

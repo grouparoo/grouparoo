@@ -16,6 +16,9 @@ if (
 }
 
 // normal pathway
+import fs from "fs";
+import path from "path";
+import nock from "nock";
 
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
@@ -72,11 +75,6 @@ import {
   Team,
   TeamMember,
 } from "@grouparoo/core/src"; // we explicitly require the src (typescript) files
-
-import { Op } from "sequelize";
-import fs from "fs";
-import path from "path";
-import nock from "nock";
 
 const models = [
   App,
@@ -150,23 +148,6 @@ export namespace helper {
     await api.resque.queue.connection.redis.flushdb();
   }
 
-  export async function shutdown(server1, server2?) {
-    const { api } = await import("actionhero");
-    await api.resque.queue.connection.redis.flushdb();
-    await Promise.all(
-      [server1, server2].map(async (server) => {
-        if (server) {
-          if (typeof server.close === "function") {
-            await server.close();
-          }
-          if (typeof server.stop === "function") {
-            await server.stop();
-          }
-        }
-      })
-    );
-  }
-
   export async function resetSettings() {
     const settings = await Setting.findAll();
     for (const i in settings) {
@@ -175,24 +156,58 @@ export namespace helper {
     }
   }
 
-  export async function prepareForAPITest(options = { truncate: true }) {
-    const { Process } = await import("actionhero");
-    const actionhero = new Process();
-    await actionhero.start();
+  /**
+   * I am used by clients who want to start and stop their server for profile snapshot testing.
+   * As an Arrow function, 'll be in the Jest namespace when used
+   */
+  export const grouparooTestServer = (
+    options: {
+      truncate?: boolean;
+      enableTestPlugin?: boolean;
+      resetSettings?: boolean;
+      disableTestPluginImport?: boolean;
+    } = {
+      truncate: false,
+      enableTestPlugin: false,
+      resetSettings: false,
+      disableTestPluginImport: false,
+    }
+  ) => {
+    let actionhero;
 
-    // prepare models that we are using from /src
-    plugin.mountModels();
-    // prepare models that we are using from /dist
-    try {
-      require("@grouparoo/core").plugin.mountModels();
-    } catch (error) {}
+    beforeAll(async () => {
+      const { Process } = await import("actionhero");
+      actionhero = new Process();
+      await actionhero.start();
 
-    if (options.truncate) await this.truncate();
-    await this.resetSettings();
+      // prepare models that we are using from /src
+      plugin.mountModels();
+      // prepare models that we are using from /dist
+      try {
+        require("@grouparoo/core").plugin.mountModels();
+      } catch (error) {}
 
-    enableTestPlugin();
+      if (options.truncate) await helper.truncate();
+      if (options.resetSettings) await helper.resetSettings();
+      if (options.enableTestPlugin) helper.enableTestPlugin();
+      if (options.disableTestPluginImport) helper.disableTestPluginImport();
+    }, helper.setupTime);
 
-    return { actionhero };
+    afterAll(async () => {
+      await actionhero.stop();
+    }, helper.setupTime);
+
+    return actionhero;
+  };
+
+  /**
+   * To inject a plugin you are testing into core (as if it were enabled and installed in the package.json of a client app)
+   */
+  export function injectPlugin(name: string, path: string) {
+    process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+      [name]: { path },
+    });
+    console.log(process.env.GROUPAROO_INJECTED_PLUGINS);
   }
 
   export function enableTestPlugin() {
@@ -417,6 +432,24 @@ export namespace helper {
     )[0].connections[0].methods.profileProperty = async () => {
       return null;
     };
+  }
+
+  /**
+   * Find or Create a profile given the key of a unique property key and value ({email: 'person@example.com'}) and optional options.
+   * Returns bot the profile itself and a snapshot.
+   * Calls Profile.findOrCreateByUniqueProfileProperties() under the hood, as well as Profile.sync()
+   */
+  export async function getProfile(
+    args: { [key: string]: any },
+    opts: { sync?: boolean } = { sync: true }
+  ) {
+    const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
+      args
+    );
+    const snapshot = await profile.snapshot(opts.sync);
+    await profile.reload();
+
+    return { profile, snapshot };
   }
 
   export function recordNock(nockFile, updater: any) {

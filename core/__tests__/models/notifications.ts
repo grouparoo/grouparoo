@@ -1,17 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Notification } from "../../src/models/Notification";
 
-let actionhero;
-
 describe("models/notification", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("notifications can be created", async () => {
     const notification = await Notification.create({

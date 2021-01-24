@@ -2,17 +2,8 @@ import { api } from "actionhero";
 import { helper } from "@grouparoo/spec-helper";
 import { waitForLock } from "./../../src/modules/locks";
 
-let actionhero;
-
 describe("modules/locks", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     await helper.factories.properties();

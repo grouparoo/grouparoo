@@ -44,7 +44,6 @@ const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
   newNock
 );
 
-let actionhero;
 let client;
 
 const mailchimpId1 = generateMailchimpId(email1);
@@ -88,15 +87,8 @@ describe("integration/runs/mailchimp-export-id", () => {
   let destination: Destination;
   let group: Group;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
     client = await connect(appOptions);

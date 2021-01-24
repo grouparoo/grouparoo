@@ -24,7 +24,6 @@ const appOptions = loadAppOptions(newNock);
 const email1 = "luigi@example.com";
 const list1 = "<test> hubspot people";
 
-let actionhero;
 let client;
 
 async function cleanUp(suppressErrors) {
@@ -84,11 +83,8 @@ describe("integration/runs/hubspot", () => {
   let destination: Destination;
   let group: Group;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
   beforeAll(async () => {
     client = await connect(appOptions);
@@ -121,10 +117,6 @@ describe("integration/runs/hubspot", () => {
 
   afterAll(async () => {
     await cleanUp(true);
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   test("an administrator can create the related import app and destination", async () => {

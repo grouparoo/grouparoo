@@ -10,7 +10,6 @@ import { Profile, Property, ProfileProperty, Run } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
-let actionhero;
 const {
   appOptions,
   usersTableName,
@@ -19,6 +18,10 @@ const {
 } = getConfig();
 
 describe("integration/runs/mysql", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
+
   let client;
   let session;
   let csrfToken;
@@ -28,24 +31,7 @@ describe("integration/runs/mysql", () => {
   let destination;
   let group;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
-    ({ client } = await beforeData());
-  });
-
-  beforeAll(async () => {
-    await helper.factories.properties();
-    helper.disableTestPluginImport();
-  });
+  beforeAll(async () => ({ client } = await beforeData()));
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

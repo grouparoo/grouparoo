@@ -3,25 +3,17 @@ import { Generate } from "../../src/bin/generate";
 import os from "os";
 import fs from "fs-extra";
 
-let actionhero;
 const tmpDir = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
 }/generate/config`;
 
 describe("bin/generate", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(() => {
     fs.mkdirpSync(tmpDir);
     fs.emptyDirSync(tmpDir);
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   let messages = [];

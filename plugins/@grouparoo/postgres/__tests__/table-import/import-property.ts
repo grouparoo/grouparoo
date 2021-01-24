@@ -68,11 +68,8 @@ async function getPropertyArray(
 }
 
 describe("postgres/table/profileProperty", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     ({ client } = await beforeData());
@@ -80,8 +77,6 @@ describe("postgres/table/profileProperty", () => {
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
-    // all of these are in in the test plugin
-    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({
@@ -92,13 +87,8 @@ describe("postgres/table/profileProperty", () => {
     expect(profile.guid).toBeTruthy();
   });
 
-  afterAll(async () => {
-    await afterData();
-  });
+  afterAll(async () => await afterData());
 
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
   describe("exact primary tables", () => {
     let aggregationMethod = "exact";
     beforeAll(() => {

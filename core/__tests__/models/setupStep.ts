@@ -3,17 +3,8 @@ import { SetupStep } from "./../../src/models/SetupStep";
 import { SetupStepOps } from "./../../src/modules/ops/setupSteps";
 import { Team } from "../../src";
 
-let actionhero;
-
 describe("models/setupStep", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("setupSteps will be created when the server boots", async () => {
     const setupSteps = await SetupStep.findAll({

@@ -14,16 +14,7 @@ export namespace SharedGroupTests {
   let peach: Profile;
   let toad: Profile;
 
-  export async function afterAll(doActionheroTeardown = true) {
-    if (doActionheroTeardown) await helper.shutdown(actionhero);
-  }
-
-  export async function beforeAll(doActionheroSetup = true) {
-    if (doActionheroSetup) {
-      const env = await helper.prepareForAPITest();
-      actionhero = env.actionhero;
-    }
-
+  export async function beforeAll() {
     await Profile.truncate();
     await helper.factories.properties();
     helper.disableTestPluginImport();

@@ -2,22 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { ProfileProperty, Property } from "../../../src";
 
-let actionhero;
-
 describe("tasks/profileProperty:importProfileProperty", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+  beforeAll(async () => await helper.factories.properties());
 
   describe("profileProperty:importProfileProperty", () => {
     test("can be enqueued", async () => {

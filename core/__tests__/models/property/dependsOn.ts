@@ -3,17 +3,8 @@ import { Property } from "../../../src/models/Property";
 import { Source } from "../../../src/models/Source";
 import { PropertyOps } from "../../../src/modules/ops/property";
 
-let actionhero;
-
 describe("models/property", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("dependsOn", () => {
     /**

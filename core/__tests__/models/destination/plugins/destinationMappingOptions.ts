@@ -7,18 +7,10 @@ import { Profile } from "../../../../src/models/Profile";
 import { Group } from "../../../../src/models/Group";
 import { api } from "actionhero";
 import { DestinationMappingOptionsResponseTypes } from "../../../../src";
-let actionhero;
 
 describe("models/destination", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   describe("destination typecasting", () => {
     function testValues(

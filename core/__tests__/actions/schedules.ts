@@ -2,19 +2,10 @@ import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Source } from "../../src/models/Source";
 
-let actionhero;
-let guid;
-let source: Source;
-
 describe("actions/schedules", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let guid: string;
+  let source: Source;
 
   beforeAll(async () => {
     await helper.factories.properties();

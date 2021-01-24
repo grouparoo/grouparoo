@@ -8,7 +8,6 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 import { api, specHelper } from "actionhero";
 import { Profile, Property, ProfileProperty, Run } from "@grouparoo/core";
 
-let actionhero;
 const {
   appOptions,
   usersTableName,
@@ -17,6 +16,11 @@ const {
 } = getConfig();
 
 describe("integration/runs/postgres", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => helper.disableTestPluginImport());
+  beforeAll(async () => await helper.factories.properties());
+  beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+
   let session;
   let csrfToken;
   let app;
@@ -25,28 +29,8 @@ describe("integration/runs/postgres", () => {
   let destination;
   let group;
 
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await api.resque.queue.connection.redis.flushdb();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
-    await beforeData();
-  });
-
-  afterAll(async () => {
-    await afterData();
-  });
-
-  beforeAll(async () => {
-    await helper.factories.properties();
-    helper.disableTestPluginImport();
-  });
+  beforeAll(async () => await beforeData());
+  afterAll(async () => await afterData());
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

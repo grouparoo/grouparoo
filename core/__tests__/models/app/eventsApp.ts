@@ -1,17 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Property } from "../../../src/models/Property";
 import { App } from "../../../src/models/App";
-let actionhero;
 
 describe("models/app", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("events app", () => {
     beforeAll(async () => {

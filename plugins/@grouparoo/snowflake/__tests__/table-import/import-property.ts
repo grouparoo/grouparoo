@@ -32,8 +32,6 @@ require(nockFile);
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
 
-let actionhero;
-
 let sourceOptions;
 async function getPropertyValue(
   { column, sourceMapping, aggregationMethod },
@@ -74,20 +72,11 @@ async function getPropertyValue(
 }
 
 describe("snowflake/table/profileProperty", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);
-    // all of these are in in the test plugin
-    await helper.factories.properties();
 
     profile = await helper.factories.profile();
     await profile.addOrUpdateProperties({

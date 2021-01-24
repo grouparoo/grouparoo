@@ -7,17 +7,8 @@ import { File } from "../../../src/models/File";
 import { Run } from "../../../src/models/Run";
 import fs from "fs";
 
-let actionhero;
-
 describe("tasks/group:exportToCSV", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("group:exportToCSV", () => {
     let mario: Profile;

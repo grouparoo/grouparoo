@@ -3,19 +3,10 @@ import { specHelper } from "actionhero";
 import { Property } from "../../src/models/Property";
 import { Source } from "../../src/models/Source";
 
-let actionhero;
-let guid;
-let source: Source;
-
 describe("actions/properties", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  let guid: string;
+  let source: Source;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {

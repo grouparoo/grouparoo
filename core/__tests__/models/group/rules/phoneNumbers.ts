@@ -5,6 +5,8 @@ import { Property } from "../../../../src/models/Property";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+
   let group: Group;
   let mario: Profile;
   let luigi: Profile;
@@ -40,10 +42,6 @@ describe("model/group", () => {
     });
     await toad.buildNullProperties();
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await SharedGroupTests.afterAll();
-  });
 
   beforeEach(async () => {
     const response = await SharedGroupTests.beforeEach();

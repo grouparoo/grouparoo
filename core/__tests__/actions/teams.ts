@@ -7,18 +7,9 @@ import { Permission } from "./../../src/models/Permission";
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
-let actionhero;
-let guid;
-
 describe("actions/teams", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  let guid: string;
 
   describe("team:initialize", () => {
     test("a new team can be initialized with the first team member and the team member should be subscribed", async () => {

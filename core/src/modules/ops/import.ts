@@ -1,15 +1,5 @@
 import { Import } from "../../models/Import";
 import { ProfileOps } from "./profile";
-import { ProfilePropertyType } from "./profile";
-
-function simplifyProfileProperties(complexProperties: ProfilePropertyType) {
-  const simpleProperties = {};
-  for (let key in complexProperties) {
-    simpleProperties[key] = complexProperties[key].values;
-  }
-
-  return simpleProperties;
-}
 
 export namespace ImportOps {
   export async function associateProfile(_import: Import) {
@@ -19,7 +9,7 @@ export namespace ImportOps {
       // will throw if there are no unique profile properties
     } = await ProfileOps.findOrCreateByUniqueProfileProperties(_import.data);
 
-    const oldProfileProperties = await profile.properties();
+    const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");
 
     _import.profileGuid = profile.guid;
@@ -27,7 +17,7 @@ export namespace ImportOps {
 
     _import.oldProfileProperties =
       Object.keys(_import.oldProfileProperties).length === 0
-        ? simplifyProfileProperties(oldProfileProperties)
+        ? oldProfileProperties
         : {};
 
     _import.oldGroupGuids = oldGroups.map((group) => group.guid);

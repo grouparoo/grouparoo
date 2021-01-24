@@ -1,17 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile } from "./../../src/models/Profile";
-import { ProfileProperty } from "./../../src/models/ProfileProperty";
-import { Property } from "./../../src/models/Property";
-import { Group } from "./../../src/models/Group";
-import { GroupMember } from "./../../src/models/GroupMember";
-import { App } from "./../../src/models/App";
-import { Source } from "./../../src/models/Source";
-import { Log } from "./../../src/models/Log";
-import { plugin } from "./../../src/modules/plugin";
-import { ProfileOps } from "../../src/modules/ops/profile";
+import { Profile } from "../../../src/models/Profile";
+import { ProfileProperty } from "../../../src/models/ProfileProperty";
+import { Property } from "../../../src/models/Property";
+import { Group } from "../../../src/models/Group";
+import { GroupMember } from "../../../src/models/GroupMember";
+import { App } from "../../../src/models/App";
+import { Source } from "../../../src/models/Source";
+import { Log } from "../../../src/models/Log";
+import { plugin } from "../../../src/modules/plugin";
+import { ProfileOps } from "../../../src/modules/ops/profile";
 import { api, specHelper } from "actionhero";
-
-let actionhero;
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -23,14 +21,7 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
 }
 
 describe("models/profile", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   test("a profile can be created", async () => {
     const profile = new Profile();

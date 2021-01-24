@@ -7,18 +7,10 @@ import { Group } from "../../../../src/models/Group";
 import { Profile } from "../../../../src/models/Profile";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-let actionhero;
 
 describe("models/destination", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    await helper.factories.properties();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   describe("with custom exportProfile plugin", () => {
     let app: App;

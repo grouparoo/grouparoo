@@ -6,21 +6,10 @@ import { Import } from "./../../src/models/Import";
 import { specHelper } from "actionhero";
 import { Property } from "../../src/models/Property";
 import { SourceOptionsMethodResponse } from "../../src";
-let actionhero;
 
 describe("modules/plugin", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
-    await helper.factories.properties();
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeAll(async () => await helper.factories.properties());
 
   describe("registerPlugin", () => {
     test("plugins without problems can be registered", () => {

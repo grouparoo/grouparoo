@@ -30,8 +30,6 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 let profile: Profile;
 let otherProfile: Profile;
 
-let actionhero;
-
 let sourceOptions;
 async function getPropertyValues(
   { column, sourceMapping, aggregationMethod },
@@ -67,15 +65,7 @@ async function getPropertyValues(
 }
 
 describe("bigquery/table/profileProperties", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-    plugin.mountModels();
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   beforeAll(async () => {
     jest.setTimeout(helper.mediumTime);

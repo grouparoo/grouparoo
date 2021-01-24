@@ -1,22 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Import } from "./../../src/models/Import";
-let actionhero;
 
 describe("actions/imports", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let apiKey: string;
 
   beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
     await helper.factories.properties();
-  }, helper.setupTime);
 
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
-
-  beforeAll(async () => {
     const apiKeyModel = await helper.factories.apiKey();
     apiKey = apiKeyModel.apiKey;
     const permissions = await apiKeyModel.$get("permissions", {

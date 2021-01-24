@@ -1,23 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, cache, specHelper } from "actionhero";
+import { cache, Connection, specHelper } from "actionhero";
 import { Log } from "../../src/models/Log";
 import { App } from "../../src/models/App";
 import { SetupStep } from "../../src";
-let actionhero;
 
 describe("actions/cluster", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("cluster", () => {
-    let connection;
-    let csrfToken;
+    let connection: Connection;
+    let csrfToken: string;
 
     beforeAll(async () => {
       await helper.factories.properties();

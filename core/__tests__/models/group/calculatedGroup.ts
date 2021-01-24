@@ -9,17 +9,8 @@ import { GroupMember } from "../../../src/models/GroupMember";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
 import { GroupOps } from "../../../src/modules/ops/group";
 
-let actionhero;
-
 describe("models/group", () => {
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
-  });
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
   describe("calculated groups", () => {
     let run: Run;
@@ -30,15 +21,11 @@ describe("models/group", () => {
     let toad: Profile;
 
     beforeAll(async () => {
-      const response = await SharedGroupTests.beforeAll(false);
+      const response = await SharedGroupTests.beforeAll();
       mario = response.mario;
       luigi = response.luigi;
       peach = response.peach;
       toad = response.toad;
-    }, helper.setupTime);
-
-    afterAll(async () => {
-      await SharedGroupTests.afterAll(false);
     });
 
     beforeEach(async () => {

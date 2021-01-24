@@ -356,8 +356,19 @@ export class Destination extends LoggedModel<Destination> {
     return true;
   }
 
-  async exportProfile(profile: Profile, sync = false, force = false) {
-    return DestinationOps.exportProfile(this, profile, sync, force);
+  async exportProfile(
+    profile: Profile,
+    sync = false,
+    force = false,
+    saveExports = true
+  ) {
+    return DestinationOps.exportProfile(
+      this,
+      profile,
+      sync,
+      force,
+      saveExports
+    );
   }
 
   async sendExport(_export: Export, sync = false) {

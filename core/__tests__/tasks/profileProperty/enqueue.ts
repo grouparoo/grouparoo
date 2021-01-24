@@ -9,19 +9,11 @@ import {
   App,
 } from "../../../src";
 
-let actionhero;
-
 describe("tasks/profileProperties:enqueue", () => {
+  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
+
   let propertiesCount: number;
-
-  beforeAll(async () => {
-    const env = await helper.prepareForAPITest();
-    actionhero = env.actionhero;
-  }, helper.setupTime);
-
-  beforeEach(async () => {
-    await api.resque.queue.connection.redis.flushdb();
-  });
 
   afterEach(async () => {
     await plugin.updateSetting(
@@ -29,10 +21,6 @@ describe("tasks/profileProperties:enqueue", () => {
       "imports-profile-properties-batch-size",
       50
     );
-  });
-
-  afterAll(async () => {
-    await helper.shutdown(actionhero);
   });
 
   describe("profileProperties:enqueue", () => {

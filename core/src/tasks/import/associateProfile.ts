@@ -16,15 +16,6 @@ export class ImportAssociateProfile extends Task {
     };
   }
 
-  simplifyProfileProperties(complexProperties: ProfilePropertyType) {
-    const simpleProperties = {};
-    for (let key in complexProperties) {
-      simpleProperties[key] = complexProperties[key].values;
-    }
-
-    return simpleProperties;
-  }
-
   async run(params) {
     const { importGuid } = params;
     const _import = await Import.findByGuid(importGuid);
@@ -33,13 +24,11 @@ export class ImportAssociateProfile extends Task {
       const { profile, isNew } = await _import.associateProfile();
       await profile.markPending();
 
-      const oldProfileProperties = await profile.properties();
+      const oldProfileProperties = await profile.simplifiedProperties();
       const oldGroups = await profile.$get("groups");
 
       _import.createdProfile = isNew;
-      _import.oldProfileProperties = this.simplifyProfileProperties(
-        oldProfileProperties
-      );
+      _import.oldProfileProperties = oldProfileProperties;
       _import.oldGroupGuids = oldGroups.map((g) => g.guid);
       await _import.save();
     } catch (error) {
