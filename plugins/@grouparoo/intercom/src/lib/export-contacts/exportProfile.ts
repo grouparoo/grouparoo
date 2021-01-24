@@ -270,6 +270,11 @@ async function deleteUser(
     return;
   }
 
+  // first remove from all groups
+  oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
+  newGroups = [];
+  await updateTags(client, cacheData, user, oldGroups, newGroups);
+
   const { removalMode } = destinationOptions;
   switch (removalMode) {
     case RemovalMode.Archive:
@@ -277,10 +282,6 @@ async function deleteUser(
     case RemovalMode.Delete:
       return client.contacts.delete(user.id);
     case RemovalMode.Skip:
-      // not removing contact, but is clearing all tags grouparoo is in charge of
-      oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
-      newGroups = [];
-      await updateTags(client, cacheData, user, oldGroups, newGroups);
       throw new InfoError("Destination is not removing contacts.");
     default:
       throw new Error(`Unknown removalMode: ${removalMode}`);
