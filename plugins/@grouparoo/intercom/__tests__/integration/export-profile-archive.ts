@@ -194,7 +194,6 @@ describe("intercom/contacts/exportProfile/archive", () => {
     await indexContacts();
 
     const test = await findEmail(email2);
-    console.log({ unarchived: { test } });
     expect(test).toBeTruthy();
     expect(test).toBe(userId2); // unarchives!
 
