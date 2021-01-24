@@ -3,8 +3,12 @@ import {
   SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
-import { CreationMode, RemovalMode } from "./destinationOptions";
-import { getAttributeMap } from "./destinationMappingOptions";
+import {
+  CreationMode,
+  RemovalMode,
+  destinationOptions,
+} from "./destinationOptions";
+import { getKnownAttributeMap } from "./destinationMappingOptions";
 import {
   getTagId,
   normalizeTagName,
@@ -313,12 +317,12 @@ async function makePayload(
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = oldKeys.concat(newKeys);
 
-  const validAttributes = await getAttributeMap(client, cacheData);
+  const knownAttributes = await getKnownAttributeMap(client, cacheData);
   for (const key of allKeys) {
     if (["email", "external_id"].includes(key)) {
       continue; // already there
     }
-    if (!validAttributes[key]) {
+    if (!knownAttributes[key]) {
       continue; // unknown key
     }
     const value = newProfileProperties[key]; // includes clearing out removed ones

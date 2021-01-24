@@ -2,16 +2,19 @@ import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseTypes,
   objectCache,
+  SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { IntercomCacheData } from "./listMethods";
+import { CreationMode } from "./destinationOptions";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appGuid,
   appOptions,
+  destinationOptions,
 }) => {
   const client = await connect(appOptions);
-  const required = getRequiredFields();
+  const required = getRequiredFields(destinationOptions);
   const known = await getKnownAttributes(client, { appGuid, appOptions }, true);
 
   return {
@@ -55,26 +58,27 @@ const mapTypesFromIntercomToGrouparoo = (key, intercomType) => {
   return grouparooType;
 };
 
-const getRequiredFields = (): Array<{
+const getRequiredFields = (
+  destinationOptions: SimpleDestinationOptions
+): Array<{
   key: string;
   type: DestinationMappingOptionsResponseTypes;
 }> => {
-  return [
-    { key: "external_id", type: "string" },
-    { key: "email", type: "email" },
-  ];
+  const { creationMode } = destinationOptions;
+  const required = [];
+  required.push({ key: "email", type: "email" });
+  if (creationMode !== CreationMode.Lead) {
+    required.push({ key: "external_id", type: "string" });
+  }
+  return required;
 };
 
-export const getAttributeMap = async (
+export const getKnownAttributeMap = async (
   client: any,
   cacheData: IntercomCacheData
 ): Promise<{ [attributeName: string]: string }> => {
-  const required = getRequiredFields();
   const known = await getKnownAttributes(client, cacheData);
   const out = {};
-  for (const field of required) {
-    out[field.key] = field.type;
-  }
   for (const field of known) {
     out[field.key] = field.type;
   }
@@ -114,7 +118,7 @@ export const fetchKnownAttributes = async (
   }>
 > => {
   const importantKeys = ["name"];
-  const required = getRequiredFields().map((f) => f.key);
+  const requiredKeys = ["email", "external_id"];
 
   const { body } = await client.dataAttributes.list({ model: "contact" });
   const list = body.data;
@@ -129,7 +133,7 @@ export const fetchKnownAttributes = async (
     if (archived) {
       continue;
     }
-    if (required.includes(key)) {
+    if (requiredKeys.includes(key)) {
       continue;
     }
     const important = field.custom || importantKeys.includes(key);
