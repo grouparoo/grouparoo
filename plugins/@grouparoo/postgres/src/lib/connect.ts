@@ -6,6 +6,12 @@ import { ConnectPluginAppMethod } from "@grouparoo/core";
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const formattedOptions: any = Object.assign({}, appOptions);
 
+  // ensure that the "ssl" option by itself, if present, is a boolean
+  if (formattedOptions["ssl"]) {
+    formattedOptions["ssl"] =
+      formattedOptions["ssl"].toString().toLowerCase() === "true";
+  }
+
   // handle SSL options
   const sslOptions = ["ssl_cert", "ssl_key", "ssl_ca"];
   sslOptions.forEach((opt) => {
