@@ -6,6 +6,7 @@ import {
   getCodeConfigLockKey,
   validateAndFormatGuid,
   validateConfigObjectKeys,
+  GuidsByClass,
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
 import { Op } from "sequelize";
@@ -14,7 +15,7 @@ export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<GuidsByClass> {
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
@@ -55,7 +56,7 @@ export async function loadProperty(
 
   logModel(property, validate ? "validated" : isNew ? "created" : "updated");
 
-  return property;
+  return { property: [property.guid] };
 }
 
 export async function deleteProperties(guids: string[]) {

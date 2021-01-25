@@ -6,6 +6,7 @@ import {
   getCodeConfigLockKey,
   validateAndFormatGuid,
   validateConfigObjectKeys,
+  GuidsByClass,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
@@ -14,7 +15,7 @@ export async function loadSource(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<GuidsByClass> {
   let isNew = false;
 
   const app: App = await getParentByName(App, configObject.appId);
@@ -107,7 +108,10 @@ export async function loadSource(
     );
   }
 
-  return source;
+  return {
+    source: [source.guid],
+    property: bootstrappedProperty ? [bootstrappedProperty.guid] : [], // might have done this
+  };
 }
 
 export async function deleteSources(guids: string[]) {

@@ -6,6 +6,7 @@ import {
   getCodeConfigLockKey,
   validateAndFormatGuid,
   validateConfigObjectKeys,
+  GuidsByClass,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
 import { CLS } from "../../modules/cls";
@@ -15,7 +16,7 @@ export async function loadDestination(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<GuidsByClass> {
   let isNew = false;
 
   const app: App = await getParentByName(App, configObject.appId);
@@ -76,7 +77,7 @@ export async function loadDestination(
 
   logModel(destination, validate ? "validated" : isNew ? "created" : "updated");
 
-  return destination;
+  return { destination: [destination.guid] };
 }
 
 export async function deleteDestinations(guids: string[]) {

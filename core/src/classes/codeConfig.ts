@@ -2,6 +2,18 @@ import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
 
+export interface GuidsByClass {
+  app?: string[];
+  source?: string[];
+  property?: string[];
+  group?: string[];
+  schedule?: string[];
+  destination?: string[];
+  apikey?: string[];
+  team?: string[];
+  teammember?: string[];
+}
+
 export interface ConfigurationObject {
   id: string;
   class: string;

@@ -4,6 +4,7 @@ import {
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
+  GuidsByClass,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { Property } from "../../models/Property";
@@ -14,7 +15,7 @@ export async function loadGroup(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<GuidsByClass> {
   let isNew = false;
   const guid = await validateAndFormatGuid(Group, configObject.id);
   validateConfigObjectKeys(Group, configObject);
@@ -55,7 +56,7 @@ export async function loadGroup(
 
   logModel(group, validate ? "validated" : isNew ? "created" : "updated");
 
-  return group;
+  return { group: [group.guid] };
 }
 
 export async function deleteGroups(guids: string[]) {

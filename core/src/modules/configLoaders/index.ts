@@ -5,7 +5,7 @@ import glob from "glob";
 import {
   ConfigurationObject,
   sortConfigurationObject,
-  validateAndFormatGuid,
+  GuidsByClass,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
@@ -21,28 +21,22 @@ import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
 import { Property } from "../../models/Property";
 
-interface guidsByClass {
-  app: string[];
-  source: string[];
-  property: string[];
-  group: string[];
-  schedule: string[];
-  destination: string[];
-  apikey: string[];
-  team: string[];
-  teammember: string[];
-}
-
 export function getConfigDir() {
   const configDir =
     process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
   return configDir;
 }
 
-export async function loadConfigDirectory(configDir: string) {
-  let seenGuids = {};
-  let deletedGuids = {};
-  let errors = [];
+export async function loadConfigDirectory(
+  configDir: string
+): Promise<{
+  seenGuids: GuidsByClass;
+  errors: string[];
+  deletedGuids: GuidsByClass;
+}> {
+  let seenGuids: GuidsByClass = {};
+  let deletedGuids: GuidsByClass = {};
+  let errors: string[] = [];
 
   const { configObjects, configFiles } = await loadConfigObjects(configDir);
 
@@ -92,8 +86,8 @@ export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
   validate = false
-) {
-  const seenGuids: guidsByClass = {
+): Promise<{ seenGuids: GuidsByClass; errors: string[] }> {
+  const seenGuids: GuidsByClass = {
     app: [],
     source: [],
     property: [],
@@ -109,63 +103,51 @@ export async function processConfigObjects(
   for (const i in configObjects) {
     const configObject = configObjects[i];
     if (Object.keys(configObject).length === 0) continue;
-    let klass = configObject?.class?.toLocaleLowerCase();
-    let object;
+    let klass = configObject?.class?.toLowerCase();
+    let guids: GuidsByClass;
     try {
       switch (klass) {
         case "setting":
-          object = await loadSetting(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          guids = await loadSetting(configObject, externallyValidate, validate);
           break;
         case "app":
-          object = await loadApp(configObject, externallyValidate, validate);
+          guids = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          object = await loadSource(configObject, externallyValidate, validate);
-          if (configObject.bootstrappedProperty) {
-            seenGuids["property"].push(
-              await validateAndFormatGuid(
-                Property,
-                configObject.bootstrappedProperty.id
-              )
-            );
-          }
+          guids = await loadSource(configObject, externallyValidate, validate);
           break;
         case "property":
-          object = await loadProperty(
+          guids = await loadProperty(
             configObject,
             externallyValidate,
             validate
           );
           break;
         case "group":
-          object = await loadGroup(configObject, externallyValidate, validate);
+          guids = await loadGroup(configObject, externallyValidate, validate);
           break;
         case "schedule":
-          object = await loadSchedule(
+          guids = await loadSchedule(
             configObject,
             externallyValidate,
             validate
           );
           break;
         case "destination":
-          object = await loadDestination(
+          guids = await loadDestination(
             configObject,
             externallyValidate,
             validate
           );
           break;
         case "apikey":
-          object = await loadApiKey(configObject, externallyValidate, validate);
+          guids = await loadApiKey(configObject, externallyValidate, validate);
           break;
         case "team":
-          object = await loadTeam(configObject, externallyValidate, validate);
+          guids = await loadTeam(configObject, externallyValidate, validate);
           break;
         case "teammember":
-          object = await loadTeamMember(
+          guids = await loadTeamMember(
             configObject,
             externallyValidate,
             validate
@@ -183,14 +165,18 @@ export async function processConfigObjects(
       continue;
     }
 
-    if (klass !== "setting") seenGuids[klass].push(object.guid);
+    // should set guids in all cases
+    for (const className in guids) {
+      const newGuids = guids[className];
+      seenGuids[className].push(...newGuids);
+    }
   }
 
   return { seenGuids, errors };
 }
 
-async function deleteLockedObjects(seenGuids) {
-  const deletedGuids: guidsByClass = {
+async function deleteLockedObjects(seenGuids): Promise<GuidsByClass> {
+  const deletedGuids: GuidsByClass = {
     app: [],
     source: [],
     property: [],
