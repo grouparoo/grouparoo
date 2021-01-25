@@ -84,16 +84,12 @@ describe("tasks/schedule:updateSchedules", () => {
         recurringFrequency: 60 * 1000,
       });
 
-      const run = await Run.create(
-        {
-          creatorGuid: schedule.guid,
-          creatorType: "schedule",
-          state: "complete",
-          createdAt: new Date(0),
-          updatedAt: new Date(0),
-        },
-        { silent: true }
-      );
+      const run = await Run.create({
+        creatorGuid: schedule.guid,
+        creatorType: "schedule",
+        state: "complete",
+        completedAt: new Date(0),
+      });
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
@@ -113,6 +109,7 @@ describe("tasks/schedule:updateSchedules", () => {
         creatorGuid: schedule.guid,
         creatorType: "schedule",
         state: "complete",
+        completedAt: new Date(),
       });
 
       await specHelper.runTask("schedule:updateSchedules", {});

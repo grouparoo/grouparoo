@@ -18,7 +18,7 @@ export class UpdateSchedules extends CLSTask {
   }
 
   async runWithinTransaction(params) {
-    const { checkDeltas } = params;
+    const checkDeltas = params.checkDeltas || true;
     const schedules = await Schedule.findAll({
       where: { recurring: true, state: "ready" },
     });
