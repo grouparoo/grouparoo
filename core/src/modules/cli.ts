@@ -64,7 +64,6 @@ export namespace GrouparooCLI {
   }
 
   export async function resetHighWatermarks() {
-    log("Resetting Schedule high water marks...", "warning");
     const schedules = await Schedule.findAll();
     for (const i in schedules) {
       const runs = await Run.findAll({
