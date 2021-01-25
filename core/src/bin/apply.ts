@@ -14,10 +14,9 @@ export class Validate extends CLI {
     this.name = "apply";
     this.description = "Apply changes from code config";
     this.inputs = {
-      "externally-validate": {
+      local: {
         required: false,
-        description:
-          "Should we validate the config by connecting to sources and destinations?",
+        description: "Disable external validation",
       },
     };
 
@@ -34,13 +33,18 @@ export class Validate extends CLI {
 
     log(`applying ${configObjects.length} objects...`);
 
-    await CLS.wrap(async () =>
-      processConfigObjects(configObjects, !!params.externallyValidate)
-    );
+    await CLS.wrap(async () => {
+      const { errors } = await processConfigObjects(
+        configObjects,
+        !params.local
+      );
 
-    log(
-      `✅ Config applied - ${configObjects.length} config objects up-to-date!`
-    );
+      if (errors.length > 0) throw errors;
+
+      log(
+        `✅ Config applied - ${configObjects.length} config objects up-to-date!`
+      );
+    }, true);
 
     return true;
   }

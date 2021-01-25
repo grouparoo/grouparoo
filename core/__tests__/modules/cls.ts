@@ -17,8 +17,27 @@ describe("modules/cls", () => {
       result = CLS.get("test");
     };
 
-    await CLS.wrap(() => runner());
+    await CLS.wrap(runner);
     expect(result).toEqual({ k: 123 });
+  });
+
+  describe("#wrap", () => {
+    test("throw errors by default", async () => {
+      const runner = async () => {
+        throw new Error("oh no");
+      };
+
+      await expect(CLS.wrap(runner)).rejects.toThrow(/oh no/);
+    });
+
+    test("return errors if specified", async () => {
+      const runner = async () => {
+        throw new Error("oh no");
+      };
+
+      const error = await CLS.wrap(runner, true); // Does not throw error
+      expect(error.message).toMatch(/oh no/);
+    });
   });
 
   describe("#afterCommit", () => {
@@ -30,7 +49,7 @@ describe("modules/cls", () => {
         results.push("in-line");
       };
 
-      await CLS.wrap(() => runner());
+      await CLS.wrap(runner);
       expect(results).toEqual(["in-line", "side-effect-1", "side-effect-2"]);
     });
 
@@ -57,7 +76,7 @@ describe("modules/cls", () => {
         await CLS.afterCommit(async () => CLS.enqueueTask("sweeper", { a: 1 }));
       };
 
-      await CLS.wrap(() => runner());
+      await CLS.wrap(runner);
       const foundTasks = await specHelper.findEnqueuedTasks("sweeper");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({ a: 1 });
@@ -87,7 +106,7 @@ describe("modules/cls", () => {
         );
       };
 
-      await CLS.wrap(() => runner());
+      await CLS.wrap(runner);
       const foundTasks = await specHelper.findEnqueuedTasks("sweeper");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({ a: 1 });

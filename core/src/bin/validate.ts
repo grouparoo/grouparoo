@@ -17,10 +17,9 @@ export class Validate extends CLI {
     this.name = "validate";
     this.description = "Validate your code config";
     this.inputs = {
-      "externally-validate": {
+      local: {
         required: false,
-        description:
-          "Should we validate the config by connecting to sources and destinations?",
+        description: "Disable external validation",
       },
     };
 
@@ -50,7 +49,7 @@ export class Validate extends CLI {
       await api.sequelize.transaction(async () => {
         const { errors } = await processConfigObjects(
           configObjects,
-          !!params.externallyValidate,
+          !params.local,
           true
         );
         if (errors.length > 0) {
