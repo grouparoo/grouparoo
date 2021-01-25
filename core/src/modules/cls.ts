@@ -30,18 +30,23 @@ export namespace CLS {
    * Wrap an Async function f in such a way that all enqueued afterCommit / enqueueTasks during invocation will be run afterwords
    * Returns the return value of function f
    */
-  export async function wrap(f: Function) {
-    let runResponse: any;
-    let afterCommitJobs: Array<Function> = [];
+  export async function wrap(f: Function, catchError = false) {
+    try {
+      let runResponse: any;
+      let afterCommitJobs: Array<Function> = [];
 
-    await api.sequelize.transaction(async () => {
-      runResponse = await f();
-      afterCommitJobs = getNamespace().get("afterCommitJobs");
-    });
+      await api.sequelize.transaction(async () => {
+        runResponse = await f();
+        afterCommitJobs = getNamespace().get("afterCommitJobs");
+      });
 
-    for (const i in afterCommitJobs) await afterCommitJobs[i]();
+      for (const i in afterCommitJobs) await afterCommitJobs[i]();
 
-    return runResponse;
+      return runResponse;
+    } catch (error) {
+      if (catchError) return error;
+      throw error;
+    }
   }
 
   export function active() {
