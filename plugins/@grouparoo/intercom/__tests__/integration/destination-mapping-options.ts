@@ -8,6 +8,8 @@ import {
 } from "../../src/lib/export-contacts/destinationMappingOptions";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
+import { SimpleDestinationOptions } from "@grouparoo/core";
+
 const nockFile = path.join(
   __dirname,
   "../",
@@ -24,12 +26,19 @@ require("./../fixtures/destination-mapping-options");
 
 const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 const appOptions = loadAppOptions(newNock);
-const destinationOptions = {
+const defaultDestinationOptions = {
   creationMode: "User",
   removalMode: "Archive",
 };
 
-async function runDestinationMappingOptions() {
+async function runDestinationMappingOptions(
+  override?: SimpleDestinationOptions
+) {
+  const destinationOptions = Object.assign(
+    {},
+    defaultDestinationOptions,
+    override || {}
+  );
   return destinationMappingOptions({
     appGuid,
     appOptions,
@@ -62,13 +71,14 @@ describe("intercom/destinationMappingOptions", () => {
     const { required, known } = properties;
 
     expect(required.length).toBe(2);
-    const external_id = required.find((f) => f.key === "external_id");
-    expect(external_id.key).toBe("external_id");
-    expect(external_id.type).toBe("string");
 
     const email = required.find((f) => f.key === "email");
     expect(email.key).toBe("email");
     expect(email.type).toBe("email");
+
+    const external_id = required.find((f) => f.key === "external_id");
+    expect(external_id.key).toBe("external_id");
+    expect(external_id.type).toBe("string");
 
     const text = known.find((f) => f.key === "custom_attributes.text_field");
     expect(text.type).toBe("string");
@@ -85,5 +95,48 @@ describe("intercom/destinationMappingOptions", () => {
     const signed_up_at = known.find((f) => f.key === "signed_up_at");
     expect(signed_up_at.type).toBe("date");
     expect(signed_up_at.important).toBeFalsy();
+  });
+
+  test("does not use external_id when destinationOptions is Lead", async () => {
+    const options = await runDestinationMappingOptions({
+      creationMode: "Lead",
+    });
+    const { properties } = options;
+    const { required, known } = properties;
+
+    expect(required.length).toBe(1);
+
+    const email = required.find((f) => f.key === "email");
+    expect(email.key).toBe("email");
+    expect(email.type).toBe("email");
+
+    const external_id = known.find((f) => f.key === "external_id");
+    expect(external_id).toBeFalsy();
+
+    const name = known.find((f) => f.key === "name");
+    expect(name.type).toBe("string");
+    expect(name.important).toBe(true);
+  });
+
+  test("does not use external_id when destinationOptions is Lifecycle", async () => {
+    const options = await runDestinationMappingOptions({
+      creationMode: "Lifecycle",
+    });
+    const { properties } = options;
+    const { required, known } = properties;
+
+    expect(required.length).toBe(2);
+
+    const email = required.find((f) => f.key === "email");
+    expect(email.key).toBe("email");
+    expect(email.type).toBe("email");
+
+    const external_id = required.find((f) => f.key === "external_id");
+    expect(external_id.key).toBe("external_id");
+    expect(external_id.type).toBe("string");
+
+    const name = known.find((f) => f.key === "name");
+    expect(name.type).toBe("string");
+    expect(name.important).toBe(true);
   });
 });

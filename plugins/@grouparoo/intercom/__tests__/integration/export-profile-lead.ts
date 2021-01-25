@@ -35,7 +35,6 @@ const rand = getRandomNumbers(2); // has to be after requiring nock
 
 const email = `testuser1.${rand[1]}@demo.com`;
 const newEmail = `testother1b.${rand[9]}@demo.com`;
-const addedExternalId = `testuser1${rand[1]}`;
 let generatedExtId = null;
 
 const externalId2 = `testuser2.${rand[2]}`;
@@ -288,7 +287,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     expect(tags).toEqual(["outside_grouparoo"]);
   });
 
-  test("it doesn't listen to external_id when there is an email", async () => {
+  test("it doesn't listen to external_id when provided", async () => {
     userId2 = await findEmail(email2);
     expect(userId2).toBe(null);
 
@@ -373,59 +372,6 @@ describe("intercom/contacts/exportProfile/lead", () => {
     expect(user.external_id).toBe(generatedExtId);
     expect(user.email).toBe(email);
     expect(user.role).toBe("lead");
-  });
-
-  test("it cannot add an external id", async () => {
-    await runExport({
-      oldProfileProperties: {
-        email,
-      },
-      newProfileProperties: {
-        email,
-        external_id: addedExternalId,
-        name: "Ext Id",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    const user = await getUser(userId);
-    expect(user.external_id).toBe(generatedExtId); // no change!
-    expect(user.email).toBe(email);
-    expect(user.name).toBe("Ext Id");
-    expect(user.role).toBe("lead"); // still a lead
-  });
-
-  test("it picks external_id when conflicting email address", async () => {
-    await runExport({
-      oldProfileProperties: {},
-      newProfileProperties: {
-        external_id: externalId3,
-        email: email,
-        name: "Conflict",
-      },
-      oldGroups: [],
-      newGroups: [],
-      toDelete: false,
-    });
-
-    await indexContacts();
-
-    let user = await getUser(userId);
-    expect(user.email).toBe(email);
-    expect(user.external_id).toBe(generatedExtId);
-    expect(user.name).toBe("Ext Id");
-    expect(user.role).toBe("lead");
-
-    // this one actually updated
-    user = await getUser(userId3);
-    expect(user.email).toBe(email); // now same email!
-    expect(user.external_id).toMatch(externalId3);
-    expect(user.name).toBe("Conflict");
-    expect(user.role).toBe("user");
   });
 
   test("can delete a user", async () => {

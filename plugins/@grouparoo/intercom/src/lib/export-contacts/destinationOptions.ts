@@ -36,13 +36,14 @@ export enum RemovalMode {
 
 export const RemovalModeData = {
   [RemovalMode.Archive]: {
-    description: "Archive contacts that no longer being synced.",
+    description: "Archive contacts that are no longer being synced.",
   },
   [RemovalMode.Delete]: {
-    description: "Permanently delete contacts that no longer being synced.",
+    description:
+      "Permanently delete contacts that are no longer being synced. WARNING: These users can never be re-created in Intercom.",
   },
   [RemovalMode.Skip]: {
-    description: "Do not delete contacts. Leave them alone.",
+    description: "Never delete contacts. Leave them alone.",
   },
 };
 

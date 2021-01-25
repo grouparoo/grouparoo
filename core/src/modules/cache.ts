@@ -87,7 +87,7 @@ function makeCacheString(cacheKey: CacheKey) {
   return cacheKey.toString();
 }
 
-function makeBaseKey({ objectGuid, cacheKey }): string {
+export function makeBaseCacheKey({ objectGuid, cacheKey }): string {
   const objectKey = makeObjectKey({ objectGuid });
 
   const data = makeCacheString(cacheKey);
@@ -146,7 +146,7 @@ export const objectCache: ObjectCacheMethod = async (
     lock = false;
   }
 
-  const baseKey = makeBaseKey({ objectGuid, cacheKey });
+  const baseKey = makeBaseCacheKey({ objectGuid, cacheKey });
   const valueKey = `${baseKey}:value`;
   const lockKey = `${baseKey}:lock`;
 

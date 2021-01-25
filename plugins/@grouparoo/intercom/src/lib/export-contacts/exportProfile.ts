@@ -1,10 +1,12 @@
+import { api } from "actionhero";
 import {
   ExportProfilePluginMethod,
   SimpleDestinationOptions,
+  makeBaseCacheKey,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { CreationMode, RemovalMode } from "./destinationOptions";
-import { getAttributeMap } from "./destinationMappingOptions";
+import { getKnownAttributeMap } from "./destinationMappingOptions";
 import {
   getTagId,
   normalizeTagName,
@@ -31,7 +33,18 @@ class InfoError extends Error {
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
-    // TODO: issues with it taking a bit of time to show up in search. maybe retry if synced recently
+    const retryDelay = await getLock(args);
+
+    if (retryDelay > 0) {
+      return {
+        error: new Error(
+          "Intercom profile recently synced. This will be retried soon."
+        ),
+        success: false,
+        retryDelay,
+      };
+    }
+
     return sendProfile(args);
   } catch (error) {
     // https://developers.intercom.com/intercom-api-reference/reference#rate-limiting
@@ -45,7 +58,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 
     if (error?.statusCode === 429) {
       const headers = error.headers || {};
-      const now = new Date().getTime();
+      const now = Math.ceil(new Date().getTime() / 1000.0);
       const resetEpoch = headers["x-ratelimit-reset"] || 0;
       let retryIn = now - resetEpoch;
       if (retryIn <= 0) {
@@ -173,11 +186,10 @@ function filterUser(users: IntercomContact[], key: string, value) {
   return null;
 }
 
-export async function findContact(
-  client,
+function getUniqueValues(
   newProfileProperties,
   oldProfileProperties
-): Promise<IntercomContact> {
+): Array<{ field: string; operator: string; value: string }> {
   const newId = cleanExternalId(newProfileProperties.external_id);
   let oldId = cleanExternalId(oldProfileProperties.external_id);
   const newEmail = cleanEmail(newProfileProperties.email);
@@ -190,42 +202,53 @@ export async function findContact(
     oldEmail = null; // same
   }
 
-  const query = {
-    operator: "OR",
-    value: [],
-  };
-
+  // should be in order of importance (favors external id if there)
+  const value: Array<{ field: string; operator: string; value: string }> = [];
   if (newId) {
-    query.value.push({
+    value.push({
       field: "external_id",
       operator: "=",
       value: newId,
     });
   }
   if (oldId) {
-    query.value.push({
+    value.push({
       field: "external_id",
       operator: "=",
       value: oldId,
     });
   }
   if (newEmail) {
-    query.value.push({
+    value.push({
       field: "email",
       operator: "=",
       value: newEmail,
     });
   }
   if (oldEmail) {
-    query.value.push({
+    value.push({
       field: "email",
       operator: "=",
       value: oldEmail,
     });
   }
-  if (query.value.length === 0) {
+  return value;
+}
+
+export async function findContact(
+  client,
+  newProfileProperties,
+  oldProfileProperties
+): Promise<IntercomContact> {
+  const values = getUniqueValues(newProfileProperties, oldProfileProperties);
+  if (values.length === 0) {
     throw new Error("Nothing to search for existing Intercom contact");
   }
+
+  const query = {
+    operator: "OR",
+    value: values,
+  };
 
   const { body } = await client.contacts.search(query);
   const users: IntercomContact[] = body.data;
@@ -234,19 +257,12 @@ export async function findContact(
     return null;
   }
 
+  // favor external_id match because of order in getUniqueValues
   let found: IntercomContact = null;
-  // favor external_id match
-  if (!found && newId) {
-    found = filterUser(users, "external_id", newId);
-  }
-  if (!found && oldId) {
-    found = filterUser(users, "external_id", oldId);
-  }
-  if (!found && newEmail) {
-    found = filterUser(users, "email", newEmail);
-  }
-  if (!found && oldEmail) {
-    found = filterUser(users, "email", oldEmail);
+  for (const value of values) {
+    if (!found) {
+      found = filterUser(users, value.field, value.value);
+    }
   }
   if (!found) {
     found = users[0];
@@ -266,6 +282,11 @@ async function deleteUser(
     return;
   }
 
+  // first remove from all groups
+  oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
+  newGroups = [];
+  await updateTags(client, cacheData, user, oldGroups, newGroups);
+
   const { removalMode } = destinationOptions;
   switch (removalMode) {
     case RemovalMode.Archive:
@@ -273,10 +294,6 @@ async function deleteUser(
     case RemovalMode.Delete:
       return client.contacts.delete(user.id);
     case RemovalMode.Skip:
-      // not removing contact, but is clearing all tags grouparoo is in charge of
-      oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
-      newGroups = [];
-      await updateTags(client, cacheData, user, oldGroups, newGroups);
       throw new InfoError("Destination is not removing contacts.");
     default:
       throw new Error(`Unknown removalMode: ${removalMode}`);
@@ -313,12 +330,12 @@ async function makePayload(
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = oldKeys.concat(newKeys);
 
-  const validAttributes = await getAttributeMap(client, cacheData);
+  const knownAttributes = await getKnownAttributeMap(client, cacheData);
   for (const key of allKeys) {
     if (["email", "external_id"].includes(key)) {
       continue; // already there
     }
-    if (!validAttributes[key]) {
+    if (!knownAttributes[key]) {
       continue; // unknown key
     }
     const value = newProfileProperties[key]; // includes clearing out removed ones
@@ -485,6 +502,7 @@ async function updateTags(
     }
     currentTags[normName] = tag.id;
   }
+
   for (const tagName of removedTags) {
     const normName = normalizeTagName(tagName);
     const tagId = currentTags[normName];
@@ -502,4 +520,69 @@ async function updateTags(
     }
     // else already tagged
   }
+}
+
+function useRedis() {
+  const running = !!api?.redis?.clients;
+  if (!running && process.env.NODE_ENV === "test") {
+    return false;
+  }
+  return true;
+}
+
+const ITERCOM_DELAY_TTL_SECONDS = 3 * 60; // 3 minutes
+async function getLock({
+  appGuid,
+  export: { newProfileProperties, oldProfileProperties },
+}): Promise<number> {
+  if (!useRedis()) {
+    return 0;
+  }
+
+  const now = new Date().getTime();
+  const expireAt = (now + ITERCOM_DELAY_TTL_SECONDS * 1000).toString();
+
+  // try for each of the key values that we use in lookups
+  const values = getUniqueValues(oldProfileProperties, newProfileProperties);
+  const retryValues: number[] = [];
+  for (const value of values) {
+    retryValues.push(
+      await getValueLock(appGuid, value.field, value.value, expireAt)
+    );
+  }
+
+  const retryIn = Math.max(...retryValues) || 0;
+  return retryIn;
+}
+
+async function getValueLock(
+  appGuid: string,
+  propertyName: string,
+  value: string,
+  expireAt: string
+) {
+  if (!value || value.length === 0) {
+    return 0;
+  }
+
+  const cacheKey = ["getValueLock", propertyName, value];
+  const lockKey = makeBaseCacheKey({ objectGuid: appGuid, cacheKey });
+  const client = api.redis.clients.client;
+
+  const set = await client.setnx(lockKey, expireAt);
+  const checkValue = await client.get(lockKey);
+
+  if (!set || checkValue !== expireAt) {
+    // didn't get the lock
+    const now = new Date().getTime();
+    const doneAtMs = parseInt(checkValue) || now;
+    if (doneAtMs < now) {
+      await client.del(lockKey); // didn't expire! clean up.
+      return 0; // it was in the past
+    }
+    return doneAtMs - now; // how many ms until it's done
+  }
+  // keep this around until that time so that we don't go faster than Intercom search indexing
+  await client.expire(lockKey, ITERCOM_DELAY_TTL_SECONDS);
+  return 0;
 }

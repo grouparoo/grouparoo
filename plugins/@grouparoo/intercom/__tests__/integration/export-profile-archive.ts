@@ -55,7 +55,7 @@ describe("intercom/contacts/exportProfile/archive", () => {
       oldProfileProperties: {},
       newProfileProperties: { email, name: "A Lead" },
       oldGroups: [],
-      newGroups: ["another", "Test Group X"],
+      newGroups: ["another", "Test Group X", "extra_one"],
       toDelete: false,
     });
 
@@ -70,7 +70,7 @@ describe("intercom/contacts/exportProfile/archive", () => {
     expect(user.role).toBe("lead"); // because lifecycle
 
     const tags = await getTags(userId);
-    expect(tags).toEqual(["Test Group X", "another"]);
+    expect(tags).toEqual(["Test Group X", "another", "extra_one"]);
   });
 
   test("can create user profile on Intercom", async () => {
@@ -127,7 +127,7 @@ describe("intercom/contacts/exportProfile/archive", () => {
     expect(await findId(externalId2)).toBeNull();
   });
 
-  test("will not delete a lead", async () => {
+  test("will archive a lead", async () => {
     await runExport({
       oldProfileProperties: {
         email: email,
@@ -137,8 +137,8 @@ describe("intercom/contacts/exportProfile/archive", () => {
         email: newEmail, // pick up old address!
         name: "Delete Lead",
       },
-      oldGroups: ["another", "Test Group X", "no exist"],
-      newGroups: ["another", "Test Group X"],
+      oldGroups: ["another", "Test Group X", "extra_one"],
+      newGroups: ["another", "Test Group X", "extra_one"],
       toDelete: true,
     });
 
@@ -194,7 +194,6 @@ describe("intercom/contacts/exportProfile/archive", () => {
     await indexContacts();
 
     const test = await findEmail(email2);
-    console.log({ unarchived: { test } });
     expect(test).toBeTruthy();
     expect(test).toBe(userId2); // unarchives!
 
