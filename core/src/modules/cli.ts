@@ -70,11 +70,15 @@ export namespace GrouparooCLI {
       const runs = await Run.findAll({
         where: {
           creatorGuid: schedules[i].guid,
-          state: { [Op.ne]: "running" },
           highWaterMark: { [Op.ne]: null },
         },
       });
-      for (const j in runs) await runs[j].destroy();
+
+      for (const j in runs) {
+        const run = runs[j];
+        if (run.state === "running") await run.stop();
+        await run.update({ highWaterMark: {} });
+      }
     }
   }
 

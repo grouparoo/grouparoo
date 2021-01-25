@@ -1,5 +1,7 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, log, api, config } from "actionhero";
+import { Schedule, Run } from "..";
+import { CLS } from "../modules/cls";
 
 const CHECK_TIMEOUT = 1000 * 10;
 
@@ -20,6 +22,12 @@ export class RunCLI extends CLI {
         required: true,
         default: "false",
         description: "Should we run all Schedules from the beginning?",
+      },
+      "run-all-schedules": {
+        required: true,
+        default: "false",
+        description:
+          "Should we run all Schedules, event those that do not have a recurring time set?",
       },
       web: {
         required: true,
@@ -60,6 +68,10 @@ export class RunCLI extends CLI {
     await this.waitForReady();
     await this.runPausedTasks();
 
+    if (process.argv.slice(2).includes("--run-non-recurring-schedules")) {
+      await this.runNonRecurringSchedules();
+    }
+
     this.tick();
 
     return false;
@@ -84,16 +96,38 @@ export class RunCLI extends CLI {
   }
 
   async runPausedTasks() {
-    const tasks = [
-      "schedule:updateSchedules",
-      "run:recurringInternalRun",
-      "group:updateCalculatedGroups",
-    ];
+    let checkDeltas = true;
+    if (process.argv.slice(2).includes("--reset-high-watermarks")) {
+      checkDeltas = false;
+    }
 
-    for (const i in tasks) {
-      const task: Task = api.tasks.tasks[tasks[i]];
+    const tasks = {
+      "schedule:updateSchedules": {},
+      "run:recurringInternalRun": {},
+      "group:updateCalculatedGroups": {},
+    };
+
+    for (const name in tasks) {
+      const args = tasks[name];
+      const task: Task = api.tasks.tasks[name];
       log(`Running task: ${task.name}`);
-      await task.run({}, {});
+      await task.run(args, { checkDeltas });
+    }
+  }
+
+  async runNonRecurringSchedules() {
+    const schedules = await Schedule.findAll({ where: { recurring: false } });
+    for (const i in schedules) {
+      const run = await Run.create({
+        creatorGuid: schedules[i].guid,
+        creatorType: "schedule",
+        state: "running",
+      });
+
+      await CLS.enqueueTask("schedule:run", {
+        scheduleGuid: schedules[i].guid,
+        runGuid: run.guid,
+      });
     }
   }
 

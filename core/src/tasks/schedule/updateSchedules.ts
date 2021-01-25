@@ -12,9 +12,13 @@ export class UpdateSchedules extends CLSTask {
     this.frequency =
       process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "schedules";
+    this.inputs = {
+      checkDeltas: { required: false, default: true },
+    };
   }
 
-  async runWithinTransaction() {
+  async runWithinTransaction(params) {
+    const { checkDeltas } = params;
     const schedules = await Schedule.findAll({
       where: { recurring: true, state: "ready" },
     });
@@ -34,9 +38,7 @@ export class UpdateSchedules extends CLSTask {
         },
       });
 
-      if (runningRuns > 0) {
-        continue;
-      }
+      if (runningRuns > 0) continue;
 
       const lastCompleteRun = await Run.scope(null).findOne({
         where: {
@@ -44,15 +46,19 @@ export class UpdateSchedules extends CLSTask {
           creatorType: "schedule",
           state: "complete",
         },
-        order: [["updatedAt", "desc"]],
+        order: [["completedAt", "desc"]],
       });
 
       let delta = 0;
       if (lastCompleteRun) {
-        delta = new Date().getTime() - lastCompleteRun.updatedAt.getTime();
+        delta = new Date().getTime() - lastCompleteRun.completedAt.getTime();
       }
 
-      if (!lastCompleteRun || delta > schedule.recurringFrequency) {
+      if (
+        !lastCompleteRun ||
+        !checkDeltas ||
+        delta > schedule.recurringFrequency
+      ) {
         const run = await Run.create({
           creatorGuid: schedule.guid,
           creatorType: "schedule",
