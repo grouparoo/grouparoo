@@ -5,8 +5,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       class: "destination",
       type: "{{{__pluginName}}}-export",
-      appId: "data_warehouse", // The id of the App this Source uses
-      groupId: "high_value_customers", // The id of the group whose members you want to export
+      appId: "...", // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `appId: "high_value_customers"`
 
       options: {
         table: 'users_export', // The table to write profiles to

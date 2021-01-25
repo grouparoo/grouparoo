@@ -4,7 +4,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "schedule",
-      sourceId: "csvSchedule", // The id of the Source this Schedule uses
+      sourceId: "...", // The id of the Source this Schedule uses - e.g. `sourceId: "csv_schedule"`
       recurring: true, // should this Schedule regularly run?
       recurringFrequency: 1000 * 60 * 15, // 15 minutes, in ms
     },

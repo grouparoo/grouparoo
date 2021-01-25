@@ -5,9 +5,9 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}-table-import",
-      appId: "...", // Set this value to the ID of the App this Source uses.
+      appId: "...", // Set this value to the ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       options: {
-        table: "users", // Name of the table in your DB.
+        table: "...", // Name of the table in your DB - e.g. `table: "users"`
       },
 
       /**
@@ -25,7 +25,7 @@ exports.default = async function buildConfig() {
        * CLI.
        */
       mapping: {
-        id: "user_id", // Looks like `remote column`:`grouparoo property id`
+        id: "user_id",
       },
 
       /**

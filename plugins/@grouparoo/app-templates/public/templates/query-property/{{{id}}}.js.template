@@ -4,13 +4,13 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       class: "property",
-      sourceId: "purchases_table", // The ID of the Source that this Property belongs to.
+      sourceId: "...", // The ID of the Source that this Property belongs to - e.g. `sourceId: "purchases_table"`
       type: "float", // The type of the Property.  Options are: {{{__typeOptions}}}
       unique: false, // Will Profiles have unique records for this Property?
       identifying: false, // Should we consider this property Identifying in the UI? Only one Property can be identifying.
       isArray: false, // Is this an Array Property?
       options: {
-        query: "SELECT SUM(price) from purchases where user_id = \{\{userId\}\}", // The query to extract the property.  You can use mustache variables to represent the keys of other properties in the system.
+        query: "SELECT SUM(price) from purchases where user_id = \{\{userId\}\}", // The query to extract the property.  You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.
       },
     },
   ];
