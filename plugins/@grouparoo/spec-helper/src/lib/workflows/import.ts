@@ -1,4 +1,4 @@
-import { Profile } from "@grouparoo/core/src";
+import { Profile } from "@grouparoo/core";
 import { specHelper } from "actionhero";
 
 export async function ImportWorkflow() {

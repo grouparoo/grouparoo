@@ -1,5 +1,5 @@
 import faker from "faker";
-import { Source } from "@grouparoo/core/src";
+import { Source } from "@grouparoo/core";
 import AppFactory from "./app";
 
 const data = async (props = {}) => {

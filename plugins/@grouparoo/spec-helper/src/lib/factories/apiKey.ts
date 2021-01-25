@@ -1,5 +1,5 @@
 import faker from "faker";
-import { ApiKey } from "@grouparoo/core/src";
+import { ApiKey } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {

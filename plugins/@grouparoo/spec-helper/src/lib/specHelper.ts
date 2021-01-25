@@ -1,10 +1,10 @@
 // At import we need to change the working directory to core
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
-import { getCoreRootPath } from "@grouparoo/core/src/utils/pluginDetails";
+import { getCoreRootPath } from "@grouparoo/core/dist/utils/pluginDetails";
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
-process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
+process.env.ACTIONHERO_CONFIG = `${corePath}/dist/config`;
 
 if (
   corePath.includes("node_modules") &&
@@ -74,7 +74,7 @@ import {
   Mapping,
   Team,
   TeamMember,
-} from "@grouparoo/core/src"; // we explicitly require the src (typescript) files
+} from "@grouparoo/core"; // we explicitly require the src (typescript) files
 
 const models = [
   App,
@@ -105,9 +105,11 @@ const models = [
 ];
 
 export namespace helper {
-  export const setupTime = 60 * 1000;
-  export const longTime = 60 * 1000;
-  export const mediumTime = 20 * 1000;
+  export const setupTime = 60 * 1000; // 60 seconds
+  export const longTime = 60 * 1000; // 60 seconds
+  export const mediumTime = 20 * 1000; // 20 seconds
+  export const shortTime = 10 * 1000; // 10 seconds
+  export const defaultTime = shortTime;
 
   export const factories = {
     apiKey: ApiKeyFactory,

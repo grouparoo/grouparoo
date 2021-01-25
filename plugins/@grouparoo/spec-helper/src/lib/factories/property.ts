@@ -1,4 +1,4 @@
-import { Property } from "@grouparoo/core/src";
+import { Property } from "@grouparoo/core";
 import SourceFactory from "./source";
 
 const data = async (props = {}) => {

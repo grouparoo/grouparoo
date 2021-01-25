@@ -1,4 +1,4 @@
-import { Notification } from "@grouparoo/core/src";
+import { Notification } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
