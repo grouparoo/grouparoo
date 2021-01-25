@@ -168,7 +168,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) return this.exportGroupMembers();
+    if (hasChanges) return this.exportGroupMembers(true);
   }
 
   async getExportArrayProperties() {

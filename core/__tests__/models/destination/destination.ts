@@ -219,6 +219,7 @@ describe("models/destination", () => {
         await destination.setOptions({ table: newTable });
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
         expect(foundTasks.length).toBe(1);
+        expect(foundTasks[0].args[0].force).toBe(true);
       });
 
       test("re-setting options with the same value will not trigger a group run ", async () => {
