@@ -102,7 +102,7 @@ export class RunCLI extends CLI {
     }
 
     const tasks = {
-      "schedule:updateSchedules": {},
+      "schedule:updateSchedules": { checkDeltas },
       "run:recurringInternalRun": {},
       "group:updateCalculatedGroups": {},
     };
@@ -110,8 +110,8 @@ export class RunCLI extends CLI {
     for (const name in tasks) {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
-      log(`Running task: ${task.name}`);
-      await task.run(args, { checkDeltas });
+      log(`Running task: ${task.name}, ${JSON.stringify(args)}`);
+      await task.run(args, {});
     }
   }
 
