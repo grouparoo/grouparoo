@@ -167,6 +167,10 @@ export class Destination extends LoggedModel<Destination> {
     return OptionHelper.setOptions(this, options);
   }
 
+  async afterSetOptions(hasChanges: boolean) {
+    if (hasChanges) return this.exportGroupMembers();
+  }
+
   async getExportArrayProperties() {
     return DestinationOps.getExportArrayProperties(this);
   }

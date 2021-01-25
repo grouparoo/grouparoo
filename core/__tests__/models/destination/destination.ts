@@ -194,6 +194,42 @@ describe("models/destination", () => {
       });
     });
 
+    describe("options trigger runs", () => {
+      const newTable = "__test_table";
+      let destination: Destination;
+      let group: Group;
+
+      beforeAll(async () => {
+        destination = await Destination.create({
+          name: "incoming destination",
+          type: "test-plugin-export",
+          appGuid: app.guid,
+        });
+
+        group = await helper.factories.group();
+        await destination.trackGroup(group);
+      });
+
+      beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
+
+      afterAll(async () => await destination.destroy());
+      afterAll(async () => await group.destroy());
+
+      test("setting a destination's options triggers a group run", async () => {
+        await destination.setOptions({ table: newTable });
+        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+        expect(foundTasks.length).toBe(1);
+      });
+
+      test("re-setting options with the same value will not trigger a group run ", async () => {
+        await destination.setOptions({ table: newTable });
+        await api.resque.queue.connection.redis.flushdb();
+        await destination.setOptions({ table: newTable });
+        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
+        expect(foundTasks.length).toBe(0);
+      });
+    });
+
     describe("options from environment variables", () => {
       beforeAll(() => {
         process.env.GROUPAROO_OPTION__DESTINATION__TEST_OPTION = "abc123";
