@@ -6,8 +6,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        adAccountId: "562677826929881", // Number from your settings and in the URL
-        accessToken: "abc123", // The Access Token needs the ads_management permission
+        adAccountId: "...", // Number from your settings and in the URL - e.g. `adAccountId: "562677826929881"`
+        accessToken: "...", // The Access Token needs the ads_management permission
       }
     },
   ];

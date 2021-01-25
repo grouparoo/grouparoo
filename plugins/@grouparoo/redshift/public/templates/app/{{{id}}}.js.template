@@ -8,10 +8,10 @@ exports.default = async function buildConfig() {
       options: {
         host: "redshift.company.us-west-1.redshift.amazonaws.com",
         port: 5432,
-        database: "data_warehouse",
+        database: "...", // The name of the database - e.g. `database: "data_warehouse"`
         schema: "public",
-        user: "grouparoo_user", // the user to connect to the database.  If you are connecting to localhost, leave as `undefined`
-        password: "P@ssword", // the database password.  If you don't have a password, leave as `undefined`
+        user: "...", // The user to connect to the database - e.g. `user: "grouparoo_user"`.  If you are connecting to localhost, leave as `undefined`
+        password: "...", // The database password - e.g. `password: "P@ssword"`.  If you don't have a password, leave as `undefined`
       }
     },
   ];

@@ -1,4 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
+import Colors from "colors/safe";
 import {
   ConfigTemplate,
   ConfigTemplateRunResponse,
@@ -12,7 +13,14 @@ export class Generate extends CLI {
   constructor() {
     super();
     this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
-    this.description = "Generate new code config files from templates";
+    this.description = `Generate new code config files from templates.
+
+Commands:
+  [options]   See "Options" section below.
+  [template]  Name of the template. This is a starting point for building your configuration.
+              Use --list for a list of available templates.
+  [id]        A unique ID used to link items created from templates.
+              The value must be unique, using lower case letters and underscores only.`;
     this.inputs = {
       list: {
         required: false,
@@ -70,22 +78,29 @@ export class Generate extends CLI {
   }
 
   async generate(params) {
+    const learnMoreText =
+      "Learn more with `grouparoo generate --help` and `grouparoo generate --list`";
+
     if (!params.template) {
-      this.fatalError(
-        `template is required.  Learn more with \`grouparoo generate --help\` and \`grouparoo generate --list\``
-      );
+      this.fatalError(`template is required. ${learnMoreText}`);
     }
     if (!params.id) {
-      this.fatalError(`id is required`);
+      this.fatalError(`id is required. ${learnMoreText}`);
     }
 
     const template = await this.getTemplate(params.template);
 
+    const preparedParams = template.prepareParams({ ...params });
+
+    if (preparedParams.id !== params.id) {
+      console.log(
+        `${Colors.yellow("notice")}: ID was changed to ${preparedParams.id}`
+      );
+    }
+
     let fileData: ConfigTemplateRunResponse = {};
     try {
-      fileData = await template.run({
-        params: template.prepareParams(params),
-      });
+      fileData = await template.run({ params: preparedParams });
     } catch (error) {
       this.fatalError(error.message);
     }
@@ -128,7 +143,7 @@ export class Generate extends CLI {
     if (!params.template) {
       console.log("");
       console.log(
-        "You can filter this list by providing a (partial) template to match template names against"
+        "You can filter this list by providing a (partial) template to match template names against. (e.g. `grouparoo generate postgres --list`)"
       );
     }
   }

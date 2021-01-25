@@ -6,7 +6,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        hapikey: "abc123", // Hubspot hapikey (api) key
+        hapikey: "...", // Hubspot hapikey (API) key
       }
     },
   ];

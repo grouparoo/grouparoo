@@ -68,7 +68,7 @@ export class MailchimpIdDestinationTemplate extends ConfigTemplate {
   constructor() {
     super();
     this.name = `mailchimp:id:destination`;
-    this.description = `Config for a Mailchimp ID Destination`;
+    this.description = `Config for a Mailchimp ID Destination. Note: Use the email destination unless you know you need this.`;
     this.files = [path.join(templateRoot, "destination", "id", "*.template")];
     this.destinationDir = "destinations";
   }
