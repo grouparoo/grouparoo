@@ -215,10 +215,21 @@ describe("modules/codeConfig/syncTable", () => {
       expect(groups.length).toBe(1);
       expect(groups[0].guid).toBe("grp_magic_table_group");
       expect(groups[0].name).toBe("Sync to Mailchimp");
-      expect(groups[0].state).toBe("ready");
       expect(groups[0].type).toBe("calculated");
       expect(groups[0].locked).toBe("config:code");
-      // TODO: rules
+      const rules = await groups[0].getRules();
+      expect(rules).toEqual([
+        {
+          key: "magic_table_membership",
+          match: "0",
+          operation: { description: "is greater than", op: "gt" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: false,
+          type: "integer",
+        },
+      ]);
     });
 
     test("destination is created", async () => {
@@ -226,7 +237,7 @@ describe("modules/codeConfig/syncTable", () => {
       expect(destinations.length).toBe(1);
       expect(destinations[0].guid).toBe("dst_magic_table_destination");
       expect(destinations[0].appGuid).toBe("app_mailchimpapp");
-      expect(destinations[0].name).toBe("Test Destination");
+      expect(destinations[0].name).toBe("Sync to Mailchimp Destination");
       expect(destinations[0].state).toBe("ready");
       expect(destinations[0].locked).toBe("config:code");
       // TODO: type

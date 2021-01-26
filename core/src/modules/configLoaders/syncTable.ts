@@ -14,6 +14,7 @@ import { loadSchedule } from "./schedule";
 import { loadProperty } from "./property";
 import { OptionHelper } from "../optionHelper";
 import { loadGroup } from "./group";
+import { loadDestination } from "./destination";
 
 // TODO: lots of things!
 // because this is so dynamic the "providedIds" in getParentIds isn't right for proeprties, bootstrap, source, destination, schedule, etc
@@ -482,7 +483,7 @@ async function buildGroup(context: SyncTableContext): Promise<GuidsByClass> {
   }
   property.options.aggregationMethod =
     property.options.aggregationMethod || "count";
-  property.type = property.type || "boolean";
+  property.type = property.type || "integer";
 
   const { externallyValidate, validate } = context;
 
@@ -507,8 +508,8 @@ async function buildGroup(context: SyncTableContext): Promise<GuidsByClass> {
     group.rules = [
       {
         key: property.key,
-        operation: { op: "eq" },
-        match: "true",
+        operation: { op: "gt" },
+        match: "0",
       },
     ];
   }
@@ -527,32 +528,54 @@ async function buildDestination(
   };
 
   const destination = context.configObject.destination;
-  const source = context.configObject.source;
+  const sync = context.configObject.sync;
+  const group = context.configObject.group;
+  const { rootId, rootName } = context;
 
   if (!destination) {
     throw new Error("destination is required");
   }
-  if (!source) {
-    throw new Error("source is required");
+  if (!sync) {
+    throw new Error("sync properties are required");
+  }
+  if (!group) {
+    throw new Error("group is required");
   }
 
-  const dest = {
-    id: "test_destination", // guid -> `dst_hubspot_destination`
-    name: "Test Destination",
-    class: "destination",
-    type: "test-plugin-export",
-    appId: "data_warehouse", // guid -> app_data_warehouse
-    groupId: "email_group", // guid -> grp_email_group
-    options: {
-      table: "output",
-    },
-    mapping: {
-      "primary-id": "user_id",
-      "secondary-id": "email",
-    },
-    destinationGroupMemberships: {
-      "Literally Everyone": "email_group",
-    },
-  };
+  destination.id = destination.id || `${rootId}_destination`;
+  destination.name = destination.name || `${rootName} Destination`;
+  destination.class = destination.class || "Destination";
+
+  if (!destination.type) {
+    throw new Error("destination.type is required");
+  }
+  // it also needs corresponding options
+
+  if (!destination.appId) {
+    throw new Error("destination.appId is required");
+  }
+
+  destination.groupId = destination.groupId || group.id;
+
+  // allows adding in groups
+  if (!destination.destinationGroupMemberships) {
+    destination.destinationGroupMemberships = {};
+  }
+
+  if (!destination.mapping) {
+    destination.mapping = {};
+  }
+  for (const destKey in sync) {
+    // now normalized
+    destination.mapping[destKey] = sync[destKey].id;
+  }
+
+  const { externallyValidate, validate } = context;
+  const destinationConfig = Object.assign({}, destination);
+  merge(
+    seenGuids,
+    await loadDestination(destinationConfig, externallyValidate, validate)
+  );
+
   return seenGuids;
 }

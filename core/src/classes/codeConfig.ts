@@ -38,6 +38,7 @@ export interface ConfigurationObject {
   value?: string | boolean | number;
   mapping?: { [key: string]: any };
   bootstrappedProperty?: ConfigurationObject;
+  destinationGroupMemberships?: { [key: string]: string };
 
   // For SyncTable
   source?: ConfigurationObject;
