@@ -17,7 +17,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.COLUMN_NAME;
-    const { type, filterOperations } = getTypeInfo(row.data_type);
+    const { type, filterOperations } = getTypeInfo(row.DATA_TYPE);
     map[name] = {
       name,
       type,
