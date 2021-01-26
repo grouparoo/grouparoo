@@ -87,7 +87,8 @@ export class Validate extends CLI {
       const propertyStatus = {};
       const groupStatus = {};
       const exportStatus = {};
-      for (const k in properties) propertyStatus[k] = properties[k].values;
+      for (const k in properties)
+        propertyStatus[k] = [properties[k].values.join(", ")];
       for (const i in groups) groupStatus[groups[i].name] = [];
       for (const i in exports) {
         exportStatus[exports[i].destinationName + ": Properties"] = [
