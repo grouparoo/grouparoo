@@ -18,7 +18,7 @@ export class TableSourceTemplate extends ConfigTemplate {
   ) {
     super();
     this.name = `${name}:table:source`;
-    this.description = `Config for a ${name} Table Source. Construct properties from the data in the table.`;
+    this.description = `Config for a ${name} Table Source. Construct properties from the data in the table without writing SQL.`;
     this.files = files;
     this.destinationDir = "sources";
   }
