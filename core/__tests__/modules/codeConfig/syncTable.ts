@@ -78,13 +78,14 @@ describe("modules/codeConfig/syncTable", () => {
         apikey: [],
         app: ["app_mailchimpapp", "app_data_warehouse"],
         destination: ["dst_magic_table_destination"],
-        group: [],
+        group: ["grp_magic_table_group"],
         property: [
           "rul_magic_table_property_user_id", // bootstrapped
           "rul_magic_table_property_fname",
           "rul_magic_table_property_decimal_col",
           "rul_magic_table_property_timestamp_col",
           "rul_magic_table_property_email",
+          "rul_magic_table_membership",
         ],
         schedule: ["sch_magic_table_schedule"],
         source: ["src_magic_table_source"],
@@ -171,15 +172,17 @@ describe("modules/codeConfig/syncTable", () => {
 
     test("properties are created", async () => {
       const rules = await Property.findAll();
-      expect(rules.length).toBe(5);
+      expect(rules.length).toBe(6);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "email",
         "magic_table_decimal_col",
         "magic_table_fname",
+        "magic_table_membership",
         "magic_table_timestamp_col",
         "magic_table_user_id",
       ]);
       expect(rules.map((r) => r.sourceGuid).sort()).toEqual([
+        "src_magic_table_source",
         "src_magic_table_source",
         "src_magic_table_source",
         "src_magic_table_source",
@@ -192,8 +195,10 @@ describe("modules/codeConfig/syncTable", () => {
         "ready",
         "ready",
         "ready",
+        "ready",
       ]);
       expect(rules.map((r) => r.locked).sort()).toEqual([
+        "config:code",
         "config:code",
         "config:code",
         "config:code",
@@ -203,6 +208,17 @@ describe("modules/codeConfig/syncTable", () => {
 
       // TODO: check column mappings
       // TODO: check types and unique, etc
+    });
+
+    test("group is created", async () => {
+      const groups = await Group.findAll();
+      expect(groups.length).toBe(1);
+      expect(groups[0].guid).toBe("grp_magic_table_group");
+      expect(groups[0].name).toBe("Sync to Mailchimp");
+      expect(groups[0].state).toBe("ready");
+      expect(groups[0].type).toBe("calculated");
+      expect(groups[0].locked).toBe("config:code");
+      // TODO: rules
     });
 
     test("destination is created", async () => {

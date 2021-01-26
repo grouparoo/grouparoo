@@ -13,6 +13,7 @@ import { loadSource } from "./source";
 import { loadSchedule } from "./schedule";
 import { loadProperty } from "./property";
 import { OptionHelper } from "../optionHelper";
+import { loadGroup } from "./group";
 
 // TODO: lots of things!
 // because this is so dynamic the "providedIds" in getParentIds isn't right for proeprties, bootstrap, source, destination, schedule, etc
@@ -44,6 +45,7 @@ export async function loadSyncTable(
     property: [],
     schedule: [],
     destination: [],
+    group: [],
   };
 
   const rootId = configObject.id;
@@ -80,6 +82,8 @@ export async function loadSyncTable(
 
   merge(seenGuids, await buildSource(context));
   merge(seenGuids, await buildProperties(context));
+  merge(seenGuids, await buildGroup(context));
+  merge(seenGuids, await buildDestination(context));
 
   return seenGuids;
 }
@@ -239,21 +243,21 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
   let bootstrapId: string = null;
   if (!source.mapping) {
     if (!source.userKeyColumn) {
-      throw new Error("source.primaryKeyColumn is required");
+      throw new Error("source.userKeyColumn is required");
     }
-    // userKeyMapping is an existing property in system
-    if (!source.userKeyMapping) {
+    // userKeyMapsToPropertyId is an existing property in system
+    if (!source.userKeyMapsToPropertyId) {
       // need to use bootstrap, but use it if it there
       if (source.bootstrappedProperty) {
-        source.userKeyMapping = source.bootstrappedProperty.id;
+        source.userKeyMapsToPropertyId = source.bootstrappedProperty.id;
       } else {
         bootstrapId = `${rootId}_property_${source.userKeyColumn.toLowerCase()}`;
-        source.userKeyMapping = bootstrapId;
+        source.userKeyMapsToPropertyId = bootstrapId;
       }
     }
 
     source.mapping = {
-      [source.userKeyColumn]: source.userKeyMapping,
+      [source.userKeyColumn]: source.userKeyMapsToPropertyId,
     };
   }
 
@@ -287,10 +291,11 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
   const sourceConfig = Object.assign({}, source);
   delete sourceConfig.table;
   delete sourceConfig.userKeyColumn;
-  delete sourceConfig.userKeyMapping;
+  delete sourceConfig.userKeyMapsToPropertyId;
   delete sourceConfig.highWaterColumn;
   delete sourceConfig.schedule;
   delete sourceConfig.recurringFrequency;
+  delete sourceConfig.identityProperty;
 
   const { externallyValidate, validate } = context;
   merge(
@@ -393,10 +398,11 @@ async function buildProperties(
 
     property.id =
       property.id || `${rootId}_property_${property.column.toLowerCase()}`;
-    // note: it also takes property.key, but it is first in loadProperty,
-    //       so it will take hold if set (property.name is the backup)
+    // note: filling out propety.key as well in same order as loadProperty
     property.name =
       property.name || `${rootId}_${property.column.toLowerCase()}`;
+    property.key = property.key || property.name;
+
     property.class = property.class || "Property";
     property.sourceId = source.id;
     property.options = property.options || {};
@@ -439,5 +445,114 @@ async function buildProperties(
       await loadProperty(propertyConfig, externallyValidate, validate)
     );
   }
+  return seenGuids;
+}
+
+async function buildGroup(context: SyncTableContext): Promise<GuidsByClass> {
+  const seenGuids: GuidsByClass = {
+    property: [],
+    group: [],
+  };
+
+  const source = context.configObject.source;
+  const { rootId, rootName } = context;
+
+  if (!source) {
+    throw new Error("source is required");
+  }
+
+  if (!source.identityProperty) {
+    source.identityProperty = {};
+  }
+
+  const property = source.identityProperty;
+  property.id = property.id || `${rootId}_membership`;
+  // note: filling out propety.key as well in same order as loadProperty
+  property.name = property.name || `${rootId}_membership`;
+  property.key = property.key || property.name;
+
+  property.class = property.class || "Property";
+  property.sourceId = source.id;
+  property.options = property.options || {};
+  if (!property.options.column) {
+    if (!source.userKeyColumn) {
+      throw new Error("source.userKeyColumn is required");
+    }
+    property.options.column = source.userKeyColumn;
+  }
+  property.options.aggregationMethod =
+    property.options.aggregationMethod || "count";
+  property.type = property.type || "boolean";
+
+  const { externallyValidate, validate } = context;
+
+  const propertyConfig = Object.assign({}, property);
+  merge(
+    seenGuids,
+    await loadProperty(propertyConfig, externallyValidate, validate)
+  );
+
+  // now make the group of that.
+  let group = context.configObject.group;
+  if (!group) {
+    group = {};
+    context.configObject.group = group;
+  }
+
+  group.id = group.id || `${rootId}_group`;
+  group.name = group.name || `${rootName}`;
+  group.class = group.class || "Group";
+  group.type = group.type || "calculated";
+  if (!group.rules) {
+    group.rules = [
+      {
+        key: property.key,
+        operation: { op: "eq" },
+        match: "true",
+      },
+    ];
+  }
+
+  const groupConfig = Object.assign({}, group);
+  merge(seenGuids, await loadGroup(groupConfig, externallyValidate, validate));
+
+  return seenGuids;
+}
+
+async function buildDestination(
+  context: SyncTableContext
+): Promise<GuidsByClass> {
+  const seenGuids: GuidsByClass = {
+    destination: [],
+  };
+
+  const destination = context.configObject.destination;
+  const source = context.configObject.source;
+
+  if (!destination) {
+    throw new Error("destination is required");
+  }
+  if (!source) {
+    throw new Error("source is required");
+  }
+
+  const dest = {
+    id: "test_destination", // guid -> `dst_hubspot_destination`
+    name: "Test Destination",
+    class: "destination",
+    type: "test-plugin-export",
+    appId: "data_warehouse", // guid -> app_data_warehouse
+    groupId: "email_group", // guid -> grp_email_group
+    options: {
+      table: "output",
+    },
+    mapping: {
+      "primary-id": "user_id",
+      "secondary-id": "email",
+    },
+    destinationGroupMemberships: {
+      "Literally Everyone": "email_group",
+    },
+  };
   return seenGuids;
 }

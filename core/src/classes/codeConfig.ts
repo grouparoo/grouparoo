@@ -41,12 +41,14 @@ export interface ConfigurationObject {
 
   // For SyncTable
   source?: ConfigurationObject;
+  identityProperty?: ConfigurationObject;
   schedule?: ConfigurationObject;
   destination?: ConfigurationObject;
+  group?: ConfigurationObject;
   sync?: any;
   table?: string;
   userKeyColumn?: string;
-  userKeyMapping?: string;
+  userKeyMapsToPropertyId?: string;
   highWaterColumn?: string;
 }
 

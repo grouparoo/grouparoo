@@ -51,18 +51,22 @@ module.exports = async function getConfig() {
         appId: "data_warehouse", // required
         table: "mapping_table", // required
         userKeyColumn: "user_id", // makes key magic_table_user_id key (id: magic_table_property_user_id)
-        // if userKeyMapping is not there, it will bootstrap it as unique
-        //              _or_ add userKeyMapping: "existing_property_id"
+        // if userKeyMapsToPropertyId is not there, it will bootstrap it as unique
+        //              _or_ add userKeyMapsToPropertyId: "existing_property_id"
         highWaterColumn: "updated_at", // makes schedule (defaulting to recurring every 15 minutes)
         // can change with recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
         //    otherwise, can set whole schedule object here with recurring, recurringFrequency, id, name
+
+        // can set identityProperty: { id, etc } to know they are in that group
       },
+      // can put group here (id name, rules). It will add a rule for a property that is
+      //  one auto created of "everyone in this table" with id
       destination: {
         // if not provided , id auto-generates to ${parent}_source (magic_table_destination)
         // if not provided , name auto-generates (Sync to Mailchimp Destination)
         type: "mailchimp-export", // required
         appId: "mailchimpapp", // required
-        // if not provided groupId will be one auto created of "everyone in this table" with id
+        // if not provided groupId will be the one auto created of "everyone in this table"
         // ${parent}_destination_group (magic_table_destination_group)
         options: {
           listId: mailchimpListId,
