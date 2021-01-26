@@ -167,7 +167,7 @@ importers:
       nock: 13.0.5
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
       type-fest: 0.20.2
-      typedoc: 0.20.16_typescript@4.1.3
+      typedoc: 0.20.19_typescript@4.1.3
       typescript: 4.1.3
     specifiers:
       '@grouparoo/client-web': ^0.2.0-alpha.15
@@ -214,7 +214,7 @@ importers:
       ts-jest: 26.4.4
       ts-node: 9.1.1
       type-fest: 0.20.2
-      typedoc: 0.20.16
+      typedoc: 0.20.19
       typescript: 4.1.3
       umzug: 2.3.0
       uuid: 8.3.2
@@ -398,7 +398,7 @@ importers:
       typescript: 4.1.3
   plugins/@grouparoo/files-s3:
     dependencies:
-      aws-sdk: 2.828.0
+      aws-sdk: 2.831.0
       fs-extra: 9.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -414,7 +414,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.4
-      aws-sdk: 2.828.0
+      aws-sdk: 2.831.0
       fs-extra: 9.1.0
       jest: 26.6.3
       prettier: 2.2.1
@@ -519,6 +519,7 @@ importers:
   plugins/@grouparoo/logger:
     devDependencies:
       '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
       actionhero: 25.0.4
@@ -528,6 +529,7 @@ importers:
       typescript: 4.1.3
     specifiers:
       '@grouparoo/core': ^0.2.0-alpha.15
+      '@grouparoo/spec-helper': ^0.2.0-alpha.15
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.4
@@ -630,6 +632,7 @@ importers:
       newrelic: 7.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
       '@types/jest': 26.0.15
       '@types/node': 14.14.7
       actionhero: 25.0.4
@@ -639,6 +642,7 @@ importers:
       typescript: 4.1.3
     specifiers:
       '@grouparoo/core': ^0.2.0-alpha.15
+      '@grouparoo/spec-helper': ^0.2.0-alpha.15
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.4
@@ -895,7 +899,7 @@ importers:
       react-bootstrap: 1.4.3_react-dom@16.14.0+react@16.14.0
       react-bootstrap-typeahead: 5.1.4_react-dom@16.14.0+react@16.14.0
       react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
-      react-datepicker: 3.4.0_react-dom@16.14.0+react@16.14.0
+      react-datepicker: 3.4.1_react-dom@16.14.0+react@16.14.0
       react-dom: 16.14.0_react@16.14.0
       react-hook-form: 6.14.2_react@16.14.0
       react-markdown: 5.0.3_6e8834a71204835dd543aa9883583486
@@ -909,7 +913,7 @@ importers:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/jest': 26.0.15
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.5_4f82faf5e8cab057bc46d4d95079ec42
+      enzyme-adapter-react-16: 1.15.6_4f82faf5e8cab057bc46d4d95079ec42
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
@@ -935,7 +939,7 @@ importers:
       date-fns: 2.16.1
       dotenv: 8.2.0
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.5
+      enzyme-adapter-react-16: 1.15.6
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
@@ -953,7 +957,7 @@ importers:
       react-bootstrap: 1.4.3
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
-      react-datepicker: 3.4.0
+      react-datepicker: 3.4.1
       react-dom: 16.14.0
       react-hook-form: 6.14.2
       react-markdown: 5.0.3
@@ -2910,10 +2914,6 @@ packages:
     dev: false
     resolution:
       integrity: sha512-RFwCobxsvZ6j7twS7dHIZQZituMIDJJNHS/qY6iuthVebxS3zhRY+jaC2roEKiAYaVuTcGmX6Luc6YBcf6zJVg==
-  /@popperjs/core/2.6.0:
-    dev: false
-    resolution:
-      integrity: sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
   /@protobufjs/aspromise/1.1.2:
     dev: false
     resolution:
@@ -3572,10 +3572,10 @@ packages:
   /airbnb-prop-types/2.16.0_react@16.14.0:
     dependencies:
       array.prototype.find: 2.1.1
-      function.prototype.name: 1.1.2
+      function.prototype.name: 1.1.3
       is-regex: 1.1.1
       object-is: 1.1.3
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       object.entries: 1.1.2
       prop-types: 15.7.2
       prop-types-exact: 1.2.0
@@ -3983,7 +3983,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-yvsRHIaY51EYDml6MGlbqyJGfl4n7zezGYf+R7gvM8c5LNpRGc4SISkvgAswSS8SWxk/OrGCylKV9mJyVstz7w==
-  /aws-sdk/2.828.0:
+  /aws-sdk/2.831.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -3998,7 +3998,7 @@ packages:
     engines:
       node: '>= 0.8.0'
     resolution:
-      integrity: sha512-JoDujGdncSIF9ka+XFZjop/7G+fNGucwPwYj7OHYMmFIOV5p7YmqomdbVmH/vIzd988YZz8oLOinWc4jM6vvhg==
+      integrity: sha512-lrOjbGFpjk2xpESyUx2PGsTZgptCy5xycZazPeakNbFO19cOoxjHx3xyxOHsMCYb3pQwns35UvChQT60B4u6cw==
   /aws-sign2/0.7.0:
     resolution:
       integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
@@ -4572,6 +4572,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-Oj3cAGPCqOZX7Rz64Uny2GYAZNliQSqfbePrgAQ1wKAihYmCUnraBtJtKcGR4xz7wF+LoJC+ssFZvv5BgF9Igg==
+  /call-bind/1.0.2:
+    dependencies:
+      function-bind: 1.1.1
+      get-intrinsic: 1.1.0
+    resolution:
+      integrity: sha512-7O+FbCihrB5WGbFYesctwmTKae6rOiIzmz1icreWJ+0aA7LJfuqhEso2T9ncpcFtzMQtzXf2QGGueWJGTYsqrA==
   /call-me-maybe/1.0.1:
     dev: true
     resolution:
@@ -6267,14 +6273,14 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
-  /enzyme-adapter-react-16/1.15.5_4f82faf5e8cab057bc46d4d95079ec42:
+  /enzyme-adapter-react-16/1.15.6_4f82faf5e8cab057bc46d4d95079ec42:
     dependencies:
       enzyme: 3.11.0
-      enzyme-adapter-utils: 1.13.1_react@16.14.0
+      enzyme-adapter-utils: 1.14.0_react@16.14.0
       enzyme-shallow-equal: 1.0.4
       has: 1.0.3
-      object.assign: 4.1.1
-      object.values: 1.1.1
+      object.assign: 4.1.2
+      object.values: 1.1.2
       prop-types: 15.7.2
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
@@ -6287,13 +6293,14 @@ packages:
       react: ^16.0.0-0
       react-dom: ^16.0.0-0
     resolution:
-      integrity: sha512-33yUJGT1nHFQlbVI5qdo5Pfqvu/h4qPwi1o0a6ZZsjpiqq92a3HjynDhwd1IeED+Su60HDWV8mxJqkTnLYdGkw==
-  /enzyme-adapter-utils/1.13.1_react@16.14.0:
+      integrity: sha512-yFlVJCXh8T+mcQo8M6my9sPgeGzj85HSHi6Apgf1Cvq/7EL/J9+1JoJmJsRxZgyTvPMAqOEpRSu/Ii/ZpyOk0g==
+  /enzyme-adapter-utils/1.14.0_react@16.14.0:
     dependencies:
       airbnb-prop-types: 2.16.0_react@16.14.0
-      function.prototype.name: 1.1.2
-      object.assign: 4.1.1
-      object.fromentries: 2.0.2
+      function.prototype.name: 1.1.3
+      has: 1.0.3
+      object.assign: 4.1.2
+      object.fromentries: 2.0.3
       prop-types: 15.7.2
       react: 16.14.0
       semver: 5.7.1
@@ -6301,7 +6308,7 @@ packages:
     peerDependencies:
       react: 0.13.x || 0.14.x || ^15.0.0-0 || ^16.0.0-0
     resolution:
-      integrity: sha512-5A9MXXgmh/Tkvee3bL/9RCAAgleHqFnsurTYCbymecO4ohvtNO5zqIhHxV370t7nJAwaCfkgtffarKpC0GPt0g==
+      integrity: sha512-F/z/7SeLt+reKFcb7597IThpDp0bmzcH1E9Oabqv+o01cID2/YInlqHbFl7HzWBl4h3OdZYedtwNDOmSKkk0bg==
   /enzyme-shallow-equal/1.0.4:
     dependencies:
       has: 1.0.3
@@ -6366,7 +6373,7 @@ packages:
       is-regex: 1.1.1
       object-inspect: 1.8.0
       object-keys: 1.1.1
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       string.prototype.trimend: 1.0.2
       string.prototype.trimstart: 1.0.2
     engines:
@@ -6384,7 +6391,7 @@ packages:
       is-regex: 1.1.1
       object-inspect: 1.8.0
       object-keys: 1.1.1
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       string.prototype.trimend: 1.0.2
       string.prototype.trimstart: 1.0.2
     engines:
@@ -7122,17 +7129,6 @@ packages:
       node: '>=6 <7 || >=8'
     resolution:
       integrity: sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
-  /fs-extra/9.0.1:
-    dependencies:
-      at-least-node: 1.0.0
-      graceful-fs: 4.2.4
-      jsonfile: 6.0.1
-      universalify: 1.0.0
-    dev: true
-    engines:
-      node: '>=10'
-    resolution:
-      integrity: sha512-h2iAoN838FqAFJY2/qVpzFXy+EBxfVE220PalAqQLDVsFOHLJrZvut5puAbCdNv6WJk+B8ihI+k0c7JK5erwqQ==
   /fs-extra/9.1.0:
     dependencies:
       at-least-node: 1.0.0
@@ -7238,6 +7234,17 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-C8A+LlHBJjB2AdcRPorc5JvJ5VUoWlXdEHLOJdCI7kjHEtGTpHQUiqMvCIKUwIsGwZX2jZJy761AXsn356bJQg==
+  /function.prototype.name/1.1.3:
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.3
+      es-abstract: 1.18.0-next.1
+      functions-have-names: 1.2.1
+    dev: true
+    engines:
+      node: '>= 0.4'
+    resolution:
+      integrity: sha512-H51qkbNSp8mtkJt+nyW1gyStBiKZxfRqySNUR99ylq6BPXHKI4SEvIlTKp4odLfjRKJV04DFWMU3G/YRlQOsag==
   /functions-have-names/1.2.1:
     dev: true
     resolution:
@@ -7315,6 +7322,13 @@ packages:
       node: 6.* || 8.* || >= 10.*
     resolution:
       integrity: sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
+  /get-intrinsic/1.1.0:
+    dependencies:
+      function-bind: 1.1.1
+      has: 1.0.3
+      has-symbols: 1.0.1
+    resolution:
+      integrity: sha512-M11rgtQp5GZMZzDL7jLTNxbDfurpzuau5uqRWDPvlHjfvg3TdScAZo96GLvhMjImrmR8uAt0FS2RLoMrfWGKlg==
   /get-node-dimensions/1.2.1:
     dev: false
     resolution:
@@ -11489,10 +11503,21 @@ packages:
       es-abstract: 1.18.0-next.1
       has-symbols: 1.0.1
       object-keys: 1.1.1
+    dev: true
     engines:
       node: '>= 0.4'
     resolution:
       integrity: sha512-VT/cxmx5yaoHSOTSyrCygIDFco+RsibY2NM0a4RdEeY/4KgqezwFtK1yr3U67xYhqJSlASm2pKhLVzPj2lr4bA==
+  /object.assign/4.1.2:
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.3
+      has-symbols: 1.0.1
+      object-keys: 1.1.1
+    engines:
+      node: '>= 0.4'
+    resolution:
+      integrity: sha512-ixT2L5THXsApyiUPYKmW+2EHpXXe5Ii3M+f4e+aJFAHao5amFRW6J0OO6c/LU8Be47utCx2GL89hxGB6XSmKuQ==
   /object.defaults/1.1.0:
     dependencies:
       array-each: 1.0.1
@@ -11514,17 +11539,17 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-BQdB9qKmb/HyNdMNWVr7O3+z5MUIx3aiegEIJqjMBbBf0YT9RRxTJSim4mzFqtyr7PDAHigq0N9dO0m0tRakQA==
-  /object.fromentries/2.0.2:
+  /object.fromentries/2.0.3:
     dependencies:
+      call-bind: 1.0.2
       define-properties: 1.1.3
-      es-abstract: 1.17.7
-      function-bind: 1.1.1
+      es-abstract: 1.18.0-next.1
       has: 1.0.3
     dev: true
     engines:
       node: '>= 0.4'
     resolution:
-      integrity: sha512-r3ZiBH7MQppDJVLx6fhD618GKNG40CZYH9wgwdhKxBDDbQgjeWGGd4AtkZad84d291YxvWe7bJGuE65Anh0dxQ==
+      integrity: sha512-IDUSMXs6LOSJBWE++L0lzIbSqHl9KDCfff2x/JSEIDtEUavUnyMYC2ZGay/04Zq4UT8lvd4xNhU4/YHKibAOlw==
   /object.getownpropertydescriptors/2.1.0:
     dependencies:
       define-properties: 1.1.3
@@ -11570,6 +11595,17 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-WTa54g2K8iu0kmS/us18jEmdv1a4Wi//BZ/DTVYEcH0XhLM5NYdpDHja3gt57VrZLcNAO2WGA+KpWsDBaHt6eA==
+  /object.values/1.1.2:
+    dependencies:
+      call-bind: 1.0.2
+      define-properties: 1.1.3
+      es-abstract: 1.18.0-next.1
+      has: 1.0.3
+    dev: true
+    engines:
+      node: '>= 0.4'
+    resolution:
+      integrity: sha512-MYC0jvJopr8EK6dPBiO8Nb9mvjdypOachO5REGk6MXzujbBrAisKo3HmdEI6kZDL6fC31Mwee/5YbtMebixeag==
   /ocsp/1.2.0:
     dependencies:
       asn1.js: 4.10.1
@@ -12592,7 +12628,7 @@ packages:
   /prop-types-exact/1.2.0:
     dependencies:
       has: 1.0.3
-      object.assign: 4.1.1
+      object.assign: 4.1.2
       reflect.ownkeys: 0.2.0
     dev: true
     resolution:
@@ -12937,22 +12973,21 @@ packages:
       react: ^0.14 || ^15.0.0-rc || >=15.0
     resolution:
       integrity: sha512-Q0+80JaEw3O2J50Lf1dcwWfqkzu3SaCZUTgtVEG9kIHy1h1x8XTNrumX08hKz+M//wg7NOymaTzP1RPBYoLpmw==
-  /react-datepicker/3.4.0_react-dom@16.14.0+react@16.14.0:
+  /react-datepicker/3.4.1_react-dom@16.14.0+react@16.14.0:
     dependencies:
-      '@popperjs/core': 2.6.0
       classnames: 2.2.6
       date-fns: 2.16.1
       prop-types: 15.7.2
       react: 16.14.0
       react-dom: 16.14.0_react@16.14.0
       react-onclickoutside: 6.9.0_react-dom@16.14.0+react@16.14.0
-      react-popper: 2.2.4_4c9c83b1b90a13881824d427c7a265a1
+      react-popper: 1.3.7_react@16.14.0
     dev: false
     peerDependencies:
       react: ^16.9.0
       react-dom: ^16.9.0
     resolution:
-      integrity: sha512-AKvCtkU9C4GXULtJ4naEjeC7yScT94GdNuU5/Szxp9JEf7NK2QPO8zPzhJABwK3UkAel+okimL6B85m6Xx1TVw==
+      integrity: sha512-ASyVb7UmVx1vzeITidD7Cr/EXRXhKyjjbSkBndPc1MipYq4rqQ3eMFgvRQzpsXc3JmIMFgICm7nmN6Otc1GE/Q==
   /react-debounce-input/3.2.3_react@15.7.0:
     dependencies:
       lodash.debounce: 4.0.8
@@ -12987,10 +13022,6 @@ packages:
       react: ^16.14.0
     resolution:
       integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
-  /react-fast-compare/3.2.0:
-    dev: false
-    resolution:
-      integrity: sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
   /react-hook-form/6.14.2_react@16.14.0:
     dependencies:
       react: 16.14.0
@@ -13164,18 +13195,6 @@ packages:
       react: 0.14.x || ^15.0.0 || ^16.0.0
     resolution:
       integrity: sha512-nmqYTx7QVjCm3WUZLeuOomna138R1luC4EqkW3hxJUrAe+3eNz3oFCLYdnPwILfn0mX1Ew2c3wctrjlUMYYUww==
-  /react-popper/2.2.4_4c9c83b1b90a13881824d427c7a265a1:
-    dependencies:
-      '@popperjs/core': 2.6.0
-      react: 16.14.0
-      react-fast-compare: 3.2.0
-      warning: 4.0.3
-    dev: false
-    peerDependencies:
-      '@popperjs/core': ^2.0.0
-      react: ^16.8.0 || ^17
-    resolution:
-      integrity: sha512-NacOu4zWupdQjVXq02XpTD3yFPSfg5a7fex0wa3uGKVkFK7UN6LvVxgcb+xYr56UCuWiNPMH20tntdVdJRwYew==
   /react-redux/4.4.10_react@15.7.0+redux@3.7.2:
     dependencies:
       create-react-class: 15.7.0
@@ -15826,16 +15845,16 @@ packages:
   /typedarray/0.0.6:
     resolution:
       integrity: sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
-  /typedoc-default-themes/0.12.4:
+  /typedoc-default-themes/0.12.5:
     dev: true
     engines:
       node: '>= 8'
     resolution:
-      integrity: sha512-EZiXBUpogsYWe0dLgy47J8yRZCd+HAn9woGzO28XJxxSCSwZRYGKeQiw1KjyIcm3cBtLWUXiPD5+Bgx24GgZjg==
-  /typedoc/0.20.16_typescript@4.1.3:
+      integrity: sha512-JQ2O9laZ/EhfWUWYp/8EyuShYhtXLhIa6DU8eZNUfaurMhEgKdffbadKNv6HMmTfOxAcgiePg06OCxNX8EyP3g==
+  /typedoc/0.20.19_typescript@4.1.3:
     dependencies:
       colors: 1.4.0
-      fs-extra: 9.0.1
+      fs-extra: 9.1.0
       handlebars: 4.7.6
       lodash: 4.17.20
       lunr: 2.3.9
@@ -15844,7 +15863,7 @@ packages:
       progress: 2.0.3
       shelljs: 0.8.4
       shiki: 0.2.7
-      typedoc-default-themes: 0.12.4
+      typedoc-default-themes: 0.12.5
       typescript: 4.1.3
     dev: true
     engines:
@@ -15853,7 +15872,7 @@ packages:
     peerDependencies:
       typescript: 3.9.x || 4.0.x || 4.1.x
     resolution:
-      integrity: sha512-xqIL8lT6ZE3QpP0GN30ckeTR05NSEkrP2pXQlNhC0OFkbvnjqJtDUcWSmCO15BuYyu4qsEbZT+tKYFEAt9Jxew==
+      integrity: sha512-9FjQ1xQGtxpXm8R5QKvU8wFBaaYe8RW3NzrhGWB8RigbOALwG+4ywJ/EyArPGWXvmXYB7I8h2YHzeyFvZ2s0ow==
   /typescript/4.1.3:
     engines:
       node: '>=4.2.0'
