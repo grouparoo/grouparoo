@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Property } from "../../../src/models/Property";
-import { Source } from "../../../src/models/Source";
+import { Property, Source } from "../../../src";
 import { PropertyOps } from "../../../src/modules/ops/property";
 
 describe("models/property", () => {

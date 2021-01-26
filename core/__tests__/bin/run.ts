@@ -1,6 +1,6 @@
-import { RunCLI } from "../../src/bin/run";
 import { helper } from "@grouparoo/spec-helper";
-import { Run } from "../../src/models/Run";
+import { RunCLI } from "../../src/bin/run";
+import { Run } from "../../src";
 
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

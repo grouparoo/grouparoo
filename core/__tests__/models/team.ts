@@ -1,8 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Team } from "./../../src/models/Team";
-import { TeamMember } from "./../../src/models/TeamMember";
-import { Log } from "./../../src/models/Log";
-import { Permission } from "./../../src/models/Permission";
+import { Team, TeamMember, Log, Permission } from "../../src";
 
 describe("models/team", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

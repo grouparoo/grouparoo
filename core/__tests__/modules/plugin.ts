@@ -1,11 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "./../../src/modules/plugin";
-import { Setting } from "./../../src/models/Setting";
-import { Run } from "./../../src/models/Run";
-import { Import } from "./../../src/models/Import";
+import { plugin, Setting, Run, Import, Property } from "../../src";
 import { specHelper } from "actionhero";
-import { Property } from "../../src/models/Property";
-import { SourceOptionsMethodResponse } from "../../src";
+import { SourceOptionsMethodResponse } from "../..";
 
 describe("modules/plugin", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Setting } from "../../../src/models/Setting";
-import { Team } from "../../../src/models/Team";
+import { Setting, Team } from "../../../src";
 import path from "path";
 import { api } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";

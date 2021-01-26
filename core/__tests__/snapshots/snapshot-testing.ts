@@ -1,5 +1,5 @@
-import { Profile, Group, Destination, GrouparooPlugin } from "../../src";
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
+import { Profile, Group, Destination, GrouparooPlugin } from "../../src";
 import { api } from "actionhero";
 
 describe("test grouparoo profiles", () => {

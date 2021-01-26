@@ -1,7 +1,7 @@
-import { api } from "actionhero";
 import { helper } from "@grouparoo/spec-helper";
+import { api } from "actionhero";
 import { Notifier } from "../../src/classes/notifier";
-import { Notification } from "../../src/models/Notification";
+import { Notification } from "../../src";
 
 describe("modules/notifiers", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

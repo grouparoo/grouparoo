@@ -1,12 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
-import { App } from "../../src/models/App";
-import { Log } from "../../src/models/Log";
-import { Schedule } from "../../src/models/Schedule";
-import { Source } from "../../src/models/Source";
-import { Option } from "../../src/models/Option";
-import { Run } from "../../src/models/Run";
-import { plugin } from "../../src/modules/plugin";
+import { plugin, App, Log, Schedule, Source, Option, Run } from "../../src";
 
 describe("models/schedule", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

@@ -1,15 +1,17 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run } from "./../../src/models/Run";
-import { App } from "./../../src/models/App";
-import { Source } from "./../../src/models/Source";
-import { Import } from "./../../src/models/Import";
-import { Property } from "./../../src/models/Property";
-import { plugin } from "./../../src/modules/plugin";
-import { Schedule } from "../../src/models/Schedule";
-import { Group } from "../../src/models/Group";
-import { Team } from "../../src/models/Team";
-import { TeamMember } from "../../src/models/TeamMember";
-import { Profile } from "../../src/models/Profile";
+import {
+  plugin,
+  Run,
+  App,
+  Source,
+  Import,
+  Property,
+  Schedule,
+  Group,
+  Team,
+  TeamMember,
+  Profile,
+} from "../../src";
 
 describe("models/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

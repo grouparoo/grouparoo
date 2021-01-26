@@ -1,7 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { SetupStep } from "./../../src/models/SetupStep";
-import { SetupStepOps } from "./../../src/modules/ops/setupSteps";
-import { Team } from "../../src";
+import { SetupStep, Team } from "../../src";
+import { SetupStepOps } from "../../src/modules/ops/setupSteps";
 
 describe("models/setupStep", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

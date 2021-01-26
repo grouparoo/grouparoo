@@ -2,8 +2,7 @@ import fetch, { enableFetchMocks } from "jest-fetch-mock";
 enableFetchMocks();
 
 import { helper } from "@grouparoo/spec-helper";
-import { Log } from "../../src/models/Log";
-import { plugin } from "../../src/modules/plugin";
+import { plugin, Log } from "../../src";
 import { api, specHelper, config } from "actionhero";
 
 describe("tasks/telemetry", () => {

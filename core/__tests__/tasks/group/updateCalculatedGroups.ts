@@ -1,7 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Group } from "../../../src";
-import { plugin } from "./../../../src/modules/plugin";
+import { plugin, Group } from "../../../src";
 
 let group: Group;
 

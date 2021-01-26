@@ -1,7 +1,7 @@
+import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 import path from "path";
 import { GrouparooPlugin } from "../../../src";
-import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 describe("modules/codeConfig", () => {

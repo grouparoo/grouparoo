@@ -1,8 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile } from "./../../src/models/Profile";
-import { Event } from "./../../src/models/Event";
-import { Log } from "./../../src/models/Log";
-import { Property } from "../../src/models/Property";
+import { Profile, Event, Log, Property } from "../../src";
 
 describe("models/event", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

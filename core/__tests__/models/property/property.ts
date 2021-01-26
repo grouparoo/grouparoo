@@ -1,13 +1,15 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Property } from "../../../src/models/Property";
-import { Log } from "../../../src/models/Log";
-import { App } from "../../../src/models/App";
-import { Source } from "../../../src/models/Source";
-import { Run } from "../../../src/models/Run";
-import { Option } from "../../../src/models/Option";
-import { plugin } from "../../../src/modules/plugin";
-import { PropertyFilter } from "../../../src/models/PropertyFilter";
+import {
+  plugin,
+  Property,
+  Log,
+  App,
+  Source,
+  Run,
+  Option,
+  PropertyFilter,
+} from "../../../src";
 import { PropertyOps } from "../../../src/modules/ops/property";
 
 describe("models/property", () => {

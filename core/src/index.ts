@@ -25,6 +25,7 @@ export { Profile } from "./models/Profile";
 export { ProfileProperty } from "./models/ProfileProperty";
 export { Property, PropertyTypes } from "./models/Property";
 export { PropertyFilter } from "./models/PropertyFilter";
+export { ProfileMultipleAssociationShim } from "./models/ProfileMultipleAssociationShim";
 export { Run } from "./models/Run";
 export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
 export { Setting } from "./models/Setting";

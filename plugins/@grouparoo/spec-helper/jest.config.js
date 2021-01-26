@@ -1,6 +1,8 @@
+const { helper } = require("./dist/index");
+
 module.exports = {
   testEnvironment: "node",
-  testTimeout: 10000,
+  testTimeout: helper.defaultTime,
   setupFiles: ["<rootDir>/jest.setup.js"],
   transform: {
     "^.+\\.ts?$": "ts-jest",

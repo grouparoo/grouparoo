@@ -1,12 +1,14 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile } from "./../../../src/models/Profile";
-import { Import } from "./../../../src/models/Import";
-import { App } from "./../../../src/models/App";
-import { Group } from "./../../../src/models/Group";
-import { Destination } from "./../../../src/models/Destination";
-import { Export } from "./../../../src/models/Export";
-import { plugin } from "../../../src/modules/plugin";
+import {
+  Profile,
+  Import,
+  App,
+  Group,
+  Destination,
+  Export,
+  plugin,
+} from "../../../src";
 import { Op } from "sequelize";
 
 describe("tasks/profile:export", () => {

@@ -1,12 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../../src/modules/plugin";
-import { App } from "../../../../src/models/App";
-import { Destination } from "../../../../src/models/Destination";
+import {
+  plugin,
+  App,
+  Destination,
+  Profile,
+  Group,
+  DestinationMappingOptionsResponseTypes,
+} from "../../../../src";
 import { DestinationOps } from "../../../../src/modules/ops/destination";
-import { Profile } from "../../../../src/models/Profile";
-import { Group } from "../../../../src/models/Group";
 import { api } from "actionhero";
-import { DestinationMappingOptionsResponseTypes } from "../../../../src";
 
 describe("models/destination", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

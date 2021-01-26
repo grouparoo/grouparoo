@@ -1,8 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { App } from "../../../src/models/App";
-import { Option } from "../../../src/models/Option";
-import { Log } from "../../../src/models/Log";
-import { plugin } from "../../../src/modules/plugin";
+import { plugin, App, Option, Log } from "../../../src";
 import { api, redis, utils } from "actionhero";
 
 describe("models/app", () => {

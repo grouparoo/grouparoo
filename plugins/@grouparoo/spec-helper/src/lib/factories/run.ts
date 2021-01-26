@@ -1,4 +1,4 @@
-import { Run } from "@grouparoo/core/src";
+import { loadPath } from "../loadPath";
 import ScheduleFactory from "./schedule";
 
 const data = async (props = {}) => {
@@ -15,9 +15,8 @@ const data = async (props = {}) => {
 };
 
 export default async (owner?, props: { [key: string]: any } = {}) => {
-  if (!owner) {
-    owner = await ScheduleFactory();
-  }
+  const { Run } = await import(`@grouparoo/core/${loadPath}`);
+  if (!owner) owner = await ScheduleFactory();
 
   props.creatorGuid = owner.guid;
   props.creatorType = owner.guid.match(/^sch_/) ? "schedule" : "property";

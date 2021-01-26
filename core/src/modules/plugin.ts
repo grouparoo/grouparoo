@@ -29,6 +29,7 @@ import { Schedule } from "../models/Schedule";
 import { Setting, settingTypes } from "../models/Setting";
 import { SetupStep } from "../models/SetupStep";
 import { Source } from "../models/Source";
+import { Notification } from "../models/Notification";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 
@@ -58,6 +59,7 @@ const models = [
   PropertyFilter,
   ProfileMultipleAssociationShim,
   Mapping,
+  Notification,
   Setting,
   SetupStep,
   Team,

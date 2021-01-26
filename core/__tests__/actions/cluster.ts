@@ -1,8 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { cache, Connection, specHelper } from "actionhero";
-import { Log } from "../../src/models/Log";
-import { App } from "../../src/models/App";
-import { SetupStep } from "../../src";
+import { App, Log, SetupStep } from "../../src";
 
 describe("actions/cluster", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

@@ -1,6 +1,6 @@
+import { helper } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 import * as uuid from "uuid";
-import { helper } from "@grouparoo/spec-helper";
 import { objectCache, objectCacheInvalidate } from "./../../src/modules/cache";
 
 describe("modules/cache", () => {

@@ -7,19 +7,21 @@ import {
 } from "../../../src/modules/configLoaders";
 import { sortConfigurationObject } from "../../../src/classes/codeConfig";
 
-import { Property } from "../../../src/models/Property";
-import { App } from "../../../src/models/App";
-import { Source } from "../../../src/models/Source";
-import { Schedule } from "../../../src/models/Schedule";
-import { Group } from "../../../src/models/Group";
-import { GroupRule } from "../../../src/models/GroupRule";
-import { Destination } from "../../../src/models/Destination";
-import { ApiKey } from "../../../src/models/ApiKey";
-import { Team } from "../../../src/models/Team";
-import { TeamMember } from "../../../src/models/TeamMember";
-import { Setting } from "../../../src/models/Setting";
-import { Option } from "../../../src/models/Option";
-import { Mapping } from "../../../src/models/Mapping";
+import {
+  Property,
+  App,
+  Source,
+  Schedule,
+  Group,
+  GroupRule,
+  Destination,
+  ApiKey,
+  Team,
+  TeamMember,
+  Setting,
+  Option,
+  Mapping,
+} from "../../../src";
 
 function ensureNoSavedModels() {
   return test("there should be no models created", async () => {

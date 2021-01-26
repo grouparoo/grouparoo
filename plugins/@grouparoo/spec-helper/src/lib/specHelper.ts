@@ -1,10 +1,15 @@
+import { loadPath } from "./loadPath";
+
 // At import we need to change the working directory to core
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
-import { getCoreRootPath } from "@grouparoo/core/src/utils/pluginDetails";
+
+const {
+  getCoreRootPath,
+} = require(`@grouparoo/core/${loadPath}/utils/pluginDetails`);
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
-process.env.ACTIONHERO_CONFIG = `${corePath}/src/config`;
+process.env.ACTIONHERO_CONFIG = `${corePath}/${loadPath}/config`;
 
 if (
   corePath.includes("node_modules") &&
@@ -38,15 +43,16 @@ import ExportFactory from "./factories/export";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
-export * from "./workflows/import";
-
+// types
 import {
+  SourceOptionsMethodResponse,
+  DestinationOptionsMethodResponse,
+} from "@grouparoo/core";
+
+const {
   // modules
   plugin,
 
-  // types
-  SourceOptionsMethodResponse,
-  DestinationOptionsMethodResponse,
   // models
   App,
   ApiKey,
@@ -74,7 +80,7 @@ import {
   Mapping,
   Team,
   TeamMember,
-} from "@grouparoo/core/src"; // we explicitly require the src (typescript) files
+} = require(`@grouparoo/core/${loadPath}`);
 
 const models = [
   App,
@@ -105,9 +111,11 @@ const models = [
 ];
 
 export namespace helper {
-  export const setupTime = 60 * 1000;
-  export const longTime = 60 * 1000;
-  export const mediumTime = 20 * 1000;
+  export const setupTime = 60 * 1000; // 60 seconds
+  export const longTime = 60 * 1000; // 60 seconds
+  export const mediumTime = 20 * 1000; // 20 seconds
+  export const shortTime = 10 * 1000; // 10 seconds
+  export const defaultTime = process.env.CI ? mediumTime : shortTime;
 
   export const factories = {
     apiKey: ApiKeyFactory,
@@ -180,11 +188,12 @@ export namespace helper {
       actionhero = new Process();
       await actionhero.start();
 
-      // prepare models that we are using from /src
-      plugin.mountModels();
-      // prepare models that we are using from /dist
       try {
-        require("@grouparoo/core").plugin.mountModels();
+        require("@grouparoo/core/dist").plugin.mountModels();
+      } catch (error) {}
+
+      try {
+        require("@grouparoo/core/src").plugin.mountModels();
       } catch (error) {}
 
       if (options.truncate) await helper.truncate();

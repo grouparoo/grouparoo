@@ -1,7 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../../src/modules/plugin";
-import { App } from "../../../../src/models/App";
-import { Destination } from "../../../../src/models/Destination";
+import { plugin, App, Destination } from "../../../../src";
 
 describe("models/destination", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

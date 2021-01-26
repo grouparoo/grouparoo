@@ -1,9 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run } from "../../src/models/Run";
-import { Log } from "../../src/models/Log";
-import { Import } from "../../src/models/Import";
-import { Export } from "../../src/models/Export";
-import { plugin } from "../../src/modules/plugin";
+import { Run, Log, Import, Export, plugin } from "../../src";
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/sweeper", () => {

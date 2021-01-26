@@ -1,8 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Connection, specHelper } from "actionhero";
-import { Schedule } from "../../src";
-import { Run } from "../../src/models/Run";
-import { Source } from "../../src/models/Source";
+import { Run, Source, Schedule } from "../../src";
 
 describe("actions/runs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

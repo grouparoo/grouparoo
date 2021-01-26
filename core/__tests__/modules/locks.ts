@@ -1,6 +1,6 @@
-import { api } from "actionhero";
 import { helper } from "@grouparoo/spec-helper";
-import { waitForLock } from "./../../src/modules/locks";
+import { api } from "actionhero";
+import { waitForLock } from "../../src/modules/locks";
 
 describe("modules/locks", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
