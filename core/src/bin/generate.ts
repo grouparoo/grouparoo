@@ -24,44 +24,52 @@ Commands:
     this.inputs = {
       list: {
         required: false,
+        default: false,
+        letter: "l",
+        flag: true,
         description:
           'Display the available config templates to use with config-generate.  You can filter the list of templates by providing a string to match against, ie: `grouparoo generate app --list` to see templates which match "app"',
       },
       describe: {
         required: false,
+        default: false,
+        letter: "d",
+        flag: true,
         description: "Display the options for the template in detail",
       },
       overwrite: {
         required: true,
-        default: "false",
+        default: false,
+        letter: "o",
+        flag: true,
         description: "Overwrite existing files?",
       },
       path: {
         required: true,
+        letter: "p",
         default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
         description: "The location of the config directory",
       },
     };
-    this.example =
-      'grouparoo generate templateName id -- --name="the-name" --app="app-id"';
+    this.example = "grouparoo generate postgres:app data_warehouse";
 
     GrouparooCLI.setGrouparooRunMode(this);
   }
 
   async run({ params }) {
-    params = Object.assign(
-      params,
-      GrouparooCLI.parseTemplateOpts("template", "id")
-    );
+    const [template, id] = params._arguments || [];
+    if (template) params.template = template;
+    if (id) params.id = id;
+
     GrouparooCLI.logCLI(
       this.name
         .replace(" [template]", params.template ? " " + params.template : "")
         .replace(" [id]", params.id ? " " + params.id : "")
     );
 
-    if (process.argv.slice(2).includes("--list")) {
+    if (params.list) {
       await this.list(params);
-    } else if (process.argv.slice(2).includes("--describe")) {
+    } else if (params.describe) {
       await this.describe(params);
     } else {
       await this.generate(params);
@@ -106,10 +114,7 @@ Commands:
     }
 
     Object.keys(fileData).forEach((filename) => {
-      if (
-        process.argv.slice(2).includes("--overwrite") ||
-        !fs.existsSync(filename)
-      ) {
+      if (params.overwrite || !fs.existsSync(filename)) {
         fs.mkdirpSync(path.dirname(filename));
         fs.writeFileSync(
           filename,

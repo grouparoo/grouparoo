@@ -25,7 +25,7 @@ describe("bin/run", () => {
     process.env.SCHEDULER = "false";
 
     const command = new RunCLI();
-    await expect(command.run()).rejects.toThrow();
+    await expect(command.run({ params: {} })).rejects.toThrow();
   });
 
   describe("with instance", () => {
@@ -42,7 +42,7 @@ describe("bin/run", () => {
     });
 
     test("paused tasks can be run", async () => {
-      await instance.runPausedTasks(); // does not throw
+      await instance.runPausedTasks({}); // does not throw
     });
 
     test("will be complete with no pending items", async () => {

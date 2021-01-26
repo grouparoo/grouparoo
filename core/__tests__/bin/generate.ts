@@ -38,9 +38,8 @@ describe("bin/generate", () => {
   });
 
   test("the generate command can list templates", async () => {
-    process.argv = ["", "", "generate", "--list"];
     const command = new Generate();
-    await command.run({ params: { path: tmpDir } });
+    await command.run({ params: { path: tmpDir, list: true } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -50,9 +49,10 @@ describe("bin/generate", () => {
   });
 
   test("the generate command can filter the list of templates", async () => {
-    process.argv = ["", "", "generate", "group", "--list"];
     const command = new Generate();
-    await command.run({ params: { path: tmpDir } });
+    await command.run({
+      params: { path: tmpDir, template: "group", list: true },
+    });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -62,9 +62,10 @@ describe("bin/generate", () => {
   });
 
   test("the generate command can write a new file", async () => {
-    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
-    const toStop = await command.run({ params: { path: tmpDir } });
+    const toStop = await command.run({
+      params: { path: tmpDir, template: "group:calculated", id: "new-group" },
+    });
     expect(toStop).toBe(true);
 
     const file = `${tmpDir}/groups/new_group.js`;
@@ -78,9 +79,10 @@ describe("bin/generate", () => {
   });
 
   test("the generate command will fail if the file exists", async () => {
-    process.argv = ["", "", "generate", "group:calculated", "new-group"];
     const command = new Generate();
-    await command.run({ params: { path: tmpDir } });
+    await command.run({
+      params: { path: tmpDir, template: "group:calculated", id: "new-group" },
+    });
 
     const output = messages.join(" ");
     const file = `${tmpDir}/groups/new_group.js`;
@@ -89,16 +91,15 @@ describe("bin/generate", () => {
   });
 
   test("the generate command will write the file with the overwrite flag", async () => {
-    process.argv = [
-      "",
-      "",
-      "generate",
-      "group:calculated",
-      "new-group",
-      "--overwrite",
-    ];
     const command = new Generate();
-    await command.run({ params: { path: tmpDir } });
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "group:calculated",
+        id: "new-group",
+        overwrite: true,
+      },
+    });
 
     const output = messages.join(" ");
     const file = `${tmpDir}/groups/new_group.js`;
