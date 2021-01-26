@@ -1,7 +1,9 @@
-import { Profile } from "@grouparoo/core";
+import { loadPath } from "./../loadPath";
 import { specHelper } from "actionhero";
 
 export async function ImportWorkflow() {
+  const { Profile } = await import(`@grouparoo/core/${loadPath}`);
+
   const maxAttempts = 5;
   let attempts = 0;
   let importTasks = [];
