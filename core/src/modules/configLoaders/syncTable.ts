@@ -290,6 +290,7 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
   delete sourceConfig.userKeyMapping;
   delete sourceConfig.highWaterColumn;
   delete sourceConfig.schedule;
+  delete sourceConfig.recurringFrequency;
 
   const { externallyValidate, validate } = context;
   merge(
@@ -318,7 +319,10 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
     schedule.class = schedule.class || "Schedule";
     schedule.sourceId = source.id;
     schedule.recurring = recurring;
-    schedule.recurringFrequency = schedule.recurringFrequency || 15 * 60 * 1000;
+    schedule.recurringFrequency =
+      schedule.recurringFrequency ||
+      source.recurringFrequency ||
+      15 * 60 * 1000;
     schedule.options = schedule.options || {
       column: source.highWaterColumn,
     };
