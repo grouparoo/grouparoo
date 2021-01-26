@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Schedule, Run } from "./../../..";
+import { Schedule, Run } from "../../../src";
 
 describe("tasks/schedule:updateSchedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

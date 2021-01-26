@@ -1,5 +1,5 @@
+import { loadPath } from "../loadPath";
 import faker from "faker";
-import { Schedule } from "@grouparoo/core";
 import SourceFactory from "./source";
 
 const data = async (props = {}) => {
@@ -18,6 +18,8 @@ const data = async (props = {}) => {
 };
 
 export default async (source?, props: { [key: string]: any } = {}) => {
+  const { Schedule } = await import(`@grouparoo/core/${loadPath}`);
+
   if (!source) {
     source = await SourceFactory();
     await source.setOptions({ table: "__testTable" });

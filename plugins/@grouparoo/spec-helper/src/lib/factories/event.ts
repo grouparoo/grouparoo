@@ -1,6 +1,6 @@
+import { loadPath } from "../loadPath";
 import faker from "faker";
 import * as UUID from "uuid";
-import { Event } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -19,6 +19,7 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
+  const { Event } = await import(`@grouparoo/core/${loadPath}`);
   const mergedProps = await data(props);
   const instance = new Event(mergedProps);
 

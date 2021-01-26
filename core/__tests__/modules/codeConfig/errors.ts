@@ -1,9 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Setting, Team } from "../../..";
+import { Setting, Team } from "../../../src";
 import path from "path";
 import { api } from "actionhero";
-import { loadConfigDirectory } from "../../../dist/modules/configLoaders";
-import { validateConfigObjectKeys } from "../../../dist/classes/codeConfig";
+import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { validateConfigObjectKeys } from "../../../src/classes/codeConfig";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({

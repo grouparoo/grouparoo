@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { ApiKey, Permission } from "./../..";
+import { ApiKey, Permission } from "../../src";
 
 describe("actions/apiKeys", () => {
   helper.grouparooTestServer({ truncate: true });

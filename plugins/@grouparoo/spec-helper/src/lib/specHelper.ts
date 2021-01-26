@@ -1,10 +1,15 @@
+import { loadPath } from "./loadPath";
+
 // At import we need to change the working directory to core
 // Don't use the main export path as that will require Actionhero's config
 // We can rely on npm to find the right version of the package for us
-import { getCoreRootPath } from "@grouparoo/core/dist/utils/pluginDetails";
+
+const {
+  getCoreRootPath,
+} = require(`@grouparoo/core/${loadPath}/utils/pluginDetails`);
 const corePath: string = getCoreRootPath();
 process.chdir(corePath);
-process.env.ACTIONHERO_CONFIG = `${corePath}/dist/config`;
+process.env.ACTIONHERO_CONFIG = `${corePath}/${loadPath}/config`;
 
 if (
   corePath.includes("node_modules") &&
@@ -38,13 +43,15 @@ import ExportFactory from "./factories/export";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
+// types
 import {
-  // modules
-  plugin,
-
-  // types
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
+} from "@grouparoo/core";
+
+const {
+  // modules
+  plugin,
 
   // models
   App,
@@ -73,7 +80,7 @@ import {
   Mapping,
   Team,
   TeamMember,
-} from "@grouparoo/core"; // we explicitly require the src (typescript) files
+} = require(`@grouparoo/core/${loadPath}`);
 
 const models = [
   App,
@@ -181,15 +188,13 @@ export namespace helper {
       actionhero = new Process();
       await actionhero.start();
 
-      // try {
-      //   // prepare models that we are using from /src
-      //   require("@grouparoo/core/src").plugin.mountModels();
-      // } catch {}
+      try {
+        require("@grouparoo/core/dist").plugin.mountModels();
+      } catch (error) {}
 
       try {
-        // prepare models that we are using from /src
-        require("@grouparoo/core/dist").plugin.mountModels();
-      } catch {}
+        require("@grouparoo/core/src").plugin.mountModels();
+      } catch (error) {}
 
       if (options.truncate) await helper.truncate();
       if (options.resetSettings) await helper.resetSettings();

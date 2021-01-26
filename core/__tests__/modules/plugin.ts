@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Setting, Run, Import, Property } from "./../..";
+import { plugin, Setting, Run, Import, Property } from "../../src";
 import { specHelper } from "actionhero";
 import { SourceOptionsMethodResponse } from "../..";
 

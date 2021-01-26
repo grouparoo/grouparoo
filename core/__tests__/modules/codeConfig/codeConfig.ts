@@ -12,11 +12,11 @@ import {
   Team,
   TeamMember,
   Setting,
-} from "../../..";
+} from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { loadConfigDirectory } from "../../../dist/modules/configLoaders";
+import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({

@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-let actionhero;
 
 describe("actions/logs", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

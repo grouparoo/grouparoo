@@ -1,4 +1,4 @@
-import { Profile } from "@grouparoo/core";
+import { loadPath } from "../loadPath";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -10,5 +10,6 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
+  const { Profile } = await import(`@grouparoo/core/${loadPath}`);
   return Profile.create(await data(props));
 };

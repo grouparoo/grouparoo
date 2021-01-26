@@ -1,4 +1,4 @@
-import { Export } from "@grouparoo/core";
+import { loadPath } from "../loadPath";
 import DestinationFactory from "./destination";
 import ProfileFactory from "./profile";
 
@@ -21,13 +21,9 @@ export default async (
   destination?,
   props: { [key: string]: any } = {}
 ) => {
-  if (!profile) {
-    profile = await ProfileFactory();
-  }
-
-  if (!destination) {
-    destination = await DestinationFactory();
-  }
+  const { Export } = await import(`@grouparoo/core/${loadPath}`);
+  if (!profile) profile = await ProfileFactory();
+  if (!destination) destination = await DestinationFactory();
 
   props.profileGuid = profile.guid;
   props.destinationGuid = destination.guid;

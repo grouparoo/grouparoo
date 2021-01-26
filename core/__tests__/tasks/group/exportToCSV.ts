@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Import, Profile, File, Run } from "../../..";
+import { Group, Import, Profile, File, Run } from "../../../src";
 import fs from "fs";
 
 describe("tasks/group:exportToCSV", () => {

@@ -1,5 +1,5 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
-import { Profile, Property, Group } from "../../../..";
+import { Profile, Property, Group } from "../../../../src";
 import { helper } from "@grouparoo/spec-helper";
 
 describe("model/group", () => {

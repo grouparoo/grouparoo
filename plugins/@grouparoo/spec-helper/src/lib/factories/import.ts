@@ -1,10 +1,9 @@
-import { Import } from "@grouparoo/core";
+import { loadPath } from "../loadPath";
 import RunFactory from "./run";
 
 export default async (run?, props: { [key: string]: any } = {}) => {
-  if (!run) {
-    run = await RunFactory();
-  }
+  const { Import } = await import(`@grouparoo/core/${loadPath}`);
+  if (!run) run = await RunFactory();
 
   const instance = new Import({
     data: props,

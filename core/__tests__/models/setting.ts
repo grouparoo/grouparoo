@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Setting, Log } from "./../..";
+import { plugin, Setting, Log } from "../../src";
 
 describe("models/setting", () => {
   helper.grouparooTestServer({

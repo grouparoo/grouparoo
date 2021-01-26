@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { getParentPath } from "../../dist/utils/pluginDetails";
+import { getParentPath } from "../../src/utils/pluginDetails";
 import { specHelper } from "actionhero";
 import fs from "fs-extra";
 import path from "path";

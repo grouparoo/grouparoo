@@ -8,7 +8,7 @@ import {
   Destination,
   Export,
   plugin,
-} from "../../..";
+} from "../../../src";
 import { Op } from "sequelize";
 
 describe("tasks/profile:export", () => {

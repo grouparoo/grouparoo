@@ -10,7 +10,7 @@ import {
   Option,
   DestinationGroupMembership,
   Run,
-} from "../../..";
+} from "../../../src";
 
 describe("models/destination", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

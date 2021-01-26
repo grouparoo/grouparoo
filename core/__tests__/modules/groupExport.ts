@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { groupExportToCSV } from "./../../dist/modules/groupExport";
-import { Profile, Group, Run } from "./../..";
+import { groupExportToCSV } from "./../../src/modules/groupExport";
+import { Profile, Group, Run } from "./../../src";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 

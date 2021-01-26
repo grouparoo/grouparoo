@@ -1,6 +1,6 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Import, Run, Profile, Source, Property } from "./../../..";
+import { Import, Run, Profile, Source, Property } from "../../../src";
 
 describe("integration/runs/internalRun", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

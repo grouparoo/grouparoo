@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { internalRun } from "./../../dist/modules/internalRun";
-import { Run } from "../..";
+import { internalRun } from "./../../src/modules/internalRun";
+import { Run } from "../../src";
 
 describe("modules/internalRun", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

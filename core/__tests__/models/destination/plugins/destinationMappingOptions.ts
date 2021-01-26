@@ -6,8 +6,8 @@ import {
   Profile,
   Group,
   DestinationMappingOptionsResponseTypes,
-} from "../../../..";
-import { DestinationOps } from "../../../../dist/modules/ops/destination";
+} from "../../../../src";
+import { DestinationOps } from "../../../../src/modules/ops/destination";
 import { api } from "actionhero";
 
 describe("models/destination", () => {

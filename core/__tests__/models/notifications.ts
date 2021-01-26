@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Notification } from "../..";
+import { Notification } from "../../src";
 
 describe("models/notification", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

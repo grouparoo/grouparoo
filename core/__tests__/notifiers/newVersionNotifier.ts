@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
-import { NewVersionNotifier } from "../../dist/notifiers/newVersionNotifier";
-import { Notification } from "../..";
+import { NewVersionNotifier } from "../../src/notifiers/newVersionNotifier";
+import { Notification } from "../../src";
 
-jest.mock("../../dist/modules/pluginVersions", () => ({
+jest.mock("../../src/modules/pluginVersions", () => ({
   __esModule: true,
   pluginVersions: async () => {
     return [

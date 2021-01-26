@@ -4,8 +4,8 @@ import { api } from "actionhero";
 import {
   loadConfigObjects,
   processConfigObjects,
-} from "../../../dist/modules/configLoaders";
-import { sortConfigurationObject } from "../../../dist/classes/codeConfig";
+} from "../../../src/modules/configLoaders";
+import { sortConfigurationObject } from "../../../src/classes/codeConfig";
 
 import {
   Property,
@@ -21,7 +21,7 @@ import {
   Setting,
   Option,
   Mapping,
-} from "../../..";
+} from "../../../src";
 
 function ensureNoSavedModels() {
   return test("there should be no models created", async () => {

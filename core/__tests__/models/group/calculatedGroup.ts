@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper, config } from "actionhero";
-import { Log, Profile, Group, Run, Import, GroupMember } from "../../..";
+import { Log, Profile, Group, Run, Import, GroupMember } from "../../../src";
 import { SharedGroupTests } from "../../utils/prepareSharedGroupTest";
-import { GroupOps } from "../../../dist/modules/ops/group";
+import { GroupOps } from "../../../src/modules/ops/group";
 
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

@@ -1,5 +1,5 @@
+import { loadPath } from "../loadPath";
 import faker from "faker";
-import { Source } from "@grouparoo/core";
 import AppFactory from "./app";
 
 const data = async (props = {}) => {
@@ -14,9 +14,8 @@ const data = async (props = {}) => {
 };
 
 export default async (app?, props: { [key: string]: any } = {}) => {
-  if (!app) {
-    app = await AppFactory();
-  }
+  const { Source } = await import(`@grouparoo/core/${loadPath}`);
+  if (!app) app = await AppFactory();
 
   props.appGuid = app.guid;
   const mergedProps = await data(props);

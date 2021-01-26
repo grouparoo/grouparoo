@@ -9,8 +9,8 @@ import {
   App,
   Source,
   Log,
-} from "../../..";
-import { ProfileOps } from "../../../dist/modules/ops/profile";
+} from "../../../src";
+import { ProfileOps } from "../../../src/modules/ops/profile";
 import { api, specHelper } from "actionhero";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../../dist/modules/plugin";
-import { App, Destination, Export } from "../../../..";
+import { plugin } from "../../../../src/modules/plugin";
+import { App, Destination, Export } from "../../../../src";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 

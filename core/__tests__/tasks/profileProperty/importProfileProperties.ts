@@ -5,7 +5,7 @@ import {
   PluginConnection,
   ProfileProperty,
   Property,
-} from "../../..";
+} from "../../../src";
 
 describe("tasks/profileProperty:importProfileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

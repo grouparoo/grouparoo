@@ -9,8 +9,8 @@ import {
   Run,
   Option,
   PropertyFilter,
-} from "../../..";
-import { PropertyOps } from "../../../dist/modules/ops/property";
+} from "../../../src";
+import { PropertyOps } from "../../../src/modules/ops/property";
 
 describe("models/property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

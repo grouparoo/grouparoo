@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { ProfileProperty, Property, Option, Source, App } from "../..";
+import { ProfileProperty, Property, Option, Source, App } from "../../src";
 
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

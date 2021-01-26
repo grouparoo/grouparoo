@@ -1,5 +1,5 @@
+import { loadPath } from "../loadPath";
 import faker from "faker";
-import { Group } from "@grouparoo/core";
 
 const data = async (props = {}) => {
   const defaultProps = {
@@ -14,6 +14,7 @@ const data = async (props = {}) => {
 };
 
 export default async (props = {}) => {
+  const { Group } = await import(`@grouparoo/core/${loadPath}`);
   const instance = await Group.create(await data(props));
   await instance.update({ state: "ready" });
 

@@ -11,7 +11,7 @@ import {
   Team,
   TeamMember,
   Profile,
-} from "./../..";
+} from "../../src";
 
 describe("models/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

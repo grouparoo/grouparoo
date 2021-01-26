@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Property, Source } from "../../..";
-import { PropertyOps } from "../../../dist/modules/ops/property";
+import { Property, Source } from "../../../src";
+import { PropertyOps } from "../../../src/modules/ops/property";
 
 describe("models/property", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

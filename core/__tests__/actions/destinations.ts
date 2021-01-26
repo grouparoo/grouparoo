@@ -8,7 +8,7 @@ import {
   Run,
   App,
   Property,
-} from "./../..";
+} from "../../src";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

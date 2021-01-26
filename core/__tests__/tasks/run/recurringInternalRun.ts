@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Run, Setting } from "../../..";
+import { Run, Setting } from "../../../src";
 import { Op } from "sequelize";
 
 describe("tasks/run:recurringInternalRun", () => {

@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile, Destination, Export, Run, plugin } from "../../..";
+import { Profile, Destination, Export, Run, plugin } from "../../../src";
 
 describe("tasks/export:enqueue", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

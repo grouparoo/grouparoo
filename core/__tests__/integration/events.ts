@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, Connection, specHelper } from "actionhero";
-import { Property, Profile, Option, Event, EventData } from "../..";
+import { Property, Profile, Option, Event, EventData } from "../../src";
 
 describe("integration/events", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

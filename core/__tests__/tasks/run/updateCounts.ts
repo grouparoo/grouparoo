@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
-import { Run } from "../../..";
+import { Run } from "../../../src";
 
 describe("tasks/runs:updateCounts", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

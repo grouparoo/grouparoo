@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { plugin } from "../../..";
+import { plugin } from "../../../src";
 
 describe("tasks/profile:checkReady", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

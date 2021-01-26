@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Profile, Group, Team, TeamMember, Property } from "./../..";
+import { Profile, Group, Team, TeamMember, Property } from "../../src";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);

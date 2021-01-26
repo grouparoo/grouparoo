@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Destination, Profile, Export } from "../..";
+import { Destination, Profile, Export } from "../../src";
 import { Op } from "sequelize";
 
 describe("models/export", () => {

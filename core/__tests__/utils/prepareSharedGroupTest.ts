@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Group, Run, Import } from "../..";
+import { Profile, Group, Run, Import } from "../../src";
 import { specHelper } from "actionhero";
 
 export namespace SharedGroupTests {

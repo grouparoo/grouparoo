@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { ApiKey, Log, Permission } from "../..";
+import { ApiKey, Log, Permission } from "../../src";
 
 describe("models/apiKey", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
