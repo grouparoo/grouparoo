@@ -2,6 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
+  ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 import format from "pg-format";
 
@@ -22,9 +23,11 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.column_name;
+    const { type, filterOperations } = getTypeInfo(row.data_type);
     map[name] = {
       name,
-      filterOperations: getFilterOperations(row.data_type),
+      type,
+      filterOperations,
       data: row,
     };
   }
@@ -43,8 +46,14 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
 // character varying
 // abstime
 
-const getFilterOperations = function (dataType: string): FilterOperation[] {
+const getTypeInfo = function (
+  dataType: string
+): { type: ColumnType; filterOperations: FilterOperation[] } {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
+  let type: ColumnType = null;
+  let compare = false;
+  let contains = false;
+
   switch (dataType.toLowerCase()) {
     // https://www.postgresql.org/docs/9.5/datatype.html
     // https://www.postgresql.org/docs/8.4/datatype.html
@@ -54,6 +63,12 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "smallint":
     case "integer":
     case "bigint":
+    case "int2":
+    case "int4":
+      type = "integer";
+      compare = true;
+      break;
+
     case "decimal":
     case "numeric":
     case "real":
@@ -62,15 +77,11 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "smallserial":
     case "serial":
     case "bigserial":
-    case "int2":
-    case "int4":
     case "float4":
     case "float8":
     case "money":
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      type = "float";
+      compare = true;
       break;
 
     // date and time
@@ -78,15 +89,17 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "timestamp without time zone":
     case "timestamp with time zone":
     case "date":
+      type = "date";
+      compare = true;
+      break;
+
     case "time":
     case "time without time zone":
     case "time with time zone":
     case "abstime":
     case "reltime":
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      // TODO: time type without date
+      compare = true;
       break;
 
     // time intervals
@@ -105,8 +118,8 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "char4":
     case "char8":
     case "char16":
-      ops.push(FilterOperation.Contain);
-      ops.push(FilterOperation.NotContain);
+      type = "string";
+      contains = true;
       break;
 
     // network address types
@@ -132,6 +145,7 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     // boolean types
     case "boolean":
     case "bool":
+      type = "boolean";
       break;
 
     // TODO: how to custom types
@@ -164,5 +178,16 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     default:
       break;
   }
-  return ops;
+
+  if (compare) {
+    ops.push(FilterOperation.GreaterThan);
+    ops.push(FilterOperation.GreaterThanOrEqual);
+    ops.push(FilterOperation.LessThan);
+    ops.push(FilterOperation.LessThanOrEqual);
+  }
+  if (contains) {
+    ops.push(FilterOperation.Contain);
+    ops.push(FilterOperation.NotContain);
+  }
+  return { type, filterOperations: ops };
 };

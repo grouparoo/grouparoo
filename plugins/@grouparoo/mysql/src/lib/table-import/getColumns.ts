@@ -2,6 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
+  ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
@@ -17,53 +18,68 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.column_name;
+    const { type, filterOperations } = getTypeInfo(row.data_type);
     map[name] = {
       name,
-      filterOperations: getFilterOperations(row.data_type),
+      type,
+      filterOperations,
       data: row,
     };
   }
   return map;
 };
 
-const getFilterOperations = function (dataType: string): FilterOperation[] {
+const getTypeInfo = function (
+  dataType: string
+): { type: ColumnType; filterOperations: FilterOperation[] } {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
+  let type: ColumnType = null;
+  let compare = false;
+  let contains = false;
+
   switch (dataType.toUpperCase()) {
     // https://dev.mysql.com/doc/refman/8.0/en/data-types.html
 
     // numeric
     case "INTEGER":
     case "SMALLINT":
-    case "TINYINT": // This is binary/boolean. Maybe not > or < ?
     case "MEDIUMINT":
     case "BIGINT":
+    case "INT":
+    case "BIT":
+      type = "integer";
+      compare = true;
+      break;
+
+    case "TINYINT": // This is binary/boolean. Not > or <
+      type = "boolean";
+      break;
+
     case "DECIMAL":
     case "NUMERIC":
     case "FLOAT":
     case "REAL":
     case "DOUBLE PRECISION":
-    case "INT":
     case "DEC":
     case "FIXED":
     case "DOUBLE":
     case "REAL":
-    case "BIT":
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      type = "float";
+      compare = true;
       break;
 
     // date and time
     case "DATE":
     case "DATETIME":
     case "TIMESTAMP":
+      type = "date";
+      compare = true;
+      break;
+
     case "TIME":
     case "YEAR":
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      // TODO: time type without date
+      compare = true;
       break;
 
     // String types
@@ -78,9 +94,11 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "MEDIUMTEXT":
     case "LONGTEXT":
     case "ENUM":
+      type = "string";
+      contains = true;
+      break;
+
     case "SET": // not sure about this one
-      ops.push(FilterOperation.Contain);
-      ops.push(FilterOperation.NotContain);
       break;
 
     // binary types
@@ -107,5 +125,16 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     default:
       break;
   }
-  return ops;
+
+  if (compare) {
+    ops.push(FilterOperation.GreaterThan);
+    ops.push(FilterOperation.GreaterThanOrEqual);
+    ops.push(FilterOperation.LessThan);
+    ops.push(FilterOperation.LessThanOrEqual);
+  }
+  if (contains) {
+    ops.push(FilterOperation.Contain);
+    ops.push(FilterOperation.NotContain);
+  }
+  return { type, filterOperations: ops };
 };

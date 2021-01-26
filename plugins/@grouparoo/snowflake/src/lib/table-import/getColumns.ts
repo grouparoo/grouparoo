@@ -2,6 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
+  ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
@@ -16,17 +17,25 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.COLUMN_NAME;
+    const { type, filterOperations } = getTypeInfo(row.data_type);
     map[name] = {
       name,
-      filterOperations: getFilterOperations(row.DATA_TYPE),
+      type,
+      filterOperations,
       data: row,
     };
   }
   return map;
 };
 
-const getFilterOperations = function (dataType: string): FilterOperation[] {
+const getTypeInfo = function (
+  dataType: string
+): { type: ColumnType; filterOperations: FilterOperation[] } {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
+  let type: ColumnType = null;
+  let compare = false;
+  let contains = false;
+
   switch (dataType) {
     // https://docs.snowflake.com/en/sql-reference/intro-summary-data-types.html
 
@@ -34,20 +43,29 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "NUMBER": // Default precision and scale are (38,0).
     case "DECIMAL": // Synonymous with NUMBER.
     case "NUMERIC": // Synonymous with NUMBER.
+      // these can be either integer or float.
+      // TODO: see if we can use the (38,4) kind of args to do better
+      // for now, mark as float so we don't lose pieces
+      type = "float";
+      compare = true;
+      break;
+
     case "INT": // Synonymous with NUMBER except precision and scale cannot be specified.
     case "INTEGER": // Synonymous with NUMBER except precision and scale cannot be specified.
     case "BIGINT": // Synonymous with NUMBER except precision and scale cannot be specified.
     case "SMALLINT": // Synonymous with NUMBER except precision and scale cannot be specified.
+      type = "integer";
+      compare = true;
+      break;
+
     case "FLOAT":
     case "FLOAT4":
     case "FLOAT8":
     case "DOUBLE": // Synonymous with FLOAT.
     case "DOUBLE PRECISION": // Synonymous with FLOAT.
     case "REAL": // Synonymous with FLOAT.
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      type = "float";
+      compare = true;
       break;
 
     // String types
@@ -56,8 +74,8 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     case "CHARACTER": // Synonymous with VARCHAR except default length is VARCHAR(1).
     case "STRING": // Synonymous with VARCHAR.
     case "TEXT": // Synonymous with VARCHAR.
-      ops.push(FilterOperation.Contain);
-      ops.push(FilterOperation.NotContain);
+      type = "string";
+      contains = true;
       break;
 
     // binary types
@@ -67,20 +85,23 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
 
     // logical types
     case "BOOLEAN":
+      type = "boolean";
       break;
 
     // date and time types
     case "DATE":
     case "DATETIME": // Alias for TIMESTAMP_NTZ
-    case "TIME":
     case "TIMESTAMP": // Alias for one of the TIMESTAMP variations (TIMESTAMP_NTZ by default).
     case "TIMESTAMP_LTZ": // TIMESTAMP with local time zone; time zone, if provided, is not stored.
     case "TIMESTAMP_NTZ": // TIMESTAMP with no time zone; time zone, if provided, is not stored.
     case "TIMESTAMP_TZ": // TIMESTAMP with time zone.
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      type = "date";
+      compare = true;
+      break;
+
+    case "TIME":
+      // TODO: time type without date
+      compare = true;
       break;
 
     // semi-structured types
@@ -97,5 +118,16 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
     default:
       break;
   }
-  return ops;
+
+  if (compare) {
+    ops.push(FilterOperation.GreaterThan);
+    ops.push(FilterOperation.GreaterThanOrEqual);
+    ops.push(FilterOperation.LessThan);
+    ops.push(FilterOperation.LessThanOrEqual);
+  }
+  if (contains) {
+    ops.push(FilterOperation.Contain);
+    ops.push(FilterOperation.NotContain);
+  }
+  return { type, filterOperations: ops };
 };
