@@ -13,14 +13,18 @@ export class Generate extends CLI {
   constructor() {
     super();
     this.name = "generate [template] [id]"; // I will include the template ARG vs OPT
-    this.description = `Generate new code config files from templates.
+    this.description = `Generate new code config files from templates. ${
+      process.argv.slice(2).includes("generate") // we want to add more to the description, but not in the top-level "help"
+        ? `
 
 Commands:
   [options]   See "Options" section below.
   [template]  Name of the template. This is a starting point for building your configuration.
               Use --list for a list of available templates.
   [id]        A unique ID used to link items created from templates.
-              The value must be unique, using lower case letters and underscores only.`;
+              The value must be unique, using lower case letters and underscores only.`
+        : ""
+    }`;
     this.inputs = {
       list: {
         required: false,
