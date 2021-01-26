@@ -292,12 +292,10 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
   delete sourceConfig.schedule;
 
   const { externallyValidate, validate } = context;
-  const sourceGuids = await loadSource(
-    sourceConfig,
-    externallyValidate,
-    validate
+  merge(
+    seenGuids,
+    await loadSource(sourceConfig, externallyValidate, validate)
   );
-  merge(seenGuids, sourceGuids);
 
   if (seenGuids.source.length === 0) {
     throw new Error("source not created");
@@ -326,12 +324,10 @@ async function buildSource(context: SyncTableContext): Promise<GuidsByClass> {
     };
 
     const scheduleConfig = Object.assign({}, schedule);
-    const scheduleGuids = await loadSchedule(
-      scheduleConfig,
-      externallyValidate,
-      validate
+    merge(
+      seenGuids,
+      await loadSchedule(scheduleConfig, externallyValidate, validate)
     );
-    merge(seenGuids, scheduleGuids);
   }
 
   return seenGuids;
@@ -424,17 +420,17 @@ async function buildProperties(
   // make each
   const { externallyValidate, validate } = context;
   for (const destKey in syncMap) {
-    const property = Object.assign({}, syncMap[destKey]);
+    const propertyConfig = Object.assign({}, syncMap[destKey]);
 
     // skip it if it it's the one that bootstrapped
-    if (source?.bootstrappedProperty?.id === property.id) {
+    if (source?.bootstrappedProperty?.id === propertyConfig.id) {
       continue;
     }
 
-    delete property.column;
+    delete propertyConfig.column;
     merge(
       seenGuids,
-      await loadProperty(property, externallyValidate, validate)
+      await loadProperty(propertyConfig, externallyValidate, validate)
     );
   }
   return seenGuids;
