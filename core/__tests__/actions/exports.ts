@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Export } from "./../../src/models/Export";
+import { Export } from "./../..";
 
 describe("actions/exports", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

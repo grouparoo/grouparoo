@@ -7,7 +7,7 @@ import {
   GrouparooPlugin,
   Source,
   App,
-} from "../../../src";
+} from "../../..";
 
 describe("tasks/profileProperties:enqueue", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

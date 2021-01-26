@@ -1,10 +1,6 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Profile } from "../../../src/models/Profile";
-import { Group } from "../../../src/models/Group";
-import { Destination } from "../../../src/models/Destination";
-import { Export } from "../../../src/models/Export";
-import { Run } from "../../../src/models/Run";
+import { Profile, Group, Destination, Export, Run } from "../../..";
 
 describe("tasks/export:send", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

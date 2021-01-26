@@ -4,22 +4,24 @@ import { api } from "actionhero";
 import {
   loadConfigObjects,
   processConfigObjects,
-} from "../../../src/modules/configLoaders";
-import { sortConfigurationObject } from "../../../src/classes/codeConfig";
+} from "../../../dist/modules/configLoaders";
+import { sortConfigurationObject } from "../../../dist/classes/codeConfig";
 
-import { Property } from "../../../src/models/Property";
-import { App } from "../../../src/models/App";
-import { Source } from "../../../src/models/Source";
-import { Schedule } from "../../../src/models/Schedule";
-import { Group } from "../../../src/models/Group";
-import { GroupRule } from "../../../src/models/GroupRule";
-import { Destination } from "../../../src/models/Destination";
-import { ApiKey } from "../../../src/models/ApiKey";
-import { Team } from "../../../src/models/Team";
-import { TeamMember } from "../../../src/models/TeamMember";
-import { Setting } from "../../../src/models/Setting";
-import { Option } from "../../../src/models/Option";
-import { Mapping } from "../../../src/models/Mapping";
+import {
+  Property,
+  App,
+  Source,
+  Schedule,
+  Group,
+  GroupRule,
+  Destination,
+  ApiKey,
+  Team,
+  TeamMember,
+  Setting,
+  Option,
+  Mapping,
+} from "../../..";
 
 function ensureNoSavedModels() {
   return test("there should be no models created", async () => {

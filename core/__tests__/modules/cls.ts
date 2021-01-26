@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api } from "actionhero";
-import { CLS } from "../../src/modules/cls";
+import { CLS } from "../../dist/modules/cls";
 
 describe("modules/cls", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

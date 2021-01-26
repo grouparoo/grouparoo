@@ -1,20 +1,22 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../src/modules/plugin";
-import { Property } from "../../../src/models/Property";
-import { App } from "../../../src/models/App";
-import { Source } from "../../../src/models/Source";
-import { Schedule } from "../../../src/models/Schedule";
-import { Group } from "../../../src/models/Group";
-import { GroupRule } from "../../../src/models/GroupRule";
-import { Destination } from "../../../src/models/Destination";
-import { ApiKey } from "../../../src/models/ApiKey";
-import { Team } from "../../../src/models/Team";
-import { TeamMember } from "../../../src/models/TeamMember";
-import { Setting } from "../../../src/models/Setting";
+import {
+  plugin,
+  Property,
+  App,
+  Source,
+  Schedule,
+  Group,
+  GroupRule,
+  Destination,
+  ApiKey,
+  Team,
+  TeamMember,
+  Setting,
+} from "../../..";
 import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
-import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { loadConfigDirectory } from "../../../dist/modules/configLoaders";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({

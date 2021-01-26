@@ -1,10 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { internalRun } from "../../../src/modules/internalRun";
-import { Import } from "../../../src/models/Import";
-import { Property } from "../../../src/models/Property";
-import { Run } from "../../../src/models/Run";
-import { Profile } from "../../../src";
+import { internalRun } from "../../../dist/modules/internalRun";
+import { Import, Property, Run, Profile } from "../../..";
 
 describe("tasks/run:internalRun", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

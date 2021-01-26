@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Import } from "./../../src/models/Import";
+import { Import } from "./../..";
 import { specHelper } from "actionhero";
 
 describe("models/import", () => {

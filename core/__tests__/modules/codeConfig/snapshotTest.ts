@@ -1,8 +1,8 @@
 import { api } from "actionhero";
 import path from "path";
-import { GrouparooPlugin } from "../../../src";
+import { GrouparooPlugin } from "../../..";
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
-import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { loadConfigDirectory } from "../../../dist/modules/configLoaders";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({ enableTestPlugin: true, truncate: true });

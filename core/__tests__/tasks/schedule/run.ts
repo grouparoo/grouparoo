@@ -1,7 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Source } from "../../../src/models/Source";
-import { Schedule } from "../../../src/models/Schedule";
+import { Source, Schedule } from "../../..";
 
 describe("tasks/schedule:run", () => {
   let source: Source;

@@ -1,5 +1,5 @@
 import { SharedGroupTests } from "../../../utils/prepareSharedGroupTest";
-import { Group } from "../../../../src/models/Group";
+import { Group } from "../../../..";
 import { config } from "actionhero";
 import { helper } from "@grouparoo/spec-helper";
 

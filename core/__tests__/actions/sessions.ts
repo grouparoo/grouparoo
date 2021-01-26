@@ -1,9 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper, api, config } from "actionhero";
-import { Team } from "./../../src/models/Team";
-import { TeamMember } from "./../../src/models/TeamMember";
-import { Permission } from "../../src/models/Permission";
-import { ApiKey } from "../../src/models/ApiKey";
+import { Team, TeamMember, Permission, ApiKey } from "./../..";
 import fetch from "isomorphic-fetch";
 
 // enable the web server

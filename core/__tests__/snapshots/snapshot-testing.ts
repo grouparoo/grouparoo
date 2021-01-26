@@ -1,4 +1,4 @@
-import { Profile, Group, Destination, GrouparooPlugin } from "../../src";
+import { Profile, Group, Destination, GrouparooPlugin } from "../..";
 import { helper, relaxedSnapshot } from "@grouparoo/spec-helper";
 import { api } from "actionhero";
 

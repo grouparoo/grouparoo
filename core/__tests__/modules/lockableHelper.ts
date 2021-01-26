@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Team, TeamMember } from "../../src";
-import { LockableHelper } from "../../src/modules/lockableHelper";
+import { Team, TeamMember } from "../..";
+import { LockableHelper } from "../../dist/modules/lockableHelper";
 
 describe("modules/lockableHelper", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

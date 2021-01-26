@@ -1,10 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../../src/modules/plugin";
-import { App } from "../../../../src/models/App";
-import { Destination } from "../../../../src/models/Destination";
-import { Export } from "../../../../src/models/Export";
-import { Group } from "../../../../src/models/Group";
-import { Profile } from "../../../../src/models/Profile";
+import { plugin, App, Destination, Export, Group, Profile } from "../../../..";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 

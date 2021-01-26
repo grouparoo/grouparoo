@@ -1,10 +1,6 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, utils } from "actionhero";
-import { Group } from "./../../../src/models/Group";
-import { Destination } from "./../../../src/models/Destination";
-import { Export } from "./../../../src/models/Export";
-import { Profile } from "./../../../src/models/Profile";
-import { Run } from "./../../../src/models/Run";
+import { Group, Destination, Export, Profile, Run } from "./../../..";
 
 describe("tasks/destination:destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

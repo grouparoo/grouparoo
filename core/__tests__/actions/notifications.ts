@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Notification } from "../../src/models/Notification";
+import { Notification } from "./../..";
 
 describe("actions/notifications", () => {
   helper.grouparooTestServer({ truncate: true });

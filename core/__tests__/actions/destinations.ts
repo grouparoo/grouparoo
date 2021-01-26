@@ -1,13 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
-import { specHelper } from "actionhero";
-import { Destination } from "./../../src/models/Destination";
-import { Group } from "./../../src/models/Group";
-import { Profile } from "./../../src/models/Profile";
-import { Property } from "./../../src/models/Property";
-import { Source } from "./../../src/models/Source";
-import { Run } from "./../../src/models/Run";
-import { api } from "actionhero";
-import { App } from "../../src";
+import { specHelper, api } from "actionhero";
+import {
+  Destination,
+  Group,
+  Profile,
+  Source,
+  Run,
+  App,
+  Property,
+} from "./../..";
 
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

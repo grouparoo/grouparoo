@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Status } from "../../src/bin/status";
+import { Status } from "../../dist/bin/status";
 
 describe("bin/status", () => {
   helper.grouparooTestServer({

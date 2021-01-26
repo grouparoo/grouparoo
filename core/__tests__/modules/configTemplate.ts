@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { ConfigTemplate } from "../../src/classes/configTemplate";
+import { ConfigTemplate } from "../../dist/classes/configTemplate";
 import { api } from "actionhero";
 import os from "os";
 import fs from "fs-extra";

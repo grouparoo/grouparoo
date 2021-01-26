@@ -2,7 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 import { specHelper } from "actionhero";
 
-import PluginDetails from "./../../src/utils/pluginDetails";
+import PluginDetails from "./../../dist/utils/pluginDetails";
 const coreVersion = PluginDetails.getCoreVersion();
 
 describe("actions/plugins", () => {

@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { File } from "./../../src/models/File";
-import { Log } from "./../../src/models/Log";
+import { File, Log } from "./../..";
 
 describe("models/file", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

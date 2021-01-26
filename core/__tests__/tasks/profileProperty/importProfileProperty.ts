@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { ProfileProperty, Property } from "../../../src";
+import { ProfileProperty, Property } from "../../..";
 
 describe("tasks/profileProperty:importProfileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

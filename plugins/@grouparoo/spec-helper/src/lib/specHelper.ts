@@ -38,8 +38,6 @@ import ExportFactory from "./factories/export";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
-export * from "./workflows/import";
-
 import {
   // modules
   plugin,
@@ -47,6 +45,7 @@ import {
   // types
   SourceOptionsMethodResponse,
   DestinationOptionsMethodResponse,
+
   // models
   App,
   ApiKey,
@@ -182,12 +181,15 @@ export namespace helper {
       actionhero = new Process();
       await actionhero.start();
 
-      // prepare models that we are using from /src
-      plugin.mountModels();
-      // prepare models that we are using from /dist
+      // try {
+      //   // prepare models that we are using from /src
+      //   require("@grouparoo/core/src").plugin.mountModels();
+      // } catch {}
+
       try {
-        require("@grouparoo/core").plugin.mountModels();
-      } catch (error) {}
+        // prepare models that we are using from /src
+        require("@grouparoo/core/dist").plugin.mountModels();
+      } catch {}
 
       if (options.truncate) await helper.truncate();
       if (options.resetSettings) await helper.resetSettings();

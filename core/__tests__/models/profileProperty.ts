@@ -1,9 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Log } from "./../../src/models/Log";
-import { Source } from "./../../src/models/Source";
-import { Profile } from "./../../src/models/Profile";
-import { ProfileProperty } from "./../../src/models/ProfileProperty";
-import { Property } from "./../../src/models/Property";
+import { Log, Source, Profile, ProfileProperty, Property } from "./../..";
 
 describe("models/profileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });

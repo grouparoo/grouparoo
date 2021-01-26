@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { TeamMember } from "./../../src/models/TeamMember";
+import { TeamMember } from "./../..";
 
-const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
+const GrouparooSubscriptionModule = require("../../dist/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 describe("actions/teamMembers", () => {
