@@ -213,7 +213,7 @@ function getParentIds(configObject: ConfigurationObject) {
   });
 
   if (configObject["mapping"]) {
-    const mappingValues = Object.keys(configObject["mapping"]);
+    const mappingValues = Object.values(configObject["mapping"]);
     mappingValues.forEach((v) => {
       prerequisiteIds.push(v);
     });
@@ -269,6 +269,9 @@ function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
       }
     }
   });
+
+  console.log(sortedConfigObjectsWithIds.map((obj) => obj.configObject.id));
+  // console.log(sortedConfigObjectsWithIds);
 
   return sortedConfigObjectsWithIds;
 }
