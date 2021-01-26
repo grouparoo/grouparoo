@@ -1,13 +1,10 @@
-import path from "path";
+import * as path from "path";
 import "@grouparoo/spec-helper";
-import { helper } from "@grouparoo/spec-helper";
 
-import {
-  destinationMappingOptions,
-  getUserFields,
-} from "../../src/lib/export/destinationMappingOptions";
-import { loadAppOptions, updater } from "../utils/nockHelper";
+import { destinationMappingOptions, getUserFields } from "../../src/lib/export/destinationMappingOptions";
+import { loadAppOptions } from "../utils/nockHelper";
 import { connect } from "../../src/lib/connect";
+
 const nockFile = path.join(
   __dirname,
   "../",
@@ -32,7 +29,7 @@ async function runDestinationMappingOptions({}) {
     connection: null,
     destination: null,
     destinationGuid: null,
-    destinationOptions: null,
+    destinationOptions: null
   });
 }
 

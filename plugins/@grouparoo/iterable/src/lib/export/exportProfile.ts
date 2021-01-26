@@ -17,7 +17,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
-
   const client = await connect(appOptions);
 
   const email = newProfileProperties["email"]; // this is how we will identify profiles
@@ -26,47 +25,45 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   try {
-    let contact;
+    let user;
     try {
-      contact = await client.contacts.getByEmail(email);
+      user = await client.users.get({ email });
     } catch (error) {
       if (!error.toString().match(/Request failed with status code 404/)) {
         throw error;
       }
     }
-
     if (toDelete) {
-      if (contact) {
-        await client.contacts.deleteContact(contact.vid);
+      if (user) {
+        await client.users.delete(user.email);
       }
     } else {
-      // create the contact and set properties
+      // create the user and set properties
       const deletePropertiesPayload = {};
-
       const newPropertyKeys = Object.keys(newProfileProperties);
       Object.keys(oldProfileProperties)
         .filter((k) => !newPropertyKeys.includes(k))
         .forEach((k) => (deletePropertiesPayload[k] = ""));
 
-      const payload = Object.assign(
-        { email },
+      const dataFields = Object.assign(
         newProfileProperties,
         deletePropertiesPayload
       );
-      await client.contacts.createOrUpdateContact(payload);
+      const payload = Object.assign({ email }, { dataFields });
+      await client.users.update(payload);
 
-      // add to lists
-      for (const i in newGroups) {
-        const group = newGroups[i];
-        await addToList(appGuid, appOptions, email, group);
-      }
-
-      // remove from lists
-      for (const i in oldGroups) {
-        const group = oldGroups[i];
-        if (!newGroups.includes(group))
-          await removeFromList(appGuid, appOptions, email, group);
-      }
+      // // add to lists
+      // for (const i in newGroups) {
+      //   const group = newGroups[i];
+      //   await addToList(appGuid, appOptions, email, group);
+      // }
+      //
+      // // remove from lists
+      // for (const i in oldGroups) {
+      //   const group = oldGroups[i];
+      //   if (!newGroups.includes(group))
+      //     await removeFromList(appGuid, appOptions, email, group);
+      // }
     }
 
     return { success: true };

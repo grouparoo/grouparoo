@@ -26,10 +26,10 @@ export class Plugins extends Initializer {
       name: packageJSON.name,
       icon: "/public/@grouparoo/iterable/iterable.svg",
       templates: [
-        new AppTemplate("hubspot", [
+        new AppTemplate("iterable", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("hubspot", [
+        new DestinationTemplate("iterable", [
           path.join(templateRoot, "destination", "*.template"),
         ]),
       ],
@@ -52,7 +52,7 @@ export class Plugins extends Initializer {
           name: "iterable-export",
           direction: "export",
           description:
-            "Export Profiles to Iterable and add them to Contact Lists.",
+            "Export profiles to Iterable as Users and put them in static Lists.",
           app: "iterable",
           options: [],
           methods: {

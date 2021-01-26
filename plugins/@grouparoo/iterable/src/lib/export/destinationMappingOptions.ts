@@ -1,51 +1,75 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+} from "@grouparoo/core";
 import { connect } from "./../connect";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
 }) => {
   const client = await connect(appOptions);
-  const contactsProperties = await client.contactsProperties.getAllContactsProperties();
+  const required = getRequiredFields();
+  const known = await getUserFields(client);
 
   return {
     labels: {
       property: {
-        singular: "Hubspot Contact Property",
-        plural: "Hubspot Contact Properties",
+        singular: "Iterable Contact Property",
+        plural: "Iterable Contact Properties",
       },
       group: {
-        singular: "Hubspot List",
-        plural: "Hubspot Lists",
+        singular: "Iterable List",
+        plural: "Iterable Lists",
       },
     },
     properties: {
-      required: [{ key: "email", type: "email" }],
-      known: contactsProperties
-        .filter((contactProperty) => contactProperty.name !== "email")
-        .sort((a, b) => {
-          if (a.name > b.name) return 1;
-          if (a.name < b.name) return -1;
-          return 0;
-        })
-        .map((contactProperty) => {
-          let important = true;
-          if (contactProperty.name.match(/^hs_/)) important = false;
-          if (contactProperty.name.match(/^hubspot_/)) important = false;
-          if (contactProperty.name.match(/^ip_/)) important = false;
-          if (contactProperty.name.match(/^notes_/)) important = false;
-          if (contactProperty.name.match(/^num/)) important = false;
-          if (contactProperty.name.match(/^first_/)) important = false;
-          if (contactProperty.name.match(/^recent_/)) important = false;
-          if (contactProperty.name.match(/^engagements_/)) important = false;
-
-          return {
-            key: contactProperty.name,
-            type: "any",
-            // type: contactProperty.type
-            important,
-          };
-        }),
-      allowOptionalFromProperties: false,
+      required: required,
+      known: known,
+      allowOptionalFromProperties: true,
     },
   };
+};
+
+export const getRequiredFields = (): Array<{
+  key: string;
+  type: DestinationMappingOptionsResponseTypes;
+}> => {
+  return [{ key: "email", type: "string" }];
+};
+
+const mapTypesFromIterableToGrouparoo = (iterableType) => {
+  const map = {
+    string: "string",
+    long: "integer",
+    date: "date",
+    boolean: "boolean",
+  };
+  const grouparooType = map[iterableType];
+  if (!grouparooType) {
+    throw `Unknown iterable type: ${iterableType}`;
+  }
+  return grouparooType;
+};
+
+export const getUserFields = async (
+  client: any
+): Promise<
+  Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important?: boolean;
+  }>
+> => {
+  const fields = await client.users.getFields();
+  const out = [];
+
+  for (const [key, value] of Object.entries(fields.fields)) {
+    if (value !== "object" && key !== "email") {
+      const type: DestinationMappingOptionsResponseTypes = mapTypesFromIterableToGrouparoo(
+        value
+      );
+      out.push({ key, type, important: true });
+    }
+  }
+  return out;
 };

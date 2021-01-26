@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 

@@ -1,4 +1,4 @@
-import path from "path";
+import * as path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/hubspot": { path: path.join(__dirname, "..", "..") },
 });
