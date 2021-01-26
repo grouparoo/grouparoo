@@ -13,26 +13,30 @@ export class RunCLI extends CLI {
       "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
     this.inputs = {
       destroy: {
-        required: true,
-        default: "false",
+        default: false,
         description:
           "[DANGER] Empty the cluster of all Profile data before starting the run?",
+        letter: "d",
+        flag: true,
       },
       "reset-high-watermarks": {
-        required: true,
-        default: "false",
+        default: false,
         description: "Should we run all Schedules from the beginning?",
+        letter: "m",
+        flag: true,
       },
       "run-all-schedules": {
-        required: true,
-        default: "false",
+        default: false,
         description:
           "Should we run all Schedules, event those that do not have a recurring time set?",
+        letter: "s",
+        flag: true,
       },
       web: {
-        required: true,
-        default: "false",
+        default: false,
         description: "Enable the web server during this run?",
+        letter: "w",
+        flag: true,
       },
     };
 
@@ -40,21 +44,13 @@ export class RunCLI extends CLI {
     GrouparooCLI.timestampOption(this);
   }
 
-  async run() {
+  async run({ params }) {
     GrouparooCLI.logCLI(this.name, false);
     this.checkWorkers();
 
-    if (!process.argv.slice(2).includes("--web")) {
-      GrouparooCLI.disableWebServer();
-    }
-
-    if (process.argv.slice(2).includes("--destroy")) {
-      await GrouparooCLI.destroyProfiles();
-    }
-
-    if (process.argv.slice(2).includes("--reset-high-watermarks")) {
-      await GrouparooCLI.resetHighWatermarks();
-    }
+    if (!params.web) GrouparooCLI.disableWebServer();
+    if (params.destroy) await GrouparooCLI.destroyProfiles();
+    if (params.resetHighWatermarks) await GrouparooCLI.resetHighWatermarks();
 
     await import("../grouparoo"); // run the server
 
@@ -66,11 +62,9 @@ export class RunCLI extends CLI {
     ]);
 
     await this.waitForReady();
-    await this.runPausedTasks();
+    await this.runPausedTasks(params);
 
-    if (process.argv.slice(2).includes("--run-non-recurring-schedules")) {
-      await this.runNonRecurringSchedules();
-    }
+    if (params.runAllSchedules) await this.runNonRecurringSchedules();
 
     this.tick();
 
@@ -95,11 +89,8 @@ export class RunCLI extends CLI {
     });
   }
 
-  async runPausedTasks() {
-    let checkDeltas = true;
-    if (process.argv.slice(2).includes("--reset-high-watermarks")) {
-      checkDeltas = false;
-    }
+  async runPausedTasks(params) {
+    let checkDeltas = !params.resetHighWatermarks;
 
     const tasks = {
       "schedule:updateSchedules": { checkDeltas },

@@ -135,8 +135,8 @@ async function convertCLIToCommanderAction(cli, program) {
   const command = program
     .command(instance.name)
     .description(instance.description)
-    .action(async (filename, _arg1, _arg2, _arg3) => {
-      await runCommand(instance, _arg1, _arg2, _arg3);
+    .action(async (_arg1, _arg2, _arg3, _arg4) => {
+      await runCommand(instance, _arg1, _arg2, _arg3, _arg4);
     })
     .on("--help", () => {
       if (instance.example) {
@@ -150,23 +150,34 @@ async function convertCLIToCommanderAction(cli, program) {
 
   for (const key in instance.inputs) {
     const input = instance.inputs[key];
-    if (input.required && !input.default) {
-      command.requiredOption(`--${key} <${key}>`, input.description);
-    } else {
-      command.option(`--${key} [${key}]`, input.description, input.default);
-    }
+    const separators = input.required ? ["<", ">"] : ["[", "]"];
+    const methodName = input.required ? "requiredOption" : "option";
+    command[methodName](
+      `${input.letter ? `-${input.letter}, ` : ""}--${key} ${
+        input.flag ? "" : `${separators[0]}${key}${separators[1]}`
+      }`,
+      input.description,
+      input.default
+    );
   }
 }
 
-async function runCommand(instance, _arg1, _arg2, _arg3) {
+async function runCommand(instance, _arg1, _arg2, _arg3, _arg4) {
   // arg1, arg2, or _arg3 might be the _program, depending on if there's an ARG in the command
 
   let toStop = false;
 
+  let _arguments = [];
   let params = {};
-  if (typeof _arg1?.opts === "function") params = _arg1.opts();
-  if (typeof _arg2?.opts === "function") params = _arg2.opts();
-  if (typeof _arg3?.opts === "function") params = _arg3.opts();
+  [_arg1, _arg2, _arg3, _arg4].forEach((arg) => {
+    if (typeof arg?.opts === "function") {
+      params = arg.opts();
+    } else if (arg !== null && arg !== undefined && typeof arg !== "object") {
+      _arguments.push(arg);
+    }
+  });
+
+  params["_arguments"] = _arguments;
 
   if (instance.initialize === false && instance.start === false) {
     toStop = await instance.run({ params });

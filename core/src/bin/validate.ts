@@ -18,8 +18,10 @@ export class Validate extends CLI {
     this.description = "Validate your code config";
     this.inputs = {
       local: {
-        required: false,
+        default: false,
         description: "Disable external validation",
+        letter: "l",
+        flag: true,
       },
     };
 
