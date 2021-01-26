@@ -137,8 +137,12 @@ export namespace GrouparooCLI {
 
   /** Logging */
 
-  export function logStatus(title: string, statusArray: LogStatusArray) {
-    const formattedTitle = `┌-- ${title} @ ${new Date().toISOString()} ---`;
+  export function logStatus(
+    title: string,
+    statusArray: LogStatusArray,
+    secondaryTitle = `@ ${new Date().toISOString()}`
+  ) {
+    const formattedTitle = `┌-- ${title} ${secondaryTitle} ---`;
 
     console.log("");
     console.log(blueBold(formattedTitle));
