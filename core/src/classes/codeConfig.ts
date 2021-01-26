@@ -270,8 +270,5 @@ function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
     }
   });
 
-  console.log(sortedConfigObjectsWithIds.map((obj) => obj.configObject.id));
-  // console.log(sortedConfigObjectsWithIds);
-
   return sortedConfigObjectsWithIds;
 }
