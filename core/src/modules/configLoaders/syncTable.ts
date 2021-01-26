@@ -11,6 +11,7 @@ import {
 import { Op } from "sequelize";
 import { App, Source, Property } from "../..";
 import { loadSource } from "./source";
+import { loadSchedule } from "./schedule";
 
 // TODO: lots of things!
 // because this is so dynamic the "providedIds" in getParentIds isn't right for proeprties, bootstrap, source, destination, schedule, etc
@@ -121,11 +122,19 @@ export async function buildSource(
     };
   }
 
+  let schedule = true;
+  if (`${config.highWaterColumn}` === "false") {
+    schedule = false;
+  } else if (!config.highWaterColumn && !config?.schedule?.options?.column) {
+    throw new Error("source.highWaterColumn is required");
+  }
+
   const sourceConfig = Object.assign({}, config);
   delete sourceConfig.table;
   delete sourceConfig.userKeyColumn;
   delete sourceConfig.userKeyMapping;
   delete sourceConfig.highWaterColumn;
+  delete sourceConfig.schedule;
 
   const { externallyValidate, validate } = context;
   const source = await loadSource(sourceConfig, externallyValidate, validate);
@@ -136,6 +145,34 @@ export async function buildSource(
   }
   if (seenGuids.source.length > 1) {
     throw new Error("multiple sources created");
+  }
+
+  if (schedule) {
+    if (!config.schedule) {
+      config.schedule = {};
+    }
+
+    const recurring = Object.keys(config.schedule).includes("recurring")
+      ? config.schedule.recurring
+      : true;
+    config.schedule.id = config.schedule.id || `${rootId}_schedule`;
+    config.schedule.name = config.schedule.name || `${rootName} Schedule`;
+    config.schedule.class = config.schedule.class || "Schedule";
+    config.schedule.sourceId = config.id;
+    config.schedule.recurring = recurring;
+    config.schedule.recurringFrequency =
+      config.schedule.recurringFrequency || 15 * 60 * 1000;
+    config.schedule.options = config.schedule.options || {
+      column: config.highWaterColumn,
+    };
+
+    const scheduleConfig = Object.assign({}, config.schedule);
+    const schedule = await loadSchedule(
+      scheduleConfig,
+      externallyValidate,
+      validate
+    );
+    merge(seenGuids, schedule);
   }
 
   return seenGuids;
