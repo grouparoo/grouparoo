@@ -80,11 +80,11 @@ describe("modules/codeConfig/syncTable", () => {
         destination: ["dst_magic_table_destination"],
         group: [],
         property: [
+          "rul_magic_table_property_user_id", // bootstrapped
           "rul_magic_table_property_fname",
           "rul_magic_table_property_decimal_col",
-          "rul_magic_table_property_timstemap_col",
+          "rul_magic_table_property_timestamp_col",
           "rul_magic_table_property_email",
-          "rul_magic_table_property_user_id",
         ],
         schedule: ["sch_magic_table_schedule"],
         source: ["src_magic_table_source"],
@@ -171,11 +171,11 @@ describe("modules/codeConfig/syncTable", () => {
 
     test("properties are created", async () => {
       const rules = await Property.findAll();
-      expect(rules.length).toBe(4);
+      expect(rules.length).toBe(5);
       expect(rules.map((r) => r.key).sort()).toEqual([
         "email",
-        "magic_table_fname",
         "magic_table_decimal_col",
+        "magic_table_fname",
         "magic_table_timestamp_col",
         "magic_table_user_id",
       ]);
@@ -202,7 +202,7 @@ describe("modules/codeConfig/syncTable", () => {
       ]);
 
       // TODO: check column mappings
-      // TODO: check types
+      // TODO: check types and unique, etc
     });
 
     test("destination is created", async () => {

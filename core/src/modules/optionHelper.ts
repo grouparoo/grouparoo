@@ -100,12 +100,17 @@ export namespace OptionHelper {
   export async function getPlugin(
     instance: Source | Destination | Schedule | Property | App
   ) {
+    const type = await getInstanceType(instance);
+    return getPluginByType(type);
+  }
+
+  export function getPluginByType(type: string) {
     let match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
       pluginApp: PluginApp;
     } = { plugin: null, pluginConnection: null, pluginApp: null };
-    const type = await getInstanceType(instance);
+
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.forEach((pluginApp) => {

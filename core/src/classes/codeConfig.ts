@@ -43,7 +43,7 @@ export interface ConfigurationObject {
   source?: ConfigurationObject;
   schedule?: ConfigurationObject;
   destination?: ConfigurationObject;
-  sync?: ConfigurationObject;
+  sync?: any;
   table?: string;
   userKeyColumn?: string;
   userKeyMapping?: string;
