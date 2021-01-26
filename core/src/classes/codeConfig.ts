@@ -15,9 +15,9 @@ export interface GuidsByClass {
 }
 
 export interface ConfigurationObject {
-  id: string;
-  class: string;
-  type: string;
+  id?: string;
+  class?: string;
+  type?: string;
   name?: string;
   key?: string;
   appId?: string;
@@ -31,13 +31,23 @@ export interface ConfigurationObject {
   isArray?: boolean;
   rules?: GroupRuleWithKey[];
   recurring?: boolean;
-  recurringFrequency: number;
+  recurringFrequency?: number;
   groupId?: string;
   pluginName?: string;
   permissions?: Array<{ guid: string; read: boolean; write: boolean }>;
-  value: string | boolean | number;
-  bootstrappedProperty?: ConfigurationObject;
+  value?: string | boolean | number;
   mapping?: { [key: string]: any };
+  bootstrappedProperty?: ConfigurationObject;
+
+  // For SyncTable
+  source?: ConfigurationObject;
+  schedule?: ConfigurationObject;
+  destination?: ConfigurationObject;
+  sync?: ConfigurationObject;
+  table?: string;
+  userKeyColumn?: string;
+  userKeyMapping?: string;
+  highWaterColumn?: string;
 }
 
 interface orderedConfigObject {
@@ -68,7 +78,9 @@ export async function getParentByName(model: any, id: string) {
 }
 
 export async function validateAndFormatGuid(model: any, id: string) {
-  if (!id) throw new Error("id is required");
+  if (!id) {
+    throw new Error("id is required");
+  }
   let guid = `${id}`;
 
   const guidPrefix: string = new model().guidPrefix();
@@ -195,7 +207,7 @@ export function getParentIds(configObject: ConfigurationObject) {
     }
   }
 
-  const objectContainers = ["options"];
+  const objectContainers = ["options", "source", "destination"];
   objectContainers.map((_container) => {
     if (configObject[_container]) {
       const containerKeys = Object.keys(configObject[_container]);

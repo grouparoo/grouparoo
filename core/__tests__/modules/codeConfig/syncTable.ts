@@ -1,3 +1,31 @@
+import path from "path";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/mailchimp": {
+    path: path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "plugins",
+      "@grouparoo",
+      "mailchimp"
+    ),
+  },
+  "@grouparoo/postgres": {
+    path: path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "..",
+      "plugins",
+      "@grouparoo",
+      "postgres"
+    ),
+  },
+});
+
 import { helper } from "@grouparoo/spec-helper";
 import { plugin } from "../../../src/modules/plugin";
 import { Property } from "../../../src/models/Property";
@@ -11,7 +39,6 @@ import { ApiKey } from "../../../src/models/ApiKey";
 import { Team } from "../../../src/models/Team";
 import { TeamMember } from "../../../src/models/TeamMember";
 import { Setting } from "../../../src/models/Setting";
-import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
@@ -25,7 +52,13 @@ describe("modules/codeConfig/syncTable", () => {
   describe("initial config", () => {
     beforeAll(async () => {
       await createSchema();
+    });
 
+    afterAll(async () => {
+      await clearSchema();
+    });
+
+    test("runs the config", async () => {
       // manually run the initializer again after the server has started.
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
@@ -37,7 +70,8 @@ describe("modules/codeConfig/syncTable", () => {
           "codeConfig",
           "sync-table",
           "initial"
-        )
+        ),
+        false // not testing external validation
       );
       expect(errors).toEqual([]);
       expect(seenGuids).toEqual({
@@ -68,10 +102,6 @@ describe("modules/codeConfig/syncTable", () => {
         team: [],
         teammember: [],
       });
-    });
-
-    afterAll(async () => {
-      await clearSchema();
     });
 
     test("apps are created", async () => {

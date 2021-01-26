@@ -16,6 +16,7 @@ import { loadTeamMember, deleteTeamMembers } from "./teamMember";
 import { loadGroup, deleteGroups } from "./group";
 import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
+import { loadSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
@@ -28,7 +29,8 @@ export function getConfigDir() {
 }
 
 export async function loadConfigDirectory(
-  configDir: string
+  configDir: string,
+  externallyValidate: boolean = true
 ): Promise<{
   seenGuids: GuidsByClass;
   errors: string[];
@@ -42,7 +44,10 @@ export async function loadConfigDirectory(
 
   if (configFiles.length > 0) {
     const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const response = await processConfigObjects(sortedConfigObjects, true);
+    const response = await processConfigObjects(
+      sortedConfigObjects,
+      externallyValidate
+    );
     seenGuids = response.seenGuids;
     errors = response.errors;
 
@@ -148,6 +153,13 @@ export async function processConfigObjects(
           break;
         case "teammember":
           guids = await loadTeamMember(
+            configObject,
+            externallyValidate,
+            validate
+          );
+          break;
+        case "synctable":
+          guids = await loadSyncTable(
             configObject,
             externallyValidate,
             validate

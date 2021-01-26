@@ -46,13 +46,13 @@ module.exports = async function getConfig() {
       class: "SyncTable",
       source: {
         // if not provided , id auto-generates to ${parent}_source (magic_table_source)
-        // if not provided, type will be the table mode of the app given (postgres-import-table)
+        // if not provided, type will be the table mode of the app given (postgres-table-import)
         // if not provided , name auto-generates (Sync to Mailchimp Source)
         appId: "data_warehouse", // required
         table: "mapping_table", // required
-        primaryKeyColumn: "user_id", // makes key magic_table_user_id key (id: magic_table_property_user_id)
-        // if primaryKeyMapping is not there, it will bootstrap it as unique
-        //              _or_ add primaryKeyMapping: "userId" (for existing)
+        userKeyColumn: "user_id", // makes key magic_table_user_id key (id: magic_table_property_user_id)
+        // if userKeyMapping is not there, it will bootstrap it as unique
+        //              _or_ add userKeyMapping: "existing_property_id"
         highWaterColumn: "updated_at", // makes schedule (defaulting to recurring every 15 minutes)
         // can change with recurringFrequency: 1000 * 60 * 15, // 15 minutes in ms
         //    otherwise, can set whole schedule object here with recurring, recurringFrequency, id, name
