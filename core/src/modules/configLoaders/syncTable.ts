@@ -393,6 +393,8 @@ async function buildProperties(
 
     property.id =
       property.id || `${rootId}_property_${property.column.toLowerCase()}`;
+    // note: it also takes property.key, but it is first in loadProperty,
+    //       so it will take hold if set (property.name is the backup)
     property.name =
       property.name || `${rootId}_${property.column.toLowerCase()}`;
     property.class = property.class || "Property";
