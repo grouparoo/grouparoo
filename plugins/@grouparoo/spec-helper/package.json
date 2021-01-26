@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "faker": "5.1.0",
-    "nock": "13.0.5",
+    "nock": "13.0.6",
     "sequelize": "5.22.3",
     "uuid": "8.3.2"
   },
