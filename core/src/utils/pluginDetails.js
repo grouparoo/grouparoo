@@ -6,6 +6,10 @@ if (process.env.INIT_CWD) {
   initialPackageJSON = readPackageJson(
     path.join(process.env.INIT_CWD, "package.json")
   );
+} else if (process.env.JEST_WORKER_ID && process.env.PWD) {
+  initialPackageJSON = readPackageJson(
+    path.join(process.env.PWD, "package.json")
+  );
 }
 const grouparooMonorepoApp = initialPackageJSON.grouparoo
   ? initialPackageJSON.grouparoo.grouparoo_monorepo_app

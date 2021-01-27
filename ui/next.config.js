@@ -19,8 +19,8 @@ if (fs.existsSync(envFile)) {
 module.exports = withSourceMaps({
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
-    ["react", "react-dom"].forEach((package) => {
-      config.resolve.alias[package] = getPluginPath(package);
+    ["react", "react-dom"].forEach((_package) => {
+      config.resolve.alias[_package] = getPluginPath(_package);
     });
 
     config.module.rules.push({

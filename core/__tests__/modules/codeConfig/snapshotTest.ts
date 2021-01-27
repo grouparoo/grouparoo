@@ -42,7 +42,7 @@ describe("modules/codeConfig", () => {
 
     test("a profile snapshot can be tested", async () => {
       const { profile, snapshot } = await helper.getProfile({
-        email: ["test-person@example.com"],
+        email: "test-person@example.com",
       });
 
       // You can do snapshot testing
