@@ -1,5 +1,5 @@
 import os from "os";
-import "node-resque"; // needed for types
+import { ErrorPayload } from "node-resque";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { api, task } from "actionhero";
 import { CLS } from "../modules/cls";
@@ -77,11 +77,10 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
   }
 
   async runWithinTransaction({ params }) {
-    return {
-      generatedErrorPayload: await api.resque.queue.forceCleanWorker(
-        params.workerName
-      ),
-    };
+    const generatedErrorPayload: ErrorPayload = await api.resque.queue.forceCleanWorker(
+      params.workerName
+    );
+    return { generatedErrorPayload };
   }
 }
 

@@ -59,7 +59,7 @@
     "mime": "2.5.0",
     "moment": "2.29.1",
     "mustache": "4.1.0",
-    "node-resque": "8.2.0",
+    "node-resque": "8.2.1",
     "nodemon": "2.0.7",
     "pacote": "11.2.3",
     "pg": "8.5.1",
