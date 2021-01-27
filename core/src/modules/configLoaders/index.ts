@@ -163,6 +163,7 @@ export async function processConfigObjects(
             externallyValidate,
             validate
           );
+          break;
         case "synctable":
           const many = await expandSyncTable(
             configObject,
@@ -186,7 +187,6 @@ export async function processConfigObjects(
       }\` (${configObject.id}): ${error}`;
       errors.push(errorMessage);
       log(errorMessage, env === "test" ? "info" : "error");
-      throw error;
       continue;
     }
 
