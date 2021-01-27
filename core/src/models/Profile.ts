@@ -127,19 +127,19 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.markPending(this);
   }
 
-  async sync(force = true, oldGroupsOverride?: Group[]) {
-    return ProfileOps.sync(this, force, oldGroupsOverride);
+  async sync(force = true, oldGroupsOverride?: Group[], toExport = true) {
+    return ProfileOps.sync(this, force, oldGroupsOverride, toExport);
   }
 
-  async snapshot(toSync = false) {
-    if (toSync) await this.sync(); // import the profile and recalculate groups
+  async snapshot(saveExports = false) {
+    await this.sync(undefined, undefined, false); // import the profile and recalculate groups; skip exports here
 
     const properties = await this.properties();
     const groups = await this.$get("groups");
     const groupApiData = (
       await Promise.all(groups.map((g) => g.apiData()))
     ).sort((a, b) => (a.name > b.name ? 1 : -1));
-    const exports = await this.export(true, [], false); // build the next exports for all groups, but to not save them
+    const exports = await this.export(true, [], saveExports);
     const exportsApiData = (
       await Promise.all(exports.map((e) => e.apiData(false)))
     ).sort((a, b) => (a.destinationName > b.destinationName ? 1 : -1));

@@ -383,13 +383,14 @@ export namespace ProfileOps {
   export async function sync(
     profile: Profile,
     force = true,
-    oldGroupsOverride?: Group[]
+    oldGroupsOverride?: Group[],
+    toExport = true
   ) {
     await profile.markPending();
     await profile.import();
     await profile.updateGroupMembership();
     await profile.update({ state: "ready" });
-    await profile.export(force, oldGroupsOverride);
+    if (toExport) await profile.export(force, oldGroupsOverride);
   }
 
   /**

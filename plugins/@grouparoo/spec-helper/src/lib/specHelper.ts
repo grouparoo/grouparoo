@@ -450,12 +450,12 @@ export namespace helper {
    */
   export async function getProfile(
     args: { [key: string]: any },
-    opts: { sync?: boolean } = { sync: true }
+    opts: { saveExports?: boolean } = { saveExports: false }
   ) {
     const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
       args
     );
-    const snapshot = await profile.snapshot(opts.sync);
+    const snapshot = await profile.snapshot(opts.saveExports);
     await profile.reload();
 
     return { profile, snapshot };
