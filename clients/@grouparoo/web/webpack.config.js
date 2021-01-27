@@ -46,6 +46,7 @@ const nodeConfig = {
     filename: "index.js",
     path: path.resolve(__dirname, "dist"),
     library: "GrouparooWebClient",
+    globalObject: "this", // see https://webpack.js.org/configuration/output/#outputglobalobject
     libraryTarget: "umd",
   },
 };
