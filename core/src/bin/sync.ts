@@ -1,9 +1,9 @@
 import { GrouparooCLI } from "../modules/cli";
 import { Profile, ProfileProperty, Property } from "..";
-import { CLI, log } from "actionhero";
+import { CLI } from "actionhero";
 import { Op } from "sequelize";
 
-export class Validate extends CLI {
+export class SyncCLI extends CLI {
   constructor() {
     super();
     this.name = "sync <profileProperty>";
@@ -16,28 +16,29 @@ export class Validate extends CLI {
         letter: "n",
         flag: true,
       },
-      json: {
-        default: false,
-        description: "Display resulting profile information as JSON?",
-        letter: "j",
-        flag: true,
-      },
     };
 
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
+    GrouparooCLI.jsonOption(this);
   }
 
   async run({ params }) {
     const [profileProperty] = params._arguments || [];
     if (profileProperty) params.profileProperty = profileProperty;
 
-    GrouparooCLI.logCLI(
-      this.name.replace(
-        " <profileProperty>",
-        params.profileProperty ? " " + params.profileProperty : ""
-      )
-    );
+    if (!params.profileProperty) {
+      return this.fatalError("No Profile Property provided");
+    }
+
+    if (!params.json) {
+      GrouparooCLI.logCLI(
+        this.name.replace(
+          " <profileProperty>",
+          params.profileProperty ? " " + params.profileProperty : ""
+        )
+      );
+    }
 
     const uniqueProperties = await Property.findAll({
       attributes: ["guid"],
@@ -72,17 +73,7 @@ export class Validate extends CLI {
     );
 
     if (params.json) {
-      console.log(
-        JSON.stringify(
-          {
-            properties,
-            groups,
-            exports,
-          },
-          null,
-          2
-        )
-      );
+      console.log(JSON.stringify({ properties, groups, exports }));
     } else {
       const propertyStatus = {};
       const groupStatus = {};

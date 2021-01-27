@@ -41,6 +41,17 @@ export namespace GrouparooCLI {
     }
   }
 
+  export function jsonOption(cli: CLI) {
+    if (!cli.inputs) cli.inputs = {};
+    cli.inputs.json = {
+      default: false,
+      description:
+        "Return data as JSON? Use process.env.GROUPAROO_LOG_LEVEL=alert to disable other messages.",
+      letter: "j",
+      flag: true,
+    };
+  }
+
   export function setGrouparooRunMode(cli: CLI) {
     process.env.GROUPAROO_RUN_MODE = `cli:${cli.name}`;
   }
