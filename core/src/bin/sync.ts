@@ -10,6 +10,11 @@ export class SyncCLI extends CLI {
     this.description =
       "Sync (import & export) a Profile.  You can provide a Profile guid or a unique Profile Property";
     this.inputs = {
+      property: {
+        description:
+          "Choose the name of the Property to find the Profile by (i.e.: email_address)",
+        letter: "p",
+      },
       "no-export": {
         default: false,
         description: "Skip exporting the profile",
@@ -17,6 +22,7 @@ export class SyncCLI extends CLI {
         flag: true,
       },
     };
+    this.example = `grouparoo sync person@example.com --property email`;
 
     GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
@@ -31,6 +37,10 @@ export class SyncCLI extends CLI {
       return this.fatalError("No Profile Property provided");
     }
 
+    if (typeof params.property === "boolean") {
+      return this.fatalError("Provide the property's name");
+    }
+
     if (!params.json) {
       GrouparooCLI.logCLI(
         this.name.replace(
@@ -40,10 +50,9 @@ export class SyncCLI extends CLI {
       );
     }
 
-    const uniqueProperties = await Property.findAll({
-      attributes: ["guid"],
-      where: { unique: true },
-    });
+    const uniqueProperties = (
+      await Property.findAll({ where: { unique: true } })
+    ).filter((p) => (params.property ? p.key === params.property : true));
 
     const profileProperties = await ProfileProperty.findAll({
       where: {
@@ -53,7 +62,11 @@ export class SyncCLI extends CLI {
     });
 
     const wheres = [];
-    if (profileProperties.length === 1) {
+    if (profileProperties.length > 1) {
+      return this.fatalError(
+        `More than one Profile found with Profile Property "${params.profileProperty}".  Please provide [property]`
+      );
+    } else if (profileProperties.length === 1) {
       wheres.push({ guid: profileProperties[0].profileGuid });
     } else {
       wheres.push({ guid: params.profileProperty });
@@ -63,7 +76,9 @@ export class SyncCLI extends CLI {
 
     if (!profile) {
       return this.fatalError(
-        `Cannot find Profile with guid or unique Profile Property "${params.profileProperty}"`
+        params.property
+          ? `Cannot find Profile where Profile Property "${params.property}"="${params.profileProperty}"`
+          : `Cannot find Profile with guid or unique Profile Property "${params.profileProperty}"`
       );
     }
 

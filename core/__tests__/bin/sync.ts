@@ -82,6 +82,25 @@ describe("bin/sync", () => {
       expect(output).toContain(`* email: mario@example.com`);
     });
 
+    test("it can sync by profile property and property", async () => {
+      await instance.run({
+        params: { profileProperty: "mario@example.com", property: "email" },
+      });
+      const output = messages.join(" ");
+      expect(output).toContain(`* guid: ${profile.guid}`);
+      expect(output).toContain(`* email: mario@example.com`);
+    });
+
+    test("it will fail with if it cannot provide the explicit property", async () => {
+      await instance.run({
+        params: { profileProperty: "mario@example.com", property: "foo" },
+      });
+      const output = messages.join(" ");
+      expect(output).toContain(
+        'Cannot find Profile where Profile Property "foo"="mario@example.com"'
+      );
+    });
+
     test("it can return JSON", async () => {
       process.env.GROUPAROO_LOG_LEVEL = "alert"; // disable other log messages
 
