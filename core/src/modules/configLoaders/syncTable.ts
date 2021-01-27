@@ -19,7 +19,7 @@ import { loadDestination } from "./destination";
 // TODO:
 // because this is so dynamic the "providedIds" in getParentIds isn't right for properties, bootstrap, source, destination, schedule, etc
 // equilavent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable. is this important?
-// boostrapping makes the propety identifying, but there might already be one.
+// boostrapping makes the property identifying, but there might already be one.
 
 interface columnTypes {
   [colName: string]: string;
@@ -215,7 +215,7 @@ export async function expandSyncTable(
     const propertyDefault: ConfigurationObject = {
       id: `${rootId}_property_${columnName.toLowerCase()}`,
       name: `${rootId}_${columnName.toLowerCase()}`,
-      class: "Propety",
+      class: "Property",
       sourceId: sourceId,
       options: {
         aggregationMethod: "exact",
@@ -283,7 +283,7 @@ export async function expandSyncTable(
     type: "calculated",
     rules: [
       {
-        key: identityPropertConfig.key || identityPropertConfig.name, // it allows either in this order
+        propertyId: identityPropertConfig.id,
         operation: { op: "gt" },
         match: "0",
       },
@@ -308,7 +308,7 @@ export async function expandSyncTable(
 
   // add in mappings
   for (const destKey in syncMap) {
-    destination.mapping[destKey] = syncMap[destKey].id;
+    destinationConfig.mapping[destKey] = syncMap[destKey].id;
   }
 
   out.push(destinationConfig);
@@ -695,7 +695,7 @@ async function buildProperties(
 
     property.id =
       property.id || `${rootId}_property_${property.column.toLowerCase()}`;
-    // note: filling out propety.key as well in same order as loadProperty
+    // note: filling out property.key as well in same order as loadProperty
     property.name =
       property.name || `${rootId}_${property.column.toLowerCase()}`;
     property.key = property.key || property.name;
@@ -765,7 +765,7 @@ async function buildGroup(context: SyncTableContext): Promise<GuidsByClass> {
 
   const property = source.identityProperty;
   property.id = property.id || `${rootId}_membership`;
-  // note: filling out propety.key as well in same order as loadProperty
+  // note: filling out propetty.key as well in same order as loadProperty
   property.name = property.name || `${rootId}_membership`;
   property.key = property.key || property.name;
 

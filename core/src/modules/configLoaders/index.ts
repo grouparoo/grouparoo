@@ -109,13 +109,6 @@ export async function processConfigObjects(
   };
   const errors: string[] = [];
 
-  const expand = await expandConfigObjects(
-    configObjects,
-    externallyValidate,
-    validate
-  );
-  configObjects = expand.configObjects;
-  errors.push(...expand.errors);
   configObjects = sortConfigurationObjects(configObjects);
 
   for (const i in configObjects) {
@@ -170,6 +163,19 @@ export async function processConfigObjects(
             externallyValidate,
             validate
           );
+        case "synctable":
+          const many = await expandSyncTable(
+            configObject,
+            externallyValidate,
+            validate
+          );
+          const expanded = await processConfigObjects(
+            many,
+            externallyValidate,
+            validate
+          );
+          guids = expanded.seenGuids;
+          errors.push(...expanded.errors);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -180,6 +186,7 @@ export async function processConfigObjects(
       }\` (${configObject.id}): ${error}`;
       errors.push(errorMessage);
       log(errorMessage, env === "test" ? "info" : "error");
+      throw error;
       continue;
     }
 
@@ -191,48 +198,6 @@ export async function processConfigObjects(
   }
 
   return { seenGuids, errors };
-}
-
-async function expandConfigObjects(
-  configObjects: ConfigurationObject[],
-  externallyValidate: boolean,
-  validate = false
-): Promise<{ configObjects: ConfigurationObject[]; errors: string[] }> {
-  // some objects make many thing. this will expand it to the simple ones
-
-  const errors: string[] = [];
-  const out: ConfigurationObject[] = [];
-
-  for (const i in configObjects) {
-    const configObject = configObjects[i];
-    if (Object.keys(configObject).length === 0) continue;
-    let klass = configObject?.class?.toLowerCase();
-    try {
-      switch (klass) {
-        case "synctable":
-          const many = await expandSyncTable(
-            configObject,
-            externallyValidate,
-            validate
-          );
-          console.log(JSON.stringify(many));
-          out.push(...many);
-          break;
-        default:
-          out.push(configObject);
-          break;
-      }
-    } catch (error) {
-      const errorMessage = `[ config ] error with ${configObject?.class} \`${
-        configObject.key || configObject.name
-      }\` (${configObject.id}): ${error}`;
-      errors.push(errorMessage);
-      log(errorMessage, env === "test" ? "info" : "error");
-      continue;
-    }
-  }
-
-  return { configObjects: out, errors };
 }
 
 async function deleteLockedObjects(seenGuids): Promise<GuidsByClass> {
