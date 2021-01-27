@@ -68,6 +68,7 @@ export class ProfileCompleteImport extends RetryableTask {
         _import.profileUpdatedAt = now;
         _import.newGroupGuids = newGroupGuids;
         _import.groupsUpdatedAt = now;
+        if (!params.toExport) _import.exportedAt = now; // we want to indicate that the import's lifecycle is complete
         await _import.save();
       }
 
