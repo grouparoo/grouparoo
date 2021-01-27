@@ -45,11 +45,11 @@ export const DEFAULT = {
       // at minimum, how many parallel taskProcessors should this node spawn?
       // (have number > 0 to enable, and < 1 to disable)
       minTaskProcessors: process.env.WORKERS
-        ? parseInt(process.env.WORKERS)
+        ? parseInt(process.env.WORKERS, 10)
         : 0,
       // at maximum, how many parallel taskProcessors should this node spawn?
       maxTaskProcessors: process.env.WORKERS
-        ? parseInt(process.env.WORKERS)
+        ? parseInt(process.env.WORKERS, 10)
         : 0,
       // how often should we check the event loop to spawn more taskProcessors?
       checkTimeout: 500,

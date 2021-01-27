@@ -240,7 +240,7 @@ export class Group extends LoggedModel<Group> {
       }
 
       await GroupRule.create({
-        position: parseInt(i) + 1,
+        position: parseInt(i, 10) + 1,
         groupGuid: this.guid,
         propertyGuid: property ? property.guid : null,
         profileColumn: property ? null : key,
@@ -344,7 +344,7 @@ export class Group extends LoggedModel<Group> {
     const setting = await Setting.findOne({
       where: { pluginName: "core", key: "groups-calculation-delay-minutes" },
     });
-    const delayMinutes = parseInt(setting.value);
+    const delayMinutes = parseInt(setting.value, 10);
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
@@ -518,7 +518,7 @@ export class Group extends LoggedModel<Group> {
 
         if (rawValueMatch[Op[operation.op]] && type === "date") {
           rawValueMatch[Op[operation.op]] = new Date(
-            parseInt(rawValueMatch[Op[operation.op]])
+            parseInt(rawValueMatch[Op[operation.op]], 10)
           ).getTime();
         }
 

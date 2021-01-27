@@ -109,12 +109,12 @@ export class ResqueQueued extends ResqueActionRead {
       },
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 100,
       },
     };
@@ -155,12 +155,12 @@ export class ResqueResqueFailed extends ResqueActionRead {
     this.inputs = {
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 100,
       },
     };
@@ -186,7 +186,7 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
     this.inputs = {
       id: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
     };
   }
@@ -224,7 +224,7 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
     this.inputs = {
       id: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
     };
   }
@@ -290,12 +290,12 @@ export class ResqueDelayedJobs extends ResqueActionRead {
     this.inputs = {
       offset: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 0,
       },
       limit: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
         default: 100,
       },
     };
@@ -333,11 +333,11 @@ export class ResqueDelDelayed extends ResqueActionWrite {
     this.inputs = {
       timestamp: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
       count: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
     };
   }
@@ -363,11 +363,11 @@ export class ResqueRunDelayed extends ResqueActionWrite {
     this.inputs = {
       timestamp: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
       count: {
         required: true,
-        formatter: parseInt,
+        formatter: (p) => parseInt(p, 10),
       },
     };
   }

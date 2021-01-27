@@ -306,7 +306,7 @@ export default function Page(props) {
                             <DatePicker
                               selected={
                                 rule.match && rule.match !== "null"
-                                  ? new Date(parseInt(rule.match))
+                                  ? new Date(parseInt(rule.match, 10))
                                   : null
                               }
                               onChange={(d: Date) => {

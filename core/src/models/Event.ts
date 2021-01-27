@@ -219,7 +219,7 @@ export class Event extends LoggedModel<Event> {
         eventDataWhere["value"] = localWhere;
         eventDataWhere["key"] = key;
       } else if (key === "occurredAt") {
-        localWhere[opSymbol] = new Date(parseInt(match.toString()));
+        localWhere[opSymbol] = new Date(parseInt(match.toString(), 10));
         eventWhere[key] = localWhere;
       } else {
         localWhere[opSymbol] = match;

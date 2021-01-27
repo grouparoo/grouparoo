@@ -306,7 +306,7 @@ export class Property extends LoggedModel<Property> {
       const filter = filters[i];
 
       await PropertyFilter.create({
-        position: parseInt(i) + 1,
+        position: parseInt(i, 10) + 1,
         propertyGuid: this.guid,
         key: filter.key,
         op: filter.op,

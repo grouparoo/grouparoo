@@ -94,44 +94,44 @@ describe("modules/groupExport", () => {
       // mario
       let properties = await mario.properties();
       expect(rows[0].guid).toBe(mario.guid);
-      expect(parseInt(rows[0].createdAt)).toBeGreaterThan(0);
+      expect(parseInt(rows[0].createdAt, 10)).toBeGreaterThan(0);
       expect(rows[0]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[0]["ltv"])).toBe(properties.ltv.values[0]);
       lastLoginAt = properties.lastLoginAt.values[0] as Date;
-      expect(parseInt(rows[0]["lastLoginAt"])).toBe(
+      expect(parseInt(rows[0]["lastLoginAt"], 10)).toBe(
         Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // luigi
       properties = await luigi.properties();
       expect(rows[1].guid).toBe(luigi.guid);
-      expect(parseInt(rows[1].createdAt)).toBeGreaterThan(0);
+      expect(parseInt(rows[1].createdAt, 10)).toBeGreaterThan(0);
       expect(rows[1]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[1]["ltv"])).toBe(properties.ltv.values[0]);
       lastLoginAt = properties.lastLoginAt.values[0] as Date;
-      expect(parseInt(rows[1]["lastLoginAt"])).toBe(
+      expect(parseInt(rows[1]["lastLoginAt"], 10)).toBe(
         Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // peach
       properties = await peach.properties();
       expect(rows[2].guid).toBe(peach.guid);
-      expect(parseInt(rows[2].createdAt)).toBeGreaterThan(0);
+      expect(parseInt(rows[2].createdAt, 10)).toBeGreaterThan(0);
       expect(rows[2]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[2]["ltv"])).toBe(properties.ltv.values[0]);
       lastLoginAt = properties.lastLoginAt.values[0] as Date;
-      expect(parseInt(rows[2]["lastLoginAt"])).toBe(
+      expect(parseInt(rows[2]["lastLoginAt"], 10)).toBe(
         Math.round(lastLoginAt.getTime() / 1000)
       );
 
       // toad
       properties = await toad.properties();
       expect(rows[3].guid).toBe(toad.guid);
-      expect(parseInt(rows[3].createdAt)).toBeGreaterThan(0);
+      expect(parseInt(rows[3].createdAt, 10)).toBeGreaterThan(0);
       expect(rows[3]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[3]["ltv"])).toBe(properties.ltv.values[0]);
       lastLoginAt = properties.lastLoginAt.values[0] as Date;
-      expect(parseInt(rows[3]["lastLoginAt"])).toBe(
+      expect(parseInt(rows[3]["lastLoginAt"], 10)).toBe(
         Math.round(lastLoginAt.getTime() / 1000)
       );
     });

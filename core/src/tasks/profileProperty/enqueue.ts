@@ -23,7 +23,8 @@ export class ProfilePropertiesEnqueue extends CLSTask {
           "core",
           "imports-profile-properties-batch-size"
         )
-      ).value
+      ).value,
+      10
     );
 
     const properties = await Property.findAll({

@@ -45,7 +45,7 @@ export default function ResqueDelayedList(props) {
     if (response.delayedjobs) {
       Object.keys(response.delayedjobs).forEach(function (t) {
         _timestamps.push({
-          date: new Date(parseInt(t)),
+          date: new Date(parseInt(t, 10)),
           key: t,
         });
       });

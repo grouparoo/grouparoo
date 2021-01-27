@@ -27,7 +27,8 @@ export namespace ScheduleOps {
     await source.validateOptions(sourceOptions);
 
     const limit: number = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+      10
     );
 
     let highWaterMark = {};

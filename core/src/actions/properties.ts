@@ -15,8 +15,12 @@ export class PropertiesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      limit: { required: true, default: 100, formatter: parseInt },
-      offset: { required: true, default: 0, formatter: parseInt },
+      limit: {
+        required: true,
+        default: 100,
+        formatter: (p) => parseInt(p, 10),
+      },
+      offset: { required: true, default: 0, formatter: (p) => parseInt(p, 10) },
       unique: { required: false },
       state: { required: false },
       sourceGuid: { required: false },

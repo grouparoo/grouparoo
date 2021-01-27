@@ -378,7 +378,8 @@ export class Run extends Model {
 
   static async sweep(limit: number) {
     const days = parseInt(
-      (await plugin.readSetting("core", "sweeper-delete-old-runs-days")).value
+      (await plugin.readSetting("core", "sweeper-delete-old-runs-days")).value,
+      10
     );
 
     const runs = await Run.findAll({

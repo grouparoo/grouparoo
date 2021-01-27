@@ -122,7 +122,7 @@ export const test = {
         secure: false,
         port: process.env.PORT
           ? process.env.PORT
-          : 18080 + parseInt(process.env.JEST_WORKER_ID || "0"),
+          : 18080 + parseInt(process.env.JEST_WORKER_ID || "0", 10),
         matchExtensionMime: true,
         metadataOptions: {
           serverInformation: true,

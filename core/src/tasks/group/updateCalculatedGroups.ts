@@ -20,7 +20,7 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
       "core",
       "groups-calculation-delay-minutes"
     );
-    const delayMinutes = parseInt(setting.value);
+    const delayMinutes = parseInt(setting.value, 10);
     const lastCheckTime = Moment().subtract(delayMinutes, "minutes");
 
     const calculatedGroups = await Group.scope(null).findAll({

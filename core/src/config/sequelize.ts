@@ -88,7 +88,7 @@ export const DEFAULT = {
       autoMigrate: true,
       logging: false,
       dialect: dialect,
-      port: parseInt(port),
+      port: parseInt(port, 10),
       database: database,
       host: host,
       username: username,
@@ -101,7 +101,7 @@ export const DEFAULT = {
           dialect === "sqlite"
             ? 1
             : process.env.SEQUELIZE_POOL_SIZE
-            ? parseInt(process.env.SEQUELIZE_POOL_SIZE)
+            ? parseInt(process.env.SEQUELIZE_POOL_SIZE, 10)
             : 5,
         min: 0,
         acquire: 30000,

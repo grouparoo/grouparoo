@@ -153,11 +153,11 @@ export default class Postgres {
       const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
       for (const fileRow of rows) {
         const row = Object.assign({}, fileRow);
-        row.id = parseInt(row.id);
+        row.id = parseInt(row.id, 10);
         if (row.id <= 0) {
           throw new Error(`no id column on ${tableName}`);
         }
-        row[userId] = parseInt(row[userId]);
+        row[userId] = parseInt(row[userId], 10);
         if (row[userId] <= 0) {
           throw new Error(`no ${userId} column on ${tableName}`);
         }

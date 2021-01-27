@@ -66,7 +66,8 @@ export class RunInternalRun extends CLSTask {
     const limit: number =
       params.limit ||
       parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+        10
       );
 
     const run = await Run.scope(null).findOne({

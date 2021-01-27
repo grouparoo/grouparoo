@@ -552,7 +552,9 @@ export default function Page(props) {
                                   selected={
                                     localFilter.match &&
                                     localFilter.match !== "null"
-                                      ? new Date(parseInt(localFilter.match))
+                                      ? new Date(
+                                          parseInt(localFilter.match, 10)
+                                        )
                                       : new Date()
                                   }
                                   onChange={(d: Date) => {

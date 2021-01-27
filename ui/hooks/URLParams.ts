@@ -27,7 +27,7 @@ export function updateURLParams(
 export function useOffset(defaultValue = 0) {
   const router = useRouter();
   const [offset, setOffset] = useState(
-    parseInt(router.query.offset?.toString() || defaultValue.toString())
+    parseInt(router.query.offset?.toString() || defaultValue.toString(), 10)
   );
 
   return { offset, setOffset };

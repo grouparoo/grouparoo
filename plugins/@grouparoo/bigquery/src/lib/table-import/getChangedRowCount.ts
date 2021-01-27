@@ -22,6 +22,6 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
 
   const options = { query, params, types };
   const [rows] = await connection.query(options);
-  const total = parseInt(rows[0]["__count"]);
+  const total = parseInt(rows[0]["__count"], 10);
   return total;
 };

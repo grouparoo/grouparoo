@@ -51,7 +51,8 @@ export class PrivateStatus extends CLSAction {
 
     const maxResqueQueueLength: number =
       parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+        10
       ) * 10;
 
     if (length > maxResqueQueueLength) {

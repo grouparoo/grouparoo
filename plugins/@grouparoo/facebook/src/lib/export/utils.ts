@@ -248,7 +248,7 @@ export default class ServerSideUtils {
       dobd = "0" + dobd;
     }
 
-    const dobd_int = parseInt(dobd);
+    const dobd_int = parseInt(dobd, 10);
     if (dobd_int < 1 || dobd_int > 31) {
       throw new Error(
         "Invalid format for dobd:'" +
@@ -270,7 +270,7 @@ export default class ServerSideUtils {
       dobm = "0" + dobm;
     }
 
-    const dobm_int = parseInt(dobm);
+    const dobm_int = parseInt(dobm, 10);
     if (dobm_int < 1 || dobm_int > 12) {
       throw new Error(
         "Invalid format for dobm:'" +

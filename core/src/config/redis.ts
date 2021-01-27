@@ -28,7 +28,7 @@ function RealRedisConfig() {
     port,
     host,
     password,
-    db: parseInt(db),
+    db: parseInt(db, 10),
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
     retryStrategy: (times) => {
       if (times === 1) {

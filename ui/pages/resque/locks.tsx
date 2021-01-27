@@ -32,7 +32,7 @@ export default function ResqueLocksList(props) {
     Object.keys(response.locks).forEach(function (l) {
       _locks.push({
         lock: l,
-        at: new Date(parseInt(response.locks[l]) * 1000),
+        at: new Date(parseInt(response.locks[l], 10) * 1000),
       });
     });
     setLoading(false);

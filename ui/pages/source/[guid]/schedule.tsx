@@ -145,7 +145,9 @@ export default function Page(props) {
                         disabled={loading}
                         value={recurringFrequencyMinutes.toString()}
                         onChange={(e) =>
-                          setRecurringFrequencyMinutes(parseInt(e.target.value))
+                          setRecurringFrequencyMinutes(
+                            parseInt(e.target.value, 10)
+                          )
                         }
                       />
                     </Form.Group>

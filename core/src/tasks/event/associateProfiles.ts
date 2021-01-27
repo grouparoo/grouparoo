@@ -17,7 +17,8 @@ export class EventsAssociateProfiles extends CLSTask {
 
   async runWithinTransaction() {
     const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+      10
     );
 
     const events = await Event.findAll({

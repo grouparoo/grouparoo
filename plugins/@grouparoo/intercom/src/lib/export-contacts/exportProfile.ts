@@ -575,7 +575,7 @@ async function getValueLock(
   if (!set || checkValue !== expireAt) {
     // didn't get the lock
     const now = new Date().getTime();
-    const doneAtMs = parseInt(checkValue) || now;
+    const doneAtMs = parseInt(checkValue, 10) || now;
     if (doneAtMs < now) {
       await client.del(lockKey); // didn't expire! clean up.
       return 0; // it was in the past

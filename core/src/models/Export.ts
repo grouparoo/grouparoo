@@ -234,7 +234,8 @@ export class Export extends Model {
   static async sweep(limit: number) {
     const days = parseInt(
       (await plugin.readSetting("core", "sweeper-delete-old-exports-days"))
-        .value
+        .value,
+      10
     );
 
     const _exports = await Export.findAll({

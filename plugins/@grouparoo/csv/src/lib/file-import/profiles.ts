@@ -36,7 +36,7 @@ export const profiles: ProfilesPluginMethod = async ({
   //       Scanning the whole file each time seems silly.
   let importsCount = 0;
   let rowId = -1;
-  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
+  const offset = sourceOffset ? parseInt(sourceOffset.toString(), 10) : 0;
 
   await new Promise((resolve, reject) => {
     parser.once("readable", async () => {

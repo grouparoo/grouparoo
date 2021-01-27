@@ -24,7 +24,8 @@ export class ProfilePropertySweep extends CLSTask {
           "core",
           "imports-profile-properties-batch-size"
         )
-      ).value
+      ).value,
+      10
     );
 
     // delete those profile properties who have no profile

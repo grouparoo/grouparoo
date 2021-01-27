@@ -52,9 +52,9 @@ export namespace ProfilePropertyOps {
       case "float":
         return parseFloat(rawValue);
       case "integer":
-        return parseInt(rawValue);
+        return parseInt(rawValue, 10);
       case "date":
-        return new Date(parseInt(rawValue));
+        return new Date(parseInt(rawValue, 10));
       case "string":
         return rawValue;
       case "email":

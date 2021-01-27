@@ -62,8 +62,8 @@ describe("modules/notifiers", () => {
 
       expect(notifications.length).toBe(2);
       expect(notifications.map((n) => n.guid)).not.toContain(firstMessage.guid);
-      expect(parseInt(notifications[0].body)).toBeGreaterThan(
-        parseInt(notifications[1].body)
+      expect(parseInt(notifications[0].body, 10)).toBeGreaterThan(
+        parseInt(notifications[1].body, 10)
       );
     });
 

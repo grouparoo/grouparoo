@@ -15,7 +15,8 @@ export class ProfilesCheckReady extends CLSTask {
 
   async runWithinTransaction() {
     const limit = parseInt(
-      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+      10
     );
 
     const toExport = process.env.GROUPAROO_DISABLE_EXPORTS

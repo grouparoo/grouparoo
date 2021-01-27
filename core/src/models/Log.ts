@@ -120,7 +120,7 @@ export class Log extends Model {
     const setting = await Setting.findOne({
       where: { pluginName: "core", key: "sweeper-delete-old-logs-days" },
     });
-    const days = parseInt(setting.value);
+    const days = parseInt(setting.value, 10);
 
     const count = await Log.destroy({
       where: {

@@ -223,7 +223,8 @@ export class MockSession {
     } else {
       // some time after created
       const userId =
-        parseInt((this.currentUserId || "").toString()) || this.randomUserId();
+        parseInt((this.currentUserId || "").toString(), 10) ||
+        this.randomUserId();
       let generatedCreateAt = await userCreatedAt(userId);
       let creationAgo = now - generatedCreateAt.getTime();
       creationAgo = Math.random() * creationAgo;

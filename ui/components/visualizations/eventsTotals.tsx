@@ -25,12 +25,12 @@ export default function EventsTotals(props) {
   );
   const [startDate, setStartDate] = useState<Date>(
     router.query.startTime
-      ? new Date(parseInt(router.query.startTime.toString()))
+      ? new Date(parseInt(router.query.startTime.toString(), 10))
       : NodeMoment().subtract(1, "month").toDate()
   );
   const [endDate, setEndDate] = useState<Date>(
     router.query.endTime
-      ? new Date(parseInt(router.query.endTime.toString()))
+      ? new Date(parseInt(router.query.endTime.toString(), 10))
       : NodeMoment().add(1, "day").toDate()
   );
 

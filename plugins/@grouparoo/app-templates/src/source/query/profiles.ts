@@ -28,12 +28,13 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     properties,
   }) => {
     let offset = highWaterMark.offset
-      ? parseInt(highWaterMark.offset.toString())
+      ? parseInt(highWaterMark.offset.toString(), 10)
       : 0;
     const limit = highWaterMark.limit
-      ? parseInt(highWaterMark.limit.toString())
+      ? parseInt(highWaterMark.limit.toString(), 10)
       : parseInt(
-          (await plugin.readSetting("core", "runs-profile-batch-size")).value
+          (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+          10
         );
 
     const rows = await getChangedRows({

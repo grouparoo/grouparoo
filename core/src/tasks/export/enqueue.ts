@@ -21,7 +21,8 @@ export class EnqueueExports extends RetryableTask {
   async runWithinTransaction(params) {
     const count = params.count || 0;
     const limit = parseInt(
-      (await plugin.readSetting("core", "exports-profile-batch-size")).value
+      (await plugin.readSetting("core", "exports-profile-batch-size")).value,
+      10
     );
 
     let totalEnqueued = 0;

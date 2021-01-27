@@ -44,7 +44,7 @@ export function userCreatedAt(userId: any) {
   // 1000 people in last 3 months, spaced out
   const secondsBack = 60 * 60 * 24 * 30 * 3;
   const secondsEach = secondsBack / 1000; // for each user
-  const ageNumber = numberOfUsers - parseInt(userId);
+  const ageNumber = numberOfUsers - parseInt(userId, 10);
   const creationAgo = secondsEach * ageNumber * 1000;
 
   // use that from something specific.

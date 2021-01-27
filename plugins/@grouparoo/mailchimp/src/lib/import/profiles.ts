@@ -22,7 +22,7 @@ export const profiles: ProfilesPluginMethod = async ({
     }
   }
 
-  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
+  const offset = sourceOffset ? parseInt(sourceOffset.toString(), 10) : 0;
   // TODO: how to handle this? what's the parent doing?
   if (limit > 1000) {
     // max per documentation: https://mailchimp.com/developer/api/marketing/list-members/list-members-info/

@@ -18,7 +18,7 @@ export class RunRecurringInternalRun extends CLSTask {
     const setting = await Setting.findOne({
       where: { key: "runs-recurring-internal-run-frequency-hours" },
     });
-    const frequencyInMs = parseInt(setting.value) * 60 * 60 * 1000;
+    const frequencyInMs = parseInt(setting.value, 10) * 60 * 60 * 1000;
     if (frequencyInMs <= 0) return;
 
     const lastRun = await Run.findOne({

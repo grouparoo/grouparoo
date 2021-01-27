@@ -21,7 +21,7 @@ export const profiles: ProfilesPluginMethod = async ({
     }
   }
 
-  const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
+  const offset = sourceOffset ? parseInt(sourceOffset.toString(), 10) : 0;
   let importsCount = 0;
   const sheet = new Spreadsheet(appOptions, sourceOptions.sheet_url);
   const rows = await sheet.read({ limit, offset });

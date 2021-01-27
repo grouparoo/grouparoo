@@ -26,7 +26,8 @@ export class GroupDestroy extends CLSTask {
     const limit: number =
       params.limit ||
       parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value,
+        10
       );
 
     const group = await Group.scope(null).findOne({
