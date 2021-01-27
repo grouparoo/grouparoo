@@ -163,7 +163,7 @@ export function sortConfigurationObject(configObjects: ConfigurationObject[]) {
   return sortedConfigObjectsWithIds.map((o) => o.configObject);
 }
 
-function getParentIds(configObject: ConfigurationObject) {
+export function getParentIds(configObject: ConfigurationObject) {
   const keys = Object.keys(configObject);
   const prerequisiteIds: string[] = [];
   const providedIds: string[] = [];
@@ -213,7 +213,7 @@ function getParentIds(configObject: ConfigurationObject) {
   });
 
   if (configObject["mapping"]) {
-    const mappingValues = Object.keys(configObject["mapping"]);
+    const mappingValues = Object.values(configObject["mapping"]);
     mappingValues.forEach((v) => {
       prerequisiteIds.push(v);
     });
