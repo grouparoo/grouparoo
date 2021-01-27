@@ -28,7 +28,7 @@ export class RunCLI extends CLI {
       "run-all-schedules": {
         default: false,
         description:
-          "Should we run all Schedules, event those that do not have a recurring time set?",
+          "Should we run all Schedules, even those that do not have a recurring time set?",
         letter: "s",
         flag: true,
       },
