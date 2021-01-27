@@ -21,13 +21,8 @@ Object {
         "primary-id": 100,
         "secondary-id": "example@example.com",
       },
-      "oldGroups": Array [
-        "Literally Everyone",
-      ],
-      "oldProfileProperties": Object {
-        "primary-id": 100,
-        "secondary-id": "example@example.com",
-      },
+      "oldGroups": Array [],
+      "oldProfileProperties": Object {},
       "profileGuid": Any<String>,
       "startedAt": Any<Number>,
       "toDelete": false,

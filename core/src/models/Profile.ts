@@ -132,7 +132,7 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async snapshot(saveExports = false) {
-    await this.sync(false, undefined, false); // import the profile and recalculate groups; skip exports here
+    await this.sync(undefined, undefined, false); // import the profile and recalculate groups; skip exports here
 
     const properties = await this.properties();
     const groups = await this.$get("groups");
