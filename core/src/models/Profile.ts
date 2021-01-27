@@ -127,12 +127,12 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.markPending(this);
   }
 
-  async sync(force = true, oldGroupsOverride?: Group[]) {
-    return ProfileOps.sync(this, force, oldGroupsOverride);
+  async sync(force = true, oldGroupsOverride?: Group[], toExport = true) {
+    return ProfileOps.sync(this, force, oldGroupsOverride, toExport);
   }
 
-  async snapshot(toSync = false, saveExports = false) {
-    if (toSync) await this.sync(); // import the profile and recalculate groups
+  async snapshot(saveExports = false) {
+    await this.sync(false, undefined, false); // import the profile and recalculate groups; skip exports here
 
     const properties = await this.properties();
     const groups = await this.$get("groups");

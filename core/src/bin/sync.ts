@@ -68,7 +68,6 @@ export class SyncCLI extends CLI {
     }
 
     const { properties, groups, exports } = await profile.snapshot(
-      true,
       params.export
     );
 
