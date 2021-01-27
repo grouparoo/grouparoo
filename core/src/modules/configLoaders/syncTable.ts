@@ -19,6 +19,7 @@ import { loadDestination } from "./destination";
 // TODO:
 // because this is so dynamic the "providedIds" in getParentIds isn't right for properties, bootstrap, source, destination, schedule, etc
 // equilavent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable. is this important?
+// boostrapping makes the propety identifying, but there might already be one.
 
 interface columnTypes {
   [colName: string]: string;
@@ -412,6 +413,7 @@ async function buildProperties(
       property.options.aggregationMethod || "exact";
     if (!property.type) {
       const type = columnTypes[property.column.toLowerCase()];
+
       if (type === undefined) {
         throw new Error(
           `unknown sync column for ${destKey}: ${property.column}`
