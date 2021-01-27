@@ -16,9 +16,9 @@ import { OptionHelper } from "../optionHelper";
 import { loadGroup } from "./group";
 import { loadDestination } from "./destination";
 
-// TODO: lots of things!
-// because this is so dynamic the "providedIds" in getParentIds isn't right for proeprties, bootstrap, source, destination, schedule, etc
-// equilavent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable
+// TODO:
+// because this is so dynamic the "providedIds" in getParentIds isn't right for properties, bootstrap, source, destination, schedule, etc
+// equilavent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable. is this important?
 
 interface columnTypes {
   [colName: string]: string;
