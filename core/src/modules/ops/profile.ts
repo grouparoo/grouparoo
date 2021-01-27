@@ -582,7 +582,7 @@ export namespace ProfileOps {
    * Find profiles that are not ready but whose properties are and make them ready.
    * Task `profile:completeImport` will be enqueued for each Profile.
    */
-  export async function makeReady(limit = 100) {
+  export async function makeReady(limit = 100, toExport = true) {
     let profiles: Profile[];
 
     const notInQuery = api.sequelize.dialect.queryGenerator
@@ -623,6 +623,7 @@ export namespace ProfileOps {
       profiles.map((profile) =>
         CLS.enqueueTask("profile:completeImport", {
           profileGuid: profile.guid,
+          toExport,
         })
       )
     );

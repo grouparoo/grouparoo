@@ -18,6 +18,10 @@ export class ProfilesCheckReady extends CLSTask {
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );
 
-    await ProfileOps.makeReady(limit);
+    const toExport = process.env.GROUPAROO_DISABLE_EXPORTS
+      ? process.env.GROUPAROO_DISABLE_EXPORTS !== "true"
+      : true;
+
+    await ProfileOps.makeReady(limit, toExport);
   }
 }
