@@ -4,7 +4,7 @@ import fs from "fs";
 import glob from "glob";
 import {
   ConfigurationObject,
-  sortConfigurationObject,
+  sortConfigurationObjects,
   GuidsByClass,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
@@ -40,12 +40,11 @@ export async function loadConfigDirectory(
   let deletedGuids: GuidsByClass = {};
   let errors: string[] = [];
 
-  const { configObjects, configFiles } = await loadConfigObjects(configDir);
+  const configObjects = await loadConfigObjects(configDir);
 
-  if (configFiles.length > 0) {
-    const sortedConfigObjects = sortConfigurationObject(configObjects);
+  if (configObjects !== null) {
     const response = await processConfigObjects(
-      sortedConfigObjects,
+      configObjects,
       externallyValidate
     );
     seenGuids = response.seenGuids;
@@ -59,7 +58,9 @@ export async function loadConfigDirectory(
   return { seenGuids, errors, deletedGuids };
 }
 
-export async function loadConfigObjects(configDir: string) {
+export async function loadConfigObjects(
+  configDir: string
+): Promise<ConfigurationObject[]> {
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: ConfigurationObject[] = [];
@@ -67,7 +68,10 @@ export async function loadConfigObjects(configDir: string) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
   configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
-  return { configObjects, configFiles };
+  if (configFiles.length === 0) {
+    return null;
+  }
+  return configObjects;
 }
 
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
@@ -104,6 +108,8 @@ export async function processConfigObjects(
     teammember: [],
   };
   const errors: string[] = [];
+
+  configObjects = sortConfigurationObjects(configObjects);
 
   for (const i in configObjects) {
     const configObject = configObjects[i];

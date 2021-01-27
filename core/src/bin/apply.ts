@@ -1,7 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, log } from "actionhero";
 import { CLS } from "../modules/cls";
-import { sortConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
@@ -30,8 +29,7 @@ export class Validate extends CLI {
     GrouparooCLI.logCLI(this.name);
 
     const configDir = getConfigDir();
-    const loadResponse = await loadConfigObjects(configDir);
-    const configObjects = sortConfigurationObject(loadResponse.configObjects);
+    const configObjects = await loadConfigObjects(configDir);
 
     log(`applying ${configObjects.length} objects...`);
 

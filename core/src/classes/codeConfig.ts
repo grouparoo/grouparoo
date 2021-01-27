@@ -171,7 +171,9 @@ export function extractNonNullParts(
   return cleanedOptions;
 }
 
-export function sortConfigurationObject(configObjects: ConfigurationObject[]) {
+export function sortConfigurationObjects(
+  configObjects: ConfigurationObject[]
+): ConfigurationObject[] {
   const configObjectsWithIds: orderedConfigObject[] = [];
 
   for (const i in configObjects) {

@@ -1,9 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, api, log } from "actionhero";
-import {
-  ConfigurationObject,
-  sortConfigurationObject,
-} from "../classes/codeConfig";
+import { ConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
@@ -37,8 +34,7 @@ export class Validate extends CLI {
 
     // Can we read the config directory?  Is the JSON/JS valid?
     try {
-      const loadResponse = await loadConfigObjects(configDir);
-      configObjects = sortConfigurationObject(loadResponse.configObjects);
+      configObjects = await loadConfigObjects(configDir);
     } catch (error) {
       logFatalError(
         `error loading config from ${configDir}: \r\n\r\n${error.stack}`
