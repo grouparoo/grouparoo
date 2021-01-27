@@ -32,6 +32,12 @@ export class RunCLI extends CLI {
         letter: "s",
         flag: true,
       },
+      "no-export": {
+        default: false,
+        description: "Skip exporting the profiles",
+        letter: "n",
+        flag: true,
+      },
       web: {
         default: false,
         description: "Enable the web server during this run?",
@@ -51,6 +57,9 @@ export class RunCLI extends CLI {
     if (!params.web) GrouparooCLI.disableWebServer();
     if (params.destroy) await GrouparooCLI.destroyProfiles();
     if (params.resetHighWatermarks) await GrouparooCLI.resetHighWatermarks();
+    process.env.GROUPAROO_DISABLE_EXPORTS = String(
+      params.export.toString().toLowerCase() !== "true"
+    );
 
     await import("../grouparoo"); // run the server
 

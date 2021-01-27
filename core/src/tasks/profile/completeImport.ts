@@ -2,7 +2,6 @@ import { CLS } from "../../modules/cls";
 import { config } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
-import { ProfilePropertyType } from "../../modules/ops/profile";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 
 export class ProfileCompleteImport extends RetryableTask {
@@ -15,6 +14,7 @@ export class ProfileCompleteImport extends RetryableTask {
     this.queue = "profiles";
     this.inputs = {
       profileGuid: { required: true },
+      toExport: { required: true },
     };
   }
 
@@ -68,15 +68,16 @@ export class ProfileCompleteImport extends RetryableTask {
         _import.profileUpdatedAt = now;
         _import.newGroupGuids = newGroupGuids;
         _import.groupsUpdatedAt = now;
+        if (!params.toExport) _import.exportedAt = now; // we want to indicate that the import's lifecycle is complete
         await _import.save();
       }
 
-      let force = false;
-
-      await CLS.enqueueTask("profile:export", {
-        profileGuid: profile.guid,
-        force,
-      });
+      if (params.toExport) {
+        await CLS.enqueueTask("profile:export", {
+          profileGuid: profile.guid,
+          force: false,
+        });
+      }
     } catch (error) {
       await Promise.all(imports.map((e) => e.setError(error, this.name)));
       throw error;
