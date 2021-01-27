@@ -449,11 +449,16 @@ export namespace helper {
    * Calls Profile.findOrCreateByUniqueProfileProperties() under the hood, as well as Profile.sync()
    */
   export async function getProfile(
-    args: { [key: string]: any },
+    args: { [key: string]: string | number },
     opts: { saveExports?: boolean } = { saveExports: false }
   ) {
+    const arrayedArgs = {};
+    for (const k in args) {
+      arrayedArgs[k] = [args[k]];
+    }
+
     const { profile } = await Profile.findOrCreateByUniqueProfileProperties(
-      args
+      arrayedArgs
     );
     const snapshot = await profile.snapshot(opts.saveExports);
     await profile.reload();
