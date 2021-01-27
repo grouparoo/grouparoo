@@ -69,5 +69,10 @@ export default async function Initialize(
   console.info(
     "    - Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
   );
-  console.info(`    - Type "npm start" to start the Grouparoo application.`);
+  console.info(
+    "    - Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands"
+  );
+  console.info(
+    `    - Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application`
+  );
 }
