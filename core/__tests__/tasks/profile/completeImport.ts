@@ -24,7 +24,10 @@ describe("tasks/profile:completeImport", () => {
 
   describe("profile:completeImport", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profile:completeImport", { profileGuid: "abc123" });
+      await task.enqueue("profile:completeImport", {
+        profileGuid: "abc123",
+        toExport: true,
+      });
       const found = await specHelper.findEnqueuedTasks(
         "profile:completeImport"
       );
@@ -38,6 +41,7 @@ describe("tasks/profile:completeImport", () => {
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       await profile.reload();
@@ -49,6 +53,7 @@ describe("tasks/profile:completeImport", () => {
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       await profile.destroy();
@@ -67,6 +72,7 @@ describe("tasks/profile:completeImport", () => {
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       const foundTasks = await specHelper.findEnqueuedTasks(
@@ -75,6 +81,7 @@ describe("tasks/profile:completeImport", () => {
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       await profile.destroy();
@@ -91,6 +98,7 @@ describe("tasks/profile:completeImport", () => {
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       groups = await profile.$get("groups");
@@ -124,6 +132,7 @@ describe("tasks/profile:completeImport", () => {
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       await _import.reload();
@@ -145,6 +154,7 @@ describe("tasks/profile:completeImport", () => {
 
       await specHelper.runTask("profile:completeImport", {
         profileGuid: profile.guid,
+        toExport: true,
       });
 
       const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
@@ -153,6 +163,20 @@ describe("tasks/profile:completeImport", () => {
         force: false,
         profileGuid: profile.guid,
       });
+    });
+
+    test("optionally enqueuing a profile:export task can be skipped", async () => {
+      const profile = await helper.factories.profile();
+      await profile.import();
+      await profile.update({ state: "ready" });
+
+      await specHelper.runTask("profile:completeImport", {
+        profileGuid: profile.guid,
+        toExport: false,
+      });
+
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toEqual(0);
     });
   });
 });
