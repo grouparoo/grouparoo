@@ -87,6 +87,7 @@ module.exports = async function getConfig() {
             unique: true,
             key: "email",
             type: "email",
+            id: "email_custom",
           }, // can give more options including type (magic_table_property_email)
           EXT_ID: "user_id", // can be the same as the bootstrapped one. (magic_table_property_user_id)
         },

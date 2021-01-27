@@ -27,20 +27,13 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin } from "../../../src/modules/plugin";
 import { Property } from "../../../src/models/Property";
 import { App } from "../../../src/models/App";
 import { Source } from "../../../src/models/Source";
 import { Schedule } from "../../../src/models/Schedule";
 import { Group } from "../../../src/models/Group";
-import { GroupRule } from "../../../src/models/GroupRule";
 import { Destination } from "../../../src/models/Destination";
-import { ApiKey } from "../../../src/models/ApiKey";
-import { Team } from "../../../src/models/Team";
-import { TeamMember } from "../../../src/models/TeamMember";
-import { Setting } from "../../../src/models/Setting";
-import { api, specHelper } from "actionhero";
-import { Op } from "sequelize";
+import { api } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
 
 describe("modules/codeConfig/syncTable", () => {
@@ -84,7 +77,7 @@ describe("modules/codeConfig/syncTable", () => {
           "rul_magic_table_property_fname",
           "rul_magic_table_property_decimal_col",
           "rul_magic_table_property_timestamp_col",
-          "rul_magic_table_property_email",
+          "rul_email_custom",
           "rul_magic_table_membership",
         ],
         schedule: ["sch_magic_table_schedule"],
@@ -115,7 +108,8 @@ describe("modules/codeConfig/syncTable", () => {
       expect(apps[0].name).toBe("Mailchimp");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
-      // TODO: type
+      expect(apps[0].type).toBe("mailchimp");
+
       let options = await apps[0].getOptions();
       expect(options.apiKey).toBeTruthy();
       expect(Object.keys(options).length).toBe(1);
@@ -124,6 +118,8 @@ describe("modules/codeConfig/syncTable", () => {
       expect(apps[1].name).toBe("Data Warehouse");
       expect(apps[1].state).toBe("ready");
       expect(apps[1].locked).toBe("config:code");
+      expect(apps[1].type).toBe("postgres");
+
       options = await apps[1].getOptions();
       expect(options.database).toBeTruthy();
     });
@@ -136,11 +132,13 @@ describe("modules/codeConfig/syncTable", () => {
       expect(sources[0].name).toBe("Sync to Mailchimp Source");
       expect(sources[0].state).toBe("ready");
       expect(sources[0].locked).toBe("config:code");
-      // TODO: type
+      expect(sources[0].type).toBe("postgres-table-import");
+
       const options = await sources[0].getOptions();
       expect(options).toEqual({ table: "mapping_table" });
 
-      // TODO: check on mapping to bootstrap
+      const mapping = await sources[0].getMapping();
+      expect(mapping).toEqual({ user_id: "magic_table_user_id" });
     });
 
     test("the bootstrapped property is created", async () => {
@@ -167,13 +165,13 @@ describe("modules/codeConfig/syncTable", () => {
       expect(schedules[0].recurringFrequency).toBe(15 * 60 * 1000);
       expect(schedules[0].locked).toBe("config:code");
 
-      // TODO: column = updated_at
+      const options = await schedules[0].getOptions();
+      expect(options).toEqual({ column: "updated_at" });
     });
 
     test("properties are created", async () => {
-      const rules = await Property.findAll();
-      expect(rules.length).toBe(6);
-      expect(rules.map((r) => r.key).sort()).toEqual([
+      const properties = await Property.findAll();
+      expect(properties.map((r) => r.key).sort()).toEqual([
         "email",
         "magic_table_decimal_col",
         "magic_table_fname",
@@ -181,7 +179,9 @@ describe("modules/codeConfig/syncTable", () => {
         "magic_table_timestamp_col",
         "magic_table_user_id",
       ]);
-      expect(rules.map((r) => r.sourceGuid).sort()).toEqual([
+      expect(properties.length).toBe(6);
+
+      expect(properties.map((r) => r.sourceGuid).sort()).toEqual([
         "src_magic_table_source",
         "src_magic_table_source",
         "src_magic_table_source",
@@ -189,7 +189,7 @@ describe("modules/codeConfig/syncTable", () => {
         "src_magic_table_source",
         "src_magic_table_source",
       ]);
-      expect(rules.map((r) => r.state).sort()).toEqual([
+      expect(properties.map((r) => r.state).sort()).toEqual([
         "ready",
         "ready",
         "ready",
@@ -197,7 +197,7 @@ describe("modules/codeConfig/syncTable", () => {
         "ready",
         "ready",
       ]);
-      expect(rules.map((r) => r.locked).sort()).toEqual([
+      expect(properties.map((r) => r.locked).sort()).toEqual([
         "config:code",
         "config:code",
         "config:code",
@@ -206,8 +206,42 @@ describe("modules/codeConfig/syncTable", () => {
         "config:code",
       ]);
 
-      // TODO: check column mappings
-      // TODO: check types and unique, etc
+      let property: Property;
+      property = properties.find((r) => r.key === "email");
+      expect(property.type).toBe("email");
+      expect(property.guid).toBe("rul_email_custom");
+      expect(property.unique).toBe(true);
+      expect(property.identifying).toBe(false);
+
+      property = properties.find((r) => r.key === "magic_table_user_id");
+      expect(property.type).toBe("integer");
+      expect(property.guid).toBe("rul_magic_table_property_user_id");
+      expect(property.unique).toBe(true);
+      expect(property.identifying).toBe(true);
+
+      property = properties.find((r) => r.key === "magic_table_decimal_col");
+      expect(property.type).toBe("float");
+      expect(property.guid).toBe("rul_magic_table_property_decimal_col");
+      expect(property.unique).toBe(false);
+      expect(property.identifying).toBe(false);
+
+      property = properties.find((r) => r.key === "magic_table_fname");
+      expect(property.type).toBe("string");
+      expect(property.guid).toBe("rul_magic_table_property_fname");
+      expect(property.unique).toBe(false);
+      expect(property.identifying).toBe(false);
+
+      property = properties.find((r) => r.key === "magic_table_membership");
+      expect(property.type).toBe("integer");
+      expect(property.guid).toBe("rul_magic_table_membership");
+      expect(property.unique).toBe(false);
+      expect(property.identifying).toBe(false);
+
+      property = properties.find((r) => r.key === "magic_table_timestamp_col");
+      expect(property.type).toBe("date");
+      expect(property.guid).toBe("rul_magic_table_property_timestamp_col");
+      expect(property.unique).toBe(false);
+      expect(property.identifying).toBe(false);
     });
 
     test("group is created", async () => {
@@ -217,6 +251,7 @@ describe("modules/codeConfig/syncTable", () => {
       expect(groups[0].name).toBe("Sync to Mailchimp");
       expect(groups[0].type).toBe("calculated");
       expect(groups[0].locked).toBe("config:code");
+
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
         {
@@ -240,7 +275,8 @@ describe("modules/codeConfig/syncTable", () => {
       expect(destinations[0].name).toBe("Sync to Mailchimp Destination");
       expect(destinations[0].state).toBe("ready");
       expect(destinations[0].locked).toBe("config:code");
-      // TODO: type
+      expect(destinations[0].type).toBe("mailchimp-export");
+
       let options = await destinations[0].getOptions();
       expect(options.listId).toBeTruthy();
       expect(Object.keys(options).length).toBe(1);
