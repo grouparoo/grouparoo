@@ -1,4 +1,4 @@
-import * as path from "path";
+import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
@@ -41,9 +41,9 @@ describe("iterable/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client);
-    const text = fields.find((f) => f.key === "phoneNumber");
-    expect(text.type).toBe("string");
-    expect(text.important).toBe(true);
+    const phoneNumber = fields.find((f) => f.key === "phoneNumber");
+    expect(phoneNumber.type).toBe("string");
+    expect(phoneNumber.important).toBe(true);
     const decimal = fields.find((f) => f.key === "userId");
     expect(decimal.type).toBe("string");
     expect(decimal.important).toBe(true);
@@ -58,7 +58,7 @@ describe("iterable/destinationMappingOptions", () => {
 
     const requiredFieldEmail = required.find((f) => f.key === "email");
     expect(requiredFieldEmail.key).toBe("email");
-    expect(requiredFieldEmail.type).toBe("string");
+    expect(requiredFieldEmail.type).toBe("email");
 
     const knownFieldUserId = known.find((f) => f.key === "userId");
     expect(knownFieldUserId.type).toBe("string");

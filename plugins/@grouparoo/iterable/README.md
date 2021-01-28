@@ -2,4 +2,4 @@
 
 ## Attribution
 
-The Iterable icon used in this plugin is from http://getlogo.net/iterable-inc-logo-vector-svg
+The Iterable icon used in this plugin is from https://assets.iterable.com/assets/images/logos/updated/primary_vertical.png

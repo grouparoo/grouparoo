@@ -1,6 +1,6 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 import * as dotenv from "dotenv";
-import * as path from "path";
+import path from "path";
 import * as fs from "fs-extra";
 
 const dirPath = path.resolve(path.join(__dirname, ".."));

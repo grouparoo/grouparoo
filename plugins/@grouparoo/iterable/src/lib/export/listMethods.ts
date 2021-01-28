@@ -1,123 +1,85 @@
 import { objectCache } from "@grouparoo/core";
-import Axios from "axios";
 
-async function getLists(appGuid, appOptions, update = false) {
+async function getLists(client, appGuid, appOptions, update = false) {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getLists", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
     async () => {
-      return fetchLists(appOptions);
+      return client.lists.get();
     }
   );
 }
 
-// gets called if the lists are not cached
-async function fetchLists(appOptions) {
-  // TODO: This is not paginated, it will need to be
-  // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
-  const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${appOptions.hapikey}&count=999`;
-
-  const { data } = await Axios({
-    method: "GET",
-    url,
-    headers: { "Content-Type": "application/json" },
-  });
-  return data.lists;
-}
-
-async function getListId(appGuid, appOptions, groupName): Promise<string> {
+async function getListId(
+  client,
+  appGuid,
+  appOptions,
+  groupName
+): Promise<string> {
   groupName = (groupName || "").toString().trim();
   if (groupName.length === 0) {
-    return `Hubspot empty groupName`;
+    return `Iterable empty groupName`;
   }
-
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", groupName, appOptions];
   return objectCache(
     { objectGuid: appGuid, cacheKey, cacheDurationMs },
     async () => {
-      return ensureList(appGuid, appOptions, groupName);
+      return ensureList(client, appGuid, appOptions, groupName);
     }
   );
 }
 
-function filterLists(hubspotLists, groupName) {
-  hubspotLists = hubspotLists || [];
-  const matchingList = hubspotLists.filter(
-    (list) => list.name === groupName
-  )[0];
+// gets called if the list if is not cached
+async function ensureList(
+  client,
+  appGuid,
+  appOptions,
+  groupName
+): Promise<string> {
+  let allLists, listId;
+
+  // see if it's already there
+  let listsResponse = await getLists(client, appGuid, appOptions);
+  allLists = listsResponse.lists;
+  listId = filterLists(allLists, groupName);
+  if (listId) {
+    return listId;
+  }
+  // maybe it's just not cached yet
+  listsResponse = await getLists(client, appGuid, appOptions, true);
+  allLists = listsResponse.lists;
+  listId = filterLists(allLists, groupName);
+  if (listId) {
+    return listId;
+  }
+  const response = await client.lists.create({ name: groupName });
+  return response.listId;
+}
+
+function filterLists(allLists, groupName) {
+  allLists = allLists || [];
+  const matchingList = allLists.filter((list) => list.name === groupName)[0];
   if (matchingList) {
-    return matchingList.listId;
+    return matchingList.id;
   }
   return null;
 }
 
-// gets called if the list if is not cached
-async function ensureList(appGuid, appOptions, groupName): Promise<string> {
-  let hubspotLists, listId;
-
-  // see if it's already there
-  hubspotLists = await getLists(appGuid, appOptions);
-  listId = filterLists(hubspotLists, groupName);
-  if (listId) {
-    return listId;
-  }
-
-  // maybe it's just not cached yet
-  hubspotLists = await getLists(appGuid, appOptions, true);
-  listId = filterLists(hubspotLists, groupName);
-  if (listId) {
-    return listId;
-  }
-
-  // need to create it
-  const url = `https://api.hubapi.com/contacts/v1/lists?hapikey=${appOptions.hapikey}`;
-  const response = await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      name: groupName,
-    },
-  });
-
-  return response.data.listId;
+export async function addToList(client, appGuid, appOptions, email, groupName) {
+  const listId = await getListId(client, appGuid, appOptions, groupName);
+  await client.lists.subscribe({ listId, subscribers: [{ email }] });
 }
 
-export async function addToList(appGuid, appOptions, email, groupName) {
-  const listId = await getListId(appGuid, appOptions, groupName);
-  const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/add?hapikey=${appOptions.hapikey}`;
-
-  try {
-    await Axios({
-      method: "POST",
-      url,
-      headers: { "Content-Type": "application/json" },
-      data: {
-        emails: [email],
-      },
-    });
-  } catch (error) {
-    if (error?.response?.data?.errorType === "LIST_EXISTS") {
-      // ok
-    } else {
-      throw error;
-    }
-  }
-}
-
-export async function removeFromList(appGuid, appOptions, email, groupName) {
-  const listId = await getListId(appGuid, appOptions, groupName);
-  const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/remove?hapikey=${appOptions.hapikey}`;
-
-  await Axios({
-    method: "POST",
-    url,
-    headers: { "Content-Type": "application/json" },
-    data: {
-      emails: [email],
-    },
-  });
+export async function removeFromList(
+  client,
+  appGuid,
+  appOptions,
+  email,
+  groupName
+) {
+  const listId = await getListId(client, appGuid, appOptions, groupName);
+  await client.lists.unsubscribe({ listId, subscribers: [{ email }] });
 }

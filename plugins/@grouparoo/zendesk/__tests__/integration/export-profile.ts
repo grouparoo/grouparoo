@@ -1,10 +1,10 @@
-import * as path from "path";
+import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import {
   exportProfile,
-  searchForUser
+  searchForUser,
 } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
@@ -75,12 +75,12 @@ async function deleteUsers(suppressErrors) {
 }
 
 async function runExport({
-                           oldProfileProperties,
-                           newProfileProperties,
-                           oldGroups,
-                           newGroups,
-                           toDelete
-                         }) {
+  oldProfileProperties,
+  newProfileProperties,
+  oldGroups,
+  newGroups,
+  toDelete,
+}) {
   return exportProfile({
     appOptions,
     connection: null,
@@ -96,8 +96,8 @@ async function runExport({
       newProfileProperties,
       oldGroups,
       newGroups,
-      toDelete
-    }
+      toDelete,
+    },
   });
 }
 
@@ -120,7 +120,7 @@ describe("zendesk/exportProfile", () => {
       newProfileProperties: { email, external_id, name },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     userId = await findId();
@@ -139,11 +139,11 @@ describe("zendesk/exportProfile", () => {
         name,
         alias: "BL",
         text_field: "testing here",
-        date_field: exampleDate
+        date_field: exampleDate,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -163,7 +163,7 @@ describe("zendesk/exportProfile", () => {
         name,
         alias: "BL",
         text_field: "testing here",
-        date_field: exampleDate
+        date_field: exampleDate,
       },
       newProfileProperties: {
         email,
@@ -173,11 +173,11 @@ describe("zendesk/exportProfile", () => {
         unknown_junk: "ok", // make sure it doesn't hurt anything
         text_field: "testing here change",
         checkbox_field: true,
-        date_field: null
+        date_field: null,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -199,16 +199,16 @@ describe("zendesk/exportProfile", () => {
         name: "Evan",
         alias: "BL",
         text_field: "testing here change",
-        checkbox_field: true
+        checkbox_field: true,
       },
       newProfileProperties: {
         email,
         external_id,
-        name: ""
+        name: "",
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -223,15 +223,15 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       newProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       oldGroups: [],
       newGroups: ["Test Group X", "another"],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -242,15 +242,15 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       newProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       oldGroups: ["Test Group X", "another"],
       newGroups: ["Test Group X"],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -260,28 +260,28 @@ describe("zendesk/exportProfile", () => {
   test("it does not change zendesk-created tags", async () => {
     await client.users.update(userId, {
       user: {
-        tags: ["test_group_x", "outside_grouparoo"]
-      }
+        tags: ["test_group_x", "outside_grouparoo"],
+      },
     });
     await runExport({
       oldProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       newProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       oldGroups: ["Test Group X"],
       newGroups: ["Test Group X", "New_one"],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
     expect(user.tags.sort()).toEqual([
       "new_one",
       "outside_grouparoo",
-      "test_group_x"
+      "test_group_x",
     ]);
   });
 
@@ -289,15 +289,15 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       newProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       oldGroups: ["Test Group X", "New_one"],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -308,15 +308,15 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email,
-        external_id
+        external_id,
       },
       newProfileProperties: {
         email: "NewOne@bleonard.com",
-        external_id
+        external_id,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -335,9 +335,9 @@ describe("zendesk/exportProfile", () => {
         email: migratedEmail,
         user_fields: {
           text_field: "my text",
-          checkbox_field: true
-        }
-      }
+          checkbox_field: true,
+        },
+      },
     });
 
     // then sync a profile
@@ -347,11 +347,11 @@ describe("zendesk/exportProfile", () => {
         email: migratedEmail,
         name: migratedName,
         external_id: migratedExternalId,
-        text_field: "change"
+        text_field: "change",
       },
       oldGroups: [],
       newGroups: ["something"],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await client.users.show(created.id);
@@ -368,15 +368,15 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {
         email: "NewOne@bleonard.com",
-        external_id
+        external_id,
       },
       newProfileProperties: {
         external_id: newExternalId,
-        email
+        email,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const user = await getUser();
@@ -389,11 +389,11 @@ describe("zendesk/exportProfile", () => {
     await runExport({
       oldProfileProperties: {},
       newProfileProperties: {
-        external_id
+        external_id,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     newId = await findId();
@@ -417,11 +417,11 @@ describe("zendesk/exportProfile", () => {
       oldProfileProperties: { external_id },
       newProfileProperties: {
         external_id,
-        email: "added@bleonard.com"
+        email: "added@bleonard.com",
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
 
     const newUser = await getNewUser();
@@ -436,7 +436,7 @@ describe("zendesk/exportProfile", () => {
       newProfileProperties: { external_id },
       oldGroups: [],
       newGroups: [],
-      toDelete: true
+      toDelete: true,
     });
 
     expect(await findId()).toBeNull();

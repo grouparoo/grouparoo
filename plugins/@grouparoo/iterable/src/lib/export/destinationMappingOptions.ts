@@ -34,7 +34,7 @@ export const getRequiredFields = (): Array<{
   key: string;
   type: DestinationMappingOptionsResponseTypes;
 }> => {
-  return [{ key: "email", type: "string" }];
+  return [{ key: "email", type: "email" }];
 };
 
 const mapTypesFromIterableToGrouparoo = (iterableType) => {
@@ -45,10 +45,10 @@ const mapTypesFromIterableToGrouparoo = (iterableType) => {
     boolean: "boolean",
   };
   const grouparooType = map[iterableType];
-  if (!grouparooType) {
-    throw `Unknown iterable type: ${iterableType}`;
+  if (grouparooType) {
+    return grouparooType;
   }
-  return grouparooType;
+  return null;
 };
 
 export const getUserFields = async (
@@ -68,7 +68,9 @@ export const getUserFields = async (
       const type: DestinationMappingOptionsResponseTypes = mapTypesFromIterableToGrouparoo(
         value
       );
-      out.push({ key, type, important: true });
+      if (type) {
+        out.push({ key, type, important: true });
+      }
     }
   }
   return out;

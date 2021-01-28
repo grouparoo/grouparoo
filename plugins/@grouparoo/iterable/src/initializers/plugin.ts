@@ -24,7 +24,7 @@ export class Plugins extends Initializer {
   async initialize() {
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/iterable/iterable.svg",
+      icon: "/public/@grouparoo/iterable/iterable.png",
       templates: [
         new AppTemplate("iterable", [
           path.join(templateRoot, "app", "*.template"),
