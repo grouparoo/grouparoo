@@ -30,6 +30,8 @@ const _string_ops = [
   { op: "substring", description: "includes the string" },
 ];
 
+console.log(`--- ${config.sequelize.dialect} ---`);
+
 if (config.sequelize.dialect === "postgres") {
   _string_ops.push({ op: "iLike", description: "is like (case insensitive)" });
   _string_ops.push({

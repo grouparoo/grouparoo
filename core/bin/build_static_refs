@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const actionhero = require("actionhero");
+
+// const fs = require('fs')
+// const path = require('path')
+
+// const filePaths =
+
+actionhero.config.sequelize.dialect = "postgres";
+let {
+  PropertyOpsDictionary: pgOps,
+} = require("../dist/modules/ruleOpsDictionary");
+// console.log(pgOps);
+
+// console.log("....");
+
+actionhero.config.sequelize.dialect = "sqlite";
+// console.log(actionhero.config.sequelize);
+let {
+  PropertyOpsDictionary: sqliteOps,
+} = require("../dist/modules/ruleOpsDictionary");
+// console.log(sqliteOps);
