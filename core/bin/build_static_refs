@@ -1,23 +1,28 @@
 #!/usr/bin/env node
 
-const actionhero = require("actionhero");
+const fs = require("fs");
+const path = require("path");
 
-// const fs = require('fs')
-// const path = require('path')
-
-// const filePaths =
-
-actionhero.config.sequelize.dialect = "postgres";
-let {
-  PropertyOpsDictionary: pgOps,
+const {
+  buildPropertyOpsDictionary,
 } = require("../dist/modules/ruleOpsDictionary");
-// console.log(pgOps);
 
-// console.log("....");
+const data = [
+  {
+    name: "property-ops-dictionary--postgres",
+    data: buildPropertyOpsDictionary({
+      sequelize: { dialect: "postgres" },
+    }),
+  },
+  {
+    name: "property-ops-dictionary--sqlite",
+    data: buildPropertyOpsDictionary({
+      sequelize: { dialect: "sqlite" },
+    }),
+  },
+];
 
-actionhero.config.sequelize.dialect = "sqlite";
-// console.log(actionhero.config.sequelize);
-let {
-  PropertyOpsDictionary: sqliteOps,
-} = require("../dist/modules/ruleOpsDictionary");
-// console.log(sqliteOps);
+data.map(({ name, data }) => {
+  const filePath = path.join(__dirname, `../${name}.json`);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+});
