@@ -1,14 +1,14 @@
-import ImportTabs from "../../../components/tabs/import";
+import ImportTabs from "@grouparoo/ui-components/components/tabs/import";
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Table, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
-import { Models } from "../../../utils/apiData";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 import {
   ImportProfilePropertiesDiff,
   ImportGroupsDiff,
-} from "../../../components/import/diff";
+} from "@grouparoo/ui-components/components/import/diff";
 
 export default function Page(props) {
   const {

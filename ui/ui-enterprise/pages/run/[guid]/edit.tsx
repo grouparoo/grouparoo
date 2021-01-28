@@ -1,13 +1,13 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Row, Col, Badge, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import Link from "next/link";
 import { ResponsiveLine } from "@nivo/line";
-import RunTabs from "../../../components/tabs/run";
+import RunTabs from "@grouparoo/ui-components/components/tabs/run";
 import Head from "next/head";
-import LoadingButton from "../../../components/loadingButton";
-import { Models, Actions } from "../../../utils/apiData";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { quantizedTimeline, successHandler, errorHandler } = props;

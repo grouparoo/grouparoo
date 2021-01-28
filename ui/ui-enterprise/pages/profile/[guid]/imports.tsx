@@ -1,8 +1,8 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
-import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
-import ProfileTabs from "../../../components/tabs/profile";
-import ImportList from "../../../components/import/list";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import getProfileDisplayName from "@grouparoo/ui-components/components/profile/getProfileDisplayName";
+import ProfileTabs from "@grouparoo/ui-components/components/tabs/profile";
+import ImportList from "@grouparoo/ui-components/components/import/list";
 
 export default function Page(props) {
   const { profile } = props;

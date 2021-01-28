@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { useState, Fragment } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
-import AppIcon from "../../../components/appIcon";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import AppIcon from "@grouparoo/ui-components/components/appIcon";
 import { useRouter } from "next/router";
-import { humanizePluginName } from "../../../utils/humanizePluginName";
-import { Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
+import { humanizePluginName } from "@grouparoo/ui-components/utils/humanizePluginName";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
 export default function Page(props) {
   const {

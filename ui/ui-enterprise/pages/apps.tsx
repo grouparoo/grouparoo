@@ -1,18 +1,21 @@
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import {
+  useOffset,
+  updateURLParams,
+} from "@grouparoo/ui-components/hooks/URLParams";
+import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Moment from "react-moment";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import AppIcon from "../components/appIcon";
-import StateBadge from "../components/badges/stateBadge";
+import Pagination from "@grouparoo/ui-components/components/pagination";
+import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
+import AppIcon from "@grouparoo/ui-components/components/appIcon";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 import { Button } from "react-bootstrap";
 
-import { Models, Actions } from "../utils/apiData";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;

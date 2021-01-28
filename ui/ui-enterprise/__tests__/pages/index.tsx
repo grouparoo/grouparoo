@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import Page from "../../pages/index";
-import commonProps from "../utils/commonProps";
+import commonProps from "@grouparoo/ui-components/utils/commonProps";
 
 describe("pages/index", () => {
   let wrapper;

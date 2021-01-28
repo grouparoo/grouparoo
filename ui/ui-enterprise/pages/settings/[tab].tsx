@@ -1,16 +1,15 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Tabs, Tab } from "react-bootstrap";
-import { capitalize } from "../../components/tabs";
+import { capitalize } from "@grouparoo/ui-components/components/tabs";
 import { useRouter } from "next/router";
-import { Models, Actions } from "../../utils/apiData";
-import SettingCard from "../../components/settings/settingCard";
-
-import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
-import IdentifyingProperty from "../../components/settings/identifyingProperty";
-import ResetCluster from "../../components/settings/resetCluster";
-import ClearCache from "../../components/settings/clearCache";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import SettingCard from "@grouparoo/ui-components/components/settings/settingCard";
+import ImportAndUpdateAllProfiles from "@grouparoo/ui-components/components/settings/importAndUpdate";
+import IdentifyingProperty from "@grouparoo/ui-components/components/settings/identifyingProperty";
+import ResetCluster from "@grouparoo/ui-components/components/settings/resetCluster";
+import ClearCache from "@grouparoo/ui-components/components/settings/clearCache";
 
 export default function Page(props) {
   const { errorHandler, successHandler, tab } = props;

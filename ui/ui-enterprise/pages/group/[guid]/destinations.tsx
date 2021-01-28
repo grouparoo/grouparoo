@@ -1,15 +1,15 @@
-import { useApi } from "../../../hooks/useApi";
-import { useOffset } from "../../../hooks/URLParams";
-import { useSecondaryEffect } from "../../../hooks/useSecondaryEffect";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { useOffset } from "@grouparoo/ui-components/hooks/URLParams";
+import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
 import { useState } from "react";
 import Link from "next/link";
 import Moment from "react-moment";
-import LoadingTable from "../../../components/loadingTable";
-import AppIcon from "../../../components/appIcon";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
+import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
+import AppIcon from "@grouparoo/ui-components/components/appIcon";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
 export default function Page(props) {
   const {

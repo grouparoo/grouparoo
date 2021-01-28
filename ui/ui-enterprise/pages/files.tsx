@@ -3,15 +3,21 @@ import { Button, Image } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
-import { useOffset, updateURLParams } from "../hooks/URLParams";
-import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import {
+  useOffset,
+  updateURLParams,
+} from "@grouparoo/ui-components/hooks/URLParams";
+import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Moment from "react-moment";
-import Pagination from "../components/pagination";
-import LoadingTable from "../components/loadingTable";
-import LoadingButton from "../components/loadingButton";
-import { Models, Actions } from "../utils/apiData";
-import { FilePreview, downloadFile } from "../components/filePreview";
+import Pagination from "@grouparoo/ui-components/components/pagination";
+import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import {
+  FilePreview,
+  downloadFile,
+} from "@grouparoo/ui-components/components/filePreview";
 
 const apiVersion = process.env.API_VERSION || "v1";
 

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
-import LoadingButton from "../../../components/loadingButton";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
-import { Models, Actions } from "../../../utils/apiData";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, groupHandler } = props;

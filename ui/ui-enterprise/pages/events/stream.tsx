@@ -1,5 +1,5 @@
 import Head from "next/head";
-import EventsList from "../../components/events/list";
+import EventsList from "@grouparoo/ui-components/components/events/list";
 import { Alert } from "react-bootstrap";
 import Link from "next/link";
 

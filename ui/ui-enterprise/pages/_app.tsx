@@ -1,28 +1,31 @@
 import App from "next/app";
-import { useApi } from "../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 
-import "../scss/grouparoo.scss";
-import Injection from "../components/componentInjection";
-import Layout from "../components/layouts/main";
-import "../components/icons";
+import "@grouparoo/ui-components/scss/grouparoo.scss";
+import Injection from "@grouparoo/ui-components/components/componentInjection";
+import Layout from "@grouparoo/ui-components/components/layouts/main";
+import "@grouparoo/ui-components/components/icons";
+
 import { AxiosError } from "axios";
 
-import { ErrorHandler } from "../utils/errorHandler";
-import { SuccessHandler } from "../utils/successHandler";
-import { AppHandler } from "../utils/appHandler";
-import { DestinationHandler } from "../utils/destinationHandler";
-import { FileHandler } from "../utils/fileHandler";
-import { GroupHandler } from "../utils/groupHandler";
-import { ProfileHandler } from "../utils/profileHandler";
-import { PropertiesHandler } from "../utils/propertiesHandler";
-import { RunsHandler } from "../utils/runsHandler";
-import { ScheduleHandler } from "../utils/scheduleHandler";
-import { SessionHandler } from "../utils/sessionHandler";
-import { SetupStepHandler } from "../utils/setupStepsHandler";
-import { SourceHandler } from "../utils/sourceHandler";
-import { TeamHandler } from "../utils/teamHandler";
-import { TeamMemberHandler } from "../utils/teamMembersHandler";
-import { UploadHandler } from "../utils/uploadHandler";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
+
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { AppHandler } from "@grouparoo/ui-components/utils/appHandler";
+import { DestinationHandler } from "@grouparoo/ui-components/utils/destinationHandler";
+import { FileHandler } from "@grouparoo/ui-components/utils/fileHandler";
+import { GroupHandler } from "@grouparoo/ui-components/utils/groupHandler";
+import { ProfileHandler } from "@grouparoo/ui-components/utils/profileHandler";
+import { PropertiesHandler } from "@grouparoo/ui-components/utils/propertiesHandler";
+import { RunsHandler } from "@grouparoo/ui-components/utils/runsHandler";
+import { ScheduleHandler } from "@grouparoo/ui-components/utils/scheduleHandler";
+import { SessionHandler } from "@grouparoo/ui-components/utils/sessionHandler";
+import { SetupStepHandler } from "@grouparoo/ui-components/utils/setupStepsHandler";
+import { SourceHandler } from "@grouparoo/ui-components/utils/sourceHandler";
+import { TeamHandler } from "@grouparoo/ui-components/utils/teamHandler";
+import { TeamMemberHandler } from "@grouparoo/ui-components/utils/teamMembersHandler";
+import { UploadHandler } from "@grouparoo/ui-components/utils/uploadHandler";
 
 const successHandler = new SuccessHandler();
 const errorHandler = new ErrorHandler();
@@ -40,8 +43,6 @@ const sourceHandler = new SourceHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
 const uploadHandler = new UploadHandler();
-
-import { Actions } from "../utils/apiData";
 
 export default function GrouparooWebApp(props) {
   const { Component, pageProps, err, hydrationError } = props;

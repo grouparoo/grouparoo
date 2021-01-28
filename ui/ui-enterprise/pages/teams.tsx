@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useApi } from "../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import Link from "next/link";
 import { Form } from "react-bootstrap";
-import LoadingTable from "../components/loadingTable";
+import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
 import Moment from "react-moment";
-import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
-import { Models } from "../utils/apiData";
+import ProfileImageFromEmail from "@grouparoo/ui-components/components/visualizations/profileImageFromEmail";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page({
   teams,

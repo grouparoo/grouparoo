@@ -1,14 +1,17 @@
-import FileTabs from "../../../components/tabs/file";
+import FileTabs from "@grouparoo/ui-components/components/tabs/file";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Button, Image } from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { FilePreview, downloadFile } from "../../../components/filePreview";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import {
+  FilePreview,
+  downloadFile,
+} from "@grouparoo/ui-components/components/filePreview";
 
 export default function Page(props) {
   const {

@@ -1,8 +1,8 @@
-import Loader from "../../components/loader";
+import Loader from "@grouparoo/ui-components/components/loader";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useApi } from "../../hooks/useApi";
-import { Actions } from "../../utils/apiData";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 const guidPrefixes = {
   api: "/apiKey/[guid]/edit",

@@ -1,5 +1,4 @@
 import Axios, { AxiosRequestConfig, Method } from "axios";
-import Router from "next/router";
 import { isBrowser } from "../utils/isBrowser";
 import PackageJSON from "../package.json";
 
@@ -76,12 +75,7 @@ export class Client {
   checkForLoggedIn({ code }, req?, res?) {
     if (code === "AUTHENTICATION_ERROR") {
       if (isBrowser()) {
-        Router.push({
-          pathname: "/session/sign-in",
-          query: {
-            nextPage: window.location.pathname,
-          },
-        });
+        window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
       } else {
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];

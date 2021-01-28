@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Form } from "react-bootstrap";
-import AppSelectorList from "../../../components/appSelectorList";
+import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Actions } from "../../../utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {

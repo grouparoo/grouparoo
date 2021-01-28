@@ -1,5 +1,5 @@
 import Head from "next/head";
-import RunsList from "../components/runs/list";
+import RunsList from "@grouparoo/ui-components/components/runs/list";
 
 export default function Page(props) {
   return (

@@ -1,16 +1,16 @@
 import { Fragment, useEffect, useState } from "react";
 import { Form, Table, Badge, Button } from "react-bootstrap";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
-import { useApi } from "../../../hooks/useApi";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
-import DatePicker from "../../../components/datePicker";
-import LoadingButton from "../../../components/loadingButton";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import DatePicker from "@grouparoo/ui-components/components/datePicker";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 
 export default function Page(props) {
   const {

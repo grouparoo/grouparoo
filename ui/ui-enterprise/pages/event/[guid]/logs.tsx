@@ -1,7 +1,7 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
-import LogsList from "../../../components/log/list";
-import EventTabs from "../../../components/tabs/event";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import LogsList from "@grouparoo/ui-components/components/log/list";
+import EventTabs from "@grouparoo/ui-components/components/tabs/event";
 
 export default function Page(props) {
   const { event } = props;

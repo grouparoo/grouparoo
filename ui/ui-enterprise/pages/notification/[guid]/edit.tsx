@@ -1,9 +1,9 @@
-import NotificationTabs from "../../../components/tabs/notification";
+import NotificationTabs from "@grouparoo/ui-components/components/tabs/notification";
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Button } from "react-bootstrap";
 import Moment from "react-moment";
-import { Models } from "../../../utils/apiData";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 import ReactMarkdown from "react-markdown/with-html";
 
 export default function Page(props) {

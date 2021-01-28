@@ -1,13 +1,13 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import Head from "next/head";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import StateBadge from "../../../components/badges/stateBadge";
-import GroupTabs from "../../../components/tabs/group";
-import ProfilesList from "../../../components/profile/list";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { Models, Actions } from "../../../utils/apiData";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import ProfilesList from "@grouparoo/ui-components/components/profile/list";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {

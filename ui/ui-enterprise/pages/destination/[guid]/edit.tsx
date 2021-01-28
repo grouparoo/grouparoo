@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
-import DestinationTabs from "../../../components/tabs/destination";
-import LoadingButton from "../../../components/loadingButton";
-import Loader from "../../../components/loader";
-import { Models, Actions } from "../../../utils/apiData";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import DestinationTabs from "@grouparoo/ui-components/components/tabs/destination";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import Loader from "@grouparoo/ui-components/components/loader";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {

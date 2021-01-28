@@ -1,15 +1,15 @@
-import { useApi } from "../../../hooks/useApi";
-import SourceTabs from "../../../components/tabs/source";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
 import Head from "next/head";
 import { useState } from "react";
 import { Row, Col, Table, Form, Button } from "react-bootstrap";
-import { createSchedule } from "../../../components/schedule/add";
-import LoadingButton from "../../../components/loadingButton";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import { createSchedule } from "@grouparoo/ui-components/components/schedule/add";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import { useRouter } from "next/router";
-import { Actions } from "../../../utils/apiData";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {

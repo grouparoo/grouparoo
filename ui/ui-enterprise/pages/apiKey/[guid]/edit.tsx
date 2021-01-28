@@ -1,14 +1,14 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
 import { Form } from "react-bootstrap";
 import Head from "next/head";
-import PermissionsList from "../../../components/permissions";
+import PermissionsList from "@grouparoo/ui-components/components/permissions";
 import { useRouter } from "next/router";
-import ApiKeyTabs from "../../../components/tabs/apiKey";
-import LoadingButton from "../../../components/loadingButton";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import ApiKeyTabs from "@grouparoo/ui-components/components/tabs/apiKey";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 
-import { Models, Actions } from "../../../utils/apiData";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler } = props;

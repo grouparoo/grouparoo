@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { Alert, Button } from "react-bootstrap";
-import EventsTotals from "../../components/visualizations/eventsTotals";
-import EventsList from "../../components/events/list";
-import EventsTypesList from "../../components/events/types";
+import EventsTotals from "@grouparoo/ui-components/components/visualizations/eventsTotals";
+import EventsList from "@grouparoo/ui-components/components/events/list";
+import EventsTypesList from "@grouparoo/ui-components/components/events/types";
 
 export default function Page(props) {
   return (

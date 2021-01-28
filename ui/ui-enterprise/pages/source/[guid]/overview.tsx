@@ -1,17 +1,17 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import Link from "next/link";
 import Moment from "react-moment";
-import ScheduleAddButton from "../../../components/schedule/add";
-import PropertyAddButton from "../../../components/property/add";
-import SourceTabs from "../../../components/tabs/source";
+import ScheduleAddButton from "@grouparoo/ui-components/components/schedule/add";
+import PropertyAddButton from "@grouparoo/ui-components/components/property/add";
+import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
 import Head from "next/head";
-import { Models } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 
 export default function Page({
   errorHandler,

@@ -1,19 +1,19 @@
 import { useState, useEffect, Fragment } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form, Table, Badge, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Loader from "../../../components/loader";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
-import ProfilePreview from "../../../components/property/profilePreview";
+import Loader from "@grouparoo/ui-components/components/loader";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import ProfilePreview from "@grouparoo/ui-components/components/property/profilePreview";
 import { Typeahead } from "react-bootstrap-typeahead";
-import DatePicker from "../../../components/datePicker";
-import LoadingButton from "../../../components/loadingButton";
+import DatePicker from "@grouparoo/ui-components/components/datePicker";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import Head from "next/head";
-import PropertyTabs from "../../../components/tabs/property";
-import { Models, Actions } from "../../../utils/apiData";
+import PropertyTabs from "@grouparoo/ui-components/components/tabs/property";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const {

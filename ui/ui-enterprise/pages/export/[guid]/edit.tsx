@@ -1,14 +1,14 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Table, Badge, Alert } from "react-bootstrap";
 import Link from "next/link";
 import Head from "next/head";
 import Moment from "react-moment";
-import ExportTabs from "../../../components/tabs/export";
-import { Models } from "../../../utils/apiData";
+import ExportTabs from "@grouparoo/ui-components/components/tabs/export";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 import {
   ExportGroupsDiff,
   ExportProfilePropertiesDiff,
-} from "../../../components/export/diff";
+} from "@grouparoo/ui-components/components/export/diff";
 
 export default function Page({
   _export,

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
-import LoadingButton from "../../components/loadingButton";
+import ResqueTabs from "@grouparoo/ui-components/components/tabs/resque";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
 export default function ResqueWorkersList(props) {
   const { errorHandler, successHandler } = props;

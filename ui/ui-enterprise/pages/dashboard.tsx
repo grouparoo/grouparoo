@@ -7,8 +7,8 @@ import {
   ScheduleRuns,
   PendingImports,
   PendingExports,
-} from "../components/visualizations/homepageWidgets";
-import { useApi } from "../hooks/useApi";
+} from "@grouparoo/ui-components/components/visualizations/homepageWidgets";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 
 export default function Page(props) {
   const { errorHandler } = props;

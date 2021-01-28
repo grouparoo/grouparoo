@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
-import SetStepCard from "../../../components/setupSteps/setupStepCard";
-import { SetupStepAPIData } from "../../../utils/apiData";
+import SetStepCard from "@grouparoo/ui-components/components/setupSteps/setupStepCard";
+import { SetupStepAPIData } from "@grouparoo/ui-components/utils/apiData";
 
 describe("<setupStepCard />", () => {
   let component;

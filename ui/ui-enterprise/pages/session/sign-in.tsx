@@ -1,7 +1,7 @@
 import { Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import { useApi } from "../../hooks/useApi";
-import SignIn from "../../components/session/signIn";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import SignIn from "@grouparoo/ui-components/components/session/signIn";
 
 export default function SignInPage(props) {
   return (

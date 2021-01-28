@@ -1,6 +1,6 @@
-import { ErrorHandler } from "../../utils/errorHandler";
-import { SuccessHandler } from "../../utils/successHandler";
-import { SessionHandler } from "../../utils/sessionHandler";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { SessionHandler } from "@grouparoo/ui-components/utils/sessionHandler";
 
 const commonProps = {
   errorHandler: new ErrorHandler(),

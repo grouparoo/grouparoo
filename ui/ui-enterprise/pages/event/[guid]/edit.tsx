@@ -1,11 +1,11 @@
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Table, Badge } from "react-bootstrap";
 import Link from "next/link";
 import Head from "next/head";
 import Moment from "react-moment";
-import EventTabs from "../../../components/tabs/event";
+import EventTabs from "@grouparoo/ui-components/components/tabs/event";
 
-import { Models } from "../../../utils/apiData";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page({ event }: { event: Models.EventType }) {
   return (

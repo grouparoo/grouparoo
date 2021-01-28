@@ -1,5 +1,5 @@
 import Head from "next/head";
-import SignOutForm from "../../components/session/signOut";
+import SignOutForm from "@grouparoo/ui-components/components/session/signOut";
 
 export default function SignOutPage(props) {
   return (

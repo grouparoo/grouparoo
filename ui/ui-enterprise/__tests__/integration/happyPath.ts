@@ -2,7 +2,7 @@
  * @jest-environment jest-environment-webdriver
  */
 
-import * as helper from "../utils/specHelper";
+import * as helper from "@grouparoo/ui-components/utils/specHelper";
 let url;
 
 declare var browser: any;

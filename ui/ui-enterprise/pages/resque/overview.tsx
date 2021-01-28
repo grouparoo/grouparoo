@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Card } from "react-bootstrap";
-import RollingChart from "../../components/visualizations/rollingChart";
+import RollingChart from "@grouparoo/ui-components/components/visualizations/rollingChart";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
+import ResqueTabs from "@grouparoo/ui-components/components/tabs/resque";
 
 const refreshInterval = 1000 * 2;
 const maxSampleLength = 20;

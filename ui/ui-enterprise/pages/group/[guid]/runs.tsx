@@ -1,7 +1,7 @@
 import Head from "next/head";
-import RunsList from "../../../components/runs/list";
-import { useApi } from "../../../hooks/useApi";
-import GroupTabs from "../../../components/tabs/group";
+import RunsList from "@grouparoo/ui-components/components/runs/list";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
 
 export default function Page(props) {
   const { group } = props;

@@ -1,10 +1,10 @@
 import Head from "next/head";
-import { useApi } from "../../../hooks/useApi";
-import ExportsList from "../../../components/export/list";
-import DestinationTabs from "../../../components/tabs/destination";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import ExportsList from "@grouparoo/ui-components/components/export/list";
+import DestinationTabs from "@grouparoo/ui-components/components/tabs/destination";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 
 export default function Page(props) {
   const { destination } = props;

@@ -1,12 +1,15 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
-import { useOffset, updateURLParams } from "../../hooks/URLParams";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import {
+  useOffset,
+  updateURLParams,
+} from "@grouparoo/ui-components/hooks/URLParams";
 import { Table, Row, Col } from "react-bootstrap";
-import Pagination from "../../components/pagination";
+import Pagination from "@grouparoo/ui-components/components/pagination";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
-import LoadingButton from "../../components/loadingButton";
+import ResqueTabs from "@grouparoo/ui-components/components/tabs/resque";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
 export default function ResqueLocksList(props) {
   const { errorHandler, successHandler } = props;

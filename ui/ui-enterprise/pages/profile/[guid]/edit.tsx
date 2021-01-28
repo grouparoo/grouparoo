@@ -1,21 +1,21 @@
 import Head from "next/head";
 import Link from "next/link";
-import ProfileTabs from "../../../components/tabs/profile";
+import ProfileTabs from "@grouparoo/ui-components/components/tabs/profile";
 import { useState, useEffect } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form, ListGroup } from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { useRouter } from "next/router";
-import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
+import ProfileImageFromEmail from "@grouparoo/ui-components/components/visualizations/profileImageFromEmail";
 import Moment from "react-moment";
-import LoadingTable from "../../../components/loadingTable";
-import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
-import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { ProfileHandler } from "../../../utils/profileHandler";
-import StateBadge from "../../../components/badges/stateBadge";
+import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
+import getProfileDisplayName from "@grouparoo/ui-components/components/profile/getProfileDisplayName";
+import ArrayProfilePropertyList from "@grouparoo/ui-components/components/profile/arrayProfilePropertyList";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { ProfileHandler } from "@grouparoo/ui-components/utils/profileHandler";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
 
 export default function Page(props) {
   const {

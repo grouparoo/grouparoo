@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Table, Row, Col } from "react-bootstrap";
 import Head from "next/head";
-import ResqueTabs from "../../components/tabs/resque";
+import ResqueTabs from "@grouparoo/ui-components/components/tabs/resque";
 
 export default function ResqueRedis(props) {
   const { errorHandler } = props;

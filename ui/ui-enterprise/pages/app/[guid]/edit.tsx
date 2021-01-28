@@ -1,22 +1,22 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form, Badge, Alert } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useRouter } from "next/router";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import SourceBadge from "../../../components/badges/sourceBadge";
-import DestinationBadge from "../../../components/badges/destinationBadge";
-import AppTabs from "../../../components/tabs/app";
-import Loader from "../../../components/loader";
-import LoadingButton from "../../../components/loadingButton";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import SourceBadge from "@grouparoo/ui-components/components/badges/sourceBadge";
+import DestinationBadge from "@grouparoo/ui-components/components/badges/destinationBadge";
+import AppTabs from "@grouparoo/ui-components/components/tabs/app";
+import Loader from "@grouparoo/ui-components/components/loader";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 
-import { Actions, Models } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
-import { AppHandler } from "../../../utils/appHandler";
+import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
+import { AppHandler } from "@grouparoo/ui-components/utils/appHandler";
 
 export default function Page(props) {
   const {

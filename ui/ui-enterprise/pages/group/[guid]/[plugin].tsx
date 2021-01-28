@@ -1,6 +1,6 @@
 import Head from "next/head";
-import GroupTabs from "../../../components/tabs/group";
-import { useApi } from "../../../hooks/useApi";
+import GroupTabs from "@grouparoo/ui-components/components/tabs/group";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 
 export default function PluginPage(props) {
   const { group, query } = props;

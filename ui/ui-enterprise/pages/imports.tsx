@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ImportList from "../components/import/list";
+import ImportList from "@grouparoo/ui-components/components/import/list";
 
 export default function Page(props) {
   return (

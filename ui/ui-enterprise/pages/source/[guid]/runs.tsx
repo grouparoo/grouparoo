@@ -1,11 +1,11 @@
 import Head from "next/head";
-import RunsList from "../../../components/runs/list";
-import { useApi } from "../../../hooks/useApi";
+import RunsList from "@grouparoo/ui-components/components/runs/list";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState } from "react";
-import SourceTabs from "../../../components/tabs/source";
-import PageHeader from "../../../components/pageHeader";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
+import SourceTabs from "@grouparoo/ui-components/components/tabs/source";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
 import { Button, Row, Col } from "react-bootstrap";
 
 export default function Page(props) {

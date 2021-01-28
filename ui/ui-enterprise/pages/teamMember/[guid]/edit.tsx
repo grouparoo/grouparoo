@@ -1,13 +1,13 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Row, Col, Form } from "react-bootstrap";
-import LoadingButton from "../../../components/loadingButton";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { useRouter } from "next/router";
 import Moment from "react-moment";
-import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
-import { Models, Actions } from "../../../utils/apiData";
-import TeamMemberTabs from "../../../components/tabs/teamMember";
+import ProfileImageFromEmail from "@grouparoo/ui-components/components/visualizations/profileImageFromEmail";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import TeamMemberTabs from "@grouparoo/ui-components/components/tabs/teamMember";
 
 export default function Page(props) {
   const { errorHandler, successHandler, teams } = props;

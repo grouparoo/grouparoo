@@ -1,18 +1,18 @@
 import { useState, useRef } from "react";
-import { useApi } from "../../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Row, Col, Form, Badge, Button, Table, Alert } from "react-bootstrap";
-import ProfilePreview from "../../../components/destination/profilePreview";
+import ProfilePreview from "@grouparoo/ui-components/components/destination/profilePreview";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import DestinationTabs from "../../../components/tabs/destination";
-import LoadingButton from "../../../components/loadingButton";
-import StateBadge from "../../../components/badges/stateBadge";
-import LockedBadge from "../../../components/badges/lockedBadge";
-import PageHeader from "../../../components/pageHeader";
-import { Models, Actions } from "../../../utils/apiData";
-import { ErrorHandler } from "../../../utils/errorHandler";
-import { SuccessHandler } from "../../../utils/successHandler";
+import DestinationTabs from "@grouparoo/ui-components/components/tabs/destination";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import LockedBadge from "@grouparoo/ui-components/components/badges/lockedBadge";
+import PageHeader from "@grouparoo/ui-components/components/pageHeader";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { SuccessHandler } from "@grouparoo/ui-components/utils/successHandler";
 
 export default function Page(props) {
   const {

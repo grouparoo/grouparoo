@@ -1,9 +1,9 @@
 import Head from "next/head";
-import { useApi } from "../hooks/useApi";
 import { useState } from "react";
-import { Models } from "../utils/apiData";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { Models } from "@grouparoo/ui-components/utils/apiData";
 import { Row, Col, ProgressBar, Alert, Button } from "react-bootstrap";
-import SetupStepCard from "../components/setupSteps/setupStepCard";
+import SetupStepCard from "@grouparoo/ui-components/components/setupSteps/setupStepCard";
 
 export default function Page(props) {
   const { errorHandler, setupStepHandler } = props;

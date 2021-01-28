@@ -1,8 +1,8 @@
 import Head from "next/head";
-import { client } from "../hooks/useApi";
+import { client } from "@grouparoo/ui-components/hooks/useApi";
 import { Table, Badge, Alert, Button } from "react-bootstrap";
-import { useApi } from "../hooks/useApi";
-import { Actions } from "../utils/apiData";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 const upgradeHelpPage =
   "https://www.grouparoo.com/docs/deployment/upgrading-grouparoo";

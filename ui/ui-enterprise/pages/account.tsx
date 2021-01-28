@@ -1,11 +1,10 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Form, Row, Col } from "react-bootstrap";
-import ProfileImageFromEmail from "../components/visualizations/profileImageFromEmail";
-import LoadingButton from "../components/loadingButton";
-
-import { Models, Actions } from "../utils/apiData";
+import ProfileImageFromEmail from "@grouparoo/ui-components/components/visualizations/profileImageFromEmail";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, successHandler, sessionHandler } = props;

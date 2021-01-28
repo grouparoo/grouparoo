@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { Form, ProgressBar } from "react-bootstrap";
 import { useRouter } from "next/router";
-import LoadingButton from "../../components/loadingButton";
-import { Actions } from "../../utils/apiData";
+import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler, uploadHandler, types } = props;
