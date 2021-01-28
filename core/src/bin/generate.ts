@@ -104,7 +104,7 @@ Commands:
 
     const preparedParams = template.prepareParams({ ...params });
 
-    if (preparedParams.id !== params.id) {
+    if (preparedParams.id.toString().replace(/['"]+/g, "") !== params.id) {
       console.log(
         `${Colors.yellow("notice")}: ID was changed to ${preparedParams.id}`
       );

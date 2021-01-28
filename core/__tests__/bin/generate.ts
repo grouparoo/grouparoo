@@ -105,4 +105,37 @@ describe("bin/generate", () => {
     const file = `${tmpDir}/groups/new_group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
+
+  test("the generate command will notify if it changed the ID value", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "group:calculated",
+        id: "New-Group",
+        overwrite: true,
+      },
+    });
+
+    // Notice that if it changes *any* part of the string, it also converts
+    // hyphens to underscores, while the next test shows that the hyphens don't
+    // change if the rest of the string is valid.
+    const output = messages.join(" ");
+    expect(output).toContain(`ID was changed to \"new_group\"`);
+  });
+
+  test("the generate command will be quiet if it did not change the ID value", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "group:calculated",
+        id: "new-group",
+        overwrite: true,
+      },
+    });
+
+    const output = messages.join(" ");
+    expect(output).not.toContain(`ID was changed to \"new-group\"`);
+  });
 });
