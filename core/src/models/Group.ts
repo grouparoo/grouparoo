@@ -27,7 +27,7 @@ import { ProfileProperty } from "./ProfileProperty";
 import { Destination } from "./Destination";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { Property, propertyJSToSQLType } from "./Property";
-import { PropertyOpsDictionary } from "../modules/RuleOpsDictionary";
+import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
 import { LockableHelper } from "../modules/lockableHelper";
