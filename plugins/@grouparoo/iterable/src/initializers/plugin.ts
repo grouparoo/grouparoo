@@ -41,7 +41,8 @@ export class Plugins extends Initializer {
               key: "apiKey",
               displayName: "Iterable API Key",
               required: true,
-              description: "Iterable apikey (api) key.",
+              description:
+                "Iterable api key. The api keys can be managed here: https://app.iterable.com/settings/apiKeys",
             },
           ],
           methods: { test },

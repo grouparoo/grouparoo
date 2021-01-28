@@ -29,8 +29,6 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "^0.2.0-alpha.15",
-    "axios": "0.21.1",
-    "hubspot-api": "2.15.3",
     "node-iterable-api": "^1.0.2"
   },
   "peerDependencies": {

@@ -20,7 +20,7 @@ async function getListId(
 ): Promise<string> {
   groupName = (groupName || "").toString().trim();
   if (groupName.length === 0) {
-    return `Iterable empty groupName`;
+    return "Grouparoo Default";
   }
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", groupName, appOptions];

@@ -12,12 +12,24 @@ const appGuid = "app_7815696ecbf1c96e6894b779456d330e";
 let apiClient: any;
 let user: any;
 const phoneNumber = "+5583999999999";
+const newPhoneNumber = "+5583999999998";
+const otherPhoneNumber = "+5583999999997";
 const userId = "testuser123";
 const alternativeUserId = "testuser345";
 const email = "caio.silveira@mailinator.com";
 const alternativeEmail = "lucas.nogueira@mailinator.com";
+const otherEmail = "sandro.arturo@mailinator.com";
 const name = "Caio";
+const alternativeName = "Evan";
+const otherName = "Lucas";
 const exampleDate = new Date(1597870204 * 1000);
+const listOne = "List One";
+const listTwo = "List Two";
+const listThree = "List Three";
+const listFour = "List Four";
+const customField = "testCustomField";
+
+let listIds = {};
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -39,10 +51,14 @@ async function getUser(userEmail): Promise<any> {
 }
 
 async function getListId(listName): Promise<any> {
+  if (listName in listIds) {
+    return listIds[listName];
+  }
   const listsResponse = await apiClient.lists.get();
   const allLists = listsResponse.lists || [];
   const matchingList = allLists.filter((list) => list.name === listName)[0];
   if (matchingList) {
+    listIds[listName] = matchingList.id;
     return matchingList.id;
   }
   return null;
@@ -62,7 +78,7 @@ async function deleteUsers(suppressErrors) {
 
 async function deleteLists(suppressErrors) {
   try {
-    for (const groupToDelete in ["List One", "List Two", "List Three"]) {
+    for (const groupToDelete in [listOne, listTwo, listThree]) {
       const listId = await getListId(groupToDelete);
       if (listId) {
         await apiClient.users.delete(listId);
@@ -73,6 +89,12 @@ async function deleteLists(suppressErrors) {
       throw err;
     }
   }
+}
+
+async function cleanUp(suppressErrors) {
+  await deleteUsers(suppressErrors);
+  await deleteLists(suppressErrors);
+  await indexContacts(newNock);
 }
 
 async function runExport({
@@ -108,15 +130,11 @@ describe("iterable/exportProfile", () => {
   });
   beforeAll(async () => {
     apiClient = await connect(appOptions);
-    await deleteUsers(false);
-    await deleteLists(false);
-    await indexContacts(newNock);
+    await cleanUp(false);
   }, helper.setupTime);
 
   afterAll(async () => {
-    await deleteUsers(true);
-    await deleteLists(true);
-    await indexContacts(newNock);
+    await cleanUp(true);
   }, helper.setupTime);
 
   test("can create profile on Iterable", async () => {
@@ -135,6 +153,7 @@ describe("iterable/exportProfile", () => {
 
     expect(user).not.toBe(null);
     expect(user.email).toBe(email);
+    expect(user.dataFields.name).toBe(name);
   });
 
   test("can add user variables", async () => {
@@ -146,6 +165,7 @@ describe("iterable/exportProfile", () => {
         userId,
         phoneNumber,
         signupDate: exampleDate,
+        customField,
       },
       oldGroups: [],
       newGroups: [],
@@ -157,11 +177,11 @@ describe("iterable/exportProfile", () => {
     expect(user.userId).toBe(userId);
     expect(user.dataFields.name).toBe(name);
     expect(user.dataFields.phoneNumber).toBe(phoneNumber);
+    expect(user.dataFields.customField).toBe(customField);
     expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
   });
 
   test("can change user variables", async () => {
-    const newName = "Evan";
     // Phone must be valid.
     const newPhoneNumber = "+5583999999998";
 
@@ -176,7 +196,7 @@ describe("iterable/exportProfile", () => {
       newProfileProperties: {
         email,
         userId,
-        name: newName,
+        name: alternativeName,
         phoneNumber: newPhoneNumber,
       },
       oldGroups: [],
@@ -188,19 +208,18 @@ describe("iterable/exportProfile", () => {
     const user = await getUser(email);
 
     expect(user.userId).toBe(userId);
-    expect(user.dataFields.name).toBe(newName);
+    expect(user.dataFields.name).toBe(alternativeName);
     expect(user.dataFields.phoneNumber).toBe(newPhoneNumber);
     expect(user.dataFields.signupDate).toBe(undefined);
     expect(user.dataFields.unknown_junk).toBeUndefined();
   });
 
   test("can clear user variables", async () => {
-    const newPhoneNumber = "+5583999999998";
     await runExport({
       oldProfileProperties: {
         email,
         userId,
-        name: "Evan",
+        name: alternativeName,
         phoneNumber: newPhoneNumber,
         signupDate: exampleDate,
       },
@@ -232,7 +251,7 @@ describe("iterable/exportProfile", () => {
         userId,
       },
       oldGroups: [],
-      newGroups: ["List One", "List Two"],
+      newGroups: [listOne, listTwo],
       toDelete: false,
     });
     await indexContacts(newNock);
@@ -240,8 +259,8 @@ describe("iterable/exportProfile", () => {
     const user = await getUser(email);
     expect(user.dataFields.emailListIds.length).toBe(2);
 
-    const listOneId = await getListId("List One");
-    const listTwoId = await getListId("List Two");
+    const listOneId = await getListId(listOne);
+    const listTwoId = await getListId(listTwo);
 
     expect(listOneId).not.toBe(null);
     expect(listTwoId).not.toBe(null);
@@ -260,8 +279,8 @@ describe("iterable/exportProfile", () => {
         email,
         userId,
       },
-      oldGroups: ["List One", "List Two"],
-      newGroups: ["List One"],
+      oldGroups: [listOne, listTwo],
+      newGroups: [listOne],
       toDelete: false,
     });
     await indexContacts(newNock);
@@ -269,7 +288,7 @@ describe("iterable/exportProfile", () => {
     const user = await getUser(email);
     expect(user.dataFields.emailListIds.length).toBe(1);
 
-    const listOneId = await getListId("List One");
+    const listOneId = await getListId(listOne);
     expect(listOneId).not.toBe(null);
     expect(user.dataFields.emailListIds).toContain(listOneId);
   });
@@ -285,21 +304,46 @@ describe("iterable/exportProfile", () => {
         userId,
       },
       oldGroups: [],
-      newGroups: ["List Two", "List Three"],
+      newGroups: [listTwo, listThree],
       toDelete: false,
     });
     await indexContacts(newNock);
 
     const user = await getUser(email);
 
-    const listTwoId = await getListId("List Two");
-    const listOneThree = await getListId("List Three");
+    const listTwoId = await getListId(listTwo);
+    const listThreeId = await getListId(listThree);
 
     expect(listTwoId).not.toBe(null);
-    expect(listOneThree).not.toBe(null);
+    expect(listThreeId).not.toBe(null);
 
     expect(user.dataFields.emailListIds).toContain(listTwoId);
-    expect(user.dataFields.emailListIds).toContain(listOneThree);
+    expect(user.dataFields.emailListIds).toContain(listThreeId);
+  });
+
+  test("it tries to unsubscribe non subscribed list", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email,
+        userId,
+      },
+      newProfileProperties: {
+        email,
+        userId,
+      },
+      oldGroups: [listFour],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+
+    const user = await getUser(email);
+
+    const listFourId = await getListId(listFour);
+
+    expect(listFourId).not.toBe(null);
+
+    expect(user.dataFields.emailListIds).not.toContain(listFourId);
   });
 
   test("it can change the email address", async () => {
@@ -320,16 +364,48 @@ describe("iterable/exportProfile", () => {
 
     const user = await getUser(alternativeEmail);
     expect(user.email).toBe(alternativeEmail);
+
+    const oldUser = await getUser(email);
+    expect(oldUser).toBe(null);
+  });
+
+  test("it can change the email address along other properties", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: alternativeEmail,
+        userId,
+        name: alternativeName,
+        phoneNumber: newPhoneNumber,
+      },
+      newProfileProperties: {
+        email: otherEmail,
+        userId,
+        name: otherName,
+        phoneNumber: otherPhoneNumber,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+
+    const user = await getUser(otherEmail);
+    expect(user.email).toBe(otherEmail);
+    expect(user.dataFields.name).toBe(otherName);
+    expect(user.dataFields.phoneNumber).toBe(otherPhoneNumber);
+
+    const oldUser = await getUser(alternativeEmail);
+    expect(oldUser).toBe(null);
   });
 
   test("it can change the user id", async () => {
     await runExport({
       oldProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId,
       },
       newProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId: alternativeUserId,
       },
       oldGroups: [],
@@ -338,18 +414,18 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
-    const user = await getUser(alternativeEmail);
+    const user = await getUser(otherEmail);
     expect(user.userId).toBe(alternativeUserId);
   });
 
   test("can delete a user", async () => {
     await runExport({
       oldProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId,
       },
       newProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId,
       },
       oldGroups: [],
@@ -358,21 +434,21 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
-    const user = await getUser(alternativeEmail);
+    const user = await getUser(otherEmail);
     expect(user).toBe(null);
   });
 
   test("can try to delete a user that does not exist.", async () => {
-    let user = await getUser(alternativeEmail);
+    let user = await getUser(otherEmail);
     expect(user).toBe(null);
 
     await runExport({
       oldProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId,
       },
       newProfileProperties: {
-        email: alternativeEmail,
+        email: otherEmail,
         userId,
       },
       oldGroups: [],
@@ -381,7 +457,7 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
-    user = await getUser(alternativeEmail);
+    user = await getUser(otherEmail);
     expect(user).toBe(null);
   });
 });

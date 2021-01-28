@@ -14,8 +14,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   return {
     labels: {
       property: {
-        singular: "Iterable Contact Property",
-        plural: "Iterable Contact Properties",
+        singular: "Iterable User Field",
+        plural: "Iterable User Fields",
       },
       group: {
         singular: "Iterable List",
