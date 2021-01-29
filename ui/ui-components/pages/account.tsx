@@ -55,53 +55,55 @@ export default function Page(props) {
         </Col>
         <Col md={10}>
           <Form id="form" onSubmit={submit}>
-            <Form.Group controlId="firstName">
-              <Form.Label>First Name</Form.Label>
-              <Form.Control
-                autoFocus
-                required
-                type="text"
-                defaultValue={teamMember.firstName}
-                onChange={update}
-                disabled={loading}
-              />
-            </Form.Group>
+            <fieldset disabled={teamMember.locked !== null}>
+              <Form.Group controlId="firstName">
+                <Form.Label>First Name</Form.Label>
+                <Form.Control
+                  autoFocus
+                  required
+                  type="text"
+                  defaultValue={teamMember.firstName}
+                  onChange={update}
+                  disabled={loading}
+                />
+              </Form.Group>
 
-            <Form.Group controlId="lastName">
-              <Form.Label>Last Name</Form.Label>
-              <Form.Control
-                required
-                type="text"
-                defaultValue={teamMember.lastName}
-                onChange={update}
-                disabled={loading}
-              />
-            </Form.Group>
+              <Form.Group controlId="lastName">
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control
+                  required
+                  type="text"
+                  defaultValue={teamMember.lastName}
+                  onChange={update}
+                  disabled={loading}
+                />
+              </Form.Group>
 
-            <Form.Group controlId="email">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                required
-                type="email"
-                defaultValue={teamMember.email}
-                onChange={update}
-                disabled={loading}
-              />
-            </Form.Group>
+              <Form.Group controlId="email">
+                <Form.Label>Email Address</Form.Label>
+                <Form.Control
+                  required
+                  type="email"
+                  defaultValue={teamMember.email}
+                  onChange={update}
+                  disabled={loading}
+                />
+              </Form.Group>
 
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="*"
-                onChange={update}
-                disabled={loading}
-              />
-            </Form.Group>
+              <Form.Group controlId="password">
+                <Form.Label>Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="*"
+                  onChange={update}
+                  disabled={loading}
+                />
+              </Form.Group>
 
-            <LoadingButton variant="primary" type="submit" disabled={loading}>
-              Update
-            </LoadingButton>
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
+                Update
+              </LoadingButton>
+            </fieldset>
           </Form>
         </Col>
       </Row>
