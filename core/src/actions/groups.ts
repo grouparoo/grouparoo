@@ -1,7 +1,7 @@
 import { CLS } from "../modules/cls";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
-import { PropertyOpsDictionary } from "../modules/RuleOpsDictionary";
+import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
 import { GroupOps } from "../modules/ops/group";

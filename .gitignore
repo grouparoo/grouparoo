@@ -22,6 +22,7 @@ core/files/*
 core/report.*.json
 core/docs
 core/gh-pages
+core/property-ops-dictionary-*.json
 
 # Web
 .next

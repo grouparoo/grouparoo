@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const path = require("path");
+
+const {
+  buildPropertyOpsDictionary,
+} = require("../dist/modules/ruleOpsDictionary");
+
+const data = [
+  {
+    name: "property-ops-dictionary--postgres",
+    data: buildPropertyOpsDictionary({
+      sequelize: { dialect: "postgres" },
+    }),
+  },
+  {
+    name: "property-ops-dictionary--sqlite",
+    data: buildPropertyOpsDictionary({
+      sequelize: { dialect: "sqlite" },
+    }),
+  },
+];
+
+data.map(({ name, data }) => {
+  const filePath = path.join(__dirname, `../${name}.json`);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+});
