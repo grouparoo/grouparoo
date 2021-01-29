@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
-import PropertyTab from "@grouparoo/ui-components/components/tabs/property";
-import AppTab from "@grouparoo/ui-components/components/tabs/app";
+import PropertyTab from "../../components/tabs/property";
+import AppTab from "../../components/tabs/app";
 
 describe("<PropertyTab />", () => {
   const useRouter = jest.spyOn(require("next/router"), "useRouter");

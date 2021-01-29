@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import mockAxios from "jest-mock-axios";
-import Component from "@grouparoo/ui-components/components/navigation";
-import "@grouparoo/ui-components/icons"; // this is needed to load the library
+import Component from "../../components/navigation";
+import "../../components/icons"; // this is needed to load the library
 import commonProps from "../utils/commonProps";
 
 const useRouter = jest.spyOn(require("next/router"), "useRouter");

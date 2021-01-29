@@ -2,12 +2,23 @@
  * @jest-environment jest-environment-webdriver
  */
 
-import * as helper from "@grouparoo/ui-components/utils/specHelper";
-let url;
+import path from "path";
+import { IntegrationSpecHelper, helper } from "@grouparoo/spec-helper";
 
 declare var browser: any;
 declare var by: any;
 declare var until: any;
+let env: { url: string; port: number; subProcess: any };
+
+const projectPath = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "..",
+  "apps",
+  "staging-enterprise"
+);
 
 const firstName = "mario";
 const lastName = "mario";
@@ -16,18 +27,20 @@ const password = "P@ssw0rd";
 
 describe("integration", () => {
   beforeAll(async () => {
-    const env = await helper.prepareForIntegrationTest();
-    url = env.url;
+    env = await IntegrationSpecHelper.prepareForIntegrationTest(
+      projectPath,
+      true
+    );
   }, helper.setupTime);
 
   afterAll(async () => {
-    await helper.shutdown();
+    await IntegrationSpecHelper.shutdown(env.subProcess);
   });
 
   test(
     "it renders the home page",
     async () => {
-      await browser.get(url);
+      await browser.get(env.url);
       const header = await browser.findElement(by.tagName("h2")).getText();
       expect(header).toContain(
         "Sync, Segment, and Send your Product Data Everywhere"
@@ -57,7 +70,7 @@ describe("integration", () => {
   test(
     "it can create the first team",
     async () => {
-      await browser.get(`${url}/team/initialize`);
+      await browser.get(`${env.url}/team/initialize`);
       await browser.findElement(by.name("firstName")).sendKeys(firstName);
       await browser.findElement(by.name("lastName")).sendKeys(lastName);
       await browser.findElement(by.name("email")).sendKeys(email);
@@ -100,14 +113,14 @@ describe("integration", () => {
   test(
     "it can change account information and see it reflected in the sidebar",
     async () => {
-      await browser.get(`${url}/account`);
+      await browser.get(`${env.url}/account`);
       await browser.findElement(by.id("firstName")).clear();
       await browser.findElement(by.id("firstName")).sendKeys("Super Mario");
 
       const button = await browser.findElement(by.className("btn-primary"));
       await button.click();
 
-      await browser.get(`${url}/dashboard`);
+      await browser.get(`${env.url}/dashboard`);
       await helper.sleep(2 * 1000); // sleep to let the navigation load
 
       const greeting = await browser
