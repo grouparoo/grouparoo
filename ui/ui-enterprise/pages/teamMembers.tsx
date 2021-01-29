@@ -1,13 +1,1 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
-import Loader from "@grouparoo/ui-components/components/loader";
-
-export default function TeamMemberRedirect() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.push("/teams");
-  }, []);
-
-  return <Loader />;
-}
+export { default } from "@grouparoo/ui-components/pages/teamMembers";

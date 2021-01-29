@@ -1,29 +1,25 @@
-import { useState } from "react";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
-import {
-  useOffset,
-  updateURLParams,
-} from "@grouparoo/ui-components/hooks/URLParams";
-import { useSecondaryEffect } from "@grouparoo/ui-components/hooks/useSecondaryEffect";
 import Head from "next/head";
-import { useRouter } from "next/router";
+import { useState } from "react";
+import { useApi } from "../hooks/useApi";
+import { useOffset, updateURLParams } from "../hooks/URLParams";
+import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import Pagination from "../components/pagination";
+import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
-import Pagination from "@grouparoo/ui-components/components/pagination";
-import LoadingTable from "@grouparoo/ui-components/components/loadingTable";
-import AppIcon from "@grouparoo/ui-components/components/appIcon";
-import StateBadge from "@grouparoo/ui-components/components/badges/stateBadge";
+import AppIcon from "../components/appIcon";
+import StateBadge from "../components/badges/stateBadge";
+import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
-
-import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
   const { errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
-  const [apps, setApps] = useState<Models.AppType[]>(props.apps);
-  const [total, setTotal] = useState<number>(props.total);
   const [loading, setLoading] = useState(false);
+  const [sources, setSources] = useState<Models.SourceType[]>(props.sources);
+  const [total, setTotal] = useState(props.total);
 
   // pagination
   const limit = 100;
@@ -31,22 +27,22 @@ export default function Page(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [limit, offset]);
+  }, [offset, limit]);
 
   async function load() {
     updateURLParams(router, { offset });
     setLoading(true);
-    const response: Actions.AppsList = await execApi("get", `/apps`, {
+    const response: Actions.SourcesList = await execApi("get", `/sources`, {
       limit,
       offset,
     });
     setLoading(false);
-    if (response?.apps) {
-      setApps(response.apps);
+    if (response?.sources) {
+      setSources(response.sources);
       setTotal(response.total);
 
       if (response.total === 0) {
-        router.push("/app/new");
+        router.push("/source/new");
       }
     }
   }
@@ -54,11 +50,12 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Apps</title>
+        <title>Grouparoo: Sources</title>
       </Head>
 
-      <h1>Apps</h1>
-      <p>{total} apps</p>
+      <h1>Sources</h1>
+
+      <p>{total} sources</p>
 
       <Pagination
         total={total}
@@ -73,25 +70,28 @@ export default function Page(props) {
             <th></th>
             <th>Name</th>
             <th>Type</th>
+            <th>App</th>
             <th>State</th>
             <th>Created At</th>
-            <th>Updated At</th>
           </tr>
         </thead>
         <tbody>
-          {apps.map((app) => {
+          {sources.map((source) => {
             return (
-              <tr key={`team-${app.guid}`}>
+              <tr key={`source-${source.guid}`}>
                 <td>
-                  <AppIcon src={app.icon} />
+                  <AppIcon src={source.app?.icon} />
                 </td>
                 <td>
-                  <Link href="/app/[guid]/edit" as={`/app/${app.guid}/edit`}>
+                  <Link
+                    href="/source/[guid]/overview"
+                    as={`/source/${source.guid}/overview`}
+                  >
                     <a>
                       <strong>
-                        {app.name ||
-                          `${app.state} created ${
-                            new Date(app.createdAt)
+                        {source.name ||
+                          `${source.state} created on ${
+                            new Date(source.createdAt)
                               .toLocaleString()
                               .split(",")[0]
                           }`}
@@ -99,15 +99,22 @@ export default function Page(props) {
                     </a>
                   </Link>
                 </td>
-                <td>{app.type}</td>
+                <td>{source.type}</td>
                 <td>
-                  <StateBadge state={app.state} />
+                  <Link
+                    href="/app/[guid]/edit"
+                    as={`/app/${source.app.guid}/edit`}
+                  >
+                    <a>
+                      <strong>{source.app.name}</strong>
+                    </a>
+                  </Link>
                 </td>
                 <td>
-                  <Moment fromNow>{app.createdAt}</Moment>
+                  <StateBadge state={source.state} />
                 </td>
                 <td>
-                  <Moment fromNow>{app.updatedAt}</Moment>
+                  <Moment fromNow>{source.createdAt}</Moment>
                 </td>
               </tr>
             );
@@ -127,10 +134,10 @@ export default function Page(props) {
       <Button
         variant="primary"
         onClick={() => {
-          router.push("/app/new");
+          router.push("/source/new");
         }}
       >
-        Add App
+        Add new Source
       </Button>
     </>
   );
@@ -139,6 +146,9 @@ export default function Page(props) {
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
-  const { apps, total } = await execApi("get", `/apps`, { limit, offset });
-  return { apps, total };
+  const { sources, total } = await execApi("get", `/sources`, {
+    limit,
+    offset,
+  });
+  return { sources, total };
 };

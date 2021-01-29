@@ -2,6 +2,7 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { api } from "actionhero";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -18,6 +19,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
+    const enabledPlugins = api.plugins.plugins.map((p) => p.name);
     let navigationItems = [];
     let bottomMenuItems = [];
     let platformItems = [];
@@ -192,6 +194,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return {
       navigationMode,
       clusterName: clusterNameSetting?.value || "",
+      enabledPlugins,
       navigation: {
         navigationItems,
         platformItems,

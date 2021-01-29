@@ -6,7 +6,7 @@ With regard to the Grouparoo Enterprise Software:
 This software and associated documentation files (the "Software") may only be
 used in production, if you (and any entity that you represent) have agreed to,
 and are in compliance with, and hold an active subscription for the correct
-number of user seats to a Grouparoo Enterprise Subscription.
+product and usage license to a Grouparoo Enterprise Subscription.
 
 Subject to the foregoing sentence, you are free to modify this Software and publish
 patches to the Software. You agree that Grouparoo and/or its licensors (as applicable)
@@ -31,4 +31,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
