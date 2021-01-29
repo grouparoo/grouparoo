@@ -29,9 +29,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
-
   const client = await connect(appOptions);
-
   const email = newProfileProperties["email"]; // this is how we will identify profiles
   const currentEmail = oldProfileProperties["email"];
   if (!email) {
@@ -39,7 +37,11 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   }
 
   if (toDelete) {
-    await client.users.delete(email);
+    if (currentEmail && currentEmail !== email) {
+      await client.users.delete(currentEmail);
+    } else {
+      await client.users.delete(email);
+    }
     return { success: true };
   } else {
     // create the user and set properties
@@ -66,24 +68,28 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     );
 
     if (currentEmail && currentEmail !== email) {
-      const emailPayload = { currentEmail, newEmail: email };
-      if (newProfileProperties.userId) {
-        emailPayload["currentUserId"] = newProfileProperties.userId;
+      const oldUser = await getUser(client, currentEmail);
+      if (oldUser) {
+        const emailPayload = { currentEmail, newEmail: email };
+        if (newProfileProperties.userId) {
+          emailPayload["currentUserId"] = newProfileProperties.userId;
+        }
+        await client.users.updateEmail(emailPayload);
       }
-      await client.users.updateEmail(emailPayload);
     }
 
     await client.users.update(payload);
+    const currentUser = await getUser(client, email);
 
     // add to lists
     for (const groupToAdd of newGroups) {
-      await addToList(client, appGuid, appOptions, email, groupToAdd);
+      await addToList(client, appGuid, appOptions, currentUser, groupToAdd);
     }
 
     // remove from lists
     for (const group of oldGroups) {
       if (!newGroups.includes(group))
-        await removeFromList(client, appGuid, appOptions, email, group);
+        await removeFromList(client, appGuid, appOptions, currentUser, group);
     }
     return { success: true };
   }
@@ -98,4 +104,12 @@ function formatVar(value) {
   } else {
     return value;
   }
+}
+
+async function getUser(client, email): Promise<any> {
+  const userResponse = await client.users.get({ email });
+  if ("user" in userResponse) {
+    return userResponse.user;
+  }
+  return null;
 }
