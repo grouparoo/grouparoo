@@ -76,12 +76,20 @@ class Generator {
   }
 
   addCore() {
-    this.jobList.push({
-      type: "core",
-      job_name: `test-core-api`,
-      relative_path: `core`,
-      name: "core",
+    const coreTestDir = path.join(__dirname, "../../../core/__tests__");
+    const coreDirs = fs.readdirSync(coreTestDir);
+    const excludedDirs = ["utils", "fixtures", "data"];
+    const testDirs = coreDirs.filter((dir) => !excludedDirs.includes(dir));
+    testDirs.map((dir) => {
+      this.jobList.push({
+        type: `core`,
+        test_section: dir,
+        job_name: `test-core-api`,
+        relative_path: `core`,
+        name: "core",
+      });
     });
+
     this.jobList.push({
       type: "core-local",
       job_name: `test-core-local`,
@@ -139,12 +147,6 @@ class Generator {
     for (const plugin of plugins) {
       this.jobList.push(plugin);
     }
-    // this.jobList.push({
-    //   type: "plugin",
-    //   job_name: `test-plugins`,
-    //   relative_path: "",
-    //   name: "plugins",
-    // });
   }
 
   bindJobMethod(job) {
@@ -239,16 +241,20 @@ class Generator {
   }
 
   core_job_name_list() {
-    const indent = 12;
     const prefix = " ".repeat(12) + "- ";
     const coreJobList = this.jobList.filter((j) => j.type === "core");
     return coreJobList.map((j) => `${prefix}${j.job_name}`).join("\n");
   }
 
   job_name_list() {
-    const indent = 12;
     const prefix = " ".repeat(12) + "- ";
-    return this.jobList.map((j) => `${prefix}${j.job_name}`).join("\n");
+    return this.jobList
+      .map((j) =>
+        j.type === "core"
+          ? `${prefix}test-${j.type}-${j.test_section}`
+          : `${prefix}${j.job_name}`
+      )
+      .join("\n");
   }
 
   baseView() {

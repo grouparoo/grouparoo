@@ -157,7 +157,7 @@ jobs:
       - run:
           name: linter
           command: pnpm run lint
-  test-core-api:
+  test-core-actions:
     docker:
       - image: circleci/node:12
         auth:
@@ -192,7 +192,295 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd core && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd core && ./node_modules/.bin/jest __tests__/actions --ci --maxWorkers 2
+  test-core-bin:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/bin --ci --maxWorkers 2
+  test-core-classes:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/classes --ci --maxWorkers 2
+  test-core-integration:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/integration --ci --maxWorkers 2
+  test-core-models:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/models --ci --maxWorkers 2
+  test-core-modules:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/modules --ci --maxWorkers 2
+  test-core-notifiers:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/notifiers --ci --maxWorkers 2
+  test-core-snapshots:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/snapshots --ci --maxWorkers 2
+  test-core-tasks:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *node-module-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
   test-core-local:
     docker:
       - image: circleci/node:12
@@ -1213,7 +1501,47 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-actions:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-bin:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-classes:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-integration:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-models:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-modules:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-notifiers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-snapshots:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-tasks:
           filters:
             <<: *ignored-branches
           requires:
@@ -1360,7 +1688,15 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core-api
+            - test-core-actions
+            - test-core-bin
+            - test-core-classes
+            - test-core-integration
+            - test-core-models
+            - test-core-modules
+            - test-core-notifiers
+            - test-core-snapshots
+            - test-core-tasks
             - test-core-local
             - test-ui
             - test-staging-public
@@ -1424,7 +1760,47 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-actions:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-bin:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-classes:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-integration:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-models:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-modules:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-notifiers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-snapshots:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-core-tasks:
           filters:
             <<: *ignored-branches
           requires:
@@ -1571,7 +1947,15 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core-api
+            - test-core-actions
+            - test-core-bin
+            - test-core-classes
+            - test-core-integration
+            - test-core-models
+            - test-core-modules
+            - test-core-notifiers
+            - test-core-snapshots
+            - test-core-tasks
             - test-core-local
             - test-ui
             - test-staging-public
