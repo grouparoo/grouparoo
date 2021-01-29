@@ -107,13 +107,23 @@ class Generator {
     });
   }
 
-  addStagingPublic() {
+  addStagingCommunity() {
     this.jobList.push({
       type: "apps",
-      section: "staging-public",
-      job_name: `test-staging-public`,
+      section: "staging-community",
+      job_name: `test-staging-community`,
       relative_path: `apps`,
-      name: "staging-public",
+      name: "staging-community",
+    });
+  }
+
+  addStagingEnterprise() {
+    this.jobList.push({
+      type: "apps",
+      section: "staging-enterprise",
+      job_name: `test-staging-enterprise`,
+      relative_path: `apps`,
+      name: "staging-enterprise",
     });
   }
 

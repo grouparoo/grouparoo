@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
@@ -178,12 +179,12 @@ export default function ExportsList(props) {
                     </Link>
                     <br />
                     Destination:{" "}
-                    <Link
+                    <EnterpriseLink
                       href="/destination/[guid]/edit"
                       as={`/destination/${_export.destination.guid}/edit`}
                     >
                       <a>{_export.destination.name}</a>
-                    </Link>
+                    </EnterpriseLink>
                     <br />
                     To Delete?{" "}
                     {_export.toDelete ? (

@@ -5,7 +5,7 @@ import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "next/link";
+import Link from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
@@ -157,14 +157,17 @@ export default function Page(props) {
       />
 
       <br />
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/destination/new");
-        }}
-      >
-        Add new Destination
-      </Button>
+
+      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+        <Button
+          variant="primary"
+          onClick={() => {
+            router.push("/destination/new");
+          }}
+        >
+          Add new Destination
+        </Button>
+      ) : null}
     </>
   );
 }

@@ -17,6 +17,9 @@ if (fs.existsSync(envFile)) {
 }
 
 module.exports = withSourceMaps({
+  env: {
+    GROUPAROO_UI_EDITION: "enterprise",
+  },
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
     ["react", "react-dom"].forEach((_package) => {

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+import EnterpriseLink from "../../../components/enterpriseLink";
 import ProfileTabs from "../../../components/tabs/profile";
 import { useState, useEffect } from "react";
 import { useApi } from "../../../hooks/useApi";
@@ -382,12 +382,12 @@ export default function Page(props) {
                     &nbsp; &nbsp;
                   </>
                 ) : null}
-                <Link
+                <EnterpriseLink
                   href="/group/[guid]/members"
                   as={`/group/${group.guid}/members`}
                 >
                   <a>{group.name}</a>
-                </Link>
+                </EnterpriseLink>
               </ListGroup.Item>
             ))}
           </ListGroup>

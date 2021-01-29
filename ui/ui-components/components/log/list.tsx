@@ -3,7 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
-import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
@@ -80,13 +80,13 @@ export default function LogsList(props) {
 
     if (ownerGuid) {
       return [
-        <Link
+        <EnterpriseLink
           href="/object/[guid]"
           as={`/object/${ownerGuid}`}
           prefetch={false}
         >
           <a>{`${topic}`}</a>
-        </Link>,
+        </EnterpriseLink>,
       ];
     } else {
       return [topic];
@@ -180,12 +180,12 @@ export default function LogsList(props) {
                   {log.ownerGuid ? (
                     <>
                       <br />
-                      <Link
+                      <EnterpriseLink
                         href="/object/[guid]"
                         as={`/object/${log.ownerGuid}`}
                       >
                         <a className="text-muted">{log.ownerGuid}</a>
-                      </Link>
+                      </EnterpriseLink>
                     </>
                   ) : null}
                 </td>

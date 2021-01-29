@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";

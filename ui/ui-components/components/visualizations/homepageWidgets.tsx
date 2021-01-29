@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
+import Link from "../enterpriseLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";

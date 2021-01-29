@@ -4,7 +4,7 @@ import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import Link from "../components/enterpriseLink";
 import { Button, Form, Alert } from "react-bootstrap";
 import LoadingButton from "../components/loadingButton";
 import Moment from "react-moment";
@@ -18,7 +18,10 @@ export default function Page(props) {
   const {
     errorHandler,
     sources,
-  }: { errorHandler: ErrorHandler; sources: Models.SourceType[] } = props;
+  }: {
+    errorHandler: ErrorHandler;
+    sources: Models.SourceType[];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -207,37 +210,39 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      <hr />
-
-      {sources.length > 0 ? (
-        <Form inline onSubmit={createNewProperty}>
-          <p>
-            Add new Property for source{" "}
-            <Form.Control
-              as="select"
-              size="sm"
-              value={newRuleSourceGuid}
-              disabled={loading}
-              onChange={(e) => {
-                setNewRuleSourceGuid(e.target.value);
-              }}
-            >
-              {sources.map((source) => (
-                <option key={`opt-source-${source.guid}`} value={source.guid}>
-                  {source.name}
-                </option>
-              ))}
-            </Form.Control>{" "}
-            <LoadingButton
-              type="submit"
-              size="sm"
-              disabled={newRuleLoading}
-              variant="primary"
-            >
-              Create
-            </LoadingButton>
-          </p>
-        </Form>
+      {sources.length > 0 &&
+      process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+        <>
+          <hr />
+          <Form inline onSubmit={createNewProperty}>
+            <p>
+              Add new Property for source{" "}
+              <Form.Control
+                as="select"
+                size="sm"
+                value={newRuleSourceGuid}
+                disabled={loading}
+                onChange={(e) => {
+                  setNewRuleSourceGuid(e.target.value);
+                }}
+              >
+                {sources.map((source) => (
+                  <option key={`opt-source-${source.guid}`} value={source.guid}>
+                    {source.name}
+                  </option>
+                ))}
+              </Form.Control>{" "}
+              <LoadingButton
+                type="submit"
+                size="sm"
+                disabled={newRuleLoading}
+                variant="primary"
+              >
+                Create
+              </LoadingButton>
+            </p>
+          </Form>
+        </>
       ) : null}
     </>
   );

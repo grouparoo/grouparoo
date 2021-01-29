@@ -69,10 +69,10 @@ This will generate a `package.json` and `.env` file for configuration.
 
 ## Populating Demo Data
 
-Use the `staging-public` app to try things out.
+Use the `staging-community` app to try things out.
 
 ```bash
-cd apps/staging-public
+cd apps/staging-community
 # populate the system with 1000 profiles, properties, 1000 purchases, groups, and some events
 (npx) grouparoo demo-data-purchases
 

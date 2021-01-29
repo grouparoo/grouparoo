@@ -19,7 +19,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
-    const enabledPlugins = api.plugins.plugins.map((p) => p.name);
     let navigationItems = [];
     let bottomMenuItems = [];
     let platformItems = [];
@@ -194,7 +193,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return {
       navigationMode,
       clusterName: clusterNameSetting?.value || "",
-      enabledPlugins,
       navigation: {
         navigationItems,
         platformItems,

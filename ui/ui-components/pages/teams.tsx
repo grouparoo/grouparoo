@@ -2,7 +2,7 @@ import Head from "next/head";
 import { Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
-import Link from "next/link";
+import Link from "../components/enterpriseLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
@@ -60,14 +60,17 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/team/new");
-        }}
-      >
-        Add Team
-      </Button>
+      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+        <Button
+          variant="primary"
+          onClick={() => {
+            router.push("/team/new");
+          }}
+        >
+          Add Team
+        </Button>
+      ) : null}
+
       <br />
       <br />
       <br />
@@ -124,14 +127,16 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/teamMember/new");
-        }}
-      >
-        Add Team Member
-      </Button>
+      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+        <Button
+          variant="primary"
+          onClick={() => {
+            router.push("/teamMember/new");
+          }}
+        >
+          Add Team Member
+        </Button>
+      ) : null}
     </>
   );
 }

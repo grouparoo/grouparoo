@@ -6,6 +6,7 @@ import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
 import RunDurationChart from "../visualizations/runDurations";
@@ -188,11 +189,14 @@ export default function RunsList(props) {
                     ) : null}
                   </td>
                   <td>
-                    <Link prefetch={false} href={`/object/${run.creatorGuid}`}>
+                    <EnterpriseLink
+                      prefetch={false}
+                      href={`/object/${run.creatorGuid}`}
+                    >
                       <a>
                         {run.creatorType}: {run.creatorName}
                       </a>
-                    </Link>
+                    </EnterpriseLink>
                   </td>
                   <td>
                     {run.state} <br />

@@ -4,25 +4,23 @@ import { Row, Col, Image, Button } from "react-bootstrap";
 
 export default function Page(props) {
   const router = useRouter();
-  const { navigationMode, navigation, enabledPlugins } = props;
+  const { navigationMode, navigation } = props;
 
   let CTALink = "/session/sign-in";
   let CTAMessage = "Sign In";
-
-  console.log(enabledPlugins);
 
   if (navigationMode === "authenticated") {
     CTAMessage = "View Dashboard";
     CTALink = "/dashboard";
   } else if (
-    enabledPlugins.includes("@grouparoo/ui-enterprise") &&
+    process.env.GROUPAROO_UI_EDITION === "enterprise" &&
     navigation?.bottomMenuItems[0] &&
     navigation?.bottomMenuItems[0].href === "/team/initialize"
   ) {
     CTAMessage = "Create Team";
     CTALink = "/team/initialize";
   } else if (
-    enabledPlugins.includes("@grouparoo/ui-community") &&
+    process.env.GROUPAROO_UI_EDITION === "community" &&
     navigation?.bottomMenuItems[0] &&
     navigation?.bottomMenuItems[0].href === "/team/initialize"
   ) {

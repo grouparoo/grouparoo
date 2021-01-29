@@ -1,5 +1,5 @@
 import { Badge } from "react-bootstrap";
-import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import { Models } from "../../utils/apiData";
 
 export function ImportProfilePropertiesDiff({
@@ -119,9 +119,12 @@ function groupLink(groups: Models.GroupType[], groupGuid: string) {
 
   if (group) {
     return (
-      <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
+      <EnterpriseLink
+        href="/group/[guid]/edit"
+        as={`/group/${group.guid}/edit`}
+      >
         <a>{group.name}</a>
-      </Link>
+      </EnterpriseLink>
     );
   } else {
     return <span>{groupGuid} (deleted)</span>;

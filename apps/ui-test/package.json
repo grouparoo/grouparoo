@@ -9,8 +9,8 @@
     "node": ">=12.0.0 <15.0.0"
   },
   "dependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.15",
-    "@grouparoo/ui-enterprise": "^0.2.0-alpha.15"
+    "@grouparoo/core": "^0.2.0-alpha.16",
+    "@grouparoo/ui-enterprise": "^0.2.0-alpha.16"
   },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start",

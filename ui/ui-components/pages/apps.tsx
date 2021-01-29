@@ -4,7 +4,7 @@ import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import Link from "../components/enterpriseLink";
 import Moment from "react-moment";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
@@ -120,14 +120,16 @@ export default function Page(props) {
 
       <br />
 
-      <Button
-        variant="primary"
-        onClick={() => {
-          router.push("/app/new");
-        }}
-      >
-        Add App
-      </Button>
+      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+        <Button
+          variant="primary"
+          onClick={() => {
+            router.push("/app/new");
+          }}
+        >
+          Add App
+        </Button>
+      ) : null}
     </>
   );
 }

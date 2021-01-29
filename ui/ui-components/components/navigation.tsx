@@ -33,7 +33,6 @@ export default function Navigation(props) {
     navigationMode,
     navigation,
     clusterName,
-    enabledPlugins,
     navExpanded,
     toggleNavExpanded,
     errorHandler,
@@ -43,7 +42,6 @@ export default function Navigation(props) {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
     clusterName: string;
-    enabledPlugins: string[];
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;
@@ -105,7 +103,7 @@ export default function Navigation(props) {
 
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
-  const uiPlugin = enabledPlugins.find((p) => p.match(/^@grouparoo\/ui-/));
+  const uiPlugin = `@grouparoo/ui-${process.env.GROUPAROO_UI_EDITION}`;
 
   // resque failure counts
   const pollTimerSleep = 10 * 1000 + 1;

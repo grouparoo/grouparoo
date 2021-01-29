@@ -51,7 +51,6 @@ export default function GrouparooWebApp(props) {
     navigation: props.navigation,
     navigationMode: props.navigationMode,
     clusterName: props.clusterName,
-    enabledPlugins: props.enabledPlugins,
     successHandler,
     errorHandler,
     appHandler,
@@ -87,7 +86,6 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
       navigationMode,
       navigation,
       clusterName,
-      enabledPlugins,
     }: Actions.NavigationList = await execApi("get", `/navigation`);
     let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
       firstName: "",
@@ -115,7 +113,6 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
       navigationMode,
       navigation,
       clusterName,
-      enabledPlugins,
       hydrationError,
     };
   } catch (_error) {
