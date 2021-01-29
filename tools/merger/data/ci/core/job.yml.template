@@ -1,4 +1,4 @@
-  {{{job_name}}}:
+  test-{{{type}}}-{{{test_section}}}:
     docker:
       - image: circleci/node:12
         auth:
@@ -35,5 +35,5 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd {{{relative_path}}} && ./node_modules/.bin/jest __tests__/{{test_section}} --ci --maxWorkers 2
 {{{custom_test}}}

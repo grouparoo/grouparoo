@@ -76,12 +76,20 @@ class Generator {
   }
 
   addCore() {
-    this.jobList.push({
-      type: "core",
-      job_name: `test-core-api`,
-      relative_path: `core`,
-      name: "core",
+    const coreTestDir = path.join(__dirname, "../../../core/__tests__");
+    const coreDirs = fs.readdirSync(coreTestDir);
+    const excludedDirs = ["utils", "fixtures", "data"];
+    const testDirs = coreDirs.filter((dir) => !excludedDirs.includes(dir));
+    testDirs.map((dir) => {
+      this.jobList.push({
+        type: `core`,
+        test_section: dir,
+        job_name: `test-core-api`,
+        relative_path: `core`,
+        name: "core",
+      });
     });
+
     this.jobList.push({
       type: "core-local",
       job_name: `test-core-local`,
