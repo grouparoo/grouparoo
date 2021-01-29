@@ -147,12 +147,6 @@ class Generator {
     for (const plugin of plugins) {
       this.jobList.push(plugin);
     }
-    // this.jobList.push({
-    //   type: "plugin",
-    //   job_name: `test-plugins`,
-    //   relative_path: "",
-    //   name: "plugins",
-    // });
   }
 
   bindJobMethod(job) {
@@ -256,7 +250,13 @@ class Generator {
   job_name_list() {
     const indent = 12;
     const prefix = " ".repeat(12) + "- ";
-    return this.jobList.map((j) => `${prefix}${j.job_name}`).join("\n");
+    return this.jobList
+      .map((j) =>
+        j.type === "core"
+          ? `${prefix}test-${j.type}-${j.test_section}`
+          : `${prefix}${j.job_name}`
+      )
+      .join("\n");
   }
 
   baseView() {

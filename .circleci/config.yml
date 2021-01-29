@@ -1688,15 +1688,15 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
+            - test-core-actions
+            - test-core-bin
+            - test-core-classes
+            - test-core-integration
+            - test-core-models
+            - test-core-modules
+            - test-core-notifiers
+            - test-core-snapshots
+            - test-core-tasks
             - test-core-local
             - test-ui
             - test-staging-public
@@ -1947,15 +1947,15 @@ workflows:
             - license-checker
             - spell-checker
             - linter
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
-            - test-core-api
+            - test-core-actions
+            - test-core-bin
+            - test-core-classes
+            - test-core-integration
+            - test-core-models
+            - test-core-modules
+            - test-core-notifiers
+            - test-core-snapshots
+            - test-core-tasks
             - test-core-local
             - test-ui
             - test-staging-public
