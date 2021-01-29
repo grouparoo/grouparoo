@@ -1,4 +1,4 @@
-      - {{{job_name}}}:
+      - test-{{{type}}}-{{{test_section}}}:
           filters:
             <<: *ignored-branches
           requires:

@@ -1501,47 +1501,47 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-actions:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-bin:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-classes:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-integration:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-models:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-modules:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-notifiers:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-snapshots:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-tasks:
           filters:
             <<: *ignored-branches
           requires:
@@ -1760,47 +1760,47 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-actions:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-bin:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-classes:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-integration:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-models:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-modules:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-notifiers:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-snapshots:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-core-api:
+      - test-core-tasks:
           filters:
             <<: *ignored-branches
           requires:

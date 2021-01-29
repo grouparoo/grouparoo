@@ -241,14 +241,12 @@ class Generator {
   }
 
   core_job_name_list() {
-    const indent = 12;
     const prefix = " ".repeat(12) + "- ";
     const coreJobList = this.jobList.filter((j) => j.type === "core");
     return coreJobList.map((j) => `${prefix}${j.job_name}`).join("\n");
   }
 
   job_name_list() {
-    const indent = 12;
     const prefix = " ".repeat(12) + "- ";
     return this.jobList
       .map((j) =>
