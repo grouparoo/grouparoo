@@ -258,7 +258,9 @@ class Generator {
       return [];
     }
 
-    return ["core/dist", "ui/.next"].map((p) => `${prefix}${p}`).join("\n");
+    return ["core/dist", "ui/ui-community/.next", "ui/ui-enterprise/.next"]
+      .map((p) => `${prefix}${p}`)
+      .join("\n");
   }
 
   renderJob(job, name) {

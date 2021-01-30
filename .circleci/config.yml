@@ -98,7 +98,8 @@ jobs:
           <<: *core-cache-options
           paths:
             - core/dist
-            - ui/.next
+            - ui/ui-community/.next
+            - ui/ui-enterprise/.next
   license-checker:
     docker:
       - image: circleci/node:12
