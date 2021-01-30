@@ -39,7 +39,7 @@ export default function Page(props) {
           <Col style={{ textAlign: "center" }}>
             <Image
               style={{ maxHeight: 50, margin: 40 }}
-              src="/images/logo/logo-and-wordmark-black-words.svg"
+              src="/public/images/logo/logo-and-wordmark-black-words.svg"
             />
             <br />
             <h2>Sync, Segment, and Send your Product Data Everywhere</h2>

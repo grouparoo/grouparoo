@@ -184,7 +184,7 @@ export default function Navigation(props) {
                     marginTop: 30,
                     marginBottom: 20,
                   }}
-                  src="/images/logo/logo.svg"
+                  src="/public/images/logo/logo.svg"
                 />
               </a>
             </Link>

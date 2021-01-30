@@ -26,10 +26,10 @@ core/property-ops-dictionary-*.json
 
 # Web
 .next
-!ui/*/log
+!ui/*/*/log
 web/out
 core/public/javascript/*
-ui/public/javascript/*
+ui/*/public/javascript/*
 
 # Builds
 *.tgz
