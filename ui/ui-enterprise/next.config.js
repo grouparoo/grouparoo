@@ -22,7 +22,7 @@ module.exports = withSourceMaps({
   },
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
-    ["react", "react-dom"].forEach((_package) => {
+    ["react", "react-dom", "next"].forEach((_package) => {
       config.resolve.alias[_package] = getPluginPath(_package);
     });
 
@@ -32,7 +32,12 @@ module.exports = withSourceMaps({
     });
 
     config.module.rules.push({
-      test: /grouparoo\/ui\/.*.ts$|grouparoo\/ui\/.*.tsx$/,
+      test: /grouparoo\/ui*\/.*.ts$|grouparoo\/ui*\/.*.tsx$/,
+      use: [options.defaultLoaders.babel],
+    });
+
+    config.module.rules.push({
+      test: /..\/ui-components\/.*.ts$|..\/ui-components\/.*.tsx$/,
       use: [options.defaultLoaders.babel],
     });
 
