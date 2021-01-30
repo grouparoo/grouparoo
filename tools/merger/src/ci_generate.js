@@ -53,8 +53,11 @@ class Generator {
   compile() {
     this.addCommands();
     this.addCore();
-    this.addUi();
-    this.addStagingPublic();
+    this.addUiComponents();
+    this.addUiCommunity();
+    this.addUiEnterprise();
+    this.addStagingCommunity();
+    this.addStagingEnterprise();
     this.addPlugins();
     this.addCLI();
 
@@ -98,10 +101,28 @@ class Generator {
     });
   }
 
-  addUi() {
+  addUiComponents() {
     this.jobList.push({
       type: "ui",
-      job_name: `test-ui`,
+      job_name: `test-ui-components`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+  }
+
+  addUiCommunity() {
+    this.jobList.push({
+      type: "ui",
+      job_name: `test-ui-community`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+  }
+
+  addUiEnterprise() {
+    this.jobList.push({
+      type: "ui",
+      job_name: `test-ui-enterprise`,
       relative_path: `ui`,
       name: "ui",
     });
