@@ -64,6 +64,9 @@ jobs:
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
             - tools/merger/node_modules
+            - ui/ui-community/node_modules
+            - ui/ui-components/node_modules
+            - ui/ui-enterprise/node_modules
       - save_cache:
           <<: *dist-cache-options
           paths:
