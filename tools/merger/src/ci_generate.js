@@ -104,6 +104,7 @@ class Generator {
   addUiComponents() {
     this.jobList.push({
       type: "ui",
+      test_section: "ui-components",
       job_name: `test-ui-components`,
       relative_path: `ui`,
       name: "ui",
@@ -113,6 +114,7 @@ class Generator {
   addUiCommunity() {
     this.jobList.push({
       type: "ui",
+      test_section: "ui-community",
       job_name: `test-ui-community`,
       relative_path: `ui`,
       name: "ui",
@@ -122,6 +124,7 @@ class Generator {
   addUiEnterprise() {
     this.jobList.push({
       type: "ui",
+      test_section: "ui-enterprise",
       job_name: `test-ui-enterprise`,
       relative_path: `ui`,
       name: "ui",

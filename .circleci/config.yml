@@ -545,7 +545,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-community:
@@ -587,7 +587,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd ui/ui-community && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-ui-enterprise:
@@ -629,7 +629,7 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
   test-staging-community:
