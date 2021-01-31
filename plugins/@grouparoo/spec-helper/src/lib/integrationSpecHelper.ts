@@ -1,6 +1,6 @@
 import path from "path";
 import { spawn } from "child_process";
-import fetch from "isomorphic-fetch";
+import axios from "axios";
 
 export namespace IntegrationSpecHelper {
   export async function spawnPromise(
@@ -53,7 +53,7 @@ export namespace IntegrationSpecHelper {
 
     const actionUrl = `${url}/api/1/status/public`;
     try {
-      await fetch(actionUrl).then((r) => r.json());
+      await axios.get(actionUrl);
       // console.log(`API up and running @ ${url}`);
     } catch (error) {
       // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
