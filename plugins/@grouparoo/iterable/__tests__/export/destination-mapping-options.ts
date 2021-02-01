@@ -65,7 +65,7 @@ describe("iterable/destinationMappingOptions", () => {
     expect(knownFieldUserId.important).toBe(true);
 
     const knownFieldPhoneNumber = known.find((f) => f.key === "phoneNumber");
-    expect(knownFieldPhoneNumber.type).toBe("string");
+    expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
     expect(knownFieldPhoneNumber.important).toBe(true);
 
     const knownFieldPhoneSignupDate = known.find((f) => f.key === "signupDate");

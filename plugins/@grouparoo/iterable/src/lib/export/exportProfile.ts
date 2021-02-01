@@ -7,10 +7,12 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
     return sendProfile(args);
   } catch (error) {
     if (error?.response?.status === 429) {
-      return { error, success: false, retryDelay: 1000 * 11 }; // the most common rate-limit error from hubspot is in 10-second intervals
-    } else {
-      throw error;
+      let retryIn = 60; // per minute
+      // add some random time to that to spread it out
+      retryIn += Math.floor(Math.random() * 30) + 1;
+      return { error, success: false, retryDelay: 1000 * retryIn };
     }
+    throw error;
   }
 };
 
@@ -38,9 +40,9 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
   if (toDelete) {
     if (currentEmail && currentEmail !== email) {
-      await client.users.delete(currentEmail);
+      await client.users.delete({ email: currentEmail });
     } else {
-      await client.users.delete(email);
+      await client.users.delete({ email });
     }
     return { success: true };
   } else {
@@ -67,6 +69,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       { dataFields: formattedDataFields }
     );
 
+    let currentUser = await getUser(client, email);
     if (currentEmail && currentEmail !== email) {
       const oldUser = await getUser(client, currentEmail);
       if (oldUser) {
@@ -75,11 +78,12 @@ export const sendProfile: ExportProfilePluginMethod = async ({
           emailPayload["currentUserId"] = newProfileProperties.userId;
         }
         await client.users.updateEmail(emailPayload);
+        currentUser = oldUser;
+        currentUser.email = email;
       }
     }
 
     await client.users.update(payload);
-    const currentUser = await getUser(client, email);
 
     // add to lists
     for (const groupToAdd of newGroups) {

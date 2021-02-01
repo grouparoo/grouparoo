@@ -70,14 +70,14 @@ function filterLists(allLists, groupName) {
 
 export async function addToList(client, appGuid, appOptions, user, groupName) {
   const listId = await getListId(client, appGuid, appOptions, groupName);
-  if (
-    !user.dataFields.emailListIds ||
-    !user.dataFields.emailListIds.includes(listId)
-  )
-    await client.lists.subscribe({
-      listId,
-      subscribers: [{ email: user.email }],
-    });
+  const currentListIds = user?.dataFields?.emailListIds || [];
+  if (currentListIds.includes(listId)) {
+    return;
+  }
+  await client.lists.subscribe({
+    listId,
+    subscribers: [{ email: user.email }],
+  });
 }
 
 export async function removeFromList(
@@ -88,13 +88,12 @@ export async function removeFromList(
   groupName
 ) {
   const listId = await getListId(client, appGuid, appOptions, groupName);
-  if (
-    user.dataFields.emailListIds ||
-    user.dataFields.emailListIds.includes(listId)
-  ) {
-    await client.lists.unsubscribe({
-      listId,
-      subscribers: [{ email: user.email }],
-    });
+  const currentListIds = user?.dataFields?.emailListIds || [];
+  if (!currentListIds.includes(listId)) {
+    return;
   }
+  await client.lists.unsubscribe({
+    listId,
+    subscribers: [{ email: user.email }],
+  });
 }

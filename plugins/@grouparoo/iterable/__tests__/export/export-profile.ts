@@ -34,11 +34,11 @@ let listIds = {};
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/export-profile");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -78,10 +78,10 @@ async function deleteUsers(suppressErrors) {
 
 async function deleteLists(suppressErrors) {
   try {
-    for (const groupToDelete in [listOne, listTwo, listThree]) {
+    for (const groupToDelete of [listOne, listTwo, listThree, listFour]) {
       const listId = await getListId(groupToDelete);
       if (listId) {
-        await apiClient.users.delete(listId);
+        await apiClient.lists.delete({ listId });
       }
     }
   } catch (err) {
@@ -360,7 +360,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock);
+    await indexContacts(newNock, 30 * 1000);
 
     const user = await getUser(alternativeEmail);
     expect(user.email).toBe(alternativeEmail);
@@ -387,7 +387,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock);
+    await indexContacts(newNock, 30 * 1000);
 
     const user = await getUser(otherEmail);
     expect(user.email).toBe(otherEmail);
@@ -432,7 +432,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: true,
     });
-    await indexContacts(newNock);
+    await indexContacts(newNock, 30 * 1000);
 
     const user = await getUser(otherEmail);
     expect(user).toBe(null);
