@@ -8,6 +8,7 @@ export default function Page(props) {
 
   let CTALink = "/session/sign-in";
   let CTAMessage = "Sign In";
+  let CTATarget: string;
 
   if (navigationMode === "authenticated") {
     CTAMessage = "View Dashboard";
@@ -26,6 +27,7 @@ export default function Page(props) {
   ) {
     CTAMessage = "Configure your Grouparoo Server";
     CTALink = "https://www.grouparoo.com/docs";
+    CTATarget = "_blank";
   }
 
   return (
@@ -61,7 +63,9 @@ export default function Page(props) {
                 variant="primary"
                 size="lg"
                 onClick={() => {
-                  router.push(CTALink);
+                  CTATarget
+                    ? window.open(CTALink, CTATarget)
+                    : router.push(CTALink);
                 }}
               >
                 {CTAMessage}
