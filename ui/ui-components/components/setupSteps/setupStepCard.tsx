@@ -62,9 +62,11 @@ export default function SetupStepCard({
               {step.complete ? null : (
                 <Row>
                   <Col md={6}>
-                    <Button size="sm" href={step.href}>
-                      {step.cta}
-                    </Button>
+                    {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                      <Button size="sm" href={step.href}>
+                        {step.cta}
+                      </Button>
+                    ) : null}
                   </Col>
                   <Col md={6} style={{ textAlign: "right" }}>
                     {step.skipped ? (
