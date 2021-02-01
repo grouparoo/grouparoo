@@ -74,7 +74,7 @@ export async function loadConfigObjects(configDir: string) {
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
   let payload;
   if (file.match(/\.json$/)) {
-    payload = JSON5.parse(fs.readFileSync(file));
+    payload = JSON5.parse(fs.readFileSync(file).toString());
   } else {
     payload = require(file);
   }
