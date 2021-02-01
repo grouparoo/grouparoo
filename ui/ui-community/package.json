@@ -54,6 +54,7 @@
     "swagger-ui": "3.40.0"
   },
   "devDependencies": {
+    "@grouparoo/core": "^0.2.0-alpha.16",
     "@grouparoo/spec-helper": "^0.2.0-alpha.16",
     "@grouparoo/ui-components": "^0.2.0-alpha.16",
     "@types/jest": "*",
