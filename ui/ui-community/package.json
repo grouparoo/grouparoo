@@ -51,6 +51,7 @@
     "react-markdown": "5.0.3",
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
+    "styled-jsx": "3.4.1",
     "swagger-ui": "3.40.0"
   },
   "devDependencies": {

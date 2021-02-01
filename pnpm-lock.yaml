@@ -941,6 +941,7 @@ importers:
       react-markdown: 5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6
       react-moment: 1.1.1_eafa27d017aeb76e4fdf82e703ca42a1
       stacktrace-js: 2.0.2
+      styled-jsx: 3.4.1_react@16.14.0
       swagger-ui: 3.40.0
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -992,6 +993,7 @@ importers:
       react-markdown: 5.0.3
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
+      styled-jsx: 3.4.1
       swagger-ui: 3.40.0
       ts-jest: 26.4.4
       typescript: 4.1.3
@@ -1100,6 +1102,7 @@ importers:
       react-markdown: 5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6
       react-moment: 1.1.1_eafa27d017aeb76e4fdf82e703ca42a1
       stacktrace-js: 2.0.2
+      styled-jsx: 3.4.1_react@16.14.0
       swagger-ui: 3.40.0
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1153,6 +1156,7 @@ importers:
       react-markdown: 5.0.3
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
+      styled-jsx: 3.4.1
       swagger-ui: 3.40.0
       ts-jest: 26.4.4
       typescript: 4.1.3
@@ -9544,7 +9548,6 @@ packages:
   /json5/2.2.0:
     dependencies:
       minimist: 1.2.5
-    dev: false
     engines:
       node: '>=6'
     hasBin: true
@@ -9817,7 +9820,7 @@ packages:
     dependencies:
       big.js: 5.2.2
       emojis-list: 3.0.0
-      json5: 2.1.3
+      json5: 2.2.0
     dev: true
     engines:
       node: '>=8.9.0'
@@ -14801,6 +14804,23 @@ packages:
       react: 15.x.x || 16.x.x || 17.x.x
     resolution:
       integrity: sha512-daAkGd5mqhbBhLd6jYAjYBa9LpxYCzsgo/f6qzPdFxVB8yoGbhxvzQgkC0pfmCVvW3JuAEBn0UzFLBfkHVZG1g==
+  /styled-jsx/3.4.1_react@16.14.0:
+    dependencies:
+      '@babel/helper-module-imports': 7.12.5
+      '@babel/types': 7.8.3
+      babel-plugin-syntax-jsx: 6.18.0
+      convert-source-map: 1.7.0
+      loader-utils: 1.2.3
+      react: 16.14.0
+      source-map: 0.7.3
+      string-hash: 1.1.3
+      stylis: 3.5.4
+      stylis-rule-sheet: 0.0.10_stylis@3.5.4
+    dev: false
+    peerDependencies:
+      react: 15.x.x || 16.x.x || 17.x.x
+    resolution:
+      integrity: sha512-Jl1pcQVTnHdsfePHxZ0GgxxgU3+KgiDKj9QTp2vZ0eifg2cgNV5RFdgfxcXvJyspsynUhF32opNZ4jmM1EIROA==
   /stylis-rule-sheet/0.0.10_stylis@3.5.4:
     dependencies:
       stylis: 3.5.4
