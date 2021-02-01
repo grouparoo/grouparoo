@@ -466,7 +466,7 @@ export namespace helper {
     return { profile, snapshot };
   }
 
-  export function recordNock(nockFile, updater: any) {
+  export function recordNock(nockFile, updater: any = {}) {
     nockFile = path.resolve(nockFile);
     if (fs.existsSync(nockFile)) {
       fs.unlinkSync(nockFile);
