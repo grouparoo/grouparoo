@@ -1,4 +1,4 @@
-Copyright (c) 2019-present Grouparoo Inc.
+Copyright (c) 2019-present Grouparoo, Inc.
 
 Portions of this software are licensed as follows:
 * This repository contains a number of individual packages, delimited by their own "package.json" file at the top-level directory of each package directory.

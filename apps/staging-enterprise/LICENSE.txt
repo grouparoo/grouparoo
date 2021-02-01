@@ -1,5 +1,5 @@
 The Grouparoo Enterprise (GE) License (the “GE License”)
-Copyright (c) 2021-present Grouparoo Inc.
+Copyright (c) 2021-present Grouparoo, Inc.
 
 With regard to the Grouparoo Enterprise Software:
 
