@@ -2,7 +2,7 @@ import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
 import { Row, Col, Badge, Alert } from "react-bootstrap";
 import Moment from "react-moment";
-import Link from "next/link";
+import Link from "../../../components/enterpriseLink";
 import { ResponsiveLine } from "@nivo/line";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";

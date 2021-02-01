@@ -1,6 +1,7 @@
 import { useApi } from "../../../hooks/useApi";
 import { Row, Col, Table, Alert } from "react-bootstrap";
 import Link from "next/link";
+import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
 import Moment from "react-moment";
 import ExportTabs from "../../../components/tabs/export";
@@ -29,12 +30,12 @@ export default function Page({
 
       <p>
         Destination:{" "}
-        <Link
+        <EnterpriseLink
           href="/destination/[guid]/edit"
           as={`/destination/${_export.destination.guid}/edit`}
         >
           <a>{_export.destination.name}</a>
-        </Link>
+        </EnterpriseLink>
         <br />
         Profile:{" "}
         <Link
