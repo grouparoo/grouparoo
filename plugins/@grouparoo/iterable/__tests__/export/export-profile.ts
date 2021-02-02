@@ -31,6 +31,13 @@ const listTwo = "List Two";
 const listThree = "List Three";
 const listFour = "List Four";
 const customField = "testCustomField";
+const brandNewEmail = "jake.jill@mailinator.com";
+const brandNewUserId = "jake.jill";
+const brandNewName = "Jake";
+const nonexistentEmail = "pilo.paz@mailinator.com";
+
+const invalidEmail = "000";
+const invalidDate = "GGG";
 
 let listIds = {};
 
@@ -74,6 +81,7 @@ async function deleteUsers(suppressErrors) {
       alternativeEmail,
       otherEmail,
       newEmail,
+      brandNewEmail,
     ]) {
       await apiClient.users.delete(emailToDelete);
     }
@@ -494,5 +502,59 @@ describe("iterable/exportProfile", () => {
     const listFourId = await getListId(listFour);
     expect(listFourId).not.toBe(null);
     expect(user.dataFields.emailListIds).toContain(listFourId);
+  });
+
+  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+    let brandNewUser = await getUser(brandNewEmail);
+    expect(brandNewUser).toBe(null);
+    const nonexistentUser = await getUser(nonexistentEmail);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email: nonexistentEmail },
+      newProfileProperties: {
+        email: brandNewEmail,
+        userId: brandNewUserId,
+        name: brandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+
+    brandNewUser = await getUser(brandNewEmail);
+    expect(brandNewUser).not.toBe(null);
+    expect(brandNewUser.userId).toBe(brandNewUserId);
+    expect(brandNewUser.dataFields.name).toBe(brandNewName);
+  });
+
+  test("can add a user passing a invalid email", async () => {
+    await expect(
+      runExport({
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email: invalidEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow("Request failed with status code 400");
+  });
+
+  test("can update a user passing a invalid properties", async () => {
+    await expect(
+      runExport({
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email: brandNewEmail,
+          signupDate: invalidDate,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow("Request failed with status code 400");
   });
 });

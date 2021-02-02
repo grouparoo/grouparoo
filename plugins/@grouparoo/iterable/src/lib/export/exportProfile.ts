@@ -74,7 +74,14 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       if (newProfileProperties.userId) {
         emailPayload["currentUserId"] = newProfileProperties.userId;
       }
-      await client.users.updateEmail(emailPayload);
+      try {
+        await client.users.updateEmail(emailPayload);
+      } catch (err) {
+        const message = err?.response?.data?.msg || "";
+        if (!message.match(/user does not exist/i)) {
+          throw err;
+        }
+      }
     }
 
     await client.users.update(payload);
