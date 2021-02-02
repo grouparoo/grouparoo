@@ -105,6 +105,19 @@ export class Plugins extends Initializer {
         },
       ],
     });
+
+    // --- Add the UI pLugin --- //
+
+    const pluginManifest = getPluginManifest();
+    const uiPlugin = pluginManifest.plugins.find((p) =>
+      p.name.match(/^@grouparoo\/ui-/)
+    );
+    if (uiPlugin) {
+      this.registerPlugin({
+        name: uiPlugin.name,
+        icon: "/public/@grouparoo/logo.png",
+      });
+    }
   }
 
   async start() {

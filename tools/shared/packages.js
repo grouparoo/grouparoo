@@ -21,9 +21,17 @@ function appPackageFiles(glob) {
   return packageFiles;
 }
 
+function allUiFiles(glob) {
+  const packageFiles = [].concat(
+    glob.sync(path.join(rootPath, "ui", "*", "package.json"))
+  );
+  return packageFiles;
+}
+
 function allPackageFiles(glob) {
   const packageFiles = [].concat(
     appPackageFiles(glob),
+    allUiFiles(glob),
     glob.sync(path.join(rootPath, "internal", "*", "package.json")),
     glob.sync(path.join(rootPath, "tools", "*", "package.json"))
   );
@@ -44,5 +52,6 @@ module.exports = {
   allPackageFiles,
   allPackagePaths,
   allPluginPaths,
+  allUiFiles,
   appPackageFiles,
 };

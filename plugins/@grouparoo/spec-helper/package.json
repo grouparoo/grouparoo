@@ -29,6 +29,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "axios": "0.21.1",
     "faker": "5.1.0",
     "nock": "13.0.6",
     "sequelize": "5.22.3",

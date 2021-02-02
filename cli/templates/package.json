@@ -20,7 +20,7 @@
     "@grouparoo/redshift": "~~VERSION~~",
     "@grouparoo/salesforce": "~~VERSION~~",
     "@grouparoo/snowflake": "~~VERSION~~",
-    "@grouparoo/ui": "~~VERSION~~",
+    "@grouparoo/ui-community": "~~VERSION~~",
     "@grouparoo/zendesk": "~~VERSION~~"
   },
   "scripts": {
@@ -40,7 +40,7 @@
       "@grouparoo/redshift",
       "@grouparoo/salesforce",
       "@grouparoo/snowflake",
-      "@grouparoo/ui",
+      "@grouparoo/ui-community",
       "@grouparoo/zendesk"
     ],
     "includedFiles": [

@@ -2,6 +2,7 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { api } from "actionhero";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {

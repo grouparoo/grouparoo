@@ -33,17 +33,13 @@ describe("actions/files", () => {
 
     beforeAll(async () => {
       const file = "/tmp/roo.png";
-      if (await fs.pathExists(file)) {
-        fs.unlinkSync(file);
-      }
+      if (await fs.pathExists(file)) fs.unlinkSync(file);
 
       await fs.copy(
         path.join(
           __dirname,
           "..",
           "..",
-          "..",
-          "ui",
           "public",
           "images",
           "logo",

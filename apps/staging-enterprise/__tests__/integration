@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+
+cd "`dirname "$0"`/.."
+
+printf "*** starting server ***\r\n"
+npm run start &
+
+sleep 10
+
+printf "*** checking status ***\r\n"
+curl http://localhost:3000/api/v1/status/public
+curl http://localhost:3000/api/v1/status/private
+
+printf "It worked!\r\n"
+pkill -f dist/grouparoo
+wait
+
+printf "Done!\r\n"

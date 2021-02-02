@@ -8,7 +8,9 @@ export const DEFAULT = {
     let nextRootPath: string;
     const pluginManifest = getPluginManifest();
     const uiPlugin = pluginManifest.plugins.find(
-      (p) => p.name === "@grouparoo/ui"
+      (p) =>
+        p.name === "@grouparoo/ui-community" ||
+        p.name === "@grouparoo/ui-enterprise"
     );
     if (uiPlugin) nextRootPath = uiPlugin.path;
 

@@ -1,8 +1,9 @@
-Copyright (c) 2019-present Grouparoo Inc.
+Copyright (c) 2019-present Grouparoo, Inc.
 
 Portions of this software are licensed as follows:
 * This repository contains a number of individual packages, delimited by their own "package.json" file at the top-level directory of each package directory.
   * For example, all content that resides under the "core/" directory of this repository is licensed under the license defined in "core/LICENSE.txt".  All content that resides under the "plugins/@grouparoo/mysql" directory of this repository is licensed under the license defined in "plugins/@grouparoo/mysql/LICENSE.txt".
+  * ui/ui-enterprise is not an open source package, and contains its own license.
   * The "license" field in each package's "package.json" file will also reflect the contents of each package's LICENSE.txt using the relevant SPDX identifier (i.e. "MPL-2.0").
 * All third party components incorporated into the Grouparoo Software are licensed under the original license provided by the owner of the applicable component.
 * The license for the remaining software and documentation in this repository is governed by the the license defined below (Mozilla Public License Version 2.0).
