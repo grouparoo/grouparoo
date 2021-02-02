@@ -147,7 +147,7 @@ function cleanExternalId(external_id) {
   if (!external_id) {
     return null;
   }
-  external_id = external_id.trim();
+  external_id = external_id.toString().trim();
   if (external_id.length === 0) {
     return null;
   }
@@ -162,7 +162,7 @@ function trimLower(value) {
   if (!value) {
     return null;
   }
-  value = value.toLowerCase().trim();
+  value = value.toString().toLowerCase().trim();
   if (value.length === 0) {
     return null;
   }
