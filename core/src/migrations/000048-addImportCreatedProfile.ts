@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     await migration.addColumn("imports", "createdProfile", {
       type: DataTypes.BOOLEAN,

@@ -12,7 +12,7 @@ const tables = [
   "teamMembers",
 ];
 
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     for (const i in tables) {
       const table = tables[i];
