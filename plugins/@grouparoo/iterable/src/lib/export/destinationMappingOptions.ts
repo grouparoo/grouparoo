@@ -12,9 +12,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   const client = await connect(appOptions);
   const required = getRequiredFields();
 
-  const builtInfields = getBuiltInFields();
-  const userField = await getUserFields(client);
-  const known = builtInfields.concat(userField);
+  const known = await getUserFields(client);
 
   return {
     labels: {
@@ -46,18 +44,12 @@ const isImportant = (key): Boolean => {
   return importantFields.includes(key);
 };
 
-export const getBuiltInFields = (): Array<{
-  key: string;
-  type: DestinationMappingOptionsResponseTypes;
-  important?: boolean;
-}> => {
-  return [
-    { key: "email", type: "email", important: true },
-    { key: "phoneNumber", type: "phoneNumber", important: true },
-  ];
-};
-
-const mapTypesFromIterableToGrouparoo = (iterableType) => {
+const mapTypesFromIterableToGrouparoo = (fieldKey, iterableType) => {
+  // some default fields have known type
+  switch (fieldKey) {
+    case "phoneNumber":
+      return "phoneNumber";
+  }
   const map = {
     string: "string",
     long: "integer",
