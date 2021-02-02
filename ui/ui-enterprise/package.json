@@ -4,7 +4,7 @@
   "description": "The Grouparoo Enterprise Web UI",
   "version": "0.2.0-alpha.16",
   "license": "UNLICENSED",
-  "private": true,
+  "private": false,
   "publishConfig": {
     "access": "restricted"
   },
