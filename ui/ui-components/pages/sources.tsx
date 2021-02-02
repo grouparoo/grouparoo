@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, Fragment } from "react";
 import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
@@ -14,11 +14,14 @@ import { Models, Actions } from "../utils/apiData";
 import { Button } from "react-bootstrap";
 
 export default function Page(props) {
-  const { errorHandler } = props;
+  const { successHandler, errorHandler } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [sources, setSources] = useState<Models.SourceType[]>(props.sources);
+  const [runs, setRuns] = useState<{ [key: string]: Models.RunType }>(
+    props.runs
+  );
   const [total, setTotal] = useState(props.total);
 
   // pagination
@@ -36,14 +39,32 @@ export default function Page(props) {
       limit,
       offset,
     });
+
+    const _runs = {};
+    for (const i in sources) {
+      _runs[sources[i].guid] = await loadRun(sources[i], execApi);
+    }
+
     setLoading(false);
     if (response?.sources) {
       setSources(response.sources);
       setTotal(response.total);
+      setRuns(_runs);
 
       if (response.total === 0) {
         router.push("/source/new");
       }
+    }
+  }
+
+  async function enqueueScheduleRun(source: Models.SourceType) {
+    setLoading(true);
+    try {
+      await execApi("post", `/schedule/${source.schedule.guid}/run`);
+      successHandler.set({ message: "run enqueued" });
+    } finally {
+      setLoading(false);
+      load();
     }
   }
 
@@ -73,50 +94,87 @@ export default function Page(props) {
             <th>App</th>
             <th>State</th>
             <th>Created At</th>
+            <th>Schedule</th>
           </tr>
         </thead>
         <tbody>
           {sources.map((source) => {
+            const schedule = source.schedule;
+            const recurringFrequencyMinutes = schedule?.recurringFrequency
+              ? schedule.recurringFrequency / (60 * 1000)
+              : null;
+            const run = runs[source.guid];
+
             return (
-              <tr key={`source-${source.guid}`}>
-                <td>
-                  <AppIcon src={source.app?.icon} />
-                </td>
-                <td>
-                  <Link
-                    href="/source/[guid]/overview"
-                    as={`/source/${source.guid}/overview`}
-                  >
-                    <a>
-                      <strong>
-                        {source.name ||
-                          `${source.state} created on ${
-                            new Date(source.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
-                    </a>
-                  </Link>
-                </td>
-                <td>{source.type}</td>
-                <td>
-                  <Link
-                    href="/app/[guid]/edit"
-                    as={`/app/${source.app.guid}/edit`}
-                  >
-                    <a>
-                      <strong>{source.app.name}</strong>
-                    </a>
-                  </Link>
-                </td>
-                <td>
-                  <StateBadge state={source.state} />
-                </td>
-                <td>
-                  <Moment fromNow>{source.createdAt}</Moment>
-                </td>
-              </tr>
+              <Fragment key={`source-${source.guid}`}>
+                <tr>
+                  <td>
+                    <AppIcon src={source.app?.icon} />
+                  </td>
+                  <td>
+                    <Link
+                      href="/source/[guid]/overview"
+                      as={`/source/${source.guid}/overview`}
+                    >
+                      <a>
+                        <strong>
+                          {source.name ||
+                            `${source.state} created on ${
+                              new Date(source.createdAt)
+                                .toLocaleString()
+                                .split(",")[0]
+                            }`}
+                        </strong>
+                      </a>
+                    </Link>
+                  </td>
+                  <td>{source.type}</td>
+                  <td>
+                    <Link
+                      href="/app/[guid]/edit"
+                      as={`/app/${source.app.guid}/edit`}
+                    >
+                      <a>
+                        <strong>{source.app.name}</strong>
+                      </a>
+                    </Link>
+                  </td>
+                  <td>
+                    <StateBadge state={source.state} />
+                  </td>
+                  <td>
+                    <Moment fromNow>{source.createdAt}</Moment>
+                  </td>
+                  <td>
+                    {schedule ? (
+                      <>
+                        Frequency:{" "}
+                        {schedule.recurring
+                          ? `Every ${recurringFrequencyMinutes} minutes`
+                          : "Not recurring"}
+                        <br />
+                        Last Run:{" "}
+                        {run ? (
+                          <Moment fromNow>{run?.createdAt}</Moment>
+                        ) : (
+                          "Never"
+                        )}
+                        <br />
+                        <Button
+                          variant="outline-success"
+                          size="sm"
+                          disabled={run.state === "running"}
+                          onClick={() => enqueueScheduleRun(source)}
+                        >
+                          Run Now
+                        </Button>
+                      </>
+                    ) : (
+                      "No Schedule"
+                    )}
+                  </td>
+                </tr>
+              </Fragment>
             );
           })}
         </tbody>
@@ -152,5 +210,27 @@ Page.getInitialProps = async (ctx) => {
     limit,
     offset,
   });
-  return { sources, total };
+
+  const runs = {};
+  for (const i in sources) {
+    runs[sources[i].guid] = await loadRun(sources[i], execApi);
+  }
+
+  return { sources, total, runs };
 };
+
+async function loadRun(source: Models.SourceType, execApi) {
+  if (!source.schedule) return;
+  const { runs }: { runs: Models.RunType[] } = await execApi(
+    "get",
+    `/runs`,
+    {
+      guid: source.schedule.guid,
+      limit: 1,
+    },
+    null,
+    null,
+    false
+  );
+  return runs[0];
+}
