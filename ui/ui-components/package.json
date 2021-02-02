@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-components",
   "description": "Shared Grouparoo UI Components & Pages",
-  "version": "0.2.0-alpha.16",
+  "version": "0.2.0-alpha.17",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -25,13 +25,12 @@
     "test": "jest",
     "lint": "prettier --check pages components classes client utils hooks __tests__"
   },
-  "dependencies": {},
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.34",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "@grouparoo/core": "^0.2.0-alpha.16",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.16",
+    "@grouparoo/core": "^0.2.0-alpha.17",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.17",
     "@nivo/line": "0.62.0",
     "@types/jest": "*",
     "@types/react": "*",
