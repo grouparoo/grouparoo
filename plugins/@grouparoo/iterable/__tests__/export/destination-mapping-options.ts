@@ -42,7 +42,7 @@ describe("iterable/destinationMappingOptions", () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client);
     const phoneNumber = fields.find((f) => f.key === "phoneNumber");
-    expect(phoneNumber.type).toBe("string");
+    expect(phoneNumber.type).toBe("phoneNumber");
     expect(phoneNumber.important).toBe(true);
     const decimal = fields.find((f) => f.key === "userId");
     expect(decimal.type).toBe("string");

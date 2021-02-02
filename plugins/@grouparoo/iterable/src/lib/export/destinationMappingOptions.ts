@@ -78,6 +78,7 @@ export const getUserFields = async (
   for (const [key, value] of Object.entries(fields["fields"])) {
     if (value !== "object" && key !== "email") {
       const type: DestinationMappingOptionsResponseTypes = mapTypesFromIterableToGrouparoo(
+        key,
         value
       );
       if (type) {
