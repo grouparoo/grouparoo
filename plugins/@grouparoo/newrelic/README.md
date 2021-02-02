@@ -27,8 +27,9 @@ Install the `@grouparoo/newrelic` plugin into your `package.json` file manually 
 }
 ```
 
-Then set an environment variable.
+Then set the environment variables.
 
 ```
 NEW_RELIC_LICENSE_KEY="your.api.key.here"
+NEW_RELIC_APP_NAME="grouparoo.project.name"
 ```
