@@ -163,7 +163,7 @@ export default function Page(props) {
                         <Button
                           variant="outline-success"
                           size="sm"
-                          disabled={run.state === "running"}
+                          disabled={run?.state === "running"}
                           onClick={() => enqueueScheduleRun(source)}
                         >
                           Run Now
