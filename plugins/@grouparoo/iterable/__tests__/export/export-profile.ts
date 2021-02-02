@@ -22,6 +22,9 @@ const otherEmail = "sandro.arturo@mailinator.com";
 const name = "Caio";
 const alternativeName = "Evan";
 const otherName = "Lucas";
+const newEmail = "carlos.solimoes@mailinator.com";
+const newName = "Carlos";
+const newUserId = "testuser456";
 const exampleDate = new Date(1597870204 * 1000);
 const listOne = "List One";
 const listTwo = "List Two";
@@ -66,7 +69,12 @@ async function getListId(listName): Promise<any> {
 
 async function deleteUsers(suppressErrors) {
   try {
-    for (const emailToDelete of [email, alternativeEmail, otherEmail]) {
+    for (const emailToDelete of [
+      email,
+      alternativeEmail,
+      otherEmail,
+      newEmail,
+    ]) {
       await apiClient.users.delete(emailToDelete);
     }
   } catch (err) {
@@ -94,7 +102,7 @@ async function deleteLists(suppressErrors) {
 async function cleanUp(suppressErrors) {
   await deleteUsers(suppressErrors);
   await deleteLists(suppressErrors);
-  await indexContacts(newNock);
+  await indexContacts(newNock, 30 * 1000);
 }
 
 async function runExport({
@@ -360,7 +368,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 30 * 1000);
+    await indexContacts(newNock);
 
     const user = await getUser(alternativeEmail);
     expect(user.email).toBe(alternativeEmail);
@@ -387,7 +395,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 30 * 1000);
+    await indexContacts(newNock);
 
     const user = await getUser(otherEmail);
     expect(user.email).toBe(otherEmail);
@@ -432,7 +440,7 @@ describe("iterable/exportProfile", () => {
       newGroups: [],
       toDelete: true,
     });
-    await indexContacts(newNock, 30 * 1000);
+    await indexContacts(newNock);
 
     const user = await getUser(otherEmail);
     expect(user).toBe(null);
@@ -459,5 +467,32 @@ describe("iterable/exportProfile", () => {
 
     user = await getUser(otherEmail);
     expect(user).toBe(null);
+  });
+
+  test("can add a user and add this user to a list at the same time.", async () => {
+    let user = await getUser(newEmail);
+    expect(user).toBe(null);
+
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: newEmail,
+        userId: newUserId,
+        name: newName,
+      },
+      oldGroups: [],
+      newGroups: [listFour],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+
+    user = await getUser(newEmail);
+    expect(user).not.toBe(null);
+    expect(user.userId).toBe(newUserId);
+    expect(user.dataFields.name).toBe(newName);
+
+    const listFourId = await getListId(listFour);
+    expect(listFourId).not.toBe(null);
+    expect(user.dataFields.emailListIds).toContain(listFourId);
   });
 });

@@ -69,32 +69,27 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       { dataFields: formattedDataFields }
     );
 
-    let currentUser = await getUser(client, email);
     if (currentEmail && currentEmail !== email) {
-      const oldUser = await getUser(client, currentEmail);
-      if (oldUser) {
-        const emailPayload = { currentEmail, newEmail: email };
-        if (newProfileProperties.userId) {
-          emailPayload["currentUserId"] = newProfileProperties.userId;
-        }
-        await client.users.updateEmail(emailPayload);
-        currentUser = oldUser;
-        currentUser.email = email;
+      const emailPayload = { currentEmail, newEmail: email };
+      if (newProfileProperties.userId) {
+        emailPayload["currentUserId"] = newProfileProperties.userId;
       }
+      await client.users.updateEmail(emailPayload);
     }
 
     await client.users.update(payload);
 
     // add to lists
     for (const groupToAdd of newGroups) {
-      await addToList(client, appGuid, appOptions, currentUser, groupToAdd);
+      await addToList(client, appGuid, appOptions, email, groupToAdd);
     }
 
     // remove from lists
     for (const group of oldGroups) {
       if (!newGroups.includes(group))
-        await removeFromList(client, appGuid, appOptions, currentUser, group);
+        await removeFromList(client, appGuid, appOptions, email, group);
     }
+
     return { success: true };
   }
 };

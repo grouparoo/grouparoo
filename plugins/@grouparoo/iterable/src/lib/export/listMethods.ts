@@ -68,15 +68,11 @@ function filterLists(allLists, groupName) {
   return null;
 }
 
-export async function addToList(client, appGuid, appOptions, user, groupName) {
+export async function addToList(client, appGuid, appOptions, email, groupName) {
   const listId = await getListId(client, appGuid, appOptions, groupName);
-  const currentListIds = user?.dataFields?.emailListIds || [];
-  if (currentListIds.includes(listId)) {
-    return;
-  }
   await client.lists.subscribe({
     listId,
-    subscribers: [{ email: user.email }],
+    subscribers: [{ email }],
   });
 }
 
@@ -84,16 +80,12 @@ export async function removeFromList(
   client,
   appGuid,
   appOptions,
-  user,
+  email,
   groupName
 ) {
   const listId = await getListId(client, appGuid, appOptions, groupName);
-  const currentListIds = user?.dataFields?.emailListIds || [];
-  if (!currentListIds.includes(listId)) {
-    return;
-  }
   await client.lists.unsubscribe({
     listId,
-    subscribers: [{ email: user.email }],
+    subscribers: [{ email }],
   });
 }
