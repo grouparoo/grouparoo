@@ -47,10 +47,10 @@ export default function LogsList(props) {
           }}
         >
           {logs.map((log, idx) => (
-            <li key={`log-${log.guid}`}>
+            <li key={`log-${log.id}`}>
               <span>[ {formatCreatedAt(log.createdAt)} ]</span>{" "}
               <strong>
-                <a href={`/object/${log.ownerGuid}`}>
+                <a href={`/object/${log.ownerId}`}>
                   {log.topic}/{log.verb}
                 </a>
               </strong>{" "}

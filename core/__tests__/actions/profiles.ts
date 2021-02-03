@@ -13,7 +13,7 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
 
 describe("actions/profiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await helper.factories.properties();
@@ -56,7 +56,7 @@ describe("actions/profiles", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       expect(profile.state).toBe("pending");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [123],
@@ -69,13 +69,13 @@ describe("actions/profiles", () => {
         purchaseAmounts: [null],
         purchases: [null],
       });
-      guid = profile.guid;
+      id = profile.id;
     });
 
     test("a writer can edit a property of a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         properties: { userId: 999 },
       };
       const { error, profile } = await specHelper.runAction(
@@ -89,7 +89,7 @@ describe("actions/profiles", () => {
     test("a writer can add a new property to a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         properties: {
           ltv: 123.45,
         },
@@ -99,7 +99,7 @@ describe("actions/profiles", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
@@ -117,7 +117,7 @@ describe("actions/profiles", () => {
     test("a writer can remove a new property from a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         removedProperties: ["ltv"],
       };
       const { error, profile } = await specHelper.runAction(
@@ -125,7 +125,7 @@ describe("actions/profiles", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       expect(profile.state).toBe("ready");
       expect(simpleProfileValues(profile.properties)).toEqual({
         userId: [999],
@@ -185,7 +185,7 @@ describe("actions/profiles", () => {
 
       connection.params = {
         csrfToken,
-        propertyGuid: emailProperty.guid,
+        propertyId: emailProperty.id,
         match: "@example.com",
       };
       const { error, profileProperties } = await specHelper.runAction(
@@ -206,7 +206,7 @@ describe("actions/profiles", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(run.guid).toBeTruthy();
+      expect(run.id).toBeTruthy();
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       const rulesCount = await Property.count();
@@ -216,7 +216,7 @@ describe("actions/profiles", () => {
     test("a writer can destroy a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, success } = await specHelper.runAction(
         "profile:destroy",
@@ -252,8 +252,8 @@ describe("actions/profiles", () => {
       test("a writer can add a profile to a manual group", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
-          profileGuid: profile.guid,
+          id: group.id,
+          profileId: profile.id,
         };
         const { error, success } = await specHelper.runAction(
           "group:addProfile",
@@ -272,8 +272,8 @@ describe("actions/profiles", () => {
 
         connection.params = {
           csrfToken,
-          guid: calculatedGroup.guid,
-          profileGuid: profile.guid,
+          id: calculatedGroup.id,
+          profileId: profile.id,
         };
         const { error } = await specHelper.runAction(
           "group:addProfile",
@@ -288,7 +288,7 @@ describe("actions/profiles", () => {
       test("the profile lists group memberships", async () => {
         connection.params = {
           csrfToken,
-          guid: profile.guid,
+          id: profile.id,
         };
         const { error, groups } = await specHelper.runAction(
           "profile:view",
@@ -296,14 +296,14 @@ describe("actions/profiles", () => {
         );
         expect(error).toBeUndefined();
         expect(groups.length).toBe(1);
-        expect(groups[0].guid).toBeTruthy();
+        expect(groups[0].id).toBeTruthy();
         expect(groups[0].name).toBe("new group");
       });
 
       test("the profiles in the group can be listed, and then include when the profile joined the group", async () => {
         connection.params = {
           csrfToken,
-          groupGuid: group.guid,
+          groupId: group.id,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -319,8 +319,8 @@ describe("actions/profiles", () => {
       test("a writer can remove a profile from a manual group", async () => {
         connection.params = {
           csrfToken,
-          guid: group.guid,
-          profileGuid: profile.guid,
+          id: group.id,
+          profileId: profile.id,
         };
         const { error, success } = await specHelper.runAction(
           "group:removeProfile",
@@ -331,7 +331,7 @@ describe("actions/profiles", () => {
 
         connection.params = {
           csrfToken,
-          guid: profile.guid,
+          id: profile.id,
         };
         const { error: removeError, groups } = await specHelper.runAction(
           "profile:view",
@@ -390,15 +390,15 @@ describe("actions/profiles", () => {
 
         connection.params = {
           csrfToken,
-          guid: group.guid,
-          profileGuid: mario.guid,
+          id: group.id,
+          profileId: mario.id,
         };
         await specHelper.runAction("group:addProfile", connection);
 
         connection.params = {
           csrfToken,
-          guid: group.guid,
-          profileGuid: peach.guid,
+          id: group.id,
+          profileId: peach.id,
         };
         await specHelper.runAction("group:addProfile", connection);
       }, 10 * 1000);
@@ -408,7 +408,7 @@ describe("actions/profiles", () => {
         for (const i in profiles) {
           connection.params = {
             csrfToken,
-            guid: profiles[i].guid,
+            id: profiles[i].id,
           };
           await specHelper.runAction("profile:destroy", connection);
         }
@@ -450,7 +450,7 @@ describe("actions/profiles", () => {
       test("returns all profiles and counts when there is no search (group), returning all properties", async () => {
         connection.params = {
           csrfToken,
-          groupGuid: group.guid,
+          groupId: group.id,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -510,7 +510,7 @@ describe("actions/profiles", () => {
       test("returns exact matches when there is a search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          groupGuid: group.guid,
+          groupId: group.id,
           searchKey: "email",
           searchValue: "peach@mushroom-kingdom.gov",
         };
@@ -534,7 +534,7 @@ describe("actions/profiles", () => {
       test("returns case-insensitive matches when there is a search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          groupGuid: group.guid,
+          groupId: group.id,
           searchKey: "email",
           searchValue: "PEACH@MUSHroom-kingdom.gov",
         };
@@ -588,7 +588,7 @@ describe("actions/profiles", () => {
       test("returns fuzzy matching profiles and counts when there is no search (group), returning searched property", async () => {
         connection.params = {
           csrfToken,
-          groupGuid: group.guid,
+          groupId: group.id,
           searchKey: "email",
           searchValue: "%@mushroom-kingdom.gov",
         };
@@ -673,7 +673,7 @@ describe("actions/profiles", () => {
 
   describe("reader signed in", () => {
     let connection;
-    let teamGuid;
+    let teamId;
     let csrfToken;
 
     beforeAll(async () => {
@@ -683,16 +683,16 @@ describe("actions/profiles", () => {
         firstName: ["Toad"],
         email: ["toad@example.com"],
       });
-      guid = profile.guid;
+      id = profile.id;
 
       const readOnlyTeam = new Team({
         name: "read only team",
       });
       await readOnlyTeam.save();
-      teamGuid = readOnlyTeam.guid;
+      teamId = readOnlyTeam.id;
 
       const luigi = new TeamMember({
-        teamGuid,
+        teamId,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -737,7 +737,7 @@ describe("actions/profiles", () => {
     test("a reader cannot edit a group", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error } = await specHelper.runAction("profile:edit", connection);
       expect(error.message).toMatch(
@@ -748,14 +748,14 @@ describe("actions/profiles", () => {
     test("a reader can view a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, profile } = await specHelper.runAction(
         "profile:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
         firstName: ["Toad"],
         email: ["toad@example.com"],
@@ -772,7 +772,7 @@ describe("actions/profiles", () => {
     test("a reader cannot destroy a profile", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "profile:destroy",

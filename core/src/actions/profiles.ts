@@ -16,7 +16,7 @@ export class ProfilesList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
-      groupGuid: { required: false },
+      groupId: { required: false },
       searchKey: { required: false },
       searchValue: { required: false },
       state: { required: false },
@@ -32,7 +32,7 @@ export class ProfilesList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     let profiles: Profile[];
 
-    const where: { [propertyGuid: string]: any } = {};
+    const where: { [propertyId: string]: any } = {};
 
     if (
       params.searchKey &&
@@ -46,7 +46,7 @@ export class ProfilesList extends AuthenticatedAction {
         throw new Error(`cannot find a property for ${params.searchKey}`);
       }
 
-      where.propertyGuid = property.guid;
+      where.propertyId = property.id;
       if (
         params.searchValue.toLowerCase() === "null" ||
         params.searchValue === ""
@@ -60,8 +60,8 @@ export class ProfilesList extends AuthenticatedAction {
       }
     }
 
-    if (params.groupGuid) {
-      const group = await Group.findByGuid(params.groupGuid);
+    if (params.groupId) {
+      const group = await Group.findById(params.groupId);
 
       const groupMembers: Array<GroupMember> = await group.$get(
         "groupMembers",
@@ -81,7 +81,7 @@ export class ProfilesList extends AuthenticatedAction {
 
       profiles = await Profile.findAll({
         where: {
-          guid: { [Op.in]: groupMembers.map((mem) => mem.profileGuid) },
+          id: { [Op.in]: groupMembers.map((mem) => mem.profileId) },
           state: params.state ? params.state : { [Op.ne]: null },
         },
         include,
@@ -124,7 +124,7 @@ export class ProfilesList extends AuthenticatedAction {
         total,
         profiles: await Promise.all(
           profiles.map(async (p) => {
-            const profile = await Profile.findByGuid(p.guid);
+            const profile = await Profile.findById(p.id);
             return profile.apiData();
           })
         ),
@@ -141,7 +141,7 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
-      propertyGuid: { required: true },
+      propertyId: { required: true },
       match: { required: true },
       limit: { required: false, default: 25 },
       offset: { required: false, default: 0 },
@@ -160,13 +160,13 @@ export class ProfileAutocompleteProfileProperty extends AuthenticatedAction {
           api.sequelize.fn("DISTINCT", api.sequelize.col("rawValue")),
           "rawValue",
         ],
-        "propertyGuid",
+        "propertyId",
       ],
       where: {
-        propertyGuid: params.propertyGuid,
+        propertyId: params.propertyId,
         rawValue: rawValueWhereClause,
       },
-      group: ["rawValue", "propertyGuid"],
+      group: ["rawValue", "propertyId"],
       limit: params.limit,
       offset: params.offset,
       order: params.order,
@@ -191,7 +191,7 @@ export class ProfilesImportAndUpdate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ session }) {
-    const run = await internalRun("teamMember", session.teamMember.guid);
+    const run = await internalRun("teamMember", session.teamMember.id);
     return { run: await run.apiData() };
   }
 }
@@ -230,12 +230,12 @@ export class ProfileImportAndExport extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findByGuid(params.guid);
+    const profile = await Profile.findById(params.id);
     await profile.sync();
     const groups = await profile.$get("groups");
 
@@ -255,14 +255,14 @@ export class ProfileEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       properties: { required: false, default: {} },
       removedProperties: { required: false, default: [] },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findByGuid(params.guid);
+    const profile = await Profile.findById(params.id);
 
     const oldGroups = await profile.$get("groups");
 
@@ -289,12 +289,12 @@ export class ProfileView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findByGuid(params.guid);
+    const profile = await Profile.findById(params.id);
     const groups = await profile.$get("groups");
     return {
       profile: await profile.apiData(),
@@ -311,12 +311,12 @@ export class ProfileDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "profile", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const profile = await Profile.findByGuid(params.guid);
+    const profile = await Profile.findById(params.id);
     await profile.destroy();
     return { success: true };
   }

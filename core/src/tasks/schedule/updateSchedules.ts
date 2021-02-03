@@ -33,7 +33,7 @@ export class UpdateSchedules extends CLSTask {
 
       const runningRuns = await Run.count({
         where: {
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         },
@@ -43,7 +43,7 @@ export class UpdateSchedules extends CLSTask {
 
       const lastCompleteRun = await Run.scope(null).findOne({
         where: {
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "complete",
         },
@@ -61,18 +61,18 @@ export class UpdateSchedules extends CLSTask {
         delta > schedule.recurringFrequency
       ) {
         const run = await Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
 
         await CLS.enqueueTask("schedule:run", {
-          scheduleGuid: schedule.guid,
-          runGuid: run.guid,
+          scheduleId: schedule.id,
+          runId: run.id,
         });
 
         log(
-          `[ run ] starting run ${run.guid} for schedule ${schedule.name} (${schedule.guid})`,
+          `[ run ] starting run ${run.id} for schedule ${schedule.name} (${schedule.id})`,
           "notice"
         );
       }

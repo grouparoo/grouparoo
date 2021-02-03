@@ -25,8 +25,8 @@ export default async (
   if (!profile) profile = await ProfileFactory();
   if (!destination) destination = await DestinationFactory();
 
-  props.profileGuid = profile.guid;
-  props.destinationGuid = destination.guid;
+  props.profileId = profile.id;
+  props.destinationId = destination.id;
 
   const mergedProps = await data(props);
   const instance = new Export(mergedProps);

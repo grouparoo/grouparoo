@@ -1,6 +1,6 @@
 import { config } from "actionhero";
 
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     if (config.sequelize.dialect === "sqlite") {
       await migration.removeIndex(

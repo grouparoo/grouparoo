@@ -195,19 +195,19 @@ export namespace plugin {
       rawData: row,
       data: mappedProfileProperties,
       creatorType: "run",
-      creatorGuid: run.guid,
+      creatorId: run.id,
     });
 
     return _import;
   }
 
   /**
-   * Given a fileGuid, download the file to this server and return the readable local path
+   * Given a fileId, download the file to this server and return the readable local path
    */
-  export async function getLocalFilePath(fileGuid: string): Promise<string> {
-    const file = await File.findOne({ where: { guid: fileGuid } });
+  export async function getLocalFilePath(fileId: string): Promise<string> {
+    const file = await File.findOne({ where: { id: fileId } });
 
-    if (!file) throw new Error(`cannot find a file with guid ${fileGuid}`);
+    if (!file) throw new Error(`cannot find a file with id ${fileId}`);
 
     const { localPath } = await api.files.downloadToServer(file);
     return localPath;
@@ -242,8 +242,8 @@ export namespace plugin {
       now: expandDates(new Date()),
       run: {},
       previousRun: {
-        guid: "",
-        creatorGuid: "",
+        id: "",
+        creatorId: "",
         creatorType: "",
         error: null,
         state: "mocked",
@@ -254,8 +254,8 @@ export namespace plugin {
 
     if (run) {
       data.run = {
-        guid: run.guid,
-        creatorGuid: run.creatorGuid,
+        id: run.id,
+        creatorId: run.creatorId,
         creatorType: run.creatorType,
         state: run.state,
         error: run.error,
@@ -267,8 +267,8 @@ export namespace plugin {
 
       if (previousRun) {
         data.previousRun = {
-          guid: previousRun.guid,
-          creatorGuid: previousRun.creatorGuid,
+          id: previousRun.id,
+          creatorId: previousRun.creatorId,
           creatorType: previousRun.creatorType,
           state: previousRun.state,
           error: previousRun.error,
@@ -323,10 +323,10 @@ export namespace plugin {
   }
 
   /**
-   * Takes a string with mustache variable (keys) and replaces them with the profile property guids
+   * Takes a string with mustache variable (keys) and replaces them with the profile property ids
    * ie: `select * where id = {{ userId }}` => `select * where id = {{ ppr_abc123 }}`
    */
-  export async function replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+  export async function replaceTemplateProfilePropertyKeysWithProfilePropertyId(
     string: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
@@ -337,17 +337,17 @@ export namespace plugin {
 
     const data = {};
     properties.forEach((rule) => {
-      data[rule.key] = `{{ ${rule.guid} }}`;
+      data[rule.key] = `{{ ${rule.id} }}`;
     });
 
     return MustacheUtils.strictlyRender(string, data);
   }
 
   /**
-   * Takes a string with mustache variable (guids) and replaces them with the profile property keys
+   * Takes a string with mustache variable (ids) and replaces them with the profile property keys
    * ie: `select * where id = {{ ppr_abc123 }}` => `select * where id = {{ userId }}`
    */
-  export async function replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+  export async function replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
     string: string
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
@@ -356,7 +356,7 @@ export namespace plugin {
 
     const data = {};
     properties.forEach((rule) => {
-      data[rule.guid] = `{{ ${rule.key} }}`;
+      data[rule.id] = `{{ ${rule.key} }}`;
     });
 
     return MustacheUtils.strictlyRender(string, data);

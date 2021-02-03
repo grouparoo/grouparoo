@@ -29,7 +29,7 @@ export default function EventsList(props) {
   useRealtimeModelStream("event", "events-list", handleMessage);
   const [newEvents, setNewEvents] = useState<number>(0);
 
-  const profileGuid = router.query.guid?.toString();
+  const profileId = router.query.id?.toString();
 
   // pagination
   const limit = 100;
@@ -38,7 +38,7 @@ export default function EventsList(props) {
 
   useSecondaryEffect(() => {
     load();
-  }, [profileGuid, offset, limit]);
+  }, [profileId, offset, limit]);
 
   useSecondaryEffect(() => {
     autocompleteProfilePropertySearch();
@@ -51,7 +51,7 @@ export default function EventsList(props) {
     setNewEvents(0);
     setLoading(true);
     const response: Actions.EventsList = await execApi("get", `/events`, {
-      profileGuid,
+      profileId,
       type,
       limit,
       offset,
@@ -83,7 +83,7 @@ export default function EventsList(props) {
 
   function handleMessage({ model }) {
     if ((type && model.type === type) || type === "") {
-      if ((profileGuid && model.profileGuid === profileGuid) || !profileGuid) {
+      if ((profileId && model.profileId === profileId) || !profileId) {
         setNewEvents((newEvents) => newEvents + 1);
       }
     }
@@ -168,7 +168,7 @@ export default function EventsList(props) {
         <thead>
           <tr>
             <th>Type</th>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>UserId</th>
             <th>Data</th>
             <th>Occurred At</th>
@@ -177,27 +177,24 @@ export default function EventsList(props) {
         <tbody>
           {events.map((event) => {
             return (
-              <tr key={`event-${event.guid}`}>
+              <tr key={`event-${event.id}`}>
                 <td>
                   <strong>{event.type}</strong>
                 </td>
                 <td>
-                  Guid:{" "}
-                  <Link
-                    href="/event/[guid]/edit"
-                    as={`/event/${event.guid}/edit`}
-                  >
-                    <a>{event.guid}</a>
+                  id:{" "}
+                  <Link href="/event/[id]/edit" as={`/event/${event.id}/edit`}>
+                    <a>{event.id}</a>
                   </Link>
                   <br />
-                  {event.profileGuid ? (
+                  {event.profileId ? (
                     <>
                       Profile:{" "}
                       <Link
-                        href="/profile/[guid]/edit"
-                        as={`/profile/${event.profileGuid}/edit`}
+                        href="/profile/[id]/edit"
+                        as={`/profile/${event.profileId}/edit`}
                       >
-                        <a>{event.profileGuid}</a>
+                        <a>{event.profileId}</a>
                       </Link>
                     </>
                   ) : (
@@ -209,10 +206,10 @@ export default function EventsList(props) {
                   <br />
                   Producer:{" "}
                   <Link
-                    href="/apiKey/[guid]/edit"
-                    as={`/apiKey/${event.producerGuid}/edit`}
+                    href="/apiKey/[id]/edit"
+                    as={`/apiKey/${event.producerId}/edit`}
                   >
-                    <a>{event.producerGuid} </a>
+                    <a>{event.producerId} </a>
                   </Link>
                 </td>
                 <td>{event.userId ? event.userId : "none"}</td>
@@ -221,7 +218,7 @@ export default function EventsList(props) {
                     {Object.keys(event.data)
                       .sort()
                       .map((k) => (
-                        <li key={`event-${event.guid}-data-${k}`}>
+                        <li key={`event-${event.id}-data-${k}`}>
                           <strong>{k}</strong>: {event.data[k]}
                         </li>
                       ))}
@@ -250,12 +247,12 @@ export default function EventsList(props) {
 
 EventsList.hydrate = async (ctx, queryOverrides = {}) => {
   const { execApi } = useApi(ctx);
-  const { limit, offset, type, guid: profileGuid } = ctx.query;
+  const { limit, offset, type, id: profileId } = ctx.query;
   const { events, total } = await execApi("get", `/events`, {
     limit: queryOverrides["limit"] ? queryOverrides["limit"] : limit,
     offset,
     type,
-    profileGuid,
+    profileId,
   });
   const { types } = await execApi("get", `/events/autocompleteType`, {});
   return { events, total, autocompleteResults: types };

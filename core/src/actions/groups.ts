@@ -127,7 +127,7 @@ export class GroupEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
       type: { required: false },
       matchType: { required: false },
@@ -136,7 +136,7 @@ export class GroupEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     await group.update(params);
 
     if (params.rules) await group.setRules(params.rules);
@@ -155,12 +155,12 @@ export class GroupRun extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     await group.run();
     return { success: true };
   }
@@ -174,19 +174,19 @@ export class GroupAddProfile extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
-      profileGuid: { required: true },
+      id: { required: true },
+      profileId: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     if (group.type !== "manual") {
       throw new Error(
         "only manual groups can have membership manipulated by this action"
       );
     }
-    const profile = await Profile.findByGuid(params.profileGuid);
+    const profile = await Profile.findById(params.profileId);
     await group.addProfile(profile);
     return { success: true };
   }
@@ -200,20 +200,20 @@ export class GroupRemoveProfile extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
-      profileGuid: { required: true },
+      id: { required: true },
+      profileId: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     if (group.type !== "manual") {
       throw new Error(
         "only manual groups can have membership manipulated by this action"
       );
     }
 
-    const profile = await Profile.findByGuid(params.profileGuid);
+    const profile = await Profile.findById(params.profileId);
     await group.removeProfile(profile);
     return { success: true };
   }
@@ -227,12 +227,12 @@ export class GroupView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
     return { group: responseGroup };
@@ -248,13 +248,13 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       rules: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
 
     let rules;
     if (params.rules) {
@@ -285,13 +285,13 @@ export class GroupCountPotentialMembers extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       rules: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
 
     let rules;
     if (params.rules) {
@@ -318,12 +318,12 @@ export class GroupListDestinations extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
 
     const destinations = await group.$get("destinations");
     return {
@@ -341,16 +341,16 @@ export class GroupExport extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       type: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
 
     if (params.type === "csv") {
-      await CLS.enqueueTask("group:exportToCSV", { groupGuid: group.guid });
+      await CLS.enqueueTask("group:exportToCSV", { groupId: group.id });
     } else {
       throw new Error(`${params.type} is not a type of group export`);
     }
@@ -367,7 +367,7 @@ export class GroupDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "group", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       force: {
         required: true,
         default: false,
@@ -378,15 +378,15 @@ export class GroupDestroy extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const group = await Group.findByGuid(params.guid);
+    const group = await Group.findById(params.id);
     await Group.checkDestinationTracking(group);
 
     if (params.force === true) {
-      await GroupMember.destroy({ where: { groupGuid: group.guid } });
+      await GroupMember.destroy({ where: { groupId: group.id } });
       await group.destroy(); // other related models are handled by hooks
     } else {
       await group.update({ state: "deleted" });
-      await CLS.enqueueTask("group:destroy", { groupGuid: group.guid });
+      await CLS.enqueueTask("group:destroy", { groupId: group.id });
     }
 
     return { success: true };

@@ -23,7 +23,7 @@ require("./../fixtures/export-objects/export-profiles-reference");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_04bb07d8-0c4f-49b5-ad42-545f2e8662fa";
+const appId = "app_04bb07d8-0c4f-49b5-ad42-545f2e8662fa";
 const destinationOptions = {
   profileObject: "Contact",
   profileMatchField: "Custom_External_ID__c",
@@ -39,15 +39,15 @@ const destinationOptions = {
 const model = destinationModel(destinationOptions);
 
 const custom1 = "1refid";
-const guid1 = "pro1";
+const id1 = "pro1";
 let userId1 = null;
 
 const custom2 = "2refid";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const custom3 = "3refid";
-const guid3 = "pro3";
+const id3 = "pro3";
 let userId3 = null;
 
 const group1 = "(test) High Value3";
@@ -114,12 +114,12 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom1,
@@ -164,12 +164,12 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(await findReferenceId(accountNum2Truncated)).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom2,
@@ -208,12 +208,12 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
 
   test("it reuses truncated one when adding and doesn't update name", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
@@ -257,12 +257,12 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(accountId3).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Simpson",
@@ -281,7 +281,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
@@ -300,7 +300,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom3,
@@ -320,7 +320,7 @@ describe("salesforce/sales-cloud/export-profiles/reference", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid1);
+    expect(error.profileId).toEqual(id1);
     expect(error.message).toContain("REQUIRED_FIELD_MISSING");
 
     let user;

@@ -95,12 +95,12 @@ export class FileDetails extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "file", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const file = await File.findByGuid(params.guid);
+    const file = await File.findById(params.id);
     return { file: await file.apiData() };
   }
 }
@@ -113,14 +113,14 @@ export class FileView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "file", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction(data) {
     const { connection, params } = data;
 
-    const file = await File.findByGuid(params.guid);
+    const file = await File.findById(params.id);
     const { localPath } = await api.files.downloadToServer(file);
 
     const nameParts = file.path.split("/");
@@ -152,12 +152,12 @@ export class FileDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "file", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const file = await File.findByGuid(params.guid);
+    const file = await File.findById(params.id);
     await api.files.destroy(file);
     return { success: true };
   }

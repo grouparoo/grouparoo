@@ -40,12 +40,12 @@ export type ExportErrorLevel = typeof ERROR_LEVELS[number];
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "exp";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -56,12 +56,12 @@ export class Export extends Model {
   @AllowNull(false)
   @ForeignKey(() => Destination)
   @Column
-  destinationGuid: string;
+  destinationId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Profile)
   @Column
-  profileGuid: string;
+  profileId: string;
 
   @AllowNull(false)
   @Default(false)
@@ -163,9 +163,9 @@ export class Export extends Model {
       { mostRecent: false },
       {
         where: {
-          profileGuid: this.profileGuid,
-          destinationGuid: this.destinationGuid,
-          guid: { [Op.not]: this.guid },
+          profileId: this.profileId,
+          destinationId: this.destinationId,
+          id: { [Op.not]: this.id },
         },
       }
     );
@@ -184,13 +184,13 @@ export class Export extends Model {
     });
 
     return {
-      guid: this.guid,
+      id: this.id,
       destination:
         destination && includeDestination
           ? await destination.apiData(false, false)
           : null,
       destinationName: destination ? destination.name : null,
-      profileGuid: this.profileGuid,
+      profileId: this.profileId,
       force: this.force,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       startedAt: this.startedAt ? this.startedAt.getTime() : null,
@@ -209,18 +209,16 @@ export class Export extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 

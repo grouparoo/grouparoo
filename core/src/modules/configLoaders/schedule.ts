@@ -1,6 +1,6 @@
 import {
   ConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
   logModel,
   getParentByName,
   getCodeConfigLockKey,
@@ -16,19 +16,19 @@ export async function loadSchedule(
   validate = false
 ) {
   let isNew = false;
-  const guid = await validateAndFormatGuid(Schedule, configObject.id);
+  const id = await validateAndFormatId(Schedule, configObject.id);
   validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({
-    where: { guid, locked: getCodeConfigLockKey() },
+    where: { id, locked: getCodeConfigLockKey() },
   });
   if (!schedule) {
     isNew = true;
     schedule = await Schedule.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
-      sourceGuid: source.guid,
+      sourceId: source.id,
     });
   }
 
@@ -47,9 +47,9 @@ export async function loadSchedule(
   return schedule;
 }
 
-export async function deleteSchedules(guids: string[]) {
+export async function deleteSchedules(ids: string[]) {
   const schedules = await Schedule.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in schedules) {
@@ -57,5 +57,5 @@ export async function deleteSchedules(guids: string[]) {
     logModel(schedules[i], "deleted");
   }
 
-  return schedules.map((instance) => instance.guid);
+  return schedules.map((instance) => instance.id);
 }

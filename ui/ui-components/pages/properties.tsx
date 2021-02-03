@@ -27,8 +27,8 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
-  const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
-    props.sources[0]?.guid || ""
+  const [newRuleSourceId, setNewRuleSourceId] = useState(
+    props.sources[0]?.id || ""
   );
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
@@ -85,13 +85,13 @@ export default function Page(props) {
       "post",
       `/property`,
       {
-        sourceGuid: newRuleSourceGuid,
+        sourceId: newRuleSourceId,
         type: "string",
       }
     );
-    if (response?.property?.guid) {
+    if (response?.property?.id) {
       router.push(
-        `/property/${response.property.guid}/edit?nextPage=/properties`
+        `/property/${response.property.id}/edit?nextPage=/properties`
       );
     } else {
       setNewRuleLoading(false);
@@ -145,13 +145,13 @@ export default function Page(props) {
         </thead>
         <tbody>
           {properties.map((rule) => {
-            const source = sources.find((s) => s.guid === rule.sourceGuid);
+            const source = sources.find((s) => s.id === rule.sourceId);
             return (
-              <tr key={`property-${rule.guid}`}>
+              <tr key={`property-${rule.id}`}>
                 <td>
                   <Link
-                    href="/property/[guid]/edit"
-                    as={`/property/${rule.guid}/edit`}
+                    href="/property/[id]/edit"
+                    as={`/property/${rule.id}/edit`}
                   >
                     <a>
                       <strong>
@@ -170,8 +170,8 @@ export default function Page(props) {
                 <td>{rule.isArray ? "✅" : null}</td>
                 <td>
                   <Link
-                    href="/source/[guid]/overview"
-                    as={`/source/${source.guid}/overview`}
+                    href="/source/[id]/overview"
+                    as={`/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
                   </Link>
@@ -181,9 +181,9 @@ export default function Page(props) {
                 </td>
                 <td>
                   <em>
-                    {examples[rule.guid]
-                      ? examples[rule.guid].slice(0, 3).map((ex, idx) => (
-                          <Fragment key={`${rule.guid}-${idx}`}>
+                    {examples[rule.id]
+                      ? examples[rule.id].slice(0, 3).map((ex, idx) => (
+                          <Fragment key={`${rule.id}-${idx}`}>
                             {rule.type === "date"
                               ? new Date(parseInt(ex)).toLocaleString()
                               : ex}
@@ -220,14 +220,14 @@ export default function Page(props) {
               <Form.Control
                 as="select"
                 size="sm"
-                value={newRuleSourceGuid}
+                value={newRuleSourceId}
                 disabled={loading}
                 onChange={(e) => {
-                  setNewRuleSourceGuid(e.target.value);
+                  setNewRuleSourceId(e.target.value);
                 }}
               >
                 {sources.map((source) => (
-                  <option key={`opt-source-${source.guid}`} value={source.guid}>
+                  <option key={`opt-source-${source.id}`} value={source.id}>
                     {source.name}
                   </option>
                 ))}

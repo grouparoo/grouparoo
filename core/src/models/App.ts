@@ -47,7 +47,7 @@ const STATE_TRANSITIONS = [
 }))
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
-  guidPrefix() {
+  idPrefix() {
     return "app";
   }
 
@@ -70,7 +70,7 @@ export class App extends LoggedModel<App> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @HasMany(() => Option, "ownerGuid")
+  @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Source)
@@ -104,11 +104,11 @@ export class App extends LoggedModel<App> {
   }
 
   async setConnection(connection) {
-    api.plugins.persistentConnections[this.guid] = connection;
+    api.plugins.persistentConnections[this.id] = connection;
   }
 
   async getConnection() {
-    const connection = api.plugins.persistentConnections[this.guid];
+    const connection = api.plugins.persistentConnections[this.id];
     if (!connection) return this.connect(null);
     return connection;
   }
@@ -154,7 +154,7 @@ export class App extends LoggedModel<App> {
   }
 
   parallelismKey() {
-    return `app:${this.guid}:ratelimit:parallel`;
+    return `app:${this.id}:ratelimit:parallel`;
   }
 
   async apiData() {
@@ -163,7 +163,7 @@ export class App extends LoggedModel<App> {
     const provides = this.provides();
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       icon,
       type: this.type,
@@ -206,11 +206,9 @@ export class App extends LoggedModel<App> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -241,7 +239,7 @@ export class App extends LoggedModel<App> {
   static async ensureUniqueName(instance: App) {
     const count = await App.count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
@@ -275,20 +273,20 @@ export class App extends LoggedModel<App> {
   @BeforeDestroy
   static async checkDependents(instance: App) {
     const sources = await Source.scope(null).findAll({
-      where: { appGuid: instance.guid },
+      where: { appId: instance.id },
     });
     if (sources.length > 0) {
       throw new Error(
-        `cannot delete this app, source ${sources[0].guid} relies on it`
+        `cannot delete this app, source ${sources[0].id} relies on it`
       );
     }
 
     const destinations = await Destination.scope(null).findAll({
-      where: { appGuid: instance.guid },
+      where: { appId: instance.id },
     });
     if (destinations.length > 0) {
       throw new Error(
-        `cannot delete this app, destination ${destinations[0].guid} relies on it`
+        `cannot delete this app, destination ${destinations[0].id} relies on it`
       );
     }
   }
@@ -314,7 +312,7 @@ export class App extends LoggedModel<App> {
   static async destroyOptions(instance: App) {
     return Option.destroy({
       where: {
-        ownerGuid: instance.guid,
+        ownerId: instance.id,
       },
     });
   }

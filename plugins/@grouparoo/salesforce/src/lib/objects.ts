@@ -1,6 +1,6 @@
 import { objectCache, SimpleAppOptions } from "@grouparoo/core";
 export interface SalesforceCacheData {
-  appGuid: string;
+  appId: string;
   appOptions: SimpleAppOptions;
 }
 
@@ -10,11 +10,11 @@ export async function describeObject(
   objectName: string,
   passthru = false
 ) {
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheKey = ["describeObject", objectName, appOptions];
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs, passthru },
+    { objectId: appId, cacheKey, cacheDurationMs, passthru },
     async () => {
       return conn.sobject(objectName).describe();
     }

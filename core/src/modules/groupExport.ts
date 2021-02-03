@@ -15,9 +15,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
   const numberedPropertyKeys = (await Property.findAll())
     .map((rule) => rule.key)
     .sort();
-  const columns = ["guid", "createdAt", "updatedAt"].concat(
-    numberedPropertyKeys
-  );
+  const columns = ["id", "createdAt", "updatedAt"].concat(numberedPropertyKeys);
 
   // add the profiles
   let offset = 0;
@@ -27,7 +25,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
       offset,
       order: [
         ["createdAt", "asc"],
-        ["guid", "asc"],
+        ["id", "asc"],
       ],
     });
   }
@@ -44,7 +42,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
     const row = Object.assign(
       {
-        guid: profile.guid,
+        id: profile.id,
         createdAt: profile.createdAt,
         updatedAt: profile.updatedAt,
       },
@@ -61,7 +59,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
   const run = await Run.create({
     state: "running",
-    creatorGuid: group.guid,
+    creatorId: group.id,
     creatorType: "group",
   });
 
@@ -92,7 +90,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
   while (profiles.length > 0) {
     log(
-      `adding ${profiles.length} profiles to csv export file ${filename} for group ${group.name} (${group.guid})`
+      `adding ${profiles.length} profiles to csv export file ${filename} for group ${group.name} (${group.id})`
     );
 
     for (let i in profiles) {
@@ -113,5 +111,5 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
   await run.afterBatch("complete");
 
-  return { runGuid: run.guid, filename, cleanName };
+  return { runId: run.id, filename, cleanName };
 }

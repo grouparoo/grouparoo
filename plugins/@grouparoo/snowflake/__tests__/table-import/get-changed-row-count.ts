@@ -34,7 +34,7 @@ describe("snowflake/table/scheduleOptions", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
   beforeAll(async () => {
-    connection = await connect({ appOptions, app: null, appGuid: null });
+    connection = await connect({ appOptions, app: null, appId: null });
   });
 
   let app: App;
@@ -65,7 +65,7 @@ describe("snowflake/table/scheduleOptions", () => {
     const rowCount = await getChangedRowCount({
       connection,
       appOptions,
-      appGuid: app.guid,
+      appId: app.id,
       tableName: "PROFILES",
       highWaterMarkCondition: {
         columnName: "STAMP",

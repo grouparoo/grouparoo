@@ -34,7 +34,7 @@ export namespace OptionHelper {
 
     let optionsObject: SimpleOptions = {};
     const options = await Option.findAll({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
 
     options.forEach((option) => {
@@ -71,14 +71,14 @@ export namespace OptionHelper {
     await LockableHelper.beforeUpdateOptions(instance, hasChanges);
 
     await Option.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
 
     const keys = Object.keys(options);
     for (const i in keys) {
       const key = keys[i];
       await Option.create({
-        ownerGuid: instance.guid,
+        ownerId: instance.id,
         ownerType: modelName(instance),
         key,
         value: options[key],
@@ -177,7 +177,7 @@ export namespace OptionHelper {
           `${requiredOption} is required for a ${modelName(
             instance
           )} of type ${type} (${instance["name"] || instance["key"]}, ${
-            instance.guid
+            instance.id
           })`
         );
       }
@@ -188,7 +188,7 @@ export namespace OptionHelper {
         throw new Error(
           `${k} is not an option for a ${type} ${modelName(instance)} (${
             instance["name"] || instance["key"]
-          }, ${instance.guid})`
+          }, ${instance.id})`
         );
       }
     }
@@ -255,9 +255,9 @@ export namespace OptionHelper {
     let type = instance["type"];
 
     if (!type || instance instanceof Property) {
-      if (instance["sourceGuid"]) {
+      if (instance["sourceId"]) {
         const source = await Source.scope(null).findOne({
-          where: { guid: instance["sourceGuid"] },
+          where: { id: instance["sourceId"] },
         });
         if (source) type = source.type;
       }

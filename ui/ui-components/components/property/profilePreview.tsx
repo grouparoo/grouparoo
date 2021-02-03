@@ -9,11 +9,11 @@ import { Actions } from "../../utils/apiData";
 export default function ProfilePreview(props) {
   const { errorHandler, property, localFilters } = props;
   const router = useRouter();
-  const [profileGuid, setProfileGuid] = useState(
-    router.query.profileGuid?.toString()
+  const [profileId, setProfileId] = useState(
+    router.query.profileId?.toString()
   );
   const [toHide, setToHide] = useState(true);
-  const [profile, setProfile] = useState({ guid: "", properties: {} });
+  const [profile, setProfile] = useState({ id: "", properties: {} });
   const [sleeping, setSleeping] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [debounceCounter, setDebounceCounter] = useState(0);
@@ -30,7 +30,7 @@ export default function ProfilePreview(props) {
       clearTimeout(timer);
     };
   }, [
-    property.guid,
+    property.id,
     property.type,
     property.unique,
     property.isArray,
@@ -39,10 +39,10 @@ export default function ProfilePreview(props) {
     JSON.stringify(localFilters),
   ]);
 
-  function storeProfilePropertyGuid(profileGuid: string) {
-    setProfileGuid(profileGuid);
+  function storeProfilePropertyId(profileId: string) {
+    setProfileId(profileId);
     let url = `${window.location.pathname}?`;
-    url += `profileGuid=${profileGuid}&`;
+    url += `profileId=${profileId}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
@@ -50,7 +50,7 @@ export default function ProfilePreview(props) {
   }
 
   async function load(
-    _profileGuid = profileGuid === "" ? undefined : profileGuid,
+    _profileId = profileId === "" ? undefined : profileId,
     _sleep = sleep
   ) {
     setSleeping(true);
@@ -60,11 +60,11 @@ export default function ProfilePreview(props) {
     timer = setTimeout(async () => {
       const response: Actions.PropertyProfilePreview = await execApi(
         "get",
-        `/property/${property.guid}/profilePreview`,
+        `/property/${property.id}/profilePreview`,
         {
           options: property.options,
           filters: localFilters,
-          profileGuid: _profileGuid,
+          profileId: _profileId,
         }
       );
 
@@ -80,7 +80,7 @@ export default function ProfilePreview(props) {
             : ""
         );
         setProfile(response.profile);
-        storeProfilePropertyGuid(response.profile.guid);
+        storeProfilePropertyId(response.profile.id);
       }
 
       setSleeping(false);
@@ -88,10 +88,10 @@ export default function ProfilePreview(props) {
   }
 
   function chooseProfileProperty() {
-    const _profileGuid = prompt("Enter Profile Guid", profileGuid);
-    if (_profileGuid) {
-      storeProfilePropertyGuid(_profileGuid);
-      load(_profileGuid, 1);
+    const _profileId = prompt("Enter Profile Id", profileId);
+    if (_profileId) {
+      storeProfilePropertyId(_profileId);
+      load(_profileId, 1);
     }
   }
 
@@ -115,7 +115,7 @@ export default function ProfilePreview(props) {
   let thisPropertyValue: string;
   const otherProperties = {};
   for (const i in profile.properties) {
-    if (profile.properties[i].guid === property.guid) {
+    if (profile.properties[i].id === property.id) {
       if (property.type === "date" && profile.properties[i].values) {
         thisPropertyValue = profile.properties[i].values[0]
           ? new Date(profile.properties[i].values[0]).toLocaleString()
@@ -144,7 +144,7 @@ export default function ProfilePreview(props) {
             <ProfileImageFromEmail email={email} width={100} />
             <br />
             <Card.Link
-              href={`/profile/${profile.guid}/edit`}
+              href={`/profile/${profile.id}/edit`}
               style={{ color: "white" }}
             >
               View Profile

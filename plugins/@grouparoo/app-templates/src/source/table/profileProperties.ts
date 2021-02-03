@@ -22,7 +22,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
   const profileProperties: ProfilePropertiesPluginMethod = async ({
     connection,
     appOptions,
-    appGuid,
+    appId,
     profiles,
     sourceOptions,
     sourceMapping,
@@ -52,7 +52,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
         properties[tableMappingCol].values[0] // not null or undefined
       ) {
         primaryKeysHash[properties[tableMappingCol].values[0].toString()] =
-          profiles[i].guid;
+          profiles[i].id;
       }
     }
 
@@ -72,7 +72,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     const responsesByPrimaryKey = await getPropertyValues({
       connection,
       appOptions,
-      appGuid,
+      appId,
       tableName,
       columnName,
       tablePrimaryKeyCol,
@@ -84,13 +84,13 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
       primaryKeys: Object.keys(primaryKeysHash),
     });
 
-    const responsesByGuid = {};
+    const responsesById = {};
     for (const pk in responsesByPrimaryKey) {
-      const profileGuid = primaryKeysHash[pk];
-      responsesByGuid[profileGuid] = responsesByPrimaryKey[pk];
+      const profileId = primaryKeysHash[pk];
+      responsesById[profileId] = responsesByPrimaryKey[pk];
     }
 
-    return responsesByGuid;
+    return responsesById;
   };
 
   return profileProperties;

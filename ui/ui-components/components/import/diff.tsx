@@ -15,7 +15,7 @@ export function ImportProfilePropertiesDiff({
         <ul>
           {Object.keys(_import.oldProfileProperties).map((k) => {
             return (
-              <li key={`${_import.guid}-prp-${k}`}>
+              <li key={`${_import.id}-prp-${k}`}>
                 {k}: {_import.oldProfileProperties[k]?.toString()}
               </li>
             );
@@ -30,7 +30,7 @@ export function ImportProfilePropertiesDiff({
       <ul>
         {Object.keys(_import.oldProfileProperties).map((k) => {
           return (
-            <li key={`${_import.guid}-prp-${k}`}>
+            <li key={`${_import.id}-prp-${k}`}>
               {k}:{" "}
               {JSON.stringify(_import.oldProfileProperties[k]) !==
               JSON.stringify(_import.newProfileProperties[k]) ? (
@@ -55,7 +55,7 @@ export function ImportProfilePropertiesDiff({
 
         {Object.keys(_import.newProfileProperties).map((k) =>
           _import.oldProfileProperties[k] === undefined ? (
-            <li key={`${_import.guid}-prp-${k}`}>
+            <li key={`${_import.id}-prp-${k}`}>
               {k}: <Badge variant="success">+</Badge>&nbsp;
               {_import.newProfileProperties[k]?.toString()}
             </li>
@@ -79,8 +79,8 @@ export function ImportGroupsDiff({
     return (
       <>
         <ul>
-          {_import.oldGroupGuids.map((g) => (
-            <li key={`${_import.guid}-grp-${g}`}>{groupLink(groups, g)}</li>
+          {_import.oldGroupIds.map((g) => (
+            <li key={`${_import.id}-grp-${g}`}>{groupLink(groups, g)}</li>
           ))}
         </ul>
       </>
@@ -90,10 +90,10 @@ export function ImportGroupsDiff({
   return (
     <>
       <ul>
-        {_import.oldGroupGuids.map((g) => {
+        {_import.oldGroupIds.map((g) => {
           return (
-            <li key={`${_import.guid}-grp-${g}`}>
-              {!_import.newGroupGuids.includes(g) ? (
+            <li key={`${_import.id}-grp-${g}`}>
+              {!_import.newGroupIds.includes(g) ? (
                 <Badge variant="danger">-</Badge>
               ) : null}{" "}
               {groupLink(groups, g)}
@@ -101,9 +101,9 @@ export function ImportGroupsDiff({
           );
         })}
 
-        {_import.newGroupGuids.map((g) =>
-          !_import.oldGroupGuids.includes(g) ? (
-            <li key={`${_import.guid}-grp-${g}`}>
+        {_import.newGroupIds.map((g) =>
+          !_import.oldGroupIds.includes(g) ? (
+            <li key={`${_import.id}-grp-${g}`}>
               <Badge variant="success">+</Badge>&nbsp;
               {groupLink(groups, g)}
             </li>
@@ -114,19 +114,16 @@ export function ImportGroupsDiff({
   );
 }
 
-function groupLink(groups: Models.GroupType[], groupGuid: string) {
-  const group = groups.find((g) => g.guid === groupGuid);
+function groupLink(groups: Models.GroupType[], groupId: string) {
+  const group = groups.find((g) => g.id === groupId);
 
   if (group) {
     return (
-      <EnterpriseLink
-        href="/group/[guid]/edit"
-        as={`/group/${group.guid}/edit`}
-      >
+      <EnterpriseLink href="/group/[id]/edit" as={`/group/${group.id}/edit`}>
         <a>{group.name}</a>
       </EnterpriseLink>
     );
   } else {
-    return <span>{groupGuid} (deleted)</span>;
+    return <span>{groupId} (deleted)</span>;
   }
 }

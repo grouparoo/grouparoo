@@ -14,14 +14,14 @@ import { Destination } from "./Destination";
 
 @Table({ tableName: "options", paranoid: false })
 export class Option extends LoggedModel<Option> {
-  guidPrefix() {
+  idPrefix() {
     return "opt";
   }
 
   @AllowNull(false)
   @ForeignKey(() => App)
   @Column
-  ownerGuid: string;
+  ownerId: string;
 
   @AllowNull(false)
   @Column
@@ -35,19 +35,19 @@ export class Option extends LoggedModel<Option> {
   @Column
   value: string;
 
-  @BelongsTo(() => App, "ownerGuid")
+  @BelongsTo(() => App, "ownerId")
   app: App;
 
-  @BelongsTo(() => Source, "ownerGuid")
+  @BelongsTo(() => Source, "ownerId")
   source: Source;
 
-  @BelongsTo(() => Destination, "ownerGuid")
+  @BelongsTo(() => Destination, "ownerId")
   destination: Destination;
 
   async apiData() {
     return {
-      guid: this.guid,
-      ownerGuid: this.ownerGuid,
+      id: this.id,
+      ownerId: this.ownerId,
       ownerType: this.ownerType,
       key: this.key,
       value: this.value,
@@ -58,26 +58,24 @@ export class Option extends LoggedModel<Option> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeSave
-  static async ensureOneOwnerGuidPerKey(instance: Option) {
+  static async ensureOneownerIdPerKey(instance: Option) {
     const existing = await Option.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        ownerGuid: instance.ownerGuid,
+        id: { [Op.ne]: instance.id },
+        ownerId: instance.ownerId,
         key: instance.key,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Option for ${instance.ownerGuid} and ${instance.key}`
+        `There is already a Option for ${instance.ownerId} and ${instance.key}`
       );
     }
   }

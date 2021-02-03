@@ -19,7 +19,7 @@ require("./../fixtures/export-objects/destination-options");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_d2bb07d8-0c4f-49b5-ad42-545f2e8662e8";
+const appId = "app_d2bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 
 // profileObject
 // profileMatchField
@@ -209,7 +209,7 @@ function expectLeadTopicResult(result, referenceStage = 0) {
 
 async function runDestinationOptions({ destinationOptions }) {
   return methodToTest({
-    appGuid,
+    appId,
     destinationOptions,
     appOptions,
     app: null,

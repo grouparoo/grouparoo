@@ -93,7 +93,7 @@ export namespace SharedGroupTests {
 
   export async function afterEach() {
     await specHelper.deleteEnqueuedTasks("group:run", {
-      groupGuid: group.guid,
+      groupId: group.id,
     });
     const members = await group.$get("groupMembers");
     await Promise.all(members.map((m) => m.destroy()));

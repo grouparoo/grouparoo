@@ -69,11 +69,11 @@ export default function Page(props) {
         <tbody>
           {apiKeys.map((apiKey) => {
             return (
-              <tr key={`apiKey-${apiKey.guid}`}>
+              <tr key={`apiKey-${apiKey.id}`}>
                 <td>
                   <Link
-                    href="/apiKey/[guid]/edit"
-                    as={`/apiKey/${apiKey.guid}/edit`}
+                    href="/apiKey/[id]/edit"
+                    as={`/apiKey/${apiKey.id}/edit`}
                   >
                     <a>
                       <strong>{apiKey.name}</strong>

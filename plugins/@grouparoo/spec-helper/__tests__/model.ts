@@ -9,7 +9,7 @@ describe("model/log", () => {
       topic: "test",
       verb: "create",
       data: {},
-      ownerGuid: "test",
+      ownerId: "test",
       message: "log test message",
     });
 

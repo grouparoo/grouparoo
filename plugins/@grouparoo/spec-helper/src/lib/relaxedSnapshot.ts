@@ -1,11 +1,11 @@
 /**
  * I take a complex object and which is to be tested against a Jest snapshot and relax the matchers for any keys matching the regular expressions provided by fieldMatches.
- * By default, all *guid (UUIDs) and *At (timestamps) are relaxed and won't be expected to match in value, only in type (ie: strings=strings).
+ * By default, all *ids and *At (timestamps) are relaxed and won't be expected to match in value, only in type (ie: strings=strings).
  * Usage: expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
  */
 export function relaxedSnapshot(
   object: { [key: string]: any },
-  fieldMatches = [/^guid$/, /^.+Guid$/, /^.+At$/]
+  fieldMatches = [/^id$/, /^.+Id$/, /^.+At$/]
 ) {
   const matcherExceptions: { [key: string]: any } = {};
 

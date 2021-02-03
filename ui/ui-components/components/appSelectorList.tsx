@@ -52,7 +52,7 @@ export default function AppSelectorList({
           subheading = item.type;
           // description = item.connection.description;
           className =
-            item.guid === selectedItem.guid
+            item.id === selectedItem.id
               ? "selector-list-selected"
               : "selector-list";
         }

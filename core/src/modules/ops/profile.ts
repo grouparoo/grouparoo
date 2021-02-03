@@ -14,7 +14,7 @@ import { CLS } from "../../modules/cls";
 
 export interface ProfilePropertyType {
   [key: string]: {
-    guid: ProfileProperty["guid"];
+    id: ProfileProperty["id"];
     state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
     type: Property["type"];
@@ -37,7 +37,7 @@ export namespace ProfileOps {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.scope(null).findAll({
-        where: { profileGuid: profile.guid },
+        where: { profileId: profile.id },
         order: [["position", "ASC"]],
       }));
 
@@ -47,7 +47,7 @@ export namespace ProfileOps {
 
     for (const i in profileProperties) {
       const property = properties.find(
-        (r) => r.guid === profileProperties[i].propertyGuid
+        (r) => r.id === profileProperties[i].propertyId
       );
       if (!property) {
         await profileProperties[i].destroy();
@@ -57,7 +57,7 @@ export namespace ProfileOps {
       const key = property.key;
       if (!hash[key]) {
         hash[key] = {
-          guid: profileProperties[i].propertyGuid,
+          id: profileProperties[i].propertyId,
           state: profileProperties[i].state,
           values: [],
           type: property.type,
@@ -99,20 +99,20 @@ export namespace ProfileOps {
     profile: Profile,
     hash: { [key: string]: Array<string | number | boolean | Date> }
   ) {
-    const key = Object.keys(hash)[0]; // either the key or guid of the property, preferring the guid
+    const key = Object.keys(hash)[0]; // either the key or id of the property, preferring the id
     const values = hash[key];
 
     // ignore reserved profile property key
     if (key === "_meta") return;
 
     let property = await Property.findOne({
-      where: { guid: key },
+      where: { id: key },
     });
     if (!property) {
       property = await Property.findOne({ where: { key } });
     }
     if (!property) {
-      throw new Error(`cannot find a property for guid or key \`${key}\``);
+      throw new Error(`cannot find a property for id or key \`${key}\``);
     }
 
     // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
@@ -120,8 +120,8 @@ export namespace ProfileOps {
     if (property.isArray) {
       let profileProperties = await ProfileProperty.findAll({
         where: {
-          profileGuid: profile.guid,
-          propertyGuid: property.guid,
+          profileId: profile.id,
+          propertyId: property.id,
         },
         order: [["position", "asc"]],
       });
@@ -148,8 +148,8 @@ export namespace ProfileOps {
         for (const i in values) {
           const value = values[i];
           const profileProperty = new ProfileProperty({
-            profileGuid: profile.guid,
-            propertyGuid: property.guid,
+            profileId: profile.id,
+            propertyId: property.id,
             position,
             state: "ready",
             stateChangedAt: new Date(),
@@ -179,8 +179,8 @@ export namespace ProfileOps {
 
       let profileProperty = await ProfileProperty.findOne({
         where: {
-          profileGuid: profile.guid,
-          propertyGuid: property.guid,
+          profileId: profile.id,
+          propertyId: property.id,
           position: 0,
         },
       });
@@ -188,8 +188,8 @@ export namespace ProfileOps {
       if (!profileProperty) {
         changed = true;
         profileProperty = new ProfileProperty({
-          profileGuid: profile.guid,
-          propertyGuid: property.guid,
+          profileId: profile.id,
+          propertyId: property.id,
         });
       } else if (
         profileProperty.rawValue !==
@@ -209,8 +209,8 @@ export namespace ProfileOps {
       await profileProperty.save();
       await ProfileProperty.destroy({
         where: {
-          profileGuid: profile.guid,
-          propertyGuid: property.guid,
+          profileId: profile.id,
+          propertyId: property.id,
           position: { [Op.ne]: 0 },
         },
       });
@@ -229,7 +229,7 @@ export namespace ProfileOps {
   ) {
     let releaseLock: Function;
     if (toLock) {
-      const response = await waitForLock(`profile:${profile.guid}`);
+      const response = await waitForLock(`profile:${profile.id}`);
       releaseLock = response.releaseLock;
     }
 
@@ -238,7 +238,7 @@ export namespace ProfileOps {
 
       const keys = Object.keys(properties);
       for (const i in keys) {
-        if (keys[i] === "guid") continue;
+        if (keys[i] === "id") continue;
 
         const h = {};
         h[keys[i]] = Array.isArray(properties[keys[i]])
@@ -262,7 +262,7 @@ export namespace ProfileOps {
     if (!property) return;
 
     const properties = await ProfileProperty.findAll({
-      where: { profileGuid: profile.guid, propertyGuid: property.guid },
+      where: { profileId: profile.id, propertyId: property.id },
     });
 
     for (const i in properties) {
@@ -291,8 +291,8 @@ export namespace ProfileOps {
       const property = properties[i];
       if (!profileProperties[property.key]) {
         await ProfileProperty.create({
-          profileGuid: profile.guid,
-          propertyGuid: property.guid,
+          profileId: profile.id,
+          propertyId: property.id,
           state,
           stateChangedAt: new Date(),
           valueChangedAt: new Date(),
@@ -316,7 +316,7 @@ export namespace ProfileOps {
     let releaseLock: Function;
 
     if (toLock) {
-      const lockObject = await waitForLock(`profile:${profile.guid}`);
+      const lockObject = await waitForLock(`profile:${profile.id}`);
       releaseLock = lockObject.releaseLock;
     }
 
@@ -337,7 +337,7 @@ export namespace ProfileOps {
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },
-          { where: { profileGuid: profile.guid } }
+          { where: { profileId: profile.id } }
         );
       }
 
@@ -410,12 +410,12 @@ export namespace ProfileOps {
 
     uniqueProperties.forEach((rule) => {
       if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
-        uniquePropertiesHash[rule.guid] = hash[rule.key];
+        uniquePropertiesHash[rule.id] = hash[rule.key];
       }
     });
 
-    // and the case when we are sending a profile guid directly
-    if (hash["guid"]) uniquePropertiesHash["guid"] = hash["guid"];
+    // and the case when we are sending a profile id directly
+    if (hash["id"]) uniquePropertiesHash["id"] = hash["id"];
 
     if (Object.keys(uniquePropertiesHash).length === 0) {
       throw new Error(
@@ -425,11 +425,11 @@ export namespace ProfileOps {
       );
     }
 
-    // special handling when a guid is provided directly
+    // special handling when a id is provided directly
     // for use with internal runs
-    if (uniquePropertiesHash["guid"]) {
+    if (uniquePropertiesHash["id"]) {
       profile = await Profile.findOne({
-        where: { guid: uniquePropertiesHash["guid"] },
+        where: { id: uniquePropertiesHash["id"] },
       });
 
       if (profile) {
@@ -437,7 +437,7 @@ export namespace ProfileOps {
         return { profile, isNew };
       } else {
         throw new Error(
-          `cannot find profile with guid ${uniquePropertiesHash["guid"]}`
+          `cannot find profile with id ${uniquePropertiesHash["id"]}`
         );
       }
     }
@@ -447,18 +447,18 @@ export namespace ProfileOps {
 
     try {
       for (const i in keys) {
-        const guid = keys[i];
-        const value = uniquePropertiesHash[guid];
-        const property = uniqueProperties.find((r) => r.guid === guid);
+        const id = keys[i];
+        const value = uniquePropertiesHash[id];
+        const property = uniqueProperties.find((r) => r.id === id);
 
         const { releaseLock } = await waitForLock(
-          `profileProperty:${guid}:${value}`
+          `profileProperty:${id}:${value}`
         );
         lockReleases.push(releaseLock);
 
         profileProperty = await ProfileProperty.findOne({
           where: {
-            propertyGuid: property.guid,
+            propertyId: property.id,
             rawValue: String(value),
           },
         });
@@ -468,13 +468,13 @@ export namespace ProfileOps {
 
       if (profileProperty) {
         profile = await Profile.findOne({
-          where: { guid: profileProperty.profileGuid },
+          where: { id: profileProperty.profileId },
         });
         isNew = false;
       } else {
         profile = await Profile.create();
         profile = await profile.reload();
-        const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
+        const { releaseLock } = await waitForLock(`profile:${profile.id}`);
         lockReleases.push(releaseLock);
         await addOrUpdateProperties(profile, uniquePropertiesHash, false);
         await buildNullProperties(profile);
@@ -499,9 +499,9 @@ export namespace ProfileOps {
       { state: "pending" },
       {
         where: {
-          profileGuid: profile.guid,
-          propertyGuid: {
-            [Op.in]: nonDirectlyMappedRules.map((r) => r.guid),
+          profileId: profile.id,
+          propertyId: {
+            [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
           },
         },
       }
@@ -515,17 +515,17 @@ export namespace ProfileOps {
    */
   export async function merge(profile: Profile, otherProfile: Profile) {
     const { releaseLock: releaseLockForProfile } = await waitForLock(
-      `profile:${profile.guid}`
+      `profile:${profile.id}`
     );
     const { releaseLock: releaseLockForOtherProfile } = await waitForLock(
-      `profile:${otherProfile.guid}`
+      `profile:${otherProfile.id}`
     );
 
     try {
       // transfer events
       await Event.update(
-        { profileGuid: profile.guid },
-        { where: { profileGuid: otherProfile.guid } }
+        { profileId: profile.id },
+        { where: { profileId: otherProfile.id } }
       );
 
       // transfer properties, keeping the newest values
@@ -561,8 +561,8 @@ export namespace ProfileOps {
       await Log.create({
         topic: "profile",
         verb: "merge",
-        message: `merged with profile ${otherProfile.guid}`,
-        ownerGuid: profile.guid,
+        message: `merged with profile ${otherProfile.id}`,
+        ownerId: profile.id,
         data: { previousProperties: properties, otherProperties },
       });
 
@@ -588,7 +588,7 @@ export namespace ProfileOps {
     const notInQuery = api.sequelize.dialect.queryGenerator
       .selectQuery("profileProperties", {
         attributes: [
-          api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid")),
+          api.sequelize.fn("DISTINCT", api.sequelize.col("profileId")),
         ],
         where: { state: "pending" },
       })
@@ -597,17 +597,17 @@ export namespace ProfileOps {
     profiles = await Profile.findAll({
       where: {
         state: "pending",
-        guid: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
+        id: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
       },
       limit,
-      order: [["guid", "asc"]],
+      order: [["id", "asc"]],
     });
 
     const updateResponse = await Profile.update(
       { state: "ready" },
       {
         where: {
-          guid: { [Op.in]: profiles.map((p) => p.guid) },
+          id: { [Op.in]: profiles.map((p) => p.id) },
           state: "pending",
         },
       }
@@ -622,7 +622,7 @@ export namespace ProfileOps {
     await Promise.all(
       profiles.map((profile) =>
         CLS.enqueueTask("profile:completeImport", {
-          profileGuid: profile.guid,
+          profileId: profile.id,
           toExport,
         })
       )

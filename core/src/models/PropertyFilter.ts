@@ -14,12 +14,12 @@ import { Property } from "./Property";
 
 @Table({ tableName: "propertyFilters", paranoid: false })
 export class PropertyFilter extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "prf";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -30,7 +30,7 @@ export class PropertyFilter extends Model {
   @AllowNull(false)
   @ForeignKey(() => Property)
   @Column
-  propertyGuid: string;
+  propertyId: string;
 
   @AllowNull(false)
   @Column
@@ -61,8 +61,8 @@ export class PropertyFilter extends Model {
 
   async apiData() {
     return {
-      guid: this.guid,
-      propertyGuid: this.propertyGuid,
+      id: this.id,
+      propertyId: this.propertyId,
       key: this.key,
       position: this.position,
       match: this.match,
@@ -78,9 +78,9 @@ export class PropertyFilter extends Model {
   // --- Class Methods --- //
 
   @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 }

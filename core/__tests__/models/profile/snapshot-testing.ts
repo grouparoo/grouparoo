@@ -57,7 +57,7 @@ describe("test grouparoo profiles", () => {
         isVIP: "isVIP",
       });
       await destination.setDestinationGroupMemberships({
-        [group.guid]: "remote_group_name",
+        [group.id]: "remote_group_name",
       });
       await destination.trackGroup(group);
 
@@ -87,7 +87,7 @@ describe("test grouparoo profiles", () => {
       expect(groupApiData.length).toEqual(1);
 
       expect(groupApiData[0]).toMatchSnapshot({
-        guid: expect.stringMatching(/^grp_/),
+        id: expect.stringMatching(/^grp_/),
         createdAt: expect.any(Number),
         updatedAt: expect.any(Number),
         nextCalculatedAt: expect.any(Number),
@@ -102,7 +102,7 @@ describe("test grouparoo profiles", () => {
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({
-        profileGuid: expect.stringMatching(/^pro_/),
+        profileId: expect.stringMatching(/^pro_/),
         startedAt: expect.any(Number),
         newProfileProperties: expect.objectContaining({
           email: expect.stringMatching(/@example.com/),

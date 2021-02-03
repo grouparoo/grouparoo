@@ -34,7 +34,7 @@ export abstract class ConfigTemplate {
       id: {
         required: true,
         description:
-          "The ID of the new object being generated.  Will be used to construct the object's guid",
+          "The ID of the new object being generated.  Will be used to construct the object's id",
         formatter: (p) => this.formatId(p),
       },
     };
@@ -94,11 +94,11 @@ export abstract class ConfigTemplate {
       .toLowerCase()
       .replace(/"/gi, "")
       .replace(/'/gi, "")
-      .replace(/[^a-z0-9_\/.]/gi, "_");
+      .replace(/[^a-zA-Z0-9-_\/.]/gi, "_");
   }
 
   formatId(s: string) {
-    return s.toLowerCase().replace(/[^a-z0-9_]/gi, "_");
+    return s.toLowerCase().replace(/[^a-zA-Z0-9-_\/.]/gi, "_");
   }
 
   /**

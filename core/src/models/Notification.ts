@@ -3,7 +3,7 @@ import { LoggedModel } from "../classes/loggedModel";
 
 @Table({ tableName: "notifications", paranoid: false })
 export class Notification extends LoggedModel<Notification> {
-  guidPrefix() {
+  idPrefix() {
     return "not";
   }
 
@@ -33,7 +33,7 @@ export class Notification extends LoggedModel<Notification> {
 
   async apiData() {
     return {
-      guid: this.guid,
+      id: this.id,
       from: this.from,
       subject: this.subject,
       body: this.body,
@@ -47,11 +47,9 @@ export class Notification extends LoggedModel<Notification> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 }

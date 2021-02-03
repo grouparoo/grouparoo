@@ -22,7 +22,7 @@ export interface ConfigurationObject {
   recurringFrequency: number;
   groupId?: string;
   pluginName?: string;
-  permissions?: Array<{ guid: string; read: boolean; write: boolean }>;
+  permissions?: Array<{ id: string; read: boolean; write: boolean }>;
   value: string | boolean | number;
   bootstrappedProperty?: ConfigurationObject;
   mapping?: { [key: string]: any };
@@ -40,41 +40,36 @@ export function getCodeConfigLockKey() {
   return "config:code";
 }
 
-export async function getParentByName(model: any, id: string) {
-  if (!id) {
-    throw new Error(`missing parent id to find a ${model.name}`);
-  }
+export async function getParentByName(model: any, parentId: string) {
+  if (!parentId) throw new Error(`missing parent id to find a ${model.name}`);
 
-  const guid = await validateAndFormatGuid(model, id);
-  const instance = await model.scope(null).findOne({ where: { guid } });
+  const formattedId = await validateAndFormatId(model, parentId);
+  const instance = await model
+    .scope(null)
+    .findOne({ where: { id: formattedId } });
 
   if (!instance) {
-    throw new Error(`cannot find ${model.name} with guid "${guid}"`);
+    throw new Error(`cannot find ${model.name} with id "${parentId}"`);
   }
 
   return instance;
 }
 
-export async function validateAndFormatGuid(model: any, id: string) {
+export async function validateAndFormatId(model: any, id: string) {
   if (!id) throw new Error("id is required");
-  let guid = `${id}`;
-
-  const guidPrefix: string = new model().guidPrefix();
-  if (guid.indexOf(`${guidPrefix}_`) !== 0) guid = `${guidPrefix}_${guid}`;
 
   let failing = false;
-  if (guid.match(/\s/)) failing = true;
-  if (guid.match(/[A-Z]/)) failing = true;
-  if (guid.match(/-/)) failing = true;
-  if (guid.length > 40) failing = true;
+  if (id.match(/\s/)) failing = true;
+  if (id.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)) failing = true;
+  if (id.length > 40) failing = true;
 
   if (failing) {
     throw new Error(
-      `invalid guid: \`${guid}\` - guids must be less than 40 characters and only contain lower-case letters, numbers, and underscores`
+      `invalid id: \`${id}\` - ids must be less than 40 characters and not contain spaces or special characters`
     );
   }
 
-  return guid;
+  return id;
 }
 
 export function validateConfigObjectKeys(
@@ -93,9 +88,7 @@ export function validateConfigObjectKeys(
     .map((k) => {
       if (k === "id") {
         idFound = true;
-        return "guid";
-      } else if (k.match(/.+Id$/)) {
-        return k.replace(/Id$/, "Guid");
+        return "id";
       } else {
         return k;
       }
@@ -123,7 +116,7 @@ export function logModel(
   log(
     `[ config ] ${mode} ${instance.constructor.name} \`${
       instance.key || instance.email || instance.name
-    }\` (${instance.guid})`,
+    }\` (${instance.id})`,
     logLevel
   );
 }
@@ -190,7 +183,7 @@ export function getParentIds(configObject: ConfigurationObject) {
       for (const i in containerKeys) {
         if (containerKeys[i].match(/.+Id$/)) {
           prerequisiteIds.push(configObject[_container][containerKeys[i]]);
-        } else if (containerKeys[i].match(/.+Guid$/)) {
+        } else if (containerKeys[i].match(/.+Id$/)) {
           prerequisiteIds.push(
             configObject[_container][containerKeys[i]].replace(/^.{3}_/, "")
           );

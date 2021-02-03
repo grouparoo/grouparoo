@@ -111,12 +111,12 @@ export default function PermissionsList({
         <tbody>
           {permissions.map((permission) => {
             return (
-              <tr key={`permission-${permission.guid}`}>
+              <tr key={`permission-${permission.id}`}>
                 <td>
                   <strong>{permission.topic}</strong>
                 </td>
                 <td>
-                  <Form.Group controlId={`${permission.guid}~read`}>
+                  <Form.Group controlId={`${permission.id}~read`}>
                     <Form.Check
                       checked={permission.read}
                       disabled={permission.locked !== null}
@@ -133,7 +133,7 @@ export default function PermissionsList({
                   </Form.Group>
                 </td>
                 <td>
-                  <Form.Group controlId={`${permission.guid}~write`}>
+                  <Form.Group controlId={`${permission.id}~write`}>
                     <Form.Check
                       checked={permission.write}
                       disabled={permission.locked !== null}

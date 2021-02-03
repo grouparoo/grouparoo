@@ -9,7 +9,7 @@ export default async (run?, props: { [key: string]: any } = {}) => {
     data: props,
     rawData: props,
     creatorType: "run",
-    creatorGuid: run.guid,
+    creatorId: run.id,
   });
 
   await instance.save();

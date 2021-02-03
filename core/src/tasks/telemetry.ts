@@ -45,16 +45,15 @@ export class Telemetry extends CLSTask {
   async generateErrorPayload(error) {
     const clusterName = (await plugin.readSetting("core", "cluster-name"))
       .value;
-    const customerGuid = (
-      await plugin.readSetting("telemetry", "customer-guid")
-    ).value;
+    const customerId = (await plugin.readSetting("telemetry", "customer-id"))
+      .value;
     const customerLicense = (
       await plugin.readSetting("telemetry", "customer-license")
     ).value;
 
     const errorPayload = {
       name: clusterName,
-      guid: customerGuid,
+      id: customerId,
       license: customerLicense,
       metrics: [
         {

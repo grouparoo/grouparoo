@@ -9,7 +9,7 @@ export default function getProfileDisplayName(profile: Models.ProfileType) {
     }
   }
 
-  if (displayName === "") displayName = profile.guid;
+  if (displayName === "") displayName = profile.id;
 
   return displayName;
 }

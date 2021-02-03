@@ -14,7 +14,7 @@ export class EventsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "event", mode: "read" };
     this.inputs = {
-      profileGuid: { required: false },
+      profileId: { required: false },
       type: { required: false },
       associated: { required: false },
       data: { required: false },
@@ -39,12 +39,12 @@ export class EventsList extends AuthenticatedAction {
       }
     }
 
-    if (params.profileGuid) {
-      where["profileGuid"] = params.profileGuid;
+    if (params.profileId) {
+      where["profileId"] = params.profileId;
     } else if (params.associated === false) {
-      where["profileGuid"] = null;
+      where["profileId"] = null;
     } else if (params.associated === true) {
-      where["profileGuid"] = { [Op.ne]: null };
+      where["profileId"] = { [Op.ne]: null };
     }
 
     let data = {};
@@ -171,7 +171,7 @@ export class EventsCounts extends AuthenticatedAction {
       attributes: [
         "type",
         [timeFunc, "time"],
-        [api.sequelize.fn("COUNT", "guid"), "count"],
+        [api.sequelize.fn("COUNT", "id"), "count"],
       ],
       where,
       group: ["type", api.sequelize.literal("time")],
@@ -224,7 +224,7 @@ export class EventsTypes extends AuthenticatedAction {
     const types = await Event.findAll({
       attributes: [
         "type",
-        [api.sequelize.fn("COUNT", "guid"), "count"],
+        [api.sequelize.fn("COUNT", "id"), "count"],
         [api.sequelize.fn("MIN", api.sequelize.col("occurredAt")), "min"],
         [api.sequelize.fn("MAX", api.sequelize.col("occurredAt")), "max"],
       ],
@@ -312,12 +312,12 @@ export class EventCreate extends AuthenticatedAction {
       data = JSON.parse(data);
     } catch (error) {}
 
-    const producerGuid = session.teamMember
-      ? session.teamMember.guid
-      : session.apiKey.guid;
+    const producerId = session.teamMember
+      ? session.teamMember.id
+      : session.apiKey.id;
 
     const event = await Event.create({
-      producerGuid: producerGuid,
+      producerId: producerId,
       type: params.type,
       userId: params.userId,
       anonymousId: params.anonymousId,
@@ -377,12 +377,12 @@ export class EventView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "event", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const event = await Event.findByGuid(params.guid);
+    const event = await Event.findById(params.id);
     return { event: await event.apiData() };
   }
 }
@@ -395,12 +395,12 @@ export class EventDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "event", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const event = await Event.findByGuid(params.guid);
+    const event = await Event.findById(params.id);
     await event.destroy();
     return { success: true };
   }

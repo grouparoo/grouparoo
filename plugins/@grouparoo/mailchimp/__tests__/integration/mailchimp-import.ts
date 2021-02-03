@@ -89,7 +89,7 @@ describe("integration/runs/mailchimp-import", () => {
           csrfToken,
           type: "mailchimp-import",
           name: "source",
-          appGuid: app.guid,
+          appId: app.id,
           options: sourceOptions,
           mapping: sourceMapping,
           state: "ready",
@@ -107,7 +107,7 @@ describe("integration/runs/mailchimp-import", () => {
           csrfToken,
           name: "test import schedule",
           type: "mailchimp-import",
-          sourceGuid: source.guid,
+          sourceId: source.id,
           recurring: false,
           mappings: {
             "merge_fields.USERID": "userId",
@@ -122,7 +122,7 @@ describe("integration/runs/mailchimp-import", () => {
           session
         );
         expect(scheduleResponse.error).toBeUndefined();
-        expect(scheduleResponse.schedule.guid).toBeTruthy();
+        expect(scheduleResponse.schedule.id).toBeTruthy();
         expect(scheduleResponse.schedule.name).toBe("test import schedule");
         schedule = scheduleResponse.schedule;
       },
@@ -132,7 +132,7 @@ describe("integration/runs/mailchimp-import", () => {
     test("we can test the app options", async () => {
       session.params = {
         csrfToken,
-        guid: app.guid,
+        id: app.id,
         options: appOptions,
       };
       const { error, test } = await specHelper.runAction("app:test", session);
@@ -144,7 +144,7 @@ describe("integration/runs/mailchimp-import", () => {
     test("we can see a preview of the data", async () => {
       session.params = {
         csrfToken,
-        guid: source.guid,
+        id: source.id,
         options: sourceOptions,
       };
       const { error, preview } = await specHelper.runAction(
@@ -183,7 +183,7 @@ describe("integration/runs/mailchimp-import", () => {
     test("the mapping data for the source can be set", async () => {
       session.params = {
         csrfToken,
-        guid: source.guid,
+        id: source.id,
         mapping: sourceMapping,
       };
       const { error } = await specHelper.runAction("source:edit", session);
@@ -198,7 +198,7 @@ describe("integration/runs/mailchimp-import", () => {
 
       session.params = {
         csrfToken,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: true,
@@ -211,7 +211,7 @@ describe("integration/runs/mailchimp-import", () => {
         session
       );
       expect(error).toBeUndefined();
-      expect(property.guid).toBeTruthy();
+      expect(property.id).toBeTruthy();
 
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
@@ -223,7 +223,7 @@ describe("integration/runs/mailchimp-import", () => {
       // set the options
       session.params = {
         csrfToken,
-        guid: property.guid,
+        id: property.id,
         options: { field: "email_address" },
       };
       const { error: editError } = await specHelper.runAction(
@@ -239,7 +239,7 @@ describe("integration/runs/mailchimp-import", () => {
         // enqueue the run
         session.params = {
           csrfToken,
-          guid: schedule.guid,
+          id: schedule.id,
         };
         const { error, success } = await specHelper.runAction(
           "schedule:run",
@@ -251,11 +251,11 @@ describe("integration/runs/mailchimp-import", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].scheduleGuid).toBe(schedule.guid);
+        expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
@@ -264,8 +264,8 @@ describe("integration/runs/mailchimp-import", () => {
         // maybe we should use specHelper.deleteEnqueuedTasks() from actionhero
         await helper.sleep();
         await specHelper.runTask("schedule:run", {
-          runGuid: run.guid,
-          scheduleGuid: schedule.guid,
+          runId: run.id,
+          scheduleId: schedule.id,
         });
 
         let queue;
@@ -335,12 +335,12 @@ describe("integration/runs/mailchimp-import", () => {
     );
 
     test("profiles should be created with both the mapping data and additional profile property", async () => {
-      const profileGuid = (
+      const profileId = (
         await ProfileProperty.findOne({
           where: { rawValue: "1" },
         })
-      ).profileGuid;
-      const profile = await Profile.findOne({ where: { guid: profileGuid } });
+      ).profileId;
+      const profile = await Profile.findOne({ where: { id: profileId } });
       const properties = await profile.properties();
       expect(properties.userId.values).toEqual([1]);
       expect(properties.email.values).toEqual(["xejervois0@grouparoo.com"]);
@@ -353,7 +353,7 @@ describe("integration/runs/mailchimp-import", () => {
         // enqueue the run
         session.params = {
           csrfToken,
-          guid: schedule.guid,
+          id: schedule.id,
         };
         const { error, success } = await specHelper.runAction(
           "schedule:run",
@@ -366,17 +366,17 @@ describe("integration/runs/mailchimp-import", () => {
         let queue;
         queue = await specHelper.findEnqueuedTasks("schedule:run");
         expect(queue.length).toEqual(4);
-        expect(queue[1].args[0].scheduleGuid).toBe(schedule.guid);
+        expect(queue[1].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          runGuid: run.guid,
-          scheduleGuid: schedule.guid,
+          runId: run.id,
+          scheduleId: schedule.id,
         });
 
         // run the schedule task again to enqueue the determineState task

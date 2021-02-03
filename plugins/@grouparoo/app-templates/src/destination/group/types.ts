@@ -4,7 +4,7 @@ import {
   SimpleAppOptions,
   Destination,
   SimpleDestinationOptions,
-  ErrorWithProfileGuid,
+  ErrorWithProfileId,
 } from "@grouparoo/core";
 export { ExportedProfile } from "@grouparoo/core";
 
@@ -102,7 +102,7 @@ export interface ProfileGroupProfilesPluginMethod {
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }>;
 }
 

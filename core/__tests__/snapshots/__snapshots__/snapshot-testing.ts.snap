@@ -4,7 +4,7 @@ exports[`test grouparoo profiles within a mock environment groups match the snap
 Object {
   "calculatedAt": null,
   "createdAt": Any<Number>,
-  "guid": StringMatching /\\^grp_/,
+  "id": StringMatching /\\^grp_/,
   "locked": null,
   "matchType": "all",
   "name": "test group",
@@ -40,8 +40,8 @@ Object {
   "errorLevel": undefined,
   "errorMessage": undefined,
   "force": true,
-  "guid": null,
   "hasChanges": true,
+  "id": null,
   "mostRecent": false,
   "newGroups": Array [
     "remote_group_name",
@@ -61,7 +61,7 @@ Object {
     "ltv": 100,
     "primary-id": Any<Number>,
   },
-  "profileGuid": StringMatching /\\^pro_/,
+  "profileId": StringMatching /\\^pro_/,
   "startedAt": Any<Number>,
   "toDelete": false,
 }
@@ -112,8 +112,8 @@ Object {
       "errorLevel": undefined,
       "errorMessage": undefined,
       "force": true,
-      "guid": null,
       "hasChanges": true,
+      "id": null,
       "mostRecent": false,
       "newGroups": Array [
         "remote_group_name",
@@ -133,7 +133,7 @@ Object {
         "ltv": 100,
         "primary-id": 100,
       },
-      "profileGuid": Any<String>,
+      "profileId": Any<String>,
       "startedAt": Any<Number>,
       "toDelete": false,
     },
@@ -142,7 +142,7 @@ Object {
     Object {
       "calculatedAt": null,
       "createdAt": Any<Number>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "locked": null,
       "matchType": "all",
       "name": "test group",
@@ -172,7 +172,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -188,7 +188,7 @@ Object {
     "firstName": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -204,7 +204,7 @@ Object {
     "isVIP": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -220,7 +220,7 @@ Object {
     "lastLoginAt": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -236,7 +236,7 @@ Object {
     "lastName": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -252,7 +252,7 @@ Object {
     "ltv": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -268,7 +268,7 @@ Object {
     "purchaseAmounts": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": true,
       "state": "ready",
@@ -285,7 +285,7 @@ Object {
     "purchases": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": true,
       "state": "ready",
@@ -302,7 +302,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": true,
       "isArray": false,
       "state": "ready",

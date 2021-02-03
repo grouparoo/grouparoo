@@ -29,10 +29,10 @@ async function runDestinationMappingOptions({}) {
   return destinationMappingOptions({
     appOptions,
     app: null,
-    appGuid: null,
+    appId: null,
     connection: null,
     destination: null,
-    destinationGuid: null,
+    destinationId: null,
     destinationOptions: null,
   });
 }

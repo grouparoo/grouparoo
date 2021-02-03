@@ -72,7 +72,7 @@ describe("modules/codeConfig", () => {
           )
         );
         expect(errors[0]).toMatch(
-          /fileGuid is required for a app of type test-plugin-app/
+          /fileId is required for a app of type test-plugin-app/
         );
       });
     });

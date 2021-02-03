@@ -14,19 +14,19 @@ import { Destination } from "./Destination";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
 export class DestinationGroupMembership extends LoggedModel<DestinationGroupMembership> {
-  guidPrefix() {
+  idPrefix() {
     return "dgm";
   }
 
   @AllowNull(false)
   @ForeignKey(() => Group)
   @Column
-  groupGuid: string;
+  groupId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Destination)
   @Column
-  destinationGuid: string;
+  destinationId: string;
 
   @AllowNull(false)
   @Length({ min: 1, max: 191 })
@@ -41,8 +41,8 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
 
   async apiData() {
     return {
-      destinationGuid: this.destinationGuid,
-      groupGuid: this.groupGuid,
+      destinationId: this.destinationId,
+      groupId: this.groupId,
       remoteKey: this.remoteKey,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -51,11 +51,9 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -65,14 +63,14 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
   ) {
     const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        destinationGuid: instance.destinationGuid,
-        groupGuid: instance.groupGuid,
+        id: { [Op.ne]: instance.id },
+        destinationId: instance.destinationId,
+        groupId: instance.groupId,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a DestinationGroupMembership for ${instance.destinationGuid} and ${instance.groupGuid}`
+        `There is already a DestinationGroupMembership for ${instance.destinationId} and ${instance.groupId}`
       );
     }
   }
@@ -83,14 +81,14 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
   ) {
     const existing = await DestinationGroupMembership.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        destinationGuid: instance.destinationGuid,
+        id: { [Op.ne]: instance.id },
+        destinationId: instance.destinationId,
         remoteKey: instance.remoteKey,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a DestinationGroupMembership for ${instance.destinationGuid} and ${instance.remoteKey}`
+        `There is already a DestinationGroupMembership for ${instance.destinationId} and ${instance.remoteKey}`
       );
     }
   }

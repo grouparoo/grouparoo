@@ -14,7 +14,7 @@ export default function AddPropertyForm(props) {
     setLoading(true);
 
     const data = {
-      sourceGuid: source.guid,
+      sourceId: source.id,
       unique: false,
       type: "string",
     };
@@ -27,7 +27,7 @@ export default function AddPropertyForm(props) {
 
     if (response?.property) {
       router.push(
-        `/property/${response.property.guid}/edit?nextPage=/source/${source.guid}/overview`
+        `/property/${response.property.id}/edit?nextPage=/source/${source.id}/overview`
       );
     } else {
       setLoading(false);

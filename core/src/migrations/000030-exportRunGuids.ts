@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     await migration.addColumn("runs", "exportsCreated", {
       type: DataTypes.BIGINT,

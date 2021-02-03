@@ -42,7 +42,7 @@ describe("intercom/contacts/exportProfile/archive", () => {
     findEmail,
     findId,
     getTags,
-    guidRegex,
+    idRegex,
     indexContacts,
     runExport,
   } = setup(appOptions, destinationOptions, newNock);
@@ -65,7 +65,7 @@ describe("intercom/contacts/exportProfile/archive", () => {
     expect(userId).toBeTruthy();
     const user = await getUser(userId);
     expect(user.email).toBe(email);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("A Lead");
     expect(user.role).toBe("lead"); // because lifecycle
 

@@ -13,7 +13,7 @@ describe("modules/groupExport", () => {
 
   describe("groupExport", () => {
     let filename: string;
-    let runGuid: string;
+    let runId: string;
     let mario: Profile;
     let luigi: Profile;
     let peach: Profile;
@@ -76,13 +76,13 @@ describe("modules/groupExport", () => {
 
         const response = await groupExportToCSV(group, 1);
         filename = response.filename;
-        runGuid = response.runGuid;
+        runId = response.runId;
       },
       helper.longTime
     );
 
     test("the run is complete", async () => {
-      const run = await Run.findOne({ where: { guid: runGuid } });
+      const run = await Run.findOne({ where: { id: runId } });
       expect(run.state).toBe("complete");
       expect(run.completedAt).toBeTruthy();
     });
@@ -93,7 +93,7 @@ describe("modules/groupExport", () => {
 
       // mario
       let properties = await mario.properties();
-      expect(rows[0].guid).toBe(mario.guid);
+      expect(rows[0].id).toBe(mario.id);
       expect(parseInt(rows[0].createdAt)).toBeGreaterThan(0);
       expect(rows[0]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[0]["ltv"])).toBe(properties.ltv.values[0]);
@@ -104,7 +104,7 @@ describe("modules/groupExport", () => {
 
       // luigi
       properties = await luigi.properties();
-      expect(rows[1].guid).toBe(luigi.guid);
+      expect(rows[1].id).toBe(luigi.id);
       expect(parseInt(rows[1].createdAt)).toBeGreaterThan(0);
       expect(rows[1]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[1]["ltv"])).toBe(properties.ltv.values[0]);
@@ -115,7 +115,7 @@ describe("modules/groupExport", () => {
 
       // peach
       properties = await peach.properties();
-      expect(rows[2].guid).toBe(peach.guid);
+      expect(rows[2].id).toBe(peach.id);
       expect(parseInt(rows[2].createdAt)).toBeGreaterThan(0);
       expect(rows[2]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[2]["ltv"])).toBe(properties.ltv.values[0]);
@@ -126,7 +126,7 @@ describe("modules/groupExport", () => {
 
       // toad
       properties = await toad.properties();
-      expect(rows[3].guid).toBe(toad.guid);
+      expect(rows[3].id).toBe(toad.id);
       expect(parseInt(rows[3].createdAt)).toBeGreaterThan(0);
       expect(rows[3]["email"]).toBe(properties.email.values[0]);
       expect(parseFloat(rows[3]["ltv"])).toBe(properties.ltv.values[0]);

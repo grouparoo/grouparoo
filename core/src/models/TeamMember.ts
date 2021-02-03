@@ -17,14 +17,14 @@ import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
-  guidPrefix() {
+  idPrefix() {
     return "tem";
   }
 
   @AllowNull(false)
   @Column
   @ForeignKey(() => Team)
-  teamGuid: string;
+  teamId: string;
 
   @AllowNull(true)
   @Column
@@ -55,8 +55,8 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   async apiData() {
     return {
-      guid: this.guid,
-      teamGuid: this.teamGuid,
+      id: this.id,
+      teamId: this.teamId,
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,
@@ -77,11 +77,9 @@ export class TeamMember extends LoggedModel<TeamMember> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 

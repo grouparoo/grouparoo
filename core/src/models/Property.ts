@@ -89,14 +89,14 @@ export interface PluginConnectionPropertyOption {
   options: (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     property: Property;
-    propertyGuid: string;
+    propertyId: string;
   }) => Promise<
     Array<{
       key: string;
@@ -120,7 +120,7 @@ export interface PropertyFiltersWithKey {
 }))
 @Table({ tableName: "properties", paranoid: false })
 export class Property extends LoggedModel<Property> {
-  guidPrefix() {
+  idPrefix() {
     return "rul";
   }
 
@@ -147,7 +147,7 @@ export class Property extends LoggedModel<Property> {
   @AllowNull(false)
   @ForeignKey(() => Source)
   @Column
-  sourceGuid: string;
+  sourceId: string;
 
   @AllowNull(false)
   @Default("draft")
@@ -176,7 +176,7 @@ export class Property extends LoggedModel<Property> {
   @BelongsTo(() => Source)
   source: Source;
 
-  @HasMany(() => Option, "ownerGuid")
+  @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => PropertyFilter)
@@ -191,10 +191,10 @@ export class Property extends LoggedModel<Property> {
 
   async test(options?: SimplePropertyOptions) {
     const profile = await Profile.findOne({
-      order: [["guid", "asc"]],
+      order: [["id", "asc"]],
     });
     if (profile) {
-      const source = await Source.findByGuid(this.sourceGuid);
+      const source = await Source.findById(this.sourceId);
       return source.importProfileProperty(profile, this, options);
     }
   }
@@ -204,7 +204,7 @@ export class Property extends LoggedModel<Property> {
     for (const i in options) {
       options[
         i
-      ] = await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
+      ] = await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
         options[i]
       );
     }
@@ -218,7 +218,7 @@ export class Property extends LoggedModel<Property> {
     for (const i in options) {
       options[
         i
-      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
         options[i]
       );
     }
@@ -237,7 +237,7 @@ export class Property extends LoggedModel<Property> {
   ) {
     // This method is called on every Property, for every profile, before an import
     // caching that we are already valid can speed this up
-    const cacheKey = `cache:property:${this.guid}`;
+    const cacheKey = `cache:property:${this.id}`;
     const client = api.redis.clients.client;
     if (useCache) {
       const previouslyValidated = await client.get(cacheKey);
@@ -299,7 +299,7 @@ export class Property extends LoggedModel<Property> {
     if (filtersAreEqual) return;
 
     await PropertyFilter.destroy({
-      where: { propertyGuid: this.guid },
+      where: { propertyId: this.id },
     });
 
     for (const i in filters) {
@@ -307,7 +307,7 @@ export class Property extends LoggedModel<Property> {
 
       await PropertyFilter.create({
         position: parseInt(i) + 1,
-        propertyGuid: this.guid,
+        propertyId: this.id,
         key: filter.key,
         op: filter.op,
         match: filter.match,
@@ -355,8 +355,8 @@ export class Property extends LoggedModel<Property> {
     const filters = await this.getFilters();
 
     return {
-      guid: this.guid,
-      sourceGuid: this.sourceGuid,
+      id: this.id,
+      sourceId: this.sourceId,
       key: this.key,
       type: this.type,
       state: this.state,
@@ -374,11 +374,9 @@ export class Property extends LoggedModel<Property> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -397,7 +395,7 @@ export class Property extends LoggedModel<Property> {
   static async ensureUniqueKey(instance: Property) {
     const count = await Property.count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         key: instance.key,
         state: { [Op.ne]: "draft" },
       },
@@ -409,7 +407,7 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async ensureOptions(instance: Property) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+    const source = await Source.findById(instance.sourceId);
     await source.validateOptions(null);
   }
 
@@ -434,7 +432,7 @@ export class Property extends LoggedModel<Property> {
           [api.sequelize.fn("COUNT", api.sequelize.col("rawValue")), "count"],
         ],
         group: ["rawValue"],
-        where: { propertyGuid: instance.guid },
+        where: { propertyId: instance.id },
         having: api.sequelize.where(
           api.sequelize.fn("COUNT", api.sequelize.col("rawValue")),
           { [Op.gt]: 1 }
@@ -455,7 +453,7 @@ export class Property extends LoggedModel<Property> {
   static async ensureOneIdentifyingProperty(instance: Property) {
     if (instance.identifying) {
       const otherIdentifyingRulesCount = await Property.count({
-        where: { identifying: true, guid: { [Op.ne]: instance.guid } },
+        where: { identifying: true, id: { [Op.ne]: instance.id } },
       });
 
       if (otherIdentifyingRulesCount > 0) {
@@ -466,9 +464,9 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async ensureSourceReady(instance: Property) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+    const source = await Source.findById(instance.sourceId);
     const otherProperties = await Property.scope(null).count({
-      where: { guid: { [Op.ne]: instance.guid } },
+      where: { id: { [Op.ne]: instance.id } },
     });
 
     if (otherProperties > 0 && source.state !== "ready") {
@@ -483,7 +481,7 @@ export class Property extends LoggedModel<Property> {
 
   @BeforeSave
   static async validateReservedKeys(instance: Property) {
-    const reservedKeys = ["guid", "createdAt", "updatedAt"];
+    const reservedKeys = ["id", "createdAt", "updatedAt"];
     if (reservedKeys.includes(instance.key)) {
       throw new Error(
         `${instance.key} is a reserved key and cannot be used as a property`
@@ -514,22 +512,22 @@ export class Property extends LoggedModel<Property> {
   @BeforeDestroy
   static async ensureNotInUse(instance: Property) {
     const groupRule = await GroupRule.findOne({
-      where: { propertyGuid: instance.guid },
+      where: { propertyId: instance.id },
     });
 
     if (groupRule) {
-      const group = await Group.findByGuid(groupRule.groupGuid);
+      const group = await Group.findById(groupRule.groupId);
       throw new Error(
-        `cannot delete property "${instance.key}", group ${group.name} (${group.guid}) is based on it`
+        `cannot delete property "${instance.key}", group ${group.name} (${group.id}) is based on it`
       );
     }
 
     const mapping = await Mapping.findOne({
-      where: { propertyGuid: instance.guid },
+      where: { propertyId: instance.id },
     });
     if (mapping) {
       throw new Error(
-        `cannot delete property "${instance.key}" as ${mapping.ownerGuid} is using it in a mapping`
+        `cannot delete property "${instance.key}" as ${mapping.ownerId} is using it in a mapping`
       );
     }
   }
@@ -542,14 +540,14 @@ export class Property extends LoggedModel<Property> {
   @AfterDestroy
   static async destroyOptions(instance: Property) {
     await Option.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 
   @AfterDestroy
   static async stopRuns(instance: Property) {
     const runs = await Run.findAll({
-      where: { creatorGuid: instance.guid, state: "running" },
+      where: { creatorId: instance.id, state: "running" },
     });
 
     for (const i in runs) {
@@ -560,14 +558,14 @@ export class Property extends LoggedModel<Property> {
   @AfterDestroy
   static async destroyPropertyFilters(instance: Property) {
     await PropertyFilter.destroy({
-      where: { propertyGuid: instance.guid },
+      where: { propertyId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyProfileProperties(instance: Property) {
     await ProfileProperty.destroy({
-      where: { propertyGuid: instance.guid },
+      where: { propertyId: instance.id },
     });
   }
 }

@@ -32,7 +32,7 @@ describe("tasks/event:associateProfiles", () => {
         "event:associateProfile"
       );
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].eventGuid).toBe(event.guid);
+      expect(foundTasks[0].args[0].eventId).toBe(event.id);
     });
   });
 });

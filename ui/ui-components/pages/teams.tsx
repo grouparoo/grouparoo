@@ -37,12 +37,12 @@ export default function Page({
         <tbody>
           {teams.map((team) => {
             return (
-              <tr key={`team-${team.guid}`}>
+              <tr key={`team-${team.id}`}>
                 <td>
-                  <Link href="/team/[guid]/edit" as={`/team/${team.guid}/edit`}>
+                  <Link href="/team/[id]/edit" as={`/team/${team.id}/edit`}>
                     <a>
                       <strong>{team.name}</strong>
-                      {/* <br /><span className='text-muted'>{team.guid}</span> */}
+                      {/* <br /><span className='text-muted'>{team.id}</span> */}
                     </a>
                   </Link>
                 </td>
@@ -91,7 +91,7 @@ export default function Page({
         <tbody>
           {teamMembers.map((teamMember) => {
             return (
-              <tr key={`teamMember-${teamMember.guid}`}>
+              <tr key={`teamMember-${teamMember.id}`}>
                 <td style={{ maxWidth: 36 }}>
                   <ProfileImageFromEmail
                     loading={false}
@@ -100,8 +100,8 @@ export default function Page({
                 </td>
                 <td>
                   <Link
-                    href="/teamMember/[guid]/edit"
-                    as={`/teamMember/${teamMember.guid}/edit`}
+                    href="/teamMember/[id]/edit"
+                    as={`/teamMember/${teamMember.id}/edit`}
                   >
                     <a>{teamMember.email}</a>
                   </Link>
@@ -109,7 +109,7 @@ export default function Page({
                 <td>{teamMember.firstName}</td>
                 <td>{teamMember.lastName}</td>
                 <td>
-                  {teams.filter((t) => t.guid === teamMember.teamGuid)[0].name}
+                  {teams.filter((t) => t.id === teamMember.teamId)[0].name}
                 </td>
                 <td>
                   {teamMember.lastLoginAt ? (

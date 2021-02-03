@@ -50,7 +50,7 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
     findId,
     findEmail,
     getTags,
-    guidRegex,
+    idRegex,
     indexContacts,
     getClient,
     runExport,
@@ -74,7 +74,7 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
     expect(userId).toBeTruthy();
     const user = await getUser(userId);
     expect(user.email).toBe(email);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("Brian");
     expect(user.role).toBe("lead");
   });
@@ -181,9 +181,9 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
       name: "Alan",
     });
     userId3 = body.id;
-    const assignedGuid = body.external_id;
+    const assignedId = body.external_id;
     expect(userId3).toBeTruthy();
-    expect(assignedGuid).toBeTruthy(); // assigned one automatically by Intercom
+    expect(assignedId).toBeTruthy(); // assigned one automatically by Intercom
 
     await indexContacts();
 
@@ -200,7 +200,7 @@ describe("intercom/contacts/exportProfile/lifecycle", () => {
 
     const user = await getUser(userId3);
     expect(user.email).toBe(email3);
-    expect(user.external_id).toBe(assignedGuid);
+    expect(user.external_id).toBe(assignedId);
     expect(user.name).toBe("Allison");
     expect(user.role).toBe("lead");
 

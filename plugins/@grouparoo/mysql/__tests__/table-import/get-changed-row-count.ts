@@ -51,7 +51,7 @@ describe("mysql/table/scheduleOptions", () => {
     const rowCount = await getChangedRowCount({
       connection: client,
       appOptions,
-      appGuid: app.guid,
+      appId: app.id,
       tableName: usersTableName,
       highWaterMarkCondition: {
         columnName: "stamp",

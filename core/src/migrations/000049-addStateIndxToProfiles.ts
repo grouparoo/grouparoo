@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: async function (migration) {
     await migration.addIndex("profiles", ["state"], {
       fields: ["state"],

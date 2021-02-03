@@ -4,7 +4,7 @@ import { Property, Source } from "../../src";
 
 describe("actions/properties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
   let source: Source;
 
   beforeAll(async () => {
@@ -62,7 +62,7 @@ describe("actions/properties", () => {
     test("an administrator cannot make a new property that is both unique and an array", async () => {
       connection.params = {
         csrfToken,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: "true",
@@ -82,7 +82,7 @@ describe("actions/properties", () => {
     test("an administrator can create a new property", async () => {
       connection.params = {
         csrfToken,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: "true",
@@ -94,21 +94,21 @@ describe("actions/properties", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(property.guid).toBeTruthy();
+      expect(property.id).toBeTruthy();
       expect(property.key).toBe("email");
       expect(property.unique).toBe(true);
       expect(property.isArray).toBe(false);
       expect(property.state).toBe("draft");
-      expect(property.sourceGuid).toBe(source.guid);
+      expect(property.sourceId).toBe(source.id);
       expect(pluginOptions[0].key).toBe("column");
 
-      guid = property.guid;
+      id = property.id;
     });
 
     test("an administrator can view a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, property } = await specHelper.runAction(
         "property:view",
@@ -119,13 +119,13 @@ describe("actions/properties", () => {
       expect(property.key).toBe("email");
       expect(property.isArray).toBe(false);
       expect(property.unique).toBe(true);
-      expect(property.sourceGuid).toBe(source.guid);
+      expect(property.sourceId).toBe(source.id);
     });
 
     test("an administrator can view a property's plugin options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, pluginOptions } = await specHelper.runAction(
         "property:pluginOptions",
@@ -139,7 +139,7 @@ describe("actions/properties", () => {
     test("an administrator can view the filter options for a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, options } = await specHelper.runAction(
         "property:filterOptions",
@@ -159,7 +159,7 @@ describe("actions/properties", () => {
     test("an administrator can set the filters for a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         filters: [{ key: "id", op: "greater than", match: 6 }],
       };
       const { error, property } = await specHelper.runAction(
@@ -183,7 +183,7 @@ describe("actions/properties", () => {
     test("an administrator can make a rule ready", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: { column: "email" },
         state: "ready",
       };
@@ -198,7 +198,7 @@ describe("actions/properties", () => {
     test("an administrator can test a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, test } = await specHelper.runAction(
         "property:test",
@@ -212,7 +212,7 @@ describe("actions/properties", () => {
     test("an administrator can set options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: {
           column: "userId",
         },
@@ -231,7 +231,7 @@ describe("actions/properties", () => {
     test("options are validated", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: {
           query: "select thing from stuff",
         },
@@ -244,7 +244,7 @@ describe("actions/properties", () => {
     test("a rule can be made identifying", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, property } = await specHelper.runAction(
         "property:makeIdentifying",
@@ -267,14 +267,14 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(properties.length).toBe(2); // this + userId
-      expect(properties[1].sourceGuid).toBe(source.guid);
+      expect(properties[1].sourceId).toBe(source.id);
       expect(properties[1].type).toBe("integer");
       expect(properties[1].unique).toBe(true);
       expect(properties[0].type).toBe("string");
       expect(properties[0].unique).toBe(true);
       expect(total).toBe(2);
 
-      expect(examples[properties[0].guid]).toEqual(["person@example.com"]);
+      expect(examples[properties[0].id]).toEqual(["person@example.com"]);
 
       await profile.destroy();
     });
@@ -318,7 +318,7 @@ describe("actions/properties", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, groups } = await specHelper.runAction(
         "property:groups",
@@ -326,7 +326,7 @@ describe("actions/properties", () => {
       );
       expect(error).toBeUndefined();
       expect(groups.length).toBe(1);
-      expect(groups[0].guid).toBe(group.guid);
+      expect(groups[0].id).toBe(group.id);
 
       await group.destroy();
     });
@@ -334,7 +334,7 @@ describe("actions/properties", () => {
     test("an administrator can edit a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         unique: true,
       };
       const { error, property } = await specHelper.runAction(
@@ -354,14 +354,14 @@ describe("actions/properties", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, profile } = await specHelper.runAction(
         "property:profilePreview",
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBe(_profile.guid);
+      expect(profile.id).toBe(_profile.id);
       expect(profile.properties["email"].values).toBeTruthy();
 
       await _profile.destroy();
@@ -370,7 +370,7 @@ describe("actions/properties", () => {
     test("an administrator can remove a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, success } = await specHelper.runAction(
         "property:destroy",

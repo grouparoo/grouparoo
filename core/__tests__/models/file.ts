@@ -17,7 +17,7 @@ describe("models/file", () => {
 
     await file.save();
 
-    expect(file.guid.length).toBe(40);
+    expect(file.id.length).toBe(40);
     expect(file.createdAt).toBeTruthy();
     expect(file.updatedAt).toBeTruthy();
   });

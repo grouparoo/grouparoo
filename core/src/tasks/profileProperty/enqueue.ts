@@ -39,7 +39,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
 
       const pendingProfileProperties = await ProfileProperty.findAll({
         where: {
-          propertyGuid: property.guid,
+          propertyId: property.id,
           state: "pending",
         },
         order: [["stateChangedAt", "ASC"]],
@@ -53,17 +53,15 @@ export class ProfilePropertiesEnqueue extends CLSTask {
       if (pendingProfileProperties.length > 0) {
         if (method === "ProfileProperties") {
           await CLS.enqueueTask(`profileProperty:import${method}`, {
-            propertyGuid: property.guid,
-            profileGuids: pendingProfileProperties.map(
-              (ppp) => ppp.profileGuid
-            ),
+            propertyId: property.id,
+            profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
           });
         } else {
           await Promise.all(
             pendingProfileProperties.map((ppp) =>
               CLS.enqueueTask(`profileProperty:import${method}`, {
-                propertyGuid: property.guid,
-                profileGuid: ppp.profileGuid,
+                propertyId: property.id,
+                profileId: ppp.profileId,
               })
             )
           );

@@ -12,7 +12,7 @@ describe("<PropertyTab />", () => {
 
   beforeAll(() => {
     useRouter.mockImplementationOnce(() => ({
-      pathname: "/property/[guid]/edit",
+      pathname: "/property/[id]/edit",
       asPath: "/property/abc123/edit",
     }));
 
@@ -53,7 +53,7 @@ describe("<AppTab />", () => {
 
   beforeAll(() => {
     useRouter.mockImplementationOnce(() => ({
-      pathname: "/app/[guid]/edit",
+      pathname: "/app/[id]/edit",
       asPath: "/app/abc123/edit",
     }));
 

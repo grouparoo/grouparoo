@@ -29,13 +29,13 @@ export default function ExportsList(props) {
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "");
 
-  let profileGuid: string;
-  let destinationGuid: string;
-  if (router.query.guid) {
+  let profileId: string;
+  let destinationId: string;
+  if (router.query.id) {
     if (router.pathname.match("/profile/")) {
-      profileGuid = router.query.guid.toString();
+      profileId = router.query.id.toString();
     } else {
-      destinationGuid = router.query.guid.toString();
+      destinationId = router.query.id.toString();
     }
   }
 
@@ -50,8 +50,8 @@ export default function ExportsList(props) {
       limit,
       offset,
       state,
-      profileGuid,
-      destinationGuid,
+      profileId,
+      destinationId,
     });
     setLoading(false);
     if (response?.exports) {
@@ -150,7 +150,7 @@ export default function ExportsList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>Times</th>
             <th>Profile Properties Exported</th>
             <th>Groups Exported</th>
@@ -159,29 +159,29 @@ export default function ExportsList(props) {
         <tbody>
           {_exports.map((_export) => {
             return (
-              <Fragment key={`export-${_export.guid}`}>
+              <Fragment key={`export-${_export.id}`}>
                 <tr>
                   <td>
-                    <span>Guid</span>:{" "}
+                    <span>Id</span>:{" "}
                     <Link
-                      href="/export/[guid]/edit"
-                      as={`/export/${_export.guid}/edit`}
+                      href="/export/[id]/edit"
+                      as={`/export/${_export.id}/edit`}
                     >
-                      <a>{_export.guid}</a>
+                      <a>{_export.id}</a>
                     </Link>
                     <br />
                     Profile:{" "}
                     <Link
-                      href="/profile/[guid]/edit"
-                      as={`/profile/${_export.profileGuid}/edit`}
+                      href="/profile/[id]/edit"
+                      as={`/profile/${_export.profileId}/edit`}
                     >
-                      <a>{_export.profileGuid}</a>
+                      <a>{_export.profileId}</a>
                     </Link>
                     <br />
                     Destination:{" "}
                     <EnterpriseLink
-                      href="/destination/[guid]/edit"
-                      as={`/destination/${_export.destination.guid}/edit`}
+                      href="/destination/[id]/edit"
+                      as={`/destination/${_export.destination.id}/edit`}
                     >
                       <a>{_export.destination.name}</a>
                     </EnterpriseLink>
@@ -250,16 +250,16 @@ export default function ExportsList(props) {
 
 ExportsList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset, state } = ctx.query;
+  const { id, limit, offset, state } = ctx.query;
   const { groups } = await execApi("get", `/groups`);
 
-  let profileGuid: string;
-  let destinationGuid: string;
-  if (guid) {
+  let profileId: string;
+  let destinationId: string;
+  if (id) {
     if (ctx.pathname.match("/profile/")) {
-      profileGuid = guid;
+      profileId = id;
     } else {
-      destinationGuid = guid;
+      destinationId = id;
     }
   }
 
@@ -267,8 +267,8 @@ ExportsList.hydrate = async (ctx) => {
     limit,
     offset,
     state,
-    destinationGuid,
-    profileGuid,
+    destinationId,
+    profileId,
   });
 
   return { groups, _exports, total };

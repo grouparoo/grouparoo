@@ -29,14 +29,14 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.SettingEdit = await execApi(
       "put",
-      `/setting/${setting.guid}`,
+      `/setting/${setting.id}`,
       setting
     );
     setLoading(false);
     if (response?.setting) {
       const _settings = [...settings];
       for (const i in _settings) {
-        if (_settings[i].guid === response.setting.guid) {
+        if (_settings[i].id === response.setting.id) {
           _settings[i] = response.setting;
         }
       }
@@ -99,7 +99,7 @@ export default function Page(props) {
               .map((setting) =>
                 setting.pluginName === pluginName ? (
                   <SettingCard
-                    key={`team-${setting.guid}`}
+                    key={`team-${setting.id}`}
                     setting={setting}
                     loading={loading}
                     updateSetting={updateSetting}

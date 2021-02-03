@@ -75,7 +75,7 @@ export default function Page(props) {
         <tbody>
           {notifications.map((notification) => {
             return (
-              <tr key={`notification-${notification.guid}`}>
+              <tr key={`notification-${notification.id}`}>
                 <td>
                   {notification.readAt ? null : (
                     <Badge variant="warning">new</Badge>
@@ -83,8 +83,8 @@ export default function Page(props) {
                 </td>
                 <td>
                   <Link
-                    href="/notification/[guid]/edit"
-                    as={`/notification/${notification.guid}/edit`}
+                    href="/notification/[id]/edit"
+                    as={`/notification/${notification.id}/edit`}
                   >
                     <a>
                       {notification.readAt ? (

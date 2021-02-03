@@ -95,18 +95,18 @@ export interface ProfilesPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
-    scheduleGuid: string;
+    scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     properties: Property[];
     run: Run;
-    runGuid: string;
+    runId: string;
     limit: number;
     highWaterMark: HighWaterMark;
     sourceOffset: number | string;
@@ -127,18 +127,18 @@ export interface ProfilePropertyPluginMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     property: Property;
-    propertyGuid: string;
+    propertyId: string;
     propertyOptions: SimplePropertyOptions;
     propertyFilters: PropertyFiltersWithKey[];
     profile: Profile;
-    profileGuid: string;
+    profileId: string;
   }): Promise<ProfilePropertyPluginMethodResponse>;
 }
 
@@ -154,23 +154,23 @@ export interface ProfilePropertiesPluginMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     property: Property;
-    propertyGuid: string;
+    propertyId: string;
     propertyOptions: SimplePropertyOptions;
     propertyFilters: PropertyFiltersWithKey[];
     profiles: Profile[];
-    profileGuids: string[];
+    profileIds: string[];
   }): Promise<ProfilePropertiesPluginMethodResponse>;
 }
 
 export type ProfilePropertiesPluginMethodResponse = {
-  [profileGuid: string]: ProfilePropertyPluginMethodResponse;
+  [profileId: string]: ProfilePropertyPluginMethodResponse;
 };
 
 /**
@@ -179,7 +179,7 @@ export type ProfilePropertiesPluginMethodResponse = {
  */
 export interface ExportedProfile {
   profile: Profile;
-  profileGuid: string;
+  profileId: string;
   oldProfileProperties: { [key: string]: any };
   newProfileProperties: { [key: string]: any };
   oldGroups: Array<string>;
@@ -195,10 +195,10 @@ export interface ExportProfilePluginMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
-    destinationGuid: string;
+    destinationId: string;
     destinationOptions: SimpleDestinationOptions;
     export: ExportedProfile;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
@@ -207,28 +207,28 @@ export interface ExportProfilePluginMethod {
 /**
  * Method to export many profiles to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
- * Errors is an Array of Error objects with an additional `exportGuid` property so we can link the error to the specific export that caused the error.
+ * Errors is an Array of Error objects with an additional `exportId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the batch, just throw a single error.
  */
 export interface ExportProfilesPluginMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
-    destinationGuid: string;
+    destinationId: string;
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }>;
 }
 
-export interface ErrorWithProfileGuid extends Error {
-  profileGuid: string;
+export interface ErrorWithProfileId extends Error {
+  profileId: string;
   errorLevel: ExportErrorLevel;
 }
 
@@ -263,7 +263,7 @@ export interface AppParallelismMethod {
 export interface ConnectPluginAppMethod {
   (argument: {
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
   }): Promise<any>;
 }
@@ -274,7 +274,7 @@ export interface ConnectPluginAppMethod {
 export interface DisconnectPluginAppMethod {
   (argument: {
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     connection: any;
   }): Promise<void>;
@@ -287,7 +287,7 @@ export interface DisconnectPluginAppMethod {
 export interface TestPluginMethod {
   (argument: {
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     connection: any;
   }): Promise<{ success: boolean; message?: string }>;
@@ -301,7 +301,7 @@ export interface SourceOptionsMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     sourceOptions: SimpleSourceOptions;
   }): Promise<SourceOptionsMethodResponse>;
@@ -324,10 +324,10 @@ export interface SourcePreviewMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
   }): Promise<Array<SourcePreviewMethodResponseRow>>;
 }
@@ -344,14 +344,14 @@ export interface SourceFilterMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     property: Property;
-    propertyGuid: string;
+    propertyId: string;
     propertyOptions: SimplePropertyOptions;
   }): Promise<Array<SourceFilterMethodResponseRow>>;
 }
@@ -369,18 +369,18 @@ export interface SourceRunPercentCompleteMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     schedule: Schedule;
-    scheduleGuid: string;
+    scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
     highWaterMark: HighWaterMark;
     run: Run;
-    runGuid: string;
+    runId: string;
   }): Promise<number>;
 }
 
@@ -391,10 +391,10 @@ export interface UniquePropertyBootstrapOptions {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     mappedColumn: string;
   }): Promise<SimplePropertyOptions>;
@@ -408,7 +408,7 @@ export interface DestinationOptionsMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<DestinationOptionsMethodResponse>;
@@ -429,10 +429,10 @@ export interface DestinationMappingOptionsMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
-    destinationGuid: string;
+    destinationId: string;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
@@ -480,10 +480,10 @@ export interface ExportArrayPropertiesMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destination: Destination;
-    destinationGuid: string;
+    destinationId: string;
     destinationOptions: SimpleDestinationOptions;
   }): Promise<ExportArrayPropertiesMethodResponse>;
 }

@@ -28,8 +28,8 @@ describe("tasks/export:enqueue", () => {
       });
 
       pendingExportA = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -37,8 +37,8 @@ describe("tasks/export:enqueue", () => {
       });
 
       pendingExportB = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -46,8 +46,8 @@ describe("tasks/export:enqueue", () => {
       });
 
       completeExport = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -57,8 +57,8 @@ describe("tasks/export:enqueue", () => {
       });
 
       errorExport = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -69,8 +69,8 @@ describe("tasks/export:enqueue", () => {
       });
 
       infoExport = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -99,14 +99,12 @@ describe("tasks/export:enqueue", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].exportGuids.length).toBe(2);
-      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportA.guid);
-      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportB.guid);
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(
-        completeExport.guid
-      );
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(errorExport.guid);
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(infoExport.guid);
+      expect(foundTasks[0].args[0].exportIds.length).toBe(2);
+      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportA.id);
+      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportB.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(completeExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(errorExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
     });
 
     test("batch size is variable", async () => {

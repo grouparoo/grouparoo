@@ -25,7 +25,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.AppCreate = await execApi("post", `/app`, { type });
     if (response?.app) {
-      return router.push("/app/[guid]/edit", `/app/${response.app.guid}/edit`);
+      return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);
     } else {
       setLoading(false);
     }

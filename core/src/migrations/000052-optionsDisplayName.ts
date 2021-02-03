@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     // "aggregation method" renamed to "aggregationMethod"
     await migration.sequelize.query(

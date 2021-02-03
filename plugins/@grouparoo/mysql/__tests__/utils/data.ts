@@ -65,7 +65,7 @@ const appOptions = {
   user: "root",
   database: "grouparoo_test",
 };
-const appGuid = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
+const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
 
 let client;
 export async function getClient() {
@@ -75,7 +75,7 @@ export async function getClient() {
   client = await connect({
     appOptions,
     app: null,
-    appGuid,
+    appId,
   });
   return client;
 }
@@ -121,7 +121,7 @@ export async function populate() {
 export function getConfig() {
   return {
     appOptions,
-    appGuid,
+    appId,
     usersTableName,
     purchasesTableName,
     profilesDestinationTableName,

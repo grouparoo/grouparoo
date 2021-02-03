@@ -26,7 +26,7 @@ export function FilePreview({
       <Image
         thumbnail
         style={{ maxWidth, maxHeight }}
-        src={`/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`}
+        src={`/api/${apiVersion}/file/${file.id}?csrfToken=${csrfToken}`}
       />
     );
   }
@@ -42,6 +42,6 @@ export async function downloadFile(file) {
   const csrfToken = globalThis?.localStorage?.getItem("session:csrfToken");
 
   console.info("downloading file", file);
-  const url = `/api/${apiVersion}/file/${file.guid}?csrfToken=${csrfToken}`;
+  const url = `/api/${apiVersion}/file/${file.id}?csrfToken=${csrfToken}`;
   window.open(url, "_new");
 }

@@ -3,7 +3,7 @@ import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   export: {
     toDelete,
@@ -58,14 +58,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // add to lists
       for (const i in newGroups) {
         const group = newGroups[i];
-        await addToList(appGuid, appOptions, email, group);
+        await addToList(appId, appOptions, email, group);
       }
 
       // remove from lists
       for (const i in oldGroups) {
         const group = oldGroups[i];
         if (!newGroups.includes(group))
-          await removeFromList(appGuid, appOptions, email, group);
+          await removeFromList(appId, appOptions, email, group);
       }
     }
 

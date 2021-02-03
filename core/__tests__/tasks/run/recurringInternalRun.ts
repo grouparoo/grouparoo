@@ -28,20 +28,20 @@ describe("tasks/run:recurringInternalRun", () => {
       const run = await Run.findOne({
         where: { creatorType: "task" },
       });
-      expect(run.creatorGuid).toBe("run:recurringInternalRun");
+      expect(run.creatorId).toBe("run:recurringInternalRun");
     });
 
     test("the task will not create a run when the frequency is set and a previous run exists (too soon)", async () => {
       await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
-        creatorGuid: "run:recurringInternalRun",
+        creatorId: "run:recurringInternalRun",
         state: "complete",
       });
       await firstRun.reload();
       await specHelper.runTask("run:recurringInternalRun", {});
       const secondRun = await Run.findOne({
-        where: { creatorType: "task", guid: { [Op.ne]: firstRun.guid } },
+        where: { creatorType: "task", id: { [Op.ne]: firstRun.id } },
       });
 
       expect(secondRun).toBeNull();
@@ -51,14 +51,14 @@ describe("tasks/run:recurringInternalRun", () => {
       await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
-        creatorGuid: "run:recurringInternalRun",
+        creatorId: "run:recurringInternalRun",
         state: "running",
         createdAt: new Date("2019-01-01"),
       });
       await firstRun.reload();
       await specHelper.runTask("run:recurringInternalRun", {});
       const secondRun = await Run.findOne({
-        where: { creatorType: "task", guid: { [Op.ne]: firstRun.guid } },
+        where: { creatorType: "task", id: { [Op.ne]: firstRun.id } },
       });
 
       expect(secondRun).toBeNull();
@@ -68,17 +68,17 @@ describe("tasks/run:recurringInternalRun", () => {
       await setting.update({ value: 1 });
       const firstRun = await Run.create({
         creatorType: "task",
-        creatorGuid: "run:recurringInternalRun",
+        creatorId: "run:recurringInternalRun",
         state: "complete",
         createdAt: new Date("2019-01-01"),
       });
       await firstRun.reload();
       await specHelper.runTask("run:recurringInternalRun", {});
       const secondRun = await Run.findOne({
-        where: { creatorType: "task", guid: { [Op.ne]: firstRun.guid } },
+        where: { creatorType: "task", id: { [Op.ne]: firstRun.id } },
       });
 
-      expect(secondRun.creatorGuid).toBe("run:recurringInternalRun");
+      expect(secondRun.creatorId).toBe("run:recurringInternalRun");
     });
 
     test("the task will not create a run when the frequency is zero", async () => {

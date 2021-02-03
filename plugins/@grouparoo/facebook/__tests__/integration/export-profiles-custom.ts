@@ -27,9 +27,9 @@ require("./../fixtures/export-profiles-custom");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
+const appId = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 
-const destinationGuid = "dst_b0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
+const destinationId = "dst_b0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 const destinationOptions = {
   primaryKey: "EMAIL",
   syncMode: "Sync",
@@ -43,14 +43,14 @@ const additiveDestinationOptions = {
 let client: Client;
 
 const email1 = "brian@demo.com";
-const guid1 = "pro1";
+const id1 = "pro1";
 const newEmail1 = "other@demo.com";
 
 const email2 = "user2@demo.com";
-const guid2 = "pro2";
+const id2 = "pro2";
 
 const email3 = "user3@demo.com";
-const guid3 = "pro3";
+const id3 = "pro3";
 
 const list1 = "(test) Group 1";
 let listId1 = null;
@@ -68,8 +68,8 @@ function getUserList(count) {
   const out = [];
   for (let i = 1; i <= count; i++) {
     const email = template.replace("@", `${i}@`);
-    const profileGuid = `manyguid${i}`;
-    out.push({ email, profileGuid });
+    const profileId = `manyguid${i}`;
+    out.push({ email, profileId });
   }
   return out;
 }
@@ -140,16 +140,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(listId1).toBe(null);
 
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: { EMAIL: email1, FN: "Brian" },
           oldGroups: [],
@@ -174,16 +174,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(listId1).toBe(null);
 
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: { EMAIL: email1, FN: "Brian" },
           oldGroups: [],
@@ -224,16 +224,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(listId2).toBe(null);
 
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian" },
           newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           oldGroups: [list1],
@@ -242,7 +242,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: { EMAIL: email2, FN: "Andy", LN: " Jones" },
           oldGroups: [],
@@ -295,16 +295,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
   test("has issues deleting from small group", async () => {
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           oldGroups: [list1, list2],
@@ -313,7 +313,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { EMAIL: email2, FN: "Andy", LN: " Jones" },
           newProfileProperties: { EMAIL: email2, FN: "Andy", LN: "OK" },
           oldGroups: [list2],
@@ -326,7 +326,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toBe(1);
     let error;
-    error = errors.find((e) => e.profileGuid === guid1);
+    error = errors.find((e) => e.profileId === id1);
     expect(error.message).toContain(
       "cannot remove users from this audience because it will result in a low audience size"
     );
@@ -379,16 +379,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
   test("removes user (low issue) when no longer in group", async () => {
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           oldGroups: [list1, list2],
@@ -401,7 +401,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toBe(1);
     let error;
-    error = errors.find((e) => e.profileGuid === guid1);
+    error = errors.find((e) => e.profileId === id1);
     expect(error.message).toContain(
       "cannot remove users from this audience because it will result in a low audience size"
     );
@@ -431,9 +431,9 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(listId3).toBe(null);
 
     const exports = [];
-    for (const { email, profileGuid } of manyUsers) {
+    for (const { email, profileId } of manyUsers) {
       exports.push({
-        profileGuid,
+        profileId,
         oldProfileProperties: {},
         newProfileProperties: { EMAIL: email },
         oldGroups: [],
@@ -443,7 +443,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       });
     }
     exports.push({
-      guid1,
+      id1,
       oldProfileProperties: {},
       newProfileProperties: { EMAIL: email1 },
       oldGroups: [],
@@ -453,9 +453,9 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     });
 
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
@@ -490,16 +490,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
   test("can change user email address", async () => {
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           newProfileProperties: {
             EMAIL: newEmail1,
@@ -516,7 +516,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toBe(1);
     let error;
-    error = errors.find((e) => e.profileGuid === guid1);
+    error = errors.find((e) => e.profileId === id1);
     expect(error.message).toContain(
       "cannot remove users from this audience because it will result in a low audience size"
     );
@@ -545,16 +545,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
   test("will error on local invalidated data", async () => {
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           oldGroups: [list1],
@@ -563,7 +563,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             EMAIL: "junkemail",
@@ -580,7 +580,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toBe(1);
     let error;
-    error = errors.find((e) => e.profileGuid === guid3);
+    error = errors.find((e) => e.profileId === id3);
     expect(error.message).toContain(
       "Invalid email format for the passed email"
     );
@@ -599,16 +599,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
   test("can add more properties and handle server error", async () => {
     const { success, errors } = await exportProfiles({
-      appGuid,
+      appId,
       appOptions,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
           newProfileProperties: {
             EMAIL: email1,
@@ -622,7 +622,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             EMAIL: email3,
@@ -640,7 +640,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     expect(success).toBe(false);
     expect(errors.length).toBe(1);
     let error;
-    error = errors.find((e) => e.profileGuid === guid3);
+    error = errors.find((e) => e.profileId === id3);
     expect(error.message).toContain("empty external ID");
 
     const sent = getSentValues();
@@ -666,16 +666,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
     const destinationOptions = additiveDestinationOptions;
     test("skips deleting", async () => {
       const { success, errors } = await exportProfiles({
-        appGuid,
+        appId,
         appOptions,
-        destinationGuid,
+        destinationId,
         destinationOptions,
         connection: null,
         app: null,
         destination: null,
         exports: [
           {
-            profileGuid: guid1,
+            profileId: id1,
             oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
             newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
             oldGroups: [list1, list2],
@@ -684,7 +684,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
             profile: null,
           },
           {
-            profileGuid: guid2,
+            profileId: id2,
             oldProfileProperties: { EMAIL: email2, FN: "Andy", LN: " Jones" },
             newProfileProperties: { EMAIL: email2, FN: "Andy", LN: "OK" },
             oldGroups: [list2],
@@ -697,7 +697,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       expect(success).toBe(true);
       expect(errors.length).toBe(1);
       let error;
-      error = errors.find((e) => e.profileGuid === guid1);
+      error = errors.find((e) => e.profileId === id1);
       expect(error.message).toEqual("Destination is not removing.");
 
       const sent = getSentValues();
@@ -721,16 +721,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
     test("keeps both when change user email address", async () => {
       const { success, errors } = await exportProfiles({
-        appGuid,
+        appId,
         appOptions,
-        destinationGuid,
+        destinationId,
         destinationOptions,
         connection: null,
         app: null,
         destination: null,
         exports: [
           {
-            profileGuid: guid1,
+            profileId: id1,
             oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
             newProfileProperties: {
               EMAIL: newEmail1,
@@ -747,7 +747,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       expect(success).toBe(true);
       expect(errors.length).toBe(1);
       let error;
-      error = errors.find((e) => e.profileGuid === guid1);
+      error = errors.find((e) => e.profileId === id1);
       expect(error.message).toEqual("Destination is not removing.");
 
       const sent = getSentValues();
@@ -771,16 +771,16 @@ describe("facebook/audiences-custom/exportProfiles", () => {
 
     test("does not remove user when no longer in group", async () => {
       const { success, errors } = await exportProfiles({
-        appGuid,
+        appId,
         appOptions,
-        destinationGuid,
+        destinationId,
         destinationOptions,
         connection: null,
         app: null,
         destination: null,
         exports: [
           {
-            profileGuid: guid1,
+            profileId: id1,
             oldProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
             newProfileProperties: { EMAIL: email1, FN: "Brian", LN: "Simpson" },
             oldGroups: [list1, list2],
@@ -793,7 +793,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       expect(success).toBe(true);
       expect(errors.length).toBe(1);
       let error;
-      error = errors.find((e) => e.profileGuid === guid1);
+      error = errors.find((e) => e.profileId === id1);
       expect(error.message).toEqual("Destination is not removing.");
 
       const sent = getSentValues();

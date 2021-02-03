@@ -44,13 +44,13 @@ export class SetupStepEdit extends AuthenticatedAction {
     this.permission = { topic: "setupStep", mode: "write" };
     this.outputExample = {};
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       skipped: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const setupStep = await SetupStep.findByGuid(params.guid);
+    const setupStep = await SetupStep.findById(params.id);
 
     if (params.skipped !== null) {
       await setupStep.update({ skipped: params.skipped });

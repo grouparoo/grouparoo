@@ -23,7 +23,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
     appOptions,
-    appGuid,
+    appId,
     profile,
     property,
     propertyOptions,
@@ -48,7 +48,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       const rows = await executeQuery({
         connection,
         appOptions,
-        appGuid,
+        appId,
         query,
       });
 
@@ -63,7 +63,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       }
     } catch (error) {
       throw new Error(
-        `Error with Query (${appGuid}): - \`${query}\`, Error - ${error}`
+        `Error with Query (${appId}): - \`${query}\`, Error - ${error}`
       );
     }
     return response;

@@ -48,7 +48,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     imports.push(row);
     return null;
   });
-  const connection = await connect({ appOptions, app: null, appGuid: null });
+  const connection = await connect({ appOptions, app: null, appId: null });
   const {
     highWaterMark: nextHighWaterMark,
     importsCount,
@@ -64,11 +64,11 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     sourceOffset,
     schedule,
     scheduleOptions: await schedule.getOptions(),
-    runGuid: null,
-    scheduleGuid: null,
-    sourceGuid: null,
+    runId: null,
+    scheduleId: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
+    appId: null,
     sourceOptions: null,
     properties: await Property.findAll(),
   });
@@ -104,7 +104,7 @@ describe("snowflake/query/profiles", () => {
     });
     const options = {
       query: `SELECT id FROM PROFILES`,
-      propertyGuid: userIdProperty.guid,
+      propertyId: userIdProperty.id,
     };
     schedule = await helper.factories.schedule(source, { options });
     run = await helper.factories.run(schedule, { state: "running" });

@@ -17,7 +17,7 @@ export default async (app?, props: { [key: string]: any } = {}) => {
   const { Source } = await import(`@grouparoo/core/${loadPath}`);
   if (!app) app = await AppFactory();
 
-  props.appGuid = app.guid;
+  props.appId = app.id;
   const mergedProps = await data(props);
   const instance = new Source(mergedProps);
   await instance.save();

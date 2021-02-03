@@ -23,7 +23,7 @@ require("./../fixtures/export-objects/export-profiles-enrich");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
+const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
 const destinationOptions = {
   syncMode: "Enrich",
   profileObject: "Contact",
@@ -42,16 +42,16 @@ const model = destinationModel(destinationOptions);
 const syncOptions = Object.assign({}, destinationOptions, { syncMode: "Sync" });
 
 const email1 = "enrichbrian@demo.com";
-const guid1 = "pro1";
+const id1 = "pro1";
 const newEmail1 = "enrichother@demo.com";
 let userId1 = null;
 
 const email2 = "enrichbrian2@demo.com";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const email3 = "enrichbrian3@demo.com";
-const guid3 = "pro3";
+const id3 = "pro3";
 let userId3 = null;
 
 const group1 = "(test) High Value5";
@@ -106,12 +106,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email1,
@@ -130,7 +130,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid1);
+    expect(error.profileId).toEqual(id1);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -149,12 +149,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions: syncOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email1,
@@ -196,12 +196,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(accountId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -219,7 +219,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email2,
@@ -238,7 +238,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -265,12 +265,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             FirstName: "John",
@@ -306,12 +306,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Brian",
@@ -329,7 +329,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Jih",
@@ -352,7 +352,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -371,12 +371,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
@@ -412,12 +412,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
   test("will not delete a user, but remove them from groups", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -441,7 +441,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid1);
+    expect(error.profileId).toEqual(id1);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -457,12 +457,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
   test("is ok (and gives no error) to delete a user that doesn't exist", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -477,7 +477,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid3);
+    expect(error.profileId).toEqual(id3);
     expect(error.message).toContain("not deleting");
     expect(error.errorLevel).toEqual("info");
 
@@ -489,12 +489,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions: syncOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email2,
@@ -525,12 +525,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { Email: email1, LastName: "Smith" },
           newProfileProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1],
@@ -539,7 +539,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Patil" },
           newProfileProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [],
@@ -548,7 +548,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -563,7 +563,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid3);
+    expect(error.profileId).toEqual(id3);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -588,12 +588,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { Email: email1, LastName: "Smith" },
           newProfileProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1, group2],
@@ -602,7 +602,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [group2],
@@ -611,7 +611,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -626,7 +626,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(success).toBe(true);
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid3);
+    expect(error.profileId).toEqual(id3);
     expect(error.message).toContain("not creating");
     expect(error.errorLevel).toEqual("info");
 
@@ -646,12 +646,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Simpson",
@@ -667,7 +667,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Jones",
@@ -684,7 +684,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -700,12 +700,12 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(2);
 
-    const error2 = errors.find((e) => e.profileGuid === guid2);
+    const error2 = errors.find((e) => e.profileId === id2);
     expect(error2).toBeTruthy();
     expect(error2.message).toContain("email");
     expect(error2.errorLevel).toBeFalsy();
 
-    const error3 = errors.find((e) => e.profileGuid === guid3);
+    const error3 = errors.find((e) => e.profileId === id3);
     expect(error3).toBeTruthy();
     expect(error3.message).toContain("not creating");
     expect(error3.errorLevel).toEqual("info");

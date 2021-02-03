@@ -5,7 +5,7 @@ const data = async (props = {}) => {
   const defaultProps = {
     name: `app ${faker.name.jobDescriptor()} - ${Math.random()}`,
     type: "test-plugin-app",
-    options: { fileGuid: faker.finance.bitcoinAddress() },
+    options: { fileId: faker.finance.bitcoinAddress() },
 
     createdAt: new Date(),
     updatedAt: new Date(),

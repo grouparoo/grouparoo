@@ -28,13 +28,13 @@ export default function ImportList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
 
-  let profileGuid: string;
-  let creatorGuid: string;
-  if (router.query.guid) {
+  let profileId: string;
+  let creatorId: string;
+  if (router.query.id) {
     if (router.pathname.match("/profile/")) {
-      profileGuid = router.query.guid.toString();
+      profileId = router.query.id.toString();
     } else {
-      creatorGuid = router.query.guid.toString();
+      creatorId = router.query.id.toString();
     }
   }
 
@@ -49,8 +49,8 @@ export default function ImportList(props) {
     const response: Actions.ImportsList = await execApi("get", `/imports`, {
       limit,
       offset,
-      creatorGuid,
-      profileGuid,
+      creatorId,
+      profileId,
     });
     setLoading(false);
     if (response?.imports) {
@@ -64,8 +64,8 @@ export default function ImportList(props) {
       {props.header ? props.header : <h1>Imports</h1>}
 
       <p>
-        {total} imports {creatorGuid ? `for ${creatorGuid}` : null}{" "}
-        {profileGuid ? `for profile ${profileGuid}` : null}
+        {total} imports {creatorId ? `for ${creatorId}` : null}{" "}
+        {profileId ? `for profile ${profileId}` : null}
       </p>
 
       <Pagination
@@ -78,7 +78,7 @@ export default function ImportList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>Times</th>
             <th>Profile Properties</th>
             <th>Groups</th>
@@ -88,23 +88,23 @@ export default function ImportList(props) {
         <tbody>
           {imports.map((_import) => {
             return (
-              <Fragment key={`import-${_import.guid}`}>
+              <Fragment key={`import-${_import.id}`}>
                 <tr>
                   <td>
-                    Guid:
+                    id:
                     <Link
-                      href="/import/[guid]/edit"
-                      as={`/import/${_import.guid}/edit`}
+                      href="/import/[id]/edit"
+                      as={`/import/${_import.id}/edit`}
                     >
-                      <a> {_import.guid}</a>
+                      <a> {_import.id}</a>
                     </Link>
                     <br /> Profile:{" "}
-                    {_import.profileGuid ? (
+                    {_import.profileId ? (
                       <Link
-                        href="/profile/[guid]/edit"
-                        as={`/profile/${_import.profileGuid}/edit`}
+                        href="/profile/[id]/edit"
+                        as={`/profile/${_import.profileId}/edit`}
                       >
-                        <a>{_import.profileGuid}</a>
+                        <a>{_import.profileId}</a>
                       </Link>
                     ) : (
                       "none"
@@ -113,13 +113,13 @@ export default function ImportList(props) {
                     Creator:{" "}
                     {_import.creatorType === "run" ? (
                       <Link
-                        href="/run/[guid]/edit"
-                        as={`/run/${_import.creatorGuid}/edit`}
+                        href="/run/[id]/edit"
+                        as={`/run/${_import.creatorId}/edit`}
                       >
-                        <a>{_import.creatorGuid}</a>
+                        <a>{_import.creatorId}</a>
                       </Link>
                     ) : (
-                      _import.creatorGuid
+                      _import.creatorId
                     )}
                   </td>
                   <td>
@@ -151,7 +151,7 @@ export default function ImportList(props) {
                   </td>
                   <td>
                     {Object.keys(_import.data).map((k) => (
-                      <li key={`import-${_import.guid}-${k}`}>
+                      <li key={`import-${_import.id}-${k}`}>
                         {k}: {_import.data[k].toString()}
                       </li>
                     ))}
@@ -188,22 +188,22 @@ export default function ImportList(props) {
 
 ImportList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset } = ctx.query;
+  const { id, limit, offset } = ctx.query;
 
-  let profileGuid: string;
-  let creatorGuid: string;
-  if (guid) {
+  let profileId: string;
+  let creatorId: string;
+  if (id) {
     if (ctx.pathname.match("/profile/")) {
-      profileGuid = guid;
+      profileId = id;
     } else {
-      creatorGuid = guid;
+      creatorId = id;
     }
   }
   const { imports, total } = await execApi("get", `/imports`, {
     limit,
     offset,
-    creatorGuid,
-    profileGuid,
+    creatorId,
+    profileId,
   });
 
   const { groups } = await execApi("get", `/groups`);

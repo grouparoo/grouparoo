@@ -5,7 +5,7 @@ import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
 const veryLongTime = 5 * 60 * 1000;
 const indexTime = 2 * 60 * 1000;
 
-const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
+const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 
 export function setup(appOptions, destinationOptions, newNock) {
   let client = null;
@@ -81,16 +81,16 @@ export function setup(appOptions, destinationOptions, newNock) {
     toDelete,
   }) {
     return exportProfile({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       connection: null,
       app: null,
       destination: null,
-      destinationGuid: null,
+      destinationId: null,
       export: {
         profile: null,
-        profileGuid: null,
+        profileId: null,
         oldProfileProperties,
         newProfileProperties,
         oldGroups,
@@ -100,7 +100,7 @@ export function setup(appOptions, destinationOptions, newNock) {
     });
   }
 
-  const guidRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+  const idRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
   beforeAll(async () => {
     client = await connect(appOptions);
@@ -124,6 +124,6 @@ export function setup(appOptions, destinationOptions, newNock) {
     indexContacts,
     getClient,
     runExport,
-    guidRegex,
+    idRegex,
   };
 }

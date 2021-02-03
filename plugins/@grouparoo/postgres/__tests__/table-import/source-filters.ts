@@ -16,12 +16,12 @@ async function getFilters() {
     appOptions,
     sourceOptions,
     app: null,
-    appGuid: null,
+    appId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     sourceMapping: null,
     property: null,
-    propertyGuid: null,
+    propertyId: null,
     propertyOptions: null,
   });
   return response;

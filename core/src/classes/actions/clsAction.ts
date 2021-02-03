@@ -10,9 +10,9 @@ export abstract class CLSAction extends Action {
     super();
   }
 
-  async run(data: ActionData) {
+  async run(prams: ActionData) {
     if (typeof this.runWithinTransaction === "function") {
-      return CLS.wrap(async () => await this.runWithinTransaction(data));
+      return CLS.wrap(async () => await this.runWithinTransaction(prams));
     } else {
       throw new Error(
         "No run or runWithinTransaction method for this task: " + this.name
@@ -20,5 +20,5 @@ export abstract class CLSAction extends Action {
     }
   }
 
-  abstract runWithinTransaction(data: ActionData): Promise<any>;
+  abstract runWithinTransaction(prams: ActionData): Promise<any>;
 }

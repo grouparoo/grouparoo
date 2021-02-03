@@ -42,10 +42,10 @@ export default function ProfilesList(props) {
     load();
   }, [offset, limit, state]);
 
-  let groupGuid: string;
-  if (router.query.guid) {
+  let groupId: string;
+  if (router.query.id) {
     if (router.pathname.match("/group/")) {
-      groupGuid = router.query.guid.toString();
+      groupId = router.query.id.toString();
     }
   }
 
@@ -61,7 +61,7 @@ export default function ProfilesList(props) {
       limit,
       offset,
       state,
-      groupGuid,
+      groupId,
     });
     setLoading(false);
     if (response?.profiles) {
@@ -83,13 +83,13 @@ export default function ProfilesList(props) {
       return;
     }
 
-    const propertyGuid = properties.filter((r) => r.key === _searchKey)[0].guid;
+    const propertyId = properties.filter((r) => r.key === _searchKey)[0].id;
 
     setSearchLoading(true);
     const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
       "get",
       `/profiles/autocompleteProfileProperty`,
-      { propertyGuid, match }
+      { propertyId, match }
     );
     if (response.profileProperties) {
       setAutoCompleteResults(
@@ -106,7 +106,7 @@ export default function ProfilesList(props) {
   const uniqueProfilePropertyKeys = properties
     .filter((rule) =>
       identifyingProfileProperty
-        ? rule.guid !== identifyingProfileProperty.guid
+        ? rule.id !== identifyingProfileProperty.id
         : rule
     )
     .filter((rule) => rule.unique)
@@ -116,7 +116,7 @@ export default function ProfilesList(props) {
     <>
       {props.header ? props.header : <h1>Profiles</h1>}
 
-      {groupGuid ? null : (
+      {groupId ? null : (
         <Form id="search" onSubmit={load}>
           <Form.Row>
             <Col md={3}>
@@ -252,11 +252,11 @@ export default function ProfilesList(props) {
         <tbody>
           {profiles.map((profile) => {
             return (
-              <tr key={`profile-${profile.guid}`}>
+              <tr key={`profile-${profile.id}`}>
                 <td>
                   <Link
-                    href="/profile/[guid]/edit"
-                    as={`/profile/${profile.guid}/edit`}
+                    href="/profile/[id]/edit"
+                    as={`/profile/${profile.id}/edit`}
                   >
                     <a className="text-muted">
                       {identifyingProfileProperty?.key &&
@@ -270,12 +270,12 @@ export default function ProfilesList(props) {
                           <br />
                         </>
                       ) : null}
-                      <span>Grouparoo Guid: {profile.guid}</span>
+                      <span>Grouparoo id: {profile.id}</span>
                     </a>
                   </Link>
 
                   {searchKey === "" ? null : (
-                    <div key={`key-${profile.guid}-${searchKey}`}>
+                    <div key={`key-${profile.id}-${searchKey}`}>
                       <span className="text-muted">
                         <strong>{searchKey}</strong>:{" "}
                         {profile.properties[searchKey] ? (
@@ -297,7 +297,7 @@ export default function ProfilesList(props) {
                     }
 
                     return (
-                      <div key={`key-${profile.guid}-${key}`}>
+                      <div key={`key-${profile.id}-${key}`}>
                         <span className="text-muted">
                           {key}:{" "}
                           <ArrayProfilePropertyList
@@ -341,12 +341,12 @@ ProfilesList.hydrate = async (
   _searchValue?: string
 ) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset, state, searchKey, searchValue } = ctx.query;
+  const { id, limit, offset, state, searchKey, searchValue } = ctx.query;
 
-  let groupGuid: string;
-  if (guid) {
+  let groupId: string;
+  if (id) {
     if (ctx.pathname.match("/group/")) {
-      groupGuid = guid;
+      groupId = id;
     }
   }
   const { profiles, total } = await execApi("get", `/profiles`, {
@@ -354,7 +354,7 @@ ProfilesList.hydrate = async (
     offset,
     searchKey: searchKey || _searchKey,
     searchValue: searchValue || _searchValue,
-    groupGuid,
+    groupId,
     state,
   });
   const { properties } = await execApi("get", `/properties`);

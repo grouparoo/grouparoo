@@ -52,12 +52,12 @@ export class ScheduleRun extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const schedule = await Schedule.findByGuid(params.guid);
+    const schedule = await Schedule.findById(params.id);
     await schedule.enqueueRun();
     return { success: true };
   }
@@ -72,7 +72,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       name: { required: false },
-      sourceGuid: { required: true },
+      sourceId: { required: true },
       recurring: { required: true },
       state: { required: false },
       options: { required: false },
@@ -83,7 +83,7 @@ export class ScheduleCreate extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.create({
       name: params.name,
-      sourceGuid: params.sourceGuid,
+      sourceId: params.sourceId,
       recurring: params.recurring,
       recurringFrequency: params.recurringFrequency,
     });
@@ -106,9 +106,9 @@ export class ScheduleEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
-      sourceGuid: { required: false },
+      sourceId: { required: false },
       recurring: { required: false },
       state: { required: false },
       options: { required: false },
@@ -117,7 +117,7 @@ export class ScheduleEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const schedule = await Schedule.findByGuid(params.guid);
+    const schedule = await Schedule.findById(params.id);
     // these timing options are validated separately, and should be set first
     if (params.recurringFrequency || params.recurring) {
       await schedule.update({
@@ -145,12 +145,12 @@ export class ScheduleView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const schedule = await Schedule.findByGuid(params.guid);
+    const schedule = await Schedule.findById(params.id);
     return {
       schedule: await schedule.apiData(),
       pluginOptions: await schedule.pluginOptions(),
@@ -166,12 +166,12 @@ export class ScheduleDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const schedule = await Schedule.findByGuid(params.guid);
+    const schedule = await Schedule.findById(params.id);
     await schedule.destroy();
     return { success: true };
   }

@@ -15,7 +15,7 @@ async function getTables() {
     appOptions,
     sourceOptions: null,
     app: null,
-    appGuid: null,
+    appId: null,
   });
 
   return response.table.options;

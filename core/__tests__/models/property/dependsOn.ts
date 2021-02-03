@@ -48,7 +48,7 @@ describe("models/property", () => {
         key: "email",
         type: "string",
         unique: true,
-        sourceGuid: usersTableSource.guid,
+        sourceId: usersTableSource.id,
       });
       await emailProperty.setOptions({ column: "email" });
       await emailProperty.update({ state: "ready" });
@@ -62,7 +62,7 @@ describe("models/property", () => {
         key: "purchases",
         type: "integer",
         unique: false,
-        sourceGuid: purchasesTableSource.guid,
+        sourceId: purchasesTableSource.id,
       });
       await purchasesCountProperty.setOptions({ column: "purchases" });
       await purchasesCountProperty.update({ state: "ready" });
@@ -76,7 +76,7 @@ describe("models/property", () => {
         key: "supportTickets",
         type: "integer",
         unique: false,
-        sourceGuid: supportTicketsTableSource.guid,
+        sourceId: supportTicketsTableSource.id,
       });
       await supportTicketsCountProperty.setOptions({
         column: "support_tickets",
@@ -92,7 +92,7 @@ describe("models/property", () => {
         key: "emailDomain",
         type: "string",
         unique: false,
-        sourceGuid: querySource.guid,
+        sourceId: querySource.id,
       });
       await emailDomainProperty.setOptions({
         column:
@@ -103,39 +103,33 @@ describe("models/property", () => {
 
     test("direct mapping rules do not depend on themselves", async () => {
       const dependencies = await PropertyOps.dependencies(userIdProperty);
-      expect(dependencies.map((rule) => rule.guid)).toEqual([]);
+      expect(dependencies.map((rule) => rule.id)).toEqual([]);
     });
 
     test("dependent rules of this source", async () => {
       const dependencies = await PropertyOps.dependencies(emailProperty);
-      expect(dependencies.map((rule) => rule.guid)).toEqual([
-        userIdProperty.guid,
-      ]);
+      expect(dependencies.map((rule) => rule.id)).toEqual([userIdProperty.id]);
     });
 
     test("dependent rules for another source", async () => {
       const dependencies = await PropertyOps.dependencies(
         purchasesCountProperty
       );
-      expect(dependencies.map((rule) => rule.guid)).toEqual([
-        userIdProperty.guid,
-      ]);
+      expect(dependencies.map((rule) => rule.id)).toEqual([userIdProperty.id]);
     });
 
     test("chained dependent rules for another source", async () => {
       const dependencies = await PropertyOps.dependencies(
         supportTicketsCountProperty
       );
-      expect(dependencies.map((rule) => rule.guid)).toEqual([
-        emailProperty.guid,
-      ]);
+      expect(dependencies.map((rule) => rule.id)).toEqual([emailProperty.id]);
     });
 
     test("mustache variables reference another rule", async () => {
       const dependencies = await PropertyOps.dependencies(emailDomainProperty);
-      expect(dependencies.map((rule) => rule.guid)).toEqual([
-        userIdProperty.guid, // from the mapping
-        emailProperty.guid, // from the mustache rule
+      expect(dependencies.map((rule) => rule.id)).toEqual([
+        userIdProperty.id, // from the mapping
+        emailProperty.id, // from the mustache rule
       ]);
     });
   });

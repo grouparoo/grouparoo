@@ -24,10 +24,7 @@ export default function Page(props) {
     );
 
     if (response?.apiKey) {
-      router.push(
-        "/apiKey/[guid]/edit",
-        `/apiKey/${response.apiKey.guid}/edit`
-      );
+      router.push("/apiKey/[id]/edit", `/apiKey/${response.apiKey.id}/edit`);
     } else {
       setLoading(false);
     }

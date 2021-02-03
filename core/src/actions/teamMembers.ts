@@ -11,15 +11,15 @@ export class TeamMembersList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
-      guid: { required: false },
-      teamGuid: { required: false },
+      id: { required: false },
+      teamId: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.guid) where["teamGuid"] = params.guid;
-    if (params.teamGuid) where["teamGuid"] = params.teamGuid;
+    if (params.id) where["teamId"] = params.id;
+    if (params.teamId) where["teamId"] = params.teamId;
 
     const teamMembers = await TeamMember.findAll({
       where,
@@ -42,7 +42,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      teamGuid: { required: true },
+      teamId: { required: true },
       firstName: { required: true },
       lastName: { required: true },
       password: { required: true },
@@ -52,13 +52,13 @@ export class TeamMemberCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const team = await Team.findByGuid(params.teamGuid);
+    const team = await Team.findById(params.teamId);
 
     const teamMember = new TeamMember({
       firstName: params.firstName,
       lastName: params.lastName,
       email: params.email,
-      teamGuid: team.guid,
+      teamId: team.id,
     });
 
     await teamMember.save();
@@ -78,13 +78,13 @@ export class TeamMemberView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
     const teamMember = await TeamMember.findOne({
-      where: { guid: params.guid },
+      where: { id: params.id },
       include: [Team],
     });
     if (!teamMember) throw new Error("team member not found");
@@ -104,17 +104,17 @@ export class TeamMemberEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       firstName: { required: false },
       lastName: { required: false },
       password: { required: false },
       email: { required: false },
-      teamGuid: { required: false },
+      teamId: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const teamMember = await TeamMember.findByGuid(params.guid);
+    const teamMember = await TeamMember.findById(params.id);
 
     await teamMember.update(params);
 
@@ -132,7 +132,7 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
@@ -140,11 +140,11 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     params,
     session: { teamMember: myself },
   }: {
-    params: { guid: string };
+    params: { id: string };
     session: { teamMember: TeamMember };
   }) {
-    const teamMember = await TeamMember.findByGuid(params.guid);
-    if (myself.guid === teamMember.guid) {
+    const teamMember = await TeamMember.findById(params.id);
+    if (myself.id === teamMember.id) {
       throw new Error("you cannot delete yourself");
     }
 

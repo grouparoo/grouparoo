@@ -10,8 +10,8 @@ export default function IdentifyingProperty(props) {
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>([]);
   const [
-    identifyingProfilePropertyGuid,
-    setIdentifyingProfilePropertyGuid,
+    identifyingProfilePropertyId,
+    setIdentifyingProfilePropertyId,
   ] = useState("");
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export default function IdentifyingProperty(props) {
 
     if (response.properties) {
       setProperties(response.properties);
-      const _identifyingProfilePropertyGuid = response.properties.filter(
+      const _identifyingProfilePropertyId = response.properties.filter(
         (rule) => rule.identifying
-      )[0]?.guid;
-      if (_identifyingProfilePropertyGuid)
-        setIdentifyingProfilePropertyGuid(_identifyingProfilePropertyGuid);
+      )[0]?.id;
+      if (_identifyingProfilePropertyId)
+        setIdentifyingProfilePropertyId(_identifyingProfilePropertyId);
     }
   }
 
@@ -40,10 +40,10 @@ export default function IdentifyingProperty(props) {
 
     setLoading(true);
 
-    if (identifyingProfilePropertyGuid !== "") {
+    if (identifyingProfilePropertyId !== "") {
       await execApi(
         "put",
-        `/property/${identifyingProfilePropertyGuid}/makeIdentifying`
+        `/property/${identifyingProfilePropertyId}/makeIdentifying`
       );
     }
 
@@ -68,10 +68,8 @@ export default function IdentifyingProperty(props) {
             <Form.Control
               as="select"
               disabled={loading}
-              value={identifyingProfilePropertyGuid}
-              onChange={(e) =>
-                setIdentifyingProfilePropertyGuid(e.target.value)
-              }
+              value={identifyingProfilePropertyId}
+              onChange={(e) => setIdentifyingProfilePropertyId(e.target.value)}
             >
               {loading ? (
                 <option disabled>...</option>
@@ -80,7 +78,7 @@ export default function IdentifyingProperty(props) {
                   <option value="">None</option>
                   <option disabled>---</option>
                   {properties.map((rule) => (
-                    <option key={rule.guid} value={rule.guid}>
+                    <option key={rule.id} value={rule.id}>
                       {rule.key}
                     </option>
                   ))}

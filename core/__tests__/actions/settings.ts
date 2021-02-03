@@ -17,7 +17,7 @@ describe("actions/settings", () => {
   describe("reader signed in", () => {
     let connection;
     let csrfToken;
-    let guid;
+    let id;
 
     beforeAll(async () => {
       await Setting.truncate();
@@ -94,12 +94,12 @@ describe("actions/settings", () => {
         })
       ).toEqual(["10", "name!", "true"]);
 
-      guid = settings[0].guid;
+      id = settings[0].id;
     });
 
     test("a writer can update a setting", async () => {
       connection.params = {
-        guid,
+        id,
         csrfToken,
         value: "new value",
       };

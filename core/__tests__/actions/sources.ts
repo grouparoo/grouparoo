@@ -6,8 +6,8 @@ import { ProfileProperty, Property, Option, Source, App } from "../../src";
 describe("actions/sources", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let app: App;
-  let guid: string;
-  let propertyGuid: string;
+  let id: string;
+  let propertyId: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -40,7 +40,7 @@ describe("actions/sources", () => {
         csrfToken,
         name: "test source",
         type: "test-plugin-import",
-        appGuid: app.guid,
+        appId: app.id,
         options: { table: "users" },
       };
       const { error, source } = await specHelper.runAction(
@@ -48,12 +48,12 @@ describe("actions/sources", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(source.guid).toBeTruthy();
-      expect(source.app.guid).toBe(app.guid);
+      expect(source.id).toBeTruthy();
+      expect(source.app.id).toBe(app.id);
       expect(source.app.name).toBe("test app");
       expect(source.state).toBe("draft");
 
-      guid = source.guid;
+      id = source.id;
     });
 
     test("an administrator can list all the sources", async () => {
@@ -73,7 +73,7 @@ describe("actions/sources", () => {
     test("a source can be bootstrapped with a property", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         key: "userId",
         type: "integer",
         mappedColumn: "id",
@@ -83,14 +83,14 @@ describe("actions/sources", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(property.guid).toBeTruthy();
-      propertyGuid = property.guid;
+      expect(property.id).toBeTruthy();
+      propertyId = property.id;
     });
 
     test("an administrator can list the connection + app pairs available for a new connection", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, connectionApps } = await specHelper.runAction(
         "sources:connectionApps",
@@ -98,8 +98,8 @@ describe("actions/sources", () => {
       );
       expect(error).toBeUndefined();
       expect(
-        connectionApps.filter((ca) => ca.app.type !== "events")[0].app.guid
-      ).toBe(app.guid);
+        connectionApps.filter((ca) => ca.app.type !== "events")[0].app.id
+      ).toBe(app.id);
       expect(
         connectionApps.filter((ca) => ca.app.type !== "events")[0].connection
           .app
@@ -128,7 +128,7 @@ describe("actions/sources", () => {
     test("an administrator can enumerate the source connection options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, options } = await specHelper.runAction(
         "source:connectionOptions",
@@ -139,12 +139,12 @@ describe("actions/sources", () => {
     });
 
     test("a source with no options will see an empty preview", async () => {
-      const options = await Option.findAll({ where: { ownerGuid: guid } });
+      const options = await Option.findAll({ where: { ownerId: id } });
       await Promise.all(options.map((o) => o.destroy()));
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, preview } = await specHelper.runAction(
         "source:preview",
@@ -157,7 +157,7 @@ describe("actions/sources", () => {
     test("a source can provide options to a preview", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: { table: "users" },
       };
       const { error, preview } = await specHelper.runAction(
@@ -174,7 +174,7 @@ describe("actions/sources", () => {
     test("a source can have options set", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: { table: "users" },
       };
       const { error, source } = await specHelper.runAction(
@@ -188,7 +188,7 @@ describe("actions/sources", () => {
     test("a source with options set will return a preview", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, preview } = await specHelper.runAction(
         "source:preview",
@@ -204,7 +204,7 @@ describe("actions/sources", () => {
     test("a source can have mapping set", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         mapping: { id: "userId" },
       };
       const { error, source } = await specHelper.runAction(
@@ -218,7 +218,7 @@ describe("actions/sources", () => {
     test("a source can be made active", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         state: "ready",
       };
       const { error, source } = await specHelper.runAction(
@@ -232,7 +232,7 @@ describe("actions/sources", () => {
     test("an administrator can view a source", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, source } = await specHelper.runAction(
         "source:view",
@@ -240,14 +240,14 @@ describe("actions/sources", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(source.guid).toBeTruthy();
+      expect(source.id).toBeTruthy();
       expect(source.app.name).toBe("test app");
     });
 
     test("an administrator can destroy a source", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         mapping: {},
       };
       const editResponse = await specHelper.runAction(
@@ -258,7 +258,7 @@ describe("actions/sources", () => {
 
       connection.params = {
         csrfToken,
-        guid: propertyGuid,
+        id: propertyId,
       };
       const deleteRuleResponse = await specHelper.runAction(
         "property:destroy",
@@ -268,7 +268,7 @@ describe("actions/sources", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "source:destroy",
@@ -301,9 +301,9 @@ describe("actions/sources", () => {
           { state: "pending" },
           {
             where: {
-              profileGuid: profile.guid,
-              propertyGuid: {
-                [Op.in]: [emailProperty.guid, firstNameProperty.guid],
+              profileId: profile.id,
+              propertyId: {
+                [Op.in]: [emailProperty.id, firstNameProperty.id],
               },
             },
           }
@@ -314,7 +314,7 @@ describe("actions/sources", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(counts[emailProperty.sourceGuid]).toBe(1);
+        expect(counts[emailProperty.sourceId]).toBe(1);
       });
     });
   });

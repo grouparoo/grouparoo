@@ -15,29 +15,29 @@ export namespace GroupOps {
   export async function run(
     group: Group,
     force = false,
-    destinationGuid?: string
+    destinationId?: string
   ) {
     if (!api.process.running) return; // we are in an initializer (validating)
     await group.stopPreviousRuns();
     await group.update({ state: "updating" });
 
     const run = await Run.create({
-      creatorGuid: group.guid,
+      creatorId: group.id,
       creatorType: "group",
       state: "running",
       force,
     });
 
     log(
-      `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
+      `[ run ] starting run ${run.id} for group ${group.name} (${group.id})`,
       "notice"
     );
 
     await CLS.enqueueTask("group:run", {
-      groupGuid: group.guid,
-      runGuid: run.guid,
+      groupId: group.id,
+      runId: run.id,
       force,
-      destinationGuid,
+      destinationId,
     });
 
     return run;
@@ -49,7 +49,7 @@ export namespace GroupOps {
   export async function stopPreviousRuns(group: Group) {
     const previousRuns = await Run.findAll({
       where: {
-        creatorGuid: group.guid,
+        creatorId: group.id,
         state: "running",
       },
     });
@@ -63,13 +63,13 @@ export namespace GroupOps {
    * Given a Profile, create an import to recalculate its Group Membership
    */
   export async function buildProfileImport(
-    profileGuid: string,
+    profileId: string,
     creatorType: string,
-    creatorGuid: string,
-    destinationGuid?: string
+    creatorId: string,
+    destinationId?: string
   ) {
     const profile = await Profile.findOne({
-      where: { guid: profileGuid },
+      where: { id: profileId },
     });
 
     const oldProfileProperties = {};
@@ -78,17 +78,17 @@ export namespace GroupOps {
       oldProfileProperties[key] = properties[key].values;
     }
 
-    const oldGroupGuids = (await profile.$get("groups")).map((g) => g.guid);
+    const oldGroupIds = (await profile.$get("groups")).map((g) => g.id);
 
     const _import = await Import.create({
-      rawData: destinationGuid ? { _meta: { destinationGuid } } : {},
-      data: destinationGuid ? { _meta: { destinationGuid } } : {},
+      rawData: destinationId ? { _meta: { destinationId } } : {},
+      data: destinationId ? { _meta: { destinationId } } : {},
       creatorType,
-      creatorGuid,
-      profileGuid: profile.guid,
+      creatorId,
+      profileId: profile.id,
       profileAssociatedAt: new Date(),
       oldProfileProperties,
-      oldGroupGuids,
+      oldGroupIds,
     });
 
     await profile.markPending();
@@ -105,8 +105,8 @@ export namespace GroupOps {
   ) {
     const existingMembership = await GroupMember.findOne({
       where: {
-        groupGuid: group.guid,
-        profileGuid: profile.guid,
+        groupId: group.id,
+        profileId: profile.id,
       },
     });
 
@@ -133,10 +133,10 @@ export namespace GroupOps {
 
         // and includes this profile
         if (!where[Op.and]) where[Op.and] = [];
-        where[Op.and].push({ guid: profile.guid });
+        where[Op.and].push({ id: profile.id });
 
         const matchedProfiles = await ProfileMultipleAssociationShim.findAll({
-          attributes: ["guid"],
+          attributes: ["id"],
           where,
           include,
         });
@@ -145,8 +145,8 @@ export namespace GroupOps {
 
         if (belongs && !existingMembership) {
           await GroupMember.create({
-            groupGuid: group.guid,
-            profileGuid: profile.guid,
+            groupId: group.id,
+            profileId: profile.id,
           });
         }
 
@@ -223,14 +223,14 @@ export namespace GroupOps {
     offset = 0,
     highWaterMark: number = null,
     force = false,
-    destinationGuid?: string
+    destinationId?: string
   ) {
     let profiles: ProfileMultipleAssociationShim[];
     const rules = await group.getRules();
 
     if (group.type === "manual") {
       profiles = await group.$get("profiles", {
-        attributes: ["guid", "createdAt"],
+        attributes: ["id", "createdAt"],
         limit,
         offset,
         where: highWaterMark
@@ -252,7 +252,7 @@ export namespace GroupOps {
       }
 
       profiles = await ProfileMultipleAssociationShim.findAll({
-        attributes: ["guid", "createdAt"],
+        attributes: ["id", "createdAt"],
         where,
         include,
         limit,
@@ -279,31 +279,29 @@ export namespace GroupOps {
 
     const groupMembers = await GroupMember.findAll({
       where: {
-        profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
-        groupGuid: group.guid,
+        profileId: { [Op.in]: profiles.map((p) => p.id) },
+        groupId: group.id,
       },
     });
 
-    const existingGroupMemberProfileGuids = groupMembers.map(
-      (member) => member.profileGuid
+    const existingGroupMemberProfileIds = groupMembers.map(
+      (member) => member.profileId
     );
     const profilesNeedingGroupMembership = force
       ? profiles
-      : profiles.filter(
-          (p) => !existingGroupMemberProfileGuids.includes(p.guid)
-        );
+      : profiles.filter((p) => !existingGroupMemberProfileIds.includes(p.id));
 
     for (const i in profilesNeedingGroupMembership) {
-      const profileGuid = profilesNeedingGroupMembership[i].guid;
-      await buildProfileImport(profileGuid, "run", run.guid, destinationGuid);
+      const profileId = profilesNeedingGroupMembership[i].id;
+      await buildProfileImport(profileId, "run", run.id, destinationId);
     }
 
     await GroupMember.update(
       { updatedAt: new Date(), removedAt: null },
       {
         where: {
-          profileGuid: { [Op.in]: profiles.map((p) => p.guid) },
-          groupGuid: group.guid,
+          profileId: { [Op.in]: profiles.map((p) => p.id) },
+          groupId: group.id,
         },
       }
     );
@@ -325,13 +323,13 @@ export namespace GroupOps {
     group: Group,
     run: Run,
     limit = 1000,
-    destinationGuid?: string
+    destinationId?: string
   ) {
     let groupMembersCount = 0;
 
     const groupMembersToRemove = await GroupMember.findAll({
       where: {
-        groupGuid: group.guid,
+        groupId: group.id,
         updatedAt: { [Op.lt]: run.createdAt },
         createdAt: { [Op.lt]: run.createdAt },
         removedAt: null,
@@ -343,12 +341,7 @@ export namespace GroupOps {
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
 
-      await buildProfileImport(
-        member.profileGuid,
-        "run",
-        run.guid,
-        destinationGuid
-      );
+      await buildProfileImport(member.profileId, "run", run.id, destinationId);
 
       member.removedAt = new Date();
       await member.save();
@@ -373,7 +366,7 @@ export namespace GroupOps {
 
     const groupMembersToRemove = await GroupMember.findAll({
       where: {
-        groupGuid: group.guid,
+        groupId: group.id,
         removedAt: { [Op.lte]: run.createdAt },
       },
       limit,
@@ -382,7 +375,7 @@ export namespace GroupOps {
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
 
-      await buildProfileImport(member.profileGuid, "run", run.guid);
+      await buildProfileImport(member.profileId, "run", run.id);
 
       member.removedAt = new Date();
       await member.save();
@@ -440,33 +433,33 @@ export namespace GroupOps {
   export async function newestGroupMembers(limit = 5) {
     const newGroupMembers = await GroupMember.findAll({
       attributes: [
-        "groupGuid",
+        "groupId",
         [
           api.sequelize.fn("max", api.sequelize.col("createdAt")),
           "newestMemberAdded",
         ],
       ],
-      group: ["groupGuid"],
+      group: ["groupId"],
       order: [[api.sequelize.col("newestMemberAdded"), "desc"]],
       limit: limit,
     });
 
-    const groupGuids = newGroupMembers.map((mem) => mem.groupGuid);
+    const groupIds = newGroupMembers.map((mem) => mem.groupId);
 
     let groups = await Group.findAll();
     groups = groups
       .sort((a, b) => {
-        if (groupGuids.indexOf(a.guid) < 0) return 1;
-        if (groupGuids.indexOf(b.guid) < 0) return -1;
-        return groupGuids.indexOf(a.guid) - groupGuids.indexOf(b.guid);
+        if (groupIds.indexOf(a.id) < 0) return 1;
+        if (groupIds.indexOf(b.id) < 0) return -1;
+        return groupIds.indexOf(a.id) - groupIds.indexOf(b.id);
       })
       .slice(0, limit);
 
-    const newestMembersAdded: { [guid: string]: number } = {};
+    const newestMembersAdded: { [id: string]: number } = {};
     newGroupMembers.forEach((g) => {
       // @ts-ignore
       const value: Date | string = g.getDataValue("newestMemberAdded"); // this may be a string if SQLite is used
-      newestMembersAdded[g.groupGuid] =
+      newestMembersAdded[g.groupId] =
         value instanceof Date ? value.getTime() : new Date(value).getTime();
     });
 

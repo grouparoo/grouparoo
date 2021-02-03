@@ -9,19 +9,19 @@ export class ProfileDestroyEvents extends CLSTask {
     this.frequency = 0;
     this.queue = "events";
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const { guid } = params;
+    const { id } = params;
     const limit = 1000;
     let offset = 0;
     let events: Event[] = [];
 
     while (events.length > 0 || offset === 0) {
       events = await Event.findAll({
-        where: { profileGuid: guid },
+        where: { profileId: id },
         limit,
         offset,
       });

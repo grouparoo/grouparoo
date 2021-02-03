@@ -44,7 +44,7 @@ export class Events extends Initializer {
           name: "events",
           options: [
             {
-              key: "identifyingPropertyGuid",
+              key: "identifyingPropertyId",
               required: true,
               description:
                 "The property which will map to the event field 'userId'.  Only unique properties can be used.",
@@ -59,9 +59,9 @@ export class Events extends Initializer {
               });
 
               return {
-                identifyingPropertyGuid: {
+                identifyingPropertyId: {
                   type: "list",
-                  options: uniqueRules.map((rule) => rule.guid),
+                  options: uniqueRules.map((rule) => rule.id),
                   descriptions: uniqueRules.map((rule) => rule.key),
                 },
               };
@@ -122,7 +122,7 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
   for (const i in events) {
     const e = events[i];
     eventPreviews.push({
-      profileGuid: e.profileGuid,
+      profileId: e.profileId,
       type: e.type,
       userId: e.userId,
       ipAddress: e.ipAddress,
@@ -147,11 +147,11 @@ const eventSourcePreview: SourcePreviewMethod = async ({ sourceOptions }) => {
 
 const testEventsApp: TestPluginMethod = async ({ appOptions }) => {
   const identifyingProperty = await Property.findOne({
-    where: { guid: appOptions.identifyingPropertyGuid },
+    where: { id: appOptions.identifyingPropertyId },
   });
   if (!identifyingProperty) {
     throw new Error(
-      `cannot find identifying property (${appOptions.identifyingPropertyGuid})`
+      `cannot find identifying property (${appOptions.identifyingPropertyId})`
     );
   }
 
@@ -263,7 +263,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   const aggregationMethod = propertyOptions["aggregationMethod"];
 
   if (aggregationMethod === "all values") {
-    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const where = { profileId: profile.id, type: sourceOptions["type"] };
     const includeWhere = {};
     Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
@@ -282,7 +282,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       order: [["occurredAt", "asc"]],
     });
   } else if (aggregationMethod === "most recent value") {
-    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const where = { profileId: profile.id, type: sourceOptions["type"] };
     const includeWhere = {};
     Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
@@ -302,7 +302,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       limit: 1,
     });
   } else if (aggregationMethod === "least recent value") {
-    const where = { profileGuid: profile.guid, type: sourceOptions["type"] };
+    const where = { profileId: profile.id, type: sourceOptions["type"] };
     const includeWhere = {};
     Event.applyPropertyFilters(where, includeWhere, propertyFilters);
     events = await Event.findAll({
@@ -330,7 +330,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
 
     const where = { key: dataKey };
     const includeWhere = {
-      profileGuid: profile.guid,
+      profileId: profile.id,
       type: sourceOptions["type"],
     };
 

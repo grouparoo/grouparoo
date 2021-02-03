@@ -51,12 +51,12 @@ export class NotificationView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "notification", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const notification = await Notification.findByGuid(params.guid);
+    const notification = await Notification.findById(params.id);
     await notification.update({ readAt: new Date() });
     return { notification: await notification.apiData() };
   }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   up: async function (migration, DataTypes) {
     await migration.removeColumn("runs", "filter");
     await migration.removeColumn("runs", "highWaterMark");

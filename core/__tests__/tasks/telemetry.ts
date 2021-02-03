@@ -21,14 +21,14 @@ describe("tasks/telemetry", () => {
     });
 
     test("settings are loaded at boot", async () => {
-      const setting = await plugin.readSetting("telemetry", "customer-guid");
+      const setting = await plugin.readSetting("telemetry", "customer-id");
       expect(setting.value).toMatch(/^tcs_/);
     });
 
     test("the telemetry object can be built", async () => {
-      const { name, guid, license, metrics } = await api.telemetry.build();
+      const { name, id, license, metrics } = await api.telemetry.build();
       expect(name).toBe("My Grouparoo Cluster");
-      expect(guid).toMatch(/^tcs_/);
+      expect(id).toMatch(/^tcs_/);
       expect(license).toBe("");
 
       expect(metrics[0]).toEqual(

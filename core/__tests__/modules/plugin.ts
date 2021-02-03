@@ -21,7 +21,7 @@ describe("modules/plugin", () => {
                 return { success: true, message: "OK" };
               },
               appOptions: async () => {
-                return { fileGuid: { type: "list", options: ["a", "b"] } };
+                return { fileId: { type: "list", options: ["a", "b"] } };
               },
             },
           },
@@ -178,14 +178,14 @@ describe("modules/plugin", () => {
 
         const previousRun = await Run.create({
           state: "complete",
-          creatorGuid: run.creatorGuid,
+          creatorId: run.creatorId,
           creatorType: "schedule",
           createdAt: new Date(1575336176904),
           importsCreated: 1,
         });
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Guid is: {{previousRun.guid}}";
+          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -193,16 +193,16 @@ describe("modules/plugin", () => {
 
         expect(replacedString).toContain("where updatedAt >= '2019-12-03 ");
         expect(replacedString).toContain(
-          `# The Previous Run Guid is: ${previousRun.guid}`
+          `# The Previous Run Id is: ${previousRun.id}`
         );
       });
 
-      test("it replaces string variables with UTC 0 and a null guid when there is no previous run", async () => {
+      test("it replaces string variables with UTC 0 and a null id when there is no previous run", async () => {
         const run = await helper.factories.run();
         const schedule = await helper.factories.schedule();
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Guid is: {{previousRun.guid}}";
+          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -211,7 +211,7 @@ describe("modules/plugin", () => {
         expect(replacedString).toContain(
           "where updatedAt >= '1970-01-01 00:00:00'"
         );
-        expect(replacedString).toContain(`# The Previous Run Guid is: `);
+        expect(replacedString).toContain(`# The Previous Run Id is: `);
       });
 
       test("it throws an error if a template variable is missing", async () => {
@@ -259,22 +259,22 @@ describe("modules/plugin", () => {
       });
     });
 
-    describe("replaceTemplateProfilePropertyKeysWithProfilePropertyGuid and replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys", () => {
+    describe("replaceTemplateProfilePropertyKeysWithProfilePropertyId and replaceTemplateProfilePropertyIdsWithProfilePropertyKeys", () => {
       test("they work to convert each other", async () => {
         const property = await Property.findOne({
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";
-        const replacedWithGuid = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyGuid(
+        const replacedWithId = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
           initialString
         );
-        expect(replacedWithGuid).toEqual(
-          `select * from users where id = {{ ${property.guid} }}`
+        expect(replacedWithId).toEqual(
+          `select * from users where id = {{ ${property.id} }}`
         );
 
         expect(
-          await plugin.replaceTemplateProfilePropertyGuidsWithProfilePropertyKeys(
-            replacedWithGuid
+          await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+            replacedWithId
           )
         ).toEqual(initialString);
       });
@@ -292,11 +292,11 @@ describe("modules/plugin", () => {
         const _import = await Import.findOne({
           where: {
             creatorType: "run",
-            creatorGuid: run.guid,
+            creatorId: run.id,
           },
         });
 
-        expect(_import.guid).toBeTruthy();
+        expect(_import.id).toBeTruthy();
         expect(_import.data).toEqual({ firstName: ["Peach"] });
         expect(_import.rawData).toEqual({
           first__name: "Peach",
@@ -308,7 +308,7 @@ describe("modules/plugin", () => {
         );
 
         expect(tasks.length).toBe(1);
-        expect(tasks[0].args[0].importGuid).toBe(_import.guid);
+        expect(tasks[0].args[0].importId).toBe(_import.id);
       });
     });
   });

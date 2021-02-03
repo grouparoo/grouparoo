@@ -65,11 +65,11 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     schedule,
     sourceOptions,
     scheduleOptions: await schedule.getOptions(),
-    runGuid: null,
-    sourceGuid: null,
-    scheduleGuid: null,
+    runId: null,
+    sourceId: null,
+    scheduleId: null,
     app: null,
-    appGuid: null,
+    appId: null,
     properties: [],
   });
   return {

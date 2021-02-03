@@ -13,7 +13,7 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, runsHandler } = props;
+  const { errorHandler, runsHandler, topic } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -42,8 +42,8 @@ export default function RunsList(props) {
   }, []);
 
   async function load() {
-    const params = { limit, offset };
-    if (router.query.guid) params["guid"] = router.query.guid.toString();
+    const params = { limit, offset, topic };
+    if (router.query.id) params["id"] = router.query.id.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -152,7 +152,7 @@ export default function RunsList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guid</th>
+            <th>Id</th>
             <th>Times</th>
             <th>Creator</th>
             <th>State</th>
@@ -163,12 +163,12 @@ export default function RunsList(props) {
         <tbody>
           {runs.map((run) => {
             return (
-              <Fragment key={`profile-${run.guid}`}>
+              <Fragment key={`profile-${run.id}`}>
                 <tr>
                   <td>
-                    Guid:{" "}
-                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
-                      <a>{run.guid}</a>
+                    id:{" "}
+                    <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
+                      <a>{run.id}</a>
                     </Link>
                   </td>
                   <td>
@@ -191,7 +191,7 @@ export default function RunsList(props) {
                   <td>
                     <EnterpriseLink
                       prefetch={false}
-                      href={`/object/${run.creatorGuid}`}
+                      href={`/object/${run.creatorId}`}
                     >
                       <a>
                         {run.creatorType}: {run.creatorName}
@@ -220,7 +220,7 @@ export default function RunsList(props) {
                     ) : null}
                   </td>
                   <td>
-                    <Link href="/imports/[guid]" as={`/imports/${run.guid}`}>
+                    <Link href="/imports/[id]" as={`/imports/${run.id}`}>
                       <a>Imports Created: {run.importsCreated}</a>
                     </Link>
                     <br />
@@ -235,7 +235,7 @@ export default function RunsList(props) {
                     <td colSpan={7} style={{ border: 0 }}>
                       <Alert variant="danger">
                         {run.error.split("\n").map((err, errIdx) => (
-                          <Fragment key={`err-${run.guid}-${errIdx}`}>
+                          <Fragment key={`err-${run.id}-${errIdx}`}>
                             {err}
                             <br />
                           </Fragment>
@@ -259,15 +259,16 @@ export default function RunsList(props) {
   );
 }
 
-RunsList.hydrate = async (ctx) => {
-  const { guid, limit, offset, state, error } = ctx.query;
+RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
+  const { id, limit, offset, state, error } = ctx.query;
   const { execApi } = useApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
-    guid,
+    id,
+    topic: options.topic,
     limit,
     offset,
     state,
     hasError: error,
   });
-  return { runs, total };
+  return { runs, total, topic: options.topic };
 };

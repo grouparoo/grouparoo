@@ -7,7 +7,7 @@ import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
 
-const appGuid = "app_7815696ecbf1c96e6894b779456d330e";
+const appId = "app_7815696ecbf1c96e6894b779456d330e";
 
 let apiClient: any;
 let user: any;
@@ -122,15 +122,15 @@ async function runExport({
 }) {
   return exportProfile({
     appOptions,
-    appGuid,
+    appId,
     connection: null,
     app: null,
     destination: null,
-    destinationGuid: null,
+    destinationId: null,
     destinationOptions: null,
     export: {
       profile: null,
-      profileGuid: null,
+      profileId: null,
       oldProfileProperties,
       newProfileProperties,
       oldGroups,

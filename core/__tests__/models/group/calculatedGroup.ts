@@ -69,18 +69,18 @@ describe("models/group", () => {
 
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].groupGuid).toBe(group.guid);
+      expect(foundTasks[0].args[0].groupId).toBe(group.id);
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // first run to check additions
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(2);
-      expect(foundTasks[1].args[0].groupGuid).toBe(group.guid);
+      expect(foundTasks[1].args[0].groupId).toBe(group.id);
       expect(foundTasks[1].args[0].method).toBe("runRemoveGroupMembers");
       await specHelper.runTask("group:run", foundTasks[1].args[0]); // second run to check subtractions
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(3);
-      expect(foundTasks[2].args[0].groupGuid).toBe(group.guid);
+      expect(foundTasks[2].args[0].groupId).toBe(group.id);
       expect(foundTasks[2].args[0].method).toBe(
         "removePreviousRunGroupMembers"
       );
@@ -99,7 +99,7 @@ describe("models/group", () => {
       let foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
       const firstRun = await Run.findOne({
-        where: { creatorGuid: group.guid },
+        where: { creatorId: group.id },
       });
       expect(firstRun.state).toBe("running");
 
@@ -154,14 +154,14 @@ describe("models/group", () => {
 
       // first time
       const _import = await Import.findOne({
-        where: { creatorGuid: run.guid },
+        where: { creatorId: run.id },
       });
-      expect(_import.profileGuid).toBe(mario.guid);
+      expect(_import.profileId).toBe(mario.id);
 
       // create the groupMember
       await mario.updateGroupMembership();
       const groupMember = await GroupMember.findOne({
-        where: { groupGuid: group.guid, profileGuid: mario.guid },
+        where: { groupId: group.id, profileId: mario.id },
       });
       const firstTime = groupMember.updatedAt.getTime();
 
@@ -192,7 +192,7 @@ describe("models/group", () => {
       await mario.updateGroupMembership();
       await luigi.updateGroupMembership();
       const firstGroupMembers = await GroupMember.findAll({
-        where: { groupGuid: group.guid },
+        where: { groupId: group.id },
       });
       expect(firstGroupMembers.length).toBe(2);
 
@@ -204,13 +204,13 @@ describe("models/group", () => {
       await group.runAddGroupMembers(nextRun);
       await group.runRemoveGroupMembers(nextRun);
       const imports = await Import.findAll({
-        where: { creatorGuid: nextRun.guid },
+        where: { creatorId: nextRun.id },
       });
       expect(imports.length).toBe(1);
-      expect(imports[0].profileGuid).toBe(luigi.guid);
+      expect(imports[0].profileId).toBe(luigi.id);
 
       const luigiGroupMember = await GroupMember.findOne({
-        where: { profileGuid: luigi.guid, groupGuid: group.guid },
+        where: { profileId: luigi.id, groupId: group.id },
       });
       expect(luigiGroupMember.removedAt).toBeTruthy();
 
@@ -218,7 +218,7 @@ describe("models/group", () => {
       await luigi.updateGroupMembership();
 
       const secondGroupMembers = await GroupMember.findAll({
-        where: { groupGuid: group.guid },
+        where: { groupId: group.id },
       });
       expect(secondGroupMembers.length).toBe(1);
 
@@ -274,8 +274,8 @@ describe("models/group", () => {
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
 
       imports = await Import.findAll();
-      expect(imports.map((i) => i.profileGuid).sort()).toEqual(
-        [mario, luigi].map((p) => p.guid).sort()
+      expect(imports.map((i) => i.profileId).sort()).toEqual(
+        [mario, luigi].map((p) => p.id).sort()
       );
 
       expect(imports[0].data).toEqual({});
@@ -284,7 +284,7 @@ describe("models/group", () => {
       expect(imports[1].rawData).toEqual({});
     });
 
-    test("runUpdateMembers will create imports which include a destinationGuid in _meta if provided", async () => {
+    test("runUpdateMembers will create imports which include a destinationId in _meta if provided", async () => {
       await api.resque.queue.connection.redis.flushdb();
 
       await group.update({ type: "manual", state: "ready" });
@@ -301,11 +301,11 @@ describe("models/group", () => {
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
 
       imports = await Import.findAll();
-      expect(imports.map((i) => i.profileGuid).sort()).toEqual(
-        [mario, luigi].map((p) => p.guid).sort()
+      expect(imports.map((i) => i.profileId).sort()).toEqual(
+        [mario, luigi].map((p) => p.id).sort()
       );
 
-      const data = { _meta: { destinationGuid: "abc123" } };
+      const data = { _meta: { destinationId: "abc123" } };
       expect(imports[0].data).toEqual(data);
       expect(imports[0].rawData).toEqual(data);
       expect(imports[1].data).toEqual(data);
@@ -328,13 +328,13 @@ describe("models/group", () => {
       await mario.updateGroupMembership();
       const members = await group.$get("groupMembers");
       expect(members.length).toBe(1);
-      const groupMemberGuid = members[0].guid;
+      const groupMemberId = members[0].id;
 
       const secondRun = await helper.factories.run();
       await group.runAddGroupMembers(secondRun);
       await mario.updateGroupMembership();
       const membersAgain = await group.$get("groupMembers");
-      expect(membersAgain[0].guid).toBe(groupMemberGuid);
+      expect(membersAgain[0].id).toBe(groupMemberId);
       await secondRun.destroy();
     });
 
@@ -546,7 +546,7 @@ describe("models/group", () => {
 
           members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
-          expect(members[0].profileGuid).toBe(mario.guid);
+          expect(members[0].profileId).toBe(mario.id);
         });
 
         test("it will leave a group member in the group", async () => {
@@ -564,7 +564,7 @@ describe("models/group", () => {
 
           const members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
-          expect(members[0].profileGuid).toBe(mario.guid);
+          expect(members[0].profileId).toBe(mario.id);
         });
 
         test("it will remove a profile from the group", async () => {
@@ -579,7 +579,7 @@ describe("models/group", () => {
 
           let members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
-          expect(members[0].profileGuid).toBe(mario.guid);
+          expect(members[0].profileId).toBe(mario.id);
 
           await group.setRules([
             { key: "lastName", match: "Lakitu", operation: { op: "eq" } },

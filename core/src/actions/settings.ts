@@ -37,13 +37,13 @@ export class SettingEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       value: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    let setting = await Setting.findByGuid(params.guid);
+    let setting = await Setting.findById(params.id);
     setting = await plugin.updateSetting(
       setting.pluginName,
       setting.key,

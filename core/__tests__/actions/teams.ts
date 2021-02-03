@@ -7,7 +7,7 @@ GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 describe("actions/teams", () => {
   helper.grouparooTestServer({ truncate: true });
-  let guid: string;
+  let id: string;
 
   describe("team:initialize", () => {
     test("a new team can be initialized with the first team member and the team member should be subscribed", async () => {
@@ -18,7 +18,7 @@ describe("actions/teams", () => {
         email: "mario@example.com",
       });
 
-      expect(response.team.guid.length).toBe(40);
+      expect(response.team.id.length).toBe(40);
       expect(response.team.name).toBe("Administrators");
       expect(response.team.locked).toBe("team:initialize");
       expect(response.team.membersCount).toBe(1);
@@ -71,9 +71,9 @@ describe("actions/teams", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
       expect(team.name).toBe("new team");
-      guid = team.guid;
+      id = team.id;
     });
 
     test("an administrator can list all the teams", async () => {
@@ -91,7 +91,7 @@ describe("actions/teams", () => {
     test("an administrator can edit a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "new team name",
       };
       const { error, team } = await specHelper.runAction(
@@ -99,13 +99,13 @@ describe("actions/teams", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
       expect(team.name).toBe("new team name");
     });
 
     test("an administrator can view a team", async () => {
       const teamMember = new TeamMember({
-        teamGuid: guid,
+        teamId: id,
         firstName: "Toad",
         lastName: "Toadstool",
         email: "toad@example.com",
@@ -114,14 +114,14 @@ describe("actions/teams", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, team, teamMembers } = await specHelper.runAction(
         "team:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
       expect(team.name).toBe("new team name");
       expect(teamMembers.length).toBe(1);
       expect(teamMembers[0].email).toBe("toad@example.com");
@@ -130,7 +130,7 @@ describe("actions/teams", () => {
     test("new teams are created with read permissions", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { team } = await specHelper.runAction("team:view", connection);
       team.permissions.forEach((permission) => {
@@ -142,7 +142,7 @@ describe("actions/teams", () => {
     test("permissions can be set in bulk", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         permissionAllRead: true,
         permissionAllWrite: true,
       };
@@ -154,7 +154,7 @@ describe("actions/teams", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
         permissionAllRead: true,
         permissionAllWrite: false,
       };
@@ -170,17 +170,17 @@ describe("actions/teams", () => {
 
     test("permissions can be updated when not managing in bulk", async () => {
       const permission = await Permission.findOne({
-        where: { ownerGuid: guid, topic: "app" },
+        where: { ownerId: id, topic: "app" },
       });
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
         disabledPermissionAllRead: true,
         disabledPermissionAllWrite: true,
         permissions: [
           {
-            guid: permission.guid,
+            id: permission.id,
             read: true,
             write: true,
           },
@@ -188,7 +188,7 @@ describe("actions/teams", () => {
       };
       const { team } = await specHelper.runAction("team:edit", connection);
       team.permissions.forEach((_permission) => {
-        if (permission.guid === _permission.guid) {
+        if (permission.id === _permission.id) {
           expect(_permission.read).toBe(true);
           expect(_permission.write).toBe(true);
         } else {
@@ -211,7 +211,7 @@ describe("actions/teams", () => {
 
       connection.params = {
         csrfToken,
-        guid: team.guid,
+        id: team.id,
       };
       const destroyResponse = await specHelper.runAction(
         "team:destroy",
@@ -233,7 +233,7 @@ describe("actions/teams", () => {
       expect(error).toBeUndefined();
 
       const teamMember = new TeamMember({
-        teamGuid: team.guid,
+        teamId: team.id,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -242,7 +242,7 @@ describe("actions/teams", () => {
 
       connection.params = {
         csrfToken,
-        guid: team.guid,
+        id: team.id,
       };
       const destroyResponse = await specHelper.runAction(
         "team:destroy",
@@ -261,7 +261,7 @@ describe("actions/teams", () => {
 
       connection.params = {
         csrfToken,
-        guid: adminTeam.guid,
+        id: adminTeam.id,
       };
       const destroyResponse = await specHelper.runAction(
         "team:destroy",
@@ -280,7 +280,7 @@ describe("actions/teams", () => {
 
     beforeAll(async () => {
       const teamMember = new TeamMember({
-        teamGuid: guid,
+        teamId: id,
         firstName: "Wario",
         lastName: "Wario",
         email: "wario@example.com",
@@ -303,14 +303,14 @@ describe("actions/teams", () => {
     test("a non-administrator can view a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, team, teamMembers } = await specHelper.runAction(
         "team:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
       expect(team.name).toBe("new team name");
       expect(teamMembers.length).toBe(2);
       // email desc
@@ -332,7 +332,7 @@ describe("actions/teams", () => {
     test("a non-administrator cannot edit a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "team wario",
       };
       const { error } = await specHelper.runAction("team:edit", connection);
@@ -344,7 +344,7 @@ describe("actions/teams", () => {
     test("a non-administrator cannot destroy a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error } = await specHelper.runAction("team:destroy", connection);
       expect(error.message).toEqual(

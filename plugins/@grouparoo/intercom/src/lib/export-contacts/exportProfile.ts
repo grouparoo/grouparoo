@@ -75,7 +75,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 };
 
 export const sendProfile: ExportProfilePluginMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
   export: {
@@ -89,7 +89,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   const client = await connect(appOptions);
   const external_id = cleanExternalId(newProfileProperties.external_id);
   const email = cleanEmail(newProfileProperties.email);
-  const cacheData: IntercomCacheData = { appGuid, appOptions };
+  const cacheData: IntercomCacheData = { appId, appOptions };
 
   if (!external_id && !email) {
     throw new Error(`external_id or email is a required mapping`);
@@ -532,7 +532,7 @@ function useRedis() {
 
 const ITERCOM_DELAY_TTL_SECONDS = 3 * 60; // 3 minutes
 async function getLock({
-  appGuid,
+  appId,
   export: { newProfileProperties, oldProfileProperties },
 }): Promise<number> {
   if (!useRedis()) {
@@ -547,7 +547,7 @@ async function getLock({
   const retryValues: number[] = [];
   for (const value of values) {
     retryValues.push(
-      await getValueLock(appGuid, value.field, value.value, expireAt)
+      await getValueLock(appId, value.field, value.value, expireAt)
     );
   }
 
@@ -556,7 +556,7 @@ async function getLock({
 }
 
 async function getValueLock(
-  appGuid: string,
+  appId: string,
   propertyName: string,
   value: string,
   expireAt: string
@@ -566,7 +566,7 @@ async function getValueLock(
   }
 
   const cacheKey = ["getValueLock", propertyName, value];
-  const lockKey = makeBaseCacheKey({ objectGuid: appGuid, cacheKey });
+  const lockKey = makeBaseCacheKey({ objectId: appId, cacheKey });
   const client = api.redis.clients.client;
 
   const set = await client.setnx(lockKey, expireAt);

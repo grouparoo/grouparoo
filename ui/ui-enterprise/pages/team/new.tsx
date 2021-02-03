@@ -18,7 +18,7 @@ export default function NewTeamPage(props) {
     setLoading(true);
     const response: Actions.TeamCreate = await execApi("post", `/team`, data);
     if (response?.team) {
-      router.push("/team/[guid]/edit", `/team/${response.team.guid}/edit`);
+      router.push("/team/[id]/edit", `/team/${response.team.id}/edit`);
     } else {
       setLoading(false);
     }

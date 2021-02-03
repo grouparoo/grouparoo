@@ -46,7 +46,7 @@ describe("tasks/schedule:updateSchedules", () => {
       await source.update({ state: "ready" });
 
       const schedule = await Schedule.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         name: "tmp",
         recurring: true,
         recurringFrequency: 60 * 1000,
@@ -84,7 +84,7 @@ describe("tasks/schedule:updateSchedules", () => {
       });
 
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         completedAt: new Date(0),
@@ -105,7 +105,7 @@ describe("tasks/schedule:updateSchedules", () => {
       });
 
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         completedAt: new Date(),
@@ -126,7 +126,7 @@ describe("tasks/schedule:updateSchedules", () => {
       });
 
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });

@@ -74,19 +74,19 @@ export default function Page(props) {
         <tbody>
           {groups.map((group) => {
             return (
-              <tr key={`group-${group.guid}`}>
+              <tr key={`group-${group.id}`}>
                 <td>
                   {group.type === "calculated" ? (
                     <Link
-                      href="/group/[guid]/rules"
-                      as={`/group/${group.guid}/rules`}
+                      href="/group/[id]/rules"
+                      as={`/group/${group.id}/rules`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   ) : (
                     <Link
-                      href="/group/[guid]/edit"
-                      as={`/group/${group.guid}/edit`}
+                      href="/group/[id]/edit"
+                      as={`/group/${group.id}/edit`}
                     >
                       <a>{group.name}</a>
                     </Link>

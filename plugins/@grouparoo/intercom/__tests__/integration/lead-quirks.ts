@@ -41,7 +41,7 @@ const email5 = `testuser3.${rand[5]}@demo.com`;
 const email6 = `testuser4.${rand[6]}@demo.com`;
 
 describe("intercom has weird things with leads - verify the behavior", () => {
-  const { getUser, guidRegex, getClient } = setup(appOptions, {}, newNock);
+  const { getUser, idRegex, getClient } = setup(appOptions, {}, newNock);
 
   test("can create lead with email", async () => {
     const { body } = await getClient().contacts.create({
@@ -53,7 +53,7 @@ describe("intercom has weird things with leads - verify the behavior", () => {
 
     const user = await getUser(userId);
     expect(user.email).toBe(email);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.role).toBe("lead");
   });
 
@@ -68,7 +68,7 @@ describe("intercom has weird things with leads - verify the behavior", () => {
 
     const user = await getUser(userId2);
     expect(user.external_id).not.toBe(externalId2);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.email).toBe(email2);
     expect(user.role).toBe("lead");
   });

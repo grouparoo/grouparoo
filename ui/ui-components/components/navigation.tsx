@@ -55,7 +55,7 @@ export default function Navigation(props) {
   const [expandPlatformMenu, setExpandPlatformMenu] = useState(false);
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);
   const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
-  const logoLink = teamMember?.guid ? "/dashboard" : "/";
+  const logoLink = teamMember?.id ? "/dashboard" : "/";
 
   useEffect(() => {
     sessionHandler.subscribe("navigation", (_teamMember) =>

@@ -46,13 +46,13 @@ describe("tasks/group:exportToCSV", () => {
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("group:exportToCSV", { groupGuid: "abc123" });
+      await task.enqueue("group:exportToCSV", { groupId: "abc123" });
       const found = await specHelper.findEnqueuedTasks("group:exportToCSV");
       expect(found.length).toEqual(1);
     });
 
     test("will create the CSV file and upload it", async () => {
-      await specHelper.runTask("group:exportToCSV", { groupGuid: group.guid });
+      await specHelper.runTask("group:exportToCSV", { groupId: group.id });
       const files = await File.findAll();
       expect(files.length).toBe(1);
 
@@ -67,7 +67,7 @@ describe("tasks/group:exportToCSV", () => {
     });
 
     test("the run is complete", async () => {
-      const runs = await Run.findAll({ where: { creatorGuid: group.guid } });
+      const runs = await Run.findAll({ where: { creatorId: group.id } });
       expect(runs.length).toBe(1);
       expect(runs[0].percentComplete).toBe(100);
       expect(runs[0].state).toBe("complete");

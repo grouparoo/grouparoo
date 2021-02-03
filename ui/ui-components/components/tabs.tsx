@@ -19,7 +19,7 @@ export default function GrouparooTabs({
 
   const parts = router.asPath.split("/");
   const topic = parts[1];
-  const guid = parts[2];
+  const id = parts[2];
   const verb = parts[3].split("?")[0];
 
   if (!defaultTab) defaultTab = tabs[0];
@@ -34,8 +34,8 @@ export default function GrouparooTabs({
         </li>
         <li className="breadcrumb-item">
           <Link
-            href={`/${topic}/[guid]/${defaultTab}`}
-            as={`/${topic}/${guid}/${defaultTab}`}
+            href={`/${topic}/[id]/${defaultTab}`}
+            as={`/${topic}/${id}/${defaultTab}`}
           >
             <a>
               {name !== ""
@@ -55,7 +55,7 @@ export default function GrouparooTabs({
         activeKey={verb}
         onSelect={(k) => {
           if (k !== verb) {
-            router.push(`/${topic}/[guid]/${k}`, `/${topic}/${guid}/${k}`);
+            router.push(`/${topic}/[id]/${k}`, `/${topic}/${id}/${k}`);
           }
         }}
       >

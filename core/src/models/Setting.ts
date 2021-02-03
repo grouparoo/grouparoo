@@ -14,7 +14,7 @@ export const settingTypes = ["string", "number", "boolean"] as const;
 
 @Table({ tableName: "settings", paranoid: false })
 export class Setting extends LoggedModel<Setting> {
-  guidPrefix() {
+  idPrefix() {
     return "set";
   }
 
@@ -65,7 +65,7 @@ export class Setting extends LoggedModel<Setting> {
 
   async apiData() {
     return {
-      guid: this.guid,
+      id: this.id,
       pluginName: this.pluginName,
       key: this.key,
       title: this.title,
@@ -82,11 +82,9 @@ export class Setting extends LoggedModel<Setting> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -106,7 +104,7 @@ export class Setting extends LoggedModel<Setting> {
   static async ensureOneKeyPerPluginName(instance: Setting) {
     const existing = await Setting.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         pluginName: instance.pluginName,
         key: instance.key,
       },
