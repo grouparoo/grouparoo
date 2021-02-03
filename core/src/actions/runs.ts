@@ -13,6 +13,7 @@ export class RunsList extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "read" };
     this.inputs = {
       id: { required: false },
+      topic: { required: false },
       state: { required: false },
       hasError: { required: false },
       limit: { required: true, default: 100, formatter: parseInt },
@@ -27,7 +28,7 @@ export class RunsList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     let id: string = params.id;
 
-    if (id && id.match(/^src_/)) {
+    if (params.topic === "schedule") {
       const schedule = await Schedule.scope(null).findOne({
         where: { sourceId: params.id },
       });

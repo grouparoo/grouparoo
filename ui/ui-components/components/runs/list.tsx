@@ -13,7 +13,7 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, runsHandler } = props;
+  const { errorHandler, runsHandler, topic } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export default function RunsList(props) {
   }, []);
 
   async function load() {
-    const params = { limit, offset };
+    const params = { limit, offset, topic };
     if (router.query.id) params["id"] = router.query.id.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
@@ -259,15 +259,16 @@ export default function RunsList(props) {
   );
 }
 
-RunsList.hydrate = async (ctx) => {
+RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
   const { id, limit, offset, state, error } = ctx.query;
   const { execApi } = useApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
     id,
+    topic: options.topic,
     limit,
     offset,
     state,
     hasError: error,
   });
-  return { runs, total };
+  return { runs, total, topic: options.topic };
 };

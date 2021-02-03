@@ -72,6 +72,8 @@ Page.getInitialProps = async (ctx) => {
   const { id } = ctx.query;
   const { execApi } = useApi(ctx);
   const { source } = await execApi("get", `/source/${id}`);
-  const runsListInitialProps = await RunsList.hydrate(ctx);
+  const runsListInitialProps = await RunsList.hydrate(ctx, {
+    topic: "schedule",
+  });
   return { source, ...runsListInitialProps };
 };

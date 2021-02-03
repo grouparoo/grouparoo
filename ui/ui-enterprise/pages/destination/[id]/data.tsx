@@ -78,7 +78,9 @@ export default function Page(props) {
     // update group being tracked after the edit
     if (
       trackedGroupId !== props.trackedGroupId &&
-      trackedGroupId.match(/^grp_/)
+      trackedGroupId !== "_none" &&
+      trackedGroupId !== null &&
+      trackedGroupId !== ""
     ) {
       await execApi("post", `/destination/${id}/track`, {
         groupId: trackedGroupId,

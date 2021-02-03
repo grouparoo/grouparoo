@@ -19,7 +19,7 @@ export default async (owner?, props: { [key: string]: any } = {}) => {
   if (!owner) owner = await ScheduleFactory();
 
   props.creatorId = owner.id;
-  props.creatorType = owner.id.match(/^sch_/) ? "schedule" : "property";
+  props.creatorType = owner.constructor.name.toLowerCase();
 
   const instance = await Run.create(await data(props));
   return instance;
