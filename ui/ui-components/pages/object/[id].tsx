@@ -7,6 +7,11 @@ import { Actions } from "../../utils/apiData";
 import { Card } from "react-bootstrap";
 import { singular } from "pluralize";
 
+const detailPages = {
+  groups: "members",
+  sources: "overview",
+};
+
 export default function FindObject(props) {
   const router = useRouter();
   const { errorHandler } = props;
@@ -28,9 +33,9 @@ export default function FindObject(props) {
       response.records.length === 1 &&
       process.env.GROUPAROO_UI_EDITION === "enterprise"
     ) {
-      router.push(
-        `/${singular(response.records[0].tableName.toLowerCase())}/${id}/edit`
-      );
+      const table = response.records[0].tableName.toLowerCase();
+      const detailPage = detailPages[table] || "edit";
+      router.push(`/${singular(table)}/${id}/${detailPage}`);
     } else if (
       response.records.length === 1 &&
       process.env.GROUPAROO_UI_EDITION === "community"
@@ -47,22 +52,25 @@ export default function FindObject(props) {
         <h2>Multiple objects found:</h2>
         <table>
           <tbody>
-            {records.map((r) => (
-              <tr>
-                <td>{id} in </td>
-                <td>
-                  <Link
-                    href={
-                      process.env.GROUPAROO_UI_EDITION === "enterprise"
-                        ? `/${singular(r)}/${id}/edit`
-                        : `/${r}`
-                    }
-                  >
-                    <a>{r}</a>
-                  </Link>
-                </td>
-              </tr>
-            ))}
+            {records.map((r) => {
+              const detailPage = detailPages[r] || "edit";
+              return (
+                <tr>
+                  <td>{id} in </td>
+                  <td>
+                    <Link
+                      href={
+                        process.env.GROUPAROO_UI_EDITION === "enterprise"
+                          ? `/${singular(r)}/${id}/${detailPage}`
+                          : `/${r}`
+                      }
+                    >
+                      <a>{r}</a>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </>
