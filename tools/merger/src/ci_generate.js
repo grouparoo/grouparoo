@@ -201,7 +201,7 @@ class Generator {
     }
   }
 
-  node_module_list() {
+  full_node_module_list() {
     const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
@@ -218,9 +218,18 @@ class Generator {
     }
 
     const prefix = " ".repeat(12) + "- ";
-    return relativePaths
-      .map((p) => `${prefix}${p}`)
-      .sort()
+    return relativePaths.map((p) => `${prefix}${p}`).sort();
+  }
+
+  plugin_node_module_list() {
+    return this.full_node_module_list()
+      .filter((path) => path.includes("plugins/@grouparoo"))
+      .join("\n");
+  }
+
+  other_node_module_list() {
+    return this.full_node_module_list()
+      .filter((path) => !path.includes("plugins/@grouparoo"))
       .join("\n");
   }
 
@@ -300,7 +309,8 @@ class Generator {
     view[".Revision"] = "{{ .Revision }}";
 
     const methods = [
-      "node_module_list",
+      "plugin_node_module_list",
+      "other_node_module_list",
       "dist_list",
       "jobs",
       "workflows",
