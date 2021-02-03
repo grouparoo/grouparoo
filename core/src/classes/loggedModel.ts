@@ -29,7 +29,7 @@ export abstract class LoggedModel<T> extends Model {
   id: string;
 
   @BeforeCreate
-  static generateGuid(instance) {
+  static generateId(instance) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }

@@ -49,7 +49,7 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "fileId",
-              displayName: "File Guid",
+              displayName: "File Id",
               required: true,
               description:
                 "The fileId from a file previously uploaded to Grouparoo.",

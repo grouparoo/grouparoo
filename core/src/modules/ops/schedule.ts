@@ -53,7 +53,7 @@ export namespace ScheduleOps {
     try {
       const response = await method({
         schedule,
-        scheduleGuid: schedule.id,
+        scheduleId: schedule.id,
         scheduleOptions: options,
         connection,
         app,
@@ -65,7 +65,7 @@ export namespace ScheduleOps {
         sourceMapping,
         properties,
         run,
-        runGuid: run.id,
+        runId: run.id,
         limit,
         highWaterMark,
         sourceOffset,
@@ -186,11 +186,11 @@ export namespace ScheduleOps {
       sourceOptions,
       sourceMapping,
       schedule,
-      scheduleGuid: schedule.id,
+      scheduleId: schedule.id,
       scheduleOptions,
       highWaterMark,
       run,
-      runGuid: run.id,
+      runId: run.id,
     });
   }
 }

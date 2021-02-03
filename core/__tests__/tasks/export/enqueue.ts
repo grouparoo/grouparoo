@@ -99,14 +99,12 @@ describe("tasks/export:enqueue", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].exportGuids.length).toBe(2);
-      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportA.id);
-      expect(foundTasks[0].args[0].exportGuids).toContain(pendingExportB.id);
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(
-        completeExport.id
-      );
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(errorExport.id);
-      expect(foundTasks[0].args[0].exportGuids).not.toContain(infoExport.id);
+      expect(foundTasks[0].args[0].exportIds.length).toBe(2);
+      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportA.id);
+      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportB.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(completeExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(errorExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
     });
 
     test("batch size is variable", async () => {

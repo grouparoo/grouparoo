@@ -135,7 +135,7 @@ describe("integration/runs/internalRun", () => {
       expect(lastNameRun.state).toBe("running");
 
       await specHelper.runTask("run:internalRun", {
-        runGuid: lastNameRun.id,
+        runId: lastNameRun.id,
       });
 
       // both new properties are marked as pending

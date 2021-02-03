@@ -573,7 +573,7 @@ describe("models/destination", () => {
               force: true,
               destinationId: destination.id,
               groupId: group.id,
-              runGuid: runA.id,
+              runId: runA.id,
             })
           );
 
@@ -585,7 +585,7 @@ describe("models/destination", () => {
             force: true,
             destinationId: destination.id,
             groupId: group.id,
-            runGuid: runB.id,
+            runId: runB.id,
           });
         });
 
@@ -606,13 +606,13 @@ describe("models/destination", () => {
               groupId: group.id,
             })
           );
-          expect(foundTasks[0].args[0].runGuid).not.toEqual(run.id);
+          expect(foundTasks[0].args[0].runId).not.toEqual(run.id);
 
           expect(foundTasks[1].args[0]).toEqual({
             force: true,
             destinationId: destination.id,
             groupId: otherGroup.id,
-            runGuid: run.id,
+            runId: run.id,
           });
 
           await otherGroup.destroy();

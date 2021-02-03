@@ -68,14 +68,14 @@ describe("modules/codeConfig", () => {
 
       await expect(
         api.sequelize.transaction(async () => {
-          const { errors, seenGuids } = await processConfigObjects(
+          const { errors, seenIds } = await processConfigObjects(
             sortedConfigObjects,
             true,
             true
           );
 
           expect(errors).toEqual([]);
-          expect(seenGuids).toEqual({
+          expect(seenIds).toEqual({
             apikey: ["key_website_api_key"],
             app: ["app_data_warehouse", "app_events"],
             destination: ["dst_test_destination"],

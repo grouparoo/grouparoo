@@ -111,5 +111,5 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
 
   await run.afterBatch("complete");
 
-  return { runGuid: run.id, filename, cleanName };
+  return { runId: run.id, filename, cleanName };
 }

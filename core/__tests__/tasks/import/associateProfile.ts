@@ -9,7 +9,7 @@ describe("tasks/import:associateProfile", () => {
 
   describe("import:associateProfile", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("import:associateProfile", { importGuid: "abc123" });
+      await task.enqueue("import:associateProfile", { importId: "abc123" });
       const found = await specHelper.findEnqueuedTasks(
         "import:associateProfile"
       );
@@ -31,7 +31,7 @@ describe("tasks/import:associateProfile", () => {
       expect(profilesCount).toBe(0);
 
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.id,
+        importId: _import.id,
       });
 
       await _import.reload();
@@ -70,7 +70,7 @@ describe("tasks/import:associateProfile", () => {
 
       // I don't throw, but append the error to the Import
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.id,
+        importId: _import.id,
       });
 
       await _import.reload();

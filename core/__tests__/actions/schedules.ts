@@ -133,7 +133,7 @@ describe("actions/schedules", () => {
 
         const tasks = await specHelper.findEnqueuedTasks("schedule:run");
         expect(tasks.length).toBe(1);
-        expect(tasks[0].args[0].scheduleGuid).toBe(id);
+        expect(tasks[0].args[0].scheduleId).toBe(id);
       });
 
       test("an administrator can destroy a connection", async () => {

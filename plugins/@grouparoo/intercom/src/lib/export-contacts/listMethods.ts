@@ -30,7 +30,7 @@ export async function getTagId(
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", tagName, appOptions];
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       return ensureTag(client, cacheData, tagName);
     }
@@ -62,7 +62,7 @@ async function getTags(
   const cacheKey = ["getTags", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs, read },
+    { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchTags(client);
     }

@@ -40,7 +40,7 @@ describe("models/team", () => {
   test("teams with team members cannot be deleted", async () => {
     const team = await Team.create({ name: "people team" });
     const teamMember = await TeamMember.create({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Bowser",
       lastName: "Koopa",
       email: "bowser@example.com",

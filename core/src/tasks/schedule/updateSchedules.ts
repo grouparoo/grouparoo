@@ -67,8 +67,8 @@ export class UpdateSchedules extends CLSTask {
         });
 
         await CLS.enqueueTask("schedule:run", {
-          scheduleGuid: schedule.id,
-          runGuid: run.id,
+          scheduleId: schedule.id,
+          runId: run.id,
         });
 
         log(

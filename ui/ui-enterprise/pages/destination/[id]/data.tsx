@@ -37,8 +37,8 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [trackedGroupGuid, setTrackedGroupGuid] = useState(
-    props.trackedGroupGuid || "_none"
+  const [trackedGroupId, settrackedGroupId] = useState(
+    props.trackedGroupId || "_none"
   );
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
@@ -77,15 +77,15 @@ export default function Page(props) {
 
     // update group being tracked after the edit
     if (
-      trackedGroupGuid !== props.trackedGroupGuid &&
-      trackedGroupGuid.match(/^grp_/)
+      trackedGroupId !== props.trackedGroupId &&
+      trackedGroupId.match(/^grp_/)
     ) {
       await execApi("post", `/destination/${id}/track`, {
-        groupId: trackedGroupGuid,
+        groupId: trackedGroupId,
       });
     } else if (
-      trackedGroupGuid !== props.trackedGroupGuid &&
-      trackedGroupGuid === "_none"
+      trackedGroupId !== props.trackedGroupId &&
+      trackedGroupId === "_none"
     ) {
       await execApi("post", `/destination/${id}/untrack`);
     } else {
@@ -192,11 +192,11 @@ export default function Page(props) {
   function updateDestinationGroupMembership(
     groupId,
     remoteKey,
-    oldGroupGuid = null
+    oldGroupId = null
   ) {
     const _destination = Object.assign({}, destination);
     _destination.destinationGroupMemberships = _destination.destinationGroupMemberships.filter(
-      (dgm) => dgm.groupId !== oldGroupGuid
+      (dgm) => dgm.groupId !== oldGroupId
     );
 
     const groupName = groups.filter((g) => g.id === groupId)[0]?.name;
@@ -258,7 +258,7 @@ export default function Page(props) {
       return 0;
     })
     .sort((a, b) => {
-      if (a.id === trackedGroupGuid) return -1;
+      if (a.id === trackedGroupId) return -1;
       return 1;
     });
 
@@ -301,9 +301,9 @@ export default function Page(props) {
                   <Form.Control
                     as="select"
                     required={true}
-                    value={trackedGroupGuid}
+                    value={trackedGroupId}
                     disabled={loading}
-                    onChange={(e) => setTrackedGroupGuid(e.target["value"])}
+                    onChange={(e) => settrackedGroupId(e.target["value"])}
                   >
                     <option value={"_none"}>No Group</option>
                     <option disabled>---</option>
@@ -800,7 +800,7 @@ export default function Page(props) {
             mappingOptions={mappingOptions}
             destination={destination}
             groups={groups}
-            trackedGroupGuid={trackedGroupGuid}
+            trackedGroupId={trackedGroupId}
           />
         </Col>
       </Row>
@@ -846,7 +846,7 @@ Page.getInitialProps = async (ctx) => {
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,
-    trackedGroupGuid: destination.destinationGroup?.id,
+    trackedGroupId: destination.destinationGroup?.id,
     groups: groups
       .filter((group) => group.state !== "draft")
       .filter((group) => group.state !== "deleted"),

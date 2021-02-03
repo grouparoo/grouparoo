@@ -74,7 +74,7 @@ describe("tasks/group:run", () => {
 
       await specHelper.runTask("group:run", {
         groupId: group.id,
-        runGuid: run.id,
+        runId: run.id,
       });
 
       const found = await specHelper.findEnqueuedTasks("group:run");
@@ -100,7 +100,7 @@ describe("tasks/group:run", () => {
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
-      const run = await Run.findById(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runAddGroupMembers");
@@ -353,7 +353,7 @@ describe("tasks/group:run", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
 
-      const run = await Run.findById(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.state).toBe("running");
 
       await api.resque.queue.connection.redis.flushdb();

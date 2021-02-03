@@ -127,7 +127,7 @@ export namespace ExportOps {
           "export:sendBatch",
           {
             destinationId: destination.id,
-            exportGuids: _exports.map((e) => e.id),
+            exportIds: _exports.map((e) => e.id),
           },
           `exports:${app.type}`
         );
@@ -139,7 +139,7 @@ export namespace ExportOps {
               "export:send",
               {
                 destinationId: destination.id,
-                exportGuid: _export.id,
+                exportId: _export.id,
               },
               `exports:${app.type}`
             )

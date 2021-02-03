@@ -109,7 +109,7 @@ export default function Page({
                 <td>{teamMember.firstName}</td>
                 <td>{teamMember.lastName}</td>
                 <td>
-                  {teams.filter((t) => t.id === teamMember.teamGuid)[0].name}
+                  {teams.filter((t) => t.id === teamMember.teamId)[0].name}
                 </td>
                 <td>
                   {teamMember.lastLoginAt ? (

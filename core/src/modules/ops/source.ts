@@ -296,7 +296,7 @@ export namespace SourceOps {
 
     try {
       // manually run the hooks we want
-      Property.generateGuid(property);
+      Property.generateId(property);
       await Property.ensureUniqueKey(property);
       await Property.ensureNonArrayAndUnique(property);
       await Property.ensureOneIdentifyingProperty(property);

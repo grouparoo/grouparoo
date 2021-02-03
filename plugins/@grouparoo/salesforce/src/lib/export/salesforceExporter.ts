@@ -576,7 +576,7 @@ async function getListId(
     appOptions,
   ];
   const listId = await objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let destId = await findObjectIdByField({

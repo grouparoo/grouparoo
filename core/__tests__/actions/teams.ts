@@ -105,7 +105,7 @@ describe("actions/teams", () => {
 
     test("an administrator can view a team", async () => {
       const teamMember = new TeamMember({
-        teamGuid: id,
+        teamId: id,
         firstName: "Toad",
         lastName: "Toadstool",
         email: "toad@example.com",
@@ -233,7 +233,7 @@ describe("actions/teams", () => {
       expect(error).toBeUndefined();
 
       const teamMember = new TeamMember({
-        teamGuid: team.id,
+        teamId: team.id,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -280,7 +280,7 @@ describe("actions/teams", () => {
 
     beforeAll(async () => {
       const teamMember = new TeamMember({
-        teamGuid: id,
+        teamId: id,
         firstName: "Wario",
         lastName: "Wario",
         email: "wario@example.com",

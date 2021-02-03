@@ -168,7 +168,7 @@ export default function EventsList(props) {
         <thead>
           <tr>
             <th>Type</th>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>UserId</th>
             <th>Data</th>
             <th>Occurred At</th>
@@ -182,7 +182,7 @@ export default function EventsList(props) {
                   <strong>{event.type}</strong>
                 </td>
                 <td>
-                  Guid:{" "}
+                  id:{" "}
                   <Link href="/event/[id]/edit" as={`/event/${event.id}/edit`}>
                     <a>{event.id}</a>
                   </Link>

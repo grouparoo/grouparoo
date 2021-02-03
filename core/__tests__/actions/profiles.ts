@@ -673,7 +673,7 @@ describe("actions/profiles", () => {
 
   describe("reader signed in", () => {
     let connection;
-    let teamGuid;
+    let teamId;
     let csrfToken;
 
     beforeAll(async () => {
@@ -689,10 +689,10 @@ describe("actions/profiles", () => {
         name: "read only team",
       });
       await readOnlyTeam.save();
-      teamGuid = readOnlyTeam.id;
+      teamId = readOnlyTeam.id;
 
       const luigi = new TeamMember({
-        teamGuid,
+        teamId,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",

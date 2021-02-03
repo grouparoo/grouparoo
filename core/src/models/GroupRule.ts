@@ -95,7 +95,7 @@ export class GroupRule extends Model {
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
+  static generateId(instance) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }

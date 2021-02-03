@@ -78,7 +78,7 @@ export default function ImportList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>Times</th>
             <th>Profile Properties</th>
             <th>Groups</th>
@@ -91,7 +91,7 @@ export default function ImportList(props) {
               <Fragment key={`import-${_import.id}`}>
                 <tr>
                   <td>
-                    Guid:
+                    id:
                     <Link
                       href="/import/[id]/edit"
                       as={`/import/${_import.id}/edit`}

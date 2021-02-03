@@ -45,7 +45,7 @@ export default function Page(props) {
         </p>
       ) : (
         <Alert variant="success">
-          You’ve finished the Setup Guide! 🎉 <br />
+          You’ve finished the Setup Ide! 🎉 <br />
           If you have additional questions, please read our{" "}
           <a target="_blank" href="https://www.grouparoo.com/docs">
             Docs
@@ -105,7 +105,7 @@ Page.getInitialProps = async (ctx) => {
 function HideSetupButton() {
   return (
     <Button href="/settings/interface" size="sm">
-      Hide this Setup Guide from everyone in your team
+      Hide this Setup Ide from everyone in your team
     </Button>
   );
 }

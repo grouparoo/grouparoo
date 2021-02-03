@@ -69,7 +69,7 @@ describe("actions/account", () => {
 
     beforeAll(async () => {
       const luigi = new TeamMember({
-        teamGuid: team.id,
+        teamId: team.id,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",

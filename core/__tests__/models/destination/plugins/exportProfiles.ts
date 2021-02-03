@@ -773,14 +773,14 @@ describe("models/destination", () => {
 
       await specHelper.runTask("export:enqueue", {});
 
-      let exportGuids;
+      let exportIds;
       let foundSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
       );
       expect(foundSendBatchTasks.length).toBe(1);
-      exportGuids = foundSendBatchTasks[0].args[0].exportGuids;
-      expect(exportGuids.length).toBe(3);
-      expect(exportGuids.sort()).toEqual(
+      exportIds = foundSendBatchTasks[0].args[0].exportIds;
+      expect(exportIds.length).toBe(3);
+      expect(exportIds.sort()).toEqual(
         [_export1.id, _export2.id, _export3.id].sort()
       );
 
@@ -796,9 +796,9 @@ describe("models/destination", () => {
       expect(foundSendBatchTasks[1].timestamp).toBeGreaterThan(
         new Date().getTime()
       );
-      exportGuids = foundSendBatchTasks[1].args[0].exportGuids;
-      expect(exportGuids.length).toBe(1);
-      expect(exportGuids.sort()).toEqual([_export1.id].sort());
+      exportIds = foundSendBatchTasks[1].args[0].exportIds;
+      expect(exportIds.length).toBe(1);
+      expect(exportIds.sort()).toEqual([_export1.id].sort());
 
       await _export1.reload();
       expect(_export1.errorMessage).toMatch(/oh no!/);

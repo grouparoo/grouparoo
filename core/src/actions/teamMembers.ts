@@ -12,14 +12,14 @@ export class TeamMembersList extends AuthenticatedAction {
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
       id: { required: false },
-      teamGuid: { required: false },
+      teamId: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.id) where["teamGuid"] = params.id;
-    if (params.teamGuid) where["teamGuid"] = params.teamGuid;
+    if (params.id) where["teamId"] = params.id;
+    if (params.teamId) where["teamId"] = params.teamId;
 
     const teamMembers = await TeamMember.findAll({
       where,
@@ -42,7 +42,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      teamGuid: { required: true },
+      teamId: { required: true },
       firstName: { required: true },
       lastName: { required: true },
       password: { required: true },
@@ -52,13 +52,13 @@ export class TeamMemberCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const team = await Team.findById(params.teamGuid);
+    const team = await Team.findById(params.teamId);
 
     const teamMember = new TeamMember({
       firstName: params.firstName,
       lastName: params.lastName,
       email: params.email,
-      teamGuid: team.id,
+      teamId: team.id,
     });
 
     await teamMember.save();
@@ -109,7 +109,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
       lastName: { required: false },
       password: { required: false },
       email: { required: false },
-      teamGuid: { required: false },
+      teamId: { required: false },
     };
   }
 

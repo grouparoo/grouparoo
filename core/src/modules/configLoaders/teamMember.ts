@@ -30,11 +30,11 @@ export async function loadTeamMember(
       id,
       locked: getCodeConfigLockKey(),
       email: configObject.email,
-      teamGuid: team.id,
+      teamId: team.id,
     });
   }
 
-  teamMember.teamGuid = team.id;
+  teamMember.teamId = team.id;
   if (configObject?.options?.firstName) {
     teamMember.firstName = configObject.options.firstName;
   }

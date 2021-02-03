@@ -120,6 +120,11 @@ export class Team extends LoggedModel<Team> {
     }
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance);
+  }
+
   @AfterSave
   static async buildPermissions(instance: Team) {
     const permissionsWithStatus: Array<{
@@ -164,13 +169,7 @@ export class Team extends LoggedModel<Team> {
 
       permissionsWithStatus.push({ isNew, permission });
     }
-
     return permissionsWithStatus;
-  }
-
-  @BeforeSave
-  static async noUpdateIfLocked(instance) {
-    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy

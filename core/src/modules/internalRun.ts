@@ -34,7 +34,7 @@ export async function internalRun(creatorType: string, creatorId: string) {
 
   // we need to allow time to for the rest of the model update to complete (ie: this could be run after Property#updateOptions and we still need to wait for the state to change)
   await CLS.enqueueTaskIn(config.tasks.timeout + 1, "run:internalRun", {
-    runGuid: run.id,
+    runId: run.id,
   });
 
   return run;

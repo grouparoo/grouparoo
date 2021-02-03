@@ -10,7 +10,7 @@ export default function ProfilePreview(props) {
     errorHandler,
     destination,
     groups,
-    trackedGroupGuid,
+    trackedGroupId,
     mappingOptions,
   } = props;
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function ProfilePreview(props) {
     };
   }, [
     destination.id,
-    trackedGroupGuid,
+    trackedGroupId,
     JSON.stringify(destination.destinationGroup),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
@@ -63,7 +63,7 @@ export default function ProfilePreview(props) {
   ) {
     setSleeping(true);
 
-    if (!destination.destinationGroup?.id && trackedGroupGuid === "_none") {
+    if (!destination.destinationGroup?.id && trackedGroupId === "_none") {
       return;
     }
 
@@ -76,7 +76,7 @@ export default function ProfilePreview(props) {
           (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
       );
 
-      const groupId = destination.destinationGroup?.id || trackedGroupGuid;
+      const groupId = destination.destinationGroup?.id || trackedGroupId;
 
       const { profile }: Actions.DestinationProfilePreview = await execApi(
         "get",
@@ -100,7 +100,7 @@ export default function ProfilePreview(props) {
   }
 
   function chooseProfileProperty() {
-    const _profileId = prompt("Enter Profile Guid", profileId);
+    const _profileId = prompt("Enter Profile Id", profileId);
     if (_profileId) {
       storeProfilePropertyId(_profileId);
       load(_profileId, 1);

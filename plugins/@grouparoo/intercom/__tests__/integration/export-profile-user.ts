@@ -350,9 +350,9 @@ describe("intercom/contacts/exportProfile/user", () => {
       name: "Alan",
     });
     userId3 = body.id;
-    const assignedGuid = body.external_id;
+    const assignedId = body.external_id;
     expect(userId3).toBeTruthy();
-    expect(assignedGuid).toBeTruthy(); // assigned one automatically by Intercom
+    expect(assignedId).toBeTruthy(); // assigned one automatically by Intercom
 
     await indexContacts();
 
@@ -369,7 +369,7 @@ describe("intercom/contacts/exportProfile/user", () => {
 
     const user = await getUser(userId3);
     expect(user.email).toBe(email3);
-    expect(user.external_id).toBe(assignedGuid);
+    expect(user.external_id).toBe(assignedId);
     expect(user.name).toBe("Allison");
     expect(user.role).toBe("lead");
 

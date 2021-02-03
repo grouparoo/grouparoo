@@ -87,14 +87,12 @@ export class Log extends Model {
   }
 
   @BeforeCreate
-  static generateGuid(instance: Log) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
+  static generateId(instance: Log) {
+    if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
   }
 
   @BeforeCreate
-  static async determineOwnerGuid(instance: Log) {
+  static async determineownerId(instance: Log) {
     if (!instance.ownerId) {
       if (instance.data.id) {
         instance.ownerId = instance.data.id;

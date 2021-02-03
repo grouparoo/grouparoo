@@ -12,22 +12,22 @@ export class ScheduleRun extends RetryableTask {
     this.frequency = 0;
     this.queue = "schedules";
     this.inputs = {
-      scheduleGuid: { required: true },
-      runGuid: { required: true },
+      scheduleId: { required: true },
+      runId: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
     const schedule = await Schedule.findOne({
-      where: { id: params.scheduleGuid },
+      where: { id: params.scheduleId },
     });
     if (!schedule) return;
 
     if (schedule.state !== "ready") {
-      throw new Error(`schedule ${params.scheduleGuid} is not ready`);
+      throw new Error(`schedule ${params.scheduleId} is not ready`);
     }
 
-    const run = await Run.findById(params.runGuid);
+    const run = await Run.findById(params.runId);
 
     const { importsCount } = await schedule.run(run);
 

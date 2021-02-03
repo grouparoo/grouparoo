@@ -128,11 +128,11 @@ export default function Page(props) {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="teamGuid">
+              <Form.Group controlId="teamId">
                 <Form.Label>Team</Form.Label>
                 <Form.Control
                   as="select"
-                  value={teamMember.teamGuid}
+                  value={teamMember.teamId}
                   onChange={update}
                   disabled={loading}
                 >

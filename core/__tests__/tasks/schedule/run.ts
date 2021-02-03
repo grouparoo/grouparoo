@@ -23,43 +23,43 @@ describe("tasks/schedule:run", () => {
   describe("schedule:run", () => {
     test("can be enqueued", async () => {
       await task.enqueue("schedule:run", {
-        scheduleGuid: "abc123",
-        runGuid: "abc123",
+        scheduleId: "abc123",
+        runId: "abc123",
       });
       const found = await specHelper.findEnqueuedTasks("schedule:run");
       expect(found.length).toEqual(1);
       expect(found[0].timestamp).toBeNull();
     });
 
-    test("throws without a scheduleGuid", async () => {
+    test("throws without a scheduleId", async () => {
       await expect(
         task.enqueue("schedule:run", {
-          runGuid: "abc123",
+          runId: "abc123",
         })
-      ).rejects.toThrow(/scheduleGuid is a required input/);
+      ).rejects.toThrow(/scheduleId is a required input/);
     });
 
-    test("throws without a runGuid", async () => {
+    test("throws without a runId", async () => {
       await expect(
         task.enqueue("schedule:run", {
-          scheduleGuid: "abc123",
+          scheduleId: "abc123",
         })
-      ).rejects.toThrow(/runGuid is a required input/);
+      ).rejects.toThrow(/runId is a required input/);
     });
 
-    test("doesn't throw when scheduleGuid is **found** in DB", async () => {
+    test("doesn't throw when scheduleId is **found** in DB", async () => {
       const run = await helper.factories.run(schedule);
 
       specHelper.runTask("schedule:run", {
-        scheduleGuid: schedule.id,
-        runGuid: run.id,
+        scheduleId: schedule.id,
+        runId: run.id,
       }); // doesn't throw
     });
 
-    test("doesn't throw when scheduleGuid is **not found** in DB", async () => {
+    test("doesn't throw when scheduleId is **not found** in DB", async () => {
       specHelper.runTask("schedule:run", {
-        scheduleGuid: "abc123",
-        runGuid: "abc123",
+        scheduleId: "abc123",
+        runId: "abc123",
       }); // doesn't throw
     });
   });

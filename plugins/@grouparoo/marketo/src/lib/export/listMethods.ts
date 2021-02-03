@@ -15,7 +15,7 @@ export async function getListId(
   const { appId, appOptions } = cacheData;
   const cacheKey: CacheKey = ["getListId", listName, appOptions];
   const listId = await objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let marketoId = await findListByName(client, listName);
@@ -73,7 +73,7 @@ async function getRootFolderId(
   const cacheKey: CacheKey = ["getRootFolderId", folderName, appOptions];
   const cacheDurationMs = 1000 * 60 * 120; // 120 minutes
   const folderId = await objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       const marketoId = findSystemFolderByName(client, folderName);

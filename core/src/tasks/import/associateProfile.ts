@@ -12,13 +12,13 @@ export class ImportAssociateProfile extends Task {
     this.frequency = 0;
     this.queue = "imports";
     this.inputs = {
-      importGuid: { required: true },
+      importId: { required: true },
     };
   }
 
   async run(params) {
-    const { importGuid } = params;
-    const _import = await Import.findById(importGuid);
+    const { importId } = params;
+    const _import = await Import.findById(importId);
 
     try {
       const { profile, isNew } = await _import.associateProfile();

@@ -84,13 +84,13 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
       primaryKeys: Object.keys(primaryKeysHash),
     });
 
-    const responsesByGuid = {};
+    const responsesById = {};
     for (const pk in responsesByPrimaryKey) {
       const profileId = primaryKeysHash[pk];
-      responsesByGuid[profileId] = responsesByPrimaryKey[pk];
+      responsesById[profileId] = responsesByPrimaryKey[pk];
     }
 
-    return responsesByGuid;
+    return responsesById;
   };
 
   return profileProperties;

@@ -349,7 +349,7 @@ describe("actions/groups", () => {
 
   describe("reader signed in", () => {
     let connection;
-    let teamGuid;
+    let teamId;
     let csrfToken;
     let group: Group;
 
@@ -365,10 +365,10 @@ describe("actions/groups", () => {
         name: "read only team",
       });
       await readOnlyTeam.save();
-      teamGuid = readOnlyTeam.id;
+      teamId = readOnlyTeam.id;
 
       const luigi = new TeamMember({
-        teamGuid,
+        teamId,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -427,9 +427,9 @@ describe("actions/groups", () => {
       );
       expect(error).toBeUndefined();
       expect(groups.length).toBe(2);
-      const groupGuids = groups.map((g) => g.id);
-      expect(groupGuids[0]).toBe(bigGroup.id);
-      expect(groupGuids[1]).toBe(smallGroup.id);
+      const groupIds = groups.map((g) => g.id);
+      expect(groupIds[0]).toBe(bigGroup.id);
+      expect(groupIds[1]).toBe(smallGroup.id);
 
       expect(newestMembersAdded[bigGroup.id]).toBeGreaterThanOrEqual(
         newestMembersAdded[smallGroup.id]

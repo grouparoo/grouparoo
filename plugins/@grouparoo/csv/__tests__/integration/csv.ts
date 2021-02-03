@@ -228,7 +228,7 @@ describe("integration/runs/csv", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].scheduleGuid).toBe(schedule.id);
+        expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
@@ -237,8 +237,8 @@ describe("integration/runs/csv", () => {
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          runGuid: run.id,
-          scheduleGuid: schedule.id,
+          runId: run.id,
+          scheduleId: schedule.id,
         });
 
         // run the schedule task again to enqueue the determineState task
@@ -319,7 +319,7 @@ describe("integration/runs/csv", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(3);
-        expect(found[1].args[0].scheduleGuid).toBe(schedule.id);
+        expect(found[1].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
@@ -328,8 +328,8 @@ describe("integration/runs/csv", () => {
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          scheduleGuid: schedule.id,
-          runGuid: run.id,
+          scheduleId: schedule.id,
+          runId: run.id,
         });
 
         // run the schedule task again to enqueue the determineState task

@@ -348,10 +348,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async checkProfileWillBeExported(profile: Profile) {
-    const profileGroupGuids = (
+    const profilegroupIds = (
       await profile.$get("groups", { attributes: ["id"] })
     ).map((group) => group.id);
-    if (!profileGroupGuids.includes(this.groupId)) {
+    if (!profilegroupIds.includes(this.groupId)) {
       throw new Error(
         `profile ${profile.id} will not be exported by this destination`
       );
@@ -535,9 +535,9 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
-    const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.id);
+    const combinedgroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
     const relevantDestinations = await Destination.findAll({
-      where: { groupId: { [Op.in]: combinedGroupGuids } },
+      where: { groupId: { [Op.in]: combinedgroupIds } },
     });
 
     return relevantDestinations;

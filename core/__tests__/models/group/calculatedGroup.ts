@@ -328,13 +328,13 @@ describe("models/group", () => {
       await mario.updateGroupMembership();
       const members = await group.$get("groupMembers");
       expect(members.length).toBe(1);
-      const groupMemberGuid = members[0].id;
+      const groupMemberId = members[0].id;
 
       const secondRun = await helper.factories.run();
       await group.runAddGroupMembers(secondRun);
       await mario.updateGroupMembership();
       const membersAgain = await group.$get("groupMembers");
-      expect(membersAgain[0].id).toBe(groupMemberGuid);
+      expect(membersAgain[0].id).toBe(groupMemberId);
       await secondRun.destroy();
     });
 

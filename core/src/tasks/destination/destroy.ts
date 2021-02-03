@@ -15,14 +15,14 @@ export class DestinationDestroy extends CLSTask {
     this.queue = "destinations";
     this.inputs = {
       destinationId: { required: true },
-      runGuid: { required: false },
+      runId: { required: false },
     };
   }
 
   async reEnqueue(destination: Destination, run: Run) {
     return CLS.enqueueTaskIn(config.tasks.timeout * 2, this.name, {
       destinationId: destination.id,
-      runGuid: run.id,
+      runId: run.id,
     });
   }
 
@@ -39,8 +39,8 @@ export class DestinationDestroy extends CLSTask {
     // this will trigger a run to export all group members one last time
     if (destination.groupId) {
       run = await destination.unTrackGroup();
-    } else if (params.runGuid) {
-      run = await Run.scope(null).findOne({ where: { id: params.runGuid } });
+    } else if (params.runId) {
+      run = await Run.scope(null).findOne({ where: { id: params.runId } });
     }
 
     // the run is not yet complete

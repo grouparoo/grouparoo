@@ -163,17 +163,17 @@ export default function Page(props) {
   };
 
   // const manualProperties = [];
-  const manualAppGuids = apps
+  const manualAppIds = apps
     .filter((app) => app.type === "manual")
     .map((app) => app.id);
-  const manualSourceGuids = sources
-    .filter((source) => manualAppGuids.includes(source.appId))
+  const manualSourceIds = sources
+    .filter((source) => manualAppIds.includes(source.appId))
     .map((source) => source.id);
   const manualProperties = properties
-    .filter((p) => manualSourceGuids.includes(p.sourceId))
+    .filter((p) => manualSourceIds.includes(p.sourceId))
     .map((p) => p.key);
 
-  const groupMembershipGuids = groups.map((g) => g.id);
+  const groupMembershipIds = groups.map((g) => g.id);
 
   const uniqueProfileProperties = [];
   let email: string;
@@ -403,7 +403,7 @@ export default function Page(props) {
                     {allGroups.map((group) => {
                       const disabled =
                         group.type !== "manual" ||
-                        groupMembershipGuids.includes(group.id);
+                        groupMembershipIds.includes(group.id);
                       return (
                         <option
                           disabled={disabled}

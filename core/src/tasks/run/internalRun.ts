@@ -17,7 +17,7 @@ export class RunInternalRun extends CLSTask {
     this.frequency = 0;
     this.queue = "runs";
     this.inputs = {
-      runGuid: { required: true },
+      runId: { required: true },
       limit: { required: false },
       offset: { required: false },
     };
@@ -70,7 +70,7 @@ export class RunInternalRun extends CLSTask {
       );
 
     const run = await Run.scope(null).findOne({
-      where: { id: params.runGuid },
+      where: { id: params.runId },
     });
 
     if (!run) return;
@@ -100,7 +100,7 @@ export class RunInternalRun extends CLSTask {
 
     if (profiles.length > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.id,
+        runId: run.id,
         offset: offset + limit,
         limit,
       });

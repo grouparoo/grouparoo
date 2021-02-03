@@ -254,7 +254,7 @@ export default function Page(props) {
                                 required
                                 type="radio"
                                 id={rule.id}
-                                name="remoteProfileRuleGuid"
+                                name="remoteProfileRuleId"
                                 disabled={loading}
                                 defaultChecked={
                                   Object.values(source.mapping)[0] === rule.key

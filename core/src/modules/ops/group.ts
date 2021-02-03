@@ -35,7 +35,7 @@ export namespace GroupOps {
 
     await CLS.enqueueTask("group:run", {
       groupId: group.id,
-      runGuid: run.id,
+      runId: run.id,
       force,
       destinationId,
     });
@@ -444,14 +444,14 @@ export namespace GroupOps {
       limit: limit,
     });
 
-    const groupGuids = newGroupMembers.map((mem) => mem.groupId);
+    const groupIds = newGroupMembers.map((mem) => mem.groupId);
 
     let groups = await Group.findAll();
     groups = groups
       .sort((a, b) => {
-        if (groupGuids.indexOf(a.id) < 0) return 1;
-        if (groupGuids.indexOf(b.id) < 0) return -1;
-        return groupGuids.indexOf(a.id) - groupGuids.indexOf(b.id);
+        if (groupIds.indexOf(a.id) < 0) return 1;
+        if (groupIds.indexOf(b.id) < 0) return -1;
+        return groupIds.indexOf(a.id) - groupIds.indexOf(b.id);
       })
       .slice(0, limit);
 

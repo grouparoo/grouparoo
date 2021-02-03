@@ -6,7 +6,7 @@ async function getLists(appId, appOptions, update = false) {
   const cacheKey = ["getLists", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs, read },
+    { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchLists(appOptions);
     }
@@ -36,7 +36,7 @@ async function getListId(appId, appOptions, groupName): Promise<string> {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", groupName, appOptions];
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       return ensureList(appId, appOptions, groupName);
     }

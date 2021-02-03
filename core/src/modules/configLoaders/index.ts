@@ -40,8 +40,8 @@ export function getConfigDir() {
 }
 
 export async function loadConfigDirectory(configDir: string) {
-  let seenGuids = {};
-  let deletedGuids = {};
+  let seenIds = {};
+  let deletedIds = {};
   let errors = [];
 
   const { configObjects, configFiles } = await loadConfigObjects(configDir);
@@ -49,15 +49,15 @@ export async function loadConfigDirectory(configDir: string) {
   if (configFiles.length > 0) {
     const sortedConfigObjects = sortConfigurationObject(configObjects);
     const response = await processConfigObjects(sortedConfigObjects, true);
-    seenGuids = response.seenGuids;
+    seenIds = response.seenIds;
     errors = response.errors;
 
     if (errors.length === 0) {
-      deletedGuids = await deleteLockedObjects(seenGuids);
+      deletedIds = await deleteLockedObjects(seenIds);
     }
   }
 
-  return { seenGuids, errors, deletedGuids };
+  return { seenIds, errors, deletedIds };
 }
 
 export async function loadConfigObjects(configDir: string) {
@@ -93,7 +93,7 @@ export async function processConfigObjects(
   externallyValidate: boolean,
   validate = false
 ) {
-  const seenGuids: idsByClass = {
+  const seenIds: idsByClass = {
     app: [],
     source: [],
     property: [],
@@ -126,7 +126,7 @@ export async function processConfigObjects(
         case "source":
           object = await loadSource(configObject, externallyValidate, validate);
           if (configObject.bootstrappedProperty) {
-            seenGuids["property"].push(
+            seenIds["property"].push(
               await validateAndFormatId(
                 Property,
                 configObject.bootstrappedProperty.id
@@ -183,14 +183,14 @@ export async function processConfigObjects(
       continue;
     }
 
-    if (klass !== "setting") seenGuids[klass].push(object.id);
+    if (klass !== "setting") seenIds[klass].push(object.id);
   }
 
-  return { seenGuids, errors };
+  return { seenIds, errors };
 }
 
-async function deleteLockedObjects(seenGuids) {
-  const deletedGuids: idsByClass = {
+async function deleteLockedObjects(seenIds) {
+  const deletedIds: idsByClass = {
     app: [],
     source: [],
     property: [],
@@ -202,24 +202,24 @@ async function deleteLockedObjects(seenGuids) {
     teammember: [],
   };
 
-  deletedGuids["teammember"] = await deleteTeamMembers(seenGuids.teammember);
-  deletedGuids["team"] = await deleteTeams(seenGuids.team);
-  deletedGuids["apikey"] = await deleteApiKeys(seenGuids.apikey);
-  deletedGuids["destination"] = await deleteDestinations(seenGuids.destination);
-  deletedGuids["schedule"] = await deleteSchedules(seenGuids.schedule);
-  deletedGuids["group"] = await deleteGroups(seenGuids.group);
-  deletedGuids["property"] = await deleteProperties(seenGuids.property);
+  deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);
+  deletedIds["team"] = await deleteTeams(seenIds.team);
+  deletedIds["apikey"] = await deleteApiKeys(seenIds.apikey);
+  deletedIds["destination"] = await deleteDestinations(seenIds.destination);
+  deletedIds["schedule"] = await deleteSchedules(seenIds.schedule);
+  deletedIds["group"] = await deleteGroups(seenIds.group);
+  deletedIds["property"] = await deleteProperties(seenIds.property);
   // might return a bootstrapped property, needs special processing
-  const deletedSourceGuids = await deleteSources(seenGuids.source);
-  deletedGuids["source"] = deletedSourceGuids.filter((g) => g.match(/^src_/));
-  deletedSourceGuids
+  const deletedSourceIds = await deleteSources(seenIds.source);
+  deletedIds["source"] = deletedSourceIds.filter((g) => g.match(/^src_/));
+  deletedSourceIds
     .filter((g) => g.match(/^rul_/))
-    .filter((g) => !deletedGuids["property"].includes(g))
-    .forEach((g) => deletedGuids["property"].push(g));
+    .filter((g) => !deletedIds["property"].includes(g))
+    .forEach((g) => deletedIds["property"].push(g));
   // back to normal
-  deletedGuids["app"] = await deleteApps(seenGuids.app);
+  deletedIds["app"] = await deleteApps(seenIds.app);
 
-  return deletedGuids;
+  return deletedIds;
 }
 
 export function logFatalError(message) {

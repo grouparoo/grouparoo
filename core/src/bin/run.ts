@@ -125,8 +125,8 @@ export class RunCLI extends CLI {
       });
 
       await CLS.enqueueTask("schedule:run", {
-        scheduleGuid: schedules[i].id,
-        runGuid: run.id,
+        scheduleId: schedules[i].id,
+        runId: run.id,
       });
     }
   }

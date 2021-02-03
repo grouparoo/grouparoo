@@ -251,7 +251,7 @@ describe("integration/runs/mailchimp-import", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].scheduleGuid).toBe(schedule.id);
+        expect(found[0].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
@@ -264,8 +264,8 @@ describe("integration/runs/mailchimp-import", () => {
         // maybe we should use specHelper.deleteEnqueuedTasks() from actionhero
         await helper.sleep();
         await specHelper.runTask("schedule:run", {
-          runGuid: run.id,
-          scheduleGuid: schedule.id,
+          runId: run.id,
+          scheduleId: schedule.id,
         });
 
         let queue;
@@ -366,7 +366,7 @@ describe("integration/runs/mailchimp-import", () => {
         let queue;
         queue = await specHelper.findEnqueuedTasks("schedule:run");
         expect(queue.length).toEqual(4);
-        expect(queue[1].args[0].scheduleGuid).toBe(schedule.id);
+        expect(queue[1].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
@@ -375,8 +375,8 @@ describe("integration/runs/mailchimp-import", () => {
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          runGuid: run.id,
-          scheduleGuid: schedule.id,
+          runId: run.id,
+          scheduleId: schedule.id,
         });
 
         // run the schedule task again to enqueue the determineState task

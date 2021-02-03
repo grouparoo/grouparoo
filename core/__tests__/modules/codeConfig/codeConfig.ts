@@ -30,11 +30,11 @@ describe("modules/codeConfig", () => {
       // manually run the initializer again after the server has started.
       // the test test-app plugin has been loaded
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
       );
       expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
+      expect(seenIds).toEqual({
         apikey: ["key_website_api_key"],
         app: ["app_data_warehouse", "app_events"],
         destination: ["dst_test_destination"],
@@ -50,7 +50,7 @@ describe("modules/codeConfig", () => {
         team: ["tea_admin_team"],
         teammember: ["tem_demo"],
       });
-      expect(deletedGuids).toEqual({
+      expect(deletedIds).toEqual({
         apikey: [],
         app: [],
         destination: [],
@@ -234,11 +234,11 @@ describe("modules/codeConfig", () => {
   describe("changed config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "changes")
       );
       expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
+      expect(seenIds).toEqual({
         apikey: ["key_website_api_key"],
         app: ["app_data_warehouse", "app_events"],
         destination: [],
@@ -254,7 +254,7 @@ describe("modules/codeConfig", () => {
         team: ["tea_admin_team"],
         teammember: ["tem_demo"],
       });
-      expect(deletedGuids).toEqual({
+      expect(deletedIds).toEqual({
         apikey: [],
         app: [],
         destination: ["dst_test_destination"],
@@ -373,7 +373,7 @@ describe("modules/codeConfig", () => {
   describe("partially empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(
           __dirname,
           "..",
@@ -384,7 +384,7 @@ describe("modules/codeConfig", () => {
         )
       );
       expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
+      expect(seenIds).toEqual({
         apikey: [],
         app: ["app_data_warehouse"],
         destination: [],
@@ -395,7 +395,7 @@ describe("modules/codeConfig", () => {
         team: [],
         teammember: [],
       });
-      expect(deletedGuids).toEqual({
+      expect(deletedIds).toEqual({
         apikey: ["key_website_api_key"],
         app: ["app_events"],
         destination: [],
@@ -440,11 +440,11 @@ describe("modules/codeConfig", () => {
   describe("empty config", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "empty")
       );
       expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
+      expect(seenIds).toEqual({
         apikey: [],
         app: [],
         destination: [],
@@ -455,7 +455,7 @@ describe("modules/codeConfig", () => {
         team: [],
         teammember: [],
       });
-      expect(deletedGuids).toEqual({
+      expect(deletedIds).toEqual({
         apikey: [],
         app: ["app_data_warehouse"],
         destination: [],

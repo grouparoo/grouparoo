@@ -24,7 +24,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   @AllowNull(false)
   @Column
   @ForeignKey(() => Team)
-  teamGuid: string;
+  teamId: string;
 
   @AllowNull(true)
   @Column
@@ -56,7 +56,7 @@ export class TeamMember extends LoggedModel<TeamMember> {
   async apiData() {
     return {
       id: this.id,
-      teamGuid: this.teamGuid,
+      teamId: this.teamId,
       firstName: this.firstName,
       lastName: this.lastName,
       email: this.email,

@@ -13,20 +13,20 @@ export class ExportSendBatches extends RetryableTask {
     this.queue = "exports";
     this.inputs = {
       destinationId: { required: true },
-      exportGuids: { required: true },
+      exportIds: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
     const destinationId: string = params.destinationId;
-    const exportGuids: string[] = params.exportGuids;
+    const exportIds: string[] = params.exportIds;
     const destination = await Destination.findById(params.destinationId);
 
     const _exports = await Export.findAll({
       where: {
         destinationId,
         completedAt: null, // be sure not to export twice
-        id: { [Op.in]: exportGuids },
+        id: { [Op.in]: exportIds },
       },
     });
 
@@ -38,12 +38,12 @@ export class ExportSendBatches extends RetryableTask {
       success,
       error,
       retryDelay,
-      retryExportGuids,
+      retryexportIds,
     } = await destination.sendExports(_exports);
 
     if (!success) {
       const app = await destination.$get("app");
-      if (retryExportGuids.length === _exports.length) {
+      if (retryexportIds.length === _exports.length) {
         // all failed!
         if (retryDelay) {
           return CLS.enqueueTaskIn(
@@ -62,7 +62,7 @@ export class ExportSendBatches extends RetryableTask {
         // RESILIENCE: maybe we should split this in half or something, down to 1
         const newParams = {
           destinationId: params.destinationId,
-          exportGuids: retryExportGuids,
+          exportIds: retryexportIds,
         };
         const strategy = this.pluginOptions?.Retry?.backoffStrategy;
         const backoff = strategy ? strategy[0] : undefined;

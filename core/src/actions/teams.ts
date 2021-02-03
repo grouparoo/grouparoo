@@ -36,7 +36,7 @@ export class TeamInitialize extends CLSAction {
     });
 
     teamMember = await TeamMember.create({
-      teamGuid: team.id,
+      teamId: team.id,
       email: params.email,
       firstName: params.firstName,
       lastName: params.lastName,

@@ -44,7 +44,7 @@ export class EventData extends Model {
   event: Event;
 
   @BeforeCreate
-  static generateGuid(instance: Event) {
+  static generateId(instance: Event) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }

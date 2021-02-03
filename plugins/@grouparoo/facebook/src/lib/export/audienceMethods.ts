@@ -18,7 +18,7 @@ export async function getAudienceId(
   const { appId, appOptions } = cacheData;
   const cacheKey: CacheKey = ["getListId", subtype, listName, appOptions];
   const listId = await objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let facebookId = await findAudienceByName(client, subtype, listName);

@@ -91,14 +91,14 @@ describe("integration/events", () => {
       expect(permission.write).toBe(false);
     });
 
-    const eventPermissionGuid = _apiKeyA.permissions.filter(
+    const eventPermissionId = _apiKeyA.permissions.filter(
       (permission) => permission.topic === "event"
     )[0].id;
 
     connection.params = {
       csrfToken,
       id: _apiKeyA.id,
-      permissions: [{ id: eventPermissionGuid, read: true, write: true }],
+      permissions: [{ id: eventPermissionId, read: true, write: true }],
     };
     const { apiKey: _apiKeyB, errorB } = await specHelper.runAction(
       "apiKey:edit",

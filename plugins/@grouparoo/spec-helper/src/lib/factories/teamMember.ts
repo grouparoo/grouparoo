@@ -21,6 +21,6 @@ export default async (team, props: { [key: string]: any } = {}) => {
   const { TeamMember } = await import(`@grouparoo/core/${loadPath}`);
   if (!team) team = await TeamFactory();
 
-  props.teamGuid = team.id;
+  props.teamId = team.id;
   return TeamMember.create(await data(props));
 };

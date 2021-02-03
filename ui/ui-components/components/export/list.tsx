@@ -150,7 +150,7 @@ export default function ExportsList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guids</th>
+            <th>Ids</th>
             <th>Times</th>
             <th>Profile Properties Exported</th>
             <th>Groups Exported</th>
@@ -162,7 +162,7 @@ export default function ExportsList(props) {
               <Fragment key={`export-${_export.id}`}>
                 <tr>
                   <td>
-                    <span>Guid</span>:{" "}
+                    <span>Id</span>:{" "}
                     <Link
                       href="/export/[id]/edit"
                       as={`/export/${_export.id}/edit`}

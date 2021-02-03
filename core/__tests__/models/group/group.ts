@@ -199,8 +199,8 @@ describe("models/group", () => {
             force: false,
           })
         );
-        expect(foundTasks[0].args[0].runGuid).toBeTruthy();
-        expect(foundTasks[0].args[0].runGuid).not.toEqual(run.id);
+        expect(foundTasks[0].args[0].runId).toBeTruthy();
+        expect(foundTasks[0].args[0].runId).not.toEqual(run.id);
       });
     });
   });

@@ -13,7 +13,7 @@ export type CacheKey =
 export interface ObjectCacheMethod {
   (
     argument: {
-      objectGuid: string;
+      objectId: string;
       cacheKey: CacheKey;
       cacheDurationMs?: number;
       lock?: boolean; // send false to no lock
@@ -26,7 +26,7 @@ export interface ObjectCacheMethod {
 }
 
 export interface ObjectCacheInvalidateMethod {
-  (argument: { objectGuid: string }): Promise<void>;
+  (argument: { objectId: string }): Promise<void>;
 }
 
 async function getCacheValue({
@@ -48,13 +48,13 @@ async function getCacheValue({
   }
 }
 
-function makeObjectKey({ objectGuid }) {
-  objectGuid = (objectGuid || "").toString().trim();
-  if (!objectGuid) {
-    throw new Error(`objectGuid required`);
+function makeObjectKey({ objectId }) {
+  objectId = (objectId || "").toString().trim();
+  if (!objectId) {
+    throw new Error(`objectId required`);
   }
 
-  return `objectcache:${objectGuid}`;
+  return `objectcache:${objectId}`;
 }
 
 function makeCacheString(cacheKey: CacheKey) {
@@ -87,8 +87,8 @@ function makeCacheString(cacheKey: CacheKey) {
   return cacheKey.toString();
 }
 
-export function makeBaseCacheKey({ objectGuid, cacheKey }): string {
-  const objectKey = makeObjectKey({ objectGuid });
+export function makeBaseCacheKey({ objectId, cacheKey }): string {
+  const objectKey = makeObjectKey({ objectId });
 
   const data = makeCacheString(cacheKey);
   if (!data) {
@@ -107,14 +107,14 @@ function useRedis() {
 }
 
 export const objectCacheInvalidate: ObjectCacheInvalidateMethod = async ({
-  objectGuid,
+  objectId,
 }) => {
   if (!useRedis()) {
     return;
   }
 
   const client = cache.client();
-  const objectKey = makeObjectKey({ objectGuid });
+  const objectKey = makeObjectKey({ objectId });
   const prefix = `${cache.redisPrefix}${objectKey}`;
   const keys = await client.keys(prefix + "*");
   const jobs = [];
@@ -126,7 +126,7 @@ export const objectCacheInvalidate: ObjectCacheInvalidateMethod = async ({
 
 export const objectCache: ObjectCacheMethod = async (
   {
-    objectGuid,
+    objectId,
     cacheKey,
     cacheDurationMs = 1000 * 60 * 1,
     lock = true,
@@ -146,7 +146,7 @@ export const objectCache: ObjectCacheMethod = async (
     lock = false;
   }
 
-  const baseKey = makeBaseCacheKey({ objectGuid, cacheKey });
+  const baseKey = makeBaseCacheKey({ objectId, cacheKey });
   const valueKey = `${baseKey}:value`;
   const lockKey = `${baseKey}:lock`;
 

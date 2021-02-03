@@ -221,7 +221,7 @@ export class Import extends Model {
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
+  static generateId(instance) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
@@ -234,7 +234,7 @@ export class Import extends Model {
         config.tasks.timeout + 1,
         "import:associateProfile",
         {
-          importGuid: instance.id,
+          importId: instance.id,
         }
       );
     }

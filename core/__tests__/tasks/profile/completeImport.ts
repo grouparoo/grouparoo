@@ -117,7 +117,7 @@ describe("tasks/profile:completeImport", () => {
       });
 
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.id,
+        importId: _import.id,
       });
 
       const profile = await Profile.findOne();

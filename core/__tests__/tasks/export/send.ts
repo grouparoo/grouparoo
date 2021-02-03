@@ -9,7 +9,7 @@ describe("tasks/export:send", () => {
   test("can be enqueued", async () => {
     await task.enqueue("export:send", {
       destinationId: "abc123",
-      exportGuid: "abc123",
+      exportId: "abc123",
     });
     const found = await specHelper.findEnqueuedTasks("export:send");
     expect(found.length).toEqual(1);

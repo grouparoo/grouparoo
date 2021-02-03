@@ -69,10 +69,10 @@ describe("tasks/profileProperties:enqueue", () => {
         });
 
         await specHelper.runTask("import:associateProfile", {
-          importGuid: marioImport.id,
+          importId: marioImport.id,
         });
         await specHelper.runTask("import:associateProfile", {
-          importGuid: luigiImport.id,
+          importId: luigiImport.id,
         });
 
         await specHelper.runTask("profileProperties:enqueue", {});
@@ -121,10 +121,10 @@ describe("tasks/profileProperties:enqueue", () => {
           });
 
           await specHelper.runTask("import:associateProfile", {
-            importGuid: marioImport.id,
+            importId: marioImport.id,
           });
           await specHelper.runTask("import:associateProfile", {
-            importGuid: luigiImport.id,
+            importId: luigiImport.id,
           });
 
           await specHelper.runTask("profileProperties:enqueue", {});
@@ -160,10 +160,10 @@ describe("tasks/profileProperties:enqueue", () => {
           });
 
           await specHelper.runTask("import:associateProfile", {
-            importGuid: marioImport.id,
+            importId: marioImport.id,
           });
           await specHelper.runTask("import:associateProfile", {
-            importGuid: luigiImport.id,
+            importId: luigiImport.id,
           });
 
           await specHelper.runTask("profileProperties:enqueue", {});

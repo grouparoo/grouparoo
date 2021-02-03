@@ -10,7 +10,7 @@ export class Console extends CLI {
   apiKey: ApiKey;
   categories: string[];
   baseUrl: string;
-  userIdGuid: string;
+  userIdId: string;
 
   constructor() {
     super();
@@ -20,7 +20,7 @@ export class Console extends CLI {
     this.apiKey = null;
     this.categories = null;
     this.baseUrl = null;
-    this.userIdGuid = null;
+    this.userIdId = null;
   }
 
   getBaseUrl() {
@@ -31,7 +31,7 @@ export class Console extends CLI {
     return baseUrl;
   }
 
-  async getUserIdGuid() {
+  async getUserIdId() {
     const eventApp = await App.findOne({ where: { type: "events" } });
     if (!eventApp || eventApp.state !== "ready") {
       throw new Error("your event app is not ready");
@@ -45,7 +45,7 @@ export class Console extends CLI {
   makeSession(i) {
     return new MockSession(`stream${i}`, this.apiKey, null, this.categories, {
       baseUrl: this.baseUrl,
-      userIdGuid: this.userIdGuid,
+      userIdId: this.userIdId,
     });
   }
 
@@ -53,7 +53,7 @@ export class Console extends CLI {
     this.apiKey = await getApiKey();
     this.categories = await getPurchaseCategories();
     this.baseUrl = this.getBaseUrl();
-    this.userIdGuid = await this.getUserIdGuid();
+    this.userIdId = await this.getUserIdId();
 
     const runner = this;
     const sessions = [];

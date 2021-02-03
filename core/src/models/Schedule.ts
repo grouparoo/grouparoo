@@ -177,7 +177,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
     await CLS.enqueueTask(
       "schedule:run",
-      { scheduleGuid: this.id, runGuid: run.id },
+      { scheduleId: this.id, runId: run.id },
       "schedules"
     );
   }

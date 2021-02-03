@@ -15,7 +15,7 @@ export class GroupDestroy extends CLSTask {
     this.queue = "groups";
     this.inputs = {
       groupId: { required: true },
-      runGuid: { required: false },
+      runId: { required: false },
       offset: { required: false },
       limit: { required: false },
     };
@@ -35,8 +35,8 @@ export class GroupDestroy extends CLSTask {
     if (!group) return; // the group may have been force-deleted
 
     let run: Run;
-    if (params.runGuid) {
-      run = await Run.findById(params.runGuid);
+    if (params.runId) {
+      run = await Run.findById(params.runId);
     } else {
       await group.stopPreviousRuns();
       run = await Run.create({
@@ -71,7 +71,7 @@ export class GroupDestroy extends CLSTask {
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.id,
+        runId: run.id,
         groupId: group.id,
         offset: offset + limit,
         limit,

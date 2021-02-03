@@ -33,7 +33,7 @@ export class Plugins extends Initializer {
         // load settings
         const clusterName = (await plugin.readSetting("core", "cluster-name"))
           .value;
-        const customerGuid = (
+        const customerId = (
           await plugin.readSetting("telemetry", "customer-id")
         ).value;
         const customerLicense = (
@@ -59,7 +59,7 @@ export class Plugins extends Initializer {
 
         return {
           name: clusterName,
-          id: customerGuid,
+          id: customerId,
           license: customerLicense,
           metrics: metrics,
         };

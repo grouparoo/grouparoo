@@ -20,7 +20,7 @@ describe("integration/happyPath", () => {
   let appId: string;
   let sourceId: string;
   let profileId: string;
-  let scheduleGuid: string;
+  let scheduleId: string;
   let connection;
   let csrfToken: string;
 
@@ -362,13 +362,13 @@ describe("integration/happyPath", () => {
       expect(error).toBeUndefined();
       expect(schedule.id).toBeTruthy();
 
-      scheduleGuid = schedule.id;
+      scheduleId = schedule.id;
     });
 
     test("a schedule can be made ready", async () => {
       connection.params = {
         csrfToken,
-        id: scheduleGuid,
+        id: scheduleId,
         state: "ready",
         options: { maxColumn: "updatedAt" },
       };
@@ -383,7 +383,7 @@ describe("integration/happyPath", () => {
     test("a run can be created", async () => {
       connection.params = {
         csrfToken,
-        id: scheduleGuid,
+        id: scheduleId,
       };
       const { error, success } = await specHelper.runAction(
         "schedule:run",
@@ -394,7 +394,7 @@ describe("integration/happyPath", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("schedule:run");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].scheduleGuid).toBe(scheduleGuid);
+      expect(foundTasks[0].args[0].scheduleId).toBe(scheduleId);
 
       // run the task
       await specHelper.runTask("schedule:run", foundTasks[0].args[0]);
@@ -403,7 +403,7 @@ describe("integration/happyPath", () => {
     test("the run was created", async () => {
       connection.params = {
         csrfToken,
-        id: scheduleGuid,
+        id: scheduleId,
       };
       const { error, runs } = await specHelper.runAction(
         "runs:list",
@@ -411,7 +411,7 @@ describe("integration/happyPath", () => {
       );
       expect(error).toBeUndefined();
       expect(runs.length).toBe(1);
-      expect(runs[0].creatorId).toBe(scheduleGuid);
+      expect(runs[0].creatorId).toBe(scheduleId);
       expect(runs[0].state).toBe("complete");
     });
   });

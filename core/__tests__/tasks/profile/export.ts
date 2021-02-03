@@ -210,7 +210,7 @@ describe("tasks/profile:export", () => {
         expect(importB.exportedAt).toBeTruthy();
       });
 
-      test("it will append destinationGuids from imports", async () => {
+      test("it will append destinationIds from imports", async () => {
         const run = await helper.factories.run();
         const _import = await helper.factories.import(run, {
           email: "bowser@example.com", // create a new profile, not in the group

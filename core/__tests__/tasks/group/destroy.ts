@@ -91,7 +91,7 @@ describe("tasks/group:destroy", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(1);
-      const run = await Run.findById(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runRemoveGroupMembers");

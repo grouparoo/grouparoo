@@ -9,7 +9,7 @@ describe("modules/cache", () => {
   beforeAll(async () => await helper.factories.properties());
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
 
-  const objectGuid = "xyz_" + uuid.v4();
+  const objectId = "xyz_" + uuid.v4();
 
   describe("caching", () => {
     function checkCaching(name, cacheKey) {
@@ -21,36 +21,33 @@ describe("modules/cache", () => {
       };
       test(`the method can will cache the value with ${name}`, async () => {
         let value;
-        value = await objectCache({ objectGuid, cacheKey }, meth3);
+        value = await objectCache({ objectId, cacheKey }, meth3);
         expect(value).toEqual(3);
 
-        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        value = await objectCache({ objectId, cacheKey }, meth4);
         expect(value).toEqual(3);
 
-        value = await objectCache({ objectGuid, cacheKey, read: false }, meth4);
+        value = await objectCache({ objectId, cacheKey, read: false }, meth4);
         expect(value).toEqual(4);
       });
 
       test(`the method can will not write the value if asked with ${name}`, async () => {
         let value;
-        value = await objectCache(
-          { objectGuid, cacheKey, write: false },
-          meth3
-        );
+        value = await objectCache({ objectId, cacheKey, write: false }, meth3);
         expect(value).toEqual(3);
 
-        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        value = await objectCache({ objectId, cacheKey }, meth4);
         expect(value).toEqual(4);
       });
 
       test(`the value can be cleared with ${name}`, async () => {
         let value;
-        value = await objectCache({ objectGuid, cacheKey }, meth3);
+        value = await objectCache({ objectId, cacheKey }, meth3);
         expect(value).toEqual(3);
 
-        await objectCacheInvalidate({ objectGuid });
+        await objectCacheInvalidate({ objectId });
 
-        value = await objectCache({ objectGuid, cacheKey }, meth4);
+        value = await objectCache({ objectId, cacheKey }, meth4);
         expect(value).toEqual(4);
       });
     }
@@ -83,8 +80,8 @@ describe("modules/cache", () => {
       const methodToGetValue = async () => {
         return callee();
       };
-      const first = objectCache({ objectGuid, cacheKey }, methodToGetValue);
-      const second = objectCache({ objectGuid, cacheKey }, methodToGetValue);
+      const first = objectCache({ objectId, cacheKey }, methodToGetValue);
+      const second = objectCache({ objectId, cacheKey }, methodToGetValue);
 
       const values = await Promise.all([first, second]);
       expect(values).toEqual([3, 3]);
@@ -97,12 +94,9 @@ describe("modules/cache", () => {
         return callee();
       };
       const lock = false;
-      const first = objectCache(
-        { objectGuid, cacheKey, lock },
-        methodToGetValue
-      );
+      const first = objectCache({ objectId, cacheKey, lock }, methodToGetValue);
       const second = objectCache(
-        { objectGuid, cacheKey, lock },
+        { objectId, cacheKey, lock },
         methodToGetValue
       );
 

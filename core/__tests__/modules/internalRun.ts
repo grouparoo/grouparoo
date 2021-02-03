@@ -21,7 +21,7 @@ describe("modules/internalRun", () => {
 
     const found = await specHelper.findEnqueuedTasks("run:internalRun");
     expect(found.length).toEqual(1);
-    expect(found[0].args[0].runGuid).toBe(runs[0].id);
+    expect(found[0].args[0].runId).toBe(runs[0].id);
   });
 
   test("adding a new internal run will stop other internal runs for the same creator type", async () => {

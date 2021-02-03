@@ -16,7 +16,7 @@ export class RunGroup extends CLSTask {
     this.queue = "groups";
     this.inputs = {
       groupId: { required: true },
-      runGuid: { required: true },
+      runId: { required: true },
       method: { required: false },
       offset: { required: false },
       highWaterMark: { required: false },
@@ -46,7 +46,7 @@ export class RunGroup extends CLSTask {
       );
 
     const group = await Group.findById(params.groupId);
-    const run = await Run.findById(params.runGuid);
+    const run = await Run.findById(params.runId);
 
     if (run.state === "stopped") return;
 
@@ -90,7 +90,7 @@ export class RunGroup extends CLSTask {
 
     if (groupMembersCount === 0 && method === "runAddGroupMembers") {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.id,
+        runId: run.id,
         groupId: group.id,
         method: "runRemoveGroupMembers",
         limit,
@@ -101,7 +101,7 @@ export class RunGroup extends CLSTask {
       });
     } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.id,
+        runId: run.id,
         groupId: group.id,
         method: "removePreviousRunGroupMembers",
         limit,
@@ -112,7 +112,7 @@ export class RunGroup extends CLSTask {
       });
     } else if (groupMembersCount > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.id,
+        runId: run.id,
         groupId: group.id,
         method,
         limit,

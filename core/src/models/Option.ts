@@ -65,7 +65,7 @@ export class Option extends LoggedModel<Option> {
   }
 
   @BeforeSave
-  static async ensureOneOwnerGuidPerKey(instance: Option) {
+  static async ensureOneownerIdPerKey(instance: Option) {
     const existing = await Option.scope(null).findOne({
       where: {
         id: { [Op.ne]: instance.id },

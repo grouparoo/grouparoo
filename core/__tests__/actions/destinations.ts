@@ -463,7 +463,7 @@ describe("actions/destinations", () => {
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
         const runs = await Run.scope(null).findAll();
         const runningRunTasks = foundTasks.filter((t) => {
-          const run = runs.filter((r) => r.id === t.args[0].runGuid)[0];
+          const run = runs.filter((r) => r.id === t.args[0].runId)[0];
           return run.state === "running";
         });
 

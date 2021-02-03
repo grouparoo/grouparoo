@@ -99,7 +99,7 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   @BeforeSave
-  static async ensureOneOwnerGuidPerTopic(instance: Permission) {
+  static async ensureOneownerIdPerTopic(instance: Permission) {
     const existing = await Permission.scope(null).findOne({
       where: {
         id: { [Op.ne]: instance.id },

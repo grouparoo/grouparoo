@@ -101,7 +101,7 @@ const getKnownAttributes = async (
   const cacheKey = ["getKnownAttributes", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs, read },
+    { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchKnownAttributes(client);
     }

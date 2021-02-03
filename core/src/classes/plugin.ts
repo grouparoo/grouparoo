@@ -95,7 +95,7 @@ export interface ProfilesPluginMethod {
   (argument: {
     connection: any;
     schedule: Schedule;
-    scheduleGuid: string;
+    scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
     app: App;
     appId: string;
@@ -106,7 +106,7 @@ export interface ProfilesPluginMethod {
     sourceMapping: SourceMapping;
     properties: Property[];
     run: Run;
-    runGuid: string;
+    runId: string;
     limit: number;
     highWaterMark: HighWaterMark;
     sourceOffset: number | string;
@@ -207,7 +207,7 @@ export interface ExportProfilePluginMethod {
 /**
  * Method to export many profiles to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
- * Errors is an Array of Error objects with an additional `exportGuid` property so we can link the error to the specific export that caused the error.
+ * Errors is an Array of Error objects with an additional `exportId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the batch, just throw a single error.
  */
 export interface ExportProfilesPluginMethod {
@@ -376,11 +376,11 @@ export interface SourceRunPercentCompleteMethod {
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SourceMapping;
     schedule: Schedule;
-    scheduleGuid: string;
+    scheduleId: string;
     scheduleOptions: SimpleScheduleOptions;
     highWaterMark: HighWaterMark;
     run: Run;
-    runGuid: string;
+    runId: string;
   }): Promise<number>;
 }
 

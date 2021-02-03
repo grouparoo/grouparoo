@@ -27,7 +27,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [newRuleLoading, setNewRuleLoading] = useState(false);
   const [examples, setExamples] = useState(props.examples);
-  const [newRuleSourceGuid, setNewRuleSourceGuid] = useState(
+  const [newRuleSourceId, setNewRuleSourceId] = useState(
     props.sources[0]?.id || ""
   );
   const [properties, setProperties] = useState<Models.PropertyType[]>(
@@ -85,7 +85,7 @@ export default function Page(props) {
       "post",
       `/property`,
       {
-        sourceId: newRuleSourceGuid,
+        sourceId: newRuleSourceId,
         type: "string",
       }
     );
@@ -220,10 +220,10 @@ export default function Page(props) {
               <Form.Control
                 as="select"
                 size="sm"
-                value={newRuleSourceGuid}
+                value={newRuleSourceId}
                 disabled={loading}
                 onChange={(e) => {
-                  setNewRuleSourceGuid(e.target.value);
+                  setNewRuleSourceId(e.target.value);
                 }}
               >
                 {sources.map((source) => (

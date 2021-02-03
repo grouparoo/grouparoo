@@ -221,7 +221,7 @@ describe("session", () => {
         }
 
         toad = new TeamMember({
-          teamGuid: team.id,
+          teamId: team.id,
           firstName: "Toad",
           lastName: "Toadstool",
           email: "toad@example.com",

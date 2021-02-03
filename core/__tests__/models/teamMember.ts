@@ -12,7 +12,7 @@ describe("models/teamMember", () => {
 
   test("a team member can be added to a team", async () => {
     const teamMember = new TeamMember({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Mario",
       lastName: "Mario",
       email: "mario@example.com",
@@ -27,7 +27,7 @@ describe("models/teamMember", () => {
 
   test("team members have unique email addresses", async () => {
     const teamMember = new TeamMember({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Mario",
       lastName: "Mario",
       email: "mario@example.com",
@@ -38,7 +38,7 @@ describe("models/teamMember", () => {
 
   test("emails will be stored in lowercase", async () => {
     const teamMember = await TeamMember.create({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Toad",
       lastName: "Toadstool",
       email: "TOAD@example.com",
@@ -52,7 +52,7 @@ describe("models/teamMember", () => {
     await Log.truncate();
 
     const teamMember = await TeamMember.create({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Luigi",
       lastName: "Mario",
       email: "luigi@example.com",
@@ -95,7 +95,7 @@ describe("models/teamMember", () => {
 
   test("deleting a team member creates a log entry", async () => {
     const teamMember = await TeamMember.create({
-      teamGuid: team.id,
+      teamId: team.id,
       firstName: "Bye",
       lastName: "Person",
       email: "person@example.com",

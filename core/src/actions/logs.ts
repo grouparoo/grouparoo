@@ -37,16 +37,16 @@ export class LogsList extends AuthenticatedAction {
     if (params.topic) search.where["topic"] = params.topic;
     if (params.verb) search.where["verb"] = params.verb;
     if (params.ownerId) {
-      const ownerGuids = [params.ownerId];
+      const ownerIds = [params.ownerId];
 
       if (params.ownerId.match(/^pro_/)) {
         const profileProperties = await ProfileProperty.findAll({
           where: { profileId: params.ownerId },
         });
-        profileProperties.forEach((prop) => ownerGuids.push(prop.id));
+        profileProperties.forEach((prop) => ownerIds.push(prop.id));
       }
 
-      search.where["ownerId"] = { [Op.in]: ownerGuids };
+      search.where["ownerId"] = { [Op.in]: ownerIds };
     }
 
     const total = await Log.count(search);

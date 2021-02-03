@@ -58,18 +58,14 @@ export async function getParentByName(model: any, parentId: string) {
 export async function validateAndFormatId(model: any, id: string) {
   if (!id) throw new Error("id is required");
 
-  const idPrefix: string = new model().idPrefix();
-  if (id.indexOf(`${idPrefix}_`) !== 0) id = `${idPrefix}_${id}`;
-
   let failing = false;
   if (id.match(/\s/)) failing = true;
-  if (id.match(/[A-Z]/)) failing = true;
-  if (id.match(/-/)) failing = true;
+  if (id.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)) failing = true;
   if (id.length > 40) failing = true;
 
   if (failing) {
     throw new Error(
-      `invalid id: \`${id}\` - ids must be less than 40 characters and only contain lower-case letters, numbers, and underscores`
+      `invalid id: \`${id}\` - ids must be less than 40 characters and not contain spaces or special characters`
     );
   }
 
@@ -93,8 +89,6 @@ export function validateConfigObjectKeys(
       if (k === "id") {
         idFound = true;
         return "id";
-      } else if (k.match(/.+Id$/)) {
-        return k.replace(/Id$/, "id");
       } else {
         return k;
       }
@@ -189,7 +183,7 @@ export function getParentIds(configObject: ConfigurationObject) {
       for (const i in containerKeys) {
         if (containerKeys[i].match(/.+Id$/)) {
           prerequisiteIds.push(configObject[_container][containerKeys[i]]);
-        } else if (containerKeys[i].match(/.+Guid$/)) {
+        } else if (containerKeys[i].match(/.+Id$/)) {
           prerequisiteIds.push(
             configObject[_container][containerKeys[i]].replace(/^.{3}_/, "")
           );

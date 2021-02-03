@@ -566,7 +566,7 @@ async function getValueLock(
   }
 
   const cacheKey = ["getValueLock", propertyName, value];
-  const lockKey = makeBaseCacheKey({ objectGuid: appId, cacheKey });
+  const lockKey = makeBaseCacheKey({ objectId: appId, cacheKey });
   const client = api.redis.clients.client;
 
   const set = await client.setnx(lockKey, expireAt);

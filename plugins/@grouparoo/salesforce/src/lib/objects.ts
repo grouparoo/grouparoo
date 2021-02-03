@@ -14,7 +14,7 @@ export async function describeObject(
   const cacheKey = ["describeObject", objectName, appOptions];
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   return objectCache(
-    { objectGuid: appId, cacheKey, cacheDurationMs, passthru },
+    { objectId: appId, cacheKey, cacheDurationMs, passthru },
     async () => {
       return conn.sobject(objectName).describe();
     }

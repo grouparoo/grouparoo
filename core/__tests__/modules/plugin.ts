@@ -185,7 +185,7 @@ describe("modules/plugin", () => {
         });
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Guid is: {{previousRun.id}}";
+          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -193,7 +193,7 @@ describe("modules/plugin", () => {
 
         expect(replacedString).toContain("where updatedAt >= '2019-12-03 ");
         expect(replacedString).toContain(
-          `# The Previous Run Guid is: ${previousRun.id}`
+          `# The Previous Run Id is: ${previousRun.id}`
         );
       });
 
@@ -202,7 +202,7 @@ describe("modules/plugin", () => {
         const schedule = await helper.factories.schedule();
 
         const initialString =
-          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Guid is: {{previousRun.id}}";
+          "select * from \"users\" where updatedAt >= '{{previousRun.createdAt.sql}}'; # The Previous Run Id is: {{previousRun.id}}";
         const replacedString = await plugin.replaceTemplateRunVariables(
           initialString,
           run
@@ -211,7 +211,7 @@ describe("modules/plugin", () => {
         expect(replacedString).toContain(
           "where updatedAt >= '1970-01-01 00:00:00'"
         );
-        expect(replacedString).toContain(`# The Previous Run Guid is: `);
+        expect(replacedString).toContain(`# The Previous Run Id is: `);
       });
 
       test("it throws an error if a template variable is missing", async () => {
@@ -265,16 +265,16 @@ describe("modules/plugin", () => {
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";
-        const replacedWithGuid = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+        const replacedWithId = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
           initialString
         );
-        expect(replacedWithGuid).toEqual(
+        expect(replacedWithId).toEqual(
           `select * from users where id = {{ ${property.id} }}`
         );
 
         expect(
           await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
-            replacedWithGuid
+            replacedWithId
           )
         ).toEqual(initialString);
       });
@@ -308,7 +308,7 @@ describe("modules/plugin", () => {
         );
 
         expect(tasks.length).toBe(1);
-        expect(tasks[0].args[0].importGuid).toBe(_import.id);
+        expect(tasks[0].args[0].importId).toBe(_import.id);
       });
     });
   });

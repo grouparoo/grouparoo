@@ -13,7 +13,7 @@ describe("modules/groupExport", () => {
 
   describe("groupExport", () => {
     let filename: string;
-    let runGuid: string;
+    let runId: string;
     let mario: Profile;
     let luigi: Profile;
     let peach: Profile;
@@ -76,13 +76,13 @@ describe("modules/groupExport", () => {
 
         const response = await groupExportToCSV(group, 1);
         filename = response.filename;
-        runGuid = response.runGuid;
+        runId = response.runId;
       },
       helper.longTime
     );
 
     test("the run is complete", async () => {
-      const run = await Run.findOne({ where: { id: runGuid } });
+      const run = await Run.findOne({ where: { id: runId } });
       expect(run.state).toBe("complete");
       expect(run.completedAt).toBeTruthy();
     });

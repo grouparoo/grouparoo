@@ -45,12 +45,12 @@ export namespace DestinationOps {
    * Track a Group
    */
   export async function trackGroup(destination: Destination, group: Group) {
-    const oldGroupGuid = destination.groupId;
+    const oldGroupId = destination.groupId;
     await destination.update({ groupId: group.id });
 
-    if (oldGroupGuid !== group.id) {
-      if (oldGroupGuid) {
-        const oldGroup = await Group.findById(oldGroupGuid);
+    if (oldGroupId !== group.id) {
+      if (oldGroupId) {
+        const oldGroup = await Group.findById(oldGroupId);
         await oldGroup.run(true, destination.id);
       }
       return group.run(true, destination.id);
@@ -61,11 +61,11 @@ export namespace DestinationOps {
    * Un-track a Group
    */
   export async function unTrackGroup(destination: Destination) {
-    const oldGroupGuid = destination.groupId;
+    const oldGroupId = destination.groupId;
     await destination.update({ groupId: null });
 
-    if (oldGroupGuid) {
-      const oldGroup = await Group.findById(oldGroupGuid);
+    if (oldGroupId) {
+      const oldGroup = await Group.findById(oldGroupId);
       return oldGroup.run(true, destination.id);
     }
   }
@@ -497,7 +497,7 @@ export namespace DestinationOps {
     synchronous = false
   ): Promise<{
     retryDelay: number;
-    retryExportGuids: string[];
+    retryexportIds: string[];
     success: boolean;
     error: Error;
   }> {
@@ -532,7 +532,7 @@ export namespace DestinationOps {
         success: false,
         error,
         retryDelay: config.tasks.timeout + 1,
-        retryExportGuids: _exports.map((e) => e.id),
+        retryexportIds: _exports.map((e) => e.id),
       };
     }
 
@@ -581,7 +581,7 @@ export namespace DestinationOps {
       return {
         success: true,
         error: undefined,
-        retryExportGuids: undefined,
+        retryexportIds: undefined,
         retryDelay: undefined,
       };
     }
@@ -589,10 +589,10 @@ export namespace DestinationOps {
     // problem!
     if (!combinedError.errors || combinedError.errors.length === 0) {
       // unspecified error, so don't know specific profile with issue.
-      const retryExportGuids: string[] = [];
+      const retryexportIds: string[] = [];
       for (const _export of _exports) {
         await _export.setError(combinedError);
-        retryExportGuids.push(_export.id);
+        retryexportIds.push(_export.id);
       }
       if (synchronous) {
         // caller wants to raise
@@ -601,37 +601,37 @@ export namespace DestinationOps {
       return {
         success: false,
         error: combinedError,
-        retryExportGuids,
+        retryexportIds,
         retryDelay: outRetryDelay,
       };
     }
 
     // known specific profiles where there were errors
     const profilesWithErrors: { [id: string]: ErrorWithProfileId } = {};
-    for (const errorWithGuid of combinedError.errors) {
-      const profileId = errorWithGuid.profileId;
+    for (const errorWithId of combinedError.errors) {
+      const profileId = errorWithId.profileId;
       if (!profileId) {
         throw new Error(
           `Errors returned without profileId - throw if unknown (${destination.id})`
         );
       }
-      profilesWithErrors[profileId] = errorWithGuid;
+      profilesWithErrors[profileId] = errorWithId;
     }
 
     const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
 
-    const retryExportGuids: string[] = [];
+    const retryexportIds: string[] = [];
     for (const _export of _exports) {
       const { profileId } = _export;
-      const errorWithGuid = profilesWithErrors[profileId];
-      if (errorWithGuid) {
-        await _export.setError(errorWithGuid);
+      const errorWithId = profilesWithErrors[profileId];
+      if (errorWithId) {
+        await _export.setError(errorWithId);
         delete remainingProfilesWithErrors[profileId]; // used
 
         // "info" means that it's actually ok. for example, skipped.
         // we don't need to retry it.
         if (_export.errorLevel != "info") {
-          retryExportGuids.push(_export.id);
+          retryexportIds.push(_export.id);
         }
       } else {
         // this one was a success!
@@ -649,11 +649,11 @@ export namespace DestinationOps {
     }
 
     // because of the "info" errorLevel, it's actually possible that everything is ok again
-    if (retryExportGuids.length === 0) {
+    if (retryexportIds.length === 0) {
       return {
         success: true,
         error: undefined,
-        retryExportGuids: undefined,
+        retryexportIds: undefined,
         retryDelay: undefined,
       };
     }
@@ -665,7 +665,7 @@ export namespace DestinationOps {
     return {
       success: false,
       error: combinedError,
-      retryExportGuids,
+      retryexportIds,
       retryDelay: outRetryDelay,
     };
   }

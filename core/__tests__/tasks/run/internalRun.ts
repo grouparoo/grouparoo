@@ -16,11 +16,11 @@ describe("tasks/run:internalRun", () => {
     });
 
     test("the task will create an import for every profile", async () => {
-      await internalRun("test", "testGuid");
+      await internalRun("test", "testId");
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
-      const run = await Run.findById(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
 
       await run.reload();
@@ -44,7 +44,7 @@ describe("tasks/run:internalRun", () => {
 
       await run.stop();
 
-      await task.enqueue("run:internalRun", { runGuid: run.id });
+      await task.enqueue("run:internalRun", { runId: run.id });
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);

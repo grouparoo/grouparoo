@@ -152,7 +152,7 @@ export default function RunsList(props) {
       <LoadingTable loading={loading}>
         <thead>
           <tr>
-            <th>Guid</th>
+            <th>Id</th>
             <th>Times</th>
             <th>Creator</th>
             <th>State</th>
@@ -166,7 +166,7 @@ export default function RunsList(props) {
               <Fragment key={`profile-${run.id}`}>
                 <tr>
                   <td>
-                    Guid:{" "}
+                    id:{" "}
                     <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
                       <a>{run.id}</a>
                     </Link>

@@ -88,7 +88,7 @@ export default function ProfilePreview(props) {
   }
 
   function chooseProfileProperty() {
-    const _profileId = prompt("Enter Profile Guid", profileId);
+    const _profileId = prompt("Enter Profile Id", profileId);
     if (_profileId) {
       storeProfilePropertyId(_profileId);
       load(_profileId, 1);
