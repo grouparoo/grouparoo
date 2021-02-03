@@ -8,7 +8,9 @@
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
