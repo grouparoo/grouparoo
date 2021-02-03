@@ -111,7 +111,11 @@ export async function loadSource(
 }
 
 export async function deleteSources(ids: string[]) {
-  const deletedIds: string[] = [];
+  const deletedIds: { property: string[]; source: string[] } = {
+    property: [],
+    source: [],
+  };
+
   const sources = await Source.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
@@ -129,14 +133,15 @@ export async function deleteSources(ids: string[]) {
         await Property.destroyOptions(property);
         await Property.destroyPropertyFilters(property);
         await Property.destroyProfileProperties(property);
-        deletedIds.push(property.id);
+        logModel(property, "deleted");
+        deletedIds.property.push(property.id);
       }
     }
 
     await source.destroy();
     logModel(source, "deleted");
+    deletedIds.source.push(source.id);
   }
 
-  sources.map((instance) => deletedIds.push(instance.id));
   return deletedIds;
 }

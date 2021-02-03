@@ -6,6 +6,7 @@ import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
+  deleteLockedObjects,
 } from "../modules/configLoaders";
 
 export class Validate extends CLI {
@@ -36,12 +37,14 @@ export class Validate extends CLI {
     log(`applying ${configObjects.length} objects...`);
 
     await CLS.wrap(async () => {
-      const { errors } = await processConfigObjects(
+      const { errors, seenIds } = await processConfigObjects(
         configObjects,
         !params.local
       );
 
       if (errors.length > 0) throw errors;
+
+      await deleteLockedObjects(seenIds);
 
       log(
         `✅ Config applied - ${configObjects.length} config objects up-to-date!`

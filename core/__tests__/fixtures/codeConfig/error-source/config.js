@@ -9,7 +9,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "data_warehouse", // id -> `app_data_warehouse`
+      id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
@@ -19,11 +19,11 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "users_table", // id -> `src_data_warehouse`
+      id: "users_table", // id -> `data_warehouse`
       name: "Users Table",
       class: "Source",
       type: "test-plugin-import",
-      appId: "data_warehouse", // appId -> `app_data_warehouse`
+      appId: "data_warehouse", // appId -> `data_warehouse`
       options: {
         table: "users",
       },

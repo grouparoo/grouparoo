@@ -40,8 +40,8 @@ Object {
   "errorLevel": undefined,
   "errorMessage": undefined,
   "force": true,
-  "id": null,
   "hasChanges": true,
+  "id": null,
   "mostRecent": false,
   "newGroups": Array [
     "remote_group_name",
@@ -112,8 +112,8 @@ Object {
       "errorLevel": undefined,
       "errorMessage": undefined,
       "force": true,
-      "id": null,
       "hasChanges": true,
+      "id": null,
       "mostRecent": false,
       "newGroups": Array [
         "remote_group_name",

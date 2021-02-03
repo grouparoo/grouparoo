@@ -9,7 +9,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "data_warehouse", // id -> `app_data_warehouse`
+      id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",
@@ -19,11 +19,11 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "users_table", // id -> `src_data_warehouse`
+      id: "users_table", // id -> `data_warehouse`
       name: "Users Table",
       class: "Source",
       type: "test-plugin-import",
-      appId: "data_warehouse", // appId -> `app_data_warehouse`
+      appId: "data_warehouse", // appId -> `data_warehouse`
       options: {
         table: "users",
       },
@@ -33,7 +33,7 @@ module.exports = async function getConfig() {
       bootstrappedProperty: {
         name: "userId",
         type: "integer",
-        id: "user_id", // id -> `rul_user_id`
+        id: "user_id", // id -> `user_id`
         options: {
           column: "id",
         },
@@ -41,13 +41,13 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "email", // id -> `rul_email`
+      id: "email", // id -> `email`
       name: "email",
       class: "Property",
       type: "email",
       unique: true,
       isArray: false,
-      sourceId: "users_table", // sourceId -> `src_users_table`
+      sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "email",
       },

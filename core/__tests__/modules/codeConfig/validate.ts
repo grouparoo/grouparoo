@@ -76,20 +76,15 @@ describe("modules/codeConfig", () => {
 
           expect(errors).toEqual([]);
           expect(seenIds).toEqual({
-            apikey: ["key_website_api_key"],
-            app: ["app_data_warehouse", "app_events"],
-            destination: ["dst_test_destination"],
-            group: ["grp_email_group"],
-            property: [
-              "rul_user_id",
-              "rul_last_name",
-              "rul_first_name",
-              "rul_email",
-            ],
-            schedule: ["sch_users_table_schedule"],
-            source: ["src_users_table"],
-            team: ["tea_admin_team"],
-            teammember: ["tem_demo"],
+            apikey: ["website_key"],
+            app: ["data_warehouse", "events"],
+            destination: ["test_destination"],
+            group: ["email_group"],
+            property: ["user_id", "last_name", "first_name", "email"],
+            schedule: ["users_table_schedule"],
+            source: ["users_table"],
+            team: ["admin_team"],
+            teammember: ["demo"],
           });
 
           throw new Error("test-rollback");
@@ -122,7 +117,7 @@ describe("modules/codeConfig", () => {
 
           expect(errors.length).toBe(1);
           expect(errors[0]).toMatch(
-            /Error: cannot find Property rul_missing_profile_property/
+            /Error: cannot find Property missing_profile_property/
           );
           expect(errors[0]).toMatch(/error with Group/);
 
@@ -156,7 +151,7 @@ describe("modules/codeConfig", () => {
 
           expect(errors.length).toBe(1);
           expect(errors[0]).toMatch(
-            /Error: cannot find Property rul_missing_profile_property/
+            /Error: cannot find Property missing_profile_property/
           );
 
           throw new Error("test-rollback");

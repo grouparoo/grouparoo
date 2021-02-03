@@ -35,20 +35,15 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
-        apikey: ["key_website_api_key"],
-        app: ["app_data_warehouse", "app_events"],
-        destination: ["dst_test_destination"],
-        group: ["grp_email_group"],
-        property: [
-          "rul_user_id",
-          "rul_last_name",
-          "rul_first_name",
-          "rul_email",
-        ],
-        schedule: ["sch_users_table_schedule"],
-        source: ["src_users_table"],
-        team: ["tea_admin_team"],
-        teammember: ["tem_demo"],
+        apikey: ["website_key"],
+        app: ["data_warehouse", "events"],
+        destination: ["test_destination"],
+        group: ["email_group"],
+        property: ["user_id", "last_name", "first_name", "email"],
+        schedule: ["users_table_schedule"],
+        source: ["users_table"],
+        team: ["admin_team"],
+        teammember: ["demo"],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -75,16 +70,16 @@ describe("modules/codeConfig", () => {
       });
       expect(apps.length).toBe(2);
 
-      expect(apps[0].id).toBe("app_events");
+      expect(apps[0].id).toBe("events");
       expect(apps[0].name).toBe("Grouparoo Events");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
       let options = await apps[0].getOptions();
       expect(options).toEqual({
-        identifyingPropertyId: "rul_user_id",
+        identifyingPropertyId: "user_id",
       });
 
-      expect(apps[1].id).toBe("app_data_warehouse");
+      expect(apps[1].id).toBe("data_warehouse");
       expect(apps[1].name).toBe("Data Warehouse");
       expect(apps[1].state).toBe("ready");
       expect(apps[1].locked).toBe("config:code");
@@ -95,8 +90,8 @@ describe("modules/codeConfig", () => {
     test("sources are created", async () => {
       const sources = await Source.findAll();
       expect(sources.length).toBe(1);
-      expect(sources[0].id).toBe("src_users_table");
-      expect(sources[0].appId).toBe("app_data_warehouse");
+      expect(sources[0].id).toBe("users_table");
+      expect(sources[0].appId).toBe("data_warehouse");
       expect(sources[0].name).toBe("Users Table");
       expect(sources[0].state).toBe("ready");
       expect(sources[0].locked).toBe("config:code");
@@ -108,7 +103,7 @@ describe("modules/codeConfig", () => {
       const property = await Property.findOne({
         where: { directlyMapped: true },
       });
-      expect(property.id).toBe("rul_user_id");
+      expect(property.id).toBe("user_id");
       expect(property.key).toBe("userId");
       expect(property.type).toBe("integer");
       expect(property.unique).toBe(true);
@@ -120,8 +115,8 @@ describe("modules/codeConfig", () => {
     test("schedules are created", async () => {
       const schedules = await Schedule.findAll();
       expect(schedules.length).toBe(1);
-      expect(schedules[0].id).toBe("sch_users_table_schedule");
-      expect(schedules[0].sourceId).toBe("src_users_table");
+      expect(schedules[0].id).toBe("users_table_schedule");
+      expect(schedules[0].sourceId).toBe("users_table");
       expect(schedules[0].name).toBe("Users Table Schedule");
       expect(schedules[0].state).toBe("ready");
       expect(schedules[0].recurring).toBe(true);
@@ -139,10 +134,10 @@ describe("modules/codeConfig", () => {
         "userId",
       ]);
       expect(rules.map((r) => r.sourceId).sort()).toEqual([
-        "src_users_table",
-        "src_users_table",
-        "src_users_table",
-        "src_users_table",
+        "users_table",
+        "users_table",
+        "users_table",
+        "users_table",
       ]);
       expect(rules.map((r) => r.state).sort()).toEqual([
         "ready",
@@ -161,7 +156,7 @@ describe("modules/codeConfig", () => {
     test("groups are created", async () => {
       const groups = await Group.findAll();
       expect(groups.length).toBe(1);
-      expect(groups[0].id).toBe("grp_email_group");
+      expect(groups[0].id).toBe("email_group");
       expect(groups[0].name).toBe("People with Email Addresses");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
@@ -192,8 +187,8 @@ describe("modules/codeConfig", () => {
     test("destinations are created", async () => {
       const destinations = await Destination.findAll();
       expect(destinations.length).toBe(1);
-      expect(destinations[0].id).toBe("dst_test_destination");
-      expect(destinations[0].appId).toBe("app_data_warehouse");
+      expect(destinations[0].id).toBe("test_destination");
+      expect(destinations[0].appId).toBe("data_warehouse");
       expect(destinations[0].name).toBe("Test Destination");
       expect(destinations[0].state).toBe("ready");
       expect(destinations[0].locked).toBe("config:code");
@@ -204,7 +199,7 @@ describe("modules/codeConfig", () => {
     test("apiKeys are created", async () => {
       const apiKeys = await ApiKey.findAll();
       expect(apiKeys.length).toBe(1);
-      expect(apiKeys[0].id).toBe("key_website_api_key");
+      expect(apiKeys[0].id).toBe("website_key");
       expect(apiKeys[0].name).toBe("web-api-key");
       expect(apiKeys[0].locked).toBe("config:code");
       expect(apiKeys[0].permissionAllRead).toBe(true);
@@ -214,7 +209,7 @@ describe("modules/codeConfig", () => {
     test("teams are created", async () => {
       const teams = await Team.findAll();
       expect(teams.length).toBe(1);
-      expect(teams[0].id).toBe("tea_admin_team");
+      expect(teams[0].id).toBe("admin_team");
       expect(teams[0].name).toBe("Admin Team");
       expect(teams[0].locked).toBe("config:code");
       expect(teams[0].permissionAllRead).toBe(true);
@@ -239,25 +234,20 @@ describe("modules/codeConfig", () => {
       );
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
-        apikey: ["key_website_api_key"],
-        app: ["app_data_warehouse", "app_events"],
+        apikey: ["website_key"],
+        app: ["data_warehouse", "events"],
         destination: [],
-        group: ["grp_email_group"],
-        property: [
-          "rul_user_id",
-          "rul_last_name",
-          "rul_first_name",
-          "rul_email",
-        ],
-        schedule: ["sch_users_table_schedule"],
-        source: ["src_users_table"],
-        team: ["tea_admin_team"],
-        teammember: ["tem_demo"],
+        group: ["email_group"],
+        property: ["user_id", "last_name", "first_name", "email"],
+        schedule: ["users_table_schedule"],
+        source: ["users_table"],
+        team: ["admin_team"],
+        teammember: ["demo"],
       });
       expect(deletedIds).toEqual({
         apikey: [],
         app: [],
-        destination: ["dst_test_destination"],
+        destination: ["test_destination"],
         group: [],
         property: [],
         schedule: [],
@@ -277,7 +267,7 @@ describe("modules/codeConfig", () => {
         where: { type: { [Op.ne]: "events" } },
       });
       expect(apps.length).toBe(1);
-      expect(apps[0].id).toBe("app_data_warehouse");
+      expect(apps[0].id).toBe("data_warehouse");
       expect(apps[0].name).toBe("Data Warehouse");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
@@ -295,10 +285,10 @@ describe("modules/codeConfig", () => {
         "userId",
       ]);
       expect(rules.map((r) => r.sourceId).sort()).toEqual([
-        "src_users_table",
-        "src_users_table",
-        "src_users_table",
-        "src_users_table",
+        "users_table",
+        "users_table",
+        "users_table",
+        "users_table",
       ]);
       expect(rules.map((r) => r.state).sort()).toEqual([
         "ready",
@@ -317,7 +307,7 @@ describe("modules/codeConfig", () => {
     test("groups can have changed names and rules", async () => {
       const groups = await Group.findAll();
       expect(groups.length).toBe(1);
-      expect(groups[0].id).toBe("grp_email_group");
+      expect(groups[0].id).toBe("email_group");
       expect(groups[0].name).toBe("People who have Email Addresses");
       expect(groups[0].locked).toBe("config:code");
       const rules = await groups[0].getRules();
@@ -353,7 +343,7 @@ describe("modules/codeConfig", () => {
     test("changes to team permissions will be updated", async () => {
       const teams = await Team.findAll();
       expect(teams.length).toBe(1);
-      expect(teams[0].id).toBe("tea_admin_team");
+      expect(teams[0].id).toBe("admin_team");
       expect(teams[0].name).toBe("Admin Team (no write)");
       expect(teams[0].locked).toBe("config:code");
       expect(teams[0].permissionAllRead).toBe(true);
@@ -386,25 +376,25 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: [],
-        app: ["app_data_warehouse"],
+        app: ["data_warehouse"],
         destination: [],
         group: [],
-        property: ["rul_user_id", "rul_email"],
+        property: ["user_id", "email"],
         schedule: [],
-        source: ["src_users_table"],
+        source: ["users_table"],
         team: [],
         teammember: [],
       });
       expect(deletedIds).toEqual({
-        apikey: ["key_website_api_key"],
-        app: ["app_events"],
+        apikey: ["website_key"],
+        app: ["events"],
         destination: [],
-        group: ["grp_email_group"],
-        property: ["rul_last_name", "rul_first_name"],
-        schedule: ["sch_users_table_schedule"],
+        group: ["email_group"],
+        property: ["last_name", "first_name"],
+        schedule: ["users_table_schedule"],
         source: [],
-        team: ["tea_admin_team"],
-        teammember: ["tem_demo"],
+        team: ["admin_team"],
+        teammember: ["demo"],
       });
     });
 
@@ -457,12 +447,12 @@ describe("modules/codeConfig", () => {
       });
       expect(deletedIds).toEqual({
         apikey: [],
-        app: ["app_data_warehouse"],
+        app: ["data_warehouse"],
         destination: [],
         group: [],
-        property: ["rul_user_id", "rul_email"],
+        property: ["user_id", "email"],
         schedule: [],
-        source: ["src_users_table"],
+        source: ["users_table"],
         team: [],
         teammember: [],
       });

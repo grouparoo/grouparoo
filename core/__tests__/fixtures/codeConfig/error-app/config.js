@@ -9,7 +9,7 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "data_warehouse", // id -> `app_data_warehouse`
+      id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
       type: "test-plugin-app",

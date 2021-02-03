@@ -189,7 +189,7 @@ export async function processConfigObjects(
   return { seenIds, errors };
 }
 
-async function deleteLockedObjects(seenIds) {
+export async function deleteLockedObjects(seenIds) {
   const deletedIds: idsByClass = {
     app: [],
     source: [],
@@ -211,11 +211,10 @@ async function deleteLockedObjects(seenIds) {
   deletedIds["property"] = await deleteProperties(seenIds.property);
   // might return a bootstrapped property, needs special processing
   const deletedSourceIds = await deleteSources(seenIds.source);
-  deletedIds["source"] = deletedSourceIds.filter((g) => g.match(/^src_/));
-  deletedSourceIds
-    .filter((g) => g.match(/^rul_/))
-    .filter((g) => !deletedIds["property"].includes(g))
-    .forEach((g) => deletedIds["property"].push(g));
+  deletedIds["source"] = deletedSourceIds.source;
+  deletedSourceIds.property.map((id) => {
+    if (!deletedIds["property"].includes(id)) deletedIds["property"].push(id);
+  });
   // back to normal
   deletedIds["app"] = await deleteApps(seenIds.app);
 
