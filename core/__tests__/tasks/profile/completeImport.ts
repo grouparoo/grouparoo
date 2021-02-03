@@ -25,7 +25,7 @@ describe("tasks/profile:completeImport", () => {
   describe("profile:completeImport", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profile:completeImport", {
-        profileGuid: "abc123",
+        profileId: "abc123",
         toExport: true,
       });
       const found = await specHelper.findEnqueuedTasks(
@@ -40,7 +40,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -52,7 +52,7 @@ describe("tasks/profile:completeImport", () => {
       );
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -66,12 +66,12 @@ describe("tasks/profile:completeImport", () => {
 
       const emailProperty = await Property.findOne({ where: { key: "email" } });
       const profileProperty = await ProfileProperty.findOne({
-        where: { profileGuid: profile.guid, propertyGuid: emailProperty.guid },
+        where: { profileId: profile.id, propertyId: emailProperty.id },
       });
       await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -80,7 +80,7 @@ describe("tasks/profile:completeImport", () => {
       );
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -97,7 +97,7 @@ describe("tasks/profile:completeImport", () => {
       expect(groups.length).toBe(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -117,21 +117,21 @@ describe("tasks/profile:completeImport", () => {
       });
 
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.guid,
+        importGuid: _import.id,
       });
 
       const profile = await Profile.findOne();
       await profile.import();
       await profile.update({ state: "ready" });
 
-      expect(_import.newGroupGuids).toEqual([]);
+      expect(_import.newGroupIds).toEqual([]);
       expect(_import.newProfileProperties).toEqual({});
 
       expect(run.profilesCreated).toEqual(0);
       expect(run.profilesImported).toEqual(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -141,7 +141,7 @@ describe("tasks/profile:completeImport", () => {
       expect(_import.newProfileProperties.email).toEqual(["mario@example.com"]);
       expect(_import.newProfileProperties.firstName).toEqual(["Mario"]);
       expect(_import.newProfileProperties.lastName).toEqual(["Mario"]);
-      expect(_import.newGroupGuids).toEqual([group.guid]);
+      expect(_import.newGroupIds).toEqual([group.id]);
 
       expect(run.profilesCreated).toEqual(1);
       expect(run.profilesImported).toEqual(1);
@@ -153,7 +153,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: true,
       });
 
@@ -161,7 +161,7 @@ describe("tasks/profile:completeImport", () => {
       expect(foundTasks.length).toEqual(1);
       expect(foundTasks[0].args[0]).toEqual({
         force: false,
-        profileGuid: profile.guid,
+        profileId: profile.id,
       });
     });
 
@@ -171,7 +171,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         toExport: false,
       });
 

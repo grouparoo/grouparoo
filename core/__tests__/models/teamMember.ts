@@ -12,7 +12,7 @@ describe("models/teamMember", () => {
 
   test("a team member can be added to a team", async () => {
     const teamMember = new TeamMember({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Mario",
       lastName: "Mario",
       email: "mario@example.com",
@@ -20,14 +20,14 @@ describe("models/teamMember", () => {
 
     await teamMember.save();
 
-    expect(teamMember.guid.length).toBe(40);
+    expect(teamMember.id.length).toBe(40);
     expect(teamMember.createdAt).toBeTruthy();
     expect(teamMember.updatedAt).toBeTruthy();
   });
 
   test("team members have unique email addresses", async () => {
     const teamMember = new TeamMember({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Mario",
       lastName: "Mario",
       email: "mario@example.com",
@@ -38,7 +38,7 @@ describe("models/teamMember", () => {
 
   test("emails will be stored in lowercase", async () => {
     const teamMember = await TeamMember.create({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Toad",
       lastName: "Toadstool",
       email: "TOAD@example.com",
@@ -52,7 +52,7 @@ describe("models/teamMember", () => {
     await Log.truncate();
 
     const teamMember = await TeamMember.create({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Luigi",
       lastName: "Mario",
       email: "luigi@example.com",
@@ -62,7 +62,7 @@ describe("models/teamMember", () => {
       where: { verb: "create", topic: "teamMember" },
     });
 
-    expect(createLog.data.guid).toBeTruthy();
+    expect(createLog.data.id).toBeTruthy();
     expect(createLog.data.email).toBe("luigi@example.com");
     expect(createLog.message).toBe('teamMember "luigi@example.com" created');
 
@@ -73,7 +73,7 @@ describe("models/teamMember", () => {
       where: { verb: "update", topic: "teamMember" },
     });
 
-    expect(updateNameLog.data.guid).toBeTruthy();
+    expect(updateNameLog.data.id).toBeTruthy();
     expect(updateNameLog.message).toBe(
       'teamMember "luigi@example.com" updated: firstName -> Luigi!'
     );
@@ -85,7 +85,7 @@ describe("models/teamMember", () => {
       where: { verb: "update", topic: "teamMember" },
     });
 
-    expect(updateLog.data.guid).toBeTruthy();
+    expect(updateLog.data.id).toBeTruthy();
     expect(updateLog.data.email).toBe("luigi@example.com");
     expect(updateLog.data.password).toBeFalsy();
     expect(updateLog.message).toBe(
@@ -95,7 +95,7 @@ describe("models/teamMember", () => {
 
   test("deleting a team member creates a log entry", async () => {
     const teamMember = await TeamMember.create({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Bye",
       lastName: "Person",
       email: "person@example.com",

@@ -1,7 +1,7 @@
 module.exports = async function getConfig() {
   return [
     {
-      id: "admin_team", // guid -> `tea_admin_team`
+      id: "admin_team", // id -> `tea_admin_team`
       name: "Admin Team",
       class: "team",
       options: {
@@ -11,9 +11,9 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "demo", // guid -> `tea_person`
+      id: "demo", // id -> `tea_person`
       email: "demo@grouparoo.com",
-      teamId: "admin_team", // guid -> `tea_marketing_team`
+      teamId: "admin_team", // id -> `tea_marketing_team`
       class: "teamMember",
     },
   ];

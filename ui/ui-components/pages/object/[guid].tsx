@@ -4,22 +4,22 @@ import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 
-const guidPrefixes = {
-  api: "/apiKey/[guid]/edit",
-  app: "/app/[guid]/edit",
-  dst: "/destination/[guid]/edit",
-  evt: "/event/[guid]/edit",
-  exp: "/export/[guid]/edit",
-  fil: "/file/[guid]/edit",
-  grp: "/group/[guid]/members",
-  imp: "/import/[guid]/edit",
-  pro: "/profile/[guid]/edit",
-  rul: "/property/[guid]/edit",
-  run: "/run/[guid]/edit",
-  sch: "/source/[guid]/overview",
-  src: "/source/[guid]/overview",
-  tea: "/team/[guid]/edit",
-  tem: "/teamMember/[guid]/edit",
+const idPrefixes = {
+  api: "/apiKey/[id]/edit",
+  app: "/app/[id]/edit",
+  dst: "/destination/[id]/edit",
+  evt: "/event/[id]/edit",
+  exp: "/export/[id]/edit",
+  fil: "/file/[id]/edit",
+  grp: "/group/[id]/members",
+  imp: "/import/[id]/edit",
+  pro: "/profile/[id]/edit",
+  rul: "/property/[id]/edit",
+  run: "/run/[id]/edit",
+  sch: "/source/[id]/overview",
+  src: "/source/[id]/overview",
+  tea: "/team/[id]/edit",
+  tem: "/teamMember/[id]/edit",
 };
 
 export default function FindObject(props) {
@@ -27,9 +27,9 @@ export default function FindObject(props) {
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 
-  const guid = router.query.guid?.toString();
-  const prefix = guid.split("_")[0];
-  const route = guidPrefixes[prefix];
+  const id = router.query.id?.toString();
+  const prefix = id.split("_")[0];
+  const route = idPrefixes[prefix];
 
   useEffect(() => {
     determineRoute();
@@ -37,25 +37,25 @@ export default function FindObject(props) {
 
   async function determineRoute() {
     if (!route) {
-      errorHandler.set({ error: `Sorry, I don't know what a "${guid}" is :(` });
+      errorHandler.set({ error: `Sorry, I don't know what a "${id}" is :(` });
     } else if (prefix === "sch") {
       routeScheduleToSource();
     } else {
-      const as = route.replace("[guid]", guid);
+      const as = route.replace("[id]", id);
       router.push(route, as);
     }
   }
 
-  async function load(model: string, guid: string) {
-    return execApi("get", `/${model}/${guid}`);
+  async function load(model: string, id: string) {
+    return execApi("get", `/${model}/${id}`);
   }
 
   async function routeScheduleToSource() {
-    const response: Actions.ScheduleView = await load("schedule", guid);
+    const response: Actions.ScheduleView = await load("schedule", id);
     if (response?.schedule) {
       router.push(
-        `/source/[guid]/schedule`,
-        `/source/${response.schedule.sourceGuid}/schedule`
+        `/source/[id]/schedule`,
+        `/source/${response.schedule.sourceId}/schedule`
       );
     }
   }

@@ -69,10 +69,10 @@ describe("tasks/profileProperties:enqueue", () => {
         });
 
         await specHelper.runTask("import:associateProfile", {
-          importGuid: marioImport.guid,
+          importGuid: marioImport.id,
         });
         await specHelper.runTask("import:associateProfile", {
-          importGuid: luigiImport.guid,
+          importGuid: luigiImport.id,
         });
 
         await specHelper.runTask("profileProperties:enqueue", {});
@@ -121,10 +121,10 @@ describe("tasks/profileProperties:enqueue", () => {
           });
 
           await specHelper.runTask("import:associateProfile", {
-            importGuid: marioImport.guid,
+            importGuid: marioImport.id,
           });
           await specHelper.runTask("import:associateProfile", {
-            importGuid: luigiImport.guid,
+            importGuid: luigiImport.id,
           });
 
           await specHelper.runTask("profileProperties:enqueue", {});
@@ -139,7 +139,7 @@ describe("tasks/profileProperties:enqueue", () => {
           expect(importProfilePropertyTasks.length).toBe(0);
           expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
           importProfilePropertiesTasks.forEach((t) =>
-            expect(t.args[0].profileGuids.length).toBe(2)
+            expect(t.args[0].profileIds.length).toBe(2)
           );
         });
 
@@ -160,10 +160,10 @@ describe("tasks/profileProperties:enqueue", () => {
           });
 
           await specHelper.runTask("import:associateProfile", {
-            importGuid: marioImport.guid,
+            importGuid: marioImport.id,
           });
           await specHelper.runTask("import:associateProfile", {
-            importGuid: luigiImport.guid,
+            importGuid: luigiImport.id,
           });
 
           await specHelper.runTask("profileProperties:enqueue", {});
@@ -178,7 +178,7 @@ describe("tasks/profileProperties:enqueue", () => {
           expect(importProfilePropertyTasks.length).toBe(0);
           expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
           importProfilePropertiesTasks.forEach((t) =>
-            expect(t.args[0].profileGuids.length).toBe(1)
+            expect(t.args[0].profileIds.length).toBe(1)
           );
         });
       });

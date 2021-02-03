@@ -12,18 +12,18 @@ export default function Page(props) {
     connectionApps,
   }: { connectionApps: Actions.SourceConnectionApps["connectionApps"] } = props;
   const router = useRouter();
-  const [app, setApp] = useState({ guid: null });
+  const [app, setApp] = useState({ id: null });
 
   const apps = [];
   connectionApps.forEach((connectionApp) => {
-    if (!apps.map((a) => a.guid).includes(connectionApp.app.guid)) {
+    if (!apps.map((a) => a.id).includes(connectionApp.app.id)) {
       apps.push(connectionApp.app);
     }
   });
 
-  function updateApp({ guid }) {
-    setApp({ guid });
-    router.push(`/source/new/[appGuid]`, `/source/new/${guid}`);
+  function updateApp({ id }) {
+    setApp({ id });
+    router.push(`/source/new/[appId]`, `/source/new/${id}`);
   }
 
   if (apps.length === 0) {

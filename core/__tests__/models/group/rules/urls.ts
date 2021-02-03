@@ -28,7 +28,7 @@ describe("model/group", () => {
       unique: false,
       key: "url",
       type: "url",
-      sourceGuid: emailProperty.sourceGuid,
+      sourceId: emailProperty.sourceId,
     });
     await urlProperty.setOptions({ column: "url" });
     await urlProperty.update({ state: "ready" });

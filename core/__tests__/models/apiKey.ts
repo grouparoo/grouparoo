@@ -8,7 +8,7 @@ describe("models/apiKey", () => {
     const apiKey = new ApiKey({ name: "test key" });
     await apiKey.save();
 
-    expect(apiKey.guid.length).toBe(40);
+    expect(apiKey.id.length).toBe(40);
     expect(apiKey.createdAt).toBeTruthy();
     expect(apiKey.updatedAt).toBeTruthy();
   });

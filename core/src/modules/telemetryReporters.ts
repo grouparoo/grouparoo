@@ -143,13 +143,11 @@ export namespace TelemetryReporters {
           aggregation: "count",
           imports: schedule
             ? await Import.count({
-                include: [
-                  { model: Run, where: { creatorGuid: schedule.guid } },
-                ],
+                include: [{ model: Run, where: { creatorId: schedule.id } }],
               })
             : 0,
           runs: schedule
-            ? await Run.count({ where: { creatorGuid: schedule.guid } })
+            ? await Run.count({ where: { creatorId: schedule.id } })
             : 0,
         });
       }
@@ -169,7 +167,7 @@ export namespace TelemetryReporters {
           topic: plugin.name,
           aggregation: "count",
           exports: await Export.count({
-            where: { destinationGuid: destination.guid },
+            where: { destinationId: destination.id },
           }),
         });
       }

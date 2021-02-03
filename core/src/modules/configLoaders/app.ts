@@ -1,6 +1,6 @@
 import {
   ConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
   extractNonNullParts,
   getCodeConfigLockKey,
   logModel,
@@ -15,16 +15,16 @@ export async function loadApp(
   validate = false
 ) {
   let isNew = false;
-  const guid = await validateAndFormatGuid(App, configObject.id);
+  const id = await validateAndFormatId(App, configObject.id);
   validateConfigObjectKeys(App, configObject);
 
   let app = await App.scope(null).findOne({
-    where: { guid, locked: getCodeConfigLockKey() },
+    where: { id, locked: getCodeConfigLockKey() },
   });
   if (!app) {
     isNew = true;
     app = await App.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
@@ -40,7 +40,7 @@ export async function loadApp(
     );
     if (!response.success) {
       throw new Error(
-        `error testing app ${app.name} (${app.guid}) - ${response.error}`
+        `error testing app ${app.name} (${app.id}) - ${response.error}`
       );
     }
   }
@@ -52,9 +52,9 @@ export async function loadApp(
   return app;
 }
 
-export async function deleteApps(guids: string[]) {
+export async function deleteApps(ids: string[]) {
   const apps = await App.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in apps) {
@@ -62,5 +62,5 @@ export async function deleteApps(guids: string[]) {
     logModel(apps[i], "deleted");
   }
 
-  return apps.map((instance) => instance.guid);
+  return apps.map((instance) => instance.id);
 }

@@ -34,7 +34,7 @@ export default async (
     }
 
     const ruleProps = {
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key,
       type,
       unique,

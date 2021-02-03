@@ -77,12 +77,12 @@ export default function Page(props) {
         <tbody>
           {apps.map((app) => {
             return (
-              <tr key={`team-${app.guid}`}>
+              <tr key={`team-${app.id}`}>
                 <td>
                   <AppIcon src={app.icon} />
                 </td>
                 <td>
-                  <Link href="/app/[guid]/edit" as={`/app/${app.guid}/edit`}>
+                  <Link href="/app/[id]/edit" as={`/app/${app.id}/edit`}>
                     <a>
                       <strong>
                         {app.name ||

@@ -7,12 +7,12 @@ describe("integration/events", () => {
 
   let connection: Connection;
   let csrfToken: string;
-  let appGuid: string;
-  let sourceGuid: string;
-  let propertyGuid: string;
+  let appId: string;
+  let sourceId: string;
+  let propertyId: string;
   let userIdProperty: Property;
   let apiKey: string;
-  let eventGuid: string;
+  let eventId: string;
   let profile: Profile;
 
   beforeAll(async () => {
@@ -54,7 +54,7 @@ describe("integration/events", () => {
     };
     const { apps } = await specHelper.runAction("apps:list", connection);
     expect(apps.length).toBe(2); // properties + events
-    appGuid = apps.filter((app) => app.type === "events")[0].guid;
+    appId = apps.filter((app) => app.type === "events")[0].id;
 
     userIdProperty = await Property.findOne({
       where: { key: "userId" },
@@ -62,8 +62,8 @@ describe("integration/events", () => {
 
     connection.params = {
       csrfToken,
-      guid: appGuid,
-      options: { identifyingPropertyGuid: userIdProperty.guid },
+      id: appId,
+      options: { identifyingPropertyId: userIdProperty.id },
       state: "ready",
     };
     const { error, app } = await specHelper.runAction("app:edit", connection);
@@ -71,7 +71,7 @@ describe("integration/events", () => {
     expect(error).toBeUndefined();
     expect(app.name).toBe("Grouparoo Events");
     expect(app.state).toBe("ready");
-    appGuid = app.guid;
+    appId = app.id;
   });
 
   test("an api key can be created for events", async () => {
@@ -93,12 +93,12 @@ describe("integration/events", () => {
 
     const eventPermissionGuid = _apiKeyA.permissions.filter(
       (permission) => permission.topic === "event"
-    )[0].guid;
+    )[0].id;
 
     connection.params = {
       csrfToken,
-      guid: _apiKeyA.guid,
-      permissions: [{ guid: eventPermissionGuid, read: true, write: true }],
+      id: _apiKeyA.id,
+      permissions: [{ id: eventPermissionGuid, read: true, write: true }],
     };
     const { apiKey: _apiKeyB, errorB } = await specHelper.runAction(
       "apiKey:edit",
@@ -123,10 +123,10 @@ describe("integration/events", () => {
     });
 
     expect(error).toBeFalsy();
-    expect(event.guid).toMatch(/evt_.*/);
+    expect(event.id).toMatch(/evt_.*/);
     expect(event.type).toBe("pageview");
     expect(event.ipAddress).toBeTruthy();
-    expect(event.profileGuid).toBeFalsy();
+    expect(event.profileId).toBeFalsy();
     expect(event.anonymousId).toBe("abc123");
     expect(event.data).toEqual({ path: "/", loadTime: "100" });
 
@@ -134,21 +134,21 @@ describe("integration/events", () => {
       "event:associateProfile"
     );
     expect(foundTasks.length).toBe(1);
-    expect(foundTasks[0].args[0]).toEqual({ eventGuid: event.guid });
-    eventGuid = event.guid;
+    expect(foundTasks[0].args[0]).toEqual({ eventId: event.id });
+    eventId = event.id;
   });
 
   test("the event can be processed, creating a profile sharing the event anonymousId", async () => {
     let profiles = await Profile.findAll();
     expect(profiles.length).toBe(0);
 
-    await specHelper.runTask("event:associateProfile", { eventGuid });
+    await specHelper.runTask("event:associateProfile", { eventId });
 
     profiles = await Profile.findAll();
     expect(profiles.length).toBe(1);
     profile = profiles[0];
 
-    expect(profile.guid).toBeTruthy();
+    expect(profile.id).toBeTruthy();
     expect(profile.anonymousId).toBe("abc123");
   });
 
@@ -160,7 +160,7 @@ describe("integration/events", () => {
       data: { path: "/about", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
-      eventGuid: event.guid,
+      eventId: event.id,
     });
 
     const profiles = await Profile.findAll();
@@ -179,7 +179,7 @@ describe("integration/events", () => {
       data: { path: "/web-sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
-      eventGuid: event.guid,
+      eventId: event.id,
     });
 
     const profiles = await Profile.findAll();
@@ -200,7 +200,7 @@ describe("integration/events", () => {
       data: { path: "/mobile-sign-in", loadTime: 200 },
     });
     await specHelper.runTask("event:associateProfile", {
-      eventGuid: event.guid,
+      eventId: event.id,
     });
 
     const profiles = await Profile.findAll();
@@ -220,7 +220,7 @@ describe("integration/events", () => {
       data: { path: "/", loadTime: 200 },
     });
     await specHelper.runTask("event:associateProfile", {
-      eventGuid: event1.guid,
+      eventId: event1.id,
     });
 
     let profiles = await Profile.findAll();
@@ -234,7 +234,7 @@ describe("integration/events", () => {
       data: { path: "/sign-in", loadTime: 100 },
     });
     await specHelper.runTask("event:associateProfile", {
-      eventGuid: event2.guid,
+      eventId: event2.id,
     });
 
     profiles = await Profile.findAll();
@@ -247,7 +247,7 @@ describe("integration/events", () => {
   test("an event can be viewed", async () => {
     connection.params = {
       csrfToken,
-      guid: eventGuid,
+      id: eventId,
     };
     const { event, error } = await specHelper.runAction(
       "event:view",
@@ -255,7 +255,7 @@ describe("integration/events", () => {
     );
     expect(error).toBeFalsy();
 
-    expect(event.guid).toBe(eventGuid);
+    expect(event.id).toBe(eventId);
     expect(event.data).toEqual({
       loadTime: "100",
       path: "/",
@@ -272,7 +272,7 @@ describe("integration/events", () => {
     test("a source for an event can be created into draft mode", async () => {
       connection.params = {
         csrfToken,
-        appGuid,
+        appId,
         name: "pageview-events",
         type: "events-table-import",
       };
@@ -282,16 +282,16 @@ describe("integration/events", () => {
       );
 
       expect(error).toBeFalsy();
-      expect(source.guid).toBeTruthy();
+      expect(source.id).toBeTruthy();
       expect(source.state).toBe("draft");
 
-      sourceGuid = source.guid;
+      sourceId = source.id;
     });
 
     test("an administrator can enumerate the source connection options", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
       };
       const { error, options } = await specHelper.runAction(
         "source:connectionOptions",
@@ -305,13 +305,13 @@ describe("integration/events", () => {
 
     test("a source with no options will see an empty preview", async () => {
       const options = await Option.findAll({
-        where: { ownerGuid: sourceGuid },
+        where: { ownerId: sourceId },
       });
       await Promise.all(options.map((o) => o.destroy()));
 
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
       };
       const { error, preview } = await specHelper.runAction(
         "source:preview",
@@ -324,7 +324,7 @@ describe("integration/events", () => {
     test("a source can provide options to a preview", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
         options: { type: "pageview" },
       };
       const { error, preview } = await specHelper.runAction(
@@ -339,7 +339,7 @@ describe("integration/events", () => {
     test("a source can have options set", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
         options: { type: "pageview" },
       };
       const { error, source } = await specHelper.runAction(
@@ -353,7 +353,7 @@ describe("integration/events", () => {
     test("a source with options set will return a preview", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
       };
       const { error, preview } = await specHelper.runAction(
         "source:preview",
@@ -367,7 +367,7 @@ describe("integration/events", () => {
     test("a source can be made active", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
         state: "ready",
       };
       const { error, source } = await specHelper.runAction(
@@ -381,7 +381,7 @@ describe("integration/events", () => {
     test("an administrator can view a source", async () => {
       connection.params = {
         csrfToken,
-        guid: sourceGuid,
+        id: sourceId,
       };
       const { error, source } = await specHelper.runAction(
         "source:view",
@@ -389,7 +389,7 @@ describe("integration/events", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(source.guid).toBeTruthy();
+      expect(source.id).toBeTruthy();
       expect(source.app.name).toBe("Grouparoo Events");
     });
 
@@ -397,7 +397,7 @@ describe("integration/events", () => {
       test("an administrator can create a new property against events", async () => {
         connection.params = {
           csrfToken,
-          sourceGuid,
+          sourceId,
           key: "test-rule",
           type: "integer",
           unique: "false",
@@ -409,11 +409,11 @@ describe("integration/events", () => {
         );
 
         expect(error).toBeUndefined();
-        expect(property.guid).toBeTruthy();
+        expect(property.id).toBeTruthy();
         expect(property.key).toBe("test-rule");
         expect(property.unique).toBe(false);
         expect(property.state).toBe("draft");
-        expect(property.sourceGuid).toBe(sourceGuid);
+        expect(property.sourceId).toBe(sourceId);
         expect(pluginOptions[0].key).toBe("column");
         expect(pluginOptions[0].options.map((opt) => opt.key)).toEqual([
           "ipAddress",
@@ -436,13 +436,13 @@ describe("integration/events", () => {
           "max",
         ]);
 
-        propertyGuid = property.guid;
+        propertyId = property.id;
       });
 
       test("an administrator can view the filter options for a property", async () => {
         connection.params = {
           csrfToken,
-          guid: propertyGuid,
+          id: propertyId,
         };
         const { error, options } = await specHelper.runAction(
           "property:filterOptions",
@@ -487,7 +487,7 @@ describe("integration/events", () => {
       test("an administrator can set the filters for a property", async () => {
         connection.params = {
           csrfToken,
-          guid: propertyGuid,
+          id: propertyId,
           filters: [{ key: "[data]-path", op: "does not equal", match: "/" }],
         };
         const { error, property } = await specHelper.runAction(
@@ -511,7 +511,7 @@ describe("integration/events", () => {
       test("the rule cannot be made ready without an aggregationMethod", async () => {
         connection.params = {
           csrfToken,
-          guid: propertyGuid,
+          id: propertyId,
           options: { column: "[data]-path" },
           state: "ready",
         };
@@ -525,7 +525,7 @@ describe("integration/events", () => {
       test("an administrator can make a rule ready", async () => {
         connection.params = {
           csrfToken,
-          guid: propertyGuid,
+          id: propertyId,
           options: { column: "[data]-path", aggregationMethod: "count" },
           state: "ready",
         };
@@ -540,7 +540,7 @@ describe("integration/events", () => {
       test("an administrator can test a property", async () => {
         connection.params = {
           csrfToken,
-          guid: propertyGuid,
+          id: propertyId,
         };
         const { error, test } = await specHelper.runAction(
           "property:test",
@@ -556,7 +556,7 @@ describe("integration/events", () => {
         let property: Property;
 
         beforeAll(async () => {
-          property = await Property.findByGuid(propertyGuid);
+          property = await Property.findById(propertyId);
           await property.setFilters([]);
         });
 
@@ -593,7 +593,7 @@ describe("integration/events", () => {
       describe("aggregations", () => {
         let property: Property;
         beforeAll(async () => {
-          property = await Property.findByGuid(propertyGuid);
+          property = await Property.findById(propertyId);
           await property.setFilters([]);
         });
 
@@ -695,7 +695,7 @@ describe("integration/events", () => {
       describe("filters", () => {
         let property: Property;
         beforeAll(async () => {
-          property = await Property.findByGuid(propertyGuid);
+          property = await Property.findById(propertyId);
           await property.update({ type: "string", isArray: true });
           await property.setOptions({
             column: "[data]-path",
@@ -739,7 +739,7 @@ describe("integration/events", () => {
 
         test("on event properties - occurredAt", async () => {
           const event = await Event.findOne({
-            where: { profileGuid: profile.guid },
+            where: { profileId: profile.id },
             include: [{ model: EventData, where: { value: "/web-sign-in" } }],
           });
 

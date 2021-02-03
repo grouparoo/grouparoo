@@ -32,7 +32,7 @@ let profile: Profile;
 
 async function getPropertyValue(query: string) {
   const propertyOptions = { query };
-  const connection = await connect({ appOptions, app: null, appGuid: null });
+  const connection = await connect({ appOptions, app: null, appId: null });
   const property = await Property.findOne();
 
   return profileProperty({
@@ -41,14 +41,14 @@ async function getPropertyValue(query: string) {
     profile,
     propertyOptions,
     property,
-    profileGuid: null,
+    profileId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
+    appId: null,
     sourceOptions: null,
     sourceMapping: null,
-    propertyGuid: null,
+    propertyId: null,
     propertyFilters: null,
   });
 }
@@ -65,7 +65,7 @@ describe("bigquery/query/profileProperty", () => {
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.guid).toBeTruthy();
+    expect(profile.id).toBeTruthy();
   });
 
   test("can run a integer query to get a string", async () => {

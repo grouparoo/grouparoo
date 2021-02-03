@@ -53,14 +53,14 @@ const STATE_TRANSITIONS = [
 }))
 @Table({ tableName: "sources", paranoid: false })
 export class Source extends LoggedModel<Source> {
-  guidPrefix() {
+  idPrefix() {
     return "src";
   }
 
   @AllowNull(false)
   @ForeignKey(() => App)
   @Column
-  appGuid: string;
+  appId: string;
 
   @AllowNull(true)
   @Length({ min: 0, max: 191 })
@@ -93,7 +93,7 @@ export class Source extends LoggedModel<Source> {
   @HasMany(() => Property)
   properties: Property[];
 
-  @HasMany(() => Option, "ownerGuid")
+  @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   async getOptions(sourceFromEnvironment = true) {
@@ -170,13 +170,13 @@ export class Source extends LoggedModel<Source> {
     const mapping = await this.getMapping();
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       type: this.type,
       state: this.state,
       mapping,
       app: app ? await app.apiData() : undefined,
-      appGuid: this.appGuid,
+      appId: this.appId,
       scheduleAvailable,
       schedule: schedule ? await schedule.apiData() : undefined,
       previewAvailable,
@@ -260,24 +260,16 @@ export class Source extends LoggedModel<Source> {
     key: string,
     type: string,
     mappedColumn: string,
-    guid?: string
+    id?: string
   ) {
-    return SourceOps.bootstrapUniqueProperty(
-      this,
-      key,
-      type,
-      mappedColumn,
-      guid
-    );
+    return SourceOps.bootstrapUniqueProperty(this, key, type, mappedColumn, id);
   }
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -293,15 +285,15 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeCreate
   static async ensureAppReady(instance: Source) {
-    const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
+    const app = await App.findById(instance.appId);
+    if (app.state !== "ready") throw new Error(`app ${app.id} is not ready`);
   }
 
   @BeforeSave
   static async ensureUniqueName(instance: Source) {
     const count = await Source.count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
@@ -355,14 +347,14 @@ export class Source extends LoggedModel<Source> {
   @AfterDestroy
   static async destroyOptions(instance: Source) {
     return Option.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyMappings(instance: Source) {
     return Mapping.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 }

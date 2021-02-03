@@ -16,7 +16,7 @@ export const getSourceOptions: GetSourceOptionsMethod = ({ getTables }) => {
   const sourceOptions: SourceOptionsMethod = async ({
     connection,
     appOptions,
-    appGuid,
+    appId,
   }) => {
     const response: SourceOptionsMethodResponse = {
       [tableNameKey]: { type: "list", options: [] },
@@ -24,7 +24,7 @@ export const getSourceOptions: GetSourceOptionsMethod = ({ getTables }) => {
     const map: TableDefinitionMap = await getTables({
       connection,
       appOptions,
-      appGuid,
+      appId,
     });
     for (const tableName in map) {
       response[tableNameKey].options.push(tableName);

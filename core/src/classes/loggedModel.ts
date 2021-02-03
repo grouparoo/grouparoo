@@ -21,17 +21,17 @@ function modelName(instance): string {
 
 export abstract class LoggedModel<T> extends Model {
   /**
-   * return the prefix for this type of class' guid
+   * return the prefix for this type of class' id
    */
-  abstract guidPrefix(): string;
+  abstract idPrefix(): string;
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @BeforeCreate
   static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
@@ -43,7 +43,7 @@ export abstract class LoggedModel<T> extends Model {
 
   @AfterCreate
   static async logCreate(instance) {
-    let message = `${modelName(this)} "${instance.guid}" created`;
+    let message = `${modelName(this)} "${instance.id}" created`;
     try {
       message = await instance.logMessage("create");
     } catch (error) {
@@ -53,7 +53,7 @@ export abstract class LoggedModel<T> extends Model {
     await Log.create({
       topic: modelName(instance),
       verb: "create",
-      ownerGuid: instance.guid,
+      ownerId: instance.id,
       data: await instance.filteredDataForLogging(),
       message,
     });
@@ -74,7 +74,7 @@ export abstract class LoggedModel<T> extends Model {
     for (const i in instances) {
       const instance = instances[i];
 
-      let message = `${modelName(this)} "${instance.guid}" created`;
+      let message = `${modelName(this)} "${instance.id}" created`;
       try {
         message = await instance.logMessage("create");
       } catch (error) {
@@ -84,7 +84,7 @@ export abstract class LoggedModel<T> extends Model {
       await Log.create({
         topic: modelName(instance),
         verb: "create",
-        ownerGuid: instance.guid,
+        ownerId: instance.id,
         data: await instance.filteredDataForLogging(),
         message,
       });
@@ -93,7 +93,7 @@ export abstract class LoggedModel<T> extends Model {
 
   @AfterUpdate
   static async logUpdate(instance) {
-    let message = `${modelName(this)} "${instance.guid}" updated`;
+    let message = `${modelName(this)} "${instance.id}" updated`;
     try {
       message = await instance.logMessage("update");
     } catch (error) {
@@ -103,7 +103,7 @@ export abstract class LoggedModel<T> extends Model {
     await Log.create({
       topic: modelName(instance),
       verb: "update",
-      ownerGuid: instance.guid,
+      ownerId: instance.id,
       data: await instance.filteredDataForLogging(),
       message,
     });
@@ -111,7 +111,7 @@ export abstract class LoggedModel<T> extends Model {
 
   @AfterDestroy
   static async logDestroy(instance) {
-    let message = `${modelName(this)} "${instance.guid}" destroyed`;
+    let message = `${modelName(this)} "${instance.id}" destroyed`;
     try {
       message = await instance.logMessage("destroy");
     } catch (error) {
@@ -121,7 +121,7 @@ export abstract class LoggedModel<T> extends Model {
     await Log.create({
       topic: modelName(instance),
       verb: "destroy",
-      ownerGuid: instance.guid,
+      ownerId: instance.id,
       data: await instance.filteredDataForLogging(),
       message,
     });
@@ -144,7 +144,7 @@ export abstract class LoggedModel<T> extends Model {
 
   async logMessage(verb: "create" | "update" | "destroy") {
     let message = "";
-    let primaryName = this.guid;
+    let primaryName = this.id;
     const possibleNames = ["name", "key", "email", "path"];
     for (let i in possibleNames) {
       if (this[possibleNames[i]]) {
@@ -188,7 +188,7 @@ export abstract class LoggedModel<T> extends Model {
   /**
    * Find an instance of this class, regardless of scope
    */
-  static async findByGuid(guid: string): Promise<any> {
+  static async findById(id: string): Promise<any> {
     // static class definitions or type defining are not yet available in TS.  See:
     // * https://github.com/microsoft/TypeScript/issues/14600
     // * https://github.com/microsoft/TypeScript/issues/34516
@@ -198,9 +198,9 @@ export abstract class LoggedModel<T> extends Model {
 
     throw new Error("not implemented");
 
-    // const instance: T = await this.scope(null).findOne({ where: { guid } });
+    // const instance: T = await this.scope(null).findOne({ where: { id } });
     // if (!instance) {
-    //   throw new Error(`cannot find ${this.name} ${guid}`);
+    //   throw new Error(`cannot find ${this.name} ${id}`);
     // }
     // return instance;
   }

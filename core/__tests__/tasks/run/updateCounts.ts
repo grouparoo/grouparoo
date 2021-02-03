@@ -15,7 +15,7 @@ describe("tasks/runs:updateCounts", () => {
     test("it will find running schedule", async () => {
       const schedule = await helper.factories.schedule();
       await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -27,7 +27,7 @@ describe("tasks/runs:updateCounts", () => {
     test("it will not find stopped", async () => {
       const schedule = await helper.factories.schedule();
       await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "stopped",
       });
@@ -39,13 +39,13 @@ describe("tasks/runs:updateCounts", () => {
     test("it will not find running schedules which are over 1 day old", async () => {
       const schedule = await helper.factories.schedule();
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
 
       await api.sequelize.query(
-        `UPDATE runs set "updatedAt" = '1900-01-01' where guid='${run.guid}'`
+        `UPDATE runs set "updatedAt" = '1900-01-01' where id='${run.id}'`
       );
 
       const runsChecked = await specHelper.runTask("runs:updateCounts", {});
@@ -55,7 +55,7 @@ describe("tasks/runs:updateCounts", () => {
     test("it will find runs in the complete state that have un-imported profiles", async () => {
       const schedule = await helper.factories.schedule();
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
@@ -69,7 +69,7 @@ describe("tasks/runs:updateCounts", () => {
     test("it will not find runs in the complete state that have all their profiles imported", async () => {
       const schedule = await helper.factories.schedule();
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,

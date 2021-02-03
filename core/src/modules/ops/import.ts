@@ -12,7 +12,7 @@ export namespace ImportOps {
     const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");
 
-    _import.profileGuid = profile.guid;
+    _import.profileId = profile.id;
     _import.profileAssociatedAt = new Date();
 
     _import.oldProfileProperties =
@@ -20,7 +20,7 @@ export namespace ImportOps {
         ? oldProfileProperties
         : {};
 
-    _import.oldGroupGuids = oldGroups.map((group) => group.guid);
+    _import.oldGroupIds = oldGroups.map((group) => group.id);
 
     await _import.save();
 

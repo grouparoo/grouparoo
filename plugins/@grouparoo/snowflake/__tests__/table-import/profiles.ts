@@ -42,7 +42,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     imports.push(row);
     return null;
   });
-  const connection = await connect({ appOptions, app: null, appGuid: null });
+  const connection = await connect({ appOptions, app: null, appId: null });
   const {
     highWaterMark: nextHighWaterMark,
     importsCount,
@@ -60,9 +60,9 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     scheduleOptions: await schedule.getOptions(),
     runGuid: null,
     scheduleGuid: null,
-    sourceGuid: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
+    appId: null,
     sourceOptions: null,
     properties: [],
   });

@@ -12,7 +12,7 @@ export class RunsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "system", mode: "read" };
     this.inputs = {
-      guid: { required: false },
+      id: { required: false },
       state: { required: false },
       hasError: { required: false },
       limit: { required: true, default: 100, formatter: parseInt },
@@ -25,21 +25,21 @@ export class RunsList extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    let guid = params.guid;
+    let id: string = params.id;
 
-    if (guid && guid.match(/^src_/)) {
+    if (id && id.match(/^src_/)) {
       const schedule = await Schedule.scope(null).findOne({
-        where: { sourceGuid: params.guid },
+        where: { sourceId: params.id },
       });
       if (!schedule) {
         throw new Error("no schedule for this source");
       } else {
-        guid = schedule.guid;
+        id = schedule.id;
       }
     }
 
     const where = {};
-    if (guid) where["creatorGuid"] = guid;
+    if (id) where["creatorId"] = id;
     if (params.state) where["state"] = params.state;
     if (params.hasError === "true") where["error"] = { [Op.ne]: null };
     if (params.hasError === "false") where["error"] = { [Op.eq]: null };
@@ -68,13 +68,13 @@ export class RunEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       state: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const run = await Run.findByGuid(params.guid);
+    const run = await Run.findById(params.id);
     await run.update({ state: params.state });
     return { run: await run.apiData() };
   }
@@ -88,12 +88,12 @@ export class RunView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "system", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const run = await Run.findByGuid(params.guid);
+    const run = await Run.findById(params.id);
     return {
       run: await run.apiData(),
       quantizedTimeline: await run.quantizedTimeline(),

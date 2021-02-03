@@ -22,7 +22,7 @@ export class SourcesList extends AuthenticatedAction {
       order: {
         required: false,
         default: [
-          ["appGuid", "desc"],
+          ["appId", "desc"],
           ["createdAt", "asc"],
         ],
       },
@@ -64,25 +64,25 @@ export class SourcesCountPending extends AuthenticatedAction {
   async runWithinTransaction() {
     const countsBySource = await Property.findAll({
       attributes: [
-        "sourceGuid",
+        "sourceId",
         [
           api.sequelize.fn(
             "COUNT",
-            api.sequelize.fn("DISTINCT", api.sequelize.col("profileGuid"))
+            api.sequelize.fn("DISTINCT", api.sequelize.col("profileId"))
           ),
           "count",
         ],
       ],
-      group: ["sourceGuid"],
+      group: ["sourceId"],
       include: [
         { model: ProfileProperty, attributes: [], where: { state: "pending" } },
       ],
       raw: true,
     });
 
-    const counts: { [sourceGuid: string]: number } = {};
+    const counts: { [sourceId: string]: number } = {};
     countsBySource.forEach((record) => {
-      counts[record.sourceGuid] = record["count"];
+      counts[record.sourceId] = record["count"];
     });
 
     return { counts };
@@ -146,7 +146,7 @@ export class SourceCreate extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      appGuid: { required: true },
+      appId: { required: true },
       name: { required: false },
       type: { required: true },
       state: { required: false },
@@ -157,7 +157,7 @@ export class SourceCreate extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const source = await Source.create({
-      appGuid: params.appGuid,
+      appId: params.appId,
       name: params.name,
       type: params.type,
     });
@@ -178,12 +178,12 @@ export class SourceView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
     return { source: await source.apiData() };
   }
 }
@@ -196,8 +196,8 @@ export class SourceEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
-      appGuid: { required: false },
+      id: { required: true },
+      appId: { required: false },
       name: { required: false },
       type: { required: false },
       state: { required: false },
@@ -207,7 +207,7 @@ export class SourceEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
     if (params.options) await source.setOptions(params.options);
     if (params.mapping) await source.setMapping(params.mapping);
 
@@ -225,7 +225,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       key: { required: true },
       type: { required: true },
       mappedColumn: { required: true },
@@ -233,7 +233,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
 
     const property = await source.bootstrapUniqueProperty(
       params.key,
@@ -256,13 +256,13 @@ export class sourceConnectionOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       options: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
 
     const options =
       typeof params.options === "string"
@@ -281,13 +281,13 @@ export class SourcePreview extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       options: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
 
     const options =
       typeof params.options === "string"
@@ -306,12 +306,12 @@ export class SourceDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const source = await Source.findByGuid(params.guid);
+    const source = await Source.findById(params.id);
     await source.destroy();
     return { success: true };
   }

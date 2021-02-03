@@ -34,7 +34,7 @@ export abstract class ConfigTemplate {
       id: {
         required: true,
         description:
-          "The ID of the new object being generated.  Will be used to construct the object's guid",
+          "The ID of the new object being generated.  Will be used to construct the object's id",
         formatter: (p) => this.formatId(p),
       },
     };

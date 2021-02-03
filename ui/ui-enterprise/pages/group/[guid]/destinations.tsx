@@ -38,7 +38,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.GroupListDestinations = await execApi(
       "get",
-      `/group/${group.guid}/destinations`,
+      `/group/${group.id}/destinations`,
       {
         limit,
         offset,
@@ -74,22 +74,22 @@ export default function Page(props) {
         <tbody>
           {destinations.map((destination) => {
             return (
-              <tr key={`destination-${destination.guid}`}>
+              <tr key={`destination-${destination.id}`}>
                 <td>
                   <AppIcon src={destination.app.icon} />
                 </td>
                 <td>
                   <Link
-                    href="/destination/[guid]/edit"
-                    as={`/destination/${destination.guid}/edit`}
+                    href="/destination/[id]/edit"
+                    as={`/destination/${destination.id}/edit`}
                   >
                     <a>{destination.name}</a>
                   </Link>
                 </td>
                 <td>
                   <Link
-                    href="/app/[guid]/edit"
-                    as={`/app/${destination.app.guid}/edit`}
+                    href="/app/[id]/edit"
+                    as={`/app/${destination.app.id}/edit`}
                   >
                     <a>{destination.app.name}</a>
                   </Link>
@@ -107,12 +107,12 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid, limit, offset } = ctx.query;
+  const { id, limit, offset } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   const { destinations, total } = await execApi(
     "get",
-    `/group/${group.guid}/destinations`,
+    `/group/${group.id}/destinations`,
     {
       limit,
       offset,

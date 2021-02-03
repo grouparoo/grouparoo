@@ -8,7 +8,7 @@ describe("tasks/export:sendBatch", () => {
 
   test("can be enqueued", async () => {
     await task.enqueue("export:sendBatch", {
-      destinationGuid: "abc123",
+      destinationId: "abc123",
       exportGuids: ["abc123"],
     });
     const found = await specHelper.findEnqueuedTasks("export:sendBatch");
@@ -34,7 +34,7 @@ describe("tasks/export:sendBatch", () => {
       await Run.truncate();
 
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -48,7 +48,7 @@ describe("tasks/export:sendBatch", () => {
       await specHelper.runTask("group:run", foundGroupRunTasks[0].args[0]);
 
       run = await Run.findOne({
-        where: { creatorGuid: group.guid },
+        where: { creatorId: group.id },
       });
 
       await run.updateTotals();
@@ -99,7 +99,7 @@ describe("tasks/export:sendBatch", () => {
 
       const _exports = await Export.findAll({
         where: {
-          destinationGuid: destination.guid,
+          destinationId: destination.id,
         },
       });
 

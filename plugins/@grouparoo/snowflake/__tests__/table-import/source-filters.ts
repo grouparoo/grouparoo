@@ -30,18 +30,18 @@ const appOptions: SimpleAppOptions = loadAppOptions(newNock);
 const sourceOptions = { table: "PURCHASES" };
 
 async function getFilters() {
-  const connection = await connect({ appOptions, app: null, appGuid: null });
+  const connection = await connect({ appOptions, app: null, appId: null });
   const response = await sourceFilters({
     connection,
     appOptions,
     sourceOptions,
     app: null,
-    appGuid: null,
+    appId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     sourceMapping: null,
     property: null,
-    propertyGuid: null,
+    propertyId: null,
     propertyOptions: null,
   });
   return response;

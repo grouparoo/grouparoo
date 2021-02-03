@@ -37,7 +37,7 @@ export const PermissionTopics = [
 
 @Table({ tableName: "permissions", paranoid: false })
 export class Permission extends LoggedModel<Permission> {
-  guidPrefix() {
+  idPrefix() {
     return "prm";
   }
 
@@ -45,7 +45,7 @@ export class Permission extends LoggedModel<Permission> {
   @ForeignKey(() => Team)
   @ForeignKey(() => ApiKey)
   @Column
-  ownerGuid: string;
+  ownerId: string;
 
   @AllowNull(false)
   @Column
@@ -77,7 +77,7 @@ export class Permission extends LoggedModel<Permission> {
 
   async apiData() {
     return {
-      guid: this.guid,
+      id: this.id,
       topic: this.topic,
       read: this.read,
       write: this.write,
@@ -87,11 +87,9 @@ export class Permission extends LoggedModel<Permission> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -104,20 +102,20 @@ export class Permission extends LoggedModel<Permission> {
   static async ensureOneOwnerGuidPerTopic(instance: Permission) {
     const existing = await Permission.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        ownerGuid: instance.ownerGuid,
+        id: { [Op.ne]: instance.id },
+        ownerId: instance.ownerId,
         topic: instance.topic,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Permission for ${instance.ownerGuid} and ${instance.topic}`
+        `There is already a Permission for ${instance.ownerId} and ${instance.topic}`
       );
     }
   }
 
   static async authorizeAction(
-    ownerGuid: string,
+    ownerId: string,
     topic: string,
     mode: "read" | "write"
   ) {
@@ -126,11 +124,11 @@ export class Permission extends LoggedModel<Permission> {
     if (topic === "*") return true;
 
     const permission = await Permission.findOne({
-      where: { ownerGuid: ownerGuid, topic: topic },
+      where: { ownerId: ownerId, topic: topic },
     });
 
     if (!permission) {
-      throw new Error(`cannot find permission set for ${ownerGuid} - ${topic}`);
+      throw new Error(`cannot find permission set for ${ownerId} - ${topic}`);
     }
 
     return permission[mode];

@@ -11,14 +11,14 @@ export class ExportSend extends RetryableTask {
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      destinationGuid: { required: true },
+      destinationId: { required: true },
       exportGuid: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const destination = await Destination.findByGuid(params.destinationGuid);
-    const _export = await Export.findByGuid(params.exportGuid);
+    const destination = await Destination.findById(params.destinationId);
+    const _export = await Export.findById(params.exportGuid);
     if (_export.completedAt) {
       // be sure not to export twice
       return;

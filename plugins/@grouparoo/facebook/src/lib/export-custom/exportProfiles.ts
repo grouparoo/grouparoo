@@ -5,13 +5,13 @@ import { ExportProfilesPluginMethod } from "@grouparoo/core";
 export { setTestFunction } from "../export/facebookExporter";
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
   exports: profilesToExport,
 }) => {
   return exportFacebookProfiles({
-    appGuid,
+    appId,
     appOptions,
     model: destinationModel(destinationOptions),
     exports: profilesToExport,

@@ -24,10 +24,7 @@ export default function NewGroup(props) {
     );
     if (response?.group) {
       const path = response.group.type === "calculated" ? "rules" : "edit";
-      router.push(
-        `/group/[guid]/${path}`,
-        `/group/${response.group.guid}/${path}`
-      );
+      router.push(`/group/[id]/${path}`, `/group/${response.group.id}/${path}`);
     } else {
       setLoading(false);
     }

@@ -1,1 +1,1 @@
-export { default } from "@grouparoo/ui-components/pages/profile/[guid]/events";
+export { default } from "@grouparoo/ui-components/pages/profile/[id]/events";

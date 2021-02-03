@@ -12,7 +12,7 @@ export namespace MappingHelper {
   export async function getMapping(instance: Source | Destination) {
     const MappingObject: Mappings = {};
     const mappings = await Mapping.findAll({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
 
     for (const i in mappings) {
@@ -38,7 +38,7 @@ export namespace MappingHelper {
     await LockableHelper.beforeUpdateOptions(instance);
 
     await Mapping.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
 
     const keys = Object.keys(mappings);
@@ -54,9 +54,9 @@ export namespace MappingHelper {
       }
 
       await Mapping.create({
-        ownerGuid: instance.guid,
+        ownerId: instance.id,
         ownerType: instance.constructor.name.toLowerCase(),
-        propertyGuid: property.guid,
+        propertyId: property.id,
         remoteKey,
       });
     }

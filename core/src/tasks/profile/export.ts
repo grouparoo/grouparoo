@@ -15,14 +15,14 @@ export class ProfileExport extends RetryableTask {
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      profileGuid: { required: true },
+      profileId: { required: true },
       force: { required: false },
     };
   }
 
   async runWithinTransaction(params) {
     const profile = await Profile.findOne({
-      where: { guid: params.profileGuid },
+      where: { id: params.profileId },
     });
 
     // the profile may have been deleted or merged by the time this task ran
@@ -31,7 +31,7 @@ export class ProfileExport extends RetryableTask {
 
     const imports = await Import.findAll({
       where: {
-        profileGuid: profile.guid,
+        profileId: profile.id,
         profileUpdatedAt: { [Op.not]: null },
         groupsUpdatedAt: { [Op.not]: null },
         exportedAt: null,
@@ -40,20 +40,20 @@ export class ProfileExport extends RetryableTask {
     });
 
     try {
-      const oldGroupGuids = imports[0]?.oldGroupGuids;
-      const newGroupGuids = imports[imports.length - 1]?.newGroupGuids;
+      const oldGroupIds = imports[0]?.oldGroupIds;
+      const newGroupIds = imports[imports.length - 1]?.newGroupIds;
 
       const oldGroups =
-        oldGroupGuids && oldGroupGuids.length > 0
+        oldGroupIds && oldGroupIds.length > 0
           ? await Group.findAll({
-              where: { guid: { [Op.in]: oldGroupGuids } },
+              where: { id: { [Op.in]: oldGroupIds } },
             })
           : [];
 
       const newGroups =
-        newGroupGuids && newGroupGuids.length > 0
+        newGroupIds && newGroupIds.length > 0
           ? await Group.findAll({
-              where: { guid: { [Op.in]: newGroupGuids } },
+              where: { id: { [Op.in]: newGroupIds } },
             })
           : [];
 
@@ -66,13 +66,13 @@ export class ProfileExport extends RetryableTask {
       for (const i in imports) {
         const _import = imports[i];
         if (
-          _import.data?._meta?.destinationGuid &&
+          _import.data?._meta?.destinationId &&
           !destinations
-            .map((d) => d.guid)
-            .includes(_import.data?._meta?.destinationGuid)
+            .map((d) => d.id)
+            .includes(_import.data?._meta?.destinationId)
         ) {
           const destination = await Destination.scope(null).findOne({
-            where: { guid: _import.data._meta.destinationGuid },
+            where: { id: _import.data._meta.destinationId },
           });
           if (destination) destinations.push(destination);
         }

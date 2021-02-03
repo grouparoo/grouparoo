@@ -43,10 +43,10 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
     schedule,
     scheduleOptions: await schedule.getOptions(),
     runGuid: null,
-    sourceGuid: null,
+    sourceId: null,
     scheduleGuid: null,
     app: null,
-    appGuid: null,
+    appId: null,
     sourceOptions: null,
     properties: await Property.findAll(),
   });
@@ -87,7 +87,7 @@ describe("postgres/query/profiles", () => {
     });
     const options = {
       query: `SELECT id FROM ${usersTableName}`,
-      propertyGuid: userIdProperty.guid,
+      propertyId: userIdProperty.id,
     };
     schedule = await helper.factories.schedule(source, { options });
     run = await helper.factories.run(schedule, { state: "running" });

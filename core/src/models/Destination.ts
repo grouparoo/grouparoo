@@ -37,7 +37,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
   remoteKey: string;
-  groupGuid: string;
+  groupId: string;
   groupName: string;
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
@@ -58,14 +58,14 @@ const STATE_TRANSITIONS = [
 }))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
-  guidPrefix() {
+  idPrefix() {
     return "dst";
   }
 
   @AllowNull(false)
   @Column
   @ForeignKey(() => App)
-  appGuid: string;
+  appId: string;
 
   @AllowNull(true)
   @Length({ min: 0, max: 191 })
@@ -89,7 +89,7 @@ export class Destination extends LoggedModel<Destination> {
   @AllowNull(true)
   @Column
   @ForeignKey(() => Group)
-  groupGuid: string;
+  groupId: string;
 
   @BelongsTo(() => App)
   app: App;
@@ -103,7 +103,7 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Mapping)
   mappings: Mapping[];
 
-  @HasMany(() => Option, "ownerGuid")
+  @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Export)
@@ -124,7 +124,7 @@ export class Destination extends LoggedModel<Destination> {
     const exportTotals = await this.getExportTotals();
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       type: this.type,
       state: this.state,
@@ -142,7 +142,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async getExportTotals() {
-    return ExportOps.totals({ destinationGuid: this.guid });
+    return ExportOps.totals({ destinationId: this.id });
   }
 
   async getMapping() {
@@ -179,23 +179,23 @@ export class Destination extends LoggedModel<Destination> {
     SimpleDestinationGroupMembership[]
   > {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { destinationGuid: this.guid }, include: [Group] }
+      { where: { destinationId: this.id }, include: [Group] }
     );
 
     return destinationGroupMemberships.map((dgm) => {
       return {
         remoteKey: dgm.remoteKey,
-        groupGuid: dgm.group.guid,
+        groupId: dgm.group.id,
         groupName: dgm.group.name,
       };
     });
   }
 
   async setDestinationGroupMemberships(newDestinationGroupMemberships: {
-    [groupGuid: string]: string;
+    [groupId: string]: string;
   }) {
-    for (const groupGuid in newDestinationGroupMemberships) {
-      const group = await Group.findByGuid(groupGuid);
+    for (const groupId in newDestinationGroupMemberships) {
+      const group = await Group.findById(groupId);
       if (group.state === "draft" || group.state === "deleted") {
         throw new Error(`group ${group.name} is not ready`);
       }
@@ -203,15 +203,15 @@ export class Destination extends LoggedModel<Destination> {
 
     await DestinationGroupMembership.destroy({
       where: {
-        destinationGuid: this.guid,
+        destinationId: this.id,
       },
     });
 
-    for (const groupGuid in newDestinationGroupMemberships) {
+    for (const groupId in newDestinationGroupMemberships) {
       await DestinationGroupMembership.create({
-        destinationGuid: this.guid,
-        groupGuid,
-        remoteKey: newDestinationGroupMemberships[groupGuid],
+        destinationId: this.id,
+        groupId,
+        remoteKey: newDestinationGroupMemberships[groupId],
       });
     }
 
@@ -336,7 +336,7 @@ export class Destination extends LoggedModel<Destination> {
     profile: Profile,
     mapping: MappingHelper.Mappings,
     destinationGroupMemberships: {
-      [groupGuid: string]: string;
+      [groupId: string]: string;
     }
   ) {
     return DestinationOps.profilePreview(
@@ -349,11 +349,11 @@ export class Destination extends LoggedModel<Destination> {
 
   async checkProfileWillBeExported(profile: Profile) {
     const profileGroupGuids = (
-      await profile.$get("groups", { attributes: ["guid"] })
-    ).map((group) => group.guid);
-    if (!profileGroupGuids.includes(this.groupGuid)) {
+      await profile.$get("groups", { attributes: ["id"] })
+    ).map((group) => group.id);
+    if (!profileGroupGuids.includes(this.groupId)) {
       throw new Error(
-        `profile ${profile.guid} will not be exported by this destination`
+        `profile ${profile.id} will not be exported by this destination`
       );
     }
 
@@ -387,9 +387,9 @@ export class Destination extends LoggedModel<Destination> {
     if (!options) options = await this.getOptions(true);
     const otherDestinations = await Destination.scope(null).findAll({
       where: {
-        appGuid: this.appGuid,
+        appId: this.appId,
         type: this.type,
-        guid: { [Op.not]: this.guid },
+        id: { [Op.not]: this.id },
       },
     });
 
@@ -402,7 +402,7 @@ export class Destination extends LoggedModel<Destination> {
 
       if (isSameOptions) {
         throw new Error(
-          `destination "${otherDestination.name}" (${otherDestination.guid}) is already using this app with the same options`
+          `destination "${otherDestination.name}" (${otherDestination.id}) is already using this app with the same options`
         );
       }
     }
@@ -410,18 +410,16 @@ export class Destination extends LoggedModel<Destination> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
   static async ensureAppReady(instance: Destination) {
-    const app = await App.findByGuid(instance.appGuid);
-    if (app.state !== "ready") throw new Error(`app ${app.guid} is not ready`);
+    const app = await App.findById(instance.appId);
+    if (app.state !== "ready") throw new Error(`app ${app.id} is not ready`);
   }
 
   @BeforeCreate
@@ -445,7 +443,7 @@ export class Destination extends LoggedModel<Destination> {
   static async ensureUniqueName(instance: Destination) {
     const count = await Destination.count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
@@ -477,9 +475,9 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeDestroy
   static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
-    if (instance.groupGuid) {
+    if (instance.groupId) {
       const group = await Group.findOne({
-        where: { guid: instance.groupGuid },
+        where: { id: instance.groupId },
       });
       if (group) {
         throw new Error("cannot delete a destination that is tracking a group");
@@ -505,28 +503,28 @@ export class Destination extends LoggedModel<Destination> {
   @AfterDestroy
   static async destroyDestinationMappings(instance: Destination) {
     return Mapping.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyDestinationOptions(instance: Destination) {
     return Option.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyDestinationGroupMemberships(instance: Destination) {
     return DestinationGroupMembership.destroy({
-      where: { destinationGuid: instance.guid },
+      where: { destinationId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyExports(instance: Destination) {
     await Export.destroy({
-      where: { destinationGuid: instance.guid },
+      where: { destinationId: instance.id },
     });
   }
 
@@ -537,9 +535,9 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
-    const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.guid);
+    const combinedGroupGuids = [...oldGroups, ...newGroups].map((g) => g.id);
     const relevantDestinations = await Destination.findAll({
-      where: { groupGuid: { [Op.in]: combinedGroupGuids } },
+      where: { groupId: { [Op.in]: combinedGroupGuids } },
     });
 
     return relevantDestinations;

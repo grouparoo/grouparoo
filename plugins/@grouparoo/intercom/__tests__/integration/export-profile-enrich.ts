@@ -20,7 +20,7 @@ require("./../fixtures/export-profile-enrich");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
+const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   creationMode: "Enrich",
@@ -52,7 +52,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
     findId,
     findEmail,
     getTags,
-    guidRegex,
+    idRegex,
     indexContacts,
     getClient,
     runExport,
@@ -85,7 +85,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
     userId2 = lead.id;
     expect(userId2).toBeTruthy();
-    expect(lead.external_id).toMatch(guidRegex); // auto-gen
+    expect(lead.external_id).toMatch(idRegex); // auto-gen
     expect(lead.email).toBe(email2);
     expect(lead.name).toBe("Leader");
     expect(lead.role).toBe("lead");
@@ -234,7 +234,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
   test("it does not change intercom-created tags", async () => {
     const tagId = await getTagId(
       getClient(),
-      { appGuid, appOptions },
+      { appId, appOptions },
       "outside_grouparoo"
     );
     await getClient().contacts.tag(userId, tagId);
@@ -314,7 +314,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
     expect(userId2).toBeTruthy();
     const user = await getUser(userId2);
     expect(user.email).toBe(email2);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("Sally");
     expect(user.role).toBe("lead");
 
@@ -343,7 +343,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
     const user = await getUser(userId2);
     expect(user.email).toBe(email2);
     expect(user.external_id).not.toBe(externalId2);
-    expect(user.external_id).toMatch(guidRegex);
+    expect(user.external_id).toMatch(idRegex);
     expect(user.name).toBe("Sally");
     expect(user.role).toBe("lead");
 

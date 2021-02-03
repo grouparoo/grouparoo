@@ -10,14 +10,14 @@ describe("models/log", () => {
       topic: "profile",
       verb: "create",
       message: "hello",
-      ownerGuid: "abc",
+      ownerId: "abc",
       data: {
         key: "value",
       },
     });
 
-    expect(log.guid).toMatch(/^log_/);
-    expect(log.guid.length).toBe(40);
+    expect(log.id).toMatch(/^log_/);
+    expect(log.id.length).toBe(40);
 
     await log.reload();
     expect(log.data["key"]).toBe("value");
@@ -30,7 +30,7 @@ describe("models/log", () => {
       topic: "profile",
       verb: "create",
       message: "",
-      ownerGuid: "abc",
+      ownerId: "abc",
       data: {},
     });
 

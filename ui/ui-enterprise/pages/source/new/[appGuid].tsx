@@ -20,23 +20,20 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const { appGuid } = router.query;
+  const { appId } = router.query;
 
   const relevantConnectionApps = connectionApps.filter(
-    (ca) => ca.app.guid === appGuid
+    (ca) => ca.app.id === appId
   );
 
   const create = async (connection) => {
     setLoading(true);
     const response: Actions.SourceCreate = await execApi("post", `/source`, {
-      appGuid,
+      appId,
       type: connection.name,
     });
     if (response?.source) {
-      router.push(
-        "/source/[guid]/edit",
-        `/source/${response.source.guid}/edit`
-      );
+      router.push("/source/[id]/edit", `/source/${response.source.id}/edit`);
     } else {
       setLoading(false);
     }

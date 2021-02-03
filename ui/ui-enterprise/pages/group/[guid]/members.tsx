@@ -27,7 +27,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.GroupExport = await execApi(
       "put",
-      `/group/${group.guid}/export`,
+      `/group/${group.id}/export`,
       {
         type,
       }
@@ -46,7 +46,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.GroupRun = await execApi(
         "put",
-        `/group/${group.guid}/run`
+        `/group/${group.id}/run`
       );
       setLoading(false);
       if (response?.success) {
@@ -92,9 +92,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   const profileListInitialProps = await ProfilesList.hydrate(ctx);
 
   return { group, ...profileListInitialProps };

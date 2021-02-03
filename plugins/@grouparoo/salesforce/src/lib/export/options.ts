@@ -16,19 +16,19 @@ export interface WhichOptions {
 }
 interface SalesforceDestinationOptions {
   (argument: {
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
     which: WhichOptions;
   }): Promise<DestinationOptionsMethodResponse>;
 }
 export const getDestinationOptions: SalesforceDestinationOptions = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
   which,
 }) => {
-  const cacheData: SalesforceCacheData = { appGuid, appOptions };
+  const cacheData: SalesforceCacheData = { appId, appOptions };
   const out: DestinationOptionsMethodResponse = {};
 
   Object.assign(out, getSyncModes());

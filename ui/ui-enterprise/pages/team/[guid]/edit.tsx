@@ -28,7 +28,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.TeamEdit = await execApi(
       "put",
-      `/team/${team.guid}`,
+      `/team/${team.id}`,
       _team
     );
 
@@ -45,7 +45,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.TeamDestroy = await execApi(
         "delete",
-        `/team/${team.guid}`
+        `/team/${team.id}`
       );
       if (success) {
         successHandler.set({ message: "Team deleted" });
@@ -148,7 +148,7 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
-  const { team } = await execApi("get", `/team/${guid}`);
+  const { id } = ctx.query;
+  const { team } = await execApi("get", `/team/${id}`);
   return { team };
 };

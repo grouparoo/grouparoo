@@ -51,7 +51,7 @@ export default function Page({
         <Col>
           <p>
             <strong>App</strong>:{" "}
-            <Link href="/app/[guid]/edit" as={`/app/${source.app.guid}/edit`}>
+            <Link href="/app/[id]/edit" as={`/app/${source.app.id}/edit`}>
               <a>{source.app.name}</a>
             </Link>
             <br />
@@ -81,11 +81,11 @@ export default function Page({
             </thead>
             <tbody>
               {properties.map((rule) => (
-                <tr key={`rule-${rule.guid}`}>
+                <tr key={`rule-${rule.id}`}>
                   <td>
                     <Link
-                      href="/property/[guid]/edit"
-                      as={`/property/${rule.guid}/edit`}
+                      href="/property/[id]/edit"
+                      as={`/property/${rule.id}/edit`}
                     >
                       <a>
                         <strong>
@@ -124,8 +124,8 @@ export default function Page({
                 <Col>
                   <p>
                     <Link
-                      href="/source/[guid]/schedule"
-                      as={`/source/${source.guid}/schedule`}
+                      href="/source/[id]/schedule"
+                      as={`/source/${source.id}/schedule`}
                     >
                       <a>{source.schedule.name}</a>
                     </Link>
@@ -174,8 +174,8 @@ export default function Page({
                         ) : null}
                         <p>
                           <Link
-                            href="/run/[guid]/edit"
-                            as={`/run/${run.guid}/edit`}
+                            href="/run/[id]/edit"
+                            as={`/run/${run.id}/edit`}
                           >
                             <a>See More</a>
                           </Link>
@@ -275,17 +275,17 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { source } = await execApi("get", `/source/${guid}`);
+  const { source } = await execApi("get", `/source/${id}`);
   const { properties } = await execApi("get", `/properties`, {
-    sourceGuid: guid,
+    sourceId: id,
   });
 
   let run;
-  if (source?.schedule?.guid) {
+  if (source?.schedule?.id) {
     const { runs } = await execApi("get", `/runs`, {
-      guid: source.schedule.guid,
+      id: source.schedule.id,
       limit: 1,
     });
     run = runs[0];

@@ -34,10 +34,10 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test destination",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
-      expect(destination.guid.length).toBe(40);
+      expect(destination.id.length).toBe(40);
       expect(destination.createdAt).toBeTruthy();
       expect(destination.updatedAt).toBeTruthy();
 
@@ -45,13 +45,13 @@ describe("models/destination", () => {
       expect(options).toEqual({});
 
       const _app = await destination.$get("app");
-      expect(_app.guid).toBe(app.guid);
+      expect(_app.id).toBe(app.id);
     });
 
     test("a new destination will have a '' name", async () => {
       destination = await Destination.create({
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       expect(destination.name).toBe("");
@@ -62,13 +62,13 @@ describe("models/destination", () => {
     test("draft destination can share the same name, but not with ready destination", async () => {
       const destinationOne = await Destination.create({
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       const otherApp = await helper.factories.app();
       const destinationTwo = await Destination.create({
         type: "test-plugin-export",
-        appGuid: otherApp.guid,
+        appId: otherApp.id,
       });
 
       expect(destinationOne.name).toBe("");
@@ -102,7 +102,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "bye destination",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await destination.trackGroup(group);
       await expect(destination.destroy()).rejects.toThrow(
@@ -117,14 +117,14 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "bye destination",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await destination.setOptions({ table: "table" });
       await destination.setMapping({ "primary-id": "userId" });
       await destination.trackGroup(group);
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = "remote-tag";
+      destinationGroupMemberships[group.id] = "remote-tag";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -133,15 +133,15 @@ describe("models/destination", () => {
       await destination.destroy();
 
       let count = await DestinationGroupMembership.count({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
       });
       expect(count).toBe(0);
       count = await Option.count({
-        where: { ownerGuid: destination.guid },
+        where: { ownerId: destination.id },
       });
       expect(count).toBe(0);
       count = await Mapping.count({
-        where: { ownerGuid: destination.guid },
+        where: { ownerId: destination.id },
       });
       expect(count).toBe(0);
 
@@ -152,13 +152,13 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "bye destination",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       const profile = await helper.factories.profile();
       const _export = await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         oldGroups: [],
@@ -205,7 +205,7 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "incoming destination",
           type: "test-plugin-export",
-          appGuid: app.guid,
+          appId: app.id,
         });
 
         group = await helper.factories.group();
@@ -242,7 +242,7 @@ describe("models/destination", () => {
         const destination = await Destination.create({
           name: "incoming destination",
           type: "test-plugin-export",
-          appGuid: app.guid,
+          appId: app.id,
         });
 
         await destination.setOptions({ table: "TEST_OPTION" });
@@ -250,7 +250,7 @@ describe("models/destination", () => {
         expect(options.table).toBe("abc123");
 
         const option = await Option.findOne({
-          where: { ownerGuid: destination.guid, key: "table" },
+          where: { ownerId: destination.id, key: "table" },
         });
         expect(option.value).toBe("TEST_OPTION");
 
@@ -267,10 +267,10 @@ describe("models/destination", () => {
         destination = new Destination({
           name: "incoming destination - too many options",
           type: "test-plugin-export",
-          appGuid: app.guid,
+          appId: app.id,
         });
         await destination.save();
-        expect(destination.guid).toBeTruthy();
+        expect(destination.id).toBeTruthy();
 
         await expect(
           destination.setOptions({
@@ -319,7 +319,7 @@ describe("models/destination", () => {
 
       test("mapping data is cached", async () => {
         destination = await helper.factories.destination();
-        const cacheKey = `destination:${destination.guid}:mappingOptions`;
+        const cacheKey = `destination:${destination.id}:mappingOptions`;
         await expect(cache.load(cacheKey)).rejects.toThrow();
 
         await destination.setMapping({
@@ -343,7 +343,7 @@ describe("models/destination", () => {
 
       test("a destination cannot be created in the ready state with missing required options", async () => {
         const destination = Destination.build({
-          appGuid: app.guid,
+          appId: app.id,
           type: "test-plugin-export",
           state: "ready",
         });
@@ -353,7 +353,7 @@ describe("models/destination", () => {
 
       test("a destination cannot be changed to to the ready state if there are missing required options", async () => {
         destination = await Destination.build({
-          appGuid: app.guid,
+          appId: app.id,
           name: "missing options",
           type: "test-plugin-export",
         });
@@ -373,14 +373,14 @@ describe("models/destination", () => {
       test("an app can only have one destination per connection with the same options", async () => {
         destination = await Destination.create({
           name: "first destination",
-          appGuid: app.guid,
+          appId: app.id,
           type: "test-plugin-export",
         });
 
         await expect(
           Destination.create({
             name: "second destination",
-            appGuid: app.guid,
+            appId: app.id,
             type: "test-plugin-export",
           })
         ).rejects.toThrow(
@@ -390,7 +390,7 @@ describe("models/destination", () => {
         // but it's ok to have one in another type of connection
         const ok = await Destination.create({
           name: "ok destination",
-          appGuid: app.guid,
+          appId: app.id,
           type: "test-plugin-export-batch", // different
         });
         expect(ok.state).toEqual("draft");
@@ -399,7 +399,7 @@ describe("models/destination", () => {
 
         const otherDestination = await Destination.create({
           name: "second destination",
-          appGuid: app.guid,
+          appId: app.id,
           type: "test-plugin-export",
         }); // does not throw
 
@@ -426,7 +426,7 @@ describe("models/destination", () => {
       beforeEach(async () => {
         destination = await Destination.create({
           name: "test destination",
-          appGuid: app.guid,
+          appId: app.id,
           type: "test-plugin-export",
         });
 
@@ -441,12 +441,12 @@ describe("models/destination", () => {
       test("a group can be tracked", async () => {
         await destination.trackGroup(group);
         const _group = await destination.$get("group");
-        expect(_group.guid).toBe(group.guid);
+        expect(_group.id).toBe(group.id);
       });
 
       test("tracking a group will not enqueue a run", async () => {
         const runs = await Run.findAll({
-          where: { creatorGuid: destination.guid },
+          where: { creatorId: destination.id },
         });
         expect(runs.length).toBe(0);
       });
@@ -457,14 +457,14 @@ describe("models/destination", () => {
         await destination.trackGroup(group);
         await destination.trackGroup(newGroup);
         const _group = await destination.$get("group");
-        expect(_group.guid).toBe(newGroup.guid);
+        expect(_group.id).toBe(newGroup.id);
         await newGroup.destroy();
       });
 
       test("a group can be unTracked", async () => {
         await destination.trackGroup(group);
         let _group = await destination.$get("group");
-        expect(_group.guid).toBe(group.guid);
+        expect(_group.id).toBe(group.id);
 
         await destination.unTrackGroup();
         _group = await destination.$get("group");
@@ -486,7 +486,7 @@ describe("models/destination", () => {
         };
 
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = "another-group-tag";
+        destinationGroupMemberships[group.id] = "another-group-tag";
 
         const _profile = await destination.profilePreview(
           profile,
@@ -552,8 +552,8 @@ describe("models/destination", () => {
             await profile.$get("groups")
           );
           expect(destinations.length).toBe(2);
-          expect(destinations.map((d) => d.guid).sort()).toEqual(
-            [destination.guid, otherDestination.guid].sort()
+          expect(destinations.map((d) => d.id).sort()).toEqual(
+            [destination.id, otherDestination.id].sort()
           );
 
           await destination.unTrackGroup();
@@ -571,9 +571,9 @@ describe("models/destination", () => {
           expect(foundTasks[0].args[0]).toEqual(
             expect.objectContaining({
               force: true,
-              destinationGuid: destination.guid,
-              groupGuid: group.guid,
-              runGuid: runA.guid,
+              destinationId: destination.id,
+              groupId: group.id,
+              runGuid: runA.id,
             })
           );
 
@@ -583,9 +583,9 @@ describe("models/destination", () => {
           expect(foundTasks.length).toBe(1);
           expect(foundTasks[0].args[0]).toEqual({
             force: true,
-            destinationGuid: destination.guid,
-            groupGuid: group.guid,
-            runGuid: runB.guid,
+            destinationId: destination.id,
+            groupId: group.id,
+            runGuid: runB.id,
           });
         });
 
@@ -602,17 +602,17 @@ describe("models/destination", () => {
           expect(foundTasks[0].args[0]).toEqual(
             expect.objectContaining({
               force: true,
-              destinationGuid: destination.guid,
-              groupGuid: group.guid,
+              destinationId: destination.id,
+              groupId: group.id,
             })
           );
-          expect(foundTasks[0].args[0].runGuid).not.toEqual(run.guid);
+          expect(foundTasks[0].args[0].runGuid).not.toEqual(run.id);
 
           expect(foundTasks[1].args[0]).toEqual({
             force: true,
-            destinationGuid: destination.guid,
-            groupGuid: otherGroup.guid,
-            runGuid: run.guid,
+            destinationId: destination.id,
+            groupId: otherGroup.id,
+            runGuid: run.id,
           });
 
           await otherGroup.destroy();
@@ -625,7 +625,7 @@ describe("models/destination", () => {
         destination = new Destination({
           name: "outgoing pg destination",
           type: "test-plugin-export",
-          appGuid: app.guid,
+          appId: app.id,
         });
         await destination.save();
 

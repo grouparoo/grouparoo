@@ -10,12 +10,12 @@ describe("facebook/audiences-custom/destinationMappingOptions", () => {
   test("can load destinationMappingOptions", async () => {
     const options = await destinationMappingOptions({
       destinationOptions,
-      appGuid: null,
+      appId: null,
       appOptions: null,
       app: null,
       connection: null,
       destination: null,
-      destinationGuid: null,
+      destinationId: null,
     });
     const { properties } = options;
     const { required, known } = properties;

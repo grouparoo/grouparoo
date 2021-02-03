@@ -7,7 +7,7 @@ import { Run } from "../models/Run";
  * This method will enqueue a run which creates an import for every profile
  * Enqueuing a new internal run will end any previous runs for the same creator type
  */
-export async function internalRun(creatorType: string, creatorGuid: string) {
+export async function internalRun(creatorType: string, creatorId: string) {
   const previousRuns = await Run.findAll({
     where: {
       creatorType,
@@ -21,20 +21,20 @@ export async function internalRun(creatorType: string, creatorGuid: string) {
 
   const run = await Run.create({
     creatorType,
-    creatorGuid,
+    creatorId,
     state: "running",
   });
 
   log(
     `[ run ] starting run ${
-      run.guid
-    } for ${creatorType} ${await run.getCreatorName()} (${creatorGuid})`,
+      run.id
+    } for ${creatorType} ${await run.getCreatorName()} (${creatorId})`,
     "notice"
   );
 
   // we need to allow time to for the rest of the model update to complete (ie: this could be run after Property#updateOptions and we still need to wait for the state to change)
   await CLS.enqueueTaskIn(config.tasks.timeout + 1, "run:internalRun", {
-    runGuid: run.guid,
+    runGuid: run.id,
   });
 
   return run;

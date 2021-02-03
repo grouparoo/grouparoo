@@ -10,7 +10,7 @@ export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
     const options = await schedule.getOptions();
     const source = await schedule.$get("source");
-    const app = await App.findByGuid(source.appGuid);
+    const app = await App.findById(source.appId);
     const properties = await Property.findAll();
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
@@ -53,19 +53,19 @@ export namespace ScheduleOps {
     try {
       const response = await method({
         schedule,
-        scheduleGuid: schedule.guid,
+        scheduleGuid: schedule.id,
         scheduleOptions: options,
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         source,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         sourceOptions,
         sourceMapping,
         properties,
         run,
-        runGuid: run.guid,
+        runGuid: run.id,
         limit,
         highWaterMark,
         sourceOffset,
@@ -80,7 +80,7 @@ export namespace ScheduleOps {
       });
     } catch (error) {
       log(
-        `failed run ${run.guid} for schedule ${schedule.guid}: ${error}`,
+        `failed run ${run.id} for schedule ${schedule.id}: ${error}`,
         "error",
         error
       );
@@ -99,7 +99,7 @@ export namespace ScheduleOps {
    * Load the options for this schedule from the plugin
    */
   export async function pluginOptions(schedule: Schedule) {
-    const source = await Source.findByGuid(schedule.sourceGuid);
+    const source = await Source.findById(schedule.sourceId);
     const { pluginConnection } = await source.getPlugin();
 
     const response: Array<{
@@ -132,10 +132,10 @@ export namespace ScheduleOps {
       const options = await opt.options({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         source,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         sourceOptions,
         sourceMapping,
         properties,
@@ -179,18 +179,18 @@ export namespace ScheduleOps {
     return method({
       connection: await app.getConnection(),
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       source,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       sourceOptions,
       sourceMapping,
       schedule,
-      scheduleGuid: schedule.guid,
+      scheduleGuid: schedule.id,
       scheduleOptions,
       highWaterMark,
       run,
-      runGuid: run.guid,
+      runGuid: run.id,
     });
   }
 }

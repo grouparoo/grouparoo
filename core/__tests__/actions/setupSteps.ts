@@ -17,7 +17,7 @@ describe("actions/setupSteps", () => {
   describe("reader signed in", () => {
     let connection: any;
     let csrfToken: string;
-    let guid: string;
+    let id: string;
 
     beforeAll(async () => {
       // log in
@@ -64,7 +64,7 @@ describe("actions/setupSteps", () => {
       expect(setupSteps[0].complete).toBe(false);
       expect(toDisplay).toBe(true);
 
-      guid = setupSteps[0].guid;
+      id = setupSteps[0].id;
     });
 
     test("toDisplay is false when the setting is disabled", async () => {
@@ -100,7 +100,7 @@ describe("actions/setupSteps", () => {
     test("a setupStep can be skipped", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         skipped: true,
       };
       const { error, setupStep } = await specHelper.runAction(
@@ -109,7 +109,7 @@ describe("actions/setupSteps", () => {
       );
 
       expect(error).toBeFalsy();
-      expect(setupStep.guid).toBe(guid);
+      expect(setupStep.id).toBe(id);
       expect(setupStep.skipped).toBe(true);
     });
   });

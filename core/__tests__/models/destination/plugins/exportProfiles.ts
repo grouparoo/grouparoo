@@ -118,7 +118,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-template-app",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await destination.update({ state: "ready" });
 
@@ -143,8 +143,8 @@ describe("models/destination", () => {
 
       const destinationGroupMemberships = {};
       // modify the membership name
-      destinationGroupMemberships[groupA.guid] = groupA.name + "+";
-      destinationGroupMemberships[groupB.guid] = groupB.name + "+";
+      destinationGroupMemberships[groupA.id] = groupA.name + "+";
+      destinationGroupMemberships[groupB.id] = groupB.name + "+";
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -164,7 +164,7 @@ describe("models/destination", () => {
         mostRecent: true,
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
-        guid: oldExport.guid,
+        id: oldExport.id,
       });
 
       await destination.exportProfile(profile);
@@ -183,10 +183,10 @@ describe("models/destination", () => {
       expect(foundTasks.length).toBe(1);
       await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
-      expect(exportArgs.destination.guid).toEqual(destination.guid);
-      expect(exportArgs.app.guid).toEqual(app.guid);
+      expect(exportArgs.destination.id).toEqual(destination.id);
+      expect(exportArgs.app.id).toEqual(app.id);
       expect(exportArgs.exports.length).toEqual(1);
-      expect(exportArgs.exports[0].profile.guid).toEqual(profile.guid);
+      expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
       expect(exportArgs.exports[0].oldProfileProperties).toEqual({
         customer_email: "oldmail@example.com",
       });
@@ -201,12 +201,12 @@ describe("models/destination", () => {
       expect(exportArgs.exports[0].toDelete).toEqual(false);
 
       const _exports = await Export.findAll({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
         order: [["createdAt", "asc"]],
       });
       expect(_exports.length).toBe(2);
-      expect(_exports[1].destinationGuid).toBe(destination.guid);
-      expect(_exports[1].profileGuid).toBe(profile.guid);
+      expect(_exports[1].destinationId).toBe(destination.id);
+      expect(_exports[1].profileId).toBe(profile.id);
       expect(
         _exports[1].completedAt.getTime() - _exports[0].startedAt.getTime()
       ).toBeGreaterThan(0);
@@ -242,8 +242,8 @@ describe("models/destination", () => {
 
       // create a previous export
       const _export = await Export.create({
-        profileGuid: profile.guid,
-        destinationGuid: destination.guid,
+        profileId: profile.id,
+        destinationId: destination.id,
         newProfileProperties: {
           customer_email: { type: "email", rawValue: "oldmail@example.com" },
           gender: { type: "string", rawValue: "Male" },
@@ -293,8 +293,8 @@ describe("models/destination", () => {
       const groupB = await helper.factories.group();
 
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[groupA.guid] = groupA.name;
-      destinationGroupMemberships[groupB.guid] = groupB.name;
+      destinationGroupMemberships[groupA.id] = groupA.name;
+      destinationGroupMemberships[groupB.id] = groupB.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -309,7 +309,7 @@ describe("models/destination", () => {
         mostRecent: true,
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
-        guid: oldExport.guid,
+        id: oldExport.id,
       });
 
       await destination.exportProfile(profile);
@@ -329,7 +329,7 @@ describe("models/destination", () => {
       await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
 
       expect(exportArgs.exports.length).toBe(1);
-      expect(exportArgs.exports[0].profile.guid).toEqual(profile.guid);
+      expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
       expect(exportArgs.exports[0].oldGroups).toEqual(
         [groupA, groupB].map((g) => g.name).sort()
       );
@@ -344,8 +344,8 @@ describe("models/destination", () => {
       await destination.trackGroup(group);
 
       const oldExport = await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         startedAt: new Date(),
         completedAt: new Date(),
         oldProfileProperties: {},
@@ -358,8 +358,8 @@ describe("models/destination", () => {
       await destination.exportProfile(profile);
       const newExport = await Export.findOne({
         where: {
-          destinationGuid: destination.guid,
-          guid: { [Op.ne]: oldExport.guid },
+          destinationId: destination.id,
+          id: { [Op.ne]: oldExport.id },
         },
       });
 
@@ -386,8 +386,8 @@ describe("models/destination", () => {
       await destination.trackGroup(group);
 
       const oldExport = await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         startedAt: new Date(),
         completedAt: new Date(),
         oldProfileProperties: {},
@@ -400,8 +400,8 @@ describe("models/destination", () => {
       await destination.exportProfile(profile, false, true);
       const newExport = await Export.findOne({
         where: {
-          destinationGuid: destination.guid,
-          guid: { [Op.ne]: oldExport.guid },
+          destinationId: destination.id,
+          id: { [Op.ne]: oldExport.id },
         },
       });
 
@@ -433,14 +433,14 @@ describe("models/destination", () => {
       });
 
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
 
       await destination.exportProfile(profile);
       const newExport = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
       });
 
       expect(newExport.oldProfileProperties).toEqual({});
@@ -468,7 +468,7 @@ describe("models/destination", () => {
 
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -477,7 +477,7 @@ describe("models/destination", () => {
 
       await destination.exportProfile(profile);
       const _export = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
       });
 
       await specHelper.runTask("export:enqueue", {});
@@ -521,7 +521,7 @@ describe("models/destination", () => {
 
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -539,7 +539,7 @@ describe("models/destination", () => {
     test("sending an export with sync and throwing an error will throw in task", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -568,7 +568,7 @@ describe("models/destination", () => {
     test("sending an export with sync and producing an error will throw combined of all sub errors", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -577,7 +577,7 @@ describe("models/destination", () => {
       const run = await helper.factories.run(group, { state: "running" });
 
       const error = new Error("oh no!");
-      error["profileGuid"] = profile.guid;
+      error["profileId"] = profile.id;
 
       exportProfilesResponse = {
         success: false,
@@ -610,7 +610,7 @@ describe("models/destination", () => {
     test("the app can be rate-limited and the export:sendBatches task will be re-enqueued", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -618,11 +618,11 @@ describe("models/destination", () => {
       const profile = await helper.factories.profile();
       await destination.exportProfile(profile);
       const _export = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
       });
 
       const profileError = new Error("oh no!");
-      profileError["profileGuid"] = profile.guid;
+      profileError["profileId"] = profile.id;
       exportProfilesResponse = {
         success: false,
         errors: [profileError],
@@ -675,7 +675,7 @@ describe("models/destination", () => {
     test("the app have export:sendBatches task with info level", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -683,11 +683,11 @@ describe("models/destination", () => {
       const profile = await helper.factories.profile();
       await destination.exportProfile(profile);
       const _export = await Export.findOne({
-        where: { destinationGuid: destination.guid },
+        where: { destinationId: destination.id },
       });
 
       const profileError = new Error("oh no!");
-      profileError["profileGuid"] = profile.guid;
+      profileError["profileId"] = profile.id;
       profileError["errorLevel"] = "info";
       exportProfilesResponse = {
         success: false,
@@ -728,7 +728,7 @@ describe("models/destination", () => {
     test("the app can be re-enqueued for some profiles", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
-      destinationGroupMemberships[group.guid] = group.name;
+      destinationGroupMemberships[group.id] = group.name;
       await destination.setDestinationGroupMemberships(
         destinationGroupMemberships
       );
@@ -737,8 +737,8 @@ describe("models/destination", () => {
       await destination.exportProfile(profile1);
       const _export1 = await Export.findOne({
         where: {
-          destinationGuid: destination.guid,
-          profileGuid: profile1.guid,
+          destinationId: destination.id,
+          profileId: profile1.id,
         },
       });
 
@@ -746,8 +746,8 @@ describe("models/destination", () => {
       await destination.exportProfile(profile2);
       const _export2 = await Export.findOne({
         where: {
-          destinationGuid: destination.guid,
-          profileGuid: profile2.guid,
+          destinationId: destination.id,
+          profileId: profile2.id,
         },
       });
 
@@ -755,15 +755,15 @@ describe("models/destination", () => {
       await destination.exportProfile(profile3);
       const _export3 = await Export.findOne({
         where: {
-          destinationGuid: destination.guid,
-          profileGuid: profile3.guid,
+          destinationId: destination.id,
+          profileId: profile3.id,
         },
       });
 
       const profileError1 = new Error("oh no!");
-      profileError1["profileGuid"] = profile1.guid;
+      profileError1["profileId"] = profile1.id;
       const profileError2 = new Error("inform me!");
-      profileError2["profileGuid"] = profile2.guid;
+      profileError2["profileId"] = profile2.id;
       profileError2["errorLevel"] = "info";
       exportProfilesResponse = {
         success: false,
@@ -781,7 +781,7 @@ describe("models/destination", () => {
       exportGuids = foundSendBatchTasks[0].args[0].exportGuids;
       expect(exportGuids.length).toBe(3);
       expect(exportGuids.sort()).toEqual(
-        [_export1.guid, _export2.guid, _export3.guid].sort()
+        [_export1.id, _export2.id, _export3.id].sort()
       );
 
       // the task should be re-enqueued with no error
@@ -798,7 +798,7 @@ describe("models/destination", () => {
       );
       exportGuids = foundSendBatchTasks[1].args[0].exportGuids;
       expect(exportGuids.length).toBe(1);
-      expect(exportGuids.sort()).toEqual([_export1.guid].sort());
+      expect(exportGuids.sort()).toEqual([_export1.id].sort());
 
       await _export1.reload();
       expect(_export1.errorMessage).toMatch(/oh no!/);

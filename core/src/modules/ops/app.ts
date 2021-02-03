@@ -20,7 +20,7 @@ export namespace AppOps {
     const { releaseLock } = await getConnectionLock(app);
 
     try {
-      connection = api.plugins.persistentConnections[app.guid];
+      connection = api.plugins.persistentConnections[app.id];
       if (connection) {
         if (forceReconnect) {
           await disconnect(app, true);
@@ -30,13 +30,13 @@ export namespace AppOps {
       }
 
       log(
-        `connecting to app ${app.name} - ${pluginApp.name} (${app.guid})`,
+        `connecting to app ${app.name} - ${pluginApp.name} (${app.id})`,
         "debug"
       );
 
       connection = await pluginApp.methods.connect({
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions: options ? options : appOptions,
       });
 
@@ -64,16 +64,16 @@ export namespace AppOps {
         releaseLock = lockResponse.releaseLock;
       }
 
-      const connection = api.plugins.persistentConnections[app.guid];
+      const connection = api.plugins.persistentConnections[app.id];
 
       if (connection) {
         log(
-          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.guid})`,
+          `disconnecting from app ${app.name} - ${pluginApp.name} (${app.id})`,
           "debug"
         );
         await pluginApp.methods.disconnect({
           app,
-          appGuid: app.guid,
+          appId: app.id,
           appOptions,
           connection,
         });
@@ -105,14 +105,14 @@ export namespace AppOps {
       if (pluginApp.methods.connect) {
         connection = await pluginApp.methods.connect({
           app,
-          appGuid: app.guid,
+          appId: app.id,
           appOptions: options,
         });
       }
 
       const result = await pluginApp.methods.test({
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions: options,
         connection,
       });
@@ -123,7 +123,7 @@ export namespace AppOps {
         await pluginApp.methods.disconnect({
           connection,
           app,
-          appGuid: app.guid,
+          appId: app.id,
           appOptions: options,
         });
       }
@@ -131,7 +131,7 @@ export namespace AppOps {
       error = err.message || err.toString();
       success = false;
       log(
-        `[ app ] testing app ${app.name} (${app.guid}) threw error: ${error}`,
+        `[ app ] testing app ${app.name} (${app.id}) threw error: ${error}`,
         "notice"
       );
     }
@@ -140,7 +140,7 @@ export namespace AppOps {
   }
 
   async function getConnectionLock(app: App) {
-    const key = `app:${app.guid}:connection:${id}`;
+    const key = `app:${app.id}:connection:${id}`;
     return waitForLock(key);
   }
 }

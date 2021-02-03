@@ -25,7 +25,7 @@ describe("integration/runs/internalRun", () => {
       await Run.truncate();
 
       property = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
         key: "email",
         unique: true,
@@ -39,7 +39,7 @@ describe("integration/runs/internalRun", () => {
       const runs = await Run.findAll();
       expect(runs.length).toBe(1);
       expect(runs[0].creatorType).toBe("property");
-      expect(runs[0].creatorGuid).toBe(property.guid);
+      expect(runs[0].creatorId).toBe(property.id);
       expect(runs[0].state).toBe("running");
       run = runs[0];
     });
@@ -56,7 +56,7 @@ describe("integration/runs/internalRun", () => {
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
-      expect(imports[0].profileGuid).toBe(profile.guid);
+      expect(imports[0].profileId).toBe(profile.id);
     });
 
     test("the run will be complete when all imports are created", async () => {
@@ -105,7 +105,7 @@ describe("integration/runs/internalRun", () => {
 
     test("if a new property stops a run, both properties will be imported", async () => {
       const firstNameProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
         key: "firstName",
         unique: false,
@@ -114,7 +114,7 @@ describe("integration/runs/internalRun", () => {
       await firstNameProperty.update({ state: "ready" });
 
       const lastNameProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
         key: "lastName",
         unique: false,
@@ -127,17 +127,15 @@ describe("integration/runs/internalRun", () => {
 
       const runs = await Run.findAll();
       const firstNameRun = runs.find(
-        (r) => r.creatorGuid === firstNameProperty.guid
+        (r) => r.creatorId === firstNameProperty.id
       );
-      const lastNameRun = runs.find(
-        (r) => r.creatorGuid === lastNameProperty.guid
-      );
+      const lastNameRun = runs.find((r) => r.creatorId === lastNameProperty.id);
       expect(runs.length).toBe(2);
       expect(firstNameRun.state).toBe("stopped");
       expect(lastNameRun.state).toBe("running");
 
       await specHelper.runTask("run:internalRun", {
-        runGuid: lastNameRun.guid,
+        runGuid: lastNameRun.id,
       });
 
       // both new properties are marked as pending

@@ -10,7 +10,7 @@ import { SetupStepOps } from "../modules/ops/setupSteps";
 
 @Table({ tableName: "setupSteps", paranoid: false })
 export class SetupStep extends LoggedModel<SetupStep> {
-  guidPrefix() {
+  idPrefix() {
     return "sus";
   }
 
@@ -42,7 +42,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
     const outcome = await this.getOutcome(ssd);
 
     return {
-      guid: this.guid,
+      id: this.id,
       position: this.position,
       key: this.key,
       title,
@@ -108,11 +108,9 @@ export class SetupStep extends LoggedModel<SetupStep> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 }

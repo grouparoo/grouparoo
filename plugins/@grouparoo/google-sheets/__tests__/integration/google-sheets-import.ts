@@ -84,7 +84,7 @@ describe("integration/runs/google-sheets", () => {
         csrfToken,
         type: "google-sheet-import",
         name: "sheet source",
-        appGuid: app.guid,
+        appId: app.id,
         options: {
           sheet_url: SHEET_URL,
         },
@@ -103,7 +103,7 @@ describe("integration/runs/google-sheets", () => {
         csrfToken,
         name: "test import schedule",
         type: "google-sheet-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
         recurring: false,
         mappings: {
           id: "userId",
@@ -118,7 +118,7 @@ describe("integration/runs/google-sheets", () => {
         session
       );
       expect(scheduleResponse.error).toBeUndefined();
-      expect(scheduleResponse.schedule.guid).toBeTruthy();
+      expect(scheduleResponse.schedule.id).toBeTruthy();
       expect(scheduleResponse.schedule.name).toBe("test import schedule");
       schedule = scheduleResponse.schedule;
     });
@@ -126,7 +126,7 @@ describe("integration/runs/google-sheets", () => {
     test("we can test the app options", async () => {
       session.params = {
         csrfToken,
-        guid: app.guid,
+        id: app.id,
         options: {
           client_email: GOOGLE_SERVICE_CLIENT_EMAIL,
           private_key: GOOGLE_SERVICE_PRIVATE_KEY,
@@ -141,7 +141,7 @@ describe("integration/runs/google-sheets", () => {
     test("we can see a preview of the sheet", async () => {
       session.params = {
         csrfToken,
-        guid: source.guid,
+        id: source.id,
         options: { sheet_url: SHEET_URL },
       };
       const { error, preview } = await specHelper.runAction(
@@ -167,7 +167,7 @@ describe("integration/runs/google-sheets", () => {
     test("the mapping data for the source can be set", async () => {
       session.params = {
         csrfToken,
-        guid: source.guid,
+        id: source.id,
         mapping: { id: "userId" },
       };
       const { error } = await specHelper.runAction("source:edit", session);
@@ -182,7 +182,7 @@ describe("integration/runs/google-sheets", () => {
 
       session.params = {
         csrfToken,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: true,
@@ -195,7 +195,7 @@ describe("integration/runs/google-sheets", () => {
         session
       );
       expect(error).toBeUndefined();
-      expect(property.guid).toBeTruthy();
+      expect(property.id).toBeTruthy();
 
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
@@ -207,7 +207,7 @@ describe("integration/runs/google-sheets", () => {
       // set the options
       session.params = {
         csrfToken,
-        guid: property.guid,
+        id: property.id,
         options: { column: "email" },
       };
       const { error: editError } = await specHelper.runAction(
@@ -223,7 +223,7 @@ describe("integration/runs/google-sheets", () => {
         // enqueue the run
         session.params = {
           csrfToken,
-          guid: schedule.guid,
+          id: schedule.id,
         };
         const { error, success } = await specHelper.runAction(
           "schedule:run",
@@ -235,17 +235,17 @@ describe("integration/runs/google-sheets", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(1);
-        expect(found[0].args[0].scheduleGuid).toBe(schedule.guid);
+        expect(found[0].args[0].scheduleGuid).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          runGuid: run.guid,
-          scheduleGuid: schedule.guid,
+          runGuid: run.id,
+          scheduleGuid: schedule.id,
         });
 
         // run the schedule task again to enqueue the determineState task
@@ -307,12 +307,12 @@ describe("integration/runs/google-sheets", () => {
     );
 
     test("profiles should be created with both the mapping data and additional profile property", async () => {
-      const profileGuid = (
+      const profileId = (
         await ProfileProperty.findOne({
           where: { rawValue: "1" },
         })
-      ).profileGuid;
-      const profile = await Profile.findOne({ where: { guid: profileGuid } });
+      ).profileId;
+      const profile = await Profile.findOne({ where: { id: profileId } });
       const properties = await profile.properties();
       expect(properties.userId.values).toEqual([1]);
       expect(properties.email.values).toEqual(["ejervois0@example.com"]);
@@ -324,7 +324,7 @@ describe("integration/runs/google-sheets", () => {
         // enqueue the run
         session.params = {
           csrfToken,
-          guid: schedule.guid,
+          id: schedule.id,
         };
         const { error, success } = await specHelper.runAction(
           "schedule:run",
@@ -336,17 +336,17 @@ describe("integration/runs/google-sheets", () => {
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
         expect(found.length).toEqual(3);
-        expect(found[1].args[0].scheduleGuid).toBe(schedule.guid);
+        expect(found[1].args[0].scheduleGuid).toBe(schedule.id);
 
         // run the schedule
         const run = await Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
         await specHelper.runTask("schedule:run", {
-          runGuid: run.guid,
-          scheduleGuid: schedule.guid,
+          runGuid: run.id,
+          scheduleGuid: schedule.id,
         });
 
         // run the schedule task again to enqueue the determineState task

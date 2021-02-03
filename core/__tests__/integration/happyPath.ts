@@ -17,9 +17,9 @@ describe("integration/happyPath", () => {
     disableTestPluginImport: true,
   });
 
-  let appGuid: string;
-  let sourceGuid: string;
-  let profileGuid: string;
+  let appId: string;
+  let sourceId: string;
+  let profileId: string;
   let scheduleGuid: string;
   let connection;
   let csrfToken: string;
@@ -48,16 +48,16 @@ describe("integration/happyPath", () => {
       csrfToken,
       name: "test app",
       type: "test-plugin-app",
-      options: { fileGuid: "abc123" },
+      options: { fileId: "abc123" },
       state: "ready",
     };
     const { error, app } = await specHelper.runAction("app:create", connection);
 
     expect(error).toBeUndefined();
-    expect(app.guid).toBeTruthy();
+    expect(app.id).toBeTruthy();
     expect(app.name).toBe("test app");
     expect(app.type).toBe("test-plugin-app");
-    appGuid = app.guid;
+    appId = app.id;
   });
 
   test("an admin can create the first source and bootstrap it with a property", async () => {
@@ -65,7 +65,7 @@ describe("integration/happyPath", () => {
       csrfToken,
       name: "test source",
       type: "test-plugin-import",
-      appGuid,
+      appId,
       options: { table: "users" },
     };
     const createResponse = await specHelper.runAction(
@@ -74,15 +74,15 @@ describe("integration/happyPath", () => {
     );
 
     expect(createResponse.error).toBeUndefined();
-    expect(createResponse.source.guid).toBeTruthy();
+    expect(createResponse.source.id).toBeTruthy();
     expect(createResponse.source.name).toBe("test source");
     expect(createResponse.source.type).toBe("test-plugin-import");
     expect(createResponse.source.app.type).toBe("test-plugin-app");
-    sourceGuid = createResponse.source.guid;
+    sourceId = createResponse.source.id;
 
     connection.params = {
       csrfToken,
-      guid: sourceGuid,
+      id: sourceId,
       key: "userId",
       type: "integer",
       mappedColumn: "id",
@@ -92,11 +92,11 @@ describe("integration/happyPath", () => {
       connection
     );
     expect(bootstrapResponse.error).toBeUndefined();
-    expect(bootstrapResponse.property.guid).toBeTruthy();
+    expect(bootstrapResponse.property.id).toBeTruthy();
 
     connection.params = {
       csrfToken,
-      guid: sourceGuid,
+      id: sourceId,
       mapping: { id: "userId" },
       state: "ready",
     };
@@ -108,7 +108,7 @@ describe("integration/happyPath", () => {
   test("an admin can create properties", async () => {
     connection.params = {
       csrfToken,
-      sourceGuid,
+      sourceId,
       key: "email",
       type: "string",
       unique: true,
@@ -122,7 +122,7 @@ describe("integration/happyPath", () => {
 
     connection.params = {
       csrfToken,
-      sourceGuid,
+      sourceId,
       key: "firstName",
       type: "string",
       unique: false,
@@ -135,7 +135,7 @@ describe("integration/happyPath", () => {
 
     connection.params = {
       csrfToken,
-      sourceGuid,
+      sourceId,
       key: "lastName",
       type: "string",
       unique: false,
@@ -148,7 +148,7 @@ describe("integration/happyPath", () => {
 
     connection.params = {
       csrfToken,
-      sourceGuid,
+      sourceId,
       key: "ltv",
       type: "float",
       unique: false,
@@ -163,7 +163,7 @@ describe("integration/happyPath", () => {
   test("an admin can set the source mapping", async () => {
     connection.params = {
       csrfToken,
-      guid: sourceGuid,
+      id: sourceId,
       mapping: { email: "email" },
     };
     const { error, source } = await specHelper.runAction(
@@ -176,7 +176,7 @@ describe("integration/happyPath", () => {
   });
 
   describe("manual group", () => {
-    let groupGuid;
+    let groupId;
 
     test("an admin can create a profile", async () => {
       connection.params = {
@@ -193,7 +193,7 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       expect(simpleProfileValues(profile.properties)).toEqual({
         email: ["luigi@example.com"],
         firstName: ["Luigi"],
@@ -201,7 +201,7 @@ describe("integration/happyPath", () => {
         ltv: [100.12],
         userId: [null],
       });
-      profileGuid = profile.guid;
+      profileId = profile.id;
     });
 
     test("an admin can create a manual group", async () => {
@@ -217,18 +217,18 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("manual group");
       expect(group.type).toBe("manual");
       expect(group.state).toBe("ready");
-      groupGuid = group.guid;
+      groupId = group.id;
     });
 
     test("an admin can add a profile to a manual group", async () => {
       connection.params = {
         csrfToken,
-        guid: groupGuid,
-        profileGuid,
+        id: groupId,
+        profileId,
       };
       const { error, success } = await specHelper.runAction(
         "group:addProfile",
@@ -241,7 +241,7 @@ describe("integration/happyPath", () => {
     test("the profile lists group memberships", async () => {
       connection.params = {
         csrfToken,
-        guid: profileGuid,
+        id: profileId,
       };
       const { error, groups } = await specHelper.runAction(
         "profile:view",
@@ -249,14 +249,14 @@ describe("integration/happyPath", () => {
       );
       expect(error).toBeUndefined();
       expect(groups.length).toBe(1);
-      expect(groups[0].guid).toBeTruthy();
+      expect(groups[0].id).toBeTruthy();
       expect(groups[0].name).toBe("manual group");
     });
 
     test("the manual group lists the profile as a member", async () => {
       connection.params = {
         csrfToken,
-        guid: groupGuid,
+        id: groupId,
       };
       const { error, group } = await specHelper.runAction(
         "group:view",
@@ -267,7 +267,7 @@ describe("integration/happyPath", () => {
 
       connection.params = {
         csrfToken,
-        guid: groupGuid,
+        id: groupId,
       };
       const { error: listError, profiles } = await specHelper.runAction(
         "profiles:list",
@@ -282,7 +282,7 @@ describe("integration/happyPath", () => {
   });
 
   describe("calculated group", () => {
-    let groupGuid: string;
+    let groupId: string;
 
     test("a calculated group can be created", async () => {
       connection.params = {
@@ -300,11 +300,11 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("calculated group");
       expect(group.type).toBe("calculated");
       expect(group.state).not.toBe("draft");
-      groupGuid = group.guid;
+      groupId = group.id;
     });
 
     test("the group#run task can be run, along with the associated import chain", async () => {
@@ -321,7 +321,7 @@ describe("integration/happyPath", () => {
     test("the profile will be in the calculated group", async () => {
       connection.params = {
         csrfToken,
-        guid: groupGuid,
+        id: groupId,
       };
 
       const { error, group } = await specHelper.runAction(
@@ -333,7 +333,7 @@ describe("integration/happyPath", () => {
 
       connection.params = {
         csrfToken,
-        guid: groupGuid,
+        id: groupId,
       };
       const { listError, profiles } = await specHelper.runAction(
         "profiles:list",
@@ -351,7 +351,7 @@ describe("integration/happyPath", () => {
     test("a schedule can be created", async () => {
       connection.params = {
         csrfToken,
-        sourceGuid,
+        sourceId,
         name: "the schedule",
         recurring: false,
       };
@@ -360,15 +360,15 @@ describe("integration/happyPath", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(schedule.guid).toBeTruthy();
+      expect(schedule.id).toBeTruthy();
 
-      scheduleGuid = schedule.guid;
+      scheduleGuid = schedule.id;
     });
 
     test("a schedule can be made ready", async () => {
       connection.params = {
         csrfToken,
-        guid: scheduleGuid,
+        id: scheduleGuid,
         state: "ready",
         options: { maxColumn: "updatedAt" },
       };
@@ -383,7 +383,7 @@ describe("integration/happyPath", () => {
     test("a run can be created", async () => {
       connection.params = {
         csrfToken,
-        guid: scheduleGuid,
+        id: scheduleGuid,
       };
       const { error, success } = await specHelper.runAction(
         "schedule:run",
@@ -403,7 +403,7 @@ describe("integration/happyPath", () => {
     test("the run was created", async () => {
       connection.params = {
         csrfToken,
-        guid: scheduleGuid,
+        id: scheduleGuid,
       };
       const { error, runs } = await specHelper.runAction(
         "runs:list",
@@ -411,7 +411,7 @@ describe("integration/happyPath", () => {
       );
       expect(error).toBeUndefined();
       expect(runs.length).toBe(1);
-      expect(runs[0].creatorGuid).toBe(scheduleGuid);
+      expect(runs[0].creatorId).toBe(scheduleGuid);
       expect(runs[0].state).toBe("complete");
     });
   });

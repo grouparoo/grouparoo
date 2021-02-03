@@ -40,10 +40,10 @@ describe("actions/account", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
       expect(teamMember.firstName).toBe("Mario");
       expect(teamMember.email).toBe("mario@example.com");
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
     });
 
     test("can edit account", async () => {
@@ -56,10 +56,10 @@ describe("actions/account", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
       expect(teamMember.firstName).toBe("Mario!");
       expect(teamMember.email).toBe("mario@example.com");
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
     });
   });
 
@@ -69,7 +69,7 @@ describe("actions/account", () => {
 
     beforeAll(async () => {
       const luigi = new TeamMember({
-        teamGuid: team.guid,
+        teamGuid: team.id,
         firstName: "Luigi",
         lastName: "Mario",
         email: "luigi@example.com",
@@ -95,10 +95,10 @@ describe("actions/account", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
       expect(teamMember.firstName).toBe("Luigi");
       expect(teamMember.email).toBe("luigi@example.com");
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
     });
 
     test("can edit account", async () => {
@@ -111,10 +111,10 @@ describe("actions/account", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
       expect(teamMember.firstName).toBe("Luigi is the best!");
       expect(teamMember.email).toBe("luigi@example.com");
-      expect(team.guid).toBeTruthy();
+      expect(team.id).toBeTruthy();
     });
   });
 });

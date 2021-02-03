@@ -25,7 +25,7 @@ export namespace SourceOps {
     return pluginConnection.methods.sourceOptions({
       connection,
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       sourceOptions,
     });
@@ -58,10 +58,10 @@ export namespace SourceOps {
     return pluginConnection.methods.sourcePreview({
       connection,
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       source,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       sourceOptions,
     });
   }
@@ -91,7 +91,7 @@ export namespace SourceOps {
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
       throw new Error(
-        `cannot find connection for source ${source.type} (${source.guid})`
+        `cannot find connection for source ${source.type} (${source.id})`
       );
     }
 
@@ -125,14 +125,14 @@ export namespace SourceOps {
       const response = await method({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         source,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         sourceOptions,
         sourceMapping,
         property,
-        propertyGuid: property.guid,
+        propertyId: property.id,
         propertyOptions: propertyOptionsOverride
           ? propertyOptionsOverride
           : await property.getOptions(),
@@ -140,7 +140,7 @@ export namespace SourceOps {
           ? propertyFiltersOverride
           : await property.getFilters(),
         profile,
-        profileGuid: profile.guid,
+        profileId: profile.id,
       });
 
       return response;
@@ -178,7 +178,7 @@ export namespace SourceOps {
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
       throw new Error(
-        `cannot find connection for source ${source.type} (${source.guid})`
+        `cannot find connection for source ${source.type} (${source.id})`
       );
     }
 
@@ -202,14 +202,14 @@ export namespace SourceOps {
       const response = await method({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         source,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         sourceOptions,
         sourceMapping,
         property,
-        propertyGuid: property.guid,
+        propertyId: property.id,
         propertyOptions: propertyOptionsOverride
           ? propertyOptionsOverride
           : await property.getOptions(),
@@ -217,7 +217,7 @@ export namespace SourceOps {
           ? propertyFiltersOverride
           : await property.getFilters(),
         profiles,
-        profileGuids: profiles.map((p) => p.guid),
+        profileIds: profiles.map((p) => p.id),
       });
 
       return response;
@@ -257,16 +257,16 @@ export namespace SourceOps {
       rules.map((rule) =>
         source
           .importProfileProperty(profile, rule, null, null, preloadedArgs)
-          .then((response) => (hash[rule.guid] = response))
+          .then((response) => (hash[rule.id] = response))
       )
     );
 
     // remove null and undefined as we cannot set that value
     const hashKeys = Object.keys(hash);
     for (const i in hashKeys) {
-      const guid = hashKeys[i];
-      if (hash[guid] === null || hash[guid] === undefined) {
-        delete hash[guid];
+      const id = hashKeys[i];
+      if (hash[id] === null || hash[id] === undefined) {
+        delete hash[id];
       }
     }
 
@@ -281,15 +281,15 @@ export namespace SourceOps {
     key: string,
     type: string,
     mappedColumn: string,
-    guid?: string
+    id?: string
   ) {
     const property = Property.build({
-      guid,
+      id,
       key,
       type,
       state: "ready",
       unique: true,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       isArray: false,
       identifying: true,
     });
@@ -319,11 +319,11 @@ export namespace SourceOps {
         const ruleOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
           {
             app,
-            appGuid: app.guid,
+            appId: app.id,
             connection,
             appOptions,
             source,
-            sourceGuid: source.guid,
+            sourceId: source.id,
             sourceOptions: options,
             mappedColumn,
           }

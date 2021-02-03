@@ -23,7 +23,7 @@ require("./../fixtures/export-objects/export-profiles-lead");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662f2";
+const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662f2";
 const destinationOptions = {
   profileObject: "Lead",
   profileMatchField: "Email",
@@ -39,14 +39,14 @@ const destinationOptions = {
 const model = destinationModel(destinationOptions);
 
 const email1 = "leadbrian@demo.com";
-const guid1 = "pro1";
+const id1 = "pro1";
 const newEmail1 = "leadother@demo.com";
 let userId1 = null;
 const accountName1 = "ConvertedCorp";
 let contactId1 = null;
 
 const email2 = "leadbrian2@demo.com";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const group1 = "(test) High Value4";
@@ -118,12 +118,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(userId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email1,
@@ -154,12 +154,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -177,7 +177,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email2,
@@ -213,12 +213,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             FirstName: "John",
@@ -237,7 +237,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Jih",
@@ -276,12 +276,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
@@ -300,7 +300,7 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Test",
@@ -340,12 +340,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             FirstName: "Brian",
@@ -429,12 +429,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
 
   test("does not edit converted leads", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -475,12 +475,12 @@ describe("salesforce/sales-cloud/export-profiles/leads", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "NoEdit",

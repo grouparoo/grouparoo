@@ -74,7 +74,7 @@ const STATE_TRANSITIONS = [
 ];
 
 export const TopLevelGroupRules = [
-  { key: "guid", column: "guid", type: "string" },
+  { key: "id", column: "id", type: "string" },
   { key: "createdAt", column: "createdAt", type: "date" },
 ];
 
@@ -92,7 +92,7 @@ export const TopLevelGroupRules = [
 }))
 @Table({ tableName: "groups", paranoid: false })
 export class Group extends LoggedModel<Group> {
-  guidPrefix() {
+  idPrefix() {
     return "grp";
   }
 
@@ -146,7 +146,7 @@ export class Group extends LoggedModel<Group> {
   profiles: Profile[];
 
   async profilesCount(options = {}) {
-    let queryOptions = { where: { groupGuid: this.guid } };
+    let queryOptions = { where: { groupId: this.id } };
     if (options) {
       queryOptions = Object.assign(queryOptions, options);
     }
@@ -209,7 +209,7 @@ export class Group extends LoggedModel<Group> {
     if (rulesAreEqual) return;
 
     await GroupRule.destroy({
-      where: { groupGuid: this.guid },
+      where: { groupId: this.id },
     });
 
     for (const i in rules) {
@@ -241,8 +241,8 @@ export class Group extends LoggedModel<Group> {
 
       await GroupRule.create({
         position: parseInt(i) + 1,
-        groupGuid: this.guid,
-        propertyGuid: property ? property.guid : null,
+        groupId: this.id,
+        propertyId: property ? property.id : null,
         profileColumn: property ? null : key,
         op: rule.operation.op,
         match: rule.match,
@@ -270,7 +270,7 @@ export class Group extends LoggedModel<Group> {
     const nextCalculatedAt = await this.nextCalculatedAt();
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       type: this.type,
       rules,
@@ -348,8 +348,8 @@ export class Group extends LoggedModel<Group> {
     return Moment(this.calculatedAt).add(delayMinutes, "minutes").toDate();
   }
 
-  async run(force = false, destinationGuid?: string) {
-    return GroupOps.run(this, force, destinationGuid);
+  async run(force = false, destinationId?: string) {
+    return GroupOps.run(this, force, destinationId);
   }
 
   async stopPreviousRuns() {
@@ -357,22 +357,22 @@ export class Group extends LoggedModel<Group> {
   }
 
   async addProfile(profile: Profile) {
-    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
+    await GroupOps.buildProfileImport(profile.id, "group", this.id);
 
     await GroupMember.create({
-      groupGuid: this.guid,
-      profileGuid: profile.guid,
+      groupId: this.id,
+      profileId: profile.id,
     });
   }
 
   async removeProfile(profile: Profile) {
     const membership = await GroupMember.findOne({
-      where: { groupGuid: this.guid, profileGuid: profile.guid },
+      where: { groupId: this.id, profileId: profile.id },
     });
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    await GroupOps.buildProfileImport(profile.guid, "group", this.guid);
+    await GroupOps.buildProfileImport(profile.id, "group", this.id);
 
     await membership.destroy();
   }
@@ -383,7 +383,7 @@ export class Group extends LoggedModel<Group> {
     offset = 0,
     highWaterMark: number = null,
     force = false,
-    destinationGuid?: string
+    destinationId?: string
   ) {
     return GroupOps.runAddGroupMembers(
       this,
@@ -392,16 +392,12 @@ export class Group extends LoggedModel<Group> {
       offset,
       highWaterMark,
       force,
-      destinationGuid
+      destinationId
     );
   }
 
-  async runRemoveGroupMembers(
-    run: Run,
-    limit = 1000,
-    destinationGuid?: string
-  ) {
-    return GroupOps.runRemoveGroupMembers(this, run, limit, destinationGuid);
+  async runRemoveGroupMembers(run: Run, limit = 1000, destinationId?: string) {
+    return GroupOps.runRemoveGroupMembers(this, run, limit, destinationId);
   }
 
   async removePreviousRunGroupMembers(run: Run, limit = 100) {
@@ -554,7 +550,7 @@ export class Group extends LoggedModel<Group> {
         ["ne", "notLike", "notILike"].includes(operation.op)
       ) {
         let reverseMatchWhere = {
-          [Op.and]: [{ propertyGuid: property.guid }],
+          [Op.and]: [{ propertyId: property.id }],
         };
         const castedValue = api.sequelize.cast(
           api.sequelize.col(`rawValue`),
@@ -588,7 +584,7 @@ export class Group extends LoggedModel<Group> {
         );
 
         const affirmativeArrayMatch = api.sequelize.literal(
-          `"ProfileMultipleAssociationShim"."guid" NOT IN (SELECT "profileGuid" FROM "profileProperties" WHERE ${whereClause})`
+          `"ProfileMultipleAssociationShim"."id" NOT IN (SELECT "profileId" FROM "profileProperties" WHERE ${whereClause})`
         );
         localWhereGroup[Op.and].push(affirmativeArrayMatch);
       }
@@ -600,7 +596,7 @@ export class Group extends LoggedModel<Group> {
           // $_$ wrapping is an option with eager loading
           // https://sequelize.org/master/manual/models-usage.html#eager-loading
           where: {
-            [`$${alias}.propertyGuid$`]: property.guid,
+            [`$${alias}.propertyId$`]: property.id,
           },
           attributes: [],
           model: ProfileProperty,
@@ -609,7 +605,7 @@ export class Group extends LoggedModel<Group> {
       }
     }
 
-    if (rules.length === 0) wheres.push({ guid: "" });
+    if (rules.length === 0) wheres.push({ id: "" });
 
     const joinType = matchType === "all" ? Op.and : Op.or;
     const whereContainer = {};
@@ -620,11 +616,9 @@ export class Group extends LoggedModel<Group> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -632,7 +626,7 @@ export class Group extends LoggedModel<Group> {
   static async ensureUniqueName(instance: Group) {
     const count = await Group.count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
@@ -680,14 +674,14 @@ export class Group extends LoggedModel<Group> {
     });
 
     for (const i in destinations) {
-      await destinations[i].update({ groupGuid: null });
+      await destinations[i].update({ groupId: null });
     }
   }
 
   @AfterDestroy
   static async destroyDestinationGroupMembership(instance: Group) {
     const destinationGroupMemberships = await DestinationGroupMembership.findAll(
-      { where: { groupGuid: instance.guid } }
+      { where: { groupId: instance.id } }
     );
 
     for (const i in destinationGroupMemberships) {
@@ -703,7 +697,7 @@ export class Group extends LoggedModel<Group> {
   static async destroyGroupRules(instance: Group) {
     return GroupRule.destroy({
       where: {
-        groupGuid: instance.guid,
+        groupId: instance.id,
       },
     });
   }
@@ -711,7 +705,7 @@ export class Group extends LoggedModel<Group> {
   @AfterDestroy
   static async stopRuns(instance: Group) {
     const runs = await Run.findAll({
-      where: { creatorGuid: instance.guid, state: "running" },
+      where: { creatorId: instance.id, state: "running" },
     });
 
     for (const i in runs) {

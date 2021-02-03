@@ -16,7 +16,7 @@ export default function Page(props) {
   async function enqueueScheduleRun() {
     setLoading(true);
     try {
-      await execApi("post", `/schedule/${source.schedule.guid}/run`);
+      await execApi("post", `/schedule/${source.schedule.id}/run`);
       successHandler.set({ message: "run enqueued" });
       runsHandler.set({});
     } finally {
@@ -69,9 +69,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { source } = await execApi("get", `/source/${guid}`);
+  const { source } = await execApi("get", `/source/${id}`);
   const runsListInitialProps = await RunsList.hydrate(ctx);
   return { source, ...runsListInitialProps };
 };

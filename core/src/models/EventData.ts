@@ -14,17 +14,17 @@ import * as uuid from "uuid";
 
 @Table({ tableName: "eventData", paranoid: false })
 export class EventData extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "evd";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @AllowNull(false)
   @Column
   @Index
-  eventGuid: string;
+  eventId: string;
 
   @AllowNull(false)
   @Column
@@ -40,13 +40,13 @@ export class EventData extends Model {
   @UpdatedAt
   updatedAt: Date;
 
-  @BelongsTo(() => Event, "eventGuid")
+  @BelongsTo(() => Event, "eventId")
   event: Event;
 
   @BeforeCreate
   static generateGuid(instance: Event) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 }

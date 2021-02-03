@@ -18,8 +18,8 @@ export default async (owner?, props: { [key: string]: any } = {}) => {
   const { Run } = await import(`@grouparoo/core/${loadPath}`);
   if (!owner) owner = await ScheduleFactory();
 
-  props.creatorGuid = owner.guid;
-  props.creatorType = owner.guid.match(/^sch_/) ? "schedule" : "property";
+  props.creatorId = owner.id;
+  props.creatorType = owner.id.match(/^sch_/) ? "schedule" : "property";
 
   const instance = await Run.create(await data(props));
   return instance;

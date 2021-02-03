@@ -20,7 +20,7 @@ describe("navigation", () => {
         {...commonProps}
         currentTeamMember={{
           firstName: "mario",
-          guid: "abc123",
+          id: "abc123",
         }}
         navigationMode="authenticated"
         navigation={{

@@ -23,7 +23,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.TeamMemberEdit = await execApi(
       "put",
-      `/team/member/${teamMember.guid}`,
+      `/team/member/${teamMember.id}`,
       teamMember
     );
     if (response?.teamMember) {
@@ -38,7 +38,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.TeamMemberDestroy = await execApi(
         "delete",
-        `/team/member/${teamMember.guid}`
+        `/team/member/${teamMember.id}`
       );
       if (success) {
         successHandler.set({ message: "team member deleted" });
@@ -137,7 +137,7 @@ export default function Page(props) {
                   disabled={loading}
                 >
                   {teams.map((team) => (
-                    <option key={`team-${team.guid}`} value={team.guid}>
+                    <option key={`team-${team.id}`} value={team.id}>
                       {team.name}
                     </option>
                   ))}
@@ -179,8 +179,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { teams } = await execApi("get", `/teams`);
-  const { teamMember } = await execApi("get", `/team/member/${guid}`);
+  const { teamMember } = await execApi("get", `/team/member/${id}`);
   return { teams, teamMember };
 };

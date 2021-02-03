@@ -3,7 +3,7 @@ import { specHelper } from "actionhero";
 
 describe("actions/apps", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -33,18 +33,18 @@ describe("actions/apps", () => {
         csrfToken,
         name: "test app",
         type: "test-plugin-app",
-        options: { fileGuid: "abc123" },
+        options: { fileId: "abc123" },
       };
       const { error, app } = await specHelper.runAction(
         "app:create",
         connection
       );
       expect(error).toBeUndefined();
-      expect(app.guid).toBeTruthy();
+      expect(app.id).toBeTruthy();
       expect(app.name).toBe("test app");
-      expect(app.options.fileGuid).toBe("abc123");
+      expect(app.options.fileId).toBe("abc123");
 
-      guid = app.guid;
+      id = app.id;
     });
 
     test("an administrator can get the options for a new app and how they can be used", async () => {
@@ -63,7 +63,7 @@ describe("actions/apps", () => {
 
       const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
       expect(pluginTestAppType.options).toEqual([
-        { key: "fileGuid", required: true },
+        { key: "fileId", required: true },
       ]);
       expect(pluginTestAppType.plugin).toEqual({
         name: "@grouparoo/test-plugin",
@@ -75,7 +75,7 @@ describe("actions/apps", () => {
       const eventsAppType = types.find((t) => t.name === "events");
       expect(eventsAppType.options).toEqual([
         expect.objectContaining({
-          key: "identifyingPropertyGuid",
+          key: "identifyingPropertyId",
           required: true,
         }),
       ]);
@@ -109,7 +109,7 @@ describe("actions/apps", () => {
     test("an administrator can get the options for the app options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, options } = await specHelper.runAction(
         "app:optionOptions",
@@ -117,14 +117,14 @@ describe("actions/apps", () => {
       );
       expect(error).toBeUndefined();
       expect(options).toEqual({
-        fileGuid: { options: ["a", "b"], type: "list" },
+        fileId: { options: ["a", "b"], type: "list" },
       });
     });
 
     test("an administrator can test the app options with the saved app options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, test } = await specHelper.runAction(
         "app:test",
@@ -139,7 +139,7 @@ describe("actions/apps", () => {
     test("an administrator can test the app options with new app options", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         options: { thing: "stuff" },
       };
       const { error, test } = await specHelper.runAction(
@@ -169,27 +169,27 @@ describe("actions/apps", () => {
     test("an administrator can edit an app", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "new app name",
-        options: { fileGuid: "zzz" },
+        options: { fileId: "zzz" },
       };
       const { error, app } = await specHelper.runAction("app:edit", connection);
       expect(error).toBeUndefined();
-      expect(app.guid).toBeTruthy();
+      expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
-      expect(app.options.fileGuid).toBe("zzz");
+      expect(app.options.fileId).toBe("zzz");
     });
 
     test("an administrator can view an app", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, app } = await specHelper.runAction("app:view", connection);
       expect(error).toBeUndefined();
-      expect(app.guid).toBeTruthy();
+      expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
-      expect(app.options.fileGuid).toBe("zzz");
+      expect(app.options.fileId).toBe("zzz");
     });
 
     test("an administrator can destroy an app", async () => {
@@ -197,7 +197,7 @@ describe("actions/apps", () => {
         csrfToken,
         name: "doomed app",
         type: "test-plugin-app",
-        options: { fileGuid: "abc123" },
+        options: { fileId: "abc123" },
       };
       const { error, app } = await specHelper.runAction(
         "app:create",
@@ -207,7 +207,7 @@ describe("actions/apps", () => {
 
       connection.params = {
         csrfToken,
-        guid: app.guid,
+        id: app.id,
       };
       const destroyResponse = await specHelper.runAction(
         "app:destroy",

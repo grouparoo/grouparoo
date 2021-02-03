@@ -10,12 +10,12 @@ export default function Page({ event }: { event: Models.EventType }) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {event.guid}</title>
+        <title>Grouparoo: {event.id}</title>
       </Head>
 
       <EventTabs event={event} />
 
-      <h1>Event {event.guid}</h1>
+      <h1>Event {event.id}</h1>
 
       <p>
         Type: <Badge variant="secondary">{event.type}</Badge>
@@ -24,21 +24,18 @@ export default function Page({ event }: { event: Models.EventType }) {
         <Link
           href=""
           as={
-            event?.producerGuid?.indexOf("key") === 0
-              ? `/apiKey/${event.producerGuid}/edit`
-              : `/teamMember/${event.producerGuid}/edit`
+            event?.producerId?.indexOf("key") === 0
+              ? `/apiKey/${event.producerId}/edit`
+              : `/teamMember/${event.producerId}/edit`
           }
           prefetch={false}
         >
-          <a>{event.producerGuid}</a>
+          <a>{event.producerId}</a>
         </Link>
         <br />
         Profile:{" "}
-        <Link
-          href="/profile/[guid]/edit"
-          as={`/profile/${event.profileGuid}/edit`}
-        >
-          <a>{event.profileGuid}</a>
+        <Link href="/profile/[id]/edit" as={`/profile/${event.profileId}/edit`}>
+          <a>{event.profileId}</a>
         </Link>
       </p>
 
@@ -137,8 +134,8 @@ export default function Page({ event }: { event: Models.EventType }) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { event } = await execApi("get", `/event/${guid}`);
+  const { event } = await execApi("get", `/event/${id}`);
   return { event };
 };

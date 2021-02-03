@@ -122,12 +122,12 @@ export class AppOptionOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "app", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const app = await App.findByGuid(params.guid);
+    const app = await App.findById(params.id);
     return { options: await app.appOptions() };
   }
 }
@@ -168,7 +168,7 @@ export class AppEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
       type: { required: false },
       state: { required: false },
@@ -177,7 +177,7 @@ export class AppEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const app = await App.findByGuid(params.guid);
+    const app = await App.findById(params.id);
     if (params.options) {
       await app.setOptions(params.options);
     }
@@ -195,13 +195,13 @@ export class AppTest extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       options: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const app = await App.findByGuid(params.guid);
+    const app = await App.findById(params.id);
     const test = await app.test(params.options);
     if (test.error) test.error = String(test.error);
 
@@ -220,12 +220,12 @@ export class AppView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "app", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const app = await App.findByGuid(params.guid);
+    const app = await App.findById(params.id);
     return { app: await app.apiData() };
   }
 }
@@ -238,12 +238,12 @@ export class AppDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "app", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const app = await App.findByGuid(params.guid);
+    const app = await App.findById(params.id);
     await app.destroy();
 
     return { success: true };

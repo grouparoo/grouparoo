@@ -40,7 +40,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
         throw new AuthenticationError("CSRF error");
       } else {
         const teamMember = await TeamMember.findOne({
-          where: { guid: sessionData.guid },
+          where: { id: sessionData.id },
           include: [Team],
         });
 
@@ -112,7 +112,7 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
           throw new AuthenticationError("CSRF error");
         } else {
           const teamMember = await TeamMember.findOne({
-            where: { guid: sessionData.guid },
+            where: { id: sessionData.id },
             include: [Team],
           });
 
@@ -176,7 +176,7 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
       throw new AuthenticationError("Please log in to continue");
     } else {
       const teamMember = await TeamMember.findOne({
-        where: { guid: sessionData.guid },
+        where: { id: sessionData.id },
         include: [Team],
       });
 
@@ -194,7 +194,7 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
 };
 
 interface SessionData {
-  guid: string;
+  id: string;
   csrfToken: string;
   createdAt: number;
 }
@@ -248,7 +248,7 @@ export class Session extends Initializer {
         const csrfToken = await randomBytesAsync();
 
         const sessionData = {
-          guid: teamMember.guid,
+          id: teamMember.id,
           csrfToken: csrfToken,
           createdAt: new Date().getTime(),
         };

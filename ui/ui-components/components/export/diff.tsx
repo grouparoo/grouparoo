@@ -14,7 +14,7 @@ export function ExportProfilePropertiesDiff({
       <ul>
         {Object.keys(_export.oldProfileProperties).map((k) => {
           return (
-            <li key={`${_export.guid}-prp-${k}`}>
+            <li key={`${_export.id}-prp-${k}`}>
               {k}: {_export.oldProfileProperties[k]?.toString()}
             </li>
           );
@@ -27,7 +27,7 @@ export function ExportProfilePropertiesDiff({
     <ul>
       {Object.keys(_export.oldProfileProperties).map((k) => {
         return (
-          <li key={`${_export.guid}-prp-${k}`}>
+          <li key={`${_export.id}-prp-${k}`}>
             {k}:{" "}
             {JSON.stringify(_export.oldProfileProperties[k]) !==
             JSON.stringify(_export.newProfileProperties[k]) ? (
@@ -52,7 +52,7 @@ export function ExportProfilePropertiesDiff({
 
       {Object.keys(_export.newProfileProperties).map((k) =>
         _export.oldProfileProperties[k] === undefined ? (
-          <li key={`${_export.guid}-prp-${k}`}>
+          <li key={`${_export.id}-prp-${k}`}>
             {k}: <Badge variant="success">+</Badge>&nbsp;
             {_export.newProfileProperties[k]?.toString()}
           </li>
@@ -76,7 +76,7 @@ export function ExportGroupsDiff({
       <>
         <ul>
           {_export.oldGroups.map((g) => (
-            <li key={`${_export.guid}-grp-${g}`}>{groupLink(groups, g)}</li>
+            <li key={`${_export.id}-grp-${g}`}>{groupLink(groups, g)}</li>
           ))}
         </ul>
       </>
@@ -87,7 +87,7 @@ export function ExportGroupsDiff({
     <ul>
       {_export.oldGroups.map((g) => {
         return (
-          <li key={`${_export.guid}-grp-${g}`}>
+          <li key={`${_export.id}-grp-${g}`}>
             {!_export.newGroups.includes(g) ? (
               <Badge variant={"danger"}>
                 {!_export.newGroups.includes(g) ? "-" : "+"}
@@ -101,7 +101,7 @@ export function ExportGroupsDiff({
 
       {_export.newGroups.map((g) =>
         !_export.oldGroups.includes(g) ? (
-          <li key={`${_export.guid}-grp-${g}`}>
+          <li key={`${_export.id}-grp-${g}`}>
             <Badge variant="success">+</Badge>&nbsp;
             {groupLink(groups, g)}
           </li>
@@ -116,7 +116,7 @@ function groupLink(groups: Models.GroupType[], groupName: string) {
 
   if (group) {
     return (
-      <Link href="/group/[guid]/edit" as={`/group/${group.guid}/edit`}>
+      <Link href="/group/[id]/edit" as={`/group/${group.id}/edit`}>
         <a>{group.name}</a>
       </Link>
     );

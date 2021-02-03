@@ -43,8 +43,8 @@ describe("tasks/profile:checkReady", () => {
       expect(mario.state).toBe("ready");
       expect(luigi.state).toBe("ready");
 
-      expect(found.map((t) => t.args[0].profileGuid).sort()).toEqual(
-        [mario.guid, luigi.guid].sort() // no toad
+      expect(found.map((t) => t.args[0].profileId).sort()).toEqual(
+        [mario.id, luigi.id].sort() // no toad
       );
 
       await mario.destroy();

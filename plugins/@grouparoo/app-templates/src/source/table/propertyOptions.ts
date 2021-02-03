@@ -43,12 +43,12 @@ export const getPropertyOptions: GetPropertyOptionsMethod = ({
       required: true,
       description: "where the data comes from",
       type: "typeahead",
-      options: async ({ connection, appOptions, appGuid, sourceOptions }) => {
+      options: async ({ connection, appOptions, appId, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
         return getColumnExamples({
           connection,
           appOptions,
-          appGuid,
+          appId,
           tableName,
           getSampleRows,
           getColumns,
@@ -76,12 +76,12 @@ export const getPropertyOptions: GetPropertyOptionsMethod = ({
       description:
         "which column to sort by for most and least recent properties",
       type: "typeahead",
-      options: async ({ connection, appOptions, appGuid, sourceOptions }) => {
+      options: async ({ connection, appOptions, appId, sourceOptions }) => {
         const tableName = sourceOptions[tableNameKey];
         return getColumnExamples({
           connection,
           appOptions,
-          appGuid,
+          appId,
           tableName,
           getSampleRows,
           getColumns,

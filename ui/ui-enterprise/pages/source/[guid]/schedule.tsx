@@ -50,7 +50,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.ScheduleEdit = await execApi(
       "put",
-      `/schedule/${schedule.guid}`,
+      `/schedule/${schedule.id}`,
       _schedule
     );
     if (response?.schedule) {
@@ -59,10 +59,7 @@ export default function Page(props) {
       );
       setSchedule(response.schedule);
       if (response.schedule.state === "ready" && schedule.state === "draft") {
-        router.push(
-          "/source/[guid]/overview",
-          `/source/${source.guid}/overview`
-        );
+        router.push("/source/[id]/overview", `/source/${source.id}/overview`);
       } else {
         setLoading(false);
         successHandler.set({ message: "Schedule Updated" });
@@ -76,10 +73,10 @@ export default function Page(props) {
     if (window.confirm("are you sure?")) {
       const { success }: Actions.ScheduleDestroy = await execApi(
         "delete",
-        `/schedule/${schedule.guid}`
+        `/schedule/${schedule.id}`
       );
       if (success) {
-        router.push(`/source/${source.guid}/overview`);
+        router.push(`/source/${source.id}/overview`);
       }
     }
   }
@@ -179,8 +176,8 @@ export default function Page(props) {
                           ) : null}
                           <p>
                             <Link
-                              href="/run/[guid]/edit"
-                              as={`/run/${run.guid}/edit`}
+                              href="/run/[id]/edit"
+                              as={`/run/${run.id}/edit`}
                             >
                               <a>See More</a>
                             </Link>
@@ -347,15 +344,15 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { source } = await execApi("get", `/source/${guid}`);
+  const { source } = await execApi("get", `/source/${id}`);
   const { schedule, pluginOptions } = await execApi(
     "get",
-    `/schedule/${source.schedule.guid}`
+    `/schedule/${source.schedule.id}`
   );
   const { runs } = await execApi("get", `/runs`, {
-    guid: source.schedule.guid,
+    id: source.schedule.id,
     limit: 1,
   });
 

@@ -17,7 +17,7 @@ export default function ImportAndUpdateProfile(props) {
         `/profiles/importAndUpdate`
       );
       if (response?.run) {
-        successHandler.set({ message: `Run ${response.run.guid} enqueued` });
+        successHandler.set({ message: `Run ${response.run.id} enqueued` });
       }
       setLoading(false);
     }

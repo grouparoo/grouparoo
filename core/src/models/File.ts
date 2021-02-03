@@ -4,7 +4,7 @@ import { LoggedModel } from "../classes/loggedModel";
 
 @Table({ tableName: "files", paranoid: false })
 export class File extends LoggedModel<File> {
-  guidPrefix() {
+  idPrefix() {
     return "fil";
   }
 
@@ -38,7 +38,7 @@ export class File extends LoggedModel<File> {
 
   async apiData() {
     return {
-      guid: this.guid,
+      id: this.id,
       transport: this.transport,
       type: this.type,
       bucket: this.bucket,
@@ -53,11 +53,9 @@ export class File extends LoggedModel<File> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 

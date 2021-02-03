@@ -24,7 +24,7 @@ describe("actions/totals", () => {
     await readOnlyTeam.save();
 
     const luigi = new TeamMember({
-      teamGuid: readOnlyTeam.guid,
+      teamGuid: readOnlyTeam.id,
       firstName: "Luigi",
       lastName: "Mario",
       email: "luigi@example.com",

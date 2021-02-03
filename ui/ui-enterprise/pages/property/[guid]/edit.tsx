@@ -34,8 +34,8 @@ export default function Page(props) {
   const [property, setProperty] = useState<Models.PropertyType>(props.property);
   const [localFilters, setLocalFilters] = useState(props.property.filters);
 
-  const { guid } = router.query;
-  const source = sources.find((s) => s.guid === property.sourceGuid);
+  const { id } = router.query;
+  const source = sources.find((s) => s.id === property.sourceId);
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -53,7 +53,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.PropertyEdit = await execApi(
         "put",
-        `/property/${guid}`,
+        `/property/${id}`,
         Object.assign({}, property, {
           filters: localFilters,
           state: "ready",
@@ -84,7 +84,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.PropertyDestroy = await execApi(
         "delete",
-        `/property/${guid}`
+        `/property/${id}`
       );
       setLoading(false);
       if (success) {
@@ -145,7 +145,7 @@ export default function Page(props) {
     setLocalFilters(_localFilters);
   }
 
-  if (property.guid === "") {
+  if (property.id === "") {
     return <Loader />;
   }
 
@@ -176,8 +176,8 @@ export default function Page(props) {
                 <p>
                   <strong>Source</strong>:{" "}
                   <Link
-                    href="/source/[guid]/overview"
-                    as={`/source/${source.guid}/overview`}
+                    href="/source/[id]/overview"
+                    as={`/source/${source.id}/overview`}
                   >
                     <a>{source.name}</a>
                   </Link>
@@ -232,10 +232,10 @@ export default function Page(props) {
                   disabled={loading}
                 />
               </Form.Group>
-              <Form.Group controlId="sourceGuid">
+              <Form.Group controlId="sourceId">
                 <Form.Label>Property Source</Form.Label>
-                <Form.Control as="select" disabled value={source.guid}>
-                  <option value={source.guid}>{source.name}</option>
+                <Form.Control as="select" disabled value={source.id}>
+                  <option value={source.id}>{source.name}</option>
                 </Form.Control>
               </Form.Group>
               <hr />
@@ -639,7 +639,7 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
 
   const { properties } = await execApi("get", `/properties`, {
@@ -654,18 +654,18 @@ Page.getInitialProps = async (ctx) => {
   let hydrationError: Error;
 
   try {
-    const getResponse = await execApi("get", `/property/${guid}`);
+    const getResponse = await execApi("get", `/property/${id}`);
     property = getResponse.property;
 
     const pluginOptionsResponse = await execApi(
       "get",
-      `/property/${guid}/pluginOptions`
+      `/property/${id}/pluginOptions`
     );
     pluginOptions = pluginOptionsResponse.pluginOptions;
 
     const filterResponse = await execApi(
       "get",
-      `/property/${guid}/filterOptions`
+      `/property/${id}/filterOptions`
     );
     filterOptions = filterResponse.options;
   } catch (error) {

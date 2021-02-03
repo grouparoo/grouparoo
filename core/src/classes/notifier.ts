@@ -79,7 +79,7 @@ export abstract class Notifier {
     if (oldNotifications.length === 0) return;
 
     await Notification.destroy({
-      where: { guid: { [Op.in]: oldNotifications.map((n) => n.guid) } },
+      where: { id: { [Op.in]: oldNotifications.map((n) => n.id) } },
     });
   }
 }

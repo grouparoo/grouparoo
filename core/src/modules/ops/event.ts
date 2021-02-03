@@ -12,29 +12,29 @@ export namespace EventOps {
    */
   export async function associate(
     event: Event,
-    identifyingPropertyGuid: string,
+    identifyingPropertyId: string,
     isRetry = false
   ): Promise<Profile> {
     const property = await Property.findOne({
-      where: { guid: identifyingPropertyGuid },
+      where: { id: identifyingPropertyId },
     });
     if (!property) {
       throw new Error(
-        `cannot find Property for identifyingPropertyGuid ${identifyingPropertyGuid}`
+        `cannot find Property for identifyingPropertyId ${identifyingPropertyId}`
       );
     }
 
     let profile: Profile;
 
-    if (event.profileGuid) {
-      profile = await associateEventWithProfileGuid(event, property);
+    if (event.profileId) {
+      profile = await associateEventWithProfileId(event, property);
     } else if (event.userId) {
       profile = await associateEventWithUserId(event, property);
     } else if (event.anonymousId) {
       profile = await associateEventWithAnonymousId(event, property);
     } else {
       throw new Error(
-        "cannot associate a profile without profileGuid, userId, or anonymousId"
+        "cannot associate a profile without profileId, userId, or anonymousId"
       );
     }
 
@@ -42,10 +42,7 @@ export namespace EventOps {
     return profile;
   }
 
-  async function associateEventWithProfileGuid(
-    event: Event,
-    property: Property
-  ) {
+  async function associateEventWithProfileId(event: Event, property: Property) {
     // we are already identified
     const profile = await event.$get("profile");
     await event.updateProfile(profile);
@@ -60,7 +57,7 @@ export namespace EventOps {
           model: ProfileProperty,
           where: {
             rawValue: event.userId,
-            propertyGuid: property.guid,
+            propertyId: property.id,
           },
         },
       ],
@@ -71,17 +68,17 @@ export namespace EventOps {
     }
 
     const profileProperties = {};
-    profileProperties[property.guid] = event.userId;
+    profileProperties[property.id] = event.userId;
 
     await profile.addOrUpdateProperties(profileProperties);
 
-    event.profileGuid = profile.guid;
+    event.profileId = profile.id;
     event.profileAssociatedAt = new Date();
     await event.save();
 
     const otherProfileWithAnonymousId = await Profile.findOne({
       where: {
-        guid: { [Op.ne]: profile.guid },
+        id: { [Op.ne]: profile.id },
         anonymousId: event.anonymousId,
       },
     });
@@ -109,12 +106,12 @@ export namespace EventOps {
       const otherEvent = await Event.findOne({
         where: {
           anonymousId: event.anonymousId,
-          profileGuid: { [Op.ne]: null },
+          profileId: { [Op.ne]: null },
         },
       });
       if (otherEvent) {
         profile = await Profile.findOne({
-          where: { guid: otherEvent.profileGuid },
+          where: { id: otherEvent.profileId },
         });
       }
     }
@@ -124,7 +121,7 @@ export namespace EventOps {
       profile = await createProfileFromAnonymousId(event.anonymousId);
     }
 
-    event.profileGuid = profile.guid;
+    event.profileId = profile.id;
     event.profileAssociatedAt = new Date();
     await event.save();
     await event.updateProfile(profile);

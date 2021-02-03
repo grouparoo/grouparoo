@@ -30,7 +30,7 @@ export default function Page(props) {
   const [connectionOptions, setConnectionOptions] = useState<
     Actions.sourceConnectionOptions["options"]
   >({});
-  const { guid } = router.query;
+  const { id } = router.query;
 
   useEffect(() => {
     loadPreview(source.previewAvailable);
@@ -47,7 +47,7 @@ export default function Page(props) {
     setPreviewLoading(true);
     const response: Actions.SourcePreview = await execApi(
       "get",
-      `/source/${guid}/preview`,
+      `/source/${id}/preview`,
       {
         options: Object.keys(source.options).length > 0 ? source.options : null,
       },
@@ -72,19 +72,19 @@ export default function Page(props) {
 
     const response: Actions.SourceEdit = await execApi(
       "put",
-      `/source/${guid}`,
+      `/source/${id}`,
       Object.assign({}, source, { state })
     );
     if (response?.source) {
       setSource(response.source);
       sourceHandler.set(response.source);
       if (response.source.state !== "ready") {
-        router.push(`/source/[guid]/mapping`, `/source/${guid}/mapping`);
+        router.push(`/source/[id]/mapping`, `/source/${id}/mapping`);
       } else if (
         response.source.state === "ready" &&
         source.state === "draft"
       ) {
-        router.push(`/source/${guid}/overview`);
+        router.push(`/source/${id}/overview`);
       } else {
         setLoading(false);
         successHandler.set({ message: "Source updated" });
@@ -98,7 +98,7 @@ export default function Page(props) {
     setLoadingOptions(true);
     const response: Actions.sourceConnectionOptions = await execApi(
       "get",
-      `/source/${guid}/connectionOptions`,
+      `/source/${id}/connectionOptions`,
       { options: source.options },
       null,
       null,
@@ -113,7 +113,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.SourceDestroy = await execApi(
         "delete",
-        `/source/${guid}`
+        `/source/${id}`
       );
       if (success) {
         successHandler.set({ message: "source deleted" });
@@ -427,9 +427,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { source } = await execApi("get", `/source/${guid}`);
+  const { source } = await execApi("get", `/source/${id}`);
   const { environmentVariableOptions } = await execApi(
     "get",
     `/sources/connectionApps`

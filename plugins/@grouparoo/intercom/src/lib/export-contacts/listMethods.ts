@@ -2,7 +2,7 @@ import { objectCache } from "@grouparoo/core";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 export interface IntercomCacheData {
-  appGuid: string;
+  appId: string;
   appOptions: SimpleAppOptions;
 }
 export interface TagIdMap {
@@ -26,11 +26,11 @@ export async function getTagId(
   }
 
   // otherwise map it
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", tagName, appOptions];
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectGuid: appId, cacheKey, cacheDurationMs },
     async () => {
       return ensureTag(client, cacheData, tagName);
     }
@@ -57,12 +57,12 @@ async function getTags(
   cacheData: IntercomCacheData,
   update = false
 ): Promise<IntercomTag[]> {
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getTags", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
+    { objectGuid: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchTags(client);
     }

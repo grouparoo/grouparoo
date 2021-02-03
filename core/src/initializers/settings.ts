@@ -156,7 +156,7 @@ export class Plugins extends Initializer {
 
     const telemetrySettings: SettingsListItem[] = [
       {
-        key: "customer-guid",
+        key: "customer-id",
         title: "Customer Guid",
         defaultValue: `tcs_${UUID.v4()}`,
         description: "A unique, anonymous ID for this Grouparoo cluster.",

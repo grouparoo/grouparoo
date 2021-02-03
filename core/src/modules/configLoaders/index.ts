@@ -5,7 +5,7 @@ import glob from "glob";
 import {
   ConfigurationObject,
   sortConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
@@ -21,7 +21,7 @@ import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
 import { Property } from "../../models/Property";
 
-interface guidsByClass {
+interface idsByClass {
   app: string[];
   source: string[];
   property: string[];
@@ -93,7 +93,7 @@ export async function processConfigObjects(
   externallyValidate: boolean,
   validate = false
 ) {
-  const seenGuids: guidsByClass = {
+  const seenGuids: idsByClass = {
     app: [],
     source: [],
     property: [],
@@ -127,7 +127,7 @@ export async function processConfigObjects(
           object = await loadSource(configObject, externallyValidate, validate);
           if (configObject.bootstrappedProperty) {
             seenGuids["property"].push(
-              await validateAndFormatGuid(
+              await validateAndFormatId(
                 Property,
                 configObject.bootstrappedProperty.id
               )
@@ -183,14 +183,14 @@ export async function processConfigObjects(
       continue;
     }
 
-    if (klass !== "setting") seenGuids[klass].push(object.guid);
+    if (klass !== "setting") seenGuids[klass].push(object.id);
   }
 
   return { seenGuids, errors };
 }
 
 async function deleteLockedObjects(seenGuids) {
-  const deletedGuids: guidsByClass = {
+  const deletedGuids: idsByClass = {
     app: [],
     source: [],
     property: [],

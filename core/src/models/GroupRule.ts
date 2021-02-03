@@ -16,12 +16,12 @@ import { Property } from "./Property";
 
 @Table({ tableName: "groupRules", paranoid: false })
 export class GroupRule extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "grr";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -32,12 +32,12 @@ export class GroupRule extends Model {
   @AllowNull(false)
   @ForeignKey(() => Group)
   @Column
-  groupGuid: string;
+  groupId: string;
 
   @AllowNull(true)
   @ForeignKey(() => Property)
   @Column
-  propertyGuid: string;
+  propertyId: string;
 
   @AllowNull(true)
   @Column
@@ -71,9 +71,9 @@ export class GroupRule extends Model {
 
   async apiData() {
     return {
-      guid: this.guid,
-      groupGuid: this.groupGuid,
-      propertyGuid: this.propertyGuid,
+      id: this.id,
+      groupId: this.groupId,
+      propertyId: this.propertyId,
       profileColumn: this.profileColumn,
       position: this.position,
       match: this.match,
@@ -88,29 +88,27 @@ export class GroupRule extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
   static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
   @BeforeSave
   static async ensureEitherPropertyOrProfileColumn(instance: GroupRule) {
     if (
-      (!instance.propertyGuid && !instance.profileColumn) ||
-      (instance.propertyGuid && instance.profileColumn)
+      (!instance.propertyId && !instance.profileColumn) ||
+      (instance.propertyId && instance.profileColumn)
     ) {
       throw new Error(
-        "either propertyGuid or profileColumn is required for a GroupRule"
+        "either propertyId or profileColumn is required for a GroupRule"
       );
     }
   }

@@ -13,7 +13,7 @@ export const getScheduleOptions = () => {
       },
     },
     {
-      key: "propertyGuid",
+      key: "propertyId",
       required: true,
       description: "What single property is this query returning?",
       type: "list",
@@ -21,7 +21,7 @@ export const getScheduleOptions = () => {
         const opts = [];
         properties.forEach((property) => {
           opts.push({
-            key: property.guid,
+            key: property.id,
             description: `${property.key} (${property.type})`,
           });
         });

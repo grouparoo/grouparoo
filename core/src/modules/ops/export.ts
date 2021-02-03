@@ -11,7 +11,7 @@ import { Op } from "sequelize";
 export namespace ExportOps {
   /** Count up the exports in each state, optionally filtered for a profile or destination */
   export async function totals(
-    where: { profileGuid?: string; destinationGuid?: string } = {}
+    where: { profileId?: string; destinationId?: string } = {}
   ) {
     const totals = { all: 0, created: 0, started: 0, completed: 0, error: 0 };
 
@@ -100,7 +100,7 @@ export namespace ExportOps {
     _exports = await Export.findAll({
       where: {
         startedAt: null,
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
       },
       order: [["createdAt", "asc"]],
       limit,
@@ -110,7 +110,7 @@ export namespace ExportOps {
       { startedAt: new Date() },
       {
         where: {
-          guid: { [Op.in]: _exports.map((e) => e.guid) },
+          id: { [Op.in]: _exports.map((e) => e.id) },
           startedAt: null,
         },
       }
@@ -126,8 +126,8 @@ export namespace ExportOps {
         await CLS.enqueueTask(
           "export:sendBatch",
           {
-            destinationGuid: destination.guid,
-            exportGuids: _exports.map((e) => e.guid),
+            destinationId: destination.id,
+            exportGuids: _exports.map((e) => e.id),
           },
           `exports:${app.type}`
         );
@@ -138,8 +138,8 @@ export namespace ExportOps {
             CLS.enqueueTask(
               "export:send",
               {
-                destinationGuid: destination.guid,
-                exportGuid: _export.guid,
+                destinationId: destination.id,
+                exportGuid: _export.id,
               },
               `exports:${app.type}`
             )

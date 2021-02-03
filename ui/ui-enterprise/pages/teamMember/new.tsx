@@ -13,7 +13,7 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
-  const { guid: teamGuid } = router.query;
+  const { id: teamGuid } = router.query;
 
   async function onSubmit(data) {
     // if the option is disabled, the default value is not set
@@ -51,12 +51,12 @@ export default function Page(props) {
             name="teamGuid"
             ref={register}
             defaultValue={
-              teamGuid ? teamGuid : teams.length > 0 ? teams[0].guid : null
+              teamGuid ? teamGuid : teams.length > 0 ? teams[0].id : null
             }
             disabled={teamGuid || loading ? true : false}
           >
             {teams.map((team) => (
-              <option key={`team-${team.guid}`} value={team.guid}>
+              <option key={`team-${team.id}`} value={team.id}>
                 {team.name}
               </option>
             ))}

@@ -1,4 +1,4 @@
-import { ErrorWithProfileGuid } from "@grouparoo/core";
+import { ErrorWithProfileId } from "@grouparoo/core";
 
 export interface MethodNormalizeGroupName {
   // mess with the names of groups (tags with no spaces, for example)
@@ -59,16 +59,16 @@ export function setGroupNamesAll(
 }
 
 export interface ErrorCheckExport {
-  profileGuid: string;
+  profileId: string;
   skippedMessage?: string;
   error?: any;
 }
 
 export function checkErrors(
   exportedProfiles: ErrorCheckExport[]
-): { success: boolean; errors: ErrorWithProfileGuid[] } {
+): { success: boolean; errors: ErrorWithProfileId[] } {
   // assuming semantics here of success is only true if there are zero errors
-  let errors: ErrorWithProfileGuid[] = null; // for ones that go wrong
+  let errors: ErrorWithProfileId[] = null; // for ones that go wrong
   let success = true;
   for (const exportedProfile of exportedProfiles) {
     let { error, skippedMessage } = exportedProfile;
@@ -78,12 +78,12 @@ export function checkErrors(
       if (typeof error === "string") {
         error = new Error(error);
       }
-      error.profileGuid = exportedProfile.profileGuid;
+      error.profileId = exportedProfile.profileId;
       errors.push(error);
     } else if (skippedMessage) {
       errors = errors || [];
-      const skip = <ErrorWithProfileGuid>new Error(skippedMessage);
-      skip.profileGuid = exportedProfile.profileGuid;
+      const skip = <ErrorWithProfileId>new Error(skippedMessage);
+      skip.profileId = exportedProfile.profileId;
       skip.errorLevel = "info";
       errors.push(skip);
     }

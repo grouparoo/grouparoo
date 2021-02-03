@@ -37,11 +37,9 @@ export class Console extends CLI {
       throw new Error("your event app is not ready");
     }
     const appOptions = await eventApp.getOptions();
-    const guid = appOptions.identifyingPropertyGuid;
-    if (!guid) {
-      throw new Error("no identifyingPropertyGuid on the events app");
-    }
-    return guid;
+    const id = appOptions.identifyingPropertyId;
+    if (!id) throw new Error("no identifyingPropertyId on the events app");
+    return id;
   }
 
   makeSession(i) {

@@ -11,14 +11,14 @@ export class TeamMembersList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
-      guid: { required: false },
+      id: { required: false },
       teamGuid: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.guid) where["teamGuid"] = params.guid;
+    if (params.id) where["teamGuid"] = params.id;
     if (params.teamGuid) where["teamGuid"] = params.teamGuid;
 
     const teamMembers = await TeamMember.findAll({
@@ -52,13 +52,13 @@ export class TeamMemberCreate extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const team = await Team.findByGuid(params.teamGuid);
+    const team = await Team.findById(params.teamGuid);
 
     const teamMember = new TeamMember({
       firstName: params.firstName,
       lastName: params.lastName,
       email: params.email,
-      teamGuid: team.guid,
+      teamGuid: team.id,
     });
 
     await teamMember.save();
@@ -78,13 +78,13 @@ export class TeamMemberView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
     const teamMember = await TeamMember.findOne({
-      where: { guid: params.guid },
+      where: { id: params.id },
       include: [Team],
     });
     if (!teamMember) throw new Error("team member not found");
@@ -104,7 +104,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       firstName: { required: false },
       lastName: { required: false },
       password: { required: false },
@@ -114,7 +114,7 @@ export class TeamMemberEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const teamMember = await TeamMember.findByGuid(params.guid);
+    const teamMember = await TeamMember.findById(params.id);
 
     await teamMember.update(params);
 
@@ -132,7 +132,7 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
@@ -140,11 +140,11 @@ export class TeamMemberDestroy extends AuthenticatedAction {
     params,
     session: { teamMember: myself },
   }: {
-    params: { guid: string };
+    params: { id: string };
     session: { teamMember: TeamMember };
   }) {
-    const teamMember = await TeamMember.findByGuid(params.guid);
-    if (myself.guid === teamMember.guid) {
+    const teamMember = await TeamMember.findById(params.id);
+    if (myself.id === teamMember.id) {
       throw new Error("you cannot delete yourself");
     }
 

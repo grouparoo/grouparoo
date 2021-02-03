@@ -16,7 +16,7 @@ describe("models/schedule", () => {
       source = await Source.create({
         name: "test source",
         type: "test-plugin-import",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -27,12 +27,12 @@ describe("models/schedule", () => {
       const schedule = new Schedule({
         name: "test schedule",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await schedule.save();
 
-      expect(schedule.guid.length).toBe(40);
+      expect(schedule.id.length).toBe(40);
       expect(schedule.createdAt).toBeTruthy();
       expect(schedule.updatedAt).toBeTruthy();
 
@@ -41,7 +41,7 @@ describe("models/schedule", () => {
 
       const _source = await schedule.$get("source");
       const _app = await _source.$get("app");
-      expect(_app.guid).toBe(app.guid);
+      expect(_app.id).toBe(app.id);
       await schedule.destroy();
     });
 
@@ -58,7 +58,7 @@ describe("models/schedule", () => {
     test("a schedule name will be generated from the source if one is not provided", async () => {
       const schedule = await Schedule.create({
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       expect(schedule.name).toMatch(/test source schedule/);
@@ -70,7 +70,7 @@ describe("models/schedule", () => {
       const schedule = await Schedule.create({
         name: "bye schedule",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await schedule.destroy();
@@ -97,7 +97,7 @@ describe("models/schedule", () => {
         Schedule.create({
           name: "test schedule",
           type: "test-plugin-import",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         })
       ).rejects.toThrow(/table is required/);
     });
@@ -105,14 +105,14 @@ describe("models/schedule", () => {
     test("a schedule cannot be created if the source does not support schedules", async () => {
       const app = await App.create({ type: "manual", name: "manual app" });
       await app.update({ state: "ready" });
-      const source = await Source.create({ type: "manual", appGuid: app.guid });
+      const source = await Source.create({ type: "manual", appId: app.id });
       await source.update({ state: "ready" });
 
       await expect(
         Schedule.create({
           name: "test schedule",
           type: "test-plugin-import",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         })
       ).rejects.toThrow(/cannot have a schedule/);
 
@@ -125,11 +125,11 @@ describe("models/schedule", () => {
         const schedule = new Schedule({
           name: "incoming schedule - too many options",
           type: "test-plugin-import",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
 
         await schedule.save();
-        expect(schedule.guid).toBeTruthy();
+        expect(schedule.id).toBeTruthy();
 
         await expect(
           schedule.setOptions({ maxColumn: "abc", something: "abc123" })
@@ -160,7 +160,7 @@ describe("models/schedule", () => {
 
       test("a schedule cannot be changed to to the ready state if there are missing required options", async () => {
         const schedule = await Schedule.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           name: "no opts",
         });
 
@@ -172,7 +172,7 @@ describe("models/schedule", () => {
 
       test("a schedule cannot be created in the ready state with missing required options", async () => {
         const schedule = Schedule.build({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           name: "no opts",
           state: "ready",
         });
@@ -208,14 +208,14 @@ describe("models/schedule", () => {
       const scheduleA = new Schedule({
         name: "incoming schedule A",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await scheduleA.save();
 
       const scheduleB = new Schedule({
         name: "incoming schedule B",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await expect(scheduleB.save()).rejects.toThrow(/already has a schedule/);
 
@@ -226,7 +226,7 @@ describe("models/schedule", () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await schedule.setOptions({ maxColumn: "id" });
@@ -240,7 +240,7 @@ describe("models/schedule", () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await schedule.setOptions({ maxColumn: "abc" });
@@ -248,7 +248,7 @@ describe("models/schedule", () => {
       await schedule.destroy(); // doesn't throw
 
       const optionsCount = await Option.count({
-        where: { ownerGuid: schedule.guid },
+        where: { ownerId: schedule.id },
       });
       expect(optionsCount).toBe(0);
     });
@@ -257,7 +257,7 @@ describe("models/schedule", () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await expect(schedule.setOptions({ notThing: "abc" })).rejects.toThrow(
@@ -341,7 +341,7 @@ describe("models/schedule", () => {
       source = await Source.create({
         name: "test source from plugin",
         type: "import-from-test-template-app",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
@@ -350,7 +350,7 @@ describe("models/schedule", () => {
     test("schedules can retrieve their options from the source", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       const pluginOptions = await schedule.pluginOptions();
@@ -373,12 +373,12 @@ describe("models/schedule", () => {
     test("running a schedule that isn't ready will throw", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await expect(
         Run.create({
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         })
@@ -390,13 +390,13 @@ describe("models/schedule", () => {
     test("running a schedule will save the highWaterMark sourceOffset on the run", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await schedule.setOptions({ maxColumn: "col" });
       await schedule.update({ state: "ready" });
 
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -412,13 +412,13 @@ describe("models/schedule", () => {
     test("the source can provide the percentComplete via sourceRunPercentComplete", async () => {
       const schedule = await Schedule.create({
         name: "test plugin schedule",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await schedule.setOptions({ maxColumn: "col" });
       await schedule.update({ state: "ready" });
 
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -443,7 +443,7 @@ describe("models/schedule", () => {
       await expect(
         Schedule.create({
           name: "test plugin schedule",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         })
       ).rejects.toThrow(/cannot have a schedule/);
     });

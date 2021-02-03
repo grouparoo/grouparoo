@@ -17,12 +17,12 @@ import { chatRoom } from "actionhero";
 
 @Table({ tableName: "logs", paranoid: false })
 export class Log extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "log";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @AllowNull(false)
   @Column
@@ -53,7 +53,7 @@ export class Log extends Model {
     // need to load this dynamically to prevent cyclic load errors
     return require("./Profile").Profile;
   })
-  ownerGuid: string;
+  ownerId: string;
 
   @AllowNull(false)
   @Column
@@ -67,8 +67,8 @@ export class Log extends Model {
 
   async apiData() {
     return {
-      guid: this.guid,
-      ownerGuid: this.ownerGuid,
+      id: this.id,
+      ownerId: this.ownerId,
       topic: this.topic,
       verb: this.verb,
       who: this.who,
@@ -80,28 +80,26 @@ export class Log extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
   static generateGuid(instance: Log) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
   @BeforeCreate
   static async determineOwnerGuid(instance: Log) {
-    if (!instance.ownerGuid) {
-      if (instance.data.guid) {
-        instance.ownerGuid = instance.data.guid;
-      } else if (instance.data.profileGuid) {
-        instance.ownerGuid = instance.data.profileGuid;
+    if (!instance.ownerId) {
+      if (instance.data.id) {
+        instance.ownerId = instance.data.id;
+      } else if (instance.data.profileId) {
+        instance.ownerId = instance.data.profileId;
       }
     }
   }

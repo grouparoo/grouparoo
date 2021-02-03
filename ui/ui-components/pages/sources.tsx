@@ -42,7 +42,7 @@ export default function Page(props) {
 
     const _runs = {};
     for (const i in sources) {
-      _runs[sources[i].guid] = await loadRun(sources[i], execApi);
+      _runs[sources[i].id] = await loadRun(sources[i], execApi);
     }
 
     setLoading(false);
@@ -60,7 +60,7 @@ export default function Page(props) {
   async function enqueueScheduleRun(source: Models.SourceType) {
     setLoading(true);
     try {
-      await execApi("post", `/schedule/${source.schedule.guid}/run`);
+      await execApi("post", `/schedule/${source.schedule.id}/run`);
       successHandler.set({ message: "run enqueued" });
     } finally {
       setLoading(false);
@@ -103,18 +103,18 @@ export default function Page(props) {
             const recurringFrequencyMinutes = schedule?.recurringFrequency
               ? schedule.recurringFrequency / (60 * 1000)
               : null;
-            const run = runs[source.guid];
+            const run = runs[source.id];
 
             return (
-              <Fragment key={`source-${source.guid}`}>
+              <Fragment key={`source-${source.id}`}>
                 <tr>
                   <td>
                     <AppIcon src={source.app?.icon} />
                   </td>
                   <td>
                     <Link
-                      href="/source/[guid]/overview"
-                      as={`/source/${source.guid}/overview`}
+                      href="/source/[id]/overview"
+                      as={`/source/${source.id}/overview`}
                     >
                       <a>
                         <strong>
@@ -131,8 +131,8 @@ export default function Page(props) {
                   <td>{source.type}</td>
                   <td>
                     <Link
-                      href="/app/[guid]/edit"
-                      as={`/app/${source.app.guid}/edit`}
+                      href="/app/[id]/edit"
+                      as={`/app/${source.app.id}/edit`}
                     >
                       <a>
                         <strong>{source.app.name}</strong>
@@ -213,7 +213,7 @@ Page.getInitialProps = async (ctx) => {
 
   const runs = {};
   for (const i in sources) {
-    runs[sources[i].guid] = await loadRun(sources[i], execApi);
+    runs[sources[i].id] = await loadRun(sources[i], execApi);
   }
 
   return { sources, total, runs };
@@ -225,7 +225,7 @@ async function loadRun(source: Models.SourceType, execApi) {
     "get",
     `/runs`,
     {
-      guid: source.schedule.guid,
+      id: source.schedule.id,
       limit: 1,
     },
     null,

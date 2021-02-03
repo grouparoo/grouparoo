@@ -20,9 +20,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { event } = await execApi("get", `/event/${guid}`);
+  const { event } = await execApi("get", `/event/${id}`);
   const logListInitialProps = await LogsList.hydrate(ctx);
   return { event, ...logListInitialProps };
 };

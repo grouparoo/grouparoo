@@ -42,10 +42,10 @@ export interface PluginConnectionScheduleOption {
   options: (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     source: Source;
-    sourceGuid: string;
+    sourceId: string;
     sourceOptions: SimpleSourceOptions;
     sourceMapping: SimpleSourceOptions;
     properties: Property[];
@@ -74,14 +74,14 @@ const STATE_TRANSITIONS = [
 }))
 @Table({ tableName: "schedules", paranoid: false })
 export class Schedule extends LoggedModel<Schedule> {
-  guidPrefix() {
+  idPrefix() {
     return "sch";
   }
 
   @AllowNull(false)
   @Column
   @ForeignKey(() => Source)
-  sourceGuid: string;
+  sourceId: string;
 
   @AllowNull(true)
   @Length({ min: 0, max: 191 })
@@ -106,7 +106,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   recurringFrequency: number;
 
-  @HasMany(() => Option, "ownerGuid")
+  @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
   @BelongsTo(() => Source)
@@ -150,10 +150,10 @@ export class Schedule extends LoggedModel<Schedule> {
     const options = await this.getOptions(null);
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       state: this.state,
-      sourceGuid: this.sourceGuid,
+      sourceId: this.sourceId,
       recurring: this.recurring,
       locked: this.locked,
       options,
@@ -165,19 +165,19 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async enqueueRun() {
     const run = await Run.create({
-      creatorGuid: this.guid,
+      creatorId: this.id,
       creatorType: "schedule",
       state: "running",
     });
 
     log(
-      `[ run ] starting run ${run.guid} for schedule ${this.name} (${this.guid})`,
+      `[ run ] starting run ${run.id} for schedule ${this.name} (${this.id})`,
       "notice"
     );
 
     await CLS.enqueueTask(
       "schedule:run",
-      { scheduleGuid: this.guid, runGuid: run.guid },
+      { scheduleGuid: this.id, runGuid: run.id },
       "schedules"
     );
   }
@@ -188,24 +188,22 @@ export class Schedule extends LoggedModel<Schedule> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeSave
   static async ensureSourceOptions(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+    const source = await Source.findById(instance.sourceId);
     const sourceOptions = await source.getOptions(true);
     await source.validateOptions(sourceOptions);
   }
 
   @BeforeSave
   static async ensureSourceMapping(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+    const source = await Source.findById(instance.sourceId);
     if (!source.scheduleAvailable()) {
       throw new Error(`a ${source.type} source cannot have a schedule`);
     }
@@ -234,7 +232,7 @@ export class Schedule extends LoggedModel<Schedule> {
   @BeforeValidate
   static async ensureName(instance: Schedule) {
     if (!instance.name) {
-      const source = await Source.findByGuid(instance.sourceGuid);
+      const source = await Source.findById(instance.sourceId);
       instance.name = `${source.name} schedule`;
     }
   }
@@ -243,25 +241,25 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureOnePerSource(instance: Schedule) {
     const existingCount = await Schedule.scope(null).count({
       where: {
-        sourceGuid: instance.sourceGuid,
+        sourceId: instance.sourceId,
       },
     });
 
     if (existingCount > 0) {
-      throw new Error(`source ${instance.sourceGuid} already has a schedule`);
+      throw new Error(`source ${instance.sourceId} already has a schedule`);
     }
   }
 
   @BeforeCreate
   static async ensureSourceCanUseSchedule(instance: Schedule) {
-    const source = await Source.findByGuid(instance.sourceGuid);
+    const source = await Source.findById(instance.sourceId);
 
     if (source.state !== "ready") throw new Error("source is not ready");
 
     const scheduleAvailable = await source.scheduleAvailable();
     if (!scheduleAvailable) {
       throw new Error(
-        `source ${source.name} (${instance.sourceGuid}) cannot have a schedule`
+        `source ${source.name} (${instance.sourceId}) cannot have a schedule`
       );
     }
   }
@@ -270,7 +268,7 @@ export class Schedule extends LoggedModel<Schedule> {
   static async ensureUniqueName(instance: Schedule) {
     const count = await Schedule.scope(null).count({
       where: {
-        guid: { [Op.ne]: instance.guid },
+        id: { [Op.ne]: instance.id },
         name: instance.name,
         state: { [Op.ne]: "draft" },
       },
@@ -290,13 +288,13 @@ export class Schedule extends LoggedModel<Schedule> {
 
   @AfterDestroy
   static async destroyAppOptions(instance: Schedule) {
-    return Option.destroy({ where: { ownerGuid: instance.guid } });
+    return Option.destroy({ where: { ownerId: instance.id } });
   }
 
   @AfterDestroy
   static async stopRuns(instance: Schedule) {
     const runs = await Run.findAll({
-      where: { creatorGuid: instance.guid, state: "running" },
+      where: { creatorId: instance.id, state: "running" },
     });
 
     for (const i in runs) {

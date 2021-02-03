@@ -13,7 +13,7 @@ export class LogsList extends AuthenticatedAction {
     this.inputs = {
       topic: { required: false },
       verb: { required: false },
-      ownerGuid: { required: false },
+      ownerId: { required: false },
       limit: { required: true, default: 100, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
@@ -36,17 +36,17 @@ export class LogsList extends AuthenticatedAction {
 
     if (params.topic) search.where["topic"] = params.topic;
     if (params.verb) search.where["verb"] = params.verb;
-    if (params.ownerGuid) {
-      const ownerGuids = [params.ownerGuid];
+    if (params.ownerId) {
+      const ownerGuids = [params.ownerId];
 
-      if (params.ownerGuid.match(/^pro_/)) {
+      if (params.ownerId.match(/^pro_/)) {
         const profileProperties = await ProfileProperty.findAll({
-          where: { profileGuid: params.ownerGuid },
+          where: { profileId: params.ownerId },
         });
-        profileProperties.forEach((prop) => ownerGuids.push(prop.guid));
+        profileProperties.forEach((prop) => ownerGuids.push(prop.id));
       }
 
-      search.where["ownerGuid"] = { [Op.in]: ownerGuids };
+      search.where["ownerId"] = { [Op.in]: ownerGuids };
     }
 
     const total = await Log.count(search);

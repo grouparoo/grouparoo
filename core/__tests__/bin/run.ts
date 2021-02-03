@@ -62,7 +62,7 @@ describe("bin/run", () => {
     test("will not be complete with a pending import", async () => {
       const profile = await helper.factories.profile();
       await profile.update({ state: "ready" });
-      await helper.factories.import(null, { profileGuid: profile.guid });
+      await helper.factories.import(null, { profileId: profile.id });
 
       expect(await instance.checkForComplete()).toBe(false);
       await profile.destroy();

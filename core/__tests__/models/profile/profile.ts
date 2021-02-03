@@ -30,7 +30,7 @@ describe("models/profile", () => {
 
     await profile.save();
 
-    expect(profile.guid.length).toBe(40);
+    expect(profile.id.length).toBe(40);
     expect(profile.createdAt).toBeTruthy();
     expect(profile.updatedAt).toBeTruthy();
   });
@@ -76,7 +76,7 @@ describe("models/profile", () => {
       });
 
       emailProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "email",
         unique: true,
@@ -85,7 +85,7 @@ describe("models/profile", () => {
       await emailProperty.update({ state: "ready" });
 
       colorProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "color",
         type: "string",
         unique: false,
@@ -94,7 +94,7 @@ describe("models/profile", () => {
       await colorProperty.update({ state: "ready" });
 
       houseProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "house",
         type: "string",
         unique: false,
@@ -131,7 +131,7 @@ describe("models/profile", () => {
       });
 
       expect(isNew).toBe(false);
-      expect(profile.guid).toBe(toad.guid);
+      expect(profile.id).toBe(toad.id);
     });
 
     test("it cannot find the profile by color and will create a new one", async () => {
@@ -144,7 +144,7 @@ describe("models/profile", () => {
       });
 
       expect(isNew).toBe(true);
-      expect(profile.guid).not.toBe(toad.guid);
+      expect(profile.id).not.toBe(toad.id);
     });
 
     test("it will throw an error if no unique profile properties are included", async () => {
@@ -168,7 +168,7 @@ describe("models/profile", () => {
         house: ["castle"],
       });
 
-      expect(responseA.profile.guid).toEqual(responseB.profile.guid);
+      expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);
       expect(responseB.isNew).toBe(false);
     });
@@ -184,7 +184,7 @@ describe("models/profile", () => {
         house: ["castle"],
       });
 
-      expect(responseA.profile.guid).toEqual(responseB.profile.guid);
+      expect(responseA.profile.id).toEqual(responseB.profile.id);
       expect(responseA.isNew).toBe(true);
       expect(responseB.isNew).toBe(false);
 
@@ -217,7 +217,7 @@ describe("models/profile", () => {
       await profile.save();
       await expect(
         profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
-      ).rejects.toThrow("cannot find a property for guid or key `email`");
+      ).rejects.toThrow("cannot find a property for id or key `email`");
       await profile.destroy();
     });
 
@@ -232,7 +232,7 @@ describe("models/profile", () => {
         await source.update({ state: "ready" });
 
         const emailProperty = await Property.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           key: "email",
           type: "string",
         });
@@ -240,7 +240,7 @@ describe("models/profile", () => {
         await emailProperty.update({ state: "ready" });
 
         const firstNameProperty = await Property.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           key: "firstName",
           type: "string",
         });
@@ -248,7 +248,7 @@ describe("models/profile", () => {
         await firstNameProperty.update({ state: "ready" });
 
         const lastNameProperty = await Property.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           key: "lastName",
           type: "string",
         });
@@ -256,7 +256,7 @@ describe("models/profile", () => {
         await lastNameProperty.update({ state: "ready" });
 
         const colorProperty = await Property.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           key: "color",
           type: "string",
         });
@@ -289,7 +289,7 @@ describe("models/profile", () => {
         await newProfile.update({ state: "ready" });
         await ProfileProperty.update(
           { state: "ready" },
-          { where: { profileGuid: newProfile.guid } }
+          { where: { profileId: newProfile.id } }
         );
 
         await newProfile.markPending();
@@ -321,7 +321,7 @@ describe("models/profile", () => {
       test("adding values to profile properties moves them to the ready state", async () => {
         await ProfileProperty.update(
           { state: "pending" },
-          { where: { profileGuid: profile.guid } }
+          { where: { profileId: profile.id } }
         );
 
         await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
@@ -333,7 +333,7 @@ describe("models/profile", () => {
       test("profile cannot transition to ready state until all properties are ready", async () => {
         await ProfileProperty.update(
           { state: "pending" },
-          { where: { profileGuid: profile.guid } }
+          { where: { profileId: profile.id } }
         );
 
         await expect(profile.update({ state: "ready" })).rejects.toThrow(
@@ -344,7 +344,7 @@ describe("models/profile", () => {
       test("profile can transition to ready state if all properties are ready", async () => {
         await ProfileProperty.update(
           { state: "ready" },
-          { where: { profileGuid: profile.guid } }
+          { where: { profileId: profile.id } }
         );
 
         await profile.update({ state: "ready" }); // does not throw
@@ -378,7 +378,7 @@ describe("models/profile", () => {
         test("changing state sets stateChangedAt", async () => {
           await ProfileProperty.update(
             { state: "pending" },
-            { where: { profileGuid: profile.guid } }
+            { where: { profileId: profile.id } }
           );
           const start = new Date().getTime();
 
@@ -397,7 +397,7 @@ describe("models/profile", () => {
 
         beforeAll(async () => {
           purchasesProperty = await Property.create({
-            sourceGuid: source.guid,
+            sourceId: source.id,
             key: "purchases",
             type: "string",
             isArray: true,
@@ -452,7 +452,7 @@ describe("models/profile", () => {
         test("changing state sets stateChangedAt", async () => {
           await ProfileProperty.update(
             { state: "pending" },
-            { where: { profileGuid: profile.guid } }
+            { where: { profileId: profile.id } }
           );
           const start = new Date().getTime();
 
@@ -551,12 +551,12 @@ describe("models/profile", () => {
         ]);
       });
 
-      test("profile properties can be addded by guid", async () => {
+      test("profile properties can be addded by id", async () => {
         const emailProperty = await Property.findOne({
           where: { key: "email" },
         });
         await profile.addOrUpdateProperty({
-          [emailProperty.guid]: ["luigi@example.com"],
+          [emailProperty.id]: ["luigi@example.com"],
         });
 
         const properties = await profile.properties();
@@ -618,9 +618,9 @@ describe("models/profile", () => {
 
         const profileProperty = await ProfileProperty.create(
           {
-            guid: "rule_missing",
-            profileGuid: profile.guid,
-            propertyGuid: "missing",
+            id: "rule_missing",
+            profileId: profile.id,
+            propertyId: "missing",
             rawValue: "green-hat",
             position: 0,
           },
@@ -638,12 +638,12 @@ describe("models/profile", () => {
 
       test("deleting the profile also deletes the properties", async () => {
         const beforeCount = await ProfileProperty.count({
-          where: { profileGuid: profile.guid },
+          where: { profileId: profile.id },
         });
         expect(beforeCount).toBe(5);
         await profile.destroy();
         const afterCount = await ProfileProperty.count({
-          where: { profileGuid: profile.guid },
+          where: { profileId: profile.id },
         });
         expect(afterCount).toBe(0);
       });
@@ -653,7 +653,7 @@ describe("models/profile", () => {
 
         beforeAll(async () => {
           const purchasesProperty = await Property.create({
-            sourceGuid: source.guid,
+            sourceId: source.id,
             key: "purchases",
             type: "string",
             isArray: true,
@@ -761,16 +761,16 @@ describe("models/profile", () => {
 
     test("calculating memberships will include the manual group", async () => {
       const groups = await profile.updateGroupMembership();
-      expect(groups[group.guid]).toEqual(true);
+      expect(groups[group.id]).toEqual(true);
     });
 
     test("deleting the profile will also delete the groupMember", async () => {
-      let count = await GroupMember.count({ where: { groupGuid: group.guid } });
+      let count = await GroupMember.count({ where: { groupId: group.id } });
       expect(count).toBe(1);
 
       await profile.destroy();
 
-      count = await GroupMember.count({ where: { groupGuid: group.guid } });
+      count = await GroupMember.count({ where: { groupId: group.id } });
       expect(count).toBe(0);
     });
   });
@@ -789,11 +789,11 @@ describe("models/profile", () => {
         name: "test app",
         type: "test-plugin-app",
       });
-      await app.setOptions({ fileGuid: "abc123" });
+      await app.setOptions({ fileId: "abc123" });
       await app.update({ state: "ready" });
 
       source = await Source.create({
-        appGuid: app.guid,
+        appId: app.id,
         name: "test import source",
         type: "test-plugin-import",
       });
@@ -803,7 +803,7 @@ describe("models/profile", () => {
       await source.update({ state: "ready" });
 
       emailProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: true,
@@ -843,11 +843,11 @@ describe("models/profile", () => {
         ]);
 
         const groupMemberships = await profile.updateGroupMembership();
-        expect(groupMemberships[group.guid]).toBe(true);
+        expect(groupMemberships[group.id]).toBe(true);
 
         members = await group.$get("groupMembers");
         expect(members.length).toBe(1);
-        expect(members[0].profileGuid).toBe(profile.guid);
+        expect(members[0].profileId).toBe(profile.id);
       });
     });
   });
@@ -900,7 +900,7 @@ describe("models/profile", () => {
       });
 
       source = await Source.create({
-        appGuid: app.guid,
+        appId: app.id,
         name: "test import source",
         type: "import-from-test-template-app",
       });
@@ -909,14 +909,14 @@ describe("models/profile", () => {
       await source.update({ state: "ready" });
 
       emailProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "email",
         type: "string",
         unique: true,
       });
 
       colorProperty = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "color",
         type: "string",
         unique: false,
@@ -980,7 +980,7 @@ describe("models/profile", () => {
     beforeAll(async () => {
       profile = await helper.factories.profile();
       await helper.factories.event({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         type: "pageview",
         data: { page: "/" },
         occurredAt: new Date(1000),
@@ -988,7 +988,7 @@ describe("models/profile", () => {
 
       helper.sleep(1001);
       await helper.factories.event({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         type: "pageview",
         data: { page: "/about" },
         occurredAt: new Date(2000),
@@ -996,7 +996,7 @@ describe("models/profile", () => {
       helper.sleep(1001);
 
       await helper.factories.event({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         type: "purchase",
         data: { item: "red-shirt", value: 10 },
         occurredAt: new Date(3000),
@@ -1031,7 +1031,7 @@ describe("models/profile", () => {
         "profile:destroyEvents"
       );
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].guid).toBe(profile.guid);
+      expect(foundTasks[0].args[0].id).toBe(profile.id);
     });
   });
 
@@ -1052,28 +1052,28 @@ describe("models/profile", () => {
       await profileB.update({ anonymousId: "abc123" });
 
       await helper.factories.event({
-        profileGuid: profileA.guid,
+        profileId: profileA.id,
         type: "pageview",
         data: { page: "/" },
       });
       await helper.factories.event({
-        profileGuid: profileA.guid,
+        profileId: profileA.id,
         type: "pageview",
         data: { page: "/sign-in" },
       });
       await helper.factories.event({
-        profileGuid: profileA.guid,
+        profileId: profileA.id,
         type: "pageview",
         data: { page: "/sign-purchase" },
       });
 
       await helper.factories.event({
-        profileGuid: profileB.guid,
+        profileId: profileB.id,
         type: "pageview",
         data: { page: "/about" },
       });
       await helper.factories.event({
-        profileGuid: profileB.guid,
+        profileId: profileB.id,
         type: "pageview",
         data: { page: "/item-1" },
       });
@@ -1178,10 +1178,10 @@ describe("models/profile", () => {
 
     test("the merged profile has a log entry about the merge", async () => {
       const logs = await Log.findAll({
-        where: { ownerGuid: profileA.guid, verb: "merge" },
+        where: { ownerId: profileA.id, verb: "merge" },
       });
       expect(logs.length).toEqual(1);
-      expect(logs[0].message).toEqual(`merged with profile ${profileB.guid}`);
+      expect(logs[0].message).toEqual(`merged with profile ${profileB.id}`);
     });
 
     test("merging profiles moved the anonymousId", async () => {

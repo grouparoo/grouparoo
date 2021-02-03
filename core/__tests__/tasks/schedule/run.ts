@@ -51,8 +51,8 @@ describe("tasks/schedule:run", () => {
       const run = await helper.factories.run(schedule);
 
       specHelper.runTask("schedule:run", {
-        scheduleGuid: schedule.guid,
-        runGuid: run.guid,
+        scheduleGuid: schedule.id,
+        runGuid: run.id,
       }); // doesn't throw
     });
 

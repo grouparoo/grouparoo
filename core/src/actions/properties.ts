@@ -19,7 +19,7 @@ export class PropertiesList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       unique: { required: false },
       state: { required: false },
-      sourceGuid: { required: false },
+      sourceId: { required: false },
       order: {
         required: false,
         default: [
@@ -33,7 +33,7 @@ export class PropertiesList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const where = {};
     if (params.state) where["state"] = params.state;
-    if (params.sourceGuid) where["sourceGuid"] = params.sourceGuid;
+    if (params.sourceId) where["sourceId"] = params.sourceId;
     if (params?.unique?.toString().toLowerCase() === "true")
       where["unique"] = true;
 
@@ -47,7 +47,7 @@ export class PropertiesList extends AuthenticatedAction {
     const responseProperties: Array<
       AsyncReturnType<typeof Property.prototype.apiData>
     > = [];
-    const responseExamples: { [guid: string]: string[] } = {};
+    const responseExamples: { [id: string]: string[] } = {};
 
     for (const i in properties) {
       const property = properties[i];
@@ -55,16 +55,16 @@ export class PropertiesList extends AuthenticatedAction {
 
       const examples = await ProfileProperty.findAll({
         where: {
-          propertyGuid: property.guid,
+          propertyId: property.id,
           rawValue: { [Op.not]: null },
         },
-        order: [["guid", "asc"]],
+        order: [["id", "asc"]],
         limit: 5,
       });
       const exampleValues = examples.map((e) => e.rawValue);
 
       responseProperties.push(apiData);
-      responseExamples[property.guid] = exampleValues;
+      responseExamples[property.id] = exampleValues;
     }
 
     const total = await Property.scope(null).count();
@@ -100,17 +100,17 @@ export class PropertyGroups extends AuthenticatedAction {
       "enumerate the groups using this property in their rules";
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
-    this.inputs = { guid: { required: true } };
+    this.inputs = { id: { required: true } };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
     const groups = await Group.findAll({
       include: [
         {
           model: GroupRule,
-          where: { propertyGuid: property.guid },
+          where: { propertyId: property.id },
         },
       ],
     });
@@ -134,7 +134,7 @@ export class PropertyCreate extends AuthenticatedAction {
       unique: { required: false },
       isArray: { required: false },
       state: { required: false },
-      sourceGuid: { required: false },
+      sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
     };
@@ -146,7 +146,7 @@ export class PropertyCreate extends AuthenticatedAction {
       type: params.type,
       unique: params.unique,
       isArray: params.isArray,
-      sourceGuid: params.sourceGuid,
+      sourceId: params.sourceId,
     });
     if (params.options) await property.setOptions(params.options);
     if (params.filters) await property.setFilters(params.filters);
@@ -168,20 +168,20 @@ export class PropertyEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       key: { required: false },
       type: { required: false },
       unique: { required: false },
       isArray: { required: false },
       state: { required: false },
-      sourceGuid: { required: false },
+      sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
     if (params.options) await property.setOptions(params.options);
     if (params.filters) await property.setFilters(params.filters);
@@ -206,12 +206,12 @@ export class PropertyMakeIdentifying extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
     await property.makeIdentifying();
     return { property: await property.apiData() };
   }
@@ -225,12 +225,12 @@ export class PropertyFilterOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
     return { options: await property.pluginFilterOptions() };
   }
 }
@@ -243,12 +243,12 @@ export class PropertyView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
     const source = await property.$get("source");
 
     return {
@@ -266,12 +266,12 @@ export class PropertyPluginOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
     return { pluginOptions: await property.pluginOptions() };
   }
@@ -285,8 +285,8 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "read" };
     this.inputs = {
-      guid: { required: true },
-      profileGuid: { required: false },
+      id: { required: true },
+      profileId: { required: false },
       options: { required: false },
       filters: { required: false },
     };
@@ -295,12 +295,12 @@ export class PropertyProfilePreview extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     let profile: Profile;
 
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
-    if (params.profileGuid) {
-      profile = await Profile.findByGuid(params.profileGuid);
+    if (params.profileId) {
+      profile = await Profile.findById(params.profileId);
     } else {
-      profile = await Profile.findOne({ order: [["guid", "asc"]] });
+      profile = await Profile.findOne({ order: [["id", "asc"]] });
       if (!profile) {
         return { errorMessage: "No profiles found" };
       }
@@ -339,7 +339,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     }
 
     apiData.properties[property.key] = {
-      guid: property.guid,
+      id: property.id,
       state: property.state,
       values: newPropertyValues,
       type: property.type,
@@ -365,12 +365,12 @@ export class PropertyTest extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
     return { test: (await property.test()) || true };
   }
@@ -384,12 +384,12 @@ export class PropertyDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const property = await Property.findByGuid(params.guid);
+    const property = await Property.findById(params.id);
 
     await property.destroy();
     return { success: true };

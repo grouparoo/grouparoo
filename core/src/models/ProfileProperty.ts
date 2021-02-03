@@ -28,19 +28,19 @@ const STATE_TRANSITIONS = [
 
 @Table({ tableName: "profileProperties", paranoid: false })
 export class ProfileProperty extends LoggedModel<ProfileProperty> {
-  guidPrefix() {
+  idPrefix() {
     return "prp";
   }
 
   @AllowNull(false)
   @ForeignKey(() => Profile)
   @Column
-  profileGuid: string;
+  profileId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Property)
   @Column
-  propertyGuid: string;
+  propertyId: string;
 
   @AllowNull(false)
   @Default("pending")
@@ -78,7 +78,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     const property = await this.$get("property");
 
     return {
-      profileGuid: this.profileGuid,
+      profileId: this.profileId,
       property: this.property,
       state: this.state,
       valueChangedAt: this.valueChangedAt
@@ -111,9 +111,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   async ensureProperty() {
     const property = await this.$get("property");
     if (!property) {
-      throw new Error(
-        `property not found for propertyGuid ${this.propertyGuid}`
-      );
+      throw new Error(`property not found for propertyId ${this.propertyId}`);
     }
     return property;
   }
@@ -156,9 +154,9 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     if (property.unique) {
       const count = await ProfileProperty.count({
         where: {
-          propertyGuid: property.guid,
+          propertyId: property.id,
           rawValue: this.rawValue,
-          profileGuid: { [Op.notIn]: [this.profileGuid] },
+          profileId: { [Op.notIn]: [this.profileId] },
         },
       });
 
@@ -172,11 +170,9 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -191,15 +187,15 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   ) {
     const existing = await ProfileProperty.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        profileGuid: instance.profileGuid,
-        propertyGuid: instance.propertyGuid,
+        id: { [Op.ne]: instance.id },
+        profileId: instance.profileId,
+        propertyId: instance.propertyId,
         position: instance.position,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a ProfileProperty for ${instance.profileGuid} and ${instance.propertyGuid} at position ${instance.position}`
+        `There is already a ProfileProperty for ${instance.profileId} and ${instance.propertyId} at position ${instance.position}`
       );
     }
   }

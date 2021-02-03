@@ -23,7 +23,7 @@ require("./../fixtures/export-objects/export-profiles-custom");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
+const appId = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 const destinationOptions = {
   syncMode: "Sync",
   profileObject: "Contact",
@@ -40,15 +40,15 @@ const destinationOptions = {
 const model = destinationModel(destinationOptions);
 
 const custom1 = "1id";
-const guid1 = "pro1";
+const id1 = "pro1";
 let userId1 = null;
 
 const custom2 = "2id";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const custom3 = "3id";
-const guid3 = "pro3";
+const id3 = "pro3";
 let userId3 = null;
 
 const group1 = "(test) High Value2";
@@ -92,12 +92,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom1,
@@ -126,12 +126,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
@@ -147,7 +147,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom2,
@@ -180,12 +180,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "John",
@@ -214,12 +214,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "Brian",
@@ -236,7 +236,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Test",
@@ -276,12 +276,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             FirstName: "Brian",
@@ -312,12 +312,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
@@ -332,7 +332,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom2,
@@ -367,12 +367,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
@@ -387,7 +387,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
@@ -417,12 +417,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can ignore case for an custom value to update same user", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Smith",
@@ -449,12 +449,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
 
   test("can set back to lowercase", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1.toUpperCase(),
             LastName: "MACRON",
@@ -469,7 +469,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom2,
@@ -496,12 +496,12 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Custom_External_ID__c: custom1,
             LastName: "Simpson",
@@ -516,7 +516,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Custom_External_ID__c: custom2,
             LastName: "Jones",
@@ -532,7 +532,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             Custom_External_ID__c: custom3,
@@ -552,7 +552,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);

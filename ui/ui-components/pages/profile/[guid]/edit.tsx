@@ -58,7 +58,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.ProfileView = await execApi(
       "get",
-      `/profile/${profile.guid}`
+      `/profile/${profile.id}`
     );
     if (response?.profile) {
       profileHandler.set(response.profile);
@@ -74,7 +74,7 @@ export default function Page(props) {
     successHandler.set({ message: "enqueued for import..." });
     const response: Actions.ProfileImportAndExport = await execApi(
       "post",
-      `/profile/${profile.guid}/importAndExport`
+      `/profile/${profile.id}/importAndExport`
     );
     if (response?.profile) {
       successHandler.set({ message: "Import and Export Complete!" });
@@ -88,7 +88,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.ProfileDestroy = await execApi(
         "delete",
-        `/profile/${profile.guid}`
+        `/profile/${profile.id}`
       );
       if (success) {
         router.push("/profiles");
@@ -102,9 +102,9 @@ export default function Page(props) {
     setLoading(true);
     const { success }: Actions.GroupRemoveProfile = await execApi(
       "put",
-      `/group/${group.guid}/remove`,
+      `/group/${group.id}/remove`,
       {
-        profileGuid: profile.guid,
+        profileId: profile.id,
       }
     );
     if (success) {
@@ -119,14 +119,14 @@ export default function Page(props) {
   async function handleAdd(event) {
     const form = event.currentTarget;
     event.preventDefault();
-    const groupGuid = form.elements[0].value;
+    const groupId = form.elements[0].value;
 
     setLoading(true);
     const { success }: Actions.GroupAddProfile = await execApi(
       "put",
-      `/group/${groupGuid}/add`,
+      `/group/${groupId}/add`,
       {
-        profileGuid: profile.guid,
+        profileId: profile.id,
       }
     );
     if (success) {
@@ -144,7 +144,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.ProfileEdit = await execApi(
       "put",
-      `/profile/${profile.guid}`,
+      `/profile/${profile.id}`,
       {
         properties: hash,
       }
@@ -165,15 +165,15 @@ export default function Page(props) {
   // const manualProperties = [];
   const manualAppGuids = apps
     .filter((app) => app.type === "manual")
-    .map((app) => app.guid);
+    .map((app) => app.id);
   const manualSourceGuids = sources
-    .filter((source) => manualAppGuids.includes(source.appGuid))
-    .map((source) => source.guid);
+    .filter((source) => manualAppGuids.includes(source.appId))
+    .map((source) => source.id);
   const manualProperties = properties
-    .filter((p) => manualSourceGuids.includes(p.sourceGuid))
+    .filter((p) => manualSourceGuids.includes(p.sourceId))
     .map((p) => p.key);
 
-  const groupMembershipGuids = groups.map((g) => g.guid);
+  const groupMembershipGuids = groups.map((g) => g.id);
 
   const uniqueProfileProperties = [];
   let email: string;
@@ -366,7 +366,7 @@ export default function Page(props) {
 
           <ListGroup>
             {groups.map((group) => (
-              <ListGroup.Item key={`groupMember-${group.guid}`} variant="info">
+              <ListGroup.Item key={`groupMember-${group.id}`} variant="info">
                 {group.type === "manual" ? (
                   <>
                     <LoadingButton
@@ -383,8 +383,8 @@ export default function Page(props) {
                   </>
                 ) : null}
                 <EnterpriseLink
-                  href="/group/[guid]/members"
-                  as={`/group/${group.guid}/members`}
+                  href="/group/[id]/members"
+                  as={`/group/${group.id}/members`}
                 >
                   <a>{group.name}</a>
                 </EnterpriseLink>
@@ -397,18 +397,18 @@ export default function Page(props) {
           <Form onSubmit={(event) => handleAdd(event)} autoComplete="off">
             <Row>
               <Col md={9}>
-                <Form.Group controlId="groupGuid">
+                <Form.Group controlId="groupId">
                   <Form.Label>Add Group</Form.Label>
                   <Form.Control as="select" disabled={loading}>
                     {allGroups.map((group) => {
                       const disabled =
                         group.type !== "manual" ||
-                        groupMembershipGuids.includes(group.guid);
+                        groupMembershipGuids.includes(group.id);
                       return (
                         <option
                           disabled={disabled}
-                          value={group.guid}
-                          key={`group-${group.guid}`}
+                          value={group.id}
+                          key={`group-${group.id}`}
                         >
                           {group.name}
                         </option>
@@ -437,9 +437,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { profile, groups } = await execApi("get", `/profile/${guid}`);
+  const { profile, groups } = await execApi("get", `/profile/${id}`);
   const { properties } = await execApi("get", `/properties`);
   const { groups: allGroups } = await execApi("get", `/groups`);
   const { apps } = await execApi("get", `/apps`);

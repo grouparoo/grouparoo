@@ -54,7 +54,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.SourceBootstrapUniqueProperty = await execApi(
         "post",
-        `/source/${source.guid}/bootstrapUniqueProperty`,
+        `/source/${source.id}/bootstrapUniqueProperty`,
         Object.assign(newProperty, { mappedColumn: newMappingKey })
       );
       if (response?.property) {
@@ -75,7 +75,7 @@ export default function Page(props) {
 
         setNewMappingValue(response.property.key);
         document.getElementById(
-          response.property.guid
+          response.property.id
           // @ts-ignore
         ).checked = true;
       }
@@ -91,7 +91,7 @@ export default function Page(props) {
     source.mapping[newMappingKey] = newMappingValue;
     const response: Actions.SourceEdit = await execApi(
       "put",
-      `/source/${source.guid}`,
+      `/source/${source.id}`,
       Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
@@ -100,15 +100,12 @@ export default function Page(props) {
         await createSchedule({
           router,
           execApi,
-          sourceGuid: response.source.guid,
+          sourceId: response.source.id,
           setLoading: () => {},
         });
       } else if (source.state !== response.source.state) {
         // we just went 'ready'
-        router.push(
-          `/source/[guid]/overview`,
-          `/source/${source.guid}/overview`
-        );
+        router.push(`/source/[id]/overview`, `/source/${source.id}/overview`);
       } else {
         setSource(response.source);
         successHandler.set({ message: "Source updated" });
@@ -250,13 +247,13 @@ export default function Page(props) {
                       </thead>
                       <tbody>
                         {properties.map((rule) => (
-                          <tr key={`prr-${rule.guid}`}>
+                          <tr key={`prr-${rule.id}`}>
                             <td>
                               <Form.Check
                                 inline
                                 required
                                 type="radio"
-                                id={rule.guid}
+                                id={rule.id}
                                 name="remoteProfileRuleGuid"
                                 disabled={loading}
                                 defaultChecked={
@@ -269,8 +266,8 @@ export default function Page(props) {
                               <strong>{rule.key}</strong>
                             </td>
                             <td>
-                              {propertyExamples[rule.guid]
-                                ? propertyExamples[rule.guid]
+                              {propertyExamples[rule.id]
+                                ? propertyExamples[rule.id]
                                     .slice(0, 3)
                                     .join(", ")
                                 : null}
@@ -358,9 +355,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { source } = await execApi("get", `/source/${guid}`);
+  const { source } = await execApi("get", `/source/${id}`);
 
   const { properties, examples: propertyExamples } = await execApi(
     "get",
@@ -378,7 +375,7 @@ Page.getInitialProps = async (ctx) => {
 
   try {
     if (source.previewAvailable) {
-      const previewResponse = await execApi("get", `/source/${guid}/preview`);
+      const previewResponse = await execApi("get", `/source/${id}/preview`);
       preview = previewResponse.preview;
     }
   } catch (error) {

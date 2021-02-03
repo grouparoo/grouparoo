@@ -43,7 +43,7 @@ export default function RunsList(props) {
 
   async function load() {
     const params = { limit, offset };
-    if (router.query.guid) params["guid"] = router.query.guid.toString();
+    if (router.query.id) params["id"] = router.query.id.toString();
     if (stateFilter !== "") params["state"] = stateFilter;
     if (errorFilter !== "") params["hasError"] = errorFilter;
 
@@ -163,12 +163,12 @@ export default function RunsList(props) {
         <tbody>
           {runs.map((run) => {
             return (
-              <Fragment key={`profile-${run.guid}`}>
+              <Fragment key={`profile-${run.id}`}>
                 <tr>
                   <td>
                     Guid:{" "}
-                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
-                      <a>{run.guid}</a>
+                    <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
+                      <a>{run.id}</a>
                     </Link>
                   </td>
                   <td>
@@ -191,7 +191,7 @@ export default function RunsList(props) {
                   <td>
                     <EnterpriseLink
                       prefetch={false}
-                      href={`/object/${run.creatorGuid}`}
+                      href={`/object/${run.creatorId}`}
                     >
                       <a>
                         {run.creatorType}: {run.creatorName}
@@ -220,7 +220,7 @@ export default function RunsList(props) {
                     ) : null}
                   </td>
                   <td>
-                    <Link href="/imports/[guid]" as={`/imports/${run.guid}`}>
+                    <Link href="/imports/[id]" as={`/imports/${run.id}`}>
                       <a>Imports Created: {run.importsCreated}</a>
                     </Link>
                     <br />
@@ -235,7 +235,7 @@ export default function RunsList(props) {
                     <td colSpan={7} style={{ border: 0 }}>
                       <Alert variant="danger">
                         {run.error.split("\n").map((err, errIdx) => (
-                          <Fragment key={`err-${run.guid}-${errIdx}`}>
+                          <Fragment key={`err-${run.id}-${errIdx}`}>
                             {err}
                             <br />
                           </Fragment>
@@ -260,10 +260,10 @@ export default function RunsList(props) {
 }
 
 RunsList.hydrate = async (ctx) => {
-  const { guid, limit, offset, state, error } = ctx.query;
+  const { id, limit, offset, state, error } = ctx.query;
   const { execApi } = useApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
-    guid,
+    id,
     limit,
     offset,
     state,

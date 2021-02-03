@@ -9,7 +9,7 @@ describe("models/team", () => {
 
     await team.save();
 
-    expect(team.guid.length).toBe(40);
+    expect(team.id.length).toBe(40);
     expect(team.createdAt).toBeTruthy();
     expect(team.updatedAt).toBeTruthy();
   });
@@ -40,7 +40,7 @@ describe("models/team", () => {
   test("teams with team members cannot be deleted", async () => {
     const team = await Team.create({ name: "people team" });
     const teamMember = await TeamMember.create({
-      teamGuid: team.guid,
+      teamGuid: team.id,
       firstName: "Bowser",
       lastName: "Koopa",
       email: "bowser@example.com",

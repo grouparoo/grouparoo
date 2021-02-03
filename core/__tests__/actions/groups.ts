@@ -4,7 +4,7 @@ import { Group, Profile, Team, TeamMember } from "../../src";
 
 describe("actions/groups", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -40,10 +40,10 @@ describe("actions/groups", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group");
       expect(group.type).toBe("manual");
-      guid = group.guid;
+      id = group.id;
     });
 
     test("a writer cannot create a new group with a bogus type", async () => {
@@ -72,7 +72,7 @@ describe("actions/groups", () => {
     test("a writer can edit a group", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "new group name",
       };
       const { error, group } = await specHelper.runAction(
@@ -80,32 +80,32 @@ describe("actions/groups", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group name");
     });
 
     test("a writer can view a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, group } = await specHelper.runAction(
         "group:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("new group name");
     });
 
     test("an administrator can view the destinations tracking a group", async () => {
       const destination = await helper.factories.destination();
-      const group = await Group.findByGuid(guid);
+      const group = await Group.findById(id);
       await destination.trackGroup(group);
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, destinations } = await specHelper.runAction(
         "group:listDestinations",
@@ -113,7 +113,7 @@ describe("actions/groups", () => {
       );
       expect(error).toBeUndefined();
       expect(destinations.length).toBe(1);
-      expect(destinations[0].guid).toEqual(destination.guid);
+      expect(destinations[0].id).toEqual(destination.id);
 
       await destination.unTrackGroup();
       await destination.destroy();
@@ -122,7 +122,7 @@ describe("actions/groups", () => {
     test("an administrator can enqueue a group export to CSV", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         type: "csv",
       };
       const { error, success } = await specHelper.runAction(
@@ -136,17 +136,17 @@ describe("actions/groups", () => {
         "group:exportToCSV"
       );
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ groupGuid: guid });
+      expect(foundTasks[0].args[0]).toEqual({ groupId: id });
     });
 
     test("an administrator cannot destroy a group used by a destination", async () => {
       const destination = await helper.factories.destination();
-      const group = await Group.findByGuid(guid);
+      const group = await Group.findById(id);
       await destination.trackGroup(group);
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "group:destroy",
@@ -163,7 +163,7 @@ describe("actions/groups", () => {
     test("an administrator can enqueue a group to be destroyed", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "group:destroy",
@@ -181,7 +181,7 @@ describe("actions/groups", () => {
 
       connection.params = {
         csrfToken,
-        guid: newGroup.guid,
+        id: newGroup.id,
         force: true,
       };
       const destroyResponse = await specHelper.runAction(
@@ -191,7 +191,7 @@ describe("actions/groups", () => {
       expect(destroyResponse.error).toBeUndefined();
       expect(destroyResponse.success).toBe(true);
 
-      expect(await Group.count({ where: { guid: newGroup.guid } })).toBe(0);
+      expect(await Group.count({ where: { id: newGroup.id } })).toBe(0);
     });
 
     describe("calculated group", () => {
@@ -275,7 +275,7 @@ describe("actions/groups", () => {
         ]);
 
         // test existing rules
-        connection.params = { csrfToken, guid: group.guid };
+        connection.params = { csrfToken, id: group.id };
         let response = await specHelper.runAction(
           "group:countComponentMembers",
           connection
@@ -292,7 +292,7 @@ describe("actions/groups", () => {
             operation: { op: "like" },
           },
         ];
-        connection.params = { csrfToken, guid: group.guid, rules: newRules };
+        connection.params = { csrfToken, id: group.id, rules: newRules };
         response = await specHelper.runAction(
           "group:countComponentMembers",
           connection
@@ -313,7 +313,7 @@ describe("actions/groups", () => {
         ]);
 
         // test existing rules
-        connection.params = { csrfToken, guid: group.guid };
+        connection.params = { csrfToken, id: group.id };
         let response = await specHelper.runAction(
           "group:countPotentialMembers",
           connection
@@ -329,7 +329,7 @@ describe("actions/groups", () => {
             operation: { op: "like" },
           },
         ];
-        connection.params = { csrfToken, guid: group.guid, rules: newRules };
+        connection.params = { csrfToken, id: group.id, rules: newRules };
         response = await specHelper.runAction(
           "group:countPotentialMembers",
           connection
@@ -339,7 +339,7 @@ describe("actions/groups", () => {
       });
 
       test("group#run", async () => {
-        connection.params = { csrfToken, guid: group.guid };
+        connection.params = { csrfToken, id: group.id };
         let response = await specHelper.runAction("group:run", connection);
         expect(response.error).toBeUndefined();
         expect(response.success).toBe(true);
@@ -359,13 +359,13 @@ describe("actions/groups", () => {
         name: "test group",
       });
       await group.save();
-      guid = group.guid;
+      id = group.id;
 
       const readOnlyTeam = new Team({
         name: "read only team",
       });
       await readOnlyTeam.save();
-      teamGuid = readOnlyTeam.guid;
+      teamGuid = readOnlyTeam.id;
 
       const luigi = new TeamMember({
         teamGuid,
@@ -427,12 +427,12 @@ describe("actions/groups", () => {
       );
       expect(error).toBeUndefined();
       expect(groups.length).toBe(2);
-      const groupGuids = groups.map((g) => g.guid);
-      expect(groupGuids[0]).toBe(bigGroup.guid);
-      expect(groupGuids[1]).toBe(smallGroup.guid);
+      const groupGuids = groups.map((g) => g.id);
+      expect(groupGuids[0]).toBe(bigGroup.id);
+      expect(groupGuids[1]).toBe(smallGroup.id);
 
-      expect(newestMembersAdded[bigGroup.guid]).toBeGreaterThanOrEqual(
-        newestMembersAdded[smallGroup.guid]
+      expect(newestMembersAdded[bigGroup.id]).toBeGreaterThanOrEqual(
+        newestMembersAdded[smallGroup.id]
       );
 
       await profileA.destroy();
@@ -444,7 +444,7 @@ describe("actions/groups", () => {
     test("a reader cannot edit a group", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "new group name",
       };
       const { error } = await specHelper.runAction("group:edit", connection);
@@ -456,21 +456,21 @@ describe("actions/groups", () => {
     test("a reader can view a team", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, group } = await specHelper.runAction(
         "group:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(group.guid).toBeTruthy();
+      expect(group.id).toBeTruthy();
       expect(group.name).toBe("test group");
     });
 
     test("a reader cannot destroy a group", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "group:destroy",

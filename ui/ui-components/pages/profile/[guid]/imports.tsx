@@ -30,8 +30,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
-  const { profile } = await execApi("get", `/profile/${guid}`);
+  const { id } = ctx.query;
+  const { profile } = await execApi("get", `/profile/${id}`);
   const importListInitialProps = await ImportList.hydrate(ctx);
   return { profile, ...importListInitialProps };
 };

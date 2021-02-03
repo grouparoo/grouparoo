@@ -13,10 +13,10 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
-  const { appGuid } = router.query;
+  const { appId } = router.query;
 
   const relevantConnectionApps = connectionApps.filter(
-    (ca) => ca.app.guid === appGuid
+    (ca) => ca.app.id === appId
   );
 
   const create = async (connection) => {
@@ -25,14 +25,14 @@ export default function Page(props) {
       "post",
       `/destination`,
       {
-        appGuid,
+        appId,
         type: connection.name,
       }
     );
     if (response?.destination) {
       router.push(
-        "/destination/[guid]/edit",
-        `/destination/${response.destination.guid}/edit`
+        "/destination/[id]/edit",
+        `/destination/${response.destination.id}/edit`
       );
     } else {
       setLoading(false);

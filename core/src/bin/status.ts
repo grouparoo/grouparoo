@@ -31,8 +31,8 @@ export class Status extends CLI {
     const groupsStatus = {};
     for (const i in groups) {
       const group = groups[i];
-      const additionTime = newestMembersAdded[group.guid]
-        ? new Date(newestMembersAdded[group.guid]).toISOString()
+      const additionTime = newestMembersAdded[group.id]
+        ? new Date(newestMembersAdded[group.id]).toISOString()
         : "Never";
       const groupMembersCount = await group.$count("groupMembers");
       groupsStatus[group.name] = [

@@ -1,6 +1,6 @@
 import {
   ConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
@@ -15,16 +15,16 @@ export async function loadApiKey(
 ) {
   let isNew = false;
 
-  const guid = await validateAndFormatGuid(ApiKey, configObject.id);
+  const id = await validateAndFormatId(ApiKey, configObject.id);
   validateConfigObjectKeys(ApiKey, configObject);
 
   let apiKey = await ApiKey.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), guid },
+    where: { locked: getCodeConfigLockKey(), id },
   });
   if (!apiKey) {
     isNew = true;
     apiKey = await ApiKey.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
     });
@@ -56,7 +56,7 @@ export async function loadApiKey(
 
   await Permission.update(
     { locked: getCodeConfigLockKey() },
-    { where: { ownerGuid: apiKey.guid } }
+    { where: { ownerId: apiKey.id } }
   );
 
   logModel(apiKey, validate ? "validated" : isNew ? "created" : "updated");
@@ -64,9 +64,9 @@ export async function loadApiKey(
   return apiKey;
 }
 
-export async function deleteApiKeys(guids: string[]) {
+export async function deleteApiKeys(ids: string[]) {
   const apiKeys = await ApiKey.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in apiKeys) {
@@ -74,5 +74,5 @@ export async function deleteApiKeys(guids: string[]) {
     logModel(apiKeys[i], "deleted");
   }
 
-  return apiKeys.map((instance) => instance.guid);
+  return apiKeys.map((instance) => instance.id);
 }

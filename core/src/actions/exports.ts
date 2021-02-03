@@ -11,8 +11,8 @@ export class ExportsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
-      profileGuid: { required: false },
-      destinationGuid: { required: false },
+      profileId: { required: false },
+      destinationId: { required: false },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       state: { required: false },
@@ -25,11 +25,11 @@ export class ExportsList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.profileGuid) {
-      where["profileGuid"] = params.profileGuid;
+    if (params.profileId) {
+      where["profileId"] = params.profileId;
     }
-    if (params.destinationGuid) {
-      where["destinationGuid"] = params.destinationGuid;
+    if (params.destinationId) {
+      where["destinationId"] = params.destinationId;
     }
 
     if (params.state) {
@@ -80,18 +80,18 @@ export class ExportsTotals extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
-      profileGuid: { required: false },
-      destinationGuid: { required: false },
+      profileId: { required: false },
+      destinationId: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.profileGuid) {
-      where["profileGuid"] = params.profileGuid;
+    if (params.profileId) {
+      where["profileId"] = params.profileId;
     }
-    if (params.destinationGuid) {
-      where["destinationGuid"] = params.destinationGuid;
+    if (params.destinationId) {
+      where["destinationId"] = params.destinationId;
     }
 
     return { totals: await ExportOps.totals(where) };
@@ -106,12 +106,12 @@ export class ExportView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "export", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const _export = await Export.findByGuid(params.guid);
+    const _export = await Export.findById(params.id);
     return { export: await _export.apiData() };
   }
 }

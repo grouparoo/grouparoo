@@ -52,7 +52,7 @@ describe("actions/notifications", () => {
     test("a reader can read a notification and mark it as read", async () => {
       const notificationObject = await Notification.findOne();
 
-      connection.params = { csrfToken, guid: notificationObject.guid };
+      connection.params = { csrfToken, id: notificationObject.id };
       const { error, notification } = await specHelper.runAction(
         "notification:view",
         connection

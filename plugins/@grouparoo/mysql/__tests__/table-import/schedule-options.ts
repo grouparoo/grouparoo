@@ -19,9 +19,9 @@ async function getColumns() {
     appOptions,
     sourceOptions,
     app: null,
-    appGuid: null,
+    appId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     sourceMapping: null,
     properties: [],
   });

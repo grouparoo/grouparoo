@@ -16,7 +16,7 @@ describe("modules/lockableHelper", () => {
       firstName: "Mario",
       lastName: "Mario",
       email: "mario@demo.com",
-      teamGuid: team.guid,
+      teamGuid: team.id,
     });
   });
 

@@ -50,15 +50,15 @@ describe("actions/runs", () => {
     expect(total).toBe(2);
     expect(runs.length).toBe(2);
 
-    const guids = runs.map((r) => r.guid);
-    expect(guids).toContain(runA.guid);
-    expect(guids).toContain(runB.guid);
+    const ids = runs.map((r) => r.id);
+    expect(ids).toContain(runA.id);
+    expect(ids).toContain(runB.id);
   });
 
   test("runs for just a schedule can be listed", async () => {
     connection.params = {
       csrfToken,
-      guid: scheduleA.guid,
+      id: scheduleA.id,
     };
 
     const { error, runs, total } = await specHelper.runAction(
@@ -68,17 +68,17 @@ describe("actions/runs", () => {
     expect(error).toBeUndefined();
     expect(total).toBe(1);
     expect(runs.length).toBe(1);
-    expect(runs[0].guid).toBe(runA.guid);
+    expect(runs[0].id).toBe(runA.id);
   });
 
-  test("when providing a sourceGuid, the runs for the schedule belonging to that source will be returned", async () => {
+  test("when providing a sourceId, the runs for the schedule belonging to that source will be returned", async () => {
     const source = await Source.findOne({
-      where: { guid: scheduleA.sourceGuid },
+      where: { id: scheduleA.sourceId },
     });
 
     connection.params = {
       csrfToken,
-      guid: source.guid,
+      id: source.id,
     };
 
     const { error, runs, total } = await specHelper.runAction(
@@ -88,13 +88,13 @@ describe("actions/runs", () => {
     expect(error).toBeUndefined();
     expect(total).toBe(1);
     expect(runs.length).toBe(1);
-    expect(runs[0].guid).toBe(runA.guid);
+    expect(runs[0].id).toBe(runA.id);
   });
 
   test("a run can be viewed", async () => {
     connection.params = {
       csrfToken,
-      guid: runA.guid,
+      id: runA.id,
     };
 
     const { error, run, quantizedTimeline } = await specHelper.runAction(
@@ -102,7 +102,7 @@ describe("actions/runs", () => {
       connection
     );
     expect(error).toBeUndefined();
-    expect(run.guid).toBe(runA.guid);
+    expect(run.id).toBe(runA.id);
     expect(quantizedTimeline.length).toBe(25 + 4); // 25 for times, 4
   });
 
@@ -112,13 +112,13 @@ describe("actions/runs", () => {
 
     connection.params = {
       csrfToken,
-      guid: _run.guid,
+      id: _run.id,
       state: "stopped",
     };
 
     const { error, run } = await specHelper.runAction("run:edit", connection);
     expect(error).toBeUndefined();
-    expect(run.guid).toBe(_run.guid);
+    expect(run.id).toBe(_run.id);
     expect(run.state).toBe("stopped");
 
     await _run.destroy();

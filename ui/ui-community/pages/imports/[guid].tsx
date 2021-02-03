@@ -9,7 +9,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Imports for {query.creatorGuid}</title>
+        <title>Grouparoo: Imports for {query.creatorId}</title>
       </Head>
 
       <ImportList {...props} />

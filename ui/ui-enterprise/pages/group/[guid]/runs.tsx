@@ -20,9 +20,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   const runsListInitialProps = await RunsList.hydrate(ctx);
   return { group, ...runsListInitialProps };
 };

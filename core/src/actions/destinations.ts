@@ -115,7 +115,7 @@ export class DestinationCreate extends AuthenticatedAction {
       name: { required: false },
       type: { required: true },
       state: { required: false },
-      appGuid: { required: true },
+      appId: { required: true },
       options: { required: false },
       mapping: { required: false, default: {} },
       destinationGroupMemberships: { required: false },
@@ -126,7 +126,7 @@ export class DestinationCreate extends AuthenticatedAction {
     const destination = await Destination.create({
       name: params.name,
       type: params.type,
-      appGuid: params.appGuid,
+      appId: params.appId,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
@@ -150,7 +150,7 @@ export class DestinationEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
       state: { required: false },
       options: { required: false },
@@ -160,7 +160,7 @@ export class DestinationEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
       await destination.setMapping(params.mapping, undefined, false);
@@ -185,13 +185,13 @@ export class DestinationConnectionOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       options: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
 
     const options =
       typeof params.options === "string"
@@ -210,12 +210,12 @@ export class DestinationMappingOptions extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     const options = await destination.destinationMappingOptions(false); // never use cache when displaying to the user
 
     const _destinationTypeConversions: { [key: string]: Array<string> } = {};
@@ -238,12 +238,12 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
     };
@@ -258,14 +258,14 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
-      guid: { required: true },
-      groupGuid: { required: true },
+      id: { required: true },
+      groupId: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
-    const group = await Group.findByGuid(params.groupGuid);
+    const destination = await Destination.findById(params.id);
+    const group = await Group.findById(params.groupId);
     await destination.trackGroup(group);
     return { destination: await destination.apiData() };
   }
@@ -279,12 +279,12 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     await destination.unTrackGroup();
     return { destination: await destination.apiData() };
   }
@@ -297,12 +297,12 @@ export class DestinationView extends AuthenticatedAction {
     this.description = "view a destination";
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     return { destination: await destination.apiData() };
   }
 }
@@ -315,13 +315,13 @@ export class DestinationExport extends AuthenticatedAction {
       "export the members of the groups tracked by this destination";
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       force: { required: false, default: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     await destination.exportGroupMembers(params.force);
     return { success: true };
   }
@@ -336,27 +336,27 @@ export class DestinationProfilePreview extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "read" };
     this.inputs = {
-      guid: { required: true },
-      groupGuid: { required: false },
-      profileGuid: { required: false },
+      id: { required: true },
+      groupId: { required: false },
+      profileId: { required: false },
       mapping: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
 
     let profile: Profile;
-    if (params.profileGuid) {
-      profile = await Profile.findByGuid(params.profileGuid);
+    if (params.profileId) {
+      profile = await Profile.findById(params.profileId);
     } else {
-      const group = await Group.findByGuid(params.groupGuid);
+      const group = await Group.findById(params.groupId);
       const groupMember = await GroupMember.findOne({
-        where: { groupGuid: group.guid },
+        where: { groupId: group.id },
       });
       if (groupMember) {
-        profile = await Profile.findByGuid(groupMember.profileGuid);
+        profile = await Profile.findById(groupMember.profileId);
       }
     }
 
@@ -379,7 +379,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
       const destinationGroupMembershipsArray = await destination.getDestinationGroupMemberships();
       destinationGroupMemberships = {};
       destinationGroupMembershipsArray.map(
-        (dgm) => (destinationGroupMemberships[dgm.groupGuid] = dgm.remoteKey)
+        (dgm) => (destinationGroupMemberships[dgm.groupId] = dgm.remoteKey)
       );
     } else {
       try {
@@ -390,7 +390,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
 
     if (
       !params.mapping &&
-      !params.groupGuid &&
+      !params.groupId &&
       !params.destinationGroupMemberships
     ) {
       await destination.checkProfileWillBeExported(profile);
@@ -414,7 +414,7 @@ export class DestinationDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       force: {
         required: true,
         default: false,
@@ -425,13 +425,13 @@ export class DestinationDestroy extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const destination = await Destination.findByGuid(params.guid);
+    const destination = await Destination.findById(params.id);
     if (params.force) {
       await destination.destroy();
     } else {
       await destination.update({ state: "deleted" });
       await CLS.enqueueTask("destination:destroy", {
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
       });
     }
 

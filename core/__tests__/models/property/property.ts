@@ -36,7 +36,7 @@ describe("models/property", () => {
 
     await expect(
       Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "thing",
         type: "string",
         unique: false,
@@ -53,7 +53,7 @@ describe("models/property", () => {
 
     await expect(
       Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "thing",
         type: "string",
         unique: false,
@@ -78,7 +78,7 @@ describe("models/property", () => {
 
     test("a new property will have a '' key", async () => {
       const property = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
       });
 
@@ -89,11 +89,11 @@ describe("models/property", () => {
 
     test("draft property can share the same key, but not with ready rule", async () => {
       const ruleOne = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
       });
       const ruleTwo = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
       });
 
@@ -114,7 +114,7 @@ describe("models/property", () => {
 
     test("types must be of a known type", async () => {
       const property = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
       });
 
@@ -126,12 +126,12 @@ describe("models/property", () => {
     });
 
     test("keys cannot be from the reserved list of keys", async () => {
-      const reservedKeys = ["guid", "createdAt", "updatedAt"];
+      const reservedKeys = ["id", "createdAt", "updatedAt"];
       for (const i in reservedKeys) {
         const key = reservedKeys[i];
         await expect(
           Property.create({
-            sourceGuid: source.guid,
+            sourceId: source.id,
             type: "string",
             key,
           })
@@ -141,7 +141,7 @@ describe("models/property", () => {
 
     test("a property can be isArray", async () => {
       const property = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
         isArray: true,
       });
@@ -152,7 +152,7 @@ describe("models/property", () => {
     test("a property cannot be isArray and unique", async () => {
       await expect(
         Property.create({
-          sourceGuid: source.guid,
+          sourceId: source.id,
           type: "string",
           isArray: true,
           unique: true,
@@ -162,7 +162,7 @@ describe("models/property", () => {
 
     test("a property cannot be made unique if there are non-unique values already", async () => {
       const property = await Property.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         key: "name",
         type: "string",
       });
@@ -196,7 +196,7 @@ describe("models/property", () => {
       await expect(
         Property.create({
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
           identifying: true,
         })
       ).rejects.toThrow(/only one property can be identifying/);
@@ -206,7 +206,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "New Rule",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       expect(property.identifying).toBe(false);
 
@@ -249,24 +249,24 @@ describe("models/property", () => {
   test("when a property with no options or filters first becomes ready, a run will be started", async () => {
     const app = await App.create({ type: "manual" });
     await app.update({ state: "ready" });
-    const source = await Source.create({ appGuid: app.guid, type: "manual" });
+    const source = await Source.create({ appId: app.id, type: "manual" });
     await source.update({ state: "ready" });
     const property = await Property.create({
       key: "manual-property",
-      sourceGuid: source.guid,
+      sourceId: source.id,
       type: "boolean",
     });
     await property.update({ state: "ready" });
 
     const firstRun = await Run.findOne({
-      where: { creatorGuid: property.guid },
+      where: { creatorId: property.id },
     });
     expect(firstRun).toBeTruthy();
     await firstRun.destroy();
 
     await property.update({ key: "new-key" });
     const secondRun = await Run.findOne({
-      where: { creatorGuid: property.guid },
+      where: { creatorId: property.id },
     });
     expect(secondRun).toBeNull();
 
@@ -297,7 +297,7 @@ describe("models/property", () => {
     );
   });
 
-  test("options will have mustache keys converted to mustache guids", async () => {
+  test("options will have mustache keys converted to mustache ids", async () => {
     const property = await Property.findOne({ where: { key: "email" } });
     await property.setOptions({
       column: "{{   email}}@example.com",
@@ -306,9 +306,9 @@ describe("models/property", () => {
     expect(options).toEqual({ column: "{{ email }}@example.com" }); //appears normal (but formatted) to the user
 
     const rawOption = await Option.findOne({
-      where: { ownerGuid: property.guid },
+      where: { ownerId: property.id },
     });
-    expect(rawOption.value).toBe(`{{ ${property.guid} }}@example.com`);
+    expect(rawOption.value).toBe(`{{ ${property.id} }}@example.com`);
   });
 
   test("an array property cannot be used as an option", async () => {
@@ -318,7 +318,7 @@ describe("models/property", () => {
     await source.update({ state: "ready" });
 
     const cartsProperty = await Property.create({
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "carts",
       type: "string",
       isArray: true,
@@ -340,7 +340,7 @@ describe("models/property", () => {
   test("a property cannot be created in the ready state with missing required options", async () => {
     const source = await helper.factories.source();
     const property = Property.build({
-      sourceGuid: source.guid,
+      sourceId: source.id,
       name: "no opts",
       type: "string",
       state: "ready",
@@ -372,7 +372,7 @@ describe("models/property", () => {
     await source.update({ state: "ready" });
 
     const property = await Property.create({
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "thing",
       type: "string",
       unique: false,
@@ -393,7 +393,7 @@ describe("models/property", () => {
     await source.update({ state: "ready" });
 
     const property = await Property.create({
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "thing",
       type: "string",
       unique: false,
@@ -422,7 +422,7 @@ describe("models/property", () => {
     await source.update({ state: "ready" });
 
     const property = await Property.create({
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "thing",
       type: "string",
       unique: false,
@@ -434,7 +434,7 @@ describe("models/property", () => {
     await source.destroy();
 
     const optionsCount = await Option.count({
-      where: { ownerGuid: property.guid },
+      where: { ownerId: property.id },
     });
     expect(optionsCount).toBe(0);
   });
@@ -552,7 +552,7 @@ describe("models/property", () => {
       source = await Source.create({
         name: "test source",
         type: "import-from-test-app",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setMapping({ id: "userId" });
       await source.update({ state: "ready" });
@@ -561,13 +561,13 @@ describe("models/property", () => {
         where: { key: "firstName" },
       });
 
-      firstNameProperty.sourceGuid = source.guid;
+      firstNameProperty.sourceId = source.id;
       await firstNameProperty.save();
 
       const lastNameProperty = await Property.findOne({
         where: { key: "lastName" },
       });
-      lastNameProperty.sourceGuid = source.guid;
+      lastNameProperty.sourceId = source.id;
       await lastNameProperty.save();
     });
 
@@ -580,7 +580,7 @@ describe("models/property", () => {
         const property = await Property.create({
           key: "test",
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
 
         await property.setFilters([
@@ -612,7 +612,7 @@ describe("models/property", () => {
         const property = await Property.create({
           key: "test",
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
 
         const filterOptions = await property.pluginFilterOptions();
@@ -631,7 +631,7 @@ describe("models/property", () => {
         const property = await Property.create({
           key: "test",
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
 
         await property.setFilters([
@@ -671,7 +671,7 @@ describe("models/property", () => {
         const property = await Property.create({
           key: "test",
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
 
         await expect(
@@ -692,7 +692,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       const pluginOptions = await property.pluginOptions();
@@ -718,7 +718,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await property.setOptions({ column: "test" });
       await property.update({ state: "ready" });
@@ -751,7 +751,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await expect(property.setOptions({ column: "throw" })).rejects.toThrow(
@@ -770,7 +770,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await property.setOptions({ column: "~" });
       await property.update({ state: "ready" });
@@ -793,7 +793,7 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
       await property.setOptions({ column: "id" });
 
@@ -806,11 +806,11 @@ describe("models/property", () => {
       const property = await Property.create({
         key: "test",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       const apiData = await property.apiData();
-      expect(apiData.sourceGuid).toEqual(source.guid);
+      expect(apiData.sourceId).toEqual(source.id);
       await property.destroy();
     });
   });

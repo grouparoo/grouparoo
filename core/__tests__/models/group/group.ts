@@ -10,7 +10,7 @@ describe("models/group", () => {
 
     await group.save();
 
-    expect(group.guid.length).toBe(40);
+    expect(group.id.length).toBe(40);
     expect(group.type).toBe("manual");
     expect(group.createdAt).toBeTruthy();
     expect(group.updatedAt).toBeTruthy();
@@ -157,7 +157,7 @@ describe("models/group", () => {
 
         const destination = await helper.factories.destination();
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = "remote-tag";
+        destinationGroupMemberships[group.id] = "remote-tag";
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
@@ -181,7 +181,7 @@ describe("models/group", () => {
         const destination = await helper.factories.destination();
         const run = await destination.trackGroup(trackedGroup);
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[taggedGroup.guid] = "remote-tagged-group";
+        destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
@@ -194,13 +194,13 @@ describe("models/group", () => {
         expect(foundTasks.length).toBe(1);
         expect(foundTasks[0].args[0]).toEqual(
           expect.objectContaining({
-            destinationGuid: destination.guid,
-            groupGuid: trackedGroup.guid,
+            destinationId: destination.id,
+            groupId: trackedGroup.id,
             force: false,
           })
         );
         expect(foundTasks[0].args[0].runGuid).toBeTruthy();
-        expect(foundTasks[0].args[0].runGuid).not.toEqual(run.guid);
+        expect(foundTasks[0].args[0].runGuid).not.toEqual(run.id);
       });
     });
   });
@@ -225,17 +225,17 @@ describe("models/group", () => {
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(2);
-      // import#profileGuid is set directly
-      expect(imports[0].profileGuid).toBe(profile.guid);
-      expect(imports[1].profileGuid).toBe(profile.guid);
+      // import#profileId is set directly
+      expect(imports[0].profileId).toBe(profile.id);
+      expect(imports[1].profileId).toBe(profile.id);
     });
 
     test("a group with members cannot be deleted", async () => {
       const group = await helper.factories.group();
       const profile = await helper.factories.profile();
       const groupMember = await GroupMember.create({
-        profileGuid: profile.guid,
-        groupGuid: group.guid,
+        profileId: profile.id,
+        groupId: group.id,
       });
 
       await expect(group.destroy()).rejects.toThrow(
@@ -246,7 +246,7 @@ describe("models/group", () => {
       await group.destroy(); // does not throw
 
       const memberCount = await GroupMember.count({
-        where: { groupGuid: group.guid },
+        where: { groupId: group.id },
       });
       expect(memberCount).toBe(0);
     });
@@ -269,8 +269,8 @@ describe("models/group", () => {
       await group.addProfile(profile);
       const profiles = await group.$get("profiles");
       expect(profiles.length).toBe(1);
-      const profileGuids = profiles.map((p) => p.guid);
-      expect(profileGuids).toContain(profile.guid);
+      const profileIds = profiles.map((p) => p.id);
+      expect(profileIds).toContain(profile.id);
     });
 
     test("it cannot add a member a second time", async () => {
@@ -297,9 +297,9 @@ describe("models/group", () => {
       await group.removeProfile(anotherProfile);
       const profiles = await group.$get("profiles");
       expect(profiles.length).toBe(1);
-      const profileGuids = profiles.map((p) => p.guid);
-      expect(profileGuids).toContain(profile.guid);
-      expect(profileGuids).not.toContain(anotherProfile.guid);
+      const profileIds = profiles.map((p) => p.id);
+      expect(profileIds).toContain(profile.id);
+      expect(profileIds).not.toContain(anotherProfile.id);
     });
 
     test("it cannot remove a non-member", async () => {

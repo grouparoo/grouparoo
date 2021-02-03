@@ -229,7 +229,7 @@ export namespace helper {
           name: "test-plugin-app",
           options: [
             {
-              key: "fileGuid",
+              key: "fileId",
               required: true,
             },
           ],
@@ -238,7 +238,7 @@ export namespace helper {
               return { success: true, message: "OK" };
             },
             appOptions: async () => {
-              return { fileGuid: { type: "list", options: ["a", "b"] } };
+              return { fileId: { type: "list", options: ["a", "b"] } };
             },
           },
         },
@@ -325,7 +325,7 @@ export namespace helper {
               const data = {
                 userId: new Date().getTime(),
                 isVIP: true,
-                email: `${profile.guid}@example.com`,
+                email: `${profile.id}@example.com`,
                 firstName: "Mario",
                 lastName: "Mario",
                 ltv: 100.0,

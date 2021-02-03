@@ -20,7 +20,7 @@ export interface RuleDefinition {
 
 export async function findPropertyRule(source: Source, propertyKey: string) {
   const where = {
-    sourceGuid: source.guid,
+    sourceId: source.id,
     key: propertyKey,
   };
   return Property.scope(null).findOne({ where });
@@ -31,8 +31,8 @@ export async function createPropertyRule(source: Source, rule: RuleDefinition) {
 
   const params = Object.assign({}, RULE_DEFAULT, rule, {
     state: "ready",
-    sourceGuid: source.guid,
-    guid: found?.guid,
+    sourceId: source.id,
+    id: found?.id,
   });
   if (found) {
     await runAction("property:edit", params);
@@ -55,7 +55,7 @@ export async function makePropertyRuleIdentifying(
     where: { identifying: true },
   });
   for (const propertyRule of current) {
-    const params = { identifying: false, guid: propertyRule.guid };
+    const params = { identifying: false, id: propertyRule.id };
     await runAction("property:edit", params);
   }
 
@@ -65,7 +65,7 @@ export async function makePropertyRuleIdentifying(
     throw new Error(`Identifying rule not found (${propertyKey})`);
   }
 
-  const params = { identifying: false, guid: found.guid };
+  const params = { identifying: false, id: found.id };
   await runAction("property:edit", params);
 }
 
@@ -77,14 +77,14 @@ export async function ensureBootstrapPropertyRule(
   if (found) {
     const params = Object.assign({}, RULE_DEFAULT, rule, {
       state: "ready",
-      sourceGuid: source.guid,
-      guid: found?.guid,
+      sourceId: source.id,
+      id: found?.id,
     });
     await runAction("property:edit", params);
   } else {
     // need to bootstrap it
     const params = {
-      guid: source.guid,
+      id: source.id,
       key: rule.key,
       type: rule.type,
       mappedColumn: rule.options.column,

@@ -16,7 +16,7 @@ export default function SetupStepCard({
   );
 
   async function skip() {
-    await execApi("put", `/setupStep/${step.guid}`, {
+    await execApi("put", `/setupStep/${step.id}`, {
       skipped: !step.skipped,
     });
     reload();

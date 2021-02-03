@@ -17,13 +17,13 @@ export namespace RunOps {
     const start = run.createdAt.getTime();
 
     const lastExportedImport = await Import.findOne({
-      where: { creatorGuid: run.guid },
+      where: { creatorId: run.id },
       order: [["exportedAt", "desc"]],
       limit: 1,
     });
 
     const lastImportedImport = await Import.findOne({
-      where: { creatorGuid: run.guid },
+      where: { creatorId: run.id },
       order: [["profileUpdatedAt", "desc"]],
       limit: 1,
     });
@@ -101,15 +101,15 @@ export namespace RunOps {
    */
   export async function updateTotals(run: Run) {
     const importsCreated = await Import.count({
-      where: { creatorGuid: run.guid },
+      where: { creatorId: run.id },
     });
     const profilesCreated = await Import.count({
-      where: { creatorGuid: run.guid, createdProfile: true },
+      where: { creatorId: run.id, createdProfile: true },
     });
     const profilesImported = await Import.count({
-      where: { creatorGuid: run.guid, profileUpdatedAt: { [Op.ne]: null } },
+      where: { creatorId: run.id, profileUpdatedAt: { [Op.ne]: null } },
       distinct: true,
-      col: "profileGuid",
+      col: "profileId",
     });
 
     await run.update({ importsCreated, profilesCreated, profilesImported });
@@ -126,7 +126,7 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
-      const group = await Group.findByGuid(run.creatorGuid);
+      const group = await Group.findById(run.creatorId);
       const totalGroupMembers =
         group.type === "calculated"
           ? await group.countPotentialMembers()
@@ -134,7 +134,7 @@ export namespace RunOps {
 
       const membersAlreadyUpdated = await GroupMember.count({
         where: {
-          groupGuid: group.guid,
+          groupId: group.id,
           updatedAt: { [Op.gte]: run.createdAt },
         },
       });
@@ -156,12 +156,12 @@ export namespace RunOps {
 
       return percentComplete;
     } else if (run.creatorType === "schedule") {
-      const schedule = await Schedule.findByGuid(run.creatorGuid);
+      const schedule = await Schedule.findById(run.creatorId);
       try {
         return schedule.runPercentComplete(run);
       } catch (error) {
         log(
-          `Error calculating the percent complete for run ${run.guid} (${schedule.name}): ${error}`,
+          `Error calculating the percent complete for run ${run.id} (${schedule.name}): ${error}`,
           "error"
         );
         return 0;

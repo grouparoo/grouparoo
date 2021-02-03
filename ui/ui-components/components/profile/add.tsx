@@ -12,10 +12,7 @@ export default function AddProfile(props) {
   async function create() {
     setLoading(true);
     const response: Actions.ProfileCreate = await execApi("post", `/profile`);
-    router.push(
-      "/profile/[guid]/edit",
-      `/profile/${response.profile.guid}/edit`
-    );
+    router.push("/profile/[id]/edit", `/profile/${response.profile.id}/edit`);
   }
 
   return (

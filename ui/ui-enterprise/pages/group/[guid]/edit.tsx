@@ -33,7 +33,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.GroupEdit = await execApi(
       "put",
-      `/group/${group.guid}`,
+      `/group/${group.id}`,
       group
     );
 
@@ -50,7 +50,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.GroupDestroy = await execApi(
         "delete",
-        `/group/${group.guid}`,
+        `/group/${group.id}`,
         {
           force,
         }
@@ -196,8 +196,8 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   return { group };
 };

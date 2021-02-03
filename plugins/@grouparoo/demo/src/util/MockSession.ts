@@ -153,7 +153,7 @@ export class MockSession {
     const property = await ProfileProperty.findOne({
       order: api.sequelize.random(),
       where: {
-        propertyGuid: userIdGuid,
+        propertyId: userIdGuid,
         rawValue: {
           [Op.ne]: null,
         },
@@ -351,7 +351,7 @@ export async function getApiKey(): Promise<ApiKey> {
     name: where.name,
     permissionAllRead: true,
     permissionAllWrite: true,
-    guid: found?.guid,
+    id: found?.id,
     permissions: [],
   };
   if (found) {

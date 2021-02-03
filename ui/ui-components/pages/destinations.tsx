@@ -89,14 +89,14 @@ export default function Page(props) {
               destination.exportTotals.started;
 
             return (
-              <tr key={`destination-${destination.guid}`}>
+              <tr key={`destination-${destination.id}`}>
                 <td>
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
                   <Link
-                    href="/destination/[guid]/edit"
-                    as={`/destination/${destination.guid}/edit`}
+                    href="/destination/[id]/edit"
+                    as={`/destination/${destination.id}/edit`}
                   >
                     <a>
                       <strong>
@@ -111,10 +111,10 @@ export default function Page(props) {
                   </Link>
                 </td>
                 <td>
-                  {destination.destinationGroup?.guid ? (
+                  {destination.destinationGroup?.id ? (
                     <Link
-                      href="/group/[guid]/edit"
-                      as={`/group/${destination.destinationGroup.guid}/edit`}
+                      href="/group/[id]/edit"
+                      as={`/group/${destination.destinationGroup.id}/edit`}
                     >
                       <a>{destination.destinationGroup.name}</a>
                     </Link>
@@ -124,8 +124,8 @@ export default function Page(props) {
                 </td>
                 <td>
                   <Link
-                    href="/app/[guid]/edit"
-                    as={`/app/${destination.app.guid}/edit`}
+                    href="/app/[id]/edit"
+                    as={`/app/${destination.app.id}/edit`}
                   >
                     <a>
                       <strong>{destination.app.name}</strong>

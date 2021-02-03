@@ -45,7 +45,7 @@ export default function Page(props) {
     message: string;
   }>({ success: null, error: null, message: null });
   const [ranTest, setRanTest] = useState(false);
-  const { guid } = router.query;
+  const { id } = router.query;
 
   async function edit(event) {
     event.preventDefault();
@@ -53,7 +53,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.AppEdit = await execApi(
       "put",
-      `/app/${guid}`,
+      `/app/${id}`,
       Object.assign({}, app, { state })
     );
     if (response?.app) {
@@ -75,7 +75,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.AppDestroy = await execApi(
         "delete",
-        `/app/${guid}`
+        `/app/${id}`
       );
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });
@@ -90,13 +90,9 @@ export default function Page(props) {
     setTestLoading(true);
     setRanTest(false);
     setTestResult({ success: null, message: null, error: null });
-    const response: Actions.AppTest = await execApi(
-      "put",
-      `/app/${guid}/test`,
-      {
-        options: app.options,
-      }
-    );
+    const response: Actions.AppTest = await execApi("put", `/app/${id}/test`, {
+      options: app.options,
+    });
     if (response?.test) {
       setRanTest(true);
       setTestResult(response.test);
@@ -385,13 +381,13 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { app } = await execApi("get", `/app/${guid}`);
+  const { app } = await execApi("get", `/app/${id}`);
   const { types, environmentVariableOptions } = await execApi(
     "get",
     `/appOptions`
   );
-  const { options } = await execApi("get", `/app/${guid}/optionOptions`);
+  const { options } = await execApi("get", `/app/${id}/optionOptions`);
   return { app, types, environmentVariableOptions, optionOptions: options };
 };

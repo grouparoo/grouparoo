@@ -33,13 +33,13 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.TeamMemberDestroy = await execApi(
         "delete",
-        `/team/member/${teamMember.guid}`
+        `/team/member/${teamMember.id}`
       );
       if (success) {
         successHandler.set({ message: "Team Member Deleted" });
         const { teamMembers: _teamMembers } = await execApi(
           "get",
-          `/team/${team.guid}/members`
+          `/team/${team.id}/members`
         );
         setTeamMembers(_teamMembers);
       }
@@ -68,7 +68,7 @@ export default function Page(props) {
         <tbody>
           {teamMembers.map((teamMember) => {
             return (
-              <tr key={`teamMember-${teamMember.guid}`}>
+              <tr key={`teamMember-${teamMember.id}`}>
                 <td style={{ maxWidth: 50 }}>
                   <ProfileImageFromEmail
                     loading={loading}
@@ -77,8 +77,8 @@ export default function Page(props) {
                 </td>
                 <td>
                   <Link
-                    href="/teamMember/[guid]/edit"
-                    as={`/teamMember/${teamMember.guid}/edit`}
+                    href="/teamMember/[id]/edit"
+                    as={`/teamMember/${teamMember.id}/edit`}
                   >
                     <a>{teamMember.email}</a>
                   </Link>
@@ -117,7 +117,7 @@ export default function Page(props) {
         variant="primary"
         disabled={loading}
         onClick={() => {
-          router.push(`/team/${team.guid}/teamMember/new`);
+          router.push(`/team/${team.id}/teamMember/new`);
         }}
       >
         Add Team Member
@@ -128,8 +128,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
-  const { team } = await execApi("get", `/team/${guid}`);
-  const { teamMembers } = await execApi("get", `/team/${guid}/members`);
+  const { id } = ctx.query;
+  const { team } = await execApi("get", `/team/${id}`);
+  const { teamMembers } = await execApi("get", `/team/${id}/members`);
   return { team, teamMembers };
 };

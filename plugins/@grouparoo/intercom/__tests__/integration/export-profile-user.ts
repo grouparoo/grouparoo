@@ -20,7 +20,7 @@ require("./../fixtures/export-profile-user");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
+const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   creationMode: "User",
@@ -223,7 +223,7 @@ describe("intercom/contacts/exportProfile/user", () => {
   test("it does not change intercom-created tags", async () => {
     const tagId = await getTagId(
       getClient(),
-      { appGuid, appOptions },
+      { appId, appOptions },
       "outside_grouparoo"
     );
     await getClient().contacts.tag(userId, tagId);

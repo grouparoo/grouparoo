@@ -21,8 +21,8 @@ export default function PluginPage(props) {
 }
 
 PluginPage.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   return { group };
 };

@@ -21,28 +21,28 @@ export default function Page({
   return (
     <>
       <Head>
-        <title>Grouparoo: {_export.guid}</title>
+        <title>Grouparoo: {_export.id}</title>
       </Head>
 
       <ExportTabs export={_export} />
 
-      <h1>{_export.guid}</h1>
+      <h1>{_export.id}</h1>
 
       <p>
         Destination:{" "}
         <EnterpriseLink
-          href="/destination/[guid]/edit"
-          as={`/destination/${_export.destination.guid}/edit`}
+          href="/destination/[id]/edit"
+          as={`/destination/${_export.destination.id}/edit`}
         >
           <a>{_export.destination.name}</a>
         </EnterpriseLink>
         <br />
         Profile:{" "}
         <Link
-          href="/profile/[guid]/edit"
-          as={`/profile/${_export.profileGuid}/edit`}
+          href="/profile/[id]/edit"
+          as={`/profile/${_export.profileId}/edit`}
         >
-          <a>{_export.profileGuid}</a>
+          <a>{_export.profileId}</a>
         </Link>
         <br />
         <br />
@@ -139,9 +139,9 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { export: _export } = await execApi("get", `/export/${guid}`);
+  const { export: _export } = await execApi("get", `/export/${id}`);
   const { groups } = await execApi("get", `/groups`);
   return { _export, groups };
 };

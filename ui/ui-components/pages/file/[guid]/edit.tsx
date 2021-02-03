@@ -32,7 +32,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.FileDestroy = await execApi(
         "delete",
-        `/file/${file.guid}`
+        `/file/${file.id}`
       );
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
@@ -100,8 +100,8 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { file } = await execApi("get", `/file/${guid}/details`);
+  const { file } = await execApi("get", `/file/${id}/details`);
   return { file };
 };

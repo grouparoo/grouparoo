@@ -14,14 +14,14 @@ export default function ProfilePreview(props) {
     mappingOptions,
   } = props;
   const router = useRouter();
-  const [profileGuid, setProfileGuid] = useState(
-    router.query.profileGuid?.toString()
+  const [profileId, setProfileId] = useState(
+    router.query.profileId?.toString()
   );
   const [toHide, setToHide] = useState(true);
   const [profile, setProfile] = useState<
     Partial<Actions.DestinationProfilePreview["profile"]>
   >({
-    guid: "",
+    id: "",
     properties: {},
     groupNames: [],
   });
@@ -40,17 +40,17 @@ export default function ProfilePreview(props) {
       clearTimeout(timer);
     };
   }, [
-    destination.guid,
+    destination.id,
     trackedGroupGuid,
     JSON.stringify(destination.destinationGroup),
     JSON.stringify(destination.mapping),
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
-  function storeProfilePropertyGuid(profileGuid: string) {
-    setProfileGuid(profileGuid);
+  function storeProfilePropertyId(profileId: string) {
+    setProfileId(profileId);
     let url = `${window.location.pathname}?`;
-    url += `profileGuid=${profileGuid}&`;
+    url += `profileId=${profileId}&`;
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
@@ -58,12 +58,12 @@ export default function ProfilePreview(props) {
   }
 
   async function load(
-    _profileGuid = profileGuid === "" ? undefined : profileGuid,
+    _profileId = profileId === "" ? undefined : profileId,
     _sleep = sleep
   ) {
     setSleeping(true);
 
-    if (!destination.destinationGroup?.guid && trackedGroupGuid === "_none") {
+    if (!destination.destinationGroup?.id && trackedGroupGuid === "_none") {
       return;
     }
 
@@ -73,26 +73,26 @@ export default function ProfilePreview(props) {
       const destinationGroupMembershipsObject = {};
       destination.destinationGroupMemberships.forEach(
         (dgm) =>
-          (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
+          (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
       );
 
-      const groupGuid = destination.destinationGroup?.guid || trackedGroupGuid;
+      const groupId = destination.destinationGroup?.id || trackedGroupGuid;
 
       const { profile }: Actions.DestinationProfilePreview = await execApi(
         "get",
-        `/destination/${destination.guid}/profilePreview`,
+        `/destination/${destination.id}/profilePreview`,
         {
-          groupGuid,
+          groupId,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
-          profileGuid: _profileGuid,
+          profileId: _profileId,
         }
       );
 
       if (profile) {
         setToHide(false);
         setProfile(profile);
-        storeProfilePropertyGuid(profile.guid);
+        storeProfilePropertyId(profile.id);
       }
 
       setSleeping(false);
@@ -100,10 +100,10 @@ export default function ProfilePreview(props) {
   }
 
   function chooseProfileProperty() {
-    const _profileGuid = prompt("Enter Profile Guid", profileGuid);
-    if (_profileGuid) {
-      storeProfilePropertyGuid(_profileGuid);
-      load(_profileGuid, 1);
+    const _profileId = prompt("Enter Profile Guid", profileId);
+    if (_profileId) {
+      storeProfilePropertyId(_profileId);
+      load(_profileId, 1);
     }
   }
 
@@ -136,7 +136,7 @@ export default function ProfilePreview(props) {
         ) : (
           <>
             <Card.Link
-              href={`/profile/${profile.guid}/edit`}
+              href={`/profile/${profile.id}/edit`}
               style={{ color: "white" }}
             >
               View Profile

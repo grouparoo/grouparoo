@@ -22,7 +22,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
 
     const line = JSON.stringify({
       time: new Date(),
-      guid: profile.guid,
+      id: profile.id,
       oldProfileProperties,
       newProfileProperties,
       oldGroups,

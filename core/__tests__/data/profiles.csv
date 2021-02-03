@@ -646,7 +646,7 @@ id,first_name,last_name,email,gender,ip_address,ios_app,android_app,vip,ltv
 645,Celinda,Calcut,ccalcuthw@example.com,Female,90.73.152.18,false,true,true,391.87
 646,Zebulon,Canero,zcanerohx@example.com,Male,159.59.69.25,false,true,true,849.32
 647,Gorden,Pengelly,gpengellyhy@example.com,Male,188.240.195.43,false,false,true,665.71
-648,Guntar,Duiguid,gduiguidhz@example.com,Male,102.137.172.133,false,false,true,863.76
+648,Guntar,Duiid,gduiguidhz@example.com,Male,102.137.172.133,false,false,true,863.76
 649,Linnea,Haseley,lhaseleyi0@example.com,Female,130.34.45.245,false,false,false,734.18
 650,Lynsey,Ryman,lrymani1@example.com,Female,106.229.92.187,false,true,false,441.45
 651,Rochell,Cattini,rcattinii2@example.com,Female,158.230.78.213,false,true,false,334.48

@@ -30,14 +30,14 @@ export class ProfilePropertySweep extends CLSTask {
     // delete those profile properties who have no profile
     const profilePropertiesMissingProfile = await ProfileProperty.findAll({
       include: [{ model: Profile, required: false }],
-      where: { "$profile.guid$": null },
+      where: { "$profile.id$": null },
       limit,
     });
 
     // delete those profile properties who have no property
     const profilePropertiesMissingRule = await ProfileProperty.findAll({
       include: [{ model: Property, required: false }],
-      where: { "$property.guid$": null },
+      where: { "$property.id$": null },
       limit,
     });
 

@@ -33,7 +33,7 @@ describe("model/group", () => {
       test("groupRule can be saved without topLevel indicating they have a profileColumn", async () => {
         await group.setRules([
           {
-            key: "guid",
+            key: "id",
             operation: { op: "exists" },
           },
         ]);
@@ -41,7 +41,7 @@ describe("model/group", () => {
         const rules = await group.getRules();
         expect(rules.length).toBe(1);
         expect(rules[0]).toEqual({
-          key: "guid",
+          key: "id",
           topLevel: true,
           type: "string",
           operation: { op: "ne", description: "exists with any value" },
@@ -52,10 +52,10 @@ describe("model/group", () => {
         });
 
         const groupRule = await GroupRule.findOne({
-          where: { groupGuid: group.guid },
+          where: { groupId: group.id },
         });
-        expect(groupRule.profileColumn).toBe("guid");
-        expect(groupRule.propertyGuid).toBe(null);
+        expect(groupRule.profileColumn).toBe("id");
+        expect(groupRule.propertyId).toBe(null);
 
         expect(await group.countPotentialMembers()).toBe(4);
       });
@@ -71,15 +71,15 @@ describe("model/group", () => {
         ).rejects.toThrow(/cannot find property koopa/);
       });
 
-      test("GroupRules must have either a profilePropertyGuid or a profileColumn", async () => {
+      test("GroupRules must have either a profilePropertyId or a profileColumn", async () => {
         await expect(
           GroupRule.create({
             position: 1,
             op: "eq",
-            groupGuid: group.guid,
+            groupId: group.id,
           })
         ).rejects.toThrow(
-          /either propertyGuid or profileColumn is required for a GroupRule/
+          /either propertyId or profileColumn is required for a GroupRule/
         );
       });
 
@@ -89,7 +89,7 @@ describe("model/group", () => {
         // OK
         const count = await group.countPotentialMembers([
           {
-            key: "guid",
+            key: "id",
             match: "pro%",
             operation: { op: "like" },
             topLevel: true,
@@ -101,7 +101,7 @@ describe("model/group", () => {
         await expect(
           group.countPotentialMembers([
             {
-              key: "guid",
+              key: "id",
               match: "pro%",
               operation: { op: "exists" },
             },
@@ -109,12 +109,12 @@ describe("model/group", () => {
         ).rejects.toThrow(/cannot find type for Property gui/);
       });
 
-      describe("guid", () => {
+      describe("id", () => {
         test("exact matches", async () => {
           await group.setRules([
             {
-              key: "guid",
-              match: mario.guid,
+              key: "id",
+              match: mario.id,
               operation: { op: "eq" },
             },
           ]);
@@ -123,42 +123,40 @@ describe("model/group", () => {
 
         test("partial matches", async () => {
           await group.setRules([
-            { key: "guid", match: "pro%", operation: { op: "like" } },
+            { key: "id", match: "pro%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("multiple rules with same key", async () => {
           await group.setRules([
-            { key: "guid", match: "pro%", operation: { op: "like" } },
-            { key: "guid", match: "pro_%", operation: { op: "like" } },
+            { key: "id", match: "pro%", operation: { op: "like" } },
+            { key: "id", match: "pro_%", operation: { op: "like" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("null match", async () => {
           await group.setRules([
-            { key: "guid", match: "null", operation: { op: "eq" } },
+            { key: "id", match: "null", operation: { op: "eq" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
 
         test("not null match", async () => {
           await group.setRules([
-            { key: "guid", match: "null", operation: { op: "ne" } },
+            { key: "id", match: "null", operation: { op: "ne" } },
           ]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("exists", async () => {
-          await group.setRules([{ key: "guid", operation: { op: "exists" } }]);
+          await group.setRules([{ key: "id", operation: { op: "exists" } }]);
           expect(await group.countPotentialMembers()).toBe(4);
         });
 
         test("notExists", async () => {
-          await group.setRules([
-            { key: "guid", operation: { op: "notExists" } },
-          ]);
+          await group.setRules([{ key: "id", operation: { op: "notExists" } }]);
           expect(await group.countPotentialMembers()).toBe(0);
         });
       });

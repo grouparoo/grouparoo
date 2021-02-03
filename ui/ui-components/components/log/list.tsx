@@ -55,7 +55,7 @@ export default function LogsList(props) {
       limit,
       offset,
       topic,
-      ownerGuid: router.query.guid,
+      ownerId: router.query.id,
     });
     setLoading(false);
     if (response?.logs) {
@@ -65,24 +65,24 @@ export default function LogsList(props) {
   }
 
   function formatTopicsAndLinks(log) {
-    let ownerGuid = log.ownerGuid;
+    let ownerId = log.ownerId;
     let topic = log.topic;
 
     if (topic === "profileProperty") {
       topic = "profile";
-      ownerGuid = log.data.profileGuid;
+      ownerId = log.data.profileId;
     }
 
     if (topic === "groupMember") {
       topic = "group";
-      ownerGuid = log.data.groupGuid;
+      ownerId = log.data.groupId;
     }
 
-    if (ownerGuid) {
+    if (ownerId) {
       return [
         <EnterpriseLink
-          href="/object/[guid]"
-          as={`/object/${ownerGuid}`}
+          href="/object/[id]"
+          as={`/object/${ownerId}`}
           prefetch={false}
         >
           <a>{`${topic}`}</a>
@@ -96,8 +96,8 @@ export default function LogsList(props) {
   function handleMessage({ model }) {
     if ((topic && model.topic === topic) || !topic) {
       if (
-        (router.query.guid && model.ownerGuid === router.query.guid) ||
-        !router.query.guid
+        (router.query.id && model.ownerId === router.query.id) ||
+        !router.query.id
       ) {
         setNewLogs((newLogs) => newLogs + 1);
       }
@@ -173,25 +173,25 @@ export default function LogsList(props) {
         <tbody>
           {logs.map((log) => {
             return (
-              <tr key={`log-${log.guid}`}>
+              <tr key={`log-${log.id}`}>
                 <td>{formatCreatedAt(log.createdAt)}</td>
                 <td>
                   <strong>{log.message}</strong>{" "}
-                  {log.ownerGuid ? (
+                  {log.ownerId ? (
                     <>
                       <br />
                       <EnterpriseLink
-                        href="/object/[guid]"
-                        as={`/object/${log.ownerGuid}`}
+                        href="/object/[id]"
+                        as={`/object/${log.ownerId}`}
                       >
-                        <a className="text-muted">{log.ownerGuid}</a>
+                        <a className="text-muted">{log.ownerId}</a>
                       </EnterpriseLink>
                     </>
                   ) : null}
                 </td>
                 <td>
                   {formatTopicsAndLinks(log).map((link) => (
-                    <p key={`log-${log.guid}-${link.href}`}>{link}</p>
+                    <p key={`log-${log.id}-${link.href}`}>{link}</p>
                   ))}
                 </td>
                 <td>{log.verb}</td>
@@ -214,9 +214,9 @@ export default function LogsList(props) {
 
 LogsList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid, limit, offset, topic } = ctx.query;
+  const { id, limit, offset, topic } = ctx.query;
   const { logs, total } = await execApi("get", `/logs`, {
-    ownerGuid: guid,
+    ownerId: id,
     limit,
     offset,
     topic,

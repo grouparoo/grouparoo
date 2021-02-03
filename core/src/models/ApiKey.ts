@@ -18,7 +18,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "apiKeys", paranoid: false })
 export class ApiKey extends LoggedModel<ApiKey> {
-  guidPrefix() {
+  idPrefix() {
     return "key";
   }
 
@@ -65,7 +65,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
     >[] = await Promise.all(permissions.map((prm) => prm.apiData()));
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       apiKey: this.apiKey,
       locked: this.locked,
@@ -78,19 +78,19 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async authorizeAction(topic: string, mode: "read" | "write") {
-    return Permission.authorizeAction(this.guid, topic, mode);
+    return Permission.authorizeAction(this.id, topic, mode);
   }
 
   async setPermissions(
-    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+    permissions: Array<{ id: string; read: boolean; write: boolean }>
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
-        where: { ownerGuid: this.guid, guid: permissions[i].guid },
+        where: { ownerId: this.id, id: permissions[i].id },
       });
       if (!permission) {
         throw new Error(
-          `permission ${permissions[i].guid} not found for this apiKey`
+          `permission ${permissions[i].id} not found for this apiKey`
         );
       }
 
@@ -111,11 +111,9 @@ export class ApiKey extends LoggedModel<ApiKey> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -131,7 +129,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
       let permission = await Permission.findOne({
         where: {
           topic,
-          ownerGuid: instance.guid,
+          ownerId: instance.id,
           ownerType: "apiKey",
         },
       });
@@ -139,7 +137,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
       if (!permission) {
         permission = await Permission.create({
           topic,
-          ownerGuid: instance.guid,
+          ownerId: instance.id,
           ownerType: "apiKey",
         });
       }
@@ -164,7 +162,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   @AfterDestroy
   static async deletePermissions(instance: ApiKey, {}) {
     return Permission.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 }

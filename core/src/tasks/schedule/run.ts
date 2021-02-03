@@ -19,7 +19,7 @@ export class ScheduleRun extends RetryableTask {
 
   async runWithinTransaction(params) {
     const schedule = await Schedule.findOne({
-      where: { guid: params.scheduleGuid },
+      where: { id: params.scheduleGuid },
     });
     if (!schedule) return;
 
@@ -27,7 +27,7 @@ export class ScheduleRun extends RetryableTask {
       throw new Error(`schedule ${params.scheduleGuid} is not ready`);
     }
 
-    const run = await Run.findByGuid(params.runGuid);
+    const run = await Run.findById(params.runGuid);
 
     const { importsCount } = await schedule.run(run);
 

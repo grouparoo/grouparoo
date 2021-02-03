@@ -48,11 +48,11 @@ export class Plugins extends Initializer {
           app: "csv",
           options: [
             {
-              key: "fileGuid",
+              key: "fileId",
               displayName: "File Guid",
               required: true,
               description:
-                "The fileGuid from a file previously uploaded to Grouparoo.",
+                "The fileId from a file previously uploaded to Grouparoo.",
             },
           ],
           scheduleOptions: [],

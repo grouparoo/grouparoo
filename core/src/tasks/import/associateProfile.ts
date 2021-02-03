@@ -18,7 +18,7 @@ export class ImportAssociateProfile extends Task {
 
   async run(params) {
     const { importGuid } = params;
-    const _import = await Import.findByGuid(importGuid);
+    const _import = await Import.findById(importGuid);
 
     try {
       const { profile, isNew } = await _import.associateProfile();
@@ -29,7 +29,7 @@ export class ImportAssociateProfile extends Task {
 
       _import.createdProfile = isNew;
       _import.oldProfileProperties = oldProfileProperties;
-      _import.oldGroupGuids = oldGroups.map((g) => g.guid);
+      _import.oldGroupIds = oldGroups.map((g) => g.id);
       await _import.save();
     } catch (error) {
       if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");

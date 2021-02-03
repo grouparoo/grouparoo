@@ -10,7 +10,7 @@ export class TeamPermissions extends Initializer {
 
   async updateTeamPermissions(team: Team) {
     const { releaseLock } = await waitForLock(
-      `team:${team.guid}:updateTeamPermissions`
+      `team:${team.id}:updateTeamPermissions`
     );
 
     try {

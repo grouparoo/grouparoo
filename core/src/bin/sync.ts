@@ -8,7 +8,7 @@ export class SyncCLI extends CLI {
     super();
     this.name = "sync <profileProperty>";
     this.description =
-      "Sync (import & export) a Profile.  You can provide a Profile guid or a unique Profile Property";
+      "Sync (import & export) a Profile.  You can provide a Profile id or a unique Profile Property";
     this.inputs = {
       property: {
         description:
@@ -57,7 +57,7 @@ export class SyncCLI extends CLI {
     const profileProperties = await ProfileProperty.findAll({
       where: {
         rawValue: params.profileProperty,
-        propertyGuid: { [Op.in]: uniqueProperties.map((p) => p.guid) },
+        propertyId: { [Op.in]: uniqueProperties.map((p) => p.id) },
       },
     });
 
@@ -67,9 +67,9 @@ export class SyncCLI extends CLI {
         `More than one Profile found with Profile Property "${params.profileProperty}".  Please provide [property]`
       );
     } else if (profileProperties.length === 1) {
-      wheres.push({ guid: profileProperties[0].profileGuid });
+      wheres.push({ id: profileProperties[0].profileId });
     } else {
-      wheres.push({ guid: params.profileProperty });
+      wheres.push({ id: params.profileProperty });
     }
 
     const profile = await Profile.findOne({ where: { [Op.or]: wheres } });
@@ -78,7 +78,7 @@ export class SyncCLI extends CLI {
       return this.fatalError(
         params.property
           ? `Cannot find Profile where Profile Property "${params.property}"="${params.profileProperty}"`
-          : `Cannot find Profile with guid or unique Profile Property "${params.profileProperty}"`
+          : `Cannot find Profile with id or unique Profile Property "${params.profileProperty}"`
       );
     }
 
@@ -112,7 +112,7 @@ export class SyncCLI extends CLI {
           {
             header: "Info",
             status: {
-              guid: [profile.guid],
+              id: [profile.id],
               createdAt: [profile.createdAt.toISOString()],
               state: [profile.state],
             },
@@ -124,7 +124,7 @@ export class SyncCLI extends CLI {
             status: exportStatus,
           },
         ],
-        profile.guid
+        profile.id
       );
     }
 

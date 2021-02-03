@@ -28,7 +28,7 @@ describe("model/group", () => {
       unique: false,
       key: "phoneNumber",
       type: "phoneNumber",
-      sourceGuid: emailProperty.sourceGuid,
+      sourceId: emailProperty.sourceId,
     });
     await phoneNumberProperty.setOptions({ column: "phoneNumber" });
     await phoneNumberProperty.update({ state: "ready" });

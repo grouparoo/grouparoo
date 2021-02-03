@@ -51,7 +51,7 @@ export default function Page(props) {
   const taggedGroupRef = useRef(null);
   const [unlockedProperties, setUnlockedProperties] = useState({});
   const [unlockedGroups, setUnlockedGroups] = useState<string[]>([]);
-  const { guid } = router.query;
+  const { id } = router.query;
 
   if (hydrationError) errorHandler.set({ error: hydrationError });
 
@@ -68,10 +68,9 @@ export default function Page(props) {
     }
     const destinationGroupMembershipsObject = {};
     destination.destinationGroupMemberships.forEach(
-      (dgm) =>
-        (destinationGroupMembershipsObject[dgm.groupGuid] = dgm.remoteKey)
+      (dgm) => (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
     );
-    await execApi("put", `/destination/${guid}`, {
+    await execApi("put", `/destination/${id}`, {
       mapping: filteredMapping,
       destinationGroupMemberships: destinationGroupMembershipsObject,
     });
@@ -81,17 +80,17 @@ export default function Page(props) {
       trackedGroupGuid !== props.trackedGroupGuid &&
       trackedGroupGuid.match(/^grp_/)
     ) {
-      await execApi("post", `/destination/${guid}/track`, {
-        groupGuid: trackedGroupGuid,
+      await execApi("post", `/destination/${id}/track`, {
+        groupId: trackedGroupGuid,
       });
     } else if (
       trackedGroupGuid !== props.trackedGroupGuid &&
       trackedGroupGuid === "_none"
     ) {
-      await execApi("post", `/destination/${guid}/untrack`);
+      await execApi("post", `/destination/${id}/untrack`);
     } else {
       // trigger a full export
-      await execApi("post", `/destination/${guid}/export`, { force: true });
+      await execApi("post", `/destination/${id}/export`, { force: true });
     }
 
     setLoading(false);
@@ -191,22 +190,22 @@ export default function Page(props) {
   }
 
   function updateDestinationGroupMembership(
-    groupGuid,
+    groupId,
     remoteKey,
     oldGroupGuid = null
   ) {
     const _destination = Object.assign({}, destination);
     _destination.destinationGroupMemberships = _destination.destinationGroupMemberships.filter(
-      (dgm) => dgm.groupGuid !== oldGroupGuid
+      (dgm) => dgm.groupId !== oldGroupGuid
     );
 
-    const groupName = groups.filter((g) => g.guid === groupGuid)[0]?.name;
+    const groupName = groups.filter((g) => g.id === groupId)[0]?.name;
 
     let found = false;
     for (const i in _destination.destinationGroupMemberships) {
-      if (_destination.destinationGroupMemberships[i].groupGuid === groupGuid) {
+      if (_destination.destinationGroupMemberships[i].groupId === groupId) {
         _destination.destinationGroupMemberships[i] = {
-          groupGuid,
+          groupId,
           groupName,
           remoteKey: remoteKey ? remoteKey : groupName,
         };
@@ -214,9 +213,9 @@ export default function Page(props) {
       }
     }
 
-    if (!found && groupGuid) {
+    if (!found && groupId) {
       _destination.destinationGroupMemberships.push({
-        groupGuid,
+        groupId,
         groupName,
         remoteKey: remoteKey ? remoteKey : groupName,
       });
@@ -235,13 +234,13 @@ export default function Page(props) {
     setUnlockedProperties(_unlockedProperties);
   }
 
-  function toggleUnlockedGroup(groupGuid) {
+  function toggleUnlockedGroup(groupId) {
     const _unlockedGroups = [].concat(unlockedGroups);
-    if (_unlockedGroups.includes(groupGuid)) {
-      const index = _unlockedGroups.indexOf(groupGuid);
+    if (_unlockedGroups.includes(groupId)) {
+      const index = _unlockedGroups.indexOf(groupId);
       _unlockedGroups.splice(index, 1);
     } else {
-      _unlockedGroups.push(groupGuid);
+      _unlockedGroups.push(groupId);
     }
     setUnlockedGroups(_unlockedGroups);
   }
@@ -250,8 +249,8 @@ export default function Page(props) {
     .filter(
       (group) =>
         !destination.destinationGroupMemberships
-          .map((dgm) => dgm.groupGuid)
-          .includes(group.guid)
+          .map((dgm) => dgm.groupId)
+          .includes(group.id)
     )
     .sort((a, b) => {
       if (a.name > b.name) return 1;
@@ -259,7 +258,7 @@ export default function Page(props) {
       return 0;
     })
     .sort((a, b) => {
-      if (a.guid === trackedGroupGuid) return -1;
+      if (a.id === trackedGroupGuid) return -1;
       return 1;
     });
 
@@ -317,7 +316,7 @@ export default function Page(props) {
                         }
                       })
                       .map((group) => (
-                        <option key={`grp-${group.guid}`} value={group.guid}>
+                        <option key={`grp-${group.id}`} value={group.id}>
                           {group.name} ({group.profilesCount} members)
                         </option>
                       ))}
@@ -382,9 +381,7 @@ export default function Page(props) {
                                           ).includes(rule.key)
                                       )
                                       .map((rule) => (
-                                        <option
-                                          key={`opt-required-${rule.guid}`}
-                                        >
+                                        <option key={`opt-required-${rule.id}`}>
                                           {rule.key}
                                         </option>
                                       ))}
@@ -456,9 +453,7 @@ export default function Page(props) {
                                             ).includes(rule.key)
                                         )
                                         .map((rule) => (
-                                          <option
-                                            key={`opt-known-${rule.guid}`}
-                                          >
+                                          <option key={`opt-known-${rule.id}`}>
                                             {rule.key}
                                           </option>
                                         ))}
@@ -670,19 +665,19 @@ export default function Page(props) {
                     </thead>
                     <tbody>
                       {destination.destinationGroupMemberships.map(
-                        ({ groupName, groupGuid, remoteKey }, idx) => (
+                        ({ groupName, groupId, remoteKey }, idx) => (
                           <tr key={`optional-mapping-${idx}`}>
                             <td>
                               <Form.Control
                                 as="select"
                                 required={false}
-                                value={groupGuid}
+                                value={groupId}
                                 disabled={loading}
                                 onChange={(e) =>
                                   updateDestinationGroupMembership(
                                     e.target["value"],
                                     null,
-                                    groupGuid
+                                    groupId
                                   )
                                 }
                               >
@@ -691,8 +686,8 @@ export default function Page(props) {
                                 </option>
                                 {groups.map((group) => (
                                   <option
-                                    value={group.guid}
-                                    key={`group-remote-mapping-${group.guid}`}
+                                    value={group.id}
+                                    key={`group-remote-mapping-${group.id}`}
                                   >
                                     {group.name}
                                   </option>
@@ -704,11 +699,11 @@ export default function Page(props) {
                               <Form.Control
                                 required
                                 type="text"
-                                disabled={!unlockedGroups.includes(groupGuid)}
+                                disabled={!unlockedGroups.includes(groupId)}
                                 value={remoteKey}
                                 onChange={(e) =>
                                   updateDestinationGroupMembership(
-                                    groupGuid,
+                                    groupId,
                                     e.target["value"]
                                   )
                                 }
@@ -722,7 +717,7 @@ export default function Page(props) {
                               <Button
                                 size="sm"
                                 variant="light"
-                                onClick={() => toggleUnlockedGroup(groupGuid)}
+                                onClick={() => toggleUnlockedGroup(groupId)}
                               >
                                 ✏️
                               </Button>
@@ -735,7 +730,7 @@ export default function Page(props) {
                                   updateDestinationGroupMembership(
                                     null,
                                     null,
-                                    groupGuid
+                                    groupId
                                   );
                                 }}
                               >
@@ -769,7 +764,7 @@ export default function Page(props) {
                             )[0];
 
                             updateDestinationGroupMembership(
-                              chosenGroup.guid,
+                              chosenGroup.id,
                               chosenGroup.name
                             );
                           }}
@@ -815,8 +810,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${guid}`);
+  const { id } = ctx.query;
+  const { destination } = await execApi("get", `/destination/${id}`);
   const { groups } = await execApi("get", `/groups`);
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
@@ -830,7 +825,7 @@ Page.getInitialProps = async (ctx) => {
   try {
     const mappingOptionsResponse = await execApi(
       "get",
-      `/destination/${guid}/mappingOptions`
+      `/destination/${id}/mappingOptions`
     );
     mappingOptions = mappingOptionsResponse.options;
     destinationTypeConversions =
@@ -838,7 +833,7 @@ Page.getInitialProps = async (ctx) => {
 
     const exportArrayPropertiesResponse = await execApi(
       "get",
-      `/destination/${guid}/exportArrayProperties`
+      `/destination/${id}/exportArrayProperties`
     );
     exportArrayProperties = exportArrayPropertiesResponse.exportArrayProperties;
   } catch (error) {
@@ -851,7 +846,7 @@ Page.getInitialProps = async (ctx) => {
     mappingOptions,
     destinationTypeConversions,
     exportArrayProperties,
-    trackedGroupGuid: destination.destinationGroup?.guid,
+    trackedGroupGuid: destination.destinationGroup?.id,
     groups: groups
       .filter((group) => group.state !== "draft")
       .filter((group) => group.state !== "deleted"),

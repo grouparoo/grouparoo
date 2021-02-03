@@ -119,14 +119,14 @@ export class RunCLI extends CLI {
     const schedules = await Schedule.findAll({ where: { recurring: false } });
     for (const i in schedules) {
       const run = await Run.create({
-        creatorGuid: schedules[i].guid,
+        creatorId: schedules[i].id,
         creatorType: "schedule",
         state: "running",
       });
 
       await CLS.enqueueTask("schedule:run", {
-        scheduleGuid: schedules[i].guid,
-        runGuid: run.guid,
+        scheduleGuid: schedules[i].id,
+        runGuid: run.id,
       });
     }
   }

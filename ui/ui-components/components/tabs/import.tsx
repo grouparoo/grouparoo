@@ -7,5 +7,5 @@ export default function ImportTabs({
   import: Models.ImportType;
 }) {
   const tabs = ["edit"];
-  return <Tabs name={_import.guid} tabs={tabs} />;
+  return <Tabs name={_import.id} tabs={tabs} />;
 }

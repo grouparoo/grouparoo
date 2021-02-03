@@ -4,7 +4,7 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
@@ -18,20 +18,20 @@ export async function loadProperty(
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
-  const guid = await validateAndFormatGuid(Property, configObject.id);
+  const id = await validateAndFormatId(Property, configObject.id);
   validateConfigObjectKeys(Property, configObject, ["name"]);
 
   let property = await Property.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), guid },
+    where: { locked: getCodeConfigLockKey(), id },
   });
   if (!property) {
     isNew = true;
     property = await Property.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       key: configObject.key || configObject.name,
       type: configObject.type,
-      sourceGuid: source.guid,
+      sourceId: source.id,
     });
   }
 
@@ -58,9 +58,9 @@ export async function loadProperty(
   return property;
 }
 
-export async function deleteProperties(guids: string[]) {
+export async function deleteProperties(ids: string[]) {
   const properties = await Property.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in properties) {
@@ -70,5 +70,5 @@ export async function deleteProperties(guids: string[]) {
     logModel(property, "deleted");
   }
 
-  return properties.map((instance) => instance.guid);
+  return properties.map((instance) => instance.id);
 }

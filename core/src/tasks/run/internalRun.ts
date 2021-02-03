@@ -24,7 +24,7 @@ export class RunInternalRun extends CLSTask {
   }
 
   async updateProfileWithLock(profile: Profile, run: Run) {
-    const { releaseLock } = await waitForLock(`profile:${profile.guid}`);
+    const { releaseLock } = await waitForLock(`profile:${profile.id}`);
 
     try {
       const oldProfileProperties = await profile.simplifiedProperties();
@@ -33,21 +33,21 @@ export class RunInternalRun extends CLSTask {
       await profile.buildNullProperties("pending");
 
       await Import.create({
-        profileGuid: profile.guid,
+        profileId: profile.id,
         profileAssociatedAt: new Date(),
         oldProfileProperties: oldProfileProperties,
-        oldGroupGuids: oldGroups.map((g) => g.guid),
+        oldGroupIds: oldGroups.map((g) => g.id),
         rawData: {},
         data: {},
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
       });
 
       if (run.creatorType === "property") {
         const property = await ProfileProperty.findOne({
           where: {
-            profileGuid: profile.guid,
-            propertyGuid: run.creatorGuid,
+            profileId: profile.id,
+            propertyId: run.creatorId,
           },
         });
 
@@ -70,7 +70,7 @@ export class RunInternalRun extends CLSTask {
       );
 
     const run = await Run.scope(null).findOne({
-      where: { guid: params.runGuid },
+      where: { id: params.runGuid },
     });
 
     if (!run) return;
@@ -100,7 +100,7 @@ export class RunInternalRun extends CLSTask {
 
     if (profiles.length > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
+        runGuid: run.id,
         offset: offset + limit,
         limit,
       });

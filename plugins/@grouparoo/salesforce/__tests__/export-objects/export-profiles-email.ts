@@ -23,7 +23,7 @@ require("./../fixtures/export-objects/export-profiles-email");
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
+const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
 const destinationOptions = {
   profileObject: "Contact",
   profileMatchField: "Email",
@@ -39,16 +39,16 @@ const destinationOptions = {
 const model = destinationModel(destinationOptions);
 
 const email1 = "brian@demo.com";
-const guid1 = "pro1";
+const id1 = "pro1";
 const newEmail1 = "other@demo.com";
 let userId1 = null;
 
 const email2 = "brian2@demo.com";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const email3 = "brian3@demo.com";
-const guid3 = "pro3";
+const id3 = "pro3";
 let userId3 = null;
 
 const group1 = "(test) High Value1";
@@ -103,12 +103,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(accountId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email1,
@@ -149,12 +149,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(accountId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -172,7 +172,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email2,
@@ -218,12 +218,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             FirstName: "John",
@@ -259,12 +259,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Brian",
@@ -282,7 +282,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Jih",
@@ -319,12 +319,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: newEmail1,
             FirstName: "Brian",
@@ -343,7 +343,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Test",
@@ -387,12 +387,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("is ok (but gives error) to delete a user that doesn't exist", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: { Email: email3, LastName: "None" },
           newProfileProperties: { Email: email3, LastName: "None" },
           oldGroups: [],
@@ -407,7 +407,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid3);
+    expect(error.profileId).toEqual(id3);
     expect(error.message).toContain("not found to delete");
 
     expect(await findId(email3)).toBeNull(); // not added
@@ -415,12 +415,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             checkbox_field__c: true,
@@ -470,12 +470,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             checkbox_field__c: true,
             datetime_field__c: new Date(1598766588 * 1000),
@@ -525,12 +525,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(groupId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             FirstName: "Brian",
@@ -561,12 +561,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(groupId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { Email: email1, LastName: "Smith" },
           newProfileProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1],
@@ -575,7 +575,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Patil" },
           newProfileProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [],
@@ -606,12 +606,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { Email: email1, LastName: "Smith" },
           newProfileProperties: { Email: email1, LastName: "Smith" },
           oldGroups: [group1, group2],
@@ -620,7 +620,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: { Email: email2, LastName: "Jones" },
           oldGroups: [group2],
@@ -644,12 +644,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can ignore case for an email address", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1.toUpperCase(),
             LastName: "Smith",
@@ -683,12 +683,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can set back to lowercase", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1.toUpperCase(),
             LastName: "MACRON",
@@ -715,12 +715,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle unknown field", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Smith",
@@ -749,12 +749,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   test("can not (boo!) handle checkbox error", async () => {
     try {
       const { success, errors } = await exportBatch({
-        appGuid,
+        appId,
         appOptions,
         destinationOptions,
         exports: [
           {
-            profileGuid: guid2,
+            profileId: id2,
             oldProfileProperties: { Email: email2, LastName: "Jones" },
             newProfileProperties: {
               Email: email2,
@@ -791,12 +791,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
   test("can not (boo!) handle datetime error", async () => {
     try {
       const { success, errors } = await exportBatch({
-        appGuid,
+        appId,
         appOptions,
         destinationOptions,
         exports: [
           {
-            profileGuid: guid2,
+            profileId: id2,
             oldProfileProperties: { Email: email2, LastName: "Jones" },
             newProfileProperties: {
               Email: email2,
@@ -832,12 +832,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: {
             Email: email2,
@@ -857,7 +857,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId2);
@@ -877,12 +877,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
 
   test("can handle picklist error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { Email: email2, LastName: "Jones" },
           newProfileProperties: {
             Email: email2,
@@ -902,7 +902,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("picklist");
 
     user = await getUser(userId2);
@@ -925,12 +925,12 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       destinationOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             Email: email1,
             LastName: "Simpson",
@@ -946,7 +946,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             Email: email2,
             LastName: "Jones",
@@ -963,7 +963,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             Email: email3,
@@ -984,7 +984,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);

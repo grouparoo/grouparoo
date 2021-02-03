@@ -18,7 +18,7 @@ export default function Page(props) {
 
   async function stopRun() {
     setLoading(true);
-    const response: Actions.RunEdit = await execApi("put", `/run/${run.guid}`, {
+    const response: Actions.RunEdit = await execApi("put", `/run/${run.id}`, {
       state: "stopped",
     });
     setLoading(false);
@@ -31,17 +31,17 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {run.guid}</title>
+        <title>Grouparoo: {run.id}</title>
       </Head>
 
       <RunTabs run={run} />
 
       <Row>
         <Col>
-          <h1>Run {run.guid}</h1>
+          <h1>Run {run.id}</h1>
           <p>
             Creator:{" "}
-            <Link href="/object/[guid]" as={`/object/${run.creatorGuid}`}>
+            <Link href="/object/[id]" as={`/object/${run.creatorId}`}>
               <a>
                 {run.creatorType}: {run.creatorName}
               </a>
@@ -83,7 +83,7 @@ export default function Page(props) {
 
           <Row>
             <Col>
-              <Link href="/imports/[creatorGuid]" as={`/imports/${run.guid}`}>
+              <Link href="/imports/[creatorId]" as={`/imports/${run.id}`}>
                 <a>Imports Created: {run.importsCreated}</a>
               </Link>
               <br />
@@ -178,9 +178,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { run, quantizedTimeline } = await execApi("get", `/run/${guid}`);
+  const { run, quantizedTimeline } = await execApi("get", `/run/${id}`);
   return { run, quantizedTimeline };
 };
 

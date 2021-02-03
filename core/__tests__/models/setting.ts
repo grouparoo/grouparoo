@@ -18,7 +18,7 @@ describe("models/setting", () => {
       "string"
     );
 
-    expect(setting.guid.length).toBe(40);
+    expect(setting.id.length).toBe(40);
     expect(setting.key).toBe("key");
     expect(setting.title).toBe("title");
     expect(setting.value).toBe("value");

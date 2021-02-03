@@ -21,15 +21,15 @@ export class EventsAssociateProfiles extends CLSTask {
     );
 
     const events = await Event.findAll({
-      attributes: ["guid"],
-      where: { profileGuid: null },
+      attributes: ["id"],
+      where: { profileId: null },
       limit,
       order: [["createdAt", "asc"]],
     });
 
     for (const i in events) {
       await CLS.enqueueTask("event:associateProfile", {
-        eventGuid: events[i].guid,
+        eventId: events[i].id,
       });
     }
 

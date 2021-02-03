@@ -39,8 +39,8 @@ describe("models/export", () => {
     const newGroups = ["cool-people"];
 
     _export = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties,
       newProfileProperties,
@@ -98,8 +98,8 @@ describe("models/export", () => {
     const newGroups = ["cool-people"];
 
     const oldExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties,
       newProfileProperties,
@@ -152,8 +152,8 @@ describe("models/export", () => {
     };
 
     const nullExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties,
       newProfileProperties,
@@ -201,8 +201,8 @@ describe("models/export", () => {
     };
 
     const oldNullExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties,
       newProfileProperties,
@@ -257,7 +257,7 @@ describe("models/export", () => {
 
     await profile.export();
     const _export = await Export.findOne({
-      where: { profileGuid: profile.guid },
+      where: { profileId: profile.id },
     });
 
     const rawProperties = JSON.parse(
@@ -341,9 +341,7 @@ describe("models/export", () => {
     });
 
     // no exports were saved in the DB
-    expect(
-      await Export.count({ where: { profileGuid: profile.guid } })
-    ).toEqual(0);
+    expect(await Export.count({ where: { profileId: profile.id } })).toEqual(0);
 
     // cleanup
     await profile.destroy();
@@ -356,8 +354,8 @@ describe("models/export", () => {
     expect(_export.mostRecent).toBe(true);
 
     const newExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties: {},
       newProfileProperties: {},
@@ -366,8 +364,8 @@ describe("models/export", () => {
     });
 
     const unrelatedExport = await Export.create({
-      destinationGuid: "other-destination",
-      profileGuid: profile.guid,
+      destinationId: "other-destination",
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties: {},
       newProfileProperties: {},
@@ -393,14 +391,14 @@ describe("models/export", () => {
   });
 
   test("exports can be marked as having changes or not", async () => {
-    await Export.destroy({ where: { destinationGuid: destination.guid } });
+    await Export.destroy({ where: { destinationId: destination.id } });
     const group = await helper.factories.group();
     await group.addProfile(profile);
     await destination.trackGroup(group);
 
     const oldExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties: {},
       newProfileProperties: {},
@@ -413,8 +411,8 @@ describe("models/export", () => {
 
     const newExport = await Export.findOne({
       where: {
-        guid: {
-          [Op.and]: [{ [Op.ne]: oldExport.guid }],
+        id: {
+          [Op.and]: [{ [Op.ne]: oldExport.id }],
         },
       },
     });
@@ -428,8 +426,8 @@ describe("models/export", () => {
 
   test("old entries can be swept away, not the newest one for each profile + destination", async () => {
     const oldExport = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties: {},
       newProfileProperties: {},
@@ -439,8 +437,8 @@ describe("models/export", () => {
     });
 
     const oldExportMostRecent = await Export.create({
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: new Date(),
       oldProfileProperties: {},
       newProfileProperties: {},
@@ -470,15 +468,15 @@ describe("models/export", () => {
 
     const remaining = await Export.findAll();
     expect(remaining.length).toBe(1);
-    expect(remaining[0].guid).toBe(oldExportMostRecent.guid);
+    expect(remaining[0].id).toBe(oldExportMostRecent.id);
   });
 
   describe("errors", () => {
     let errorExport;
     beforeEach(async () => {
       errorExport = await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         startedAt: new Date(),
         oldProfileProperties: { firstName: "old" },
         newProfileProperties: { firstName: "new" },

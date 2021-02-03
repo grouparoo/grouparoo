@@ -74,7 +74,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "mysql source",
       type: "mysql-table-import",
-      appGuid: app.guid,
+      appId: app.id,
       options: { table: usersTableName },
       mapping: { id: "userId" },
       state: "ready",
@@ -88,7 +88,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "test schedule",
       type: "mysql-import",
-      sourceGuid: source.guid,
+      sourceId: source.id,
       recurring: false,
       options: {
         column: "id",
@@ -100,7 +100,7 @@ describe("integration/runs/mysql", () => {
       session
     );
     expect(buildScheduleResponse.error).toBeUndefined();
-    expect(buildScheduleResponse.schedule.guid).toBeTruthy();
+    expect(buildScheduleResponse.schedule.id).toBeTruthy();
     expect(buildScheduleResponse.schedule.name).toBe("test schedule");
     schedule = buildScheduleResponse.schedule;
 
@@ -109,7 +109,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "test destination",
       type: "mysql-export",
-      appGuid: app.guid,
+      appId: app.id,
       options: {
         table: profilesDestinationTableName,
         primaryKey: "id",
@@ -123,7 +123,7 @@ describe("integration/runs/mysql", () => {
       session
     );
     expect(buildDestinationResponse.error).toBeUndefined();
-    expect(buildDestinationResponse.destination.guid).toBeTruthy();
+    expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
 
     destination = buildDestinationResponse.destination;
@@ -132,7 +132,7 @@ describe("integration/runs/mysql", () => {
   test("we can test the app options", async () => {
     session.params = {
       csrfToken,
-      guid: app.guid,
+      id: app.id,
     };
     const { error, test } = await specHelper.runAction("app:test", session);
     expect(error).toBeUndefined();
@@ -143,7 +143,7 @@ describe("integration/runs/mysql", () => {
   test("we can read the columns of the table", async () => {
     session.params = {
       csrfToken,
-      guid: source.guid,
+      id: source.id,
     };
     const { error, preview } = await specHelper.runAction(
       "source:preview",
@@ -170,7 +170,7 @@ describe("integration/runs/mysql", () => {
   test("the mapping data for the source can be set", async () => {
     session.params = {
       csrfToken,
-      guid: source.guid,
+      id: source.id,
       mapping: { id: "userId" },
     };
     const { error } = await specHelper.runAction("source:edit", session);
@@ -187,7 +187,7 @@ describe("integration/runs/mysql", () => {
     // create the new rule
     session.params = {
       csrfToken,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "email",
       type: "string",
     };
@@ -197,7 +197,7 @@ describe("integration/runs/mysql", () => {
       session
     );
     expect(error).toBeUndefined();
-    expect(property.guid).toBeTruthy();
+    expect(property.id).toBeTruthy();
 
     // check the pluginOptions
     expect(pluginOptions.length).toBe(3);
@@ -212,7 +212,7 @@ describe("integration/runs/mysql", () => {
     // set the options
     session.params = {
       csrfToken,
-      guid: property.guid,
+      id: property.id,
       unique: true,
       options: { column: "email", aggregationMethod: "exact" },
       state: "ready",
@@ -242,8 +242,8 @@ describe("integration/runs/mysql", () => {
   test("track the test group with the destination", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
-      groupGuid: group.guid,
+      id: destination.id,
+      groupId: group.id,
     };
     await specHelper.runAction("destination:trackGroup", session);
   });
@@ -251,7 +251,7 @@ describe("integration/runs/mysql", () => {
   test("we can read the mysql mapping options", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
     };
     const { error, options } = await specHelper.runAction(
       "destination:mappingOptions",
@@ -280,11 +280,11 @@ describe("integration/runs/mysql", () => {
 
   test(`the destination group membership can be set`, async () => {
     const destinationGroupMemberships = {};
-    destinationGroupMemberships[group.guid] = group.name;
+    destinationGroupMemberships[group.id] = group.name;
 
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
       destinationGroupMemberships,
     };
     const { error, destination: _destination } = await specHelper.runAction(
@@ -294,7 +294,7 @@ describe("integration/runs/mysql", () => {
     expect(error).toBeUndefined();
     expect(_destination.destinationGroupMemberships).toEqual([
       {
-        groupGuid: group.guid,
+        groupId: group.id,
         groupName: group.name,
         remoteKey: group.name,
       },
@@ -304,7 +304,7 @@ describe("integration/runs/mysql", () => {
   test("the destination can use the new rule in a mapping and be made ready", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
       mapping: {
         id: "userId",
         customer_email: "email",
@@ -327,7 +327,7 @@ describe("integration/runs/mysql", () => {
       // enqueue the run
       session.params = {
         csrfToken,
-        guid: schedule.guid,
+        id: schedule.id,
       };
       const { error, success } = await specHelper.runAction(
         "schedule:run",
@@ -339,17 +339,17 @@ describe("integration/runs/mysql", () => {
       // check that the run is enqueued
       const found = await specHelper.findEnqueuedTasks("schedule:run");
       expect(found.length).toEqual(1);
-      expect(found[0].args[0].scheduleGuid).toBe(schedule.guid);
+      expect(found[0].args[0].scheduleGuid).toBe(schedule.id);
 
       // run the schedule
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
       await specHelper.runTask("schedule:run", {
-        runGuid: run.guid,
-        scheduleGuid: schedule.guid,
+        runGuid: run.id,
+        scheduleGuid: schedule.id,
       });
 
       // run the schedule task again to enqueue the determineState task
@@ -445,12 +445,12 @@ describe("integration/runs/mysql", () => {
   );
 
   test("profiles should be created with both the mapping data and additional profile property", async () => {
-    const profileGuid = (
+    const profileId = (
       await ProfileProperty.findOne({
         where: { rawValue: "1" },
       })
-    ).profileGuid;
-    const profile = await Profile.findOne({ where: { guid: profileGuid } });
+    ).profileId;
+    const profile = await Profile.findOne({ where: { id: profileId } });
     const properties = await profile.properties();
     expect(properties.userId.values).toEqual([1]);
     expect(properties.email.values).toEqual(["ejervois0@example.com"]);
@@ -462,7 +462,7 @@ describe("integration/runs/mysql", () => {
       // enqueue the run
       session.params = {
         csrfToken,
-        guid: schedule.guid,
+        id: schedule.id,
       };
       const { error, success } = await specHelper.runAction(
         "schedule:run",
@@ -473,13 +473,13 @@ describe("integration/runs/mysql", () => {
 
       // run the schedule
       const run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
       await specHelper.runTask("schedule:run", {
-        runGuid: run.guid,
-        scheduleGuid: schedule.guid,
+        runGuid: run.id,
+        scheduleGuid: schedule.id,
       });
 
       // run the schedule task again to enqueue the determineState task

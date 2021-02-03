@@ -13,13 +13,13 @@ export namespace PropertyOps {
    */
   export async function enqueueRuns(property: Property) {
     if (!api.process.running) return; // we are in an initializer (validating)
-    await internalRun("property", property.guid); // update *all* profiles
+    await internalRun("property", property.id); // update *all* profiles
 
     const groups = await Group.findAll({
       include: [
         {
           model: GroupRule,
-          where: { propertyGuid: property.guid },
+          where: { propertyId: property.id },
         },
       ],
     });
@@ -58,7 +58,7 @@ export namespace PropertyOps {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await App.findByGuid(source.appGuid);
+    const app = await App.findById(source.appId);
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const sourceOptions = await source.getOptions(true);
@@ -69,14 +69,14 @@ export namespace PropertyOps {
       const options = await opt.options({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         source,
-        sourceGuid: source.guid,
+        sourceId: source.id,
         sourceOptions,
         sourceMapping,
         property,
-        propertyGuid: property.guid,
+        propertyId: property.id,
       });
 
       response.push({
@@ -107,7 +107,7 @@ export namespace PropertyOps {
     const remoteMappingKeys = Object.values(sourceMapping);
     properties
       .filter((rule) => remoteMappingKeys.includes(rule.key))
-      .filter((rule) => rule.guid !== property.guid)
+      .filter((rule) => rule.id !== property.id)
       .forEach((rule) => dependencies.push(rule));
 
     // does this rule have any mustache variables depended on?
@@ -118,13 +118,13 @@ export namespace PropertyOps {
         .map((chunk) => chunk[1]);
       properties
         .filter((rule) => mustacheVariables.includes(rule.key))
-        .filter((rule) => rule.guid !== property.guid)
+        .filter((rule) => rule.id !== property.id)
         .forEach((rule) => dependencies.push(rule));
     }
 
     // de-duplicate
     return dependencies.filter(
-      (v, i, a) => a.findIndex((t) => t.guid === v.guid) === i
+      (v, i, a) => a.findIndex((t) => t.id === v.id) === i
     );
   }
 
@@ -134,7 +134,7 @@ export namespace PropertyOps {
 
     await Property.update(
       { identifying: false },
-      { where: { guid: { [Op.ne]: rule.guid } } }
+      { where: { id: { [Op.ne]: rule.id } } }
     );
     await rule.update({ identifying: true });
   }
@@ -150,7 +150,7 @@ export namespace PropertyOps {
     const source = await property.$get("source", { scope: null });
     const sourceOptions = await source.getOptions(true);
     const sourceMapping = await source.getMapping();
-    const app = await App.findByGuid(source.appGuid);
+    const app = await App.findById(source.appId);
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -158,14 +158,14 @@ export namespace PropertyOps {
     const options = await method({
       connection,
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       source,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       sourceOptions,
       sourceMapping,
       property,
-      propertyGuid: property.guid,
+      propertyId: property.id,
       propertyOptions,
     });
 

@@ -45,19 +45,19 @@ export default function Page({
         <tbody>
           {groups.map((group) => {
             return (
-              <tr key={`group-${group.guid}`}>
+              <tr key={`group-${group.id}`}>
                 <td>
                   {group.type === "calculated" ? (
                     <Link
-                      href="/group/[guid]/rules"
-                      as={`/group/${group.guid}/rules`}
+                      href="/group/[id]/rules"
+                      as={`/group/${group.id}/rules`}
                     >
                       <a>{group.name}</a>
                     </Link>
                   ) : (
                     <Link
-                      href="/group/[guid]/edit"
-                      as={`/group/${group.guid}/edit`}
+                      href="/group/[id]/edit"
+                      as={`/group/${group.id}/edit`}
                     >
                       <a>{group.name}</a>
                     </Link>
@@ -87,11 +87,11 @@ export default function Page({
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { property } = await execApi("get", `/property/${guid}`);
-  const { source } = await execApi("get", `/source/${property.sourceGuid}`);
-  const { groups } = await execApi("get", `/property/${guid}/groups`);
+  const { property } = await execApi("get", `/property/${id}`);
+  const { source } = await execApi("get", `/source/${property.sourceId}`);
+  const { groups } = await execApi("get", `/property/${id}/groups`);
 
   return { property, source, groups };
 };

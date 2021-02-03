@@ -28,7 +28,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [loadingOptions, setLoadingOptions] = useState(false);
   const [connectionOptions, setConnectionOptions] = useState({});
-  const { guid } = router.query;
+  const { id } = router.query;
 
   useEffect(() => {
     loadOptions();
@@ -50,7 +50,7 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.DestinationEdit = await execApi(
       "put",
-      `/destination/${guid}`,
+      `/destination/${id}`,
       Object.assign({}, destination, { state: "ready" })
     );
     if (response?.destination) {
@@ -61,8 +61,8 @@ export default function Page(props) {
         destination.state === "draft"
       ) {
         router.push(
-          `/destination/[guid]/data`,
-          `/destination/${destination.guid}/data`
+          `/destination/[id]/data`,
+          `/destination/${destination.id}/data`
         );
       } else {
         setLoading(false);
@@ -77,7 +77,7 @@ export default function Page(props) {
     setLoadingOptions(true);
     const response: Actions.DestinationConnectionOptions = await execApi(
       "get",
-      `/destination/${guid}/connectionOptions`,
+      `/destination/${id}/connectionOptions`,
       { options: destination.options },
       null,
       null,
@@ -92,7 +92,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.DestinationDestroy = await execApi(
         "delete",
-        `/destination/${guid}`
+        `/destination/${id}`
       );
       if (success) {
         router.push("/destinations");
@@ -157,7 +157,7 @@ export default function Page(props) {
 
               <p>
                 <strong>App</strong>:{" "}
-                <Link href="/app/[guid]" as={`/app/${destination.app.guid}`}>
+                <Link href="/app/[id]" as={`/app/${destination.app.id}`}>
                   <a>{destination.app.name}</a>
                 </Link>
                 <br />
@@ -373,8 +373,8 @@ export default function Page(props) {
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { guid } = ctx.query;
-  const { destination } = await execApi("get", `/destination/${guid}`);
+  const { id } = ctx.query;
+  const { destination } = await execApi("get", `/destination/${id}`);
   const { environmentVariableOptions } = await execApi(
     "get",
     "/destinations/connectionApps"

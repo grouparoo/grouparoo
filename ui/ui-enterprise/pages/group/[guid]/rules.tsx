@@ -55,7 +55,7 @@ export default function Page(props) {
     setLoading(true);
     const componentMembersResponse: Actions.GroupCountComponentMembers = await execApi(
       "get",
-      `/group/${group.guid}/countComponentMembers`,
+      `/group/${group.id}/countComponentMembers`,
       { rules: localRules },
       null,
       null,
@@ -69,7 +69,7 @@ export default function Page(props) {
 
     const potentialMembersResponse: Actions.GroupCountPotentialMembers = await execApi(
       "get",
-      `/group/${group.guid}/countPotentialMembers`,
+      `/group/${group.id}/countPotentialMembers`,
       { rules: localRules },
       null,
       null,
@@ -108,9 +108,9 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.GroupEdit = await execApi(
       "put",
-      `/group/${group.guid}`,
+      `/group/${group.id}`,
       {
-        guid: group.guid,
+        id: group.id,
         rules: localRules,
       }
     );
@@ -123,17 +123,16 @@ export default function Page(props) {
   }
 
   async function autocompleteProfilePropertySearch(localRule, match) {
-    const propertyGuid = properties.filter((r) => r.key === localRule.key)[0]
-      ?.guid;
+    const propertyId = properties.filter((r) => r.key === localRule.key)[0]?.id;
 
     // we are dealing with a topLevelGroupRule
-    if (!propertyGuid) return;
+    if (!propertyId) return;
 
     setLoading(true);
     const response: Actions.ProfileAutocompleteProfileProperty = await execApi(
       "get",
       `/profiles/autocompleteProfileProperty`,
-      { propertyGuid, match }
+      { propertyId, match }
     );
     if (response.profileProperties) {
       const _autocompleteResults = Object.assign({}, autocompleteResults);
@@ -504,9 +503,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { group } = await execApi("get", `/group/${guid}`);
+  const { group } = await execApi("get", `/group/${id}`);
   const { properties } = await execApi("get", `/properties`, {
     state: "ready",
   });

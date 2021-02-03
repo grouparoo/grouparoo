@@ -89,7 +89,7 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
     }: Actions.NavigationList = await execApi("get", `/navigation`);
     let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
       firstName: "",
-      guid: null,
+      id: null,
     };
     if (navigationMode && navigationMode === "authenticated") {
       currentTeamMember = (await execApi("get", `/session`)).teamMember;

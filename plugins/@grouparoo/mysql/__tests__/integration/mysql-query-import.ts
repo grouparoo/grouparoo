@@ -63,7 +63,7 @@ describe("integration/runs/mysql", () => {
       csrfToken,
       name: "mysql source",
       type: "mysql-query-import",
-      appGuid: app.guid,
+      appId: app.id,
       state: "ready",
     };
     const sourceResponse = await specHelper.runAction("source:create", session);
@@ -74,7 +74,7 @@ describe("integration/runs/mysql", () => {
   test("we can test the app options", async () => {
     session.params = {
       csrfToken,
-      guid: app.guid,
+      id: app.id,
     };
     const { error, test } = await specHelper.runAction("app:test", session);
     expect(error).toBeUndefined();
@@ -90,7 +90,7 @@ describe("integration/runs/mysql", () => {
 
     session.params = {
       csrfToken,
-      sourceGuid: source.guid,
+      sourceId: source.id,
       key: "email",
       type: "string",
       unique: true,
@@ -101,7 +101,7 @@ describe("integration/runs/mysql", () => {
       session
     );
     expect(error).toBeUndefined();
-    expect(property.guid).toBeTruthy();
+    expect(property.id).toBeTruthy();
 
     // check the pluginOptions
     expect(pluginOptions.length).toBe(1);
@@ -110,7 +110,7 @@ describe("integration/runs/mysql", () => {
     // set the options
     session.params = {
       csrfToken,
-      guid: property.guid,
+      id: property.id,
       options: {
         query: `select email from ${usersTableName} where id = {{ userId }}`,
       },
@@ -131,7 +131,7 @@ describe("integration/runs/mysql", () => {
       await profile.import();
       await profile.reload();
 
-      expect(profile.guid).toBeTruthy();
+      expect(profile.id).toBeTruthy();
       const properties = await profile.properties();
       expect(properties.email.values[0]).toMatch(/.*@example.com/);
       i++;

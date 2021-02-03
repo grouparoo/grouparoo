@@ -2,12 +2,12 @@ import { getDestinationOptions } from "../export/options";
 import { DestinationOptionsMethod } from "@grouparoo/core";
 
 export const destinationOptions: DestinationOptionsMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
 }) => {
   return getDestinationOptions({
-    appGuid,
+    appId,
     appOptions,
     destinationOptions,
     which: {

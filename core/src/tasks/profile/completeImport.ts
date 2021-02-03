@@ -13,14 +13,14 @@ export class ProfileCompleteImport extends RetryableTask {
     this.frequency = 0;
     this.queue = "profiles";
     this.inputs = {
-      profileGuid: { required: true },
+      profileId: { required: true },
       toExport: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
     const profile = await Profile.findOne({
-      where: { guid: params.profileGuid },
+      where: { id: params.profileId },
     });
 
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
@@ -59,14 +59,14 @@ export class ProfileCompleteImport extends RetryableTask {
       const newProfileProperties = await profile.simplifiedProperties();
 
       const newGroups = await profile.$get("groups");
-      const newGroupGuids = newGroups.map((g) => g.guid);
+      const newGroupIds = newGroups.map((g) => g.id);
       const now = new Date();
 
       for (const i in imports) {
         const _import = imports[i];
         _import.newProfileProperties = newProfileProperties;
         _import.profileUpdatedAt = now;
-        _import.newGroupGuids = newGroupGuids;
+        _import.newGroupIds = newGroupIds;
         _import.groupsUpdatedAt = now;
         if (!params.toExport) _import.exportedAt = now; // we want to indicate that the import's lifecycle is complete
         await _import.save();
@@ -74,7 +74,7 @@ export class ProfileCompleteImport extends RetryableTask {
 
       if (params.toExport) {
         await CLS.enqueueTask("profile:export", {
-          profileGuid: profile.guid,
+          profileId: profile.id,
           force: false,
         });
       }

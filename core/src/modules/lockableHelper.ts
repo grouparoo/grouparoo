@@ -27,7 +27,7 @@ export namespace LockableHelper {
       if (!allowedColumnsThatCanChangeWhenLocked.includes(changedCols[i])) {
         throw new Error(
           `you cannot update this locked ${modelName(instance)} (${
-            instance.guid
+            instance.id
           }) [${changedCols.map((k) => `\`${k}\``).join(", ")} has changes]`
         );
       }
@@ -41,7 +41,7 @@ export namespace LockableHelper {
     if (hasChanges) {
       throw new Error(
         `you cannot update the options for a locked ${modelName(instance)} (${
-          instance.guid
+          instance.id
         })`
       );
     }
@@ -52,7 +52,7 @@ export namespace LockableHelper {
     if (api?.codeConfig?.allowLockedModelChanges !== false) return;
 
     throw new Error(
-      `you cannot destroy a locked ${modelName(instance)} (${instance.guid})`
+      `you cannot destroy a locked ${modelName(instance)} (${instance.id})`
     );
   }
 }

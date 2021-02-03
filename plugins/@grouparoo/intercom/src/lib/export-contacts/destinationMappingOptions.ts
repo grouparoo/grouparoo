@@ -9,13 +9,13 @@ import { IntercomCacheData } from "./listMethods";
 import { CreationMode } from "./destinationOptions";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
 }) => {
   const client = await connect(appOptions);
   const required = getRequiredFields(destinationOptions);
-  const known = await getKnownAttributes(client, { appGuid, appOptions }, true);
+  const known = await getKnownAttributes(client, { appId, appOptions }, true);
 
   return {
     labels: {
@@ -96,12 +96,12 @@ const getKnownAttributes = async (
     important?: boolean;
   }>
 > => {
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getKnownAttributes", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
+    { objectGuid: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchKnownAttributes(client);
     }

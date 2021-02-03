@@ -7,5 +7,5 @@ export default function ExportTabs({
   export: Models.ExportType;
 }) {
   const tabs = ["edit"];
-  return <Tabs name={_export.guid} tabs={tabs} />;
+  return <Tabs name={_export.id} tabs={tabs} />;
 }

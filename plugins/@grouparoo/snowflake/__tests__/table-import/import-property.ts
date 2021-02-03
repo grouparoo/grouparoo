@@ -48,7 +48,7 @@ async function getPropertyValue(
   }
 
   const propertyFilters = usePropertyFilters || [];
-  const connection = await connect({ appOptions, app: null, appGuid: null });
+  const connection = await connect({ appOptions, app: null, appId: null });
   const property = await Property.findOne({
     where: { key: "email" },
   });
@@ -62,12 +62,12 @@ async function getPropertyValue(
     sourceMapping,
     propertyFilters,
     property,
-    profileGuid: null,
+    profileId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
-    propertyGuid: null,
+    appId: null,
+    propertyId: null,
   });
 }
 
@@ -84,7 +84,7 @@ describe("snowflake/table/profileProperty", () => {
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.guid).toBeTruthy();
+    expect(profile.id).toBeTruthy();
   });
 
   describe("exact primary tables", () => {

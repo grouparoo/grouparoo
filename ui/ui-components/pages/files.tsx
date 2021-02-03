@@ -50,7 +50,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.FileDestroy = await execApi(
         "delete",
-        `/file/${file.guid}`
+        `/file/${file.id}`
       );
       if (response?.success) {
         successHandler.set({ message: "File Deleted" });
@@ -96,16 +96,13 @@ export default function Page(props) {
             const fileName = fileNameParts[fileNameParts.length - 1];
 
             return (
-              <tr key={`file-${file.guid}`}>
+              <tr key={`file-${file.id}`}>
                 <td>
                   <FilePreview maxWidth={100} maxHeight={100} file={file} />
                 </td>
                 <td>
                   <strong>
-                    <Link
-                      href="/file/[guid]/edit"
-                      as={`/file/${file.guid}/edit`}
-                    >
+                    <Link href="/file/[id]/edit" as={`/file/${file.id}/edit`}>
                       <a>{fileName}</a>
                     </Link>
                   </strong>

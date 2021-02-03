@@ -16,8 +16,8 @@ export default function Page(props) {
     _import,
   }: { groups: Models.GroupType[]; _import: Models.ImportType } = props;
 
-  function groupName(groupGuid) {
-    const group = groups.filter((g) => g.guid === groupGuid)[0];
+  function groupName(groupId) {
+    const group = groups.filter((g) => g.id === groupId)[0];
     if (group) {
       return group.name;
     }
@@ -30,29 +30,29 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {_import.guid}</title>
+        <title>Grouparoo: {_import.id}</title>
       </Head>
 
       <ImportTabs import={_import} />
 
-      <h1>{_import.guid}</h1>
+      <h1>{_import.id}</h1>
       <p>
         Creator:{" "}
-        <Link href={`/object/${_import.creatorGuid}`} prefetch={false}>
+        <Link href={`/object/${_import.creatorId}`} prefetch={false}>
           <a>
             {_import.creatorType === "group"
-              ? `"${groupName(_import.creatorGuid)}"`
+              ? `"${groupName(_import.creatorId)}"`
               : null}{" "}
-            {_import.creatorGuid}
+            {_import.creatorId}
           </a>
         </Link>
         <br />
         Profile:{" "}
         <Link
-          href="/profile/[guid]/edit"
-          as={`/profile/${_import.profileGuid}/edit`}
+          href="/profile/[id]/edit"
+          as={`/profile/${_import.profileId}/edit`}
         >
-          <a>{_import.profileGuid}</a>
+          <a>{_import.profileId}</a>
         </Link>
       </p>
       {_import.errorMessage ? (
@@ -171,9 +171,9 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { import: _import } = await execApi("get", `/import/${guid}`);
+  const { import: _import } = await execApi("get", `/import/${id}`);
   const { groups } = await execApi("get", `/groups`);
   return { _import, groups };
 };

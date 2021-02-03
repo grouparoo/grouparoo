@@ -31,13 +31,13 @@ describe("models/run", () => {
 
   test("a run can be created", async () => {
     const run = new Run({
-      creatorGuid: schedule.guid,
+      creatorId: schedule.id,
       creatorType: "schedule",
       state: "complete",
     });
     await run.save();
 
-    expect(run.guid.length).toBe(40);
+    expect(run.id.length).toBe(40);
     firstRun = run;
   });
 
@@ -66,7 +66,7 @@ describe("models/run", () => {
       test("unknown type name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: "xxx",
+          creatorId: "xxx",
           creatorType: "xxx",
         });
         expect(await run.getCreatorName()).toBe("unknown");
@@ -75,7 +75,7 @@ describe("models/run", () => {
       test("property Name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: property.guid,
+          creatorId: property.id,
           creatorType: "property",
         });
         expect(await run.getCreatorName()).toBe(property.key);
@@ -84,7 +84,7 @@ describe("models/run", () => {
       test("group Name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
         });
         expect(await run.getCreatorName()).toBe(group.name);
@@ -93,7 +93,7 @@ describe("models/run", () => {
       test("schedule Name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
         });
         expect(await run.getCreatorName()).toBe(source.name);
@@ -102,7 +102,7 @@ describe("models/run", () => {
       test("teamMember Name", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: teamMember.guid,
+          creatorId: teamMember.id,
           creatorType: "teamMember",
         });
         expect(await run.getCreatorName()).toBe(
@@ -115,7 +115,7 @@ describe("models/run", () => {
       test("complete", async () => {
         run = await Run.create({
           state: "complete",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
         });
         await run.determinePercentComplete();
@@ -125,7 +125,7 @@ describe("models/run", () => {
       test("stopped", async () => {
         run = await Run.create({
           state: "stopped",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
         });
         await run.determinePercentComplete();
@@ -135,7 +135,7 @@ describe("models/run", () => {
       test("running - schedule", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: schedule.guid,
+          creatorId: schedule.id,
           creatorType: "schedule",
         });
         await run.determinePercentComplete();
@@ -145,7 +145,7 @@ describe("models/run", () => {
       test("running - group - runAddGroupMembers", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
           groupMethod: "runAddGroupMembers",
         });
@@ -156,7 +156,7 @@ describe("models/run", () => {
       test("running - group - runRemoveGroupMembers", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
           groupMethod: "runRemoveGroupMembers",
         });
@@ -167,7 +167,7 @@ describe("models/run", () => {
       test("running - group - removePreviousRunGroupMembers", async () => {
         run = await Run.create({
           state: "running",
-          creatorGuid: group.guid,
+          creatorId: group.id,
           creatorType: "group",
           groupMethod: "removePreviousRunGroupMembers",
         });
@@ -180,7 +180,7 @@ describe("models/run", () => {
         const profileB = await helper.factories.profile();
         run = await Run.create({
           state: "running",
-          creatorGuid: teamMember.guid,
+          creatorId: teamMember.id,
           creatorType: "teamMember",
           importsCreated: 1,
         });
@@ -204,9 +204,9 @@ describe("models/run", () => {
     });
   });
 
-  test("a run requires a creatorGuid", async () => {
+  test("a run requires a creatorId", async () => {
     const run = new Run({ state: "complete", creatorType: "schedule" });
-    await expect(run.save()).rejects.toThrow("Run.creatorGuid cannot be null");
+    await expect(run.save()).rejects.toThrow("Run.creatorId cannot be null");
   });
 
   describe("determineState", () => {
@@ -219,7 +219,7 @@ describe("models/run", () => {
       profile = await helper.factories.profile();
 
       run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -233,7 +233,7 @@ describe("models/run", () => {
     it("will keep the state running if there are incomplete imports", async () => {
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
       });
 
       await run.afterBatch();
@@ -245,7 +245,7 @@ describe("models/run", () => {
     it("will move the run to complete if all the imports have failed with an error", async () => {
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "oh no!",
       });
 
@@ -279,17 +279,17 @@ describe("models/run", () => {
     it("will mark the run with an error comprised of the counts of the import errors", async () => {
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class A",
       });
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class A",
       });
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class B",
       });
 
@@ -310,7 +310,7 @@ describe("models/run", () => {
       Import.truncate();
 
       run = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -319,17 +319,17 @@ describe("models/run", () => {
     it("can stop a run and include errors", async () => {
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class A",
       });
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class A",
       });
       await Import.create({
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         errorMessage: "error class B",
       });
 
@@ -354,7 +354,7 @@ describe("models/run", () => {
 
     beforeAll(async () => {
       nextRun = new Run({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -368,7 +368,7 @@ describe("models/run", () => {
 
     test("a run can find the previous run for the same schedule that created imports", async () => {
       previousRun = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
@@ -376,12 +376,12 @@ describe("models/run", () => {
       });
 
       const foundPreviousRun = await nextRun.previousRun();
-      expect(foundPreviousRun.guid).toBe(previousRun.guid);
+      expect(foundPreviousRun.id).toBe(previousRun.id);
     });
 
     test("will not find a previous run which found 0 profiles", async () => {
       previousRun = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 0,
@@ -400,7 +400,7 @@ describe("models/run", () => {
       );
 
       previousRun = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
@@ -419,7 +419,7 @@ describe("models/run", () => {
       );
 
       previousRun = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "complete",
         importsCreated: 1,
@@ -427,12 +427,12 @@ describe("models/run", () => {
       });
 
       const foundPreviousRun = await nextRun.previousRun();
-      expect(foundPreviousRun.guid).toEqual(previousRun.guid);
+      expect(foundPreviousRun.id).toEqual(previousRun.id);
     });
 
     test("will not find a previous run that is not complete", async () => {
       previousRun = await Run.create({
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
         importsCreated: 1,
@@ -450,7 +450,7 @@ describe("models/run", () => {
     beforeAll(async () => {
       run = await Run.create({
         createdAt: 0,
-        creatorGuid: schedule.guid,
+        creatorId: schedule.id,
         creatorType: "schedule",
         state: "running",
       });
@@ -458,9 +458,9 @@ describe("models/run", () => {
       await sleep(100);
 
       await Import.create({
-        profileGuid: "a",
+        profileId: "a",
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         profileAssociatedAt: new Date(),
         profileUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
@@ -471,9 +471,9 @@ describe("models/run", () => {
       await sleep(100);
 
       await Import.create({
-        profileGuid: "a",
+        profileId: "a",
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         profileAssociatedAt: new Date(),
         profileUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
@@ -483,9 +483,9 @@ describe("models/run", () => {
       await sleep(100);
 
       await Import.create({
-        profileGuid: "b",
+        profileId: "b",
         creatorType: "run",
-        creatorGuid: run.guid,
+        creatorId: run.id,
         profileAssociatedAt: new Date(),
         profileUpdatedAt: new Date(),
         groupsUpdatedAt: new Date(),
@@ -584,7 +584,7 @@ describe("models/run", () => {
       const source = await Source.create({
         name: "bad source",
         type: "test-error-connection",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ query: "test table" });
       await source.setMapping({ id: "userId" });
@@ -608,7 +608,7 @@ describe("models/run", () => {
       // ... which means that no run should be able to be created
       await expect(
         Run.create({
-          creatorGuid: "test",
+          creatorId: "test",
           creatorType: "test",
           state: "running",
         })

@@ -55,7 +55,7 @@ export function BigNumber({ execApi, model, title, href = null }) {
 export function GroupsByNewestMember({ execApi }) {
   const [groups, setGroups] = useState<Models.GroupType[]>([]);
   const [newestMembersAdded, setNewestMembersAdded] = useState<{
-    [guid: string]: number;
+    [id: string]: number;
   }>({});
 
   let timer;
@@ -107,19 +107,19 @@ export function GroupsByNewestMember({ execApi }) {
           <tbody>
             {groups.map((group) => {
               return (
-                <tr key={`group-${group.guid}`}>
+                <tr key={`group-${group.id}`}>
                   <td>
                     {group.type === "calculated" ? (
                       <Link
-                        href="/group/[guid]/rules"
-                        as={`/group/${group.guid}/rules`}
+                        href="/group/[id]/rules"
+                        as={`/group/${group.id}/rules`}
                       >
                         <a>{group.name}</a>
                       </Link>
                     ) : (
                       <Link
-                        href="/group/[guid]/edit"
-                        as={`/group/${group.guid}/edit`}
+                        href="/group/[id]/edit"
+                        as={`/group/${group.id}/edit`}
                       >
                         <a>{group.name}</a>
                       </Link>
@@ -127,8 +127,8 @@ export function GroupsByNewestMember({ execApi }) {
                   </td>
                   <td>{group.profilesCount}</td>
                   <td>
-                    {newestMembersAdded[group.guid] ? (
-                      <Moment fromNow>{newestMembersAdded[group.guid]}</Moment>
+                    {newestMembersAdded[group.id] ? (
+                      <Moment fromNow>{newestMembersAdded[group.id]}</Moment>
                     ) : (
                       "No Group Members"
                     )}
@@ -195,9 +195,9 @@ export function RunningRuns({ execApi }) {
                 : "n/a";
 
               return (
-                <tr key={`run-${run.guid}`}>
+                <tr key={`run-${run.id}`}>
                   <td>
-                    <Link href="/run/[guid]/edit" as={`/run/${run.guid}/edit`}>
+                    <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
                       <a>
                         {run.creatorType}: {run.creatorName}
                       </a>
@@ -225,7 +225,7 @@ export function RunningRuns({ execApi }) {
 
 export function ScheduleRuns({ execApi }) {
   const [sources, setSources] = useState<Models.SourceType[]>([]);
-  const [runs, setRuns] = useState<{ [guid: string]: Models.RunType }>({});
+  const [runs, setRuns] = useState<{ [id: string]: Models.RunType }>({});
 
   let timer;
 
@@ -254,7 +254,7 @@ export function ScheduleRuns({ execApi }) {
     await Promise.all(
       sourcesWithSchedules.map(async (source) => {
         const run = await loadRun(source);
-        runs[source.guid] = run;
+        runs[source.id] = run;
       })
     );
 
@@ -267,7 +267,7 @@ export function ScheduleRuns({ execApi }) {
       "get",
       `/runs`,
       {
-        guid: source.schedule.guid,
+        id: source.schedule.id,
         limit: 1,
       },
       null,
@@ -298,16 +298,16 @@ export function ScheduleRuns({ execApi }) {
           </thead>
           <tbody>
             {sources.map((source) => {
-              const run = runs[source.guid];
+              const run = runs[source.id];
               const recurringFrequencyMinutes =
                 source.schedule.recurringFrequency / (60 * 1000);
 
               return (
-                <tr key={`source-${source.guid}`}>
+                <tr key={`source-${source.id}`}>
                   <td>
                     <Link
-                      href="/source/[guid]/schedule"
-                      as={`/source/${source.guid}/schedule`}
+                      href="/source/[id]/schedule"
+                      as={`/source/${source.id}/schedule`}
                     >
                       <a>{source.name}</a>
                     </Link>
@@ -399,7 +399,7 @@ export function PendingImports({ execApi }) {
     const sample = { time: new Date() };
     for (const i in sources) {
       const source = sources[i];
-      sample[source.name] = counts[source.guid] || 0;
+      sample[source.name] = counts[source.id] || 0;
     }
 
     pendingImportSamples.push(sample);

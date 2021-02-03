@@ -44,10 +44,10 @@ export default function Page(props) {
 }
 
 Page.getInitialProps = async (ctx) => {
-  const { guid } = ctx.query;
+  const { id } = ctx.query;
   const { execApi } = useApi(ctx);
-  const { property } = await execApi("get", `/property/${guid}`);
-  const { source } = await execApi("get", `/source/${property.sourceGuid}`);
+  const { property } = await execApi("get", `/property/${id}`);
+  const { source } = await execApi("get", `/source/${property.sourceId}`);
   const profileListInitialProps = await ProfilesList.hydrate(
     ctx,
     property.key,

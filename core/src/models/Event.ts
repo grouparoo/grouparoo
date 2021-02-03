@@ -19,18 +19,18 @@ import { EventOps } from "../modules/ops/event";
 
 @Table({ tableName: "events", paranoid: false })
 export class Event extends LoggedModel<Event> {
-  guidPrefix() {
+  idPrefix() {
     return "evt";
   }
 
   @AllowNull(false)
   @Column
-  producerGuid: string;
+  producerId: string;
 
   @AllowNull(true)
   @Index
   @Column
-  profileGuid: string;
+  profileId: string;
 
   @AllowNull(true)
   @Index
@@ -58,10 +58,10 @@ export class Event extends LoggedModel<Event> {
   @Column
   profileAssociatedAt: Date;
 
-  @HasMany(() => EventData, "eventGuid")
+  @HasMany(() => EventData, "eventId")
   eventData: EventData[];
 
-  @BelongsTo(() => Profile, "profileGuid")
+  @BelongsTo(() => Profile, "profileId")
   profile: Profile;
 
   async getData() {
@@ -76,15 +76,15 @@ export class Event extends LoggedModel<Event> {
   async setData(data: { [key: string]: any }) {
     for (const key in data) {
       await EventData.create({
-        eventGuid: this.guid,
+        eventId: this.id,
         key,
         value: data[key].toString(),
       });
     }
   }
 
-  async associate(identifyingPropertyGuid: string) {
-    return EventOps.associate(this, identifyingPropertyGuid);
+  async associate(identifyingPropertyId: string) {
+    return EventOps.associate(this, identifyingPropertyId);
   }
 
   async updateProfile(profile: Profile) {
@@ -95,10 +95,10 @@ export class Event extends LoggedModel<Event> {
     const data = await this.getData();
 
     return {
-      guid: this.guid,
+      id: this.id,
       type: this.type,
-      producerGuid: this.producerGuid,
-      profileGuid: this.profileGuid,
+      producerId: this.producerId,
+      profileId: this.profileId,
       ipAddress: this.ipAddress,
       userId: this.userId,
       anonymousId: this.anonymousId,
@@ -114,18 +114,16 @@ export class Event extends LoggedModel<Event> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @AfterCreate
   static async enqueueAssociateEvent(instance: Event) {
     await CLS.enqueueTask("event:associateProfile", {
-      eventGuid: instance.guid,
+      eventId: instance.id,
     });
   }
 
@@ -133,7 +131,7 @@ export class Event extends LoggedModel<Event> {
   static async destroyOptions(instance: Event) {
     return EventData.destroy({
       where: {
-        eventGuid: instance.guid,
+        eventId: instance.id,
       },
     });
   }
