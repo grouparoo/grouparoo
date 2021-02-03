@@ -5,7 +5,7 @@
     "class": "App",
     "type": "events",
     "options": {
-      "identifyingPropertyId": "rul_user_id"
+      "identifyingPropertyId": "user_id"
     }
   },
   {
