@@ -106,7 +106,7 @@ describe("model/group", () => {
               operation: { op: "exists" },
             },
           ])
-        ).rejects.toThrow(/cannot find type for Property gui/);
+        ).rejects.toThrow(/cannot find type for Property id/);
       });
 
       describe("id", () => {
