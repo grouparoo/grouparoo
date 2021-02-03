@@ -28,7 +28,7 @@ export class RunsList extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     let id: string = params.id;
 
-    if (params.topic === "schedule") {
+    if (params.topic === "source") {
       const schedule = await Schedule.scope(null).findOne({
         where: { sourceId: params.id },
       });

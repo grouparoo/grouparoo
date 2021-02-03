@@ -79,6 +79,7 @@ describe("actions/runs", () => {
     connection.params = {
       csrfToken,
       id: source.id,
+      topic: "source",
     };
 
     const { error, runs, total } = await specHelper.runAction(
