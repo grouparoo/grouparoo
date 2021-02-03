@@ -47,6 +47,7 @@ jobs:
             - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/hubspot/node_modules
             - plugins/@grouparoo/intercom/node_modules
+            - plugins/@grouparoo/iterable/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
             - plugins/@grouparoo/marketo/node_modules
@@ -87,6 +88,7 @@ jobs:
             - plugins/@grouparoo/google-sheets/dist
             - plugins/@grouparoo/hubspot/dist
             - plugins/@grouparoo/intercom/dist
+            - plugins/@grouparoo/iterable/dist
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/marketo/dist
@@ -1138,6 +1140,44 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/intercom && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-iterable:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/iterable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-logger:
     docker:
       - image: circleci/node:12
@@ -1846,6 +1886,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-iterable:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-logger:
           filters:
             <<: *ignored-branches
@@ -1948,6 +1993,7 @@ workflows:
             - test-plugin-google-sheets
             - test-plugin-hubspot
             - test-plugin-intercom
+            - test-plugin-iterable
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
@@ -2123,6 +2169,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-iterable:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-logger:
           filters:
             <<: *ignored-branches
@@ -2225,6 +2276,7 @@ workflows:
             - test-plugin-google-sheets
             - test-plugin-hubspot
             - test-plugin-intercom
+            - test-plugin-iterable
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
