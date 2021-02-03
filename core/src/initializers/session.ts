@@ -26,7 +26,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
     // authenticate a web user with session cookie & csrfToken
     async function authenticateTeamMember() {
       const sessionData = await api.session.load(data.connection);
-      if (!sessionData) {
+      if (!sessionData || !sessionData.id) {
         throw new AuthenticationError("Please log in to continue");
       } else if (
         (data.params.csrfToken &&
@@ -110,6 +110,8 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
         ) {
           await api.session.destroy(data.connection);
           throw new AuthenticationError("CSRF error");
+        } else if (!sessionData.id) {
+          throw new AuthenticationError("Please log in to continue");
         } else {
           const teamMember = await TeamMember.findOne({
             where: { id: sessionData.id },
@@ -172,7 +174,7 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
     const topic = room.split(":")[1];
     const mode = "read";
     const sessionData = await api.session.load(connection);
-    if (!sessionData) {
+    if (!sessionData || !sessionData.id) {
       throw new AuthenticationError("Please log in to continue");
     } else {
       const teamMember = await TeamMember.findOne({
