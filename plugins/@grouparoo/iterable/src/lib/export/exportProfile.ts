@@ -7,9 +7,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
     return sendProfile(args);
   } catch (error) {
     if (error?.response?.status === 429) {
-      let retryIn = 60; // per minute
-      // add some random time to that to spread it out
-      retryIn += Math.floor(Math.random() * 30) + 1;
+      const retryIn = Math.floor(Math.random() * 10) + 1;
       return { error, success: false, retryDelay: 1000 * retryIn };
     }
     throw error;
