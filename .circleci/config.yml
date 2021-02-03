@@ -9,8 +9,10 @@ references:
     branches:
       ignore:
         - gh-pages
-  node-module-cache-options: &node-module-cache-options
-    key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-modules-cache-options: &plugin-modules-cache-options
+    key: plugin-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  other-modules-cache-options: &other-modules-cache-options
+    key: other-module-package-cache-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
     key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
   core-cache-options: &core-cache-options
@@ -33,14 +35,8 @@ jobs:
           name: pnpm-install
           command: pnpm install --prefer-frozen-lockfile
       - save_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
           paths:
-            - apps/staging-community/node_modules
-            - apps/staging-enterprise/node_modules
-            - cli/node_modules
-            - clients/@grouparoo/web/node_modules
-            - core/node_modules
-            - node_modules
             - plugins/@grouparoo/app-templates/node_modules
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
@@ -64,6 +60,15 @@ jobs:
             - plugins/@grouparoo/snowflake/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
+      - save_cache:
+          <<: *other-modules-cache-options
+          paths:
+            - apps/staging-community/node_modules
+            - apps/staging-enterprise/node_modules
+            - cli/node_modules
+            - clients/@grouparoo/web/node_modules
+            - core/node_modules
+            - node_modules
             - tools/merger/node_modules
             - ui/ui-community/node_modules
             - ui/ui-components/node_modules
@@ -111,7 +116,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -131,7 +138,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -151,7 +160,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -181,7 +192,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -217,7 +230,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -253,7 +268,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -289,7 +306,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -325,7 +344,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -361,7 +382,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -397,7 +420,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -433,7 +458,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -469,7 +496,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -499,7 +528,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -532,7 +563,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -574,7 +607,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -616,7 +651,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -654,7 +691,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -696,7 +735,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -738,7 +779,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -774,7 +817,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -810,7 +855,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -846,7 +893,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -882,7 +931,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -918,7 +969,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -954,7 +1007,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -990,7 +1045,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1026,7 +1083,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1062,7 +1121,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1134,7 +1195,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1170,7 +1233,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1206,7 +1271,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1246,7 +1313,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1288,7 +1357,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1324,7 +1395,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1360,7 +1433,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1396,7 +1471,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1432,7 +1509,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1468,7 +1547,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1504,7 +1585,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1540,7 +1623,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1576,7 +1661,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1602,7 +1689,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1632,7 +1721,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
