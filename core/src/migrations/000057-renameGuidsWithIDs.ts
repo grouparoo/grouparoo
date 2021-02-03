@@ -2,7 +2,7 @@ const tables = {
   apiKeys: [],
   apps: [],
   destinationGroupMemberships: ["destinationGuid", "groupGuid"],
-  destinations: ["appGuid"],
+  destinations: ["appGuid", "groupGuid"],
   eventData: ["eventGuid"],
   events: ["producerGuid", "profileGuid"],
   exports: ["profileGuid", "destinationGuid"],
