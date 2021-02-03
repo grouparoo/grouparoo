@@ -15,7 +15,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 };
 
 export const sendProfile: ExportProfilePluginMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
   export: {
@@ -86,13 +86,13 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
     // add to lists
     for (const groupToAdd of newGroups) {
-      await addToList(client, appGuid, appOptions, email, groupToAdd);
+      await addToList(client, appId, appOptions, email, groupToAdd);
     }
 
     // remove from lists
     for (const group of oldGroups) {
       if (!newGroups.includes(group))
-        await removeFromList(client, appGuid, appOptions, email, group);
+        await removeFromList(client, appId, appOptions, email, group);
     }
 
     return { success: true };
