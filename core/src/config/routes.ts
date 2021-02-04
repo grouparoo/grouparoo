@@ -76,7 +76,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/file/:id/details", action: "file:details" },
         { path: "/v:apiVersion/file/:id", action: "file:view" },
         { path: "/v:apiVersion/notifications", action: "notifications:list" },
-        { path: "/v:apiVersion/notification/:id", action: "notification:view" }
+        { path: "/v:apiVersion/notification/:id", action: "notification:view" },
+        { path: "/v:apiVersion/object/:id", action: "object:find" }
       ],
 
       post: [

@@ -1,68 +1,97 @@
 import Loader from "../../components/loader";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
+import { Card } from "react-bootstrap";
+import { singular } from "pluralize";
 
-const idPrefixes = {
-  api: "/apiKey/[id]/edit",
-  app: "/app/[id]/edit",
-  dst: "/destination/[id]/edit",
-  evt: "/event/[id]/edit",
-  exp: "/export/[id]/edit",
-  fil: "/file/[id]/edit",
-  grp: "/group/[id]/members",
-  imp: "/import/[id]/edit",
-  pro: "/profile/[id]/edit",
-  rul: "/property/[id]/edit",
-  run: "/run/[id]/edit",
-  sch: "/source/[id]/overview",
-  src: "/source/[id]/overview",
-  tea: "/team/[id]/edit",
-  tem: "/teamMember/[id]/edit",
+const detailPages = {
+  groups: "members",
+  sources: "overview",
 };
 
 export default function FindObject(props) {
   const router = useRouter();
   const { errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
+  const [error, setError] = useState<string>(null);
+  const [records, setRecords] = useState<string[]>([]);
 
   const id = router.query.id?.toString();
-  const prefix = id.split("_")[0];
-  const route = idPrefixes[prefix];
 
   useEffect(() => {
-    determineRoute();
+    load();
   }, []);
 
-  async function determineRoute() {
-    if (!route) {
-      errorHandler.set({ error: `Sorry, I don't know what a "${id}" is :(` });
-    } else if (prefix === "sch") {
-      routeScheduleToSource();
+  async function load() {
+    const response: Actions.ObjectFind = await execApi("get", `/object/${id}`);
+    if (response.records.length === 0) {
+      setError(`Cannot find object "${id}"`);
+    } else if (
+      response.records.length === 1 &&
+      process.env.GROUPAROO_UI_EDITION === "enterprise"
+    ) {
+      const table = response.records[0].tableName.toLowerCase();
+      const detailPage = detailPages[table] || "edit";
+      router.push(`/${singular(table)}/${id}/${detailPage}`);
+    } else if (
+      response.records.length === 1 &&
+      process.env.GROUPAROO_UI_EDITION === "community"
+    ) {
+      router.push(`/${response.records[0].tableName.toLowerCase()}`);
     } else {
-      const as = route.replace("[id]", id);
-      router.push(route, as);
+      setRecords(response.records.map((r) => r.tableName.toLowerCase()));
     }
   }
 
-  async function load(model: string, id: string) {
-    return execApi("get", `/${model}/${id}`);
-  }
-
-  async function routeScheduleToSource() {
-    const response: Actions.ScheduleView = await load("schedule", id);
-    if (response?.schedule) {
-      router.push(
-        `/source/[id]/schedule`,
-        `/source/${response.schedule.sourceId}/schedule`
-      );
-    }
+  if (records.length > 0) {
+    return (
+      <>
+        <h2>Multiple objects found:</h2>
+        <table>
+          <tbody>
+            {records.map((r) => {
+              const detailPage = detailPages[r] || "edit";
+              return (
+                <tr>
+                  <td>{id} in </td>
+                  <td>
+                    <Link
+                      href={
+                        process.env.GROUPAROO_UI_EDITION === "enterprise"
+                          ? `/${singular(r)}/${id}/${detailPage}`
+                          : `/${r}`
+                      }
+                    >
+                      <a>{r}</a>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </>
+    );
   }
 
   return (
-    <div style={{ textAlign: "center" }}>
-      <Loader />
-    </div>
+    <>
+      {error ? (
+        <Card border={"warning"}>
+          <Card.Body>
+            <blockquote className="blockquote mb-0">
+              <p>{error}</p>
+            </blockquote>
+          </Card.Body>
+        </Card>
+      ) : (
+        <div style={{ textAlign: "center" }}>
+          <Loader />{" "}
+        </div>
+      )}
+    </>
   );
 }
