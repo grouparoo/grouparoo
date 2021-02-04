@@ -1,16 +1,11 @@
 import Loader from "../../components/loader";
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import Link from "../../components/enterpriseLink";
 import { useRouter } from "next/router";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 import { Card } from "react-bootstrap";
 import { singular } from "pluralize";
-
-const detailPages = {
-  groups: "members",
-  sources: "overview",
-};
 
 export default function FindObject(props) {
   const router = useRouter();
@@ -20,6 +15,12 @@ export default function FindObject(props) {
   const [records, setRecords] = useState<string[]>([]);
 
   const id = router.query.id?.toString();
+
+  const detailPages = {
+    groups: "members",
+    sources: "overview",
+    schedules: redirectSchedule,
+  };
 
   useEffect(() => {
     load();
@@ -35,7 +36,11 @@ export default function FindObject(props) {
     ) {
       const table = response.records[0].tableName.toLowerCase();
       const detailPage = detailPages[table] || "edit";
-      router.push(`/${singular(table)}/${id}/${detailPage}`);
+      if (typeof detailPage === "function") {
+        await detailPage(id);
+      } else {
+        router.push(`/${singular(table)}/${id}/${detailPage}`);
+      }
     } else if (
       response.records.length === 1 &&
       process.env.GROUPAROO_UI_EDITION === "community"
@@ -43,6 +48,21 @@ export default function FindObject(props) {
       router.push(`/${response.records[0].tableName.toLowerCase()}`);
     } else {
       setRecords(response.records.map((r) => r.tableName.toLowerCase()));
+    }
+  }
+
+  async function redirectSchedule(id: string) {
+    const response: Actions.ScheduleView = await execApi(
+      "get",
+      `/schedule/${id}`
+    );
+    if (response?.schedule) {
+      router.push(
+        `/source/[id]/schedule`,
+        `/source/${response.schedule.sourceId}/schedule`
+      );
+    } else {
+      setError(`Cannot find object "${id}"`);
     }
   }
 
@@ -60,7 +80,8 @@ export default function FindObject(props) {
                   <td>
                     <Link
                       href={
-                        process.env.GROUPAROO_UI_EDITION === "enterprise"
+                        process.env.GROUPAROO_UI_EDITION === "enterprise" &&
+                        typeof detailPage === "string"
                           ? `/${singular(r)}/${id}/${detailPage}`
                           : `/${r}`
                       }
