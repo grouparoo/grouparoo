@@ -31,7 +31,7 @@
     "newrelic": "7.1.0"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.2.0",
+    "@grouparoo/core": "^0.2.0-alpha.17",
     "actionhero": "25.0.5"
   },
   "devDependencies": {
