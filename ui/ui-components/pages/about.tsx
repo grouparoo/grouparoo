@@ -5,7 +5,7 @@ import { useApi } from "../hooks/useApi";
 import { Actions } from "../utils/apiData";
 
 const upgradeHelpPage =
-  "https://www.grouparoo.com/docs/deployment/upgrading-grouparoo";
+  "https://www.grouparoo.com/docs/support/upgrading-grouparoo";
 
 function formatUrl(s = "unknown", label: string) {
   const url = s.replace(/\.git$/, "");
