@@ -8,7 +8,7 @@ exports.default = async function buildConfig() {
 
       /**
        The Rules for this group is an array. Here are some examples.
-       For a full list of options, see https://www.grouparoo.com/docs/guides/create-groups
+       For a full list of options, see https://www.grouparoo.com/docs/config/groups
 
         rules: [
           // a Property exists on the Profile
