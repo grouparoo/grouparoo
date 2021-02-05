@@ -82,10 +82,12 @@ importers:
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
+      '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
     specifiers:
+<<<<<<< HEAD
       '@grouparoo/bigquery': ^0.2.1-alpha.0
       '@grouparoo/core': ^0.2.1-alpha.0
       '@grouparoo/csv': ^0.2.1-alpha.0
@@ -108,6 +110,31 @@ importers:
       '@grouparoo/snowflake': ^0.2.1-alpha.0
       '@grouparoo/ui-enterprise': ^0.2.1-alpha.0
       '@grouparoo/zendesk': ^0.2.1-alpha.0
+=======
+      '@grouparoo/bigquery': ^0.2.0-alpha.17
+      '@grouparoo/core': ^0.2.0-alpha.17
+      '@grouparoo/csv': ^0.2.0-alpha.17
+      '@grouparoo/demo': ^0.2.0-alpha.17
+      '@grouparoo/facebook': ^0.2.0-alpha.17
+      '@grouparoo/files-s3': ^0.2.0-alpha.17
+      '@grouparoo/google-sheets': ^0.2.0-alpha.17
+      '@grouparoo/hubspot': ^0.2.0-alpha.17
+      '@grouparoo/intercom': ^0.2.0-alpha.17
+      '@grouparoo/iterable': ^0.2.0-alpha.17
+      '@grouparoo/logger': ^0.2.0-alpha.17
+      '@grouparoo/mailchimp': ^0.2.0-alpha.17
+      '@grouparoo/marketo': ^0.2.0-alpha.17
+      '@grouparoo/mysql': ^0.2.0-alpha.17
+      '@grouparoo/newrelic': ^0.2.0-alpha.17
+      '@grouparoo/postgres': ^0.2.0-alpha.17
+      '@grouparoo/redshift': ^0.2.0-alpha.17
+      '@grouparoo/sailthru': ^0.2.0-alpha.17
+      '@grouparoo/salesforce': ^0.2.0-alpha.17
+      '@grouparoo/sendgrid': ^0.2.0-alpha.17
+      '@grouparoo/snowflake': ^0.2.0-alpha.17
+      '@grouparoo/ui-enterprise': ^0.2.0-alpha.17
+      '@grouparoo/zendesk': ^0.2.0-alpha.17
+>>>>>>> feat: start sendgrid destination integration.
   cli:
     dependencies:
       chalk: 4.1.0
@@ -851,6 +878,38 @@ importers:
       fs-extra: 9.1.0
       jest: 26.6.3
       jsforce: ^1.9.3
+      nock: 13.0.6
+      prettier: 2.2.1
+      ts-jest: 26.4.4
+      typescript: 4.1.3
+  plugins/@grouparoo/sendgrid:
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      '@sendgrid/client': 7.4.2
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.22
+      actionhero: 25.0.5
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
+      nock: 13.0.6
+      prettier: 2.2.1
+      ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
+      typescript: 4.1.3
+    specifiers:
+      '@grouparoo/app-templates': ^0.2.0-alpha.17
+      '@grouparoo/core': ^0.2.0-alpha.17
+      '@grouparoo/spec-helper': ^0.2.0-alpha.17
+      '@sendgrid/client': ^7.4.2
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 25.0.5
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
       nock: 13.0.6
       prettier: 2.2.1
       ts-jest: 26.4.4
@@ -3257,6 +3316,23 @@ packages:
       react: '>=16.8.0'
     resolution:
       integrity: sha512-7Hwk2ZMYm+JLWcb7R9qIXk1OoUg1Z+saKWqZXlrvFwT3w6UArVNWgxYOzf+PJoK9zZejp8okPAKTctthhXLt5g==
+  /@sendgrid/client/7.4.2:
+    dependencies:
+      '@sendgrid/helpers': 7.4.2
+      axios: 0.21.1
+    dev: false
+    engines:
+      node: 6.* || 8.* || >=10.*
+    resolution:
+      integrity: sha512-bu8lLbRD+OV7YsYNemEy8DRoxs8/8u325EXNlQ3VaqhcpbM0eSvdL5e5Wa7VZpbczcNCJmf/sr/uqFmwcO5S+A==
+  /@sendgrid/helpers/7.4.2:
+    dependencies:
+      deepmerge: 4.2.2
+    dev: false
+    engines:
+      node: '>= 6.0.0'
+    resolution:
+      integrity: sha512-b/IyBwT4zrOfXA0ISvWZsnhYz+5uAO20n68J8n/6qe5P1E2p0L7kWNTN5LYu0S7snJPUlbEa6FpfrSKzEcP9JA==
   /@sindresorhus/is/0.14.0:
     engines:
       node: '>=6'
@@ -5922,7 +5998,6 @@ packages:
     resolution:
       integrity: sha1-s2nW+128E+7PUk+RsHD+7cNXzzQ=
   /deepmerge/4.2.2:
-    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
