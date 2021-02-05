@@ -34,10 +34,6 @@
     "iso-3166-1-alpha-2": "1.0.0",
     "js-sha256": "0.9.0"
   },
-  "peerDependencies": {
-    "@grouparoo/core": "^0.1.1",
-    "actionhero": "25.0.5"
-  },
   "devDependencies": {
     "@grouparoo/core": "^0.2.0-alpha.18",
     "@grouparoo/spec-helper": "^0.2.0-alpha.18",

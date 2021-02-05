@@ -31,10 +31,6 @@
     "@grouparoo/app-templates": "^0.2.0-alpha.18",
     "node-zendesk": "2.0.3"
   },
-  "peerDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.17",
-    "actionhero": "25.0.5"
-  },
   "devDependencies": {
     "@grouparoo/core": "^0.2.0-alpha.18",
     "@grouparoo/spec-helper": "^0.2.0-alpha.18",
