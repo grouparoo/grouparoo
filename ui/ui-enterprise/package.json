@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-enterprise",
   "description": "The Grouparoo Enterprise Web UI",
-  "version": "0.2.0-alpha.18",
+  "version": "0.2.0-alpha.19",
   "license": "UNLICENSED",
   "private": false,
   "publishConfig": {
@@ -55,9 +55,9 @@
     "swagger-ui": "3.40.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.18",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.18",
-    "@grouparoo/ui-components": "^0.2.0-alpha.18",
+    "@grouparoo/core": "^0.2.0-alpha.19",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.19",
+    "@grouparoo/ui-components": "^0.2.0-alpha.19",
     "@nivo/line": "0.62.0",
     "@types/jest": "*",
     "@types/react": "*",
