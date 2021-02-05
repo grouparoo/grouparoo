@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/spec-helper",
   "description": "Shared Utilities for testing Grouparoo and Grouparoo Plugins",
-  "version": "0.2.0-alpha.18",
+  "version": "0.2.0-alpha.20",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -35,12 +35,8 @@
     "sequelize": "5.22.3",
     "uuid": "8.3.2"
   },
-  "peerDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.17",
-    "actionhero": "25.0.5"
-  },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.18",
+    "@grouparoo/core": "^0.2.0-alpha.20",
     "@types/faker": "*",
     "@types/jest": "*",
     "@types/node": "*",
