@@ -957,27 +957,27 @@ importers:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.1
-      '@fortawesome/react-fontawesome': 0.1.14_ebef494489949c9e4f95b01f7925dda3
-      '@nivo/line': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@fortawesome/react-fontawesome': 0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7
+      '@nivo/line': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.16.1
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.6_19c094f04958f1216baf4da611b66b3e
+      next: 10.0.6_26043bd01a12da2cc999854eecb58732
       node-sass: 5.0.0
       pluralize: 8.0.0
-      react: 16.14.0
-      react-bootstrap: 1.4.3_react-dom@16.14.0+react@16.14.0
-      react-bootstrap-typeahead: 5.1.4_react-dom@16.14.0+react@16.14.0
-      react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-hook-form: 6.14.2_react@16.14.0
-      react-markdown: 5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6
-      react-moment: 1.1.1_eafa27d017aeb76e4fdf82e703ca42a1
+      react: 17.0.1
+      react-bootstrap: 1.4.3_react-dom@17.0.1+react@17.0.1
+      react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.16.1+react@17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-hook-form: 6.14.2_react@17.0.1
+      react-markdown: 5.0.3_@types+react@17.0.0+react@17.0.1
+      react-moment: 1.1.1_d173866c12dc1c3e78a5ef0679f041fb
       stacktrace-js: 2.0.2
-      styled-jsx: 3.4.1_react@16.14.0
+      styled-jsx: 3.4.1_react@17.0.1
       swagger-ui: 3.40.0
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -986,8 +986,8 @@ importers:
       '@types/jest': 26.0.20
       '@types/react': 17.0.0
       '@types/react-dom': 17.0.0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1_ed988ebff08079c40ff9e87e2acc78b3
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6_4f82faf5e8cab057bc46d4d95079ec42
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
       prettier: 2.2.1
@@ -1005,12 +1005,12 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.16.1
       dotenv: 8.2.0
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
       md5: 2.3.0
@@ -1020,11 +1020,11 @@ importers:
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       react-bootstrap: 1.4.3
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
-      react-dom: 16.14.0
+      react-dom: 17.0.1
       react-hook-form: 6.14.2
       react-markdown: 5.0.3
       react-moment: 1.1.1
@@ -1037,38 +1037,38 @@ importers:
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.1
-      '@fortawesome/react-fontawesome': 0.1.14_ebef494489949c9e4f95b01f7925dda3
+      '@fortawesome/react-fontawesome': 0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
-      '@nivo/line': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/line': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       '@types/jest': 26.0.20
       '@types/react': 17.0.0
       '@types/react-dom': 17.0.0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1_ed988ebff08079c40ff9e87e2acc78b3
       axios: 0.21.1
       bootstrap: 4.5.3
       date-fns: 2.16.1
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6_4f82faf5e8cab057bc46d4d95079ec42
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
       jest-mock-axios: 4.2.1
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.6_19c094f04958f1216baf4da611b66b3e
+      next: 10.0.6_26043bd01a12da2cc999854eecb58732
       node-sass: 5.0.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
-      react: 16.14.0
-      react-bootstrap: 1.4.3_react-dom@16.14.0+react@16.14.0
-      react-bootstrap-typeahead: 5.1.4_react-dom@16.14.0+react@16.14.0
-      react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
-      react-datepicker: 3.4.1_react-dom@16.14.0+react@16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-hook-form: 6.14.2_react@16.14.0
-      react-markdown: 5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6
-      react-moment: 1.1.1_eafa27d017aeb76e4fdf82e703ca42a1
+      react: 17.0.1
+      react-bootstrap: 1.4.3_react-dom@17.0.1+react@17.0.1
+      react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.16.1+react@17.0.1
+      react-datepicker: 3.4.1_react-dom@17.0.1+react@17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-hook-form: 6.14.2_react@17.0.1
+      react-markdown: 5.0.3_@types+react@17.0.0+react@17.0.1
+      react-moment: 1.1.1_d173866c12dc1c3e78a5ef0679f041fb
       stacktrace-js: 2.0.2
       swagger-ui: 3.40.0
       ts-jest: 26.4.4_jest@26.6.3+typescript@4.1.3
@@ -1084,11 +1084,11 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       axios: 0.21.1
       bootstrap: 4.5.3
       date-fns: 2.16.1
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
@@ -1100,12 +1100,12 @@ importers:
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       react-bootstrap: 1.4.3
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
       react-datepicker: 3.4.1
-      react-dom: 16.14.0
+      react-dom: 17.0.1
       react-hook-form: 6.14.2
       react-markdown: 5.0.3
       react-moment: 1.1.1
@@ -1118,38 +1118,38 @@ importers:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.1
-      '@fortawesome/react-fontawesome': 0.1.14_ebef494489949c9e4f95b01f7925dda3
+      '@fortawesome/react-fontawesome': 0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.16.1
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.6_19c094f04958f1216baf4da611b66b3e
+      next: 10.0.6_26043bd01a12da2cc999854eecb58732
       node-sass: 5.0.0
       pluralize: 8.0.0
-      react: 16.14.0
-      react-bootstrap: 1.4.3_react-dom@16.14.0+react@16.14.0
-      react-bootstrap-typeahead: 5.1.4_react-dom@16.14.0+react@16.14.0
-      react-date-range: 1.1.3_date-fns@2.16.1+react@16.14.0
-      react-datepicker: 3.4.1_react-dom@16.14.0+react@16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-hook-form: 6.14.2_react@16.14.0
-      react-markdown: 5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6
-      react-moment: 1.1.1_eafa27d017aeb76e4fdf82e703ca42a1
+      react: 17.0.1
+      react-bootstrap: 1.4.3_react-dom@17.0.1+react@17.0.1
+      react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.16.1+react@17.0.1
+      react-datepicker: 3.4.1_react-dom@17.0.1+react@17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-hook-form: 6.14.2_react@17.0.1
+      react-markdown: 5.0.3_@types+react@17.0.0+react@17.0.1
+      react-moment: 1.1.1_d173866c12dc1c3e78a5ef0679f041fb
       stacktrace-js: 2.0.2
-      styled-jsx: 3.4.1_react@16.14.0
+      styled-jsx: 3.4.1_react@17.0.1
       swagger-ui: 3.40.0
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-components': link:../ui-components
-      '@nivo/line': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/line': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       '@types/jest': 26.0.20
       '@types/react': 17.0.0
       '@types/react-dom': 17.0.0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1_ed988ebff08079c40ff9e87e2acc78b3
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6_4f82faf5e8cab057bc46d4d95079ec42
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
       prettier: 2.2.1
@@ -1167,12 +1167,12 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
+      '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
       date-fns: 2.16.1
       dotenv: 8.2.0
       enzyme: 3.11.0
-      enzyme-adapter-react-16: 1.15.6
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0
       md5: 2.3.0
@@ -1182,12 +1182,12 @@ importers:
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       react-bootstrap: 1.4.3
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
       react-datepicker: 3.4.1
-      react-dom: 16.14.0
+      react-dom: 17.0.1
       react-hook-form: 6.14.2
       react-markdown: 5.0.3
       react-moment: 1.1.1
@@ -1641,11 +1641,11 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-EFMuKtzRMNbvjab/SvJBaOOpaqJfdSap/Nl6hst7CgrJxwfORR1drdTV6q1Ib/JVzq4xObdTDcT6sqTaXMqfdg==
-  /@fortawesome/react-fontawesome/0.1.14_ebef494489949c9e4f95b01f7925dda3:
+  /@fortawesome/react-fontawesome/0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       '@fortawesome/fontawesome-svg-core': ^1.2.32
       react: '>=16.x'
@@ -2748,7 +2748,7 @@ packages:
   /@next/polyfill-module/10.0.6:
     resolution:
       integrity: sha512-Sk3HYFxiI3AyIhw7Nnc5un//duCthAP2XtPb4N1SamymOU2QSb8I1zkcsxVIlZRvftdXikQQgra6Ck2zfJRxpA==
-  /@next/react-dev-overlay/10.0.6_react-dom@16.14.0+react@16.14.0:
+  /@next/react-dev-overlay/10.0.6_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/code-frame': 7.12.11
       anser: 1.4.9
@@ -2757,8 +2757,8 @@ packages:
       css.escape: 1.5.1
       data-uri-to-buffer: 3.0.1
       platform: 1.3.6
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
       shell-quote: 1.7.2
       source-map: 0.8.0-beta.0
       stacktrace-parser: 0.1.10
@@ -2779,38 +2779,38 @@ packages:
         optional: true
     resolution:
       integrity: sha512-4BF+8PyzDcYpumQJ22yBUjVP/CL2KLPM+3K3ZQb61HvmIptB/t+jFnH2ew8S7ORQNu/caVQC6wP5wAfOtpJNsg==
-  /@nivo/annotations/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/annotations/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/colors': 0.62.0_prop-types@15.7.2+react@16.14.0
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/colors': 0.62.0_prop-types@15.7.2+react@17.0.1
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       lodash: 4.17.20
       prop-types: 15.7.2
-      react: 16.14.0
-      react-motion: 0.5.2_react@16.14.0
+      react: 17.0.1
+      react-motion: 0.5.2_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
       react-dom: '*'
     resolution:
       integrity: sha512-cvwUMeEkqVZ9yEgiWf3Nj3bHY36JHK7fHdXbcYS6KYZ05m5mbVWFMxHE45fPKRLaWoMqaK+rhPpioMHGYC/4mA==
-  /@nivo/axes/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/axes/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       '@nivo/scales': 0.62.0_prop-types@15.7.2
       d3-format: 1.4.5
       d3-time: 1.1.0
       d3-time-format: 2.3.0
       lodash: 4.17.20
       prop-types: 15.7.2
-      react: 16.14.0
-      react-motion: 0.5.2_react@16.14.0
+      react: 17.0.1
+      react-motion: 0.5.2_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
       react-dom: '*'
     resolution:
       integrity: sha512-9MBYGtKTVks5wvR/Xsj7h0/N6M2FHdwad/CmRP91agTBwyhMyYE9ifEwcP0urshZ6Jt9D1e5GxtZYwrPwFWv/A==
-  /@nivo/colors/0.62.0_prop-types@15.7.2+react@16.14.0:
+  /@nivo/colors/0.62.0_prop-types@15.7.2+react@17.0.1:
     dependencies:
       d3-color: 1.4.1
       d3-scale: 3.2.3
@@ -2818,16 +2818,16 @@ packages:
       lodash.get: 4.4.2
       lodash.isplainobject: 4.0.6
       prop-types: 15.7.2
-      react: 16.14.0
-      react-motion: 0.5.2_react@16.14.0
+      react: 17.0.1
+      react-motion: 0.5.2_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
     resolution:
       integrity: sha512-yBbdy0eD9oG4j7SXWx1FIa6l30/6H0pMINB3Qth3Pz0cFtXNf7mHjbIziSdt+nW8syT6GvxCtU+Vw98M52bA2A==
-  /@nivo/core/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/core/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/tooltip': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/tooltip': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       d3-color: 1.4.1
       d3-format: 1.4.5
       d3-hierarchy: 1.1.9
@@ -2838,44 +2838,44 @@ packages:
       d3-time-format: 2.3.0
       lodash: 4.17.20
       prop-types: 15.7.2
-      react: 16.14.0
-      react-measure: 2.5.2_react-dom@16.14.0+react@16.14.0
-      react-motion: 0.5.2_react@16.14.0
-      recompose: 0.30.0_react@16.14.0
+      react: 17.0.1
+      react-measure: 2.5.2_react-dom@17.0.1+react@17.0.1
+      react-motion: 0.5.2_react@17.0.1
+      recompose: 0.30.0_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
       react-dom: '*'
     resolution:
       integrity: sha512-0MdLAy4NgwL/QRJQN9oVFL8aF6H0qd0iHG3Ewy3asvgh/Dmz4boXKsTX5+V9puTeJHJtnlBdSgWqimqeeiXD8w==
-  /@nivo/legends/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/legends/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       lodash: 4.17.20
       prop-types: 15.7.2
-      react: 16.14.0
-      recompose: 0.30.0_react@16.14.0
+      react: 17.0.1
+      recompose: 0.30.0_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
       react-dom: '*'
     resolution:
       integrity: sha512-0Vda6OyftmeL0j1wKqDe64qXQ1t+4h/GVxZK4wUXfFHkxHmLOnX+KFPwAWtHaYwmBb8RuzBlZfLipkKk2M3Dwg==
-  /@nivo/line/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/line/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/annotations': 0.62.0_0106054ed56650b7cf08997e12b36ef5
-      '@nivo/axes': 0.62.0_0106054ed56650b7cf08997e12b36ef5
-      '@nivo/colors': 0.62.0_prop-types@15.7.2+react@16.14.0
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
-      '@nivo/legends': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/annotations': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
+      '@nivo/axes': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
+      '@nivo/colors': 0.62.0_prop-types@15.7.2+react@17.0.1
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
+      '@nivo/legends': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       '@nivo/scales': 0.62.0_prop-types@15.7.2
-      '@nivo/tooltip': 0.62.0_0106054ed56650b7cf08997e12b36ef5
-      '@nivo/voronoi': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/tooltip': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
+      '@nivo/voronoi': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       d3-shape: 1.3.7
       lodash: 4.17.20
       prop-types: 15.7.2
-      react: 16.14.0
-      react-motion: 0.5.2_react@16.14.0
+      react: 17.0.1
+      react-motion: 0.5.2_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
@@ -2892,26 +2892,26 @@ packages:
       prop-types: '>= 15.5.10 < 16.0.0'
     resolution:
       integrity: sha512-x3L7/yCPLNmj/mtnOl9E/kL/3KMXKyS3IyzqB2F5PAiUcsUpxKmHwcJ9ATdPKcoUaYpf/wa9z+jL92/AInz3Pw==
-  /@nivo/tooltip/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/tooltip/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       prop-types: 15.7.2
-      react-measure: 2.5.2_react-dom@16.14.0+react@16.14.0
-      react-motion: 0.5.2_react@16.14.0
+      react-measure: 2.5.2_react-dom@17.0.1+react@17.0.1
+      react-motion: 0.5.2_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '*'
       react-dom: '*'
     resolution:
       integrity: sha512-MoEq+WLDynH+DBRihb432RLtxEkvC3mKWjMuNlMwTQy+sk7h6NfIPw1QCeLrjiA/0w5qNSmWtbIv4dEJNExfwg==
-  /@nivo/voronoi/0.62.0_0106054ed56650b7cf08997e12b36ef5:
+  /@nivo/voronoi/0.62.0_738bb8f954d12b6833bcb33fcfa7848e:
     dependencies:
-      '@nivo/core': 0.62.0_0106054ed56650b7cf08997e12b36ef5
+      '@nivo/core': 0.62.0_738bb8f954d12b6833bcb33fcfa7848e
       d3-delaunay: 5.3.0
       d3-scale: 3.2.3
       prop-types: 15.7.2
-      react: 16.14.0
-      recompose: 0.30.0_react@16.14.0
+      react: 17.0.1
+      recompose: 0.30.0_react@17.0.1
     peerDependencies:
       prop-types: '>= 15.5.10 < 16.0.0'
       react: '>= 16.8.4 < 17.0.0'
@@ -3160,18 +3160,18 @@ packages:
     dev: false
     resolution:
       integrity: sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
-  /@restart/context/2.1.4_react@16.14.0:
+  /@restart/context/2.1.4_react@17.0.1:
     dependencies:
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: '>=16.3.2'
     resolution:
       integrity: sha512-INJYZQJP7g+IoDUh/475NlGiTeMfwTXUEr3tmRneckHIxNolGOW9CTq83S8cxq0CgJwwcMzMJFchxvlwe7Rk8Q==
-  /@restart/hooks/0.3.26_react@16.14.0:
+  /@restart/hooks/0.3.26_react@17.0.1:
     dependencies:
       lodash: 4.17.20
       lodash-es: 4.17.20
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: '>=16.8.0'
     resolution:
@@ -3551,6 +3551,27 @@ packages:
         optional: true
     resolution:
       integrity: sha512-03GkWxcgFfm8+WIwcsqJb9agrSDNDDoxaNnexPnCCexP5SCE4IgFd9lNpSy+K2nFqVMpgTFw6SwbmVAVTndVew==
+  /@wojtekmaj/enzyme-adapter-react-17/0.4.1_ed988ebff08079c40ff9e87e2acc78b3:
+    dependencies:
+      enzyme: 3.11.0
+      enzyme-adapter-utils: 1.14.0_react@17.0.1
+      enzyme-shallow-equal: 1.0.4
+      has: 1.0.3
+      object.assign: 4.1.2
+      object.values: 1.1.2
+      prop-types: 15.7.2
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-is: 17.0.1
+      react-test-renderer: 17.0.1_react@17.0.1
+      semver: 5.7.1
+    dev: true
+    peerDependencies:
+      enzyme: ^3.0.0
+      react: ^17.0.0-0
+      react-dom: ^17.0.0-0
+    resolution:
+      integrity: sha512-WZr8i4C6WVDV7Mb8sbm7GdlEPmk1f+xOMjUKThqrkWgwsfvu90zJyyX54wyAvsS91sjtKZ0JipGj2cJnEDaxPA==
   /@xtuc/ieee754/1.2.0:
     dev: true
     resolution:
@@ -3743,7 +3764,7 @@ packages:
       sequelize-typescript: '>=2.0.0'
     resolution:
       integrity: sha512-DzOCtsVd/cv99K6eQdawXLiwtpU60ctHRCTr6It557QOxOr20BnCBrbFSGDMHho9Ny0Y+Fc+oywFtzUyoC2QqA==
-  /airbnb-prop-types/2.16.0_react@16.14.0:
+  /airbnb-prop-types/2.16.0_react@17.0.1:
     dependencies:
       array.prototype.find: 2.1.1
       function.prototype.name: 1.1.3
@@ -3753,7 +3774,7 @@ packages:
       object.entries: 1.1.3
       prop-types: 15.7.2
       prop-types-exact: 1.2.0
-      react: 16.14.0
+      react: 17.0.1
       react-is: 16.13.1
     dev: true
     peerDependencies:
@@ -5484,11 +5505,11 @@ packages:
       object-assign: 4.1.1
     resolution:
       integrity: sha512-QZv4sFWG9S5RUvkTYWbflxeZX+JG7Cz0Tn33rQBJ+WFQTqTfUTjMjiv9tnfXazjsO5r0KhPs+AqCjyrQX6h2ng==
-  /create-react-context/0.3.0_prop-types@15.7.2+react@16.14.0:
+  /create-react-context/0.3.0_prop-types@15.7.2+react@17.0.1:
     dependencies:
       gud: 1.0.0
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       warning: 4.0.3
     peerDependencies:
       prop-types: ^15.0.0
@@ -6311,36 +6332,15 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-46+j5QxbPWza0PB1i15nZx0xQ4I/EfQxg9J8Had3b408SV63nEtor2e+oiY63amTo9KTuh2a3XLObNwduxYwwA==
-  /enzyme-adapter-react-16/1.15.6_4f82faf5e8cab057bc46d4d95079ec42:
+  /enzyme-adapter-utils/1.14.0_react@17.0.1:
     dependencies:
-      enzyme: 3.11.0
-      enzyme-adapter-utils: 1.14.0_react@16.14.0
-      enzyme-shallow-equal: 1.0.4
-      has: 1.0.3
-      object.assign: 4.1.2
-      object.values: 1.1.2
-      prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-is: 16.13.1
-      react-test-renderer: 16.14.0_react@16.14.0
-      semver: 5.7.1
-    dev: true
-    peerDependencies:
-      enzyme: ^3.0.0
-      react: ^16.0.0-0
-      react-dom: ^16.0.0-0
-    resolution:
-      integrity: sha512-yFlVJCXh8T+mcQo8M6my9sPgeGzj85HSHi6Apgf1Cvq/7EL/J9+1JoJmJsRxZgyTvPMAqOEpRSu/Ii/ZpyOk0g==
-  /enzyme-adapter-utils/1.14.0_react@16.14.0:
-    dependencies:
-      airbnb-prop-types: 2.16.0_react@16.14.0
+      airbnb-prop-types: 2.16.0_react@17.0.1
       function.prototype.name: 1.1.3
       has: 1.0.3
       object.assign: 4.1.2
       object.fromentries: 2.0.3
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       semver: 5.7.1
     dev: true
     peerDependencies:
@@ -7912,13 +7912,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==
-  /html-to-react/1.4.5_react@16.14.0:
+  /html-to-react/1.4.5_react@17.0.1:
     dependencies:
       domhandler: 3.3.0
       htmlparser2: 5.0.1
       lodash.camelcase: 4.3.0
       ramda: 0.27.1
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: ^16.0 || ^17.0
     resolution:
@@ -10869,14 +10869,14 @@ packages:
   /next-tick/1.1.0:
     resolution:
       integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==
-  /next/10.0.6_19c094f04958f1216baf4da611b66b3e:
+  /next/10.0.6_26043bd01a12da2cc999854eecb58732:
     dependencies:
       '@ampproject/toolbox-optimizer': 2.7.1-alpha.0
       '@babel/runtime': 7.12.5
       '@hapi/accept': 5.0.1
       '@next/env': 10.0.6
       '@next/polyfill-module': 10.0.6
-      '@next/react-dev-overlay': 10.0.6_react-dom@16.14.0+react@16.14.0
+      '@next/react-dev-overlay': 10.0.6_react-dom@17.0.1+react@17.0.1
       '@next/react-refresh-utils': 10.0.6_react-refresh@0.8.3
       '@opentelemetry/api': 0.14.0
       ast-types: 0.13.2
@@ -10902,13 +10902,13 @@ packages:
       process: 0.11.10
       prop-types: 15.7.2
       raw-body: 2.4.1
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
       react-is: 16.13.1
       react-refresh: 0.8.3
       stream-browserify: 3.0.0
-      styled-jsx: 3.3.2_react@16.14.0
-      use-subscription: 1.5.1_react@16.14.0
+      styled-jsx: 3.3.2_react@17.0.1
+      use-subscription: 1.5.1_react@17.0.1
       vm-browserify: 1.1.2
       watchpack: 2.0.0-beta.13
     engines:
@@ -12505,9 +12505,9 @@ packages:
     dev: true
     resolution:
       integrity: sha512-K+Tk3Kd9V0odiXFP9fwDHUYRyvK3Nun3GVyPapSIs5OBkITAm15W0CPFD/YKTkMUAbc0b9CUwRQp2ybiBIq+eA==
-  /prop-types-extra/1.1.1_react@16.14.0:
+  /prop-types-extra/1.1.1_react@17.0.1:
     dependencies:
-      react: 16.14.0
+      react: 17.0.1
       react-is: 16.13.1
       warning: 4.0.3
     peerDependencies:
@@ -12773,19 +12773,19 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==
-  /react-bootstrap-typeahead/5.1.4_react-dom@16.14.0+react@16.14.0:
+  /react-bootstrap-typeahead/5.1.4_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
-      '@restart/hooks': 0.3.26_react@16.14.0
+      '@restart/hooks': 0.3.26_react@17.0.1
       classnames: 2.2.6
       fast-deep-equal: 3.1.3
       invariant: 2.2.4
       lodash.debounce: 4.0.8
       prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-overlays: 4.1.1_react-dom@16.14.0+react@16.14.0
-      react-popper: 1.3.7_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-overlays: 4.1.1_react-dom@17.0.1+react@17.0.1
+      react-popper: 1.3.7_react@17.0.1
       scroll-into-view-if-needed: 2.2.26
       warning: 4.0.3
     peerDependencies:
@@ -12793,11 +12793,11 @@ packages:
       react-dom: '>=16.8.0'
     resolution:
       integrity: sha512-CfoaSjGV3MZS9yrkLfYkvimzRYru1Ko7qKKzacbsBeZ/sHCxFvUhxnCXmTy/K2vZCkOmAQpU/sbgQVOkMRNlSQ==
-  /react-bootstrap/1.4.3_react-dom@16.14.0+react@16.14.0:
+  /react-bootstrap/1.4.3_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
-      '@restart/context': 2.1.4_react@16.14.0
-      '@restart/hooks': 0.3.26_react@16.14.0
+      '@restart/context': 2.1.4_react@17.0.1
+      '@restart/hooks': 0.3.26_react@17.0.1
       '@types/classnames': 2.2.11
       '@types/invariant': 2.2.34
       '@types/prop-types': 15.7.3
@@ -12808,12 +12808,12 @@ packages:
       dom-helpers: 5.2.0
       invariant: 2.2.4
       prop-types: 15.7.2
-      prop-types-extra: 1.1.1_react@16.14.0
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-overlays: 4.1.1_react-dom@16.14.0+react@16.14.0
-      react-transition-group: 4.4.1_react-dom@16.14.0+react@16.14.0
-      uncontrollable: 7.2.1_react@16.14.0
+      prop-types-extra: 1.1.1_react@17.0.1
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-overlays: 4.1.1_react-dom@17.0.1+react@17.0.1
+      react-transition-group: 4.4.1_react-dom@17.0.1+react@17.0.1
+      uncontrollable: 7.2.1_react@17.0.1
       warning: 4.0.3
     peerDependencies:
       react: '>=16.8.0'
@@ -12829,28 +12829,28 @@ packages:
       react: ^15.3.0 || ^16.0.0 || ^17.0.0
     resolution:
       integrity: sha512-9S3j+m+UxDZOM0Qb8mhnT/rMR0NGSrj9A/073yz2DSxPMYhmYFBMYIdI2X4o8AjOjyFsSNxDRnCX6s/gRxpriw==
-  /react-date-range/1.1.3_date-fns@2.16.1+react@16.14.0:
+  /react-date-range/1.1.3_date-fns@2.16.1+react@17.0.1:
     dependencies:
       classnames: 2.2.6
       date-fns: 2.16.1
       prop-types: 15.7.2
-      react: 16.14.0
-      react-list: 0.8.16_react@16.14.0
+      react: 17.0.1
+      react-list: 0.8.16_react@17.0.1
       shallow-equal: 1.2.1
     peerDependencies:
       date-fns: 2.0.0-alpha.7 || >=2.0.0
       react: ^0.14 || ^15.0.0-rc || >=15.0
     resolution:
       integrity: sha512-Q0+80JaEw3O2J50Lf1dcwWfqkzu3SaCZUTgtVEG9kIHy1h1x8XTNrumX08hKz+M//wg7NOymaTzP1RPBYoLpmw==
-  /react-datepicker/3.4.1_react-dom@16.14.0+react@16.14.0:
+  /react-datepicker/3.4.1_react-dom@17.0.1+react@17.0.1:
     dependencies:
       classnames: 2.2.6
       date-fns: 2.16.1
       prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      react-onclickoutside: 6.10.0_react-dom@16.14.0+react@16.14.0
-      react-popper: 1.3.7_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      react-onclickoutside: 6.10.0_react-dom@17.0.1+react@17.0.1
+      react-popper: 1.3.7_react@17.0.1
     peerDependencies:
       react: ^16.9.0
       react-dom: ^16.9.0
@@ -12876,20 +12876,19 @@ packages:
       react: ^15.7.0
     resolution:
       integrity: sha512-mpjXqC2t1FuYsILOLCj0kg6pbg460byZkVA/80VtDmKU/pYmoTdHOtaMcTRIDiyXLz4sIur0cQ04nOC6iGndJg==
-  /react-dom/16.14.0_react@16.14.0:
+  /react-dom/17.0.1_react@17.0.1:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      prop-types: 15.7.2
-      react: 16.14.0
-      scheduler: 0.19.1
+      react: 17.0.1
+      scheduler: 0.20.1
     peerDependencies:
-      react: ^16.14.0
+      react: 17.0.1
     resolution:
-      integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
-  /react-hook-form/6.14.2_react@16.14.0:
+      integrity: sha512-6eV150oJZ9U2t9svnsspTMrWNyHc6chX0KzDeAOXftRa8bNeOKTTfCJ7KorIwenkHd2xqVTBTCZd79yk/lx/Ug==
+  /react-hook-form/6.14.2_react@17.0.1:
     dependencies:
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: ^16.8.0 || ^17
     resolution:
@@ -12933,23 +12932,23 @@ packages:
   /react-lifecycles-compat/3.0.4:
     resolution:
       integrity: sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
-  /react-list/0.8.16_react@16.14.0:
+  /react-list/0.8.16_react@17.0.1:
     dependencies:
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: 0.14 || 15 || 16 || 17
     resolution:
       integrity: sha512-LSxfvdwB9Ip+E+8NBtLPW2pcIngzuV0rSoH9nMt9C2lFjZEbnoBY/ib/Zx121jPgFgg3xYkMlMXSzx5gaiP5ig==
-  /react-markdown/5.0.3_f379cb84673dd6a6a050a3c6fcdc00a6:
+  /react-markdown/5.0.3_@types+react@17.0.0+react@17.0.1:
     dependencies:
       '@types/mdast': 3.0.3
       '@types/react': 17.0.0
       '@types/unist': 2.0.3
-      html-to-react: 1.4.5_react@16.14.0
+      html-to-react: 1.4.5_react@17.0.1
       mdast-add-list-metadata: 1.0.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       react-is: 16.13.1
       remark-parse: 9.0.0
       unified: 9.2.0
@@ -12960,24 +12959,24 @@ packages:
       react: '>=16'
     resolution:
       integrity: sha512-jDWOc1AvWn0WahpjW6NK64mtx6cwjM4iSsLHJPNBqoAgGOVoIdJMqaKX4++plhOtdd4JksdqzlDibgPx6B/M2w==
-  /react-measure/2.5.2_react-dom@16.14.0+react@16.14.0:
+  /react-measure/2.5.2_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
       get-node-dimensions: 1.2.1
       prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
       resize-observer-polyfill: 1.5.1
     peerDependencies:
       react: '>0.13.0'
       react-dom: '>0.13.0'
     resolution:
       integrity: sha512-M+rpbTLWJ3FD6FXvYV6YEGvQ5tMayQ3fGrZhRPHrE9bVlBYfDCLuDcgNttYfk8IqfOI03jz6cbpqMRTUclQnaA==
-  /react-moment/1.1.1_eafa27d017aeb76e4fdf82e703ca42a1:
+  /react-moment/1.1.1_d173866c12dc1c3e78a5ef0679f041fb:
     dependencies:
       moment: 2.29.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       moment: ^2.29.0
       prop-types: ^15.7.0
@@ -12994,50 +12993,50 @@ packages:
       react: ^0.14.9 || ^15.3.0 || ^16.0.0
     resolution:
       integrity: sha512-9q3YAvHoUiWlP3cK0v+w1N5Z23HXMj4IF4YuvjvWegWqNPfLXsOBE/V7UvQGpXxHFKRQQcNcVQE31g9SB/6qgQ==
-  /react-motion/0.5.2_react@16.14.0:
+  /react-motion/0.5.2_react@17.0.1:
     dependencies:
       performance-now: 0.2.0
       prop-types: 15.7.2
       raf: 3.4.1
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: ^0.14.9 || ^15.3.0 || ^16.0.0
     resolution:
       integrity: sha512-9q3YAvHoUiWlP3cK0v+w1N5Z23HXMj4IF4YuvjvWegWqNPfLXsOBE/V7UvQGpXxHFKRQQcNcVQE31g9SB/6qgQ==
-  /react-onclickoutside/6.10.0_react-dom@16.14.0+react@16.14.0:
+  /react-onclickoutside/6.10.0_react-dom@17.0.1+react@17.0.1:
     dependencies:
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
     peerDependencies:
       react: ^15.5.x || ^16.x || ^17.x
       react-dom: ^15.5.x || ^16.x || ^17.x
     resolution:
       integrity: sha512-7i2L3ef+0ILXpL6P+Hg304eCQswh4jl3ynwR71BSlMU49PE2uk31k8B2GkP6yE9s2D4jTGKnzuSpzWxu4YxfQQ==
-  /react-overlays/4.1.1_react-dom@16.14.0+react@16.14.0:
+  /react-overlays/4.1.1_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
       '@popperjs/core': 2.6.0
-      '@restart/hooks': 0.3.26_react@16.14.0
+      '@restart/hooks': 0.3.26_react@17.0.1
       '@types/warning': 3.0.0
       dom-helpers: 5.2.0
       prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
-      uncontrollable: 7.2.1_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      uncontrollable: 7.2.1_react@17.0.1
       warning: 4.0.3
     peerDependencies:
       react: '>=16.3.0'
       react-dom: '>=16.3.0'
     resolution:
       integrity: sha512-WtJifh081e6M24KnvTQoNjQEpz7HoLxqt8TwZM7LOYIkYJ8i/Ly1Xi7RVte87ZVnmqQ4PFaFiNHZhSINPSpdBQ==
-  /react-popper/1.3.7_react@16.14.0:
+  /react-popper/1.3.7_react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
-      create-react-context: 0.3.0_prop-types@15.7.2+react@16.14.0
+      create-react-context: 0.3.0_prop-types@15.7.2+react@17.0.1
       deep-equal: 1.1.1
       popper.js: 1.16.1
       prop-types: 15.7.2
-      react: 16.14.0
+      react: 17.0.1
       typed-styles: 0.0.7
       warning: 4.0.3
     peerDependencies:
@@ -13064,6 +13063,16 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+  /react-shallow-renderer/16.14.1_react@17.0.1:
+    dependencies:
+      object-assign: 4.1.1
+      react: 17.0.1
+      react-is: 17.0.1
+    dev: true
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0
+    resolution:
+      integrity: sha512-rkIMcQi01/+kxiTE9D3fdS959U1g7gs+/rborw++42m1O9FAQiNI/UNRZExVUoAOprn4umcXf+pFRou8i4zuBg==
   /react-syntax-highlighter/15.4.3_react@15.7.0:
     dependencies:
       '@babel/runtime': 7.12.5
@@ -13076,26 +13085,26 @@ packages:
       react: '>= 0.14.0'
     resolution:
       integrity: sha512-TnhGgZKXr5o8a63uYdRTzeb8ijJOgRGe0qjrE0eK/gajtdyqnSO6LqB3vW16hHB0cFierYSoy/AOJw8z1Dui8g==
-  /react-test-renderer/16.14.0_react@16.14.0:
+  /react-test-renderer/17.0.1_react@17.0.1:
     dependencies:
       object-assign: 4.1.1
-      prop-types: 15.7.2
-      react: 16.14.0
-      react-is: 16.13.1
-      scheduler: 0.19.1
+      react: 17.0.1
+      react-is: 17.0.1
+      react-shallow-renderer: 16.14.1_react@17.0.1
+      scheduler: 0.20.1
     dev: true
     peerDependencies:
-      react: ^16.14.0
+      react: 17.0.1
     resolution:
-      integrity: sha512-L8yPjqPE5CZO6rKsKXRO/rVPiaCOy0tQQJbC+UjPNlobl5mad59lvPjwFsQHTvL03caVDIVr9x9/OSgDe6I5Eg==
-  /react-transition-group/4.4.1_react-dom@16.14.0+react@16.14.0:
+      integrity: sha512-/dRae3mj6aObwkjCcxZPlxDFh73XZLgvwhhyON2haZGUEhiaY5EjfAdw+d/rQmlcFwdTpMXCSGVk374QbCTlrA==
+  /react-transition-group/4.4.1_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
       dom-helpers: 5.2.0
       loose-envify: 1.4.0
       prop-types: 15.7.2
-      react: 16.14.0
-      react-dom: 16.14.0_react@16.14.0
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
     peerDependencies:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
@@ -13112,15 +13121,14 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-5/MMRYmpmM0sMTHGLossnJCrmXQIiJilD6y3YN3TzAwGFj6zdnMtFv6xmi65PHKRV+pehIHpT7oy67Sr6s9AHA==
-  /react/16.14.0:
+  /react/17.0.1:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      prop-types: 15.7.2
     engines:
       node: '>=0.10.0'
     resolution:
-      integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
+      integrity: sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w==
   /read-cmd-shim/1.0.5:
     dependencies:
       graceful-fs: 4.2.4
@@ -13292,13 +13300,13 @@ packages:
       node: '>= 0.10'
     resolution:
       integrity: sha512-ADsDEH2bvbjltXEP+hTIAmeFekTFK0V2BTxMkok6qILyAJEXV0AFfoWcAq4yfll5VdIMd/RVXq0lR+wQi5ZU3Q==
-  /recompose/0.30.0_react@16.14.0:
+  /recompose/0.30.0_react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
       change-emitter: 0.1.6
       fbjs: 0.8.17
       hoist-non-react-statics: 2.5.5
-      react: 16.14.0
+      react: 17.0.1
       react-lifecycles-compat: 3.0.4
       symbol-observable: 1.2.0
     peerDependencies:
@@ -13811,12 +13819,12 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-5LBh1Tls8c9xgGjw3QrMwETmTMVk0oFgvrFSvWx62llR2hcEInrKNZ2GZCCuuy2lvWrdl5jhbpeqc5hRYKFOcw==
-  /scheduler/0.19.1:
+  /scheduler/0.20.1:
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     resolution:
-      integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
+      integrity: sha512-LKTe+2xNJBNxu/QhHvDR14wUXHRQbVY5ZOYpOGWRzhydZUqrLb2JBvLPY7cAqFmqrWuDED0Mjk7013SZiOz6Bw==
   /schema-utils/3.0.0:
     dependencies:
       '@types/json-schema': 7.0.7
@@ -14833,13 +14841,13 @@ packages:
     dev: false
     resolution:
       integrity: sha1-6NK6H6nJBXAwPAMLaQD31fiavls=
-  /styled-jsx/3.3.2_react@16.14.0:
+  /styled-jsx/3.3.2_react@17.0.1:
     dependencies:
       '@babel/types': 7.8.3
       babel-plugin-syntax-jsx: 6.18.0
       convert-source-map: 1.7.0
       loader-utils: 1.2.3
-      react: 16.14.0
+      react: 17.0.1
       source-map: 0.7.3
       string-hash: 1.1.3
       stylis: 3.5.4
@@ -14848,14 +14856,14 @@ packages:
       react: 15.x.x || 16.x.x || 17.x.x
     resolution:
       integrity: sha512-daAkGd5mqhbBhLd6jYAjYBa9LpxYCzsgo/f6qzPdFxVB8yoGbhxvzQgkC0pfmCVvW3JuAEBn0UzFLBfkHVZG1g==
-  /styled-jsx/3.4.1_react@16.14.0:
+  /styled-jsx/3.4.1_react@17.0.1:
     dependencies:
       '@babel/helper-module-imports': 7.12.5
       '@babel/types': 7.8.3
       babel-plugin-syntax-jsx: 6.18.0
       convert-source-map: 1.7.0
       loader-utils: 1.2.3
-      react: 16.14.0
+      react: 17.0.1
       source-map: 0.7.3
       string-hash: 1.1.3
       stylis: 3.5.4
@@ -15625,12 +15633,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-5z3T17DXxe2G+6xrCufYxqadUPo=
-  /uncontrollable/7.2.1_react@16.14.0:
+  /uncontrollable/7.2.1_react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.5
       '@types/react': 17.0.0
       invariant: 2.2.4
-      react: 16.14.0
+      react: 17.0.1
       react-lifecycles-compat: 3.0.4
     peerDependencies:
       react: '>=15.0.0'
@@ -15821,10 +15829,10 @@ packages:
       querystring: 0.2.0
     resolution:
       integrity: sha1-ODjpfPxgUh63PFJajlW/3Z4uKPE=
-  /use-subscription/1.5.1_react@16.14.0:
+  /use-subscription/1.5.1_react@17.0.1:
     dependencies:
       object-assign: 4.1.1
-      react: 16.14.0
+      react: 17.0.1
     peerDependencies:
       react: ^16.8.0 || ^17.0.0
     resolution:
