@@ -32,7 +32,6 @@
     "@fortawesome/fontawesome-svg-core": "1.2.34",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "@nivo/line": "0.66.0",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "0.21.1",
     "date-fns": "2.16.1",

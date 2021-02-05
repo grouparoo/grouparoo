@@ -58,7 +58,6 @@
     "@grouparoo/core": "^0.2.0-alpha.20",
     "@grouparoo/spec-helper": "^0.2.0-alpha.20",
     "@grouparoo/ui-components": "^0.2.0-alpha.20",
-    "@nivo/line": "0.66.0",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
