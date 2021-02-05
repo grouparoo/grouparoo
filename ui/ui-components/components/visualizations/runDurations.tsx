@@ -45,6 +45,7 @@ export default function RunDurationChart({ runs }: { runs: Models.RunType[] }) {
           data={chartData}
           colors={{ scheme: "category10" }}
           useMesh={true}
+          //@ts-ignore
           animate={false}
           margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
           curve={"monotoneX"}

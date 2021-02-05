@@ -176,7 +176,6 @@ function EventsBar({ data }) {
       data={data}
       colors={{ scheme: "category10" }}
       useMesh={true}
-      animate={false}
       margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
       curve={"monotoneX"}
       lineWidth={3}
