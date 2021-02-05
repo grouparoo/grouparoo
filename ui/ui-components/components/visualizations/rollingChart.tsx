@@ -1,4 +1,5 @@
 import { ResponsiveLine } from "@nivo/line";
+import { useState, useEffect } from "react";
 
 const colors = [
   "#1f77b4",
@@ -13,41 +14,52 @@ const colors = [
   "#17becf",
 ];
 
-function Chart({ data, keys }) {
-  const formattedData = { _total: [] };
+export default function Chart({ data, keys }) {
+  const [chartData, setChartData] = useState([]);
 
-  keys.forEach((q) => {
-    formattedData[q] = [];
-  });
+  useEffect(() => {
+    processData();
+  }, [data, keys]);
 
-  data.forEach((sample) => {
-    let total = 0;
+  function processData() {
+    const formattedData = { _total: [] };
+
     keys.forEach((q) => {
-      formattedData[q].push({ x: sample.time, y: sample[q] });
-      total += sample[q];
+      formattedData[q] = [];
     });
-    formattedData._total.push({ x: sample.time, y: total });
-  });
 
-  const chartData = [
-    { id: "total", data: formattedData._total, color: "#DDD" },
-  ];
-  keys
-    .sort()
-    .reverse()
-    .forEach((q, idx) => {
-      chartData.push({
-        id: q,
-        data: formattedData[q],
-        color: colors[idx],
+    data.forEach((sample) => {
+      let total = 0;
+      keys.forEach((q) => {
+        formattedData[q].push({ x: sample.time, y: sample[q] });
+        total += sample[q];
       });
+      formattedData._total.push({ x: sample.time, y: total });
     });
+
+    const chartData = [
+      { id: "total", data: formattedData._total, color: "#DDD" },
+    ];
+    keys
+      .sort()
+      .reverse()
+      .forEach((q, idx) => {
+        chartData.push({
+          id: q,
+          data: formattedData[q],
+          color: colors[idx],
+        });
+      });
+
+    setChartData(chartData);
+  }
 
   return (
     <ResponsiveLine
       data={chartData}
       enableSlices={"x"}
       useMesh={true}
+      //@ts-ignore
       animate={false}
       margin={{ top: 40, right: 150, bottom: 40, left: 50 }}
       colors={{ datum: "color" }}
@@ -96,5 +108,3 @@ function Chart({ data, keys }) {
     />
   );
 }
-
-export default Chart;

@@ -127,6 +127,7 @@ export default function Page(props) {
               margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
               colors={{ scheme: "category10" }}
               lineWidth={2}
+              //@ts-ignore
               animate={false}
               enableSlices={"x"}
               useMesh={true}
