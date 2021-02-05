@@ -13,13 +13,13 @@ describe("models/app", () => {
 
     await app.save();
 
-    expect(app.guid.length).toBe(40);
+    expect(app.id.length).toBe(40);
     expect(app.createdAt).toBeTruthy();
     expect(app.updatedAt).toBeTruthy();
 
-    await app.setOptions({ fileGuid: "abc123" });
+    await app.setOptions({ fileId: "abc123" });
     const options = await app.getOptions();
-    expect(options).toEqual({ fileGuid: "abc123" });
+    expect(options).toEqual({ fileId: "abc123" });
 
     await app.destroy();
   });
@@ -53,7 +53,7 @@ describe("models/app", () => {
     expect(appTwo.name).toBe("");
 
     await appOne.update({ name: "name" });
-    await appOne.setOptions({ fileGuid: "abc123" });
+    await appOne.setOptions({ fileId: "abc123" });
     await appOne.update({ state: "ready" });
 
     await expect(appTwo.update({ name: "name" })).rejects.toThrow(
@@ -71,13 +71,13 @@ describe("models/app", () => {
     });
 
     await app.save();
-    await app.setOptions({ fileGuid: "abc123" });
+    await app.setOptions({ fileId: "abc123" });
 
-    let count = await Option.count({ where: { ownerGuid: app.guid } });
+    let count = await Option.count({ where: { ownerId: app.id } });
     expect(count).toBe(1);
 
     await app.destroy();
-    count = await Option.count({ where: { ownerGuid: app.guid } });
+    count = await Option.count({ where: { ownerId: app.id } });
     expect(count).toBe(0);
   });
 
@@ -99,7 +99,7 @@ describe("models/app", () => {
       type: "test-plugin-app",
     });
 
-    await app.setOptions({ fileGuid: "abc123" });
+    await app.setOptions({ fileId: "abc123" });
 
     let log = await Log.findOne({
       where: { verb: "update", topic: "app" },
@@ -126,7 +126,7 @@ describe("models/app", () => {
     const app = await App.create({
       name: "bye app",
       type: "test-plugin-app",
-      options: { fileGuid: "abc123" },
+      options: { fileId: "abc123" },
     });
 
     await app.destroy();
@@ -151,12 +151,12 @@ describe("models/app", () => {
         type: "test-plugin-app",
       });
 
-      await app.setOptions({ fileGuid: "TEST_OPTION" });
+      await app.setOptions({ fileId: "TEST_OPTION" });
       const options = await app.getOptions();
-      expect(options.fileGuid).toBe("abc123");
+      expect(options.fileId).toBe("abc123");
 
       const option = await Option.findOne({
-        where: { ownerGuid: app.guid, key: "fileGuid" },
+        where: { ownerId: app.id, key: "fileId" },
       });
       expect(option.value).toBe("TEST_OPTION");
 
@@ -170,7 +170,7 @@ describe("models/app", () => {
       });
 
       const { success, error, message } = await app.test({
-        fileGuid: "TEST_OPTION",
+        fileId: "TEST_OPTION",
       });
       expect(success).toBe(true);
       expect(error).toBeUndefined();
@@ -204,11 +204,11 @@ describe("models/app", () => {
       });
 
       await expect(app.setOptions({ thing: "stuff" })).rejects.toThrow(
-        /fileGuid is required for a app of type test-plugin-app/
+        /fileId is required for a app of type test-plugin-app/
       );
 
       await expect(
-        app.setOptions({ fileGuid: "abc123", otherThing: "123" })
+        app.setOptions({ fileId: "abc123", otherThing: "123" })
       ).rejects.toThrow(
         /otherThing is not an option for a test-plugin-app app/
       );
@@ -232,7 +232,7 @@ describe("models/app", () => {
         name: "test app",
         type: "test-plugin-app",
       });
-      await app.setOptions({ fileGuid: "abc123" });
+      await app.setOptions({ fileId: "abc123" });
       await app.update({ state: "ready" });
       expect(app.state).toBe("ready");
 
@@ -249,7 +249,7 @@ describe("models/app", () => {
         state: "ready",
       });
 
-      await expect(app.save()).rejects.toThrow(/fileGuid is required/);
+      await expect(app.save()).rejects.toThrow(/fileId is required/);
     });
 
     test("an app with a source cannot be deleted", async () => {
@@ -257,7 +257,7 @@ describe("models/app", () => {
         name: "test app",
         type: "test-plugin-app",
       });
-      await app.setOptions({ fileGuid: "abc" });
+      await app.setOptions({ fileId: "abc" });
       await app.update({ state: "ready" });
 
       const source = await helper.factories.source(app);
@@ -292,7 +292,7 @@ describe("models/app", () => {
                 return { success: true };
               },
               appOptions: async () => {
-                return { fileGuid: { type: "list", options: ["a", "b"] } };
+                return { fileId: { type: "list", options: ["a", "b"] } };
               },
               parallelism: async () => {
                 return parallelism;
@@ -339,7 +339,7 @@ describe("models/app", () => {
     test("it can return the appOptions from the plugin", async () => {
       const options = await app.appOptions();
       expect(options).toEqual({
-        fileGuid: { type: "list", options: ["a", "b"] },
+        fileId: { type: "list", options: ["a", "b"] },
       });
     });
 

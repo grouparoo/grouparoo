@@ -18,7 +18,7 @@ import { LockableHelper } from "../modules/lockableHelper";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
-  guidPrefix() {
+  idPrefix() {
     return "tea";
   }
 
@@ -55,7 +55,7 @@ export class Team extends LoggedModel<Team> {
     >[] = await Promise.all(permissions.map((prm) => prm.apiData()));
 
     return {
-      guid: this.guid,
+      id: this.id,
       name: this.name,
       locked: this.locked,
       permissionAllRead: this.permissionAllRead,
@@ -68,19 +68,19 @@ export class Team extends LoggedModel<Team> {
   }
 
   async authorizeAction(topic: string, mode: "read" | "write") {
-    return Permission.authorizeAction(this.guid, topic, mode);
+    return Permission.authorizeAction(this.id, topic, mode);
   }
 
   async setPermissions(
-    permissions: Array<{ guid: string; read: boolean; write: boolean }>
+    permissions: Array<{ id: string; read: boolean; write: boolean }>
   ) {
     for (const i in permissions) {
       const permission = await Permission.findOne({
-        where: { ownerGuid: this.guid, guid: permissions[i].guid },
+        where: { ownerId: this.id, id: permissions[i].id },
       });
       if (!permission) {
         throw new Error(
-          `permission ${permissions[i].guid} not found for this team`
+          `permission ${permissions[i].id} not found for this team`
         );
       }
 
@@ -101,11 +101,9 @@ export class Team extends LoggedModel<Team> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -122,6 +120,11 @@ export class Team extends LoggedModel<Team> {
     }
   }
 
+  @BeforeSave
+  static async noUpdateIfLocked(instance) {
+    await LockableHelper.beforeSave(instance);
+  }
+
   @AfterSave
   static async buildPermissions(instance: Team) {
     const permissionsWithStatus: Array<{
@@ -135,7 +138,7 @@ export class Team extends LoggedModel<Team> {
       let permission = await Permission.findOne({
         where: {
           topic,
-          ownerGuid: instance.guid,
+          ownerId: instance.id,
           ownerType: "team",
         },
       });
@@ -144,7 +147,7 @@ export class Team extends LoggedModel<Team> {
         isNew = true;
         permission = await Permission.create({
           topic,
-          ownerGuid: instance.guid,
+          ownerId: instance.id,
           ownerType: "team",
         });
       }
@@ -166,13 +169,7 @@ export class Team extends LoggedModel<Team> {
 
       permissionsWithStatus.push({ isNew, permission });
     }
-
     return permissionsWithStatus;
-  }
-
-  @BeforeSave
-  static async noUpdateIfLocked(instance) {
-    await LockableHelper.beforeSave(instance);
   }
 
   @BeforeDestroy
@@ -192,7 +189,7 @@ export class Team extends LoggedModel<Team> {
   @AfterDestroy
   static async deletePermissions(instance: Team) {
     return Permission.destroy({
-      where: { ownerGuid: instance.guid },
+      where: { ownerId: instance.id },
     });
   }
 }

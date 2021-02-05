@@ -12,15 +12,14 @@ export class Console extends CLI {
     this.description =
       "Load eCommerce users and purchases into a source database.";
     this.inputs = {
-      scale: { required: false, default: 1 },
+      scale: { required: false, default: "1" },
     };
   }
 
   async run({ params }) {
-    const scale = params.scale;
-    if (scale > 1) {
-      log(`Using scale = ${params.scale}`);
-    }
+    const scale = parseInt(params.scale);
+    if (scale > 1) log(`Using scale = ${params.scale}`);
+
     await init({ reset: true });
     await users({ scale });
     await purchases({ scale });

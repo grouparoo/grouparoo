@@ -11,13 +11,13 @@ import { log } from "actionhero";
 export interface SalesforceDestinationMappingOptionsMethod {
   (argument: {
     appOptions: SimpleAppOptions;
-    appGuid: string;
+    appId: string;
     model: SalesforceModel;
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
 export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   model,
 }) => {
@@ -30,7 +30,7 @@ export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMe
     profileReferenceObject,
     profileReferenceMatchField,
   } = model;
-  const cacheData = { appGuid, appOptions };
+  const cacheData = { appId, appOptions };
   const profileInfo = await describeObject(
     conn,
     cacheData,

@@ -1,10 +1,10 @@
 import {
   ConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { Group } from "../..";
 import { Property } from "../../models/Property";
@@ -15,18 +15,18 @@ export async function loadGroup(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
-  const guid = await validateAndFormatGuid(Group, configObject.id);
+  const id = await validateAndFormatId(Group, configObject.id);
   validateConfigObjectKeys(Group, configObject);
 
   let group = await Group.scope(null).findOne({
-    where: { guid, locked: getCodeConfigLockKey() },
+    where: { id, locked: getCodeConfigLockKey() },
   });
   if (!group) {
     isNew = true;
     group = await Group.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
@@ -39,11 +39,11 @@ export async function loadGroup(
     const rules = [...configObject.rules];
     for (const i in rules) {
       if (rules[i]["propertyId"]) {
-        const propertyGuid = await validateAndFormatGuid(
+        const propertyId = await validateAndFormatId(
           Property,
           rules[i]["propertyId"]
         );
-        const property = await Property.findByGuid(propertyGuid);
+        const property = await Property.findById(propertyId);
         delete rules[i]["propertyId"];
         rules[i].key = property.key;
       }
@@ -56,14 +56,14 @@ export async function loadGroup(
 
   logModel(group, validate ? "validated" : isNew ? "created" : "updated");
 
-  return { group: [group.guid] };
+  return { group: [group.id] };
 }
 
-export async function deleteGroups(guids: string[]) {
+export async function deleteGroups(ids: string[]) {
   const groups = await Group.scope(null).findAll({
     where: {
       locked: getCodeConfigLockKey(),
-      guid: { [Op.notIn]: guids },
+      id: { [Op.notIn]: ids },
       state: { [Op.ne]: "deleted" },
     },
   });
@@ -71,9 +71,9 @@ export async function deleteGroups(guids: string[]) {
   for (const i in groups) {
     const group = groups[i];
     await group.update({ state: "deleted", locked: null });
-    await CLS.enqueueTask("group:destroy", { groupGuid: group.guid });
+    await CLS.enqueueTask("group:destroy", { groupId: group.id });
     logModel(group, "deleted");
   }
 
-  return groups.map((instance) => instance.guid);
+  return groups.map((instance) => instance.id);
 }

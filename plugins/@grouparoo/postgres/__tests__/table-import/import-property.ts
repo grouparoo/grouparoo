@@ -58,12 +58,12 @@ async function getPropertyArray(
     sourceMapping,
     propertyFilters,
     property,
-    profileGuid: null,
+    profileId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
-    propertyGuid: null,
+    appId: null,
+    propertyId: null,
   });
 }
 
@@ -84,7 +84,7 @@ describe("postgres/table/profileProperty", () => {
       email: ["ejervois0@example.com"],
       lastName: null,
     });
-    expect(profile.guid).toBeTruthy();
+    expect(profile.id).toBeTruthy();
   });
 
   afterAll(async () => await afterData());

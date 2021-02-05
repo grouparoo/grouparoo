@@ -68,17 +68,17 @@ describe("bin/sync", () => {
       expect(output).toContain("No Profile Property provided");
     });
 
-    test("it can sync by profile guid", async () => {
-      await instance.run({ params: { profileProperty: profile.guid } });
+    test("it can sync by profile id", async () => {
+      await instance.run({ params: { profileProperty: profile.id } });
       const output = messages.join(" ");
-      expect(output).toContain(`* guid: ${profile.guid}`);
+      expect(output).toContain(`* id: ${profile.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
     test("it can sync by profile property", async () => {
       await instance.run({ params: { profileProperty: "mario@example.com" } });
       const output = messages.join(" ");
-      expect(output).toContain(`* guid: ${profile.guid}`);
+      expect(output).toContain(`* id: ${profile.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 
@@ -87,7 +87,7 @@ describe("bin/sync", () => {
         params: { profileProperty: "mario@example.com", property: "email" },
       });
       const output = messages.join(" ");
-      expect(output).toContain(`* guid: ${profile.guid}`);
+      expect(output).toContain(`* id: ${profile.id}`);
       expect(output).toContain(`* email: mario@example.com`);
     });
 

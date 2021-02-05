@@ -9,7 +9,7 @@ describe("tasks/import:associateProfile", () => {
 
   describe("import:associateProfile", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("import:associateProfile", { importGuid: "abc123" });
+      await task.enqueue("import:associateProfile", { importId: "abc123" });
       const found = await specHelper.findEnqueuedTasks(
         "import:associateProfile"
       );
@@ -24,20 +24,20 @@ describe("tasks/import:associateProfile", () => {
         email: "toad@example.com",
         firstName: "Toad",
       });
-      expect(_import.profileGuid).toBeNull();
+      expect(_import.profileId).toBeNull();
       expect(_import.profileAssociatedAt).toBeNull();
 
       let profilesCount = await Profile.count();
       expect(profilesCount).toBe(0);
 
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.guid,
+        importId: _import.id,
       });
 
       await _import.reload();
       const profile = await Profile.findOne();
       expect(profile).toBeTruthy();
-      expect(_import.profileGuid).toBe(profile.guid);
+      expect(_import.profileId).toBe(profile.id);
       expect(_import.profileAssociatedAt).toBeTruthy();
 
       expect(_import.oldProfileProperties).toEqual({
@@ -51,9 +51,9 @@ describe("tasks/import:associateProfile", () => {
         purchases: [null],
         userId: [null],
       });
-      expect(_import.oldGroupGuids).toEqual([]);
+      expect(_import.oldGroupIds).toEqual([]);
       expect(_import.newProfileProperties).toEqual({});
-      expect(_import.newGroupGuids).toEqual([]);
+      expect(_import.newGroupIds).toEqual([]);
 
       await run.updateTotals();
 
@@ -70,7 +70,7 @@ describe("tasks/import:associateProfile", () => {
 
       // I don't throw, but append the error to the Import
       await specHelper.runTask("import:associateProfile", {
-        importGuid: _import.guid,
+        importId: _import.id,
       });
 
       await _import.reload();
@@ -93,7 +93,7 @@ describe("tasks/import:associateProfile", () => {
       });
       expect(property.state).toEqual("pending");
 
-      const profile = await Profile.findByGuid(property.profileGuid);
+      const profile = await Profile.findById(property.profileId);
       expect(profile.state).toEqual("pending");
     });
   });

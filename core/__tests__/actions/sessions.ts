@@ -30,7 +30,7 @@ describe("session", () => {
 
       expect(error).toBeUndefined();
       expect(success).toEqual(true);
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
     });
 
     test("can log in with email not in lowercase", async () => {
@@ -44,7 +44,7 @@ describe("session", () => {
 
       expect(error).toBeUndefined();
       expect(success).toEqual(true);
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
     });
 
     test("cannot log in with unknown user", async () => {
@@ -97,7 +97,7 @@ describe("session", () => {
 
       expect(error).toBeUndefined();
       expect(newCsrfToken).toBe(csrfToken);
-      expect(teamMember.guid).toBeTruthy();
+      expect(teamMember.id).toBeTruthy();
     });
   });
 
@@ -221,7 +221,7 @@ describe("session", () => {
         }
 
         toad = new TeamMember({
-          teamGuid: team.guid,
+          teamId: team.id,
           firstName: "Toad",
           lastName: "Toadstool",
           email: "toad@example.com",
@@ -291,7 +291,7 @@ describe("session", () => {
 
       test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
         const permission = await Permission.findOne({
-          where: { ownerGuid: team.guid, topic: "app" },
+          where: { ownerId: team.id, topic: "app" },
         });
         //@ts-ignore
         await permission.update({ read: true, write: false }, { hooks: false });
@@ -323,7 +323,7 @@ describe("session", () => {
 
       test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
         const permission = await Permission.findOne({
-          where: { ownerGuid: team.guid, topic: "app" },
+          where: { ownerId: team.id, topic: "app" },
         });
         //@ts-ignore
         await permission.update({ read: false, write: true }, { hooks: false });
@@ -397,7 +397,7 @@ describe("session", () => {
             headers: { "Content-Type": "application/json", Cookie: cookie },
           }
         ).then((r) => r.json());
-        expect(response.teamMember.guid).toBeTruthy();
+        expect(response.teamMember.id).toBeTruthy();
       });
 
       test("actions cannot be authenticated with the cookie without the CSRF token", async () => {
@@ -449,7 +449,7 @@ describe("session", () => {
             "X-GROUPAROO-SERVER_TOKEN": config.general.serverToken,
           },
         }).then((r) => r.json());
-        expect(response.teamMember.guid).toBeTruthy();
+        expect(response.teamMember.id).toBeTruthy();
       });
     });
 
@@ -504,7 +504,7 @@ describe("session", () => {
 
       test("changing the permission topic to read authorizes only the actions of that topic - read", async () => {
         const permission = await Permission.findOne({
-          where: { ownerGuid: apiKey.guid, topic: "app" },
+          where: { ownerId: apiKey.id, topic: "app" },
         });
         await permission.update({ read: true, write: false });
 
@@ -529,7 +529,7 @@ describe("session", () => {
 
       test("changing the permission topic to read authorizes only the actions of that topic - write", async () => {
         const permission = await Permission.findOne({
-          where: { ownerGuid: apiKey.guid, topic: "app" },
+          where: { ownerId: apiKey.id, topic: "app" },
         });
         await permission.update({ read: false, write: true });
 

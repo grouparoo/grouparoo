@@ -18,19 +18,19 @@ require("./../fixtures/destination-mapping-options");
 //helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_20bb06d8-0a4e-49b5-ad42-545f2e8662e1";
+const appId = "app_20bb06d8-0a4e-49b5-ad42-545f2e8662e1";
 
 describe("marketo/destinationMappingOptions", () => {
   test(
     "can load destinationMappingOptions",
     async () => {
       const options = await destinationMappingOptions({
-        appGuid,
+        appId,
         appOptions,
         app: null,
         connection: null,
         destination: null,
-        destinationGuid: null,
+        destinationId: null,
         destinationOptions: null,
       });
       const { properties } = options;

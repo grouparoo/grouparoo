@@ -16,18 +16,18 @@ export class ImportProfileProperties extends RetryableTask {
     this.frequency = 0;
     this.queue = "profileProperties";
     this.inputs = {
-      profileGuids: { required: true },
-      propertyGuid: { required: true },
+      profileIds: { required: true },
+      propertyId: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
     const profiles = await Profile.findAll({
-      where: { guid: { [Op.in]: params.profileGuids } },
+      where: { id: { [Op.in]: params.profileIds } },
       include: [ProfileProperty],
     });
     const property = await Property.findOne({
-      where: { guid: params.propertyGuid },
+      where: { id: params.propertyId },
     });
     if (!property) return;
     const source = await property.$get("source");
@@ -60,20 +60,20 @@ export class ImportProfileProperties extends RetryableTask {
       await Promise.all(
         profilesWithDependenciesMet.map((profile) => {
           CLS.enqueueTask("profileProperty:importProfileProperty", {
-            profileGuid: profile.guid,
-            propertyGuid: property.guid,
+            profileId: profile.id,
+            propertyId: property.id,
           });
         })
       );
       return log(error, "error");
     }
 
-    for (const profileGuid in propertyValuesBatch) {
+    for (const profileId in propertyValuesBatch) {
       const profile = profilesWithDependenciesMet.find(
-        (p) => p.guid === profileGuid
+        (p) => p.id === profileId
       );
       const hash = {};
-      hash[property.guid] = propertyValuesBatch[profileGuid];
+      hash[property.id] = propertyValuesBatch[profileId];
       await profile.addOrUpdateProperties(hash);
     }
 
@@ -82,9 +82,9 @@ export class ImportProfileProperties extends RetryableTask {
       { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
       {
         where: {
-          propertyGuid: property.guid,
-          profileGuid: {
-            [Op.in]: profilesWithDependenciesMet.map((p) => p.guid),
+          propertyId: property.id,
+          profileId: {
+            [Op.in]: profilesWithDependenciesMet.map((p) => p.id),
           },
           state: "pending",
         },

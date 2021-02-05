@@ -67,7 +67,7 @@ describe("actions/logs", () => {
 
       connection.params = {
         csrfToken,
-        ownerGuid: profile.guid,
+        ownerId: profile.id,
       };
 
       const { error, logs } = await specHelper.runAction(

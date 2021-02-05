@@ -5,7 +5,7 @@ const data = async (props = {}) => {
     topic: "test",
     verb: "create",
     message: "creating a log entry in a test",
-    ownerGuid: "abc123",
+    ownerId: "abc123",
     data: JSON.stringify({ thing: "stuff" }),
 
     createdAt: new Date(),

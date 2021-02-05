@@ -67,7 +67,7 @@ async function createGroup(definition: GroupDefinition) {
   const found = await findGroup(name);
   const params = Object.assign({}, DEFINITION_DEFAULT, definition, {
     state: "ready",
-    guid: found?.guid,
+    id: found?.id,
   });
 
   if (found) {

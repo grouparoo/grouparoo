@@ -32,12 +32,12 @@ export interface ImportProfileProperties {
 
 @Table({ tableName: "imports", paranoid: false })
 export class Import extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "imp";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -52,7 +52,7 @@ export class Import extends Model {
   @AllowNull(false)
   @ForeignKey(() => Run)
   @Column
-  creatorGuid: string;
+  creatorId: string;
 
   @Column(DataType.TEXT)
   // data: string;
@@ -78,7 +78,7 @@ export class Import extends Model {
 
   @ForeignKey(() => Profile)
   @Column
-  profileGuid: string;
+  profileId: string;
 
   @BelongsTo(() => Profile)
   profile: Profile;
@@ -117,25 +117,25 @@ export class Import extends Model {
   profileUpdatedAt: Date;
 
   @Column(DataType.TEXT)
-  // oldGroupGuids: string;
-  get oldGroupGuids(): string[] {
+  // oldGroupIds: string;
+  get oldGroupIds(): string[] {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("oldGroupGuids") || "[]");
+    return JSON.parse(this.getDataValue("oldGroupIds") || "[]");
   }
-  set oldGroupGuids(value: string[]) {
+  set oldGroupIds(value: string[]) {
     //@ts-ignore
-    this.setDataValue("oldGroupGuids", JSON.stringify(value));
+    this.setDataValue("oldGroupIds", JSON.stringify(value));
   }
 
   @Column(DataType.TEXT)
-  // newGroupGuids: string;
-  get newGroupGuids(): string[] {
+  // newGroupIds: string;
+  get newGroupIds(): string[] {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("newGroupGuids") || "[]");
+    return JSON.parse(this.getDataValue("newGroupIds") || "[]");
   }
-  set newGroupGuids(value: string[]) {
+  set newGroupIds(value: string[]) {
     //@ts-ignore
-    this.setDataValue("newGroupGuids", JSON.stringify(value));
+    this.setDataValue("newGroupIds", JSON.stringify(value));
   }
 
   @Column
@@ -162,10 +162,10 @@ export class Import extends Model {
 
     return {
       // IDs
-      guid: this.guid,
+      id: this.id,
       creatorType: this.creatorType,
-      creatorGuid: this.creatorGuid,
-      profileGuid: this.profileGuid,
+      creatorId: this.creatorId,
+      profileId: this.profileId,
 
       //data
       data,
@@ -188,8 +188,8 @@ export class Import extends Model {
       // data before and after
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
-      oldGroupGuids: this.oldGroupGuids,
-      newGroupGuids: this.newGroupGuids,
+      oldGroupIds: this.oldGroupIds,
+      newGroupIds: this.newGroupIds,
 
       // errors
       errorMessage: this.errorMessage,
@@ -214,29 +214,27 @@ export class Import extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
   @AfterCreate
   static async enqueueTask(instance: Import) {
-    if (!instance.profileGuid) {
+    if (!instance.profileId) {
       await CLS.enqueueTaskIn(
         config.tasks.timeout + 1,
         "import:associateProfile",
         {
-          importGuid: instance.guid,
+          importId: instance.id,
         }
       );
     }

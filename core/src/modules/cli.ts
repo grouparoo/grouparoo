@@ -74,8 +74,8 @@ export namespace GrouparooCLI {
     await Run.truncate();
     await Log.truncate();
     await Event.update(
-      { profileGuid: null, userId: null, profileAssociatedAt: null },
-      { where: { profileGuid: { [Op.ne]: null } } }
+      { profileId: null, userId: null, profileAssociatedAt: null },
+      { where: { profileId: { [Op.ne]: null } } }
     );
   }
 
@@ -84,7 +84,7 @@ export namespace GrouparooCLI {
     for (const i in schedules) {
       const runs = await Run.findAll({
         where: {
-          creatorGuid: schedules[i].guid,
+          creatorId: schedules[i].id,
           highWaterMark: { [Op.ne]: null },
         },
       });

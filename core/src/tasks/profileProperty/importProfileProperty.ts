@@ -13,28 +13,28 @@ export class ImportProfileProperty extends RetryableTask {
     this.frequency = 0;
     this.queue = "profileProperties";
     this.inputs = {
-      profileGuid: { required: true },
-      propertyGuid: { required: true },
+      profileId: { required: true },
+      propertyId: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
     const profile = await Profile.findOne({
-      where: { guid: params.profileGuid },
+      where: { id: params.profileId },
     });
 
     // has this profile been removed since we enqueued the import task?
     if (!profile) {
       return ProfileProperty.destroy({
         where: {
-          profileGuid: params.profileGuid,
-          propertyGuid: params.propertyGuid,
+          profileId: params.profileId,
+          propertyId: params.propertyId,
         },
       });
     }
 
     const property = await Property.findOne({
-      where: { guid: params.propertyGuid },
+      where: { id: params.propertyId },
     });
     if (!property) return;
     const properties = await profile.properties();
@@ -56,7 +56,7 @@ export class ImportProfileProperty extends RetryableTask {
 
     if (propertyValues) {
       const hash = {};
-      hash[property.guid] = Array.isArray(propertyValues)
+      hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
       await profile.addOrUpdateProperty(hash);
@@ -65,8 +65,8 @@ export class ImportProfileProperty extends RetryableTask {
         { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },
         {
           where: {
-            propertyGuid: property.guid,
-            profileGuid: profile.guid,
+            propertyId: property.id,
+            profileId: profile.id,
             state: "pending",
           },
         }

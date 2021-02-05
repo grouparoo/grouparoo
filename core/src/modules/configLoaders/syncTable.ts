@@ -1,6 +1,6 @@
 import {
   ConfigurationObject,
-  validateAndFormatGuid,
+  validateAndFormatId,
   getParentByName,
 } from "../../classes/codeConfig";
 import { App } from "../..";
@@ -23,7 +23,7 @@ export async function expandSyncTable(
   const out: ConfigurationObject[] = [];
 
   const rootId = configObject.id;
-  await validateAndFormatGuid(App, rootId); // model actually not used
+  await validateAndFormatId(App, rootId); // model actually not used
   const rootName = configObject.name || rootId;
 
   const source = configObject.source;
@@ -358,7 +358,7 @@ async function getColumnDefinitions(
     if (pluginApp.methods.connect) {
       connection = await pluginApp.methods.connect({
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions: options,
       });
     }
@@ -366,7 +366,7 @@ async function getColumnDefinitions(
     result = await getColumns({
       connection,
       appOptions: options,
-      appGuid: app.guid,
+      appId: app.id,
       tableName,
     });
   } catch (err) {
@@ -376,7 +376,7 @@ async function getColumnDefinitions(
       await pluginApp.methods.disconnect({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions: options,
       });
     }

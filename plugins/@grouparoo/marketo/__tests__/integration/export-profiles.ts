@@ -18,21 +18,21 @@ require("./../fixtures/export-profiles");
 //helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
-const appGuid = "app_a0bb07d8-0a4e-49b5-ad42-545f2e8662e6";
+const appId = "app_a0bb07d8-0a4e-49b5-ad42-545f2e8662e6";
 
 let client: any;
 
 const email1 = "brian@bleonard.com";
-const guid1 = "pro1";
+const id1 = "pro1";
 const newEmail1 = "other@bleonard.com";
 let userId1 = null;
 
 const email2 = "brian2@bleonard.com";
-const guid2 = "pro2";
+const id2 = "pro2";
 let userId2 = null;
 
 const email3 = "brian3@bleonard.com";
-const guid3 = "pro3";
+const id3 = "pro3";
 let userId3 = null;
 
 const list1 = "(test) High Value";
@@ -148,11 +148,11 @@ describe("marketo/exportProfiles", () => {
     expect(userId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {},
           newProfileProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
@@ -178,11 +178,11 @@ describe("marketo/exportProfiles", () => {
     expect(userId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { email: email1, firstName: "Brian" },
           newProfileProperties: {
             email: email1,
@@ -195,7 +195,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: { email: email2, firstName: "Andy" },
           oldGroups: [],
@@ -225,11 +225,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can clear user variables", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             email: email1,
             firstName: "John",
@@ -258,11 +258,11 @@ describe("marketo/exportProfiles", () => {
     expect(listId1).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { email: email1, firstName: "Brian" },
           newProfileProperties: { email: email1, firstName: "Brian" },
           oldGroups: [],
@@ -291,11 +291,11 @@ describe("marketo/exportProfiles", () => {
     expect(listId2).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { email: email1, firstName: "Brian" },
           newProfileProperties: { email: email1, firstName: "Brian" },
           oldGroups: [list1],
@@ -304,7 +304,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Andy" },
           newProfileProperties: { email: email2, firstName: "Sally" },
           oldGroups: [],
@@ -336,11 +336,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can remove users from lists including ones they aren't in", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { email: email1, firstName: "Brian" },
           newProfileProperties: { email: email1, firstName: "Brian" },
           oldGroups: [list1, list2],
@@ -349,7 +349,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Andy" },
           newProfileProperties: { email: email2, firstName: "Sally" },
           oldGroups: [list2],
@@ -373,11 +373,11 @@ describe("marketo/exportProfiles", () => {
 
   test("it can change the email address", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: { email: email1, firstName: "Brian" },
           newProfileProperties: {
             email: newEmail1,
@@ -390,7 +390,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Andy" },
           newProfileProperties: { email: email2, firstName: "Evan" },
           oldGroups: [list1],
@@ -426,11 +426,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             email: newEmail1,
             firstName: "Brian",
@@ -447,7 +447,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Evan" },
           newProfileProperties: { email: email2, firstName: "Evan" },
           oldGroups: [],
@@ -483,11 +483,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can add back a user and many types", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {},
           newProfileProperties: {
             email: email2,
@@ -533,11 +533,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can set all those fields to null", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: {
             email: email2,
             firstName: "Evan",
@@ -580,11 +580,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle boolean error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -604,7 +604,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("boolean");
 
     user = await getUser(userId2);
@@ -623,11 +623,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle email error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -647,7 +647,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId2);
@@ -666,11 +666,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle integer error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -690,7 +690,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("integer");
 
     user = await getUser(userId2);
@@ -709,11 +709,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle float error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -733,7 +733,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("float");
 
     user = await getUser(userId2);
@@ -752,11 +752,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle datetime error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -776,7 +776,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("datetime");
 
     user = await getUser(userId2);
@@ -795,11 +795,11 @@ describe("marketo/exportProfiles", () => {
 
   test("can handle percent error", async () => {
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -819,7 +819,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("percent");
 
     user = await getUser(userId2);
@@ -841,11 +841,11 @@ describe("marketo/exportProfiles", () => {
     expect(userId3).toBe(null);
 
     const { success, errors } = await exportBatch({
-      appGuid,
+      appId,
       appOptions,
       exports: [
         {
-          profileGuid: guid1,
+          profileId: id1,
           oldProfileProperties: {
             email: email1,
             firstName: "Brian",
@@ -862,7 +862,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid2,
+          profileId: id2,
           oldProfileProperties: { email: email2, firstName: "Maria" },
           newProfileProperties: {
             email: email2,
@@ -875,7 +875,7 @@ describe("marketo/exportProfiles", () => {
           profile: null,
         },
         {
-          profileGuid: guid3,
+          profileId: id3,
           oldProfileProperties: {},
           newProfileProperties: {
             email: email3,
@@ -895,7 +895,7 @@ describe("marketo/exportProfiles", () => {
     expect(errors).not.toBeNull();
     expect(errors.length).toEqual(1);
     const error = errors[0];
-    expect(error.profileGuid).toEqual(guid2);
+    expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
 
     user = await getUser(userId1);

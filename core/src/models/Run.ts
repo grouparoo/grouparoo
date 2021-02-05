@@ -46,12 +46,12 @@ const STATE_TRANSITIONS = [
 
 @Table({ tableName: "runs", paranoid: false })
 export class Run extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "run";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -62,7 +62,7 @@ export class Run extends Model {
   @AllowNull(false)
   @ForeignKey(() => Schedule)
   @Column
-  creatorGuid: string;
+  creatorId: string;
 
   @Column
   creatorType: string;
@@ -133,14 +133,14 @@ export class Run extends Model {
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
-  @HasMany(() => Import, "creatorGuid")
+  @HasMany(() => Import, "creatorId")
   imports: Import[];
 
   async determinePercentComplete(logPercentMessage = true) {
     const percentComplete = await RunOps.determinePercentComplete(this);
     await this.update({ percentComplete });
     if (logPercentMessage) {
-      log(`run ${this.guid} is ${this.percentComplete}% complete`);
+      log(`run ${this.id} is ${this.percentComplete}% complete`);
     }
 
     return percentComplete;
@@ -176,10 +176,10 @@ export class Run extends Model {
     const importErrorCounts = await Import.findAll({
       attributes: [
         "errorMessage",
-        [api.sequelize.fn("COUNT", "guid"), "errorCount"],
+        [api.sequelize.fn("COUNT", "id"), "errorCount"],
       ],
       where: {
-        creatorGuid: this.guid,
+        creatorId: this.id,
         errorMessage: { [Op.not]: null },
       },
       group: ["errorMessage"],
@@ -214,9 +214,9 @@ export class Run extends Model {
     );
 
     const where = {
-      creatorGuid: this.creatorGuid,
+      creatorId: this.creatorId,
       importsCreated: { [Op.gt]: 0 },
-      guid: { [Op.not]: this.guid },
+      id: { [Op.not]: this.id },
       state: "complete",
     };
 
@@ -238,7 +238,7 @@ export class Run extends Model {
    */
   async test() {
     const profile = await Profile.findOne({
-      order: [["guid", "asc"]],
+      order: [["id", "asc"]],
     });
 
     if (profile) {
@@ -261,8 +261,8 @@ export class Run extends Model {
     const creatorName = await this.getCreatorName();
 
     return {
-      guid: this.guid,
-      creatorGuid: this.creatorGuid,
+      id: this.id,
+      creatorId: this.creatorId,
       creatorName,
       creatorType: this.creatorType,
       state: this.state,
@@ -289,20 +289,20 @@ export class Run extends Model {
 
     try {
       if (this.creatorType === "group") {
-        const group = await Group.findByGuid(this.creatorGuid);
+        const group = await Group.findById(this.creatorId);
         name = group.name;
       } else if (this.creatorType === "property") {
-        const property = await Property.findByGuid(this.creatorGuid);
+        const property = await Property.findById(this.creatorId);
         name = property.key;
       } else if (this.creatorType === "schedule") {
-        const schedule = await Schedule.findByGuid(this.creatorGuid);
+        const schedule = await Schedule.findById(this.creatorId);
         const source = await schedule.$get("source");
         name = source.name;
       } else if (this.creatorType === "teamMember") {
-        const teamMember = await TeamMember.findByGuid(this.creatorGuid);
+        const teamMember = await TeamMember.findById(this.creatorId);
         name = `${teamMember.firstName} ${teamMember.lastName}`;
       } else if (this.creatorType === "task") {
-        name = this.creatorGuid;
+        name = this.creatorId;
       }
     } catch (error) {
       // likely the creator has been deleted
@@ -313,18 +313,16 @@ export class Run extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
@@ -333,13 +331,13 @@ export class Run extends Model {
     let ready = true;
     // properties are ok to enqueue if they are in draft at the time.  Options update before state
     if (instance.creatorType === "group") {
-      let creator = await Group.findByGuid(instance.creatorGuid);
+      let creator = await Group.findById(instance.creatorId);
       if (creator.state === "draft") {
         ready = false;
       }
     }
     if (instance.creatorType === "schedule") {
-      let creator = await Schedule.findByGuid(instance.creatorGuid);
+      let creator = await Schedule.findById(instance.creatorId);
       if (creator.state === "draft") {
         ready = false;
       }

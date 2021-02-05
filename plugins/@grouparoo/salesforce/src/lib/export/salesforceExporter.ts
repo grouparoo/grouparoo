@@ -1,5 +1,5 @@
 import {
-  ErrorWithProfileGuid,
+  ErrorWithProfileId,
   SimpleAppOptions,
   objectCache,
 } from "@grouparoo/core";
@@ -411,7 +411,7 @@ function processResults(results, users: BatchExport[], type: ResultType) {
     const user = users[i];
     const result = results[i];
     try {
-      const id = processResult(result, user.profileGuid, type);
+      const id = processResult(result, user.profileId, type);
       if (type === ResultType.USER) {
         if (user.destinationId && user.destinationId !== id) {
           throw new Error(
@@ -567,7 +567,7 @@ async function getListId(
   const { groupObject, groupNameField, cacheData } = model;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
 
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheKey = [
     "getListId",
     groupObject,
@@ -576,7 +576,7 @@ async function getListId(
     appOptions,
   ];
   const listId = await objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let destId = await findObjectIdByField({
@@ -666,24 +666,24 @@ export interface SalesforceData extends SalesforceModel {
 }
 export interface ExportSalesforceMethod {
   (argument: {
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     exports: BatchExport[];
     model: SalesforceModel;
   }): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }>;
 }
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   exports,
   model,
 }) => {
   const connection = await connect(appOptions);
-  const cacheData = { appGuid, appOptions };
+  const cacheData = { appId, appOptions };
   // use larger number if sales force api >= 42
   const batchSize = connection._supports("sobject-collection")
     ? 200

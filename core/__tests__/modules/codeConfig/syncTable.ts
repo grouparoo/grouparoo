@@ -54,7 +54,7 @@ describe("modules/codeConfig/syncTable", () => {
     test("runs the config", async () => {
       // manually run the initializer again after the server has started.
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenGuids, deletedGuids } = await loadConfigDirectory(
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(
           __dirname,
           "..",
@@ -67,7 +67,7 @@ describe("modules/codeConfig/syncTable", () => {
         false // not testing external validation
       );
       expect(errors).toEqual([]);
-      expect(seenGuids).toEqual({
+      expect(seenIds).toEqual({
         apikey: [],
         app: ["app_mailchimpapp", "app_data_warehouse"],
         destination: ["dst_magic_table_destination"],
@@ -85,7 +85,7 @@ describe("modules/codeConfig/syncTable", () => {
         team: [],
         teammember: [],
       });
-      expect(deletedGuids).toEqual({
+      expect(deletedIds).toEqual({
         apikey: [],
         app: [],
         destination: [],
@@ -104,7 +104,7 @@ describe("modules/codeConfig/syncTable", () => {
       });
       expect(apps.length).toBe(2);
 
-      expect(apps[0].guid).toBe("app_mailchimpapp");
+      expect(apps[0].id).toBe("app_mailchimpapp");
       expect(apps[0].name).toBe("Mailchimp");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
@@ -114,7 +114,7 @@ describe("modules/codeConfig/syncTable", () => {
       expect(options.apiKey).toBeTruthy();
       expect(Object.keys(options).length).toBe(1);
 
-      expect(apps[1].guid).toBe("app_data_warehouse");
+      expect(apps[1].id).toBe("app_data_warehouse");
       expect(apps[1].name).toBe("Data Warehouse");
       expect(apps[1].state).toBe("ready");
       expect(apps[1].locked).toBe("config:code");
@@ -127,8 +127,8 @@ describe("modules/codeConfig/syncTable", () => {
     test("source is created", async () => {
       const sources = await Source.findAll();
       expect(sources.length).toBe(1);
-      expect(sources[0].guid).toBe("src_magic_table_source");
-      expect(sources[0].appGuid).toBe("app_data_warehouse");
+      expect(sources[0].id).toBe("src_magic_table_source");
+      expect(sources[0].appId).toBe("app_data_warehouse");
       expect(sources[0].name).toBe("Sync to Mailchimp Source");
       expect(sources[0].state).toBe("ready");
       expect(sources[0].locked).toBe("config:code");
@@ -145,7 +145,7 @@ describe("modules/codeConfig/syncTable", () => {
       const property = await Property.findOne({
         where: { directlyMapped: true },
       });
-      expect(property.guid).toBe("rul_magic_table_property_user_id");
+      expect(property.id).toBe("rul_magic_table_property_user_id");
       expect(property.key).toBe("magic_table_user_id");
       expect(property.type).toBe("integer");
       expect(property.unique).toBe(true);
@@ -157,8 +157,8 @@ describe("modules/codeConfig/syncTable", () => {
     test("schedules are created", async () => {
       const schedules = await Schedule.findAll();
       expect(schedules.length).toBe(1);
-      expect(schedules[0].guid).toBe("sch_magic_table_schedule");
-      expect(schedules[0].sourceGuid).toBe("src_magic_table_source");
+      expect(schedules[0].id).toBe("sch_magic_table_schedule");
+      expect(schedules[0].sourceId).toBe("src_magic_table_source");
       expect(schedules[0].name).toBe("Sync to Mailchimp Schedule");
       expect(schedules[0].state).toBe("ready");
       expect(schedules[0].recurring).toBe(true);
@@ -181,7 +181,7 @@ describe("modules/codeConfig/syncTable", () => {
       ]);
       expect(properties.length).toBe(6);
 
-      expect(properties.map((r) => r.sourceGuid).sort()).toEqual([
+      expect(properties.map((r) => r.sourceId).sort()).toEqual([
         "src_magic_table_source",
         "src_magic_table_source",
         "src_magic_table_source",
@@ -209,37 +209,37 @@ describe("modules/codeConfig/syncTable", () => {
       let property: Property;
       property = properties.find((r) => r.key === "email");
       expect(property.type).toBe("email");
-      expect(property.guid).toBe("rul_email_custom");
+      expect(property.id).toBe("rul_email_custom");
       expect(property.unique).toBe(true);
       expect(property.identifying).toBe(false);
 
       property = properties.find((r) => r.key === "magic_table_user_id");
       expect(property.type).toBe("integer");
-      expect(property.guid).toBe("rul_magic_table_property_user_id");
+      expect(property.id).toBe("rul_magic_table_property_user_id");
       expect(property.unique).toBe(true);
       expect(property.identifying).toBe(true);
 
       property = properties.find((r) => r.key === "magic_table_decimal_col");
       expect(property.type).toBe("float");
-      expect(property.guid).toBe("rul_magic_table_property_decimal_col");
+      expect(property.id).toBe("rul_magic_table_property_decimal_col");
       expect(property.unique).toBe(false);
       expect(property.identifying).toBe(false);
 
       property = properties.find((r) => r.key === "magic_table_fname");
       expect(property.type).toBe("string");
-      expect(property.guid).toBe("rul_magic_table_property_fname");
+      expect(property.id).toBe("rul_magic_table_property_fname");
       expect(property.unique).toBe(false);
       expect(property.identifying).toBe(false);
 
       property = properties.find((r) => r.key === "magic_table_membership");
       expect(property.type).toBe("integer");
-      expect(property.guid).toBe("rul_magic_table_membership");
+      expect(property.id).toBe("rul_magic_table_membership");
       expect(property.unique).toBe(false);
       expect(property.identifying).toBe(false);
 
       property = properties.find((r) => r.key === "magic_table_timestamp_col");
       expect(property.type).toBe("date");
-      expect(property.guid).toBe("rul_magic_table_property_timestamp_col");
+      expect(property.id).toBe("rul_magic_table_property_timestamp_col");
       expect(property.unique).toBe(false);
       expect(property.identifying).toBe(false);
     });
@@ -247,7 +247,7 @@ describe("modules/codeConfig/syncTable", () => {
     test("group is created", async () => {
       const groups = await Group.findAll();
       expect(groups.length).toBe(1);
-      expect(groups[0].guid).toBe("grp_magic_table_group");
+      expect(groups[0].id).toBe("grp_magic_table_group");
       expect(groups[0].name).toBe("Sync to Mailchimp");
       expect(groups[0].type).toBe("calculated");
       expect(groups[0].locked).toBe("config:code");
@@ -270,8 +270,8 @@ describe("modules/codeConfig/syncTable", () => {
     test("destination is created", async () => {
       const destinations = await Destination.findAll();
       expect(destinations.length).toBe(1);
-      expect(destinations[0].guid).toBe("dst_magic_table_destination");
-      expect(destinations[0].appGuid).toBe("app_mailchimpapp");
+      expect(destinations[0].id).toBe("dst_magic_table_destination");
+      expect(destinations[0].appId).toBe("app_mailchimpapp");
       expect(destinations[0].name).toBe("Sync to Mailchimp Destination");
       expect(destinations[0].state).toBe("ready");
       expect(destinations[0].locked).toBe("config:code");

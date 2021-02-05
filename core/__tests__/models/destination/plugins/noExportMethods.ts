@@ -53,7 +53,7 @@ describe("models/destination", () => {
         Destination.create({
           name: "test plugin destination app missing methods",
           type: "import-from-test-template-app",
-          appGuid: app.guid,
+          appId: app.id,
         })
       ).rejects.toThrow(
         /cannot be created as there are no profile export methods/

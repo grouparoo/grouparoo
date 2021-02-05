@@ -147,7 +147,7 @@ describe("integration/runs/hubspot", () => {
       csrfToken,
       name: "test destination",
       type: "hubspot-export",
-      appGuid: app.guid,
+      appId: app.id,
       mapping: {
         email: "email",
         firstname: "firstName",
@@ -160,7 +160,7 @@ describe("integration/runs/hubspot", () => {
       session
     );
     expect(buildDestinationResponse.error).toBeUndefined();
-    expect(buildDestinationResponse.destination.guid).toBeTruthy();
+    expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
     destination = buildDestinationResponse.destination;
   });
@@ -168,7 +168,7 @@ describe("integration/runs/hubspot", () => {
   test("we can test the app options", async () => {
     session.params = {
       csrfToken,
-      guid: app.guid,
+      id: app.id,
     };
     const { error, test } = await specHelper.runAction("app:test", session);
     expect(error).toBeUndefined();
@@ -179,7 +179,7 @@ describe("integration/runs/hubspot", () => {
   test("there are no destination options to read", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
     };
     const { error, options } = await specHelper.runAction(
       "destination:connectionOptions",
@@ -192,7 +192,7 @@ describe("integration/runs/hubspot", () => {
   test("we can read the hubspot mapping options", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
     };
     const { error, options } = await specHelper.runAction(
       "destination:mappingOptions",
@@ -233,19 +233,19 @@ describe("integration/runs/hubspot", () => {
   test("track the test group with the destination", async () => {
     session.params = {
       csrfToken,
-      guid: destination.guid,
-      groupGuid: group.guid,
+      id: destination.id,
+      groupId: group.id,
     };
     await specHelper.runAction("destination:trackGroup", session);
   });
 
   test(`the destination group membership can be set`, async () => {
     const destinationGroupMemberships = {};
-    destinationGroupMemberships[group.guid] = group.name;
+    destinationGroupMemberships[group.id] = group.name;
 
     session.params = {
       csrfToken,
-      guid: destination.guid,
+      id: destination.id,
       destinationGroupMemberships,
     };
     const { error, destination: _destination } = await specHelper.runAction(
@@ -255,7 +255,7 @@ describe("integration/runs/hubspot", () => {
     expect(error).toBeUndefined();
     expect(_destination.destinationGroupMemberships).toEqual([
       {
-        groupGuid: group.guid,
+        groupId: group.id,
         groupName: list1,
         remoteKey: list1,
       },

@@ -17,22 +17,22 @@ describe("tasks/profile:export", () => {
 
   describe("profile:export", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profile:export", { profileGuid: "abc123" });
+      await task.enqueue("profile:export", { profileId: "abc123" });
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(1);
     });
 
     test("enqueuing more than one tasks for the same profile will de-duplicate", async () => {
-      await task.enqueue("profile:export", { profileGuid: "abc123" });
-      await task.enqueue("profile:export", { profileGuid: "abc123" });
+      await task.enqueue("profile:export", { profileId: "abc123" });
+      await task.enqueue("profile:export", { profileId: "abc123" });
 
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(1);
     });
 
     test("enqueuing more tasks for different profiles is OK", async () => {
-      await task.enqueue("profile:export", { profileGuid: "abc123" });
-      await task.enqueue("profile:export", { profileGuid: "cde456" });
+      await task.enqueue("profile:export", { profileId: "abc123" });
+      await task.enqueue("profile:export", { profileId: "cde456" });
 
       const found = await specHelper.findEnqueuedTasks("profile:export");
       expect(found.length).toEqual(2);
@@ -117,7 +117,7 @@ describe("tasks/profile:export", () => {
         destination = await Destination.create({
           name: "test destination",
           type: "export-from-test-template-app",
-          appGuid: app.guid,
+          appId: app.id,
         });
         await destination.setMapping({
           email: "email",
@@ -126,7 +126,7 @@ describe("tasks/profile:export", () => {
         });
         await destination.trackGroup(group);
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = group.name;
+        destinationGroupMemberships[group.id] = group.name;
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
@@ -192,8 +192,8 @@ describe("tasks/profile:export", () => {
         expect(_exports.length).toBe(1);
         const _export = _exports[0];
 
-        expect(_export.destinationGuid).toBe(destination.guid);
-        expect(_export.profileGuid).toBe(profile.guid);
+        expect(_export.destinationId).toBe(destination.id);
+        expect(_export.profileId).toBe(profile.id);
         expect(_export.completedAt).toBeTruthy();
         expect(_export.oldProfileProperties).toEqual({});
         expect(_export.newProfileProperties).toEqual({
@@ -210,14 +210,14 @@ describe("tasks/profile:export", () => {
         expect(importB.exportedAt).toBeTruthy();
       });
 
-      test("it will append destinationGuids from imports", async () => {
+      test("it will append destinationIds from imports", async () => {
         const run = await helper.factories.run();
         const _import = await helper.factories.import(run, {
           email: "bowser@example.com", // create a new profile, not in the group
           firstName: "Bowser",
           lastName: "Koopa",
           _meta: {
-            destinationGuid: destination.guid,
+            destinationId: destination.id,
           },
         });
 
@@ -254,8 +254,8 @@ describe("tasks/profile:export", () => {
         expect(_exports.length).toBe(1);
         const _export = _exports[0];
 
-        expect(_export.destinationGuid).toBe(destination.guid);
-        expect(_export.profileGuid).not.toBe(profile.guid);
+        expect(_export.destinationId).toBe(destination.id);
+        expect(_export.profileId).not.toBe(profile.id);
         expect(_export.completedAt).toBeTruthy();
         expect(_export.oldProfileProperties).toEqual({});
         expect(_export.newProfileProperties).toEqual({
@@ -275,7 +275,7 @@ describe("tasks/profile:export", () => {
         });
 
         beforeAll(async () => {
-          await Profile.destroy({ where: { guid: { [Op.ne]: profile.guid } } });
+          await Profile.destroy({ where: { id: { [Op.ne]: profile.id } } });
 
           Destination.prototype.exportProfile = jest.fn(() => {
             counter++;
@@ -287,7 +287,7 @@ describe("tasks/profile:export", () => {
           await profile.update({ state: "pending" });
 
           await specHelper.runTask("profile:export", {
-            profileGuid: profile.guid,
+            profileId: profile.id,
           }); // does not throw because it did not run
 
           expect(counter).toBe(0);
@@ -297,24 +297,24 @@ describe("tasks/profile:export", () => {
           const run = await helper.factories.run();
           const _import = await Import.create({
             creatorType: "run",
-            creatorGuid: run.guid,
-            profileGuid: profile.guid,
+            creatorId: run.id,
+            profileId: profile.id,
             profileUpdatedAt: new Date(),
             groupsUpdatedAt: new Date(),
             data: {},
-            oldGroupGuids: [],
-            newGroupGuids: [group.guid],
+            oldGroupIds: [],
+            newGroupIds: [group.id],
           });
 
           await profile.import();
           await profile.updateGroupMembership();
           await specHelper.runTask("profile:completeImport", {
-            profileGuid: profile.guid,
+            profileId: profile.id,
           });
 
           // I don't throw, but append the error to the Export
           await specHelper.runTask("profile:export", {
-            profileGuid: profile.guid,
+            profileId: profile.id,
           });
 
           expect(counter).toBe(1);

@@ -26,7 +26,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
     // authenticate a web user with session cookie & csrfToken
     async function authenticateTeamMember() {
       const sessionData = await api.session.load(data.connection);
-      if (!sessionData) {
+      if (!sessionData || !sessionData.id) {
         throw new AuthenticationError("Please log in to continue");
       } else if (
         (data.params.csrfToken &&
@@ -40,7 +40,7 @@ const authenticatedActionMiddleware: action.ActionMiddleware = {
         throw new AuthenticationError("CSRF error");
       } else {
         const teamMember = await TeamMember.findOne({
-          where: { guid: sessionData.guid },
+          where: { id: sessionData.id },
           include: [Team],
         });
 
@@ -110,9 +110,11 @@ const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
         ) {
           await api.session.destroy(data.connection);
           throw new AuthenticationError("CSRF error");
+        } else if (!sessionData.id) {
+          throw new AuthenticationError("Please log in to continue");
         } else {
           const teamMember = await TeamMember.findOne({
-            where: { guid: sessionData.guid },
+            where: { id: sessionData.id },
             include: [Team],
           });
 
@@ -172,11 +174,11 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
     const topic = room.split(":")[1];
     const mode = "read";
     const sessionData = await api.session.load(connection);
-    if (!sessionData) {
+    if (!sessionData || !sessionData.id) {
       throw new AuthenticationError("Please log in to continue");
     } else {
       const teamMember = await TeamMember.findOne({
-        where: { guid: sessionData.guid },
+        where: { id: sessionData.id },
         include: [Team],
       });
 
@@ -194,7 +196,7 @@ const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
 };
 
 interface SessionData {
-  guid: string;
+  id: string;
   csrfToken: string;
   createdAt: number;
 }
@@ -248,7 +250,7 @@ export class Session extends Initializer {
         const csrfToken = await randomBytesAsync();
 
         const sessionData = {
-          guid: teamMember.guid,
+          id: teamMember.id,
           csrfToken: csrfToken,
           createdAt: new Date().getTime(),
         };

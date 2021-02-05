@@ -13,14 +13,14 @@ describe("tasks/event:associateProfile", () => {
     });
     const eventApp = await App.create({ type: "events", name: "events" });
     await eventApp.setOptions({
-      identifyingPropertyGuid: userIdProperty.guid,
+      identifyingPropertyId: userIdProperty.id,
     });
     await eventApp.update({ state: "ready" });
   });
 
   describe("event:associateProfile", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("event:associateProfile", { eventGuid: "abc123" });
+      await task.enqueue("event:associateProfile", { eventId: "abc123" });
       const foundTasks = await specHelper.findEnqueuedTasks(
         "event:associateProfile"
       );
@@ -33,13 +33,13 @@ describe("tasks/event:associateProfile", () => {
       });
 
       await specHelper.runTask("event:associateProfile", {
-        eventGuid: event.guid,
+        eventId: event.id,
       });
 
       await event.reload();
       const profile = await Profile.findOne();
       expect(profile).toBeTruthy();
-      expect(event.profileGuid).toBe(profile.guid);
+      expect(event.profileId).toBe(profile.id);
       expect(event.profileAssociatedAt).toBeTruthy();
     });
 
@@ -53,9 +53,9 @@ describe("tasks/event:associateProfile", () => {
       );
       expect(foundTasks.length).toEqual(1);
 
-      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
-      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
-      await task.enqueue("event:associateProfile", { eventGuid: event.guid });
+      await task.enqueue("event:associateProfile", { eventId: event.id });
+      await task.enqueue("event:associateProfile", { eventId: event.id });
+      await task.enqueue("event:associateProfile", { eventId: event.id });
 
       foundTasks = await specHelper.findEnqueuedTasks("event:associateProfile");
       expect(foundTasks.length).toEqual(1);

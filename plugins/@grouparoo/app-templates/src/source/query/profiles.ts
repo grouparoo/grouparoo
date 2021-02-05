@@ -11,7 +11,7 @@ export interface GetChangedRowsMethod {
     connection: any;
     appOptions: SimpleAppOptions;
     scheduleOptions: SimpleScheduleOptions;
-    appGuid: string;
+    appId: string;
     limit: number;
     offset: number;
   }): Promise<DataResponseRow[]>;
@@ -23,7 +23,7 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     connection,
     highWaterMark,
     run,
-    appGuid,
+    appId,
     appOptions,
     properties,
   }) => {
@@ -37,7 +37,7 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
         );
 
     const rows = await getChangedRows({
-      appGuid,
+      appId,
       appOptions,
       scheduleOptions,
       limit,
@@ -49,11 +49,11 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     for (const row of rows) {
       const queryCol = Object.keys(row)[0];
       const property = properties.find(
-        (p) => p.guid === scheduleOptions.propertyGuid
+        (p) => p.id === scheduleOptions.propertyId
       );
 
       if (!property) {
-        throw new Error(`cannot find property ${scheduleOptions.propertyGuid}`);
+        throw new Error(`cannot find property ${scheduleOptions.propertyId}`);
       }
 
       const propertyMapping = { [queryCol]: property.key };

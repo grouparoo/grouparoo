@@ -3,7 +3,7 @@ import { specHelper } from "actionhero";
 
 describe("actions/events", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -55,26 +55,26 @@ describe("actions/events", () => {
       });
 
       expect(error).toBeFalsy();
-      expect(event.guid).toMatch(/evt_.*/);
+      expect(event.id).toMatch(/evt_.*/);
       expect(event.type).toBe("pageview");
       expect(event.anonymousId).toBe("abc123");
       expect(event.ipAddress).toBeTruthy();
-      expect(event.profileGuid).toBeFalsy();
+      expect(event.profileId).toBeFalsy();
       expect(event.data).toEqual({ path: "/", time: "1" });
 
-      guid = event.guid;
+      id = event.id;
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "event:associateProfile"
       );
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({ eventGuid: guid });
+      expect(foundTasks[0].args[0]).toEqual({ eventId: id });
     });
 
     test("an administrator can view an event", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, event } = await specHelper.runAction(
         "event:view",
@@ -82,10 +82,10 @@ describe("actions/events", () => {
       );
 
       expect(error).toBeFalsy();
-      expect(event.guid).toMatch(/evt_.*/);
+      expect(event.id).toMatch(/evt_.*/);
       expect(event.type).toBe("pageview");
       expect(event.ipAddress).toBeTruthy();
-      expect(event.profileGuid).toBeFalsy();
+      expect(event.profileId).toBeFalsy();
       expect(event.data).toEqual({ path: "/", time: "1" });
     });
 
@@ -99,7 +99,7 @@ describe("actions/events", () => {
       );
       expect(error).toBeFalsy();
       expect(events.length).toEqual(1);
-      expect(events[0].guid).toEqual(guid);
+      expect(events[0].id).toEqual(id);
       expect(events[0].type).toEqual("pageview");
       expect(events[0].data).toEqual({ path: "/", time: "1" });
       expect(total).toBe(1);
@@ -119,10 +119,10 @@ describe("actions/events", () => {
       expect(total).toBe(0);
     });
 
-    test("an administrator can list events (with profileGuid filter)", async () => {
+    test("an administrator can list events (with profileId filter)", async () => {
       connection.params = {
         csrfToken,
-        profileGuid: "000",
+        profileId: "000",
       };
       const { error, events, total } = await specHelper.runAction(
         "events:list",
@@ -245,7 +245,7 @@ describe("actions/events", () => {
     test("an administrator can destroy an event", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, success } = await specHelper.runAction(
         "event:destroy",

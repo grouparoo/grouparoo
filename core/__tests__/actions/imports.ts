@@ -44,7 +44,7 @@ describe("actions/imports", () => {
     );
 
     expect(error).toBeFalsy();
-    expect(_import.guid).toBeTruthy();
+    expect(_import.id).toBeTruthy();
     expect(_import.creatorType).toBe("api");
   });
 
@@ -61,7 +61,7 @@ describe("actions/imports", () => {
     );
 
     expect(error).toBeFalsy();
-    expect(_import.guid).toBeTruthy();
+    expect(_import.id).toBeTruthy();
     expect(_import.creatorType).toBe("api");
   });
 
@@ -101,14 +101,14 @@ describe("actions/imports", () => {
 
     test("an import can be viewed", async () => {
       const i = await Import.findOne();
-      connection.params = { csrfToken, guid: i.guid };
+      connection.params = { csrfToken, id: i.id };
       const { error, import: _import } = await specHelper.runAction(
         "import:view",
         connection
       );
 
       expect(error).toBeFalsy();
-      expect(_import.guid).toBe(i.guid);
+      expect(_import.id).toBe(i.id);
       expect(_import.createdAt).toBeTruthy();
     });
 
@@ -121,7 +121,7 @@ describe("actions/imports", () => {
 
       expect(error).toBeFalsy();
       expect(imports.length).toBe(2);
-      expect(imports[0].guid).toBeTruthy();
+      expect(imports[0].id).toBeTruthy();
       expect(imports[0].data.email).toBe("toad@mushroom-kingdom.gov");
     });
   });

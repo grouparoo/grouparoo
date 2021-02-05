@@ -405,7 +405,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test plugin destination",
         type: "destinationMapping-test-connection",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await destination.update({ state: "ready" });
       await api.resque.queue.connection.redis.flushdb();

@@ -6,7 +6,7 @@ import path from "path";
 
 describe("actions/files", () => {
   helper.grouparooTestServer({ truncate: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -33,17 +33,13 @@ describe("actions/files", () => {
 
     beforeAll(async () => {
       const file = "/tmp/roo.png";
-      if (await fs.pathExists(file)) {
-        fs.unlinkSync(file);
-      }
+      if (await fs.pathExists(file)) fs.unlinkSync(file);
 
       await fs.copy(
         path.join(
           __dirname,
           "..",
           "..",
-          "..",
-          "ui",
           "public",
           "images",
           "logo",
@@ -85,7 +81,7 @@ describe("actions/files", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(file.guid).toBeTruthy();
+      expect(file.id).toBeTruthy();
       expect(file.transport).toBe("local");
       expect(file.type).toBe("image");
       expect(file.bucket).toBe(
@@ -100,7 +96,7 @@ describe("actions/files", () => {
       expect(file.mime).toBe("image/svg+xml");
       expect(file.sizeBytes).toBe(1645);
 
-      guid = file.guid;
+      id = file.id;
     });
 
     test("a reader can list the files of type", async () => {
@@ -121,7 +117,7 @@ describe("actions/files", () => {
     test("a reader can get the details for a file", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, file } = await specHelper.runAction(
         "file:details",
@@ -140,7 +136,7 @@ describe("actions/files", () => {
 
     //   connection.params = {
     //     csrfToken,
-    //     guid
+    //     id
     //   }
     //   const response = await specHelper.runAction('file:view', connection)
     // })
@@ -148,7 +144,7 @@ describe("actions/files", () => {
     test("a writer can destroy a file", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error } = await specHelper.runAction("file:destroy", connection);
       expect(error).toBeUndefined();

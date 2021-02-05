@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/logger",
   "description": "@grouparoo/logger is a Destination plugin that writes the Profiles it receives to a file of your choosing (ie: profiles.log in JSON format ) and/or stdout",
-  "version": "0.2.0-alpha.16",
+  "version": "0.2.0-alpha.18",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,15 +28,15 @@
     "watch": "tsc --watch"
   },
   "peerDependencies": {
-    "@grouparoo/core": "^0.2.0",
-    "actionhero": "25.0.4"
+    "@grouparoo/core": "^0.2.0-alpha.17",
+    "actionhero": "25.0.5"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.16",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.16",
+    "@grouparoo/core": "^0.2.0-alpha.18",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.18",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "25.0.4",
+    "actionhero": "25.0.5",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "26.4.4",

@@ -14,8 +14,8 @@ export class GroupDestroy extends CLSTask {
     this.frequency = 0;
     this.queue = "groups";
     this.inputs = {
-      groupGuid: { required: true },
-      runGuid: { required: false },
+      groupId: { required: true },
+      runId: { required: false },
       offset: { required: false },
       limit: { required: false },
     };
@@ -30,24 +30,24 @@ export class GroupDestroy extends CLSTask {
       );
 
     const group = await Group.scope(null).findOne({
-      where: { guid: params.groupGuid },
+      where: { id: params.groupId },
     });
     if (!group) return; // the group may have been force-deleted
 
     let run: Run;
-    if (params.runGuid) {
-      run = await Run.findByGuid(params.runGuid);
+    if (params.runId) {
+      run = await Run.findById(params.runId);
     } else {
       await group.stopPreviousRuns();
       run = await Run.create({
-        creatorGuid: group.guid,
+        creatorId: group.id,
         creatorType: "group",
         state: "running",
       });
       await group.update({ state: "deleted" });
 
       log(
-        `[ run ] starting run ${run.guid} for group ${group.name} (${group.guid})`,
+        `[ run ] starting run ${run.id} for group ${group.name} (${group.id})`,
         "notice"
       );
     }
@@ -71,14 +71,14 @@ export class GroupDestroy extends CLSTask {
 
     if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
-        groupGuid: group.guid,
+        runId: run.id,
+        groupId: group.id,
         offset: offset + limit,
         limit,
       });
     } else {
       log(
-        `[ run ] completed run ${run.guid} for group ${group.name} (${group.guid})`,
+        `[ run ] completed run ${run.id} for group ${group.name} (${group.id})`,
         "notice"
       );
       await run.afterBatch("complete");

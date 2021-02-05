@@ -83,7 +83,7 @@ export class ClusterReset extends AuthenticatedAction {
         topic: "cluster",
         verb: "reset",
         message: `erased ${count} instances of ${modelName}`,
-        ownerGuid: teamMember.guid,
+        ownerId: teamMember.id,
         data: { count },
       });
     }
@@ -96,7 +96,7 @@ export class ClusterReset extends AuthenticatedAction {
       topic: "cluster",
       verb: "reset",
       message: "Grouparoo Cluster Reset",
-      ownerGuid: teamMember.guid,
+      ownerId: teamMember.id,
       data: { counts },
     });
 

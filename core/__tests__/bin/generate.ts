@@ -68,13 +68,13 @@ describe("bin/generate", () => {
     });
     expect(toStop).toBe(true);
 
-    const file = `${tmpDir}/groups/new_group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     const output = messages.join(" ");
     expect(output).toContain("generate group:calculated");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
-    expect(contents).toContain('id: "new_group"');
+    expect(contents).toContain('id: "new-group"');
     expect(contents).toContain('class: "group"');
   });
 
@@ -85,7 +85,7 @@ describe("bin/generate", () => {
     });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/groups/new_group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     expect(output).toContain(`${file} already exists`);
     expect(output).not.toContain(`wrote ${file}`);
   });
@@ -102,7 +102,7 @@ describe("bin/generate", () => {
     });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/groups/new_group.js`;
+    const file = `${tmpDir}/groups/new-group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
 
@@ -112,7 +112,7 @@ describe("bin/generate", () => {
       params: {
         path: tmpDir,
         template: "group:calculated",
-        id: "New-Group",
+        id: "New Group",
         overwrite: true,
       },
     });

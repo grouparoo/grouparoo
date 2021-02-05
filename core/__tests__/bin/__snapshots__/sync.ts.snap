@@ -8,7 +8,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -24,7 +24,7 @@ Object {
     "firstName": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -40,7 +40,7 @@ Object {
     "isVIP": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -56,7 +56,7 @@ Object {
     "lastLoginAt": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -72,7 +72,7 @@ Object {
     "lastName": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -88,7 +88,7 @@ Object {
     "ltv": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -104,7 +104,7 @@ Object {
     "purchaseAmounts": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": true,
       "state": "ready",
@@ -121,7 +121,7 @@ Object {
     "purchases": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": true,
       "state": "ready",
@@ -138,7 +138,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": true,
       "isArray": false,
       "state": "ready",

@@ -24,7 +24,7 @@ require("./../fixtures/destination-mapping-options");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
+const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8762f9";
 const appOptions = loadAppOptions(newNock);
 const defaultDestinationOptions = {
   creationMode: "User",
@@ -40,13 +40,13 @@ async function runDestinationMappingOptions(
     override || {}
   );
   return destinationMappingOptions({
-    appGuid,
+    appId,
     appOptions,
     destinationOptions,
     app: null,
     connection: null,
     destination: null,
-    destinationGuid: null,
+    destinationId: null,
   });
 }
 

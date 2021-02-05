@@ -4,9 +4,9 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
 import { Op } from "sequelize";
@@ -15,24 +15,24 @@ export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
-  const guid = await validateAndFormatGuid(Property, configObject.id);
+  const id = await validateAndFormatId(Property, configObject.id);
   validateConfigObjectKeys(Property, configObject, ["name"]);
 
   let property = await Property.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), guid },
+    where: { locked: getCodeConfigLockKey(), id },
   });
   if (!property) {
     isNew = true;
     property = await Property.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       key: configObject.key || configObject.name,
       type: configObject.type,
-      sourceGuid: source.guid,
+      sourceId: source.id,
     });
   }
 
@@ -56,12 +56,12 @@ export async function loadProperty(
 
   logModel(property, validate ? "validated" : isNew ? "created" : "updated");
 
-  return { property: [property.guid] };
+  return { property: [property.id] };
 }
 
-export async function deleteProperties(guids: string[]) {
+export async function deleteProperties(ids: string[]) {
   const properties = await Property.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in properties) {
@@ -71,5 +71,5 @@ export async function deleteProperties(guids: string[]) {
     logModel(property, "deleted");
   }
 
-  return properties.map((instance) => instance.guid);
+  return properties.map((instance) => instance.id);
 }

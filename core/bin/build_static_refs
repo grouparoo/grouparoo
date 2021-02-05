@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
+const fs = require("fs-extra");
 const path = require("path");
 
 const {
   buildPropertyOpsDictionary,
 } = require("../dist/modules/ruleOpsDictionary");
+const { enumerateCLICommands } = require("../dist/utils/cli");
 
 const data = [
   {
@@ -20,9 +21,16 @@ const data = [
       sequelize: { dialect: "sqlite" },
     }),
   },
+  {
+    name: "cli-commands",
+    data: enumerateCLICommands(),
+  },
 ];
 
+fs.mkdirpSync(path.join(__dirname, "static_refs"));
+
 data.map(({ name, data }) => {
-  const filePath = path.join(__dirname, `../${name}.json`);
+  const filePath = path.join(__dirname, "static_refs", `${name}.json`);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  console.log(`wrote ${filePath}`);
 });

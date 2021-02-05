@@ -19,7 +19,7 @@ describe("actions/exports", () => {
     let csrfToken;
     let destination;
     let profile;
-    let guid;
+    let id;
 
     beforeAll(async () => {
       profile = await helper.factories.profile();
@@ -27,18 +27,18 @@ describe("actions/exports", () => {
       const otherDestination = await helper.factories.destination();
 
       const firstExport = await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
       });
-      guid = firstExport.guid;
+      id = firstExport.id;
 
       await Export.create({
-        destinationGuid: destination.guid,
-        profileGuid: "other-profile",
+        destinationId: destination.id,
+        profileId: "other-profile",
         startedAt: new Date(),
         oldProfileProperties: {},
         newProfileProperties: {},
@@ -47,8 +47,8 @@ describe("actions/exports", () => {
       });
 
       await Export.create({
-        destinationGuid: otherDestination.guid,
-        profileGuid: profile.guid,
+        destinationId: otherDestination.id,
+        profileId: profile.id,
         startedAt: new Date(),
         completedAt: new Date(),
         oldProfileProperties: {},
@@ -58,8 +58,8 @@ describe("actions/exports", () => {
       });
 
       await Export.create({
-        destinationGuid: otherDestination.guid,
-        profileGuid: profile.guid,
+        destinationId: otherDestination.id,
+        profileId: profile.id,
         startedAt: new Date(),
         oldProfileProperties: {},
         newProfileProperties: {},
@@ -90,20 +90,20 @@ describe("actions/exports", () => {
     });
 
     test("a reader can view an export", async () => {
-      connection.params = { csrfToken, guid };
+      connection.params = { csrfToken, id };
       const { error, export: _export } = await specHelper.runAction(
         "export:view",
         connection
       );
 
       expect(error).toBeUndefined();
-      expect(_export.guid).toBe(guid);
+      expect(_export.id).toBe(id);
       expect(_export.createdAt).toBeGreaterThan(0);
-      expect(_export.destination.guid).toBe(destination.guid);
+      expect(_export.destination.id).toBe(destination.id);
     });
 
     test("a reader can ask for exports about a profile", async () => {
-      connection.params = { csrfToken, profileGuid: profile.guid };
+      connection.params = { csrfToken, profileId: profile.id };
       const { error, exports, total } = await specHelper.runAction(
         "exports:list",
         connection
@@ -111,13 +111,13 @@ describe("actions/exports", () => {
 
       expect(error).toBeUndefined();
       expect(exports.length).toBe(3);
-      expect(exports[0].profileGuid).toBe(profile.guid);
-      expect(exports[1].profileGuid).toBe(profile.guid);
+      expect(exports[0].profileId).toBe(profile.id);
+      expect(exports[1].profileId).toBe(profile.id);
       expect(total).toBe(3);
     });
 
     test("a reader can ask for exports about a destination", async () => {
-      connection.params = { csrfToken, destinationGuid: destination.guid };
+      connection.params = { csrfToken, destinationId: destination.id };
       const { error, exports, total } = await specHelper.runAction(
         "exports:list",
         connection
@@ -125,8 +125,8 @@ describe("actions/exports", () => {
 
       expect(error).toBeUndefined();
       expect(exports.length).toBe(2);
-      expect(exports[0].destination.guid).toBe(destination.guid);
-      expect(exports[1].destination.guid).toBe(destination.guid);
+      expect(exports[0].destination.id).toBe(destination.id);
+      expect(exports[1].destination.id).toBe(destination.id);
       expect(total).toBe(2);
     });
 
@@ -147,7 +147,7 @@ describe("actions/exports", () => {
     });
 
     test("a reader can get export totals for a profile", async () => {
-      connection.params = { csrfToken, profileGuid: profile.guid };
+      connection.params = { csrfToken, profileId: profile.id };
       const { error, totals } = await specHelper.runAction(
         "exports:totals",
         connection
@@ -163,7 +163,7 @@ describe("actions/exports", () => {
     });
 
     test("a reader can get export totals for a destination", async () => {
-      connection.params = { csrfToken, destinationGuid: destination.guid };
+      connection.params = { csrfToken, destinationId: destination.id };
       const { error, totals } = await specHelper.runAction(
         "exports:totals",
         connection

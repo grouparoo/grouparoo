@@ -15,10 +15,10 @@ export async function fileImportPreview({
 }): Promise<Array<SourcePreviewMethodResponseRow>> {
   const response = [];
 
-  if (!sourceOptions.fileGuid) {
+  if (!sourceOptions.fileId) {
     return response;
   }
-  const localPath = await plugin.getLocalFilePath(sourceOptions.fileGuid);
+  const localPath = await plugin.getLocalFilePath(sourceOptions.fileId);
   const stream = fs.createReadStream(localPath);
   const parser = stream.pipe(csvParser());
 

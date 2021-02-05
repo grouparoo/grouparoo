@@ -39,7 +39,7 @@ const STATE_TRANSITIONS = [
 
 @Table({ tableName: "profiles", paranoid: false })
 export class Profile extends LoggedModel<Profile> {
-  guidPrefix() {
+  idPrefix() {
     return "pro";
   }
 
@@ -69,14 +69,14 @@ export class Profile extends LoggedModel<Profile> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @HasMany(() => Event, "profileGuid")
+  @HasMany(() => Event, "profileId")
   events: Event[];
 
   async apiData() {
     const properties = await this.properties();
 
     return {
-      guid: this.guid,
+      id: this.id,
       anonymousId: this.anonymousId,
       state: this.state,
       properties,
@@ -154,7 +154,7 @@ export class Profile extends LoggedModel<Profile> {
     for (const i in groups) {
       const group = groups[i];
       const belongs = await group.updateProfileMembership(this);
-      results[group.guid] = belongs;
+      results[group.id] = belongs;
     }
 
     return results;
@@ -191,7 +191,7 @@ export class Profile extends LoggedModel<Profile> {
     for (const k in properties) {
       if (properties[k].state !== "ready") {
         throw new Error(
-          `cannot transition profile ${this.guid} to ready state as not all properties are ready (${k})`
+          `cannot transition profile ${this.id} to ready state as not all properties are ready (${k})`
         );
       }
     }
@@ -199,11 +199,9 @@ export class Profile extends LoggedModel<Profile> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -231,35 +229,35 @@ export class Profile extends LoggedModel<Profile> {
   @AfterDestroy
   static async destroyProfileProperties(instance: Profile) {
     await ProfileProperty.destroy({
-      where: { profileGuid: instance.guid },
+      where: { profileId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyGroupMembers(instance: Profile) {
     await GroupMember.destroy({
-      where: { profileGuid: instance.guid },
+      where: { profileId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
     await CLS.enqueueTask("profile:destroyEvents", {
-      guid: instance.guid,
+      id: instance.id,
     });
   }
 
   @AfterDestroy
   static async destroyImports(instance: Profile) {
     await Import.destroy({
-      where: { profileGuid: instance.guid },
+      where: { profileId: instance.id },
     });
   }
 
   @AfterDestroy
   static async destroyExports(instance: Profile) {
     await Export.destroy({
-      where: { profileGuid: instance.guid },
+      where: { profileId: instance.id },
     });
   }
 }

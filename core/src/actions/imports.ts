@@ -10,8 +10,8 @@ export class ImportsList extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "import", mode: "read" };
     this.inputs = {
-      creatorGuid: { required: false },
-      profileGuid: { required: false },
+      creatorId: { required: false },
+      profileId: { required: false },
       limit: { required: true, default: 100, formatter: parseInt },
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
@@ -23,8 +23,8 @@ export class ImportsList extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const where = {};
-    if (params.creatorGuid) where["creatorGuid"] = params.creatorGuid;
-    if (params.profileGuid) where["profileGuid"] = params.profileGuid;
+    if (params.creatorId) where["creatorId"] = params.creatorId;
+    if (params.profileId) where["profileId"] = params.profileId;
 
     const search = {
       where,
@@ -50,12 +50,12 @@ export class ImportView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "import", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const _import = await Import.findByGuid(params.guid);
+    const _import = await Import.findById(params.id);
     return { import: await _import.apiData() };
   }
 }
@@ -92,7 +92,7 @@ export class ImportCreate extends AuthenticatedAction {
       data: _properties,
       rawData: _properties,
       creatorType: "api",
-      creatorGuid: "?",
+      creatorId: "?",
     });
 
     return { import: await _import.apiData() };

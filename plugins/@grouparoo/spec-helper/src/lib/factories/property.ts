@@ -20,7 +20,7 @@ export default async (
   const { Property } = await import(`@grouparoo/core/${loadPath}`);
   if (!source) source = await SourceFactory();
 
-  props.sourceGuid = source.guid;
+  props.sourceId = source.id;
   const mergedProps = await data(props);
   const instance = new Property(mergedProps);
   await instance.save();

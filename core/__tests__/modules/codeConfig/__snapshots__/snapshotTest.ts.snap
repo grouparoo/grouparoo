@@ -11,8 +11,8 @@ Object {
       "errorLevel": undefined,
       "errorMessage": undefined,
       "force": true,
-      "guid": null,
       "hasChanges": true,
+      "id": null,
       "mostRecent": false,
       "newGroups": Array [
         "Literally Everyone",
@@ -23,7 +23,7 @@ Object {
       },
       "oldGroups": Array [],
       "oldProfileProperties": Object {},
-      "profileGuid": Any<String>,
+      "profileId": Any<String>,
       "startedAt": Any<Number>,
       "toDelete": false,
     },
@@ -32,7 +32,7 @@ Object {
     Object {
       "calculatedAt": null,
       "createdAt": Any<Number>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "locked": "config:code",
       "matchType": "all",
       "name": "People with Email Addresses",
@@ -75,7 +75,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -91,7 +91,7 @@ Object {
     "first name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -107,7 +107,7 @@ Object {
     "last name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": false,
       "isArray": false,
       "state": "ready",
@@ -123,7 +123,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
-      "guid": Any<String>,
+      "id": Any<String>,
       "identifying": true,
       "isArray": false,
       "state": "ready",

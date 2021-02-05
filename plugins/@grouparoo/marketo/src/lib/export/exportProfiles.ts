@@ -118,7 +118,7 @@ async function updateUsers(client, users: BatchExport[], options) {
     try {
       if (!result.id) {
         throw new Error(
-          `Marketo profile error: ${user.profileGuid} ${JSON.stringify(result)}`
+          `Marketo profile error: ${user.profileId} ${JSON.stringify(result)}`
         );
       }
       if (user.destinationId && user.destinationId !== result.id) {
@@ -265,8 +265,8 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appGuid, appOptions, exports }) {
-  const cacheData = { appGuid, appOptions };
+export async function exportBatch({ appId, appOptions, exports }) {
+  const cacheData = { appId, appOptions };
   const batchSize = 300;
   const findSize = 300;
   const data: MarketoData = { cacheData };
@@ -297,14 +297,14 @@ export async function exportBatch({ appGuid, appOptions, exports }) {
 }
 
 export const exportProfiles: ExportProfilesPluginMethod = async ({
-  appGuid,
+  appId,
   appOptions,
   destinationOptions,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
-    appGuid,
+    appId,
     appOptions,
     exports: batchExports,
   });

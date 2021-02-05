@@ -4,7 +4,7 @@ import * as UUID from "uuid";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    producerGuid: "test-event",
+    producerId: "test-event",
     ipAddress: faker.internet.ip(),
     type: faker.lorem.slug(),
     anonymousId: UUID.v4(),

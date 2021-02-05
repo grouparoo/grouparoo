@@ -4,7 +4,7 @@ import { ApiKey, Permission } from "../../src";
 
 describe("actions/apiKeys", () => {
   helper.grouparooTestServer({ truncate: true });
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -39,9 +39,9 @@ describe("actions/apiKeys", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(apiKey.guid).toBeTruthy();
+      expect(apiKey.id).toBeTruthy();
       expect(apiKey.name).toBe("new key");
-      guid = apiKey.guid;
+      id = apiKey.id;
     });
 
     test("an administrator can list all the apiKeys", async () => {
@@ -59,7 +59,7 @@ describe("actions/apiKeys", () => {
     test("an administrator can edit an apiKey", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         name: "new key name",
       };
       const { error, apiKey } = await specHelper.runAction(
@@ -67,28 +67,28 @@ describe("actions/apiKeys", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(apiKey.guid).toBeTruthy();
+      expect(apiKey.id).toBeTruthy();
       expect(apiKey.name).toBe("new key name");
     });
 
     test("an administrator can view an apiKey", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, apiKey } = await specHelper.runAction(
         "apiKey:view",
         connection
       );
       expect(error).toBeUndefined();
-      expect(apiKey.guid).toBeTruthy();
+      expect(apiKey.id).toBeTruthy();
       expect(apiKey.name).toBe("new key name");
     });
 
     test("new apiKeys are created with no read or write permissions", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { apiKey } = await specHelper.runAction("apiKey:view", connection);
       apiKey.permissions.forEach((permission) => {
@@ -98,7 +98,7 @@ describe("actions/apiKeys", () => {
     });
 
     test("apiKeys without permissions get an error when running an action", async () => {
-      const { apiKey: key } = await ApiKey.findByGuid(guid);
+      const { apiKey: key } = await ApiKey.findById(id);
       const { error } = await specHelper.runAction("apiKey:view", {
         apiKey: key,
       });
@@ -112,7 +112,7 @@ describe("actions/apiKeys", () => {
     test("permissions can be set in bulk", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         permissionAllRead: true,
         permissionAllWrite: true,
       };
@@ -124,7 +124,7 @@ describe("actions/apiKeys", () => {
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
         permissionAllRead: true,
         permissionAllWrite: false,
       };
@@ -140,17 +140,17 @@ describe("actions/apiKeys", () => {
 
     test("permissions can be updated when not managing in bulk", async () => {
       const permission = await Permission.findOne({
-        where: { ownerGuid: guid, topic: "app" },
+        where: { ownerId: id, topic: "app" },
       });
 
       connection.params = {
         csrfToken,
-        guid,
+        id,
         disabledPermissionAllRead: true,
         disabledPermissionAllWrite: true,
         permissions: [
           {
-            guid: permission.guid,
+            id: permission.id,
             read: true,
             write: true,
           },
@@ -158,7 +158,7 @@ describe("actions/apiKeys", () => {
       };
       const { apiKey } = await specHelper.runAction("apiKey:edit", connection);
       apiKey.permissions.forEach((_permission) => {
-        if (permission.guid === _permission.guid) {
+        if (permission.id === _permission.id) {
           expect(_permission.read).toBe(true);
           expect(_permission.write).toBe(true);
         } else {
@@ -181,7 +181,7 @@ describe("actions/apiKeys", () => {
 
       connection.params = {
         csrfToken,
-        guid: apiKey.guid,
+        id: apiKey.id,
       };
       const destroyResponse = await specHelper.runAction(
         "apiKey:destroy",

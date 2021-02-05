@@ -26,14 +26,14 @@ async function getPropertyValue(query: string) {
     profile,
     propertyOptions,
     property,
-    profileGuid: null,
+    profileId: null,
     source: null,
-    sourceGuid: null,
+    sourceId: null,
     app: null,
-    appGuid: null,
+    appId: null,
     sourceOptions: null,
     sourceMapping: null,
-    propertyGuid: null,
+    propertyId: null,
     propertyFilters: null,
   });
 }
@@ -52,7 +52,7 @@ describe("postgres/query/profileProperty", () => {
       userId: [1],
       email: ["ejervois0@example.com"],
     });
-    expect(profile.guid).toBeTruthy();
+    expect(profile.id).toBeTruthy();
   });
 
   afterAll(async () => await afterData());

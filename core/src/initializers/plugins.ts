@@ -28,7 +28,7 @@ declare module "actionhero" {
       announcePlugins: () => void;
       templates: () => Array<ConfigTemplate>;
       persistentConnections: {
-        [guid: string]: any;
+        [id: string]: any;
       };
     };
   }
@@ -105,6 +105,19 @@ export class Plugins extends Initializer {
         },
       ],
     });
+
+    // --- Add the UI pLugin --- //
+
+    const pluginManifest = getPluginManifest();
+    const uiPlugin = pluginManifest.plugins.find((p) =>
+      p.name.match(/^@grouparoo\/ui-/)
+    );
+    if (uiPlugin) {
+      this.registerPlugin({
+        name: uiPlugin.name,
+        icon: "/public/@grouparoo/logo.png",
+      });
+    }
   }
 
   async start() {
@@ -112,8 +125,8 @@ export class Plugins extends Initializer {
   }
 
   async stop() {
-    for (const guid in api.plugins.persistentConnections) {
-      const app = await App.findByGuid(guid);
+    for (const id in api.plugins.persistentConnections) {
+      const app = await App.findById(id);
       await app.disconnect();
     }
   }

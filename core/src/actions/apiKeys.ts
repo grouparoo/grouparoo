@@ -60,7 +60,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "apiKey", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
       permissionAllRead: { required: false },
       permissionAllWrite: { required: false },
@@ -71,7 +71,7 @@ export class ApiKeyEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const apiKey = await ApiKey.findByGuid(params.guid);
+    const apiKey = await ApiKey.findById(params.id);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) {
       updateParams.permissionAllRead = null;
@@ -103,12 +103,12 @@ export class ApiKeyView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "apiKey", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const apiKey = await ApiKey.findByGuid(params.guid);
+    const apiKey = await ApiKey.findById(params.id);
     return { apiKey: await apiKey.apiData() };
   }
 }
@@ -121,12 +121,12 @@ export class ApiKeyDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "apiKey", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const apiKey = await ApiKey.findByGuid(params.guid);
+    const apiKey = await ApiKey.findById(params.id);
     await apiKey.destroy();
     return { success: true };
   }

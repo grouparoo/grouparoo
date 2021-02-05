@@ -10,7 +10,7 @@ import { MappingHelper } from "../mappingHelper";
 import {
   ExportedProfile,
   ExportProfilesPluginMethod,
-  ErrorWithProfileGuid,
+  ErrorWithProfileId,
   DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
 } from "../../classes/plugin";
@@ -38,22 +38,22 @@ export namespace DestinationOps {
     force = false
   ) {
     const group = await destination.$get("group");
-    if (group) await group.run(force, destination.guid);
+    if (group) await group.run(force, destination.id);
   }
 
   /**
    * Track a Group
    */
   export async function trackGroup(destination: Destination, group: Group) {
-    const oldGroupGuid = destination.groupGuid;
-    await destination.update({ groupGuid: group.guid });
+    const oldGroupId = destination.groupId;
+    await destination.update({ groupId: group.id });
 
-    if (oldGroupGuid !== group.guid) {
-      if (oldGroupGuid) {
-        const oldGroup = await Group.findByGuid(oldGroupGuid);
-        await oldGroup.run(true, destination.guid);
+    if (oldGroupId !== group.id) {
+      if (oldGroupId) {
+        const oldGroup = await Group.findById(oldGroupId);
+        await oldGroup.run(true, destination.id);
       }
-      return group.run(true, destination.guid);
+      return group.run(true, destination.id);
     }
   }
 
@@ -61,12 +61,12 @@ export namespace DestinationOps {
    * Un-track a Group
    */
   export async function unTrackGroup(destination: Destination) {
-    const oldGroupGuid = destination.groupGuid;
-    await destination.update({ groupGuid: null });
+    const oldGroupId = destination.groupId;
+    await destination.update({ groupId: null });
 
-    if (oldGroupGuid) {
-      const oldGroup = await Group.findByGuid(oldGroupGuid);
-      return oldGroup.run(true, destination.guid);
+    if (oldGroupId) {
+      const oldGroup = await Group.findById(oldGroupId);
+      return oldGroup.run(true, destination.id);
     }
   }
 
@@ -79,7 +79,7 @@ export namespace DestinationOps {
     profile: Profile,
     mapping: MappingHelper.Mappings,
     destinationGroupMemberships: {
-      [groupGuid: string]: string;
+      [groupId: string]: string;
     }
   ) {
     const profileProperties = await profile.properties();
@@ -115,9 +115,9 @@ export namespace DestinationOps {
     const groups = await profile.$get("groups");
     const mappedGroupNames = groups
       .filter((group) =>
-        Object.keys(destinationGroupMemberships).includes(group.guid)
+        Object.keys(destinationGroupMemberships).includes(group.id)
       )
-      .map((group) => destinationGroupMemberships[group.guid])
+      .map((group) => destinationGroupMemberships[group.id])
       .sort();
 
     const apiData = await profile.apiData();
@@ -149,7 +149,7 @@ export namespace DestinationOps {
     return pluginConnection.methods.destinationOptions({
       connection,
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       destinationOptions,
     });
@@ -163,7 +163,7 @@ export namespace DestinationOps {
     cached = true,
     saveCache = true
   ) {
-    const cacheKey = `destination:${destination.guid}:mappingOptions`;
+    const cacheKey = `destination:${destination.id}:mappingOptions`;
     const cacheDuration = 1000 * 60 * 10; // 10 minutes
 
     if (cached) {
@@ -200,10 +200,10 @@ export namespace DestinationOps {
       {
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         destination,
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
         destinationOptions,
       }
     );
@@ -229,10 +229,10 @@ export namespace DestinationOps {
     return pluginConnection.methods.exportArrayProperties({
       connection,
       app,
-      appGuid: app.guid,
+      appId: app.id,
       appOptions,
       destination,
-      destinationGuid: destination.guid,
+      destinationId: destination.id,
       destinationOptions,
     });
   }
@@ -261,10 +261,10 @@ export namespace DestinationOps {
     let toDelete = false;
 
     let newGroups = await Group.findAll({
-      include: [{ model: GroupMember, where: { profileGuid: profile.guid } }],
+      include: [{ model: GroupMember, where: { profileId: profile.id } }],
     });
 
-    if (!newGroups.map((g) => g.guid).includes(destination.groupGuid)) {
+    if (!newGroups.map((g) => g.id).includes(destination.groupId)) {
       toDelete = true;
     }
 
@@ -274,8 +274,8 @@ export namespace DestinationOps {
     // If there is not a mostRecentExport, both old groups and old profile properties are an empty collection
     const mostRecentExport = await Export.findOne({
       where: {
-        destinationGuid: destination.guid,
-        profileGuid: profile.guid,
+        destinationId: destination.id,
+        profileId: profile.id,
         mostRecent: true,
         errorMessage: null,
       },
@@ -326,14 +326,12 @@ export namespace DestinationOps {
 
     newGroupNames = newGroups
       .filter((group) =>
-        destinationGroupMemberships
-          .map((dgm) => dgm.groupGuid)
-          .includes(group.guid)
+        destinationGroupMemberships.map((dgm) => dgm.groupId).includes(group.id)
       )
       .map(
         (group) =>
           destinationGroupMemberships.filter(
-            (dgm) => dgm.groupGuid === group.guid
+            (dgm) => dgm.groupId === group.id
           )[0].remoteKey
       );
 
@@ -355,8 +353,8 @@ export namespace DestinationOps {
 
     let _export: Export;
     const exportArgs = {
-      destinationGuid: destination.guid,
-      profileGuid: profile.guid,
+      destinationId: destination.id,
+      profileId: profile.id,
       startedAt: synchronous ? new Date() : undefined,
       oldProfileProperties: mappedOldProfileProperties,
       newProfileProperties: mappedNewProfileProperties,
@@ -380,18 +378,15 @@ export namespace DestinationOps {
     return _export;
   }
 
-  function transformError(
-    error: Error,
-    profileGuid: string
-  ): ErrorWithProfileGuid {
+  function transformError(error: Error, profileId: string): ErrorWithProfileId {
     if (typeof error === "string") {
       error = new Error(error);
     }
     if (!error) {
-      error = new Error(`unknown export error with profile ${profileGuid}`);
+      error = new Error(`unknown export error with profile ${profileId}`);
     }
-    const myError: ErrorWithProfileGuid = <ErrorWithProfileGuid>error;
-    myError.profileGuid = profileGuid;
+    const myError: ErrorWithProfileId = <ErrorWithProfileId>error;
+    myError.profileId = profileId;
     // also can have error.errorLevel on it already
     return myError;
   }
@@ -407,7 +402,7 @@ export namespace DestinationOps {
     const method = pluginConnection.methods.exportProfile;
     if (!method) {
       throw new Error(
-        `destination ${destination.name} (${destination.guid}) has no exportProfile or exportProfiles method`
+        `destination ${destination.name} (${destination.id}) has no exportProfile or exportProfiles method`
       );
     }
 
@@ -415,34 +410,34 @@ export namespace DestinationOps {
     const singleAsBatch: ExportProfilesPluginMethod = async function ({
       connection,
       app,
-      appGuid,
+      appId,
       appOptions,
       destination,
-      destinationGuid,
+      destinationId,
       destinationOptions,
       exports: _exports,
     }) {
-      const outErrors: ErrorWithProfileGuid[] = [];
+      const outErrors: ErrorWithProfileId[] = [];
       let outRetryDelay: number = undefined;
       let outSuccess = true;
 
       for (const _export of _exports) {
-        const { profileGuid } = _export;
+        const { profileId } = _export;
         try {
           let { success, retryDelay, error } = await method({
             connection,
             app,
-            appGuid,
+            appId,
             appOptions,
             destination,
-            destinationGuid,
+            destinationId,
             destinationOptions,
             export: _export,
           });
 
           if (!success || error) {
             outSuccess = false;
-            outErrors.push(transformError(error, profileGuid));
+            outErrors.push(transformError(error, profileId));
           }
           if (retryDelay) {
             if (!outRetryDelay || outRetryDelay < retryDelay) {
@@ -451,7 +446,7 @@ export namespace DestinationOps {
           }
         } catch (err) {
           outSuccess = false;
-          outErrors.push(transformError(err, profileGuid));
+          outErrors.push(transformError(err, profileId));
         }
       }
 
@@ -473,7 +468,7 @@ export namespace DestinationOps {
       const profile = await _export.$get("profile"); // PEFORMANCE: get all profiles at once
       exportedProfiles.push({
         profile,
-        profileGuid: profile?.guid,
+        profileId: profile?.id,
         oldProfileProperties: await formatProfilePropertiesForDestination(
           _export,
           destination,
@@ -493,7 +488,7 @@ export namespace DestinationOps {
   }
 
   export interface CombinedError extends Error {
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }
 
   export async function sendExports(
@@ -502,7 +497,7 @@ export namespace DestinationOps {
     synchronous = false
   ): Promise<{
     retryDelay: number;
-    retryExportGuids: string[];
+    retryexportIds: string[];
     success: boolean;
     error: Error;
   }> {
@@ -537,7 +532,7 @@ export namespace DestinationOps {
         success: false,
         error,
         retryDelay: config.tasks.timeout + 1,
-        retryExportGuids: _exports.map((e) => e.guid),
+        retryexportIds: _exports.map((e) => e.id),
       };
     }
 
@@ -554,10 +549,10 @@ export namespace DestinationOps {
       let { success, retryDelay, errors } = await exportProfiles({
         connection,
         app,
-        appGuid: app.guid,
+        appId: app.id,
         appOptions,
         destination,
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
         destinationOptions: options,
         exports: exportedProfiles,
       });
@@ -565,7 +560,7 @@ export namespace DestinationOps {
       combinedError = new Error(
         `error exporting ${
           errors ? errors.length : "?"
-        } profiles to destination ${destination.name} (${destination.guid}): ${
+        } profiles to destination ${destination.name} (${destination.id}): ${
           errors ? errors.map((e) => e.message).join(", ") : ""
         }`
       );
@@ -586,7 +581,7 @@ export namespace DestinationOps {
       return {
         success: true,
         error: undefined,
-        retryExportGuids: undefined,
+        retryexportIds: undefined,
         retryDelay: undefined,
       };
     }
@@ -594,10 +589,10 @@ export namespace DestinationOps {
     // problem!
     if (!combinedError.errors || combinedError.errors.length === 0) {
       // unspecified error, so don't know specific profile with issue.
-      const retryExportGuids: string[] = [];
+      const retryexportIds: string[] = [];
       for (const _export of _exports) {
         await _export.setError(combinedError);
-        retryExportGuids.push(_export.guid);
+        retryexportIds.push(_export.id);
       }
       if (synchronous) {
         // caller wants to raise
@@ -606,37 +601,37 @@ export namespace DestinationOps {
       return {
         success: false,
         error: combinedError,
-        retryExportGuids,
+        retryexportIds,
         retryDelay: outRetryDelay,
       };
     }
 
     // known specific profiles where there were errors
-    const profilesWithErrors: { [guid: string]: ErrorWithProfileGuid } = {};
-    for (const errorWithGuid of combinedError.errors) {
-      const profileGuid = errorWithGuid.profileGuid;
-      if (!profileGuid) {
+    const profilesWithErrors: { [id: string]: ErrorWithProfileId } = {};
+    for (const errorWithId of combinedError.errors) {
+      const profileId = errorWithId.profileId;
+      if (!profileId) {
         throw new Error(
-          `Errors returned without profileGuid - throw if unknown (${destination.guid})`
+          `Errors returned without profileId - throw if unknown (${destination.id})`
         );
       }
-      profilesWithErrors[profileGuid] = errorWithGuid;
+      profilesWithErrors[profileId] = errorWithId;
     }
 
     const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
 
-    const retryExportGuids: string[] = [];
+    const retryexportIds: string[] = [];
     for (const _export of _exports) {
-      const { profileGuid } = _export;
-      const errorWithGuid = profilesWithErrors[profileGuid];
-      if (errorWithGuid) {
-        await _export.setError(errorWithGuid);
-        delete remainingProfilesWithErrors[profileGuid]; // used
+      const { profileId } = _export;
+      const errorWithId = profilesWithErrors[profileId];
+      if (errorWithId) {
+        await _export.setError(errorWithId);
+        delete remainingProfilesWithErrors[profileId]; // used
 
         // "info" means that it's actually ok. for example, skipped.
         // we don't need to retry it.
         if (_export.errorLevel != "info") {
-          retryExportGuids.push(_export.guid);
+          retryexportIds.push(_export.id);
         }
       } else {
         // this one was a success!
@@ -647,18 +642,18 @@ export namespace DestinationOps {
     const profilesNotUsed = Object.keys(remainingProfilesWithErrors);
     if (profilesNotUsed.length > 0) {
       throw new Error(
-        `Invalid ErrorWithProfileGuid given but not used (${
-          destination.guid
+        `Invalid ErrorWithProfileId given but not used (${
+          destination.id
         }): ${profilesNotUsed.join(",")}`
       );
     }
 
     // because of the "info" errorLevel, it's actually possible that everything is ok again
-    if (retryExportGuids.length === 0) {
+    if (retryexportIds.length === 0) {
       return {
         success: true,
         error: undefined,
-        retryExportGuids: undefined,
+        retryexportIds: undefined,
         retryDelay: undefined,
       };
     }
@@ -670,7 +665,7 @@ export namespace DestinationOps {
     return {
       success: false,
       error: combinedError,
-      retryExportGuids,
+      retryexportIds,
       retryDelay: outRetryDelay,
     };
   }

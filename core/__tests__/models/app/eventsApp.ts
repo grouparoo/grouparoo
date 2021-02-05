@@ -22,16 +22,16 @@ describe("models/app", () => {
     test("the appOptions for the events app only include unique properties", async () => {
       const app = await App.scope(null).findOne({ where: { type: "events" } });
       const appOptions = await app.appOptions();
-      expect(appOptions.identifyingPropertyGuid.descriptions.sort()).toEqual([
+      expect(appOptions.identifyingPropertyId.descriptions.sort()).toEqual([
         "email",
         "userId",
       ]);
     });
 
-    test("the events app tests that there is a valid identifyingPropertyGuid", async () => {
+    test("the events app tests that there is a valid identifyingPropertyId", async () => {
       const app = await App.scope(null).findOne({ where: { type: "events" } });
 
-      await app.setOptions({ identifyingPropertyGuid: "missing" });
+      await app.setOptions({ identifyingPropertyId: "missing" });
       expect(await app.test()).toEqual({
         error: "cannot find identifying property (missing)",
         message: undefined,
@@ -41,7 +41,7 @@ describe("models/app", () => {
       const property = await Property.findOne({
         where: { key: "userId" },
       });
-      await app.setOptions({ identifyingPropertyGuid: property.guid });
+      await app.setOptions({ identifyingPropertyId: property.id });
       expect(await app.test()).toEqual({
         error: undefined,
         message: "Events App OK",

@@ -34,14 +34,14 @@ describe("tasks/profileProperty:importProfileProperties", () => {
           const data = {
             userId: new Date().getTime(),
             isVIP: true,
-            email: `${profile.guid}@example.com`,
+            email: `${profile.id}@example.com`,
             firstName: "Mario",
             lastName: "Mario",
             ltv: 100.0,
             lastLoginAt: new Date(),
           };
 
-          response[profile.guid] = data[property.key];
+          response[profile.id] = data[property.key];
         }
 
         return response;
@@ -54,8 +54,8 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
     test("can be enqueued", async () => {
       await task.enqueue("profileProperty:importProfileProperties", {
-        profileGuids: ["abc"],
-        propertyGuid: "abc",
+        profileIds: ["abc"],
+        propertyId: "abc",
       });
       const found = await specHelper.findEnqueuedTasks(
         "profileProperty:importProfileProperties"
@@ -75,14 +75,14 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await property.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileGuids: [profile.guid],
-        propertyGuid: property.propertyGuid,
+        profileIds: [profile.id],
+        propertyId: property.propertyId,
       });
 
       // new value and state
       await property.reload();
       expect(property.state).toBe("ready");
-      expect(property.rawValue).toBe(`${profile.guid}@example.com`);
+      expect(property.rawValue).toBe(`${profile.id}@example.com`);
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
@@ -102,15 +102,15 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       const userIdProfileProperty = await ProfileProperty.findOne({
         where: {
-          profileGuid: profile.guid,
-          propertyGuid: userIdProperty.guid,
+          profileId: profile.id,
+          propertyId: userIdProperty.id,
         },
       });
       await userIdProfileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileGuids: [profile.guid],
-        propertyGuid: property.propertyGuid,
+        profileIds: [profile.id],
+        propertyId: property.propertyId,
       });
 
       // no change

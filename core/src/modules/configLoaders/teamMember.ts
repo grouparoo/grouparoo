@@ -2,9 +2,9 @@ import {
   ConfigurationObject,
   getCodeConfigLockKey,
   getParentByName,
-  GuidsByClass,
+  IdsByClass,
   logModel,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
@@ -14,28 +14,28 @@ export async function loadTeamMember(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const team: Team = await getParentByName(Team, configObject.teamId);
 
-  const guid = await validateAndFormatGuid(TeamMember, configObject.id);
+  const id = await validateAndFormatId(TeamMember, configObject.id);
   validateConfigObjectKeys(TeamMember, configObject);
 
   let teamMember = await TeamMember.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), guid },
+    where: { locked: getCodeConfigLockKey(), id },
   });
   if (!teamMember) {
     isNew = true;
     teamMember = TeamMember.build({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       email: configObject.email,
-      teamGuid: team.guid,
+      teamId: team.id,
     });
   }
 
-  teamMember.teamGuid = team.guid;
+  teamMember.teamId = team.id;
   if (configObject?.options?.firstName) {
     teamMember.firstName = configObject.options.firstName;
   }
@@ -50,12 +50,12 @@ export async function loadTeamMember(
 
   logModel(teamMember, validate ? "validated" : isNew ? "created" : "updated");
 
-  return { teammember: [teamMember.guid] };
+  return { teammember: [teamMember.id] };
 }
 
-export async function deleteTeamMembers(guids: string[]) {
+export async function deleteTeamMembers(ids: string[]) {
   const teamMembers = await TeamMember.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in teamMembers) {
@@ -63,5 +63,5 @@ export async function deleteTeamMembers(guids: string[]) {
     logModel(teamMembers[i], "deleted");
   }
 
-  return teamMembers.map((instance) => instance.guid);
+  return teamMembers.map((instance) => instance.id);
 }

@@ -39,7 +39,7 @@ describe("tasks/group:destroy", () => {
     });
 
     test("can be enqueued", async () => {
-      await task.enqueue("group:destroy", { groupGuid: "abc123" });
+      await task.enqueue("group:destroy", { groupId: "abc123" });
       const found = await specHelper.findEnqueuedTasks("group:destroy");
       expect(found.length).toEqual(1);
     });
@@ -65,7 +65,7 @@ describe("tasks/group:destroy", () => {
       await Import.truncate();
 
       await task.enqueue("group:destroy", {
-        groupGuid: group.guid,
+        groupId: group.id,
       });
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
@@ -73,13 +73,13 @@ describe("tasks/group:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
 
-      const reloadedGroup = await Group.findByGuid(group.guid);
+      const reloadedGroup = await Group.findById(group.id);
       expect(reloadedGroup.state).toBe("deleted");
 
       _imports = await Import.findAll();
       expect(_imports.length).toBe(2);
-      expect(_imports.map((e) => e.profileGuid).sort()).toEqual(
-        [mario, luigi].map((p) => p.guid).sort()
+      expect(_imports.map((e) => e.profileId).sort()).toEqual(
+        [mario, luigi].map((p) => p.id).sort()
       );
 
       await Promise.all(
@@ -91,7 +91,7 @@ describe("tasks/group:destroy", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
       expect(foundTasks.length).toBe(1);
-      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runRemoveGroupMembers");
@@ -126,7 +126,7 @@ describe("tasks/group:destroy", () => {
       expect(groupMemberCount).toBe(2);
 
       await task.enqueue("group:destroy", {
-        groupGuid: group.guid,
+        groupId: group.id,
       });
 
       foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
@@ -134,13 +134,13 @@ describe("tasks/group:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
 
-      const reloadedGroup = await Group.findByGuid(group.guid);
+      const reloadedGroup = await Group.findById(group.id);
       expect(reloadedGroup.state).toBe("deleted");
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2);
-      expect(imports.map((e) => e.profileGuid).sort()).toEqual(
-        [mario, luigi].map((p) => p.guid).sort()
+      expect(imports.map((e) => e.profileId).sort()).toEqual(
+        [mario, luigi].map((p) => p.id).sort()
       );
 
       await Promise.all(

@@ -28,7 +28,7 @@ export const profiles: ProfilesPluginMethod = async ({
     }
   }
 
-  const localPath = await plugin.getLocalFilePath(sourceOptions.fileGuid);
+  const localPath = await plugin.getLocalFilePath(sourceOptions.fileId);
   const stream = fs.createReadStream(localPath);
   const parser = stream.pipe(csvParser());
 

@@ -2,9 +2,9 @@ import {
   ConfigurationObject,
   logModel,
   getCodeConfigLockKey,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
 import { Op } from "sequelize";
@@ -13,19 +13,19 @@ export async function loadTeam(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
 
-  const guid = await validateAndFormatGuid(Team, configObject.id);
+  const id = await validateAndFormatId(Team, configObject.id);
   validateConfigObjectKeys(Team, configObject);
 
   let team = await Team.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), guid },
+    where: { locked: getCodeConfigLockKey(), id },
   });
   if (!team) {
     isNew = true;
     team = await Team.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
     });
@@ -57,17 +57,17 @@ export async function loadTeam(
 
   await Permission.update(
     { locked: getCodeConfigLockKey() },
-    { where: { ownerGuid: team.guid } }
+    { where: { ownerId: team.id } }
   );
 
   logModel(team, validate ? "validated" : isNew ? "created" : "updated");
 
-  return { team: [team.guid] };
+  return { team: [team.id] };
 }
 
-export async function deleteTeams(guids: string[]) {
+export async function deleteTeams(ids: string[]) {
   const teams = await Team.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in teams) {
@@ -75,5 +75,5 @@ export async function deleteTeams(guids: string[]) {
     logModel(teams[i], "deleted");
   }
 
-  return teams.map((instance) => instance.guid);
+  return teams.map((instance) => instance.id);
 }

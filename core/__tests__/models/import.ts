@@ -10,7 +10,7 @@ describe("models/import", () => {
     const _import = await Import.create({
       data: {},
       creatorType: "test",
-      creatorGuid: "",
+      creatorId: "",
     });
 
     const tasks = await specHelper.findEnqueuedTasks("import:associateProfile");
@@ -26,12 +26,12 @@ describe("models/import", () => {
     const _import = await Import.create({
       data: { email: "mario@example.com" },
       creatorType: "test",
-      creatorGuid: "",
+      creatorId: "",
     });
-    expect(_import.profileGuid).toBeFalsy();
+    expect(_import.profileId).toBeFalsy();
 
     await _import.associateProfile();
-    expect(_import.profileGuid).toBe(profile.guid);
+    expect(_import.profileId).toBe(profile.id);
 
     await _import.destroy();
   });
@@ -40,7 +40,7 @@ describe("models/import", () => {
     const oldImport = await Import.create({
       data: {},
       creatorType: "test",
-      creatorGuid: "",
+      creatorId: "",
     });
 
     oldImport.set({ createdAt: new Date(0) }, { raw: true });

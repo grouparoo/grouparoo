@@ -16,11 +16,11 @@ describe("tasks/run:internalRun", () => {
     });
 
     test("the task will create an import for every profile", async () => {
-      await internalRun("test", "testGuid");
+      await internalRun("test", "testId");
 
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
-      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
 
       await run.reload();
@@ -30,21 +30,21 @@ describe("tasks/run:internalRun", () => {
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
-      expect(imports[0].profileGuid).toBe(profile.guid);
+      expect(imports[0].profileId).toBe(profile.id);
     });
 
     test("a run can be stopped outside of the task and not enqueue another task", async () => {
       const property = await Property.findOne();
       const run = await helper.factories.run(property, {
         creatorType: "test",
-        creatorGuid: "test",
+        creatorId: "test",
         state: "running",
       });
       expect(run.state).toBe("running");
 
       await run.stop();
 
-      await task.enqueue("run:internalRun", { runGuid: run.guid });
+      await task.enqueue("run:internalRun", { runId: run.id });
       const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
       expect(foundTasks.length).toBe(1);
       await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);

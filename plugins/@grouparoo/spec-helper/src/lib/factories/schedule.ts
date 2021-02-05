@@ -27,7 +27,7 @@ export default async (source?, props: { [key: string]: any } = {}) => {
     await source.update({ state: "ready" });
   }
 
-  props.sourceGuid = source.guid;
+  props.sourceId = source.id;
   const mergedProps = await data(props);
   const instance = new Schedule(mergedProps);
   await instance.save();

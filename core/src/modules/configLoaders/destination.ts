@@ -4,9 +4,9 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
 import { CLS } from "../../modules/cls";
@@ -16,25 +16,25 @@ export async function loadDestination(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  const guid = await validateAndFormatGuid(Destination, configObject.id);
+  const id = await validateAndFormatId(Destination, configObject.id);
   validateConfigObjectKeys(Destination, configObject);
 
   let destination = await Destination.scope(null).findOne({
-    where: { guid, appGuid: app.guid },
+    where: { id, appId: app.id },
   });
   if (!destination) {
     isNew = true;
     destination = await Destination.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
-      appGuid: app.guid,
+      appId: app.id,
     });
   }
 
@@ -65,11 +65,11 @@ export async function loadDestination(
       Group,
       sanitizedDestinationGroupMemberships[remoteName]
     );
-    destinationGroupMemberships[membershipGroup.guid] = remoteName;
+    destinationGroupMemberships[membershipGroup.id] = remoteName;
   }
   await destination.setDestinationGroupMemberships(destinationGroupMemberships);
 
-  if (group && destination.groupGuid !== group.guid) {
+  if (group && destination.groupId !== group.id) {
     await destination.trackGroup(group);
   }
 
@@ -77,22 +77,22 @@ export async function loadDestination(
 
   logModel(destination, validate ? "validated" : isNew ? "created" : "updated");
 
-  return { destination: [destination.guid] };
+  return { destination: [destination.id] };
 }
 
-export async function deleteDestinations(guids: string[]) {
+export async function deleteDestinations(ids: string[]) {
   const destinations = await Destination.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in destinations) {
     const destination = destinations[i];
     await destination.update({ state: "deleted", locked: null });
     await CLS.enqueueTask("destination:destroy", {
-      destinationGuid: destination.guid,
+      destinationId: destination.id,
     });
     logModel(destination, "deleted");
   }
 
-  return destinations.map((instance) => instance.guid);
+  return destinations.map((instance) => instance.id);
 }

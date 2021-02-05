@@ -53,8 +53,11 @@ class Generator {
   compile() {
     this.addCommands();
     this.addCore();
-    this.addUi();
-    this.addStagingPublic();
+    this.addUiComponents();
+    this.addUiCommunity();
+    this.addUiEnterprise();
+    this.addStagingCommunity();
+    this.addStagingEnterprise();
     this.addPlugins();
     this.addCLI();
 
@@ -98,22 +101,53 @@ class Generator {
     });
   }
 
-  addUi() {
+  addUiComponents() {
     this.jobList.push({
       type: "ui",
-      job_name: `test-ui`,
+      test_section: "ui-components",
+      job_name: `test-ui-components`,
       relative_path: `ui`,
       name: "ui",
     });
   }
 
-  addStagingPublic() {
+  addUiCommunity() {
+    this.jobList.push({
+      type: "ui",
+      test_section: "ui-community",
+      job_name: `test-ui-community`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+  }
+
+  addUiEnterprise() {
+    this.jobList.push({
+      type: "ui",
+      test_section: "ui-enterprise",
+      job_name: `test-ui-enterprise`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+  }
+
+  addStagingCommunity() {
     this.jobList.push({
       type: "apps",
-      section: "staging-public",
-      job_name: `test-staging-public`,
+      section: "staging-community",
+      job_name: `test-staging-community`,
       relative_path: `apps`,
-      name: "staging-public",
+      name: "staging-community",
+    });
+  }
+
+  addStagingEnterprise() {
+    this.jobList.push({
+      type: "apps",
+      section: "staging-enterprise",
+      job_name: `test-staging-enterprise`,
+      relative_path: `apps`,
+      name: "staging-enterprise",
     });
   }
 
@@ -167,7 +201,7 @@ class Generator {
     }
   }
 
-  node_module_list() {
+  full_node_module_list() {
     const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
@@ -184,9 +218,18 @@ class Generator {
     }
 
     const prefix = " ".repeat(12) + "- ";
-    return relativePaths
-      .map((p) => `${prefix}${p}`)
-      .sort()
+    return relativePaths.map((p) => `${prefix}${p}`).sort();
+  }
+
+  plugin_node_module_list() {
+    return this.full_node_module_list()
+      .filter((path) => path.includes("plugins/@grouparoo"))
+      .join("\n");
+  }
+
+  other_node_module_list() {
+    return this.full_node_module_list()
+      .filter((path) => !path.includes("plugins/@grouparoo"))
       .join("\n");
   }
 
@@ -224,7 +267,9 @@ class Generator {
       return [];
     }
 
-    return ["core/dist", "ui/.next"].map((p) => `${prefix}${p}`).join("\n");
+    return ["core/dist", "ui/ui-community/.next", "ui/ui-enterprise/.next"]
+      .map((p) => `${prefix}${p}`)
+      .join("\n");
   }
 
   renderJob(job, name) {
@@ -264,7 +309,8 @@ class Generator {
     view[".Revision"] = "{{ .Revision }}";
 
     const methods = [
-      "node_module_list",
+      "plugin_node_module_list",
+      "other_node_module_list",
       "dist_list",
       "jobs",
       "workflows",

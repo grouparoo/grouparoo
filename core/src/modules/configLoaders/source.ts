@@ -4,9 +4,9 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatGuid,
+  validateAndFormatId,
   validateConfigObjectKeys,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
@@ -15,25 +15,25 @@ export async function loadSource(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-): Promise<GuidsByClass> {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  const guid = await validateAndFormatGuid(Source, configObject.id);
+  const id = await validateAndFormatId(Source, configObject.id);
   validateConfigObjectKeys(Source, configObject);
 
   let source = await Source.scope(null).findOne({
-    where: { guid, locked: getCodeConfigLockKey(), appGuid: app.guid },
+    where: { id, locked: getCodeConfigLockKey(), appId: app.id },
   });
   if (!source) {
     isNew = true;
     source = await Source.create({
-      guid,
+      id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
-      appGuid: app.guid,
+      appId: app.id,
     });
   }
 
@@ -67,7 +67,7 @@ export async function loadSource(
     if (configObject.bootstrappedProperty) {
       bootstrappedProperty = await Property.findOne({
         where: {
-          guid: await validateAndFormatGuid(
+          id: await validateAndFormatId(
             Property,
             configObject.bootstrappedProperty.id
           ),
@@ -86,7 +86,7 @@ export async function loadSource(
         property.key || property.name,
         property.type,
         mappedColumn,
-        await validateAndFormatGuid(Property, property.id)
+        await validateAndFormatId(Property, property.id)
       );
       await setMapping();
     } else {
@@ -109,15 +109,19 @@ export async function loadSource(
   }
 
   return {
-    source: [source.guid],
-    property: bootstrappedProperty ? [bootstrappedProperty.guid] : [], // might have done this
+    source: [source.id],
+    property: bootstrappedProperty ? [bootstrappedProperty.id] : [], // might have done this
   };
 }
 
-export async function deleteSources(guids: string[]) {
-  const deletedGuids: string[] = [];
+export async function deleteSources(ids: string[]) {
+  const deletedIds: { property: string[]; source: string[] } = {
+    property: [],
+    source: [],
+  };
+
   const sources = await Source.scope(null).findAll({
-    where: { locked: getCodeConfigLockKey(), guid: { [Op.notIn]: guids } },
+    where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in sources) {
@@ -133,14 +137,15 @@ export async function deleteSources(guids: string[]) {
         await Property.destroyOptions(property);
         await Property.destroyPropertyFilters(property);
         await Property.destroyProfileProperties(property);
-        deletedGuids.push(property.guid);
+        logModel(property, "deleted");
+        deletedIds.property.push(property.id);
       }
     }
 
     await source.destroy();
     logModel(source, "deleted");
+    deletedIds.source.push(source.id);
   }
 
-  sources.map((instance) => deletedGuids.push(instance.guid));
-  return deletedGuids;
+  return deletedIds;
 }

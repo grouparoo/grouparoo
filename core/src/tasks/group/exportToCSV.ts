@@ -12,7 +12,7 @@ export class GroupExportToCSV extends CLSTask {
     this.frequency = 0;
     this.queue = "groups";
     this.inputs = {
-      groupGuid: { required: true },
+      groupId: { required: true },
       offset: { required: false },
       limit: { required: false },
     };
@@ -25,7 +25,7 @@ export class GroupExportToCSV extends CLSTask {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const group = await Group.findByGuid(params.groupGuid);
+    const group = await Group.findById(params.groupId);
 
     // TODO: this is going to take a long time...
     const { filename, cleanName } = await groupExportToCSV(group, limit);

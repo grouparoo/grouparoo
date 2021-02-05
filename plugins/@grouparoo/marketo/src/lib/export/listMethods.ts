@@ -2,7 +2,7 @@ import { objectCache, CacheKey } from "@grouparoo/core";
 import { SimpleAppOptions } from "@grouparoo/core";
 
 export interface MarketoCacheData {
-  appGuid: string;
+  appId: string;
   appOptions: SimpleAppOptions;
 }
 
@@ -12,10 +12,10 @@ export async function getListId(
   listName: string
 ): Promise<number> {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheKey: CacheKey = ["getListId", listName, appOptions];
   const listId = await objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let marketoId = await findListByName(client, listName);
@@ -64,7 +64,7 @@ async function getRootFolderId(
   client: any,
   cacheData: MarketoCacheData
 ): Promise<number> {
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   // for when they get created, they can move the lists anywhere after that
   // TODO: we could consider making a subfolder called "Grouparoo"
   // but we'd have to create that and that's more work. Let's see how it goes.
@@ -73,7 +73,7 @@ async function getRootFolderId(
   const cacheKey: CacheKey = ["getRootFolderId", folderName, appOptions];
   const cacheDurationMs = 1000 * 60 * 120; // 120 minutes
   const folderId = await objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       const marketoId = findSystemFolderByName(client, folderName);

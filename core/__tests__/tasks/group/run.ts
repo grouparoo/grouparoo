@@ -73,8 +73,8 @@ describe("tasks/group:run", () => {
       await run.update({ exportsCreated: 1 });
 
       await specHelper.runTask("group:run", {
-        groupGuid: group.guid,
-        runGuid: run.guid,
+        groupId: group.id,
+        runId: run.id,
       });
 
       const found = await specHelper.findEnqueuedTasks("group:run");
@@ -100,7 +100,7 @@ describe("tasks/group:run", () => {
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
-      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runAddGroupMembers");
@@ -138,8 +138,8 @@ describe("tasks/group:run", () => {
 
       imports = await Import.findAll();
       expect(imports.length).toBe(4);
-      expect(imports.map((e) => e.profileGuid).sort()).toEqual(
-        [mario, luigi, peach, toad].map((p) => p.guid).sort()
+      expect(imports.map((e) => e.profileId).sort()).toEqual(
+        [mario, luigi, peach, toad].map((p) => p.id).sort()
       );
 
       await group.reload();
@@ -150,8 +150,8 @@ describe("tasks/group:run", () => {
       );
 
       const groupMembers = await group.$get("groupMembers");
-      expect(groupMembers.map((mem) => mem.profileGuid).sort()).toEqual(
-        [mario, luigi, peach, toad].map((p) => p.guid).sort()
+      expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
+        [mario, luigi, peach, toad].map((p) => p.id).sort()
       );
     });
 
@@ -212,8 +212,8 @@ describe("tasks/group:run", () => {
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2); // only the removals
-      expect(imports.map((e) => e.profileGuid).sort()).toEqual(
-        [peach, toad].map((p) => p.guid).sort()
+      expect(imports.map((e) => e.profileId).sort()).toEqual(
+        [peach, toad].map((p) => p.id).sort()
       );
 
       await group.reload();
@@ -224,8 +224,8 @@ describe("tasks/group:run", () => {
       );
 
       const groupMembers = await group.$get("groupMembers");
-      expect(groupMembers.map((mem) => mem.profileGuid).sort()).toEqual(
-        [mario, luigi].map((p) => p.guid).sort()
+      expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
+        [mario, luigi].map((p) => p.id).sort()
       );
     });
 
@@ -246,8 +246,8 @@ describe("tasks/group:run", () => {
 
       const bowser = await helper.factories.profile();
       await GroupMember.create({
-        groupGuid: group.guid,
-        profileGuid: bowser.guid,
+        groupId: group.id,
+        profileId: bowser.id,
         removedAt: new Date(),
       });
 
@@ -299,20 +299,20 @@ describe("tasks/group:run", () => {
       await bowser.destroy();
     });
 
-    it("will pass destinationGuid to all run steps", async () => {
+    it("will pass destinationId to all run steps", async () => {
       let foundTasks = [];
       await group.run(false, "abc123");
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue remove
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
-      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue removePreviousRunGroupMembers
 
@@ -321,7 +321,7 @@ describe("tasks/group:run", () => {
       expect(foundTasks[0].args[0].method).toBe(
         "removePreviousRunGroupMembers"
       );
-      expect(foundTasks[0].args[0].destinationGuid).toBe("abc123");
+      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("group:run", foundTasks[0].args[0]); // found none, enqueue state
 
@@ -335,7 +335,7 @@ describe("tasks/group:run", () => {
       await group.run(true);
       const foundTasks = await specHelper.findEnqueuedTasks("group:run");
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
-      const run = await Run.findOne({ where: { creatorGuid: group.guid } });
+      const run = await Run.findOne({ where: { creatorId: group.id } });
       expect(run.state).toBe("running");
       expect(run.force).toBe(true);
     });
@@ -353,7 +353,7 @@ describe("tasks/group:run", () => {
 
       foundTasks = await specHelper.findEnqueuedTasks("group:run");
 
-      const run = await Run.findByGuid(foundTasks[0].args[0].runGuid);
+      const run = await Run.findById(foundTasks[0].args[0].runId);
       expect(run.state).toBe("running");
 
       await api.resque.queue.connection.redis.flushdb();

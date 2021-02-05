@@ -3,19 +3,19 @@ import { Profile, Event, Log, Property } from "../../src";
 
 describe("models/event", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let identifyingPropertyGuid: string;
+  let identifyingPropertyId: string;
 
   beforeAll(async () => {
     await helper.factories.properties();
-    identifyingPropertyGuid = (
+    identifyingPropertyId = (
       await Property.findOne({ where: { key: "userId" } })
-    ).guid;
+    ).id;
   });
 
   test("an event can be created", async () => {
     const event = await helper.factories.event();
 
-    expect(event.guid.length).toBe(40);
+    expect(event.id.length).toBe(40);
     expect(event.createdAt).toBeTruthy();
     expect(event.updatedAt).toBeTruthy();
     expect(event.occurredAt).toBeTruthy();
@@ -62,10 +62,10 @@ describe("models/event", () => {
 
     test("already identified", async () => {
       const event = await helper.factories.event();
-      await event.update({ profileGuid: profileA.guid });
+      await event.update({ profileId: profileA.id });
 
-      const response = await event.associate(identifyingPropertyGuid);
-      expect(response.guid).toBe(profileA.guid);
+      const response = await event.associate(identifyingPropertyId);
+      expect(response.id).toBe(profileA.id);
       expect(await Profile.count()).toBe(2);
     });
 
@@ -74,7 +74,7 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ userId: "100" });
 
-        const response = await event.associate(identifyingPropertyGuid);
+        const response = await event.associate(identifyingPropertyId);
 
         expect(await Profile.count()).toBe(3);
       });
@@ -83,8 +83,8 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ userId: "1" });
 
-        const response = await event.associate(identifyingPropertyGuid);
-        expect(response.guid).toBe(profileA.guid);
+        const response = await event.associate(identifyingPropertyId);
+        expect(response.id).toBe(profileA.id);
 
         expect(await Profile.count()).toBe(2);
       });
@@ -95,7 +95,7 @@ describe("models/event", () => {
         const event = await helper.factories.event();
         await event.update({ anonymousId: "abc123" });
 
-        const response = await event.associate(identifyingPropertyGuid);
+        const response = await event.associate(identifyingPropertyId);
 
         expect(await Profile.count()).toBe(3);
       });
@@ -107,11 +107,11 @@ describe("models/event", () => {
         const otherEvent = await helper.factories.event();
         await otherEvent.update({
           anonymousId: "z",
-          profileGuid: profileA.guid,
+          profileId: profileA.id,
         });
 
-        const response = await event.associate(identifyingPropertyGuid);
-        expect(response.guid).toBe(profileA.guid);
+        const response = await event.associate(identifyingPropertyId);
+        expect(response.id).toBe(profileA.id);
         expect(await Profile.count()).toBe(2);
       });
 
@@ -122,8 +122,8 @@ describe("models/event", () => {
         const otherEvent = await helper.factories.event();
         await otherEvent.update({ anonymousId: "abc123", userId: "1" });
 
-        await event.associate(identifyingPropertyGuid);
-        await otherEvent.associate(identifyingPropertyGuid);
+        await event.associate(identifyingPropertyId);
+        await otherEvent.associate(identifyingPropertyId);
 
         expect(await Profile.count()).toBe(2);
       });
@@ -136,7 +136,7 @@ describe("models/event", () => {
 
       const event = await helper.factories.event();
       await event.update({ userId: "999" });
-      await event.associate(identifyingPropertyGuid);
+      await event.associate(identifyingPropertyId);
 
       await profile.reload();
       expect(profile.state).toBe("pending");

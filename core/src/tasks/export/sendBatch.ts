@@ -12,21 +12,21 @@ export class ExportSendBatches extends RetryableTask {
     this.frequency = 0;
     this.queue = "exports";
     this.inputs = {
-      destinationGuid: { required: true },
-      exportGuids: { required: true },
+      destinationId: { required: true },
+      exportIds: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const destinationGuid: string = params.destinationGuid;
-    const exportGuids: string[] = params.exportGuids;
-    const destination = await Destination.findByGuid(params.destinationGuid);
+    const destinationId: string = params.destinationId;
+    const exportIds: string[] = params.exportIds;
+    const destination = await Destination.findById(params.destinationId);
 
     const _exports = await Export.findAll({
       where: {
-        destinationGuid,
+        destinationId,
         completedAt: null, // be sure not to export twice
-        guid: { [Op.in]: exportGuids },
+        id: { [Op.in]: exportIds },
       },
     });
 
@@ -38,12 +38,12 @@ export class ExportSendBatches extends RetryableTask {
       success,
       error,
       retryDelay,
-      retryExportGuids,
+      retryexportIds,
     } = await destination.sendExports(_exports);
 
     if (!success) {
       const app = await destination.$get("app");
-      if (retryExportGuids.length === _exports.length) {
+      if (retryexportIds.length === _exports.length) {
         // all failed!
         if (retryDelay) {
           return CLS.enqueueTaskIn(
@@ -61,8 +61,8 @@ export class ExportSendBatches extends RetryableTask {
         // some of them succeeded
         // RESILIENCE: maybe we should split this in half or something, down to 1
         const newParams = {
-          destinationGuid: params.destinationGuid,
-          exportGuids: retryExportGuids,
+          destinationId: params.destinationId,
+          exportIds: retryexportIds,
         };
         const strategy = this.pluginOptions?.Retry?.backoffStrategy;
         const backoff = strategy ? strategy[0] : undefined;

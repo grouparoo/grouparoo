@@ -20,12 +20,12 @@ import { Log } from "./Log";
 
 @Table({ tableName: "groupMembers", paranoid: false })
 export class GroupMember extends Model {
-  guidPrefix() {
+  idPrefix() {
     return "mem";
   }
 
   @Column({ primaryKey: true })
-  guid: string;
+  id: string;
 
   @CreatedAt
   createdAt: Date;
@@ -36,12 +36,12 @@ export class GroupMember extends Model {
   @AllowNull(false)
   @ForeignKey(() => Profile)
   @Column
-  profileGuid: string;
+  profileId: string;
 
   @AllowNull(false)
   @ForeignKey(() => Group)
   @Column
-  groupGuid: string;
+  groupId: string;
 
   @Column
   removedAt: Date;
@@ -54,8 +54,8 @@ export class GroupMember extends Model {
 
   async apiData() {
     return {
-      profileGuid: this.profileGuid,
-      groupGuid: this.groupGuid,
+      profileId: this.profileId,
+      groupId: this.groupId,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
       removedAt: this.removedAt ? this.removedAt.getTime() : null,
@@ -64,18 +64,16 @@ export class GroupMember extends Model {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
   @BeforeCreate
-  static generateGuid(instance) {
-    if (!instance.guid) {
-      instance.guid = `${instance.guidPrefix()}_${uuid.v4()}`;
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
   }
 
@@ -83,14 +81,14 @@ export class GroupMember extends Model {
   static async ensureOneProfilePerGroup(instance: GroupMember) {
     const existing = await GroupMember.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        profileGuid: instance.profileGuid,
-        groupGuid: instance.groupGuid,
+        id: { [Op.ne]: instance.id },
+        profileId: instance.profileId,
+        groupId: instance.groupId,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a GroupMember for ${instance.profileGuid} and ${instance.groupGuid}`
+        `There is already a GroupMember for ${instance.profileId} and ${instance.groupId}`
       );
     }
   }
@@ -103,9 +101,9 @@ export class GroupMember extends Model {
       topic: "groupMember",
       verb: "create",
       data: await instance.apiData(),
-      ownerGuid: instance.profileGuid,
+      ownerId: instance.profileId,
       message: `added to group ${group ? group.name : ""} (${
-        instance.groupGuid
+        instance.groupId
       })`,
     });
   }
@@ -118,9 +116,9 @@ export class GroupMember extends Model {
       topic: "groupMember",
       verb: "destroy",
       data: await instance.apiData(),
-      ownerGuid: instance.profileGuid,
+      ownerId: instance.profileId,
       message: `removed from group ${group ? group.name : ""} (${
-        instance.groupGuid
+        instance.groupId
       })`,
     });
   }

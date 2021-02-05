@@ -4,7 +4,7 @@ import { Client } from "../connect";
 import { AudienceSubtype } from "./model";
 
 export interface FacebookCacheData {
-  appGuid: string;
+  appId: string;
   appOptions: SimpleAppOptions;
 }
 
@@ -15,10 +15,10 @@ export async function getAudienceId(
   listName: string
 ): Promise<string> {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
-  const { appGuid, appOptions } = cacheData;
+  const { appId, appOptions } = cacheData;
   const cacheKey: CacheKey = ["getListId", subtype, listName, appOptions];
   const listId = await objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
       // not cached find it
       let facebookId = await findAudienceByName(client, subtype, listName);

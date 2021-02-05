@@ -10,7 +10,7 @@ declare module "actionhero" {
   export interface Api {
     telemetry: {
       build: () => Promise<{
-        guid: string;
+        id: string;
         name: string;
         license: string;
         metrics: TelemetryMetric[];
@@ -33,8 +33,8 @@ export class Plugins extends Initializer {
         // load settings
         const clusterName = (await plugin.readSetting("core", "cluster-name"))
           .value;
-        const customerGuid = (
-          await plugin.readSetting("telemetry", "customer-guid")
+        const customerId = (
+          await plugin.readSetting("telemetry", "customer-id")
         ).value;
         const customerLicense = (
           await plugin.readSetting("telemetry", "customer-license")
@@ -59,7 +59,7 @@ export class Plugins extends Initializer {
 
         return {
           name: clusterName,
-          guid: customerGuid,
+          id: customerId,
           license: customerLicense,
           metrics: metrics,
         };

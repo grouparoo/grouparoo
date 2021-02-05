@@ -22,8 +22,8 @@ describe("tasks/profileProperties:sweep", () => {
 
   test("a profile property with a missing profile", async () => {
     const profileProperty = await ProfileProperty.create({
-      profileGuid: "missing",
-      propertyGuid: emailProperty.guid,
+      profileId: "missing",
+      propertyId: emailProperty.id,
       rawValue: "person@example.com",
       position: 0,
     });
@@ -49,9 +49,9 @@ describe("tasks/profileProperties:sweep", () => {
 
     const profileProperty = await ProfileProperty.create(
       {
-        guid: "rule_missing",
-        profileGuid: luigi.guid,
-        propertyGuid: "missing",
+        id: "rule_missing",
+        profileId: luigi.id,
+        propertyId: "missing",
         rawValue: "green-hat",
         position: 0,
       },

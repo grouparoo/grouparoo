@@ -30,7 +30,7 @@ function inPercentage(percent) {
 
 export interface Runtime {
   baseUrl: string;
-  userIdGuid: string;
+  userIdId: string;
 }
 
 export class MockSession {
@@ -148,12 +148,12 @@ export class MockSession {
       return this.randomUserId();
     }
 
-    const { userIdGuid } = this.runtime;
+    const { userIdId } = this.runtime;
     // otherwise pick a real one
     const property = await ProfileProperty.findOne({
       order: api.sequelize.random(),
       where: {
-        propertyGuid: userIdGuid,
+        propertyId: userIdId,
         rawValue: {
           [Op.ne]: null,
         },
@@ -351,7 +351,7 @@ export async function getApiKey(): Promise<ApiKey> {
     name: where.name,
     permissionAllRead: true,
     permissionAllWrite: true,
-    guid: found?.guid,
+    id: found?.id,
     permissions: [],
   };
   if (found) {

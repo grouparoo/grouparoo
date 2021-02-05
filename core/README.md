@@ -27,7 +27,8 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   - → View the [Deployment Docs](https://www.grouparoo.com/docs/deployment).
 - 📚 **Want to learn more about how to configure and use Grouparoo?**
   - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
-  - → View the [User Guides](https://www.grouparoo.com/docs/guides).
+  - → View the [Configuration Guides](https://www.grouparoo.com/docs/config).
+  - → View the [Runtime Guides](https://www.grouparoo.com/docs/running-grouparoo).
 - ⚙️ **Want to learn more about how Grouparoo works?**
   - Grouparoo is Open Source, and we welcome community contributions. You can add your own plugins to connect to new Sources and Destinations.
   - → View the [Development Guide](https://www.grouparoo.com/docs/development).
@@ -69,10 +70,10 @@ This will generate a `package.json` and `.env` file for configuration.
 
 ## Populating Demo Data
 
-Use the `staging-public` app to try things out.
+Use the `staging-community` app to try things out.
 
 ```bash
-cd apps/staging-public
+cd apps/staging-community
 # populate the system with 1000 profiles, properties, 1000 purchases, groups, and some events
 (npx) grouparoo demo-data-purchases
 

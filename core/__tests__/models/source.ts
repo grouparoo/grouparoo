@@ -26,7 +26,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -39,7 +39,7 @@ describe("models/source", () => {
 
     test("creating a source creates a log entry", async () => {
       const log = await Log.findOne({
-        where: { topic: "source", verb: "create", ownerGuid: source.guid },
+        where: { topic: "source", verb: "create", ownerId: source.id },
       });
       expect(log.message).toBe(`source "${source.name}" created`);
     });
@@ -63,7 +63,7 @@ describe("models/source", () => {
         Source.create({
           type: "test-plugin-import",
           name: "test source",
-          appGuid: app.guid,
+          appId: app.id,
         })
       ).rejects.toThrow(/app .* not ready/);
 
@@ -75,7 +75,7 @@ describe("models/source", () => {
         Source.create({
           type: "missing-source",
           name: "test source",
-          appGuid: app.guid,
+          appId: app.id,
         })
       ).rejects.toThrow(
         /cannot find an import connection for a source of missing-source/
@@ -85,7 +85,7 @@ describe("models/source", () => {
     test("a new source will have a '' name", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       expect(source.name).toBe("");
@@ -96,11 +96,11 @@ describe("models/source", () => {
     test("draft sources can share the same name, but not with ready sources", async () => {
       const sourceOne = await Source.create({
         type: "test-plugin-import",
-        appGuid: app.guid,
+        appId: app.id,
       });
       const sourceTwo = await Source.create({
         type: "test-plugin-import",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       expect(sourceOne.name).toBe("");
@@ -149,7 +149,7 @@ describe("models/source", () => {
 
     test("a source cannot be created in the ready state with missing required options", async () => {
       const source = Source.build({
-        appGuid: app.guid,
+        appId: app.id,
         name: "no opts",
         type: "test-plugin-import",
         state: "ready",
@@ -164,7 +164,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -183,7 +183,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -192,7 +192,7 @@ describe("models/source", () => {
       const property = await Property.create({
         key: "thing",
         type: "string",
-        sourceGuid: source.guid,
+        sourceId: source.id,
       });
 
       await expect(source.destroy()).rejects.toThrow(
@@ -207,7 +207,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await source.setOptions({
@@ -225,7 +225,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await expect(source.setOptions({ notThing: "abc" })).rejects.toThrow(
@@ -248,7 +248,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await source.setOptions({ table: "abc" });
@@ -256,7 +256,7 @@ describe("models/source", () => {
       await source.destroy(); // doesn't throw
 
       const optionsCount = await Option.count({
-        where: { ownerGuid: source.guid },
+        where: { ownerId: source.id },
       });
       expect(optionsCount).toBe(0);
     });
@@ -271,7 +271,7 @@ describe("models/source", () => {
       const source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await source.setOptions({ table: "TEST_OPTION" });
@@ -279,7 +279,7 @@ describe("models/source", () => {
       expect(options.table).toBe("abc123");
 
       const option = await Option.findOne({
-        where: { ownerGuid: source.guid },
+        where: { ownerId: source.id },
       });
       expect(option.value).toBe("TEST_OPTION");
 
@@ -298,7 +298,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
     });
 
@@ -336,7 +336,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
     });
 
@@ -374,7 +374,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
     });
 
@@ -409,7 +409,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "some table" });
     });
@@ -468,7 +468,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
       await source.setOptions({ table: "test table" });
       await source.setMapping({ id: "userId" });
@@ -479,7 +479,7 @@ describe("models/source", () => {
 
       lnameProperty = await Property.create({
         key: "__lname",
-        sourceGuid: source.guid,
+        sourceId: source.id,
         type: "string",
       });
 
@@ -541,9 +541,9 @@ describe("models/source", () => {
       await source.importProfileProperty(profile, lnameProperty, null, []); // does not throw
     });
 
-    test("it can import all profile properties for this source, mapped to the property guids properly", async () => {
+    test("it can import all profile properties for this source, mapped to the property ids properly", async () => {
       const properties = await source.import(profile);
-      expect(properties).toEqual({ [lnameProperty.guid]: "...mario" });
+      expect(properties).toEqual({ [lnameProperty.id]: "...mario" });
     });
 
     test("if importing returned null, it will not be included in the response hash to set profile properties", async () => {
@@ -576,7 +576,7 @@ describe("models/source", () => {
       source = await Source.create({
         type: "test-plugin-import",
         name: "test source",
-        appGuid: app.guid,
+        appId: app.id,
       });
 
       await source.setOptions({ table: "test table" });
@@ -595,7 +595,7 @@ describe("models/source", () => {
       await source.setMapping({ id: "userId" });
 
       const schedule = await Schedule.create({
-        sourceGuid: source.guid,
+        sourceId: source.id,
         name: "test schedule",
       });
       await schedule.setOptions({ maxColumn: "abc" });

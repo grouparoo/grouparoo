@@ -1,12 +1,12 @@
 import { objectCache } from "@grouparoo/core";
 import Axios from "axios";
 
-async function getLists(appGuid, appOptions, update = false) {
+async function getLists(appId, appOptions, update = false) {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getLists", appOptions];
   const read = !update; // if updating, skip the read from cache. still write.
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs, read },
+    { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
       return fetchLists(appOptions);
     }
@@ -27,7 +27,7 @@ async function fetchLists(appOptions) {
   return data.lists;
 }
 
-async function getListId(appGuid, appOptions, groupName): Promise<string> {
+async function getListId(appId, appOptions, groupName): Promise<string> {
   groupName = (groupName || "").toString().trim();
   if (groupName.length === 0) {
     return `Hubspot empty groupName`;
@@ -36,9 +36,9 @@ async function getListId(appGuid, appOptions, groupName): Promise<string> {
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getListId", groupName, appOptions];
   return objectCache(
-    { objectGuid: appGuid, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs },
     async () => {
-      return ensureList(appGuid, appOptions, groupName);
+      return ensureList(appId, appOptions, groupName);
     }
   );
 }
@@ -55,18 +55,18 @@ function filterLists(hubspotLists, groupName) {
 }
 
 // gets called if the list if is not cached
-async function ensureList(appGuid, appOptions, groupName): Promise<string> {
+async function ensureList(appId, appOptions, groupName): Promise<string> {
   let hubspotLists, listId;
 
   // see if it's already there
-  hubspotLists = await getLists(appGuid, appOptions);
+  hubspotLists = await getLists(appId, appOptions);
   listId = filterLists(hubspotLists, groupName);
   if (listId) {
     return listId;
   }
 
   // maybe it's just not cached yet
-  hubspotLists = await getLists(appGuid, appOptions, true);
+  hubspotLists = await getLists(appId, appOptions, true);
   listId = filterLists(hubspotLists, groupName);
   if (listId) {
     return listId;
@@ -86,8 +86,8 @@ async function ensureList(appGuid, appOptions, groupName): Promise<string> {
   return response.data.listId;
 }
 
-export async function addToList(appGuid, appOptions, email, groupName) {
-  const listId = await getListId(appGuid, appOptions, groupName);
+export async function addToList(appId, appOptions, email, groupName) {
+  const listId = await getListId(appId, appOptions, groupName);
   const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/add?hapikey=${appOptions.hapikey}`;
 
   try {
@@ -108,8 +108,8 @@ export async function addToList(appGuid, appOptions, email, groupName) {
   }
 }
 
-export async function removeFromList(appGuid, appOptions, email, groupName) {
-  const listId = await getListId(appGuid, appOptions, groupName);
+export async function removeFromList(appId, appOptions, email, groupName) {
+  const listId = await getListId(appId, appOptions, groupName);
   const url = `https://api.hubapi.com/contacts/v1/lists/${listId}/remove?hapikey=${appOptions.hapikey}`;
 
   await Axios({

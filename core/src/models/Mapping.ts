@@ -15,7 +15,7 @@ import { Source } from "./Source";
 
 @Table({ tableName: "mappings", paranoid: false })
 export class Mapping extends LoggedModel<Mapping> {
-  guidPrefix() {
+  idPrefix() {
     return "map";
   }
 
@@ -23,7 +23,7 @@ export class Mapping extends LoggedModel<Mapping> {
   @ForeignKey(() => Destination)
   @ForeignKey(() => Source)
   @Column
-  ownerGuid: string;
+  ownerId: string;
 
   @AllowNull(false)
   @Column
@@ -32,7 +32,7 @@ export class Mapping extends LoggedModel<Mapping> {
   @AllowNull(false)
   @ForeignKey(() => Property)
   @Column
-  propertyGuid: string;
+  propertyId: string;
 
   @AllowNull(false)
   @Length({ min: 1, max: 191 })
@@ -50,10 +50,10 @@ export class Mapping extends LoggedModel<Mapping> {
 
   async apiData() {
     return {
-      guid: this.guid,
-      ownerGuid: this.ownerGuid,
+      id: this.id,
+      ownerId: this.ownerId,
       ownerType: this.ownerType,
-      propertyGuid: this.propertyGuid,
+      propertyId: this.propertyId,
       remoteKey: this.remoteKey,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
@@ -62,11 +62,9 @@ export class Mapping extends LoggedModel<Mapping> {
 
   // --- Class Methods --- //
 
-  static async findByGuid(guid: string) {
-    const instance = await this.scope(null).findOne({
-      where: { guid },
-    });
-    if (!instance) throw new Error(`cannot find ${this.name} ${guid}`);
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
   }
 
@@ -74,14 +72,14 @@ export class Mapping extends LoggedModel<Mapping> {
   static async ensureOneOwnerPerProperty(instance: Mapping) {
     const existing = await Mapping.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        ownerGuid: instance.ownerGuid,
-        propertyGuid: instance.propertyGuid,
+        id: { [Op.ne]: instance.id },
+        ownerId: instance.ownerId,
+        propertyId: instance.propertyId,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Mapping for ${instance.ownerGuid} and ${instance.propertyGuid}`
+        `There is already a Mapping for ${instance.ownerId} and ${instance.propertyId}`
       );
     }
   }
@@ -90,14 +88,14 @@ export class Mapping extends LoggedModel<Mapping> {
   static async ensureOneOwnerPerRemoteKey(instance: Mapping) {
     const existing = await Mapping.scope(null).findOne({
       where: {
-        guid: { [Op.ne]: instance.guid },
-        ownerGuid: instance.ownerGuid,
+        id: { [Op.ne]: instance.id },
+        ownerId: instance.ownerId,
         remoteKey: instance.remoteKey,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Mapping for to ${instance.ownerGuid} and ${instance.remoteKey}`
+        `There is already a Mapping for to ${instance.ownerId} and ${instance.remoteKey}`
       );
     }
   }

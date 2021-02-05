@@ -22,10 +22,10 @@ describe("tasks/destination:destroy", () => {
     test("deleting a destination with no group tracked works", async () => {
       await destination.update({ state: "deleted" });
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
       });
 
-      await expect(Destination.findByGuid(destination.guid)).rejects.toThrow(
+      await expect(Destination.findById(destination.id)).rejects.toThrow(
         /cannot find Destination/
       );
     });
@@ -60,33 +60,33 @@ describe("tasks/destination:destroy", () => {
     test("the task can be enqueued and create a run for the group", async () => {
       await destination.update({ state: "deleted" });
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
+        destinationId: destination.id,
       });
 
-      run = await Run.findOne({ where: { creatorGuid: group.guid } });
+      run = await Run.findOne({ where: { creatorId: group.id } });
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "destination:destroy"
       );
       expect(foundTasks.length).toBe(1);
       expect(foundTasks[0].args[0]).toEqual({
-        destinationGuid: destination.guid,
-        runGuid: run.guid,
+        destinationId: destination.id,
+        runId: run.id,
       });
 
-      destination = await Destination.findByGuid(destination.guid);
+      destination = await Destination.findById(destination.id);
       expect(destination.state).toBe("deleted");
-      expect(destination.groupGuid).toBeNull();
+      expect(destination.groupId).toBeNull();
     });
 
     test("the destination will not be deleted yet (running run)", async () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
-        runGuid: run.guid,
+        destinationId: destination.id,
+        runId: run.id,
       });
 
-      destination = await Destination.findByGuid(destination.guid);
+      destination = await Destination.findById(destination.id);
       expect(destination.state).toBe("deleted");
     });
 
@@ -111,8 +111,8 @@ describe("tasks/destination:destroy", () => {
       await specHelper.deleteEnqueuedTasks("group:run", foundTasks[0].args[0]);
       await specHelper.runTask("group:run", foundTasks[0].args[0]);
 
-      run = await Run.findByGuid(run.guid);
-      group = await Group.findByGuid(group.guid);
+      run = await Run.findById(run.id);
+      group = await Group.findById(group.id);
       expect(group.state).toBe("ready");
       expect(run.state).toBe("complete");
 
@@ -126,11 +126,11 @@ describe("tasks/destination:destroy", () => {
     test("the destination will not be deleted yet (pending exports)", async () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
-        runGuid: run.guid,
+        destinationId: destination.id,
+        runId: run.id,
       });
 
-      destination = await Destination.findByGuid(destination.guid);
+      destination = await Destination.findById(destination.id);
       expect(destination.state).toBe("deleted");
     });
 
@@ -149,11 +149,11 @@ describe("tasks/destination:destroy", () => {
     test("the destination will not be deleted yet (not enough time has passed)", async () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
-        runGuid: run.guid,
+        destinationId: destination.id,
+        runId: run.id,
       });
 
-      destination = await Destination.findByGuid(destination.guid);
+      destination = await Destination.findById(destination.id);
       expect(destination.state).toBe("deleted");
     });
 
@@ -164,11 +164,11 @@ describe("tasks/destination:destroy", () => {
     test("now the destination can be deleted", async () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
-        destinationGuid: destination.guid,
-        runGuid: run.guid,
+        destinationId: destination.id,
+        runId: run.id,
       });
 
-      await expect(Destination.findByGuid(destination.guid)).rejects.toThrow(
+      await expect(Destination.findById(destination.id)).rejects.toThrow(
         /cannot find Destination/
       );
     });

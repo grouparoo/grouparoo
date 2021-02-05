@@ -20,7 +20,7 @@ require("./../fixtures/export-profile-lead");
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
-const appGuid = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
+const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = {
   creationMode: "Lead",
@@ -52,7 +52,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     findId,
     findEmail,
     getTags,
-    guidRegex,
+    idRegex,
     indexContacts,
     getClient,
     runExport,
@@ -78,7 +78,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
 
     // leads auto-gen and external id when not provided
     generatedExtId = user.external_id;
-    expect(generatedExtId).toMatch(guidRegex);
+    expect(generatedExtId).toMatch(idRegex);
 
     expect(user.email).toBe(email);
     expect(user.name).toBe("Brian");
@@ -144,7 +144,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     });
 
     const user = await getUser(userId);
-    expect(user.external_id).toMatch(guidRegex); // auto-gen
+    expect(user.external_id).toMatch(idRegex); // auto-gen
     expect(user.email).toBe(email);
     expect(user.name).toBe("Evan");
     expect(user.phone).toBe(null); // left off, so cleared
@@ -226,7 +226,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
   test("it does not change intercom-created tags", async () => {
     const tagId = await getTagId(
       getClient(),
-      { appGuid, appOptions },
+      { appId, appOptions },
       "outside_grouparoo"
     );
     await getClient().contacts.tag(userId, tagId);
@@ -310,7 +310,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     const user = await getUser(userId2);
     expect(user.email).toBe(email2);
     expect(user.external_id).not.toBe(externalId2);
-    expect(user.external_id).toMatch(guidRegex); // auto-gen
+    expect(user.external_id).toMatch(idRegex); // auto-gen
     expect(user.name).toBe("Sally");
     expect(user.role).toBe("lead");
     expect(user.archived).toBeFalsy();

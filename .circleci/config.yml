@@ -9,8 +9,10 @@ references:
     branches:
       ignore:
         - gh-pages
-  node-module-cache-options: &node-module-cache-options
-    key: node-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-modules-cache-options: &plugin-modules-cache-options
+    key: plugin-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  other-modules-cache-options: &other-modules-cache-options
+    key: other-module-package-cache-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
     key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
   core-cache-options: &core-cache-options
@@ -33,14 +35,8 @@ jobs:
           name: pnpm-install
           command: pnpm install --prefer-frozen-lockfile
       - save_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
           paths:
-            - apps/staging-public/node_modules
-            - apps/ui-test/node_modules
-            - cli/node_modules
-            - clients/@grouparoo/web/node_modules
-            - core/node_modules
-            - node_modules
             - plugins/@grouparoo/app-templates/node_modules
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
@@ -51,6 +47,7 @@ jobs:
             - plugins/@grouparoo/google-sheets/node_modules
             - plugins/@grouparoo/hubspot/node_modules
             - plugins/@grouparoo/intercom/node_modules
+            - plugins/@grouparoo/iterable/node_modules
             - plugins/@grouparoo/logger/node_modules
             - plugins/@grouparoo/mailchimp/node_modules
             - plugins/@grouparoo/marketo/node_modules
@@ -63,8 +60,19 @@ jobs:
             - plugins/@grouparoo/snowflake/node_modules
             - plugins/@grouparoo/spec-helper/node_modules
             - plugins/@grouparoo/zendesk/node_modules
+      - save_cache:
+          <<: *other-modules-cache-options
+          paths:
+            - apps/staging-community/node_modules
+            - apps/staging-enterprise/node_modules
+            - cli/node_modules
+            - clients/@grouparoo/web/node_modules
+            - core/node_modules
+            - node_modules
             - tools/merger/node_modules
-            - ui/node_modules
+            - ui/ui-community/node_modules
+            - ui/ui-components/node_modules
+            - ui/ui-enterprise/node_modules
       - save_cache:
           <<: *dist-cache-options
           paths:
@@ -80,6 +88,7 @@ jobs:
             - plugins/@grouparoo/google-sheets/dist
             - plugins/@grouparoo/hubspot/dist
             - plugins/@grouparoo/intercom/dist
+            - plugins/@grouparoo/iterable/dist
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/marketo/dist
@@ -96,7 +105,8 @@ jobs:
           <<: *core-cache-options
           paths:
             - core/dist
-            - ui/.next
+            - ui/ui-community/.next
+            - ui/ui-enterprise/.next
   license-checker:
     docker:
       - image: circleci/node:12
@@ -106,7 +116,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -126,7 +138,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -146,7 +160,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -176,7 +192,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -212,7 +230,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -248,7 +268,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -284,7 +306,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -320,7 +344,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -356,7 +382,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -392,7 +420,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -428,7 +458,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -464,7 +496,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -494,7 +528,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -504,7 +540,7 @@ jobs:
           command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
-  test-ui:
+  test-ui-components:
     docker:
       - image: circleci/node:12
         auth:
@@ -527,7 +563,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -543,10 +581,98 @@ jobs:
           command: cd core && ./bin/create_test_databases
       - run:
           name: test
-          command: cd ui && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd ui/ui-components && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
-  test-staging-public:
+  test-ui-community:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: selenium/standalone-chrome:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd ui/ui-community && ./node_modules/.bin/jest --ci --maxWorkers 2
+          environment:
+            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+  test-ui-enterprise:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: selenium/standalone-chrome:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd ui/ui-enterprise && ./node_modules/.bin/jest --ci --maxWorkers 2
+          environment:
+            SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+  test-staging-community:
     docker:
       - image: circleci/node:12
         auth:
@@ -565,7 +691,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -580,8 +708,52 @@ jobs:
           name: create test databases
           command: createdb grouparoo_development --host localhost --user postgres
       - run:
-          name: test-staging-public
-          command: cd apps/staging-public && ./__tests__/integration
+          name: test-staging-community
+          command: cd apps/staging-community && ./__tests__/integration
+          environment:
+            PORT: 3000
+            GROUPAROO_TELEMETRY_ENABLED: "false"
+            WEB_SERVER: "true"
+            SCHEDULER: "true"
+            WORKERS: 1
+  test-staging-enterprise:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: createdb grouparoo_development --host localhost --user postgres
+      - run:
+          name: test-staging-enterprise
+          command: cd apps/staging-enterprise && ./__tests__/integration
           environment:
             PORT: 3000
             GROUPAROO_TELEMETRY_ENABLED: "false"
@@ -607,7 +779,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -643,7 +817,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -679,7 +855,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -715,7 +893,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -751,7 +931,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -787,7 +969,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -823,7 +1007,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -859,7 +1045,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -895,7 +1083,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -931,7 +1121,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -948,6 +1140,44 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/intercom && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-iterable:
+    docker:
+      - image: circleci/node:12
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/iterable && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-logger:
     docker:
       - image: circleci/node:12
@@ -967,7 +1197,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1003,7 +1235,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1039,7 +1273,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1079,7 +1315,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1121,7 +1359,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1157,7 +1397,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1193,7 +1435,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1229,7 +1473,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1265,7 +1511,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1301,7 +1549,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1337,7 +1587,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1373,7 +1625,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1409,7 +1663,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1435,7 +1691,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1465,7 +1723,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1551,12 +1811,27 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-ui:
+      - test-ui-components:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-staging-public:
+      - test-ui-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-enterprise:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-enterprise:
           filters:
             <<: *ignored-branches
           requires:
@@ -1607,6 +1882,11 @@ workflows:
           requires:
             - build
       - test-plugin-intercom:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-iterable:
           filters:
             <<: *ignored-branches
           requires:
@@ -1698,8 +1978,11 @@ workflows:
             - test-core-snapshots
             - test-core-tasks
             - test-core-local
-            - test-ui
-            - test-staging-public
+            - test-ui-components
+            - test-ui-community
+            - test-ui-enterprise
+            - test-staging-community
+            - test-staging-enterprise
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv
@@ -1710,6 +1993,7 @@ workflows:
             - test-plugin-google-sheets
             - test-plugin-hubspot
             - test-plugin-intercom
+            - test-plugin-iterable
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
@@ -1810,12 +2094,27 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
-      - test-ui:
+      - test-ui-components:
           filters:
             <<: *ignored-branches
           requires:
             - build
-      - test-staging-public:
+      - test-ui-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-ui-enterprise:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-community:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-staging-enterprise:
           filters:
             <<: *ignored-branches
           requires:
@@ -1866,6 +2165,11 @@ workflows:
           requires:
             - build
       - test-plugin-intercom:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
+      - test-plugin-iterable:
           filters:
             <<: *ignored-branches
           requires:
@@ -1957,8 +2261,11 @@ workflows:
             - test-core-snapshots
             - test-core-tasks
             - test-core-local
-            - test-ui
-            - test-staging-public
+            - test-ui-components
+            - test-ui-community
+            - test-ui-enterprise
+            - test-staging-community
+            - test-staging-enterprise
             - test-plugin-app-templates
             - test-plugin-bigquery
             - test-plugin-csv
@@ -1969,6 +2276,7 @@ workflows:
             - test-plugin-google-sheets
             - test-plugin-hubspot
             - test-plugin-intercom
+            - test-plugin-iterable
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo

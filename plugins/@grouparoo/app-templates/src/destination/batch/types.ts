@@ -4,7 +4,7 @@ import {
   SimpleAppOptions,
   Destination,
   SimpleDestinationOptions,
-  ErrorWithProfileGuid,
+  ErrorWithProfileId,
 } from "@grouparoo/core";
 
 export enum BatchGroupMode {
@@ -87,7 +87,7 @@ export interface ProfileBatchProfilesPluginMethod {
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }>;
 }
 
@@ -99,7 +99,7 @@ export interface ExportBatchProfilesPluginMethod {
   ): Promise<{
     success: boolean;
     retryDelay?: number;
-    errors?: ErrorWithProfileGuid[];
+    errors?: ErrorWithProfileId[];
   }>;
 }
 

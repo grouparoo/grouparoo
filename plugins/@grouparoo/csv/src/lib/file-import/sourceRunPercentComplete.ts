@@ -5,7 +5,7 @@ export const sourceRunPercentComplete: SourceRunPercentCompleteMethod = async ({
   run,
   sourceOptions,
 }) => {
-  const localPath = await plugin.getLocalFilePath(sourceOptions.fileGuid);
+  const localPath = await plugin.getLocalFilePath(sourceOptions.fileId);
 
   const total: number = await new Promise((resolve, reject) => {
     let i: number;

@@ -13,7 +13,7 @@ import {
 describe("actions/destinations", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let app: App;
-  let guid: string;
+  let id: string;
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -48,18 +48,18 @@ describe("actions/destinations", () => {
         csrfToken,
         name: "test destination",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       };
       const { error, destination } = await specHelper.runAction(
         "destination:create",
         connection
       );
       expect(error).toBeUndefined();
-      expect(destination.guid).toBeTruthy();
-      expect(destination.app.guid).toBe(app.guid);
+      expect(destination.id).toBeTruthy();
+      expect(destination.app.id).toBe(app.id);
       expect(destination.app.name).toBe("test app");
 
-      guid = destination.guid;
+      id = destination.id;
     });
 
     test("only one destination can be created for each app with the same options", async () => {
@@ -67,7 +67,7 @@ describe("actions/destinations", () => {
         csrfToken,
         name: "test destination again",
         type: "test-plugin-export",
-        appGuid: app.guid,
+        appId: app.id,
       };
       const { error } = await specHelper.runAction(
         "destination:create",
@@ -129,7 +129,7 @@ describe("actions/destinations", () => {
     test("an administrator can view a destination", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, destination } = await specHelper.runAction(
         "destination:view",
@@ -137,7 +137,7 @@ describe("actions/destinations", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(destination.guid).toBeTruthy();
+      expect(destination.id).toBeTruthy();
       expect(destination.name).toBe("test destination");
       expect(destination.app.name).toBe("test app");
     });
@@ -145,7 +145,7 @@ describe("actions/destinations", () => {
     test("an administrator can see connectionOptions", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { options, error } = await specHelper.runAction(
         "destination:connectionOptions",
@@ -160,7 +160,7 @@ describe("actions/destinations", () => {
     test("an administrator can see mappingOptions", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const {
         options,
@@ -203,7 +203,7 @@ describe("actions/destinations", () => {
     test("an administrator can set the mapping with valid mappings", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         mapping: {
           "primary-id": "userId",
           "something-else": "email",
@@ -223,7 +223,7 @@ describe("actions/destinations", () => {
     test("an administrator cannot set the mapping with invalid mappings", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         mapping: {
           "something-else": "email",
         },
@@ -240,7 +240,7 @@ describe("actions/destinations", () => {
     test("an administrator can see the exportArrayProperties for this destination", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
       };
       const { error, exportArrayProperties } = await specHelper.runAction(
         "destination:exportArrayProperties",
@@ -253,7 +253,7 @@ describe("actions/destinations", () => {
     test("an administrator cannot set a mapping for an array profile property if it is not allowed by the exportArrayProperties", async () => {
       connection.params = {
         csrfToken,
-        guid,
+        id,
         mapping: { "primary-id": "userId", purchases: "purchases" },
       };
       const { error } = await specHelper.runAction(
@@ -282,8 +282,8 @@ describe("actions/destinations", () => {
       test("an administrator can add a group to be tracked", async () => {
         connection.params = {
           csrfToken,
-          guid,
-          groupGuid: group.guid,
+          id,
+          groupId: group.id,
         };
         const { error } = await specHelper.runAction(
           "destination:trackGroup",
@@ -293,22 +293,22 @@ describe("actions/destinations", () => {
 
         connection.params = {
           csrfToken,
-          guid,
+          id,
         };
         const { destination } = await specHelper.runAction(
           "destination:view",
           connection
         );
-        expect(destination.destinationGroup.guid).toBe(group.guid);
+        expect(destination.destinationGroup.id).toBe(group.id);
       });
 
       test("an administrator can set the destination group memberships", async () => {
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = "remote-group-tag";
+        destinationGroupMemberships[group.id] = "remote-group-tag";
 
         connection.params = {
           csrfToken,
-          guid,
+          id,
           destinationGroupMemberships,
         };
         const { destination, error } = await specHelper.runAction(
@@ -318,7 +318,7 @@ describe("actions/destinations", () => {
         expect(error).toBeFalsy();
         expect(destination.destinationGroupMemberships).toEqual([
           {
-            groupGuid: group.guid,
+            groupId: group.id,
             groupName: group.name,
             remoteKey: "remote-group-tag",
           },
@@ -328,8 +328,8 @@ describe("actions/destinations", () => {
       test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + no profile", async () => {
         connection.params = {
           csrfToken,
-          guid,
-          groupGuid: group.guid,
+          id,
+          groupId: group.id,
         };
         const { error, profile: _profile } = await specHelper.runAction(
           "destination:profilePreview",
@@ -346,8 +346,8 @@ describe("actions/destinations", () => {
       test("an administrator can get a preview of a profile to be exported to a destination, existing mapping & destinationGroupMemberships + profile", async () => {
         connection.params = {
           csrfToken,
-          guid,
-          profileGuid: profile.guid,
+          id,
+          profileId: profile.id,
         };
         const { error, profile: _profile } = await specHelper.runAction(
           "destination:profilePreview",
@@ -363,12 +363,12 @@ describe("actions/destinations", () => {
 
       test("an administrator can get a preview of a profile to be exported to a destination, updated mapping & destinationGroupMemberships", async () => {
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.guid] = "another-group-tag";
+        destinationGroupMemberships[group.id] = "another-group-tag";
 
         connection.params = {
           csrfToken,
-          guid,
-          profileGuid: profile.guid,
+          id,
+          profileId: profile.id,
           destinationGroupMemberships,
           mapping: {
             "primary-id": "userId",
@@ -392,15 +392,15 @@ describe("actions/destinations", () => {
         const colorProperty = await Property.create({
           key: "color",
           type: "string",
-          sourceGuid: source.guid,
+          sourceId: source.id,
         });
         await colorProperty.setOptions({ column: "new_rule" });
         await colorProperty.update({ state: "ready" });
 
         connection.params = {
           csrfToken,
-          guid,
-          groupGuid: group.guid,
+          id,
+          groupId: group.id,
           mapping: {
             "primary-id": "userId",
             color: "color",
@@ -420,18 +420,18 @@ describe("actions/destinations", () => {
       test("an administrator can list and remove a tracked group", async () => {
         connection.params = {
           csrfToken,
-          guid,
+          id,
         };
         const { destination } = await specHelper.runAction(
           "destination:view",
           connection
         );
-        expect(destination.destinationGroup.guid).toBe(group.guid);
+        expect(destination.destinationGroup.id).toBe(group.id);
 
         connection.params = {
           csrfToken,
-          guid,
-          groupGuid: destination.destinationGroup.guid,
+          id,
+          groupId: destination.destinationGroup.id,
         };
         const { error } = await specHelper.runAction(
           "destination:unTrackGroup",
@@ -445,7 +445,7 @@ describe("actions/destinations", () => {
 
         connection.params = {
           csrfToken,
-          guid,
+          id,
         };
         const { success, error } = await specHelper.runAction(
           "destination:export",
@@ -463,15 +463,15 @@ describe("actions/destinations", () => {
         const foundTasks = await specHelper.findEnqueuedTasks("group:run");
         const runs = await Run.scope(null).findAll();
         const runningRunTasks = foundTasks.filter((t) => {
-          const run = runs.filter((r) => r.guid === t.args[0].runGuid)[0];
+          const run = runs.filter((r) => r.id === t.args[0].runId)[0];
           return run.state === "running";
         });
 
         expect(runningRunTasks.length).toBe(1);
         expect(runningRunTasks[0].args[0]).toEqual(
           expect.objectContaining({
-            destinationGuid: guid,
-            groupGuid: destination.destinationGroup.guid,
+            destinationId: id,
+            groupId: destination.destinationGroup.id,
             force: true,
           })
         );
@@ -484,7 +484,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         force: false,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "destination:destroy",
@@ -494,7 +494,7 @@ describe("actions/destinations", () => {
       expect(destroyResponse.success).toBe(true);
 
       const destination = await Destination.scope(null).findOne({
-        where: { guid },
+        where: { id },
       });
       expect(destination.state).toBe("deleted");
     });
@@ -503,7 +503,7 @@ describe("actions/destinations", () => {
       connection.params = {
         csrfToken,
         force: true,
-        guid,
+        id,
       };
       const destroyResponse = await specHelper.runAction(
         "destination:destroy",
@@ -513,7 +513,7 @@ describe("actions/destinations", () => {
       expect(destroyResponse.success).toBe(true);
 
       const destination = await Destination.scope(null).findOne({
-        where: { guid },
+        where: { id },
       });
       expect(destination).toBeFalsy();
     });

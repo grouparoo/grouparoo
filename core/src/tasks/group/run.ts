@@ -15,14 +15,14 @@ export class RunGroup extends CLSTask {
     this.plugins = ["QueueLock"];
     this.queue = "groups";
     this.inputs = {
-      groupGuid: { required: true },
-      runGuid: { required: true },
+      groupId: { required: true },
+      runId: { required: true },
       method: { required: false },
       offset: { required: false },
       highWaterMark: { required: false },
       limit: { required: false },
       force: { required: false },
-      destinationGuid: { required: false },
+      destinationId: { required: false },
     };
   }
 
@@ -35,7 +35,7 @@ export class RunGroup extends CLSTask {
     // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
     const force = params.force || false;
-    const destinationGuid = params.destinationGuid;
+    const destinationId = params.destinationId;
     const method = params.method || "runAddGroupMembers";
     const offset: number = params.offset || 0;
     const highWaterMark: number = params.highWaterMark || 0;
@@ -45,8 +45,8 @@ export class RunGroup extends CLSTask {
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
 
-    const group = await Group.findByGuid(params.groupGuid);
-    const run = await Run.findByGuid(params.runGuid);
+    const group = await Group.findById(params.groupId);
+    const run = await Run.findById(params.runId);
 
     if (run.state === "stopped") return;
 
@@ -68,7 +68,7 @@ export class RunGroup extends CLSTask {
         offset,
         highWaterMark,
         force,
-        destinationGuid
+        destinationId
       );
 
       groupMembersCount = response.groupMembersCount;
@@ -78,7 +78,7 @@ export class RunGroup extends CLSTask {
       groupMembersCount = await group.runRemoveGroupMembers(
         run,
         limit,
-        destinationGuid
+        destinationId
       );
     } else if (method === "removePreviousRunGroupMembers") {
       groupMembersCount = await group.removePreviousRunGroupMembers(run, limit);
@@ -90,36 +90,36 @@ export class RunGroup extends CLSTask {
 
     if (groupMembersCount === 0 && method === "runAddGroupMembers") {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
-        groupGuid: group.guid,
+        runId: run.id,
+        groupId: group.id,
         method: "runRemoveGroupMembers",
         limit,
         offset: 0,
         highWaterMark: 0,
         force,
-        destinationGuid,
+        destinationId,
       });
     } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
-        groupGuid: group.guid,
+        runId: run.id,
+        groupId: group.id,
         method: "removePreviousRunGroupMembers",
         limit,
         offset: 0,
         highWaterMark: 0,
         force,
-        destinationGuid,
+        destinationId,
       });
     } else if (groupMembersCount > 0) {
       await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runGuid: run.guid,
-        groupGuid: group.guid,
+        runId: run.id,
+        groupId: group.id,
         method,
         limit,
         offset: nextOffset,
         highWaterMark: nextHighWaterMark,
         force,
-        destinationGuid,
+        destinationId,
       });
     } else {
       const pendingImports = await run.$count("imports", {

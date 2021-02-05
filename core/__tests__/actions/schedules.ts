@@ -4,7 +4,7 @@ import { Source } from "../../src";
 
 describe("actions/schedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let guid: string;
+  let id: string;
   let source: Source;
 
   beforeAll(async () => {
@@ -43,7 +43,7 @@ describe("actions/schedules", () => {
         csrfToken,
         name: "test schedule",
         type: "test-plugin-import",
-        sourceGuid: source.guid,
+        sourceId: source.id,
         recurring: false,
       };
       const { error, schedule } = await specHelper.runAction(
@@ -51,10 +51,10 @@ describe("actions/schedules", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(schedule.guid).toBeTruthy();
+      expect(schedule.id).toBeTruthy();
       expect(schedule.name).toBe("test schedule");
 
-      guid = schedule.guid;
+      id = schedule.id;
     });
 
     describe("with schedule", () => {
@@ -75,7 +75,7 @@ describe("actions/schedules", () => {
       test("an administrator can edit a schedule", async () => {
         connection.params = {
           csrfToken,
-          guid,
+          id,
           name: "new schedule name",
         };
         const { error, schedule } = await specHelper.runAction(
@@ -83,7 +83,7 @@ describe("actions/schedules", () => {
           connection
         );
         expect(error).toBeUndefined();
-        expect(schedule.guid).toBeTruthy();
+        expect(schedule.id).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
         expect(schedule.state).toBe("draft");
       });
@@ -91,14 +91,14 @@ describe("actions/schedules", () => {
       test("an administrator can view a schedule", async () => {
         connection.params = {
           csrfToken,
-          guid,
+          id,
         };
         const { error, schedule, pluginOptions } = await specHelper.runAction(
           "schedule:view",
           connection
         );
         expect(error).toBeUndefined();
-        expect(schedule.guid).toBeTruthy();
+        expect(schedule.id).toBeTruthy();
         expect(schedule.name).toBe("new schedule name");
 
         expect(pluginOptions[0].key).toBe("maxColumn");
@@ -107,7 +107,7 @@ describe("actions/schedules", () => {
       test("an schedule can be made ready", async () => {
         connection.params = {
           csrfToken,
-          guid,
+          id,
           options: { maxColumn: "createdAt" },
           state: "ready",
         };
@@ -122,7 +122,7 @@ describe("actions/schedules", () => {
       test("an administrator can request a schedule run and enqueue a runConnection task", async () => {
         connection.params = {
           csrfToken,
-          guid,
+          id,
         };
         const { error, success } = await specHelper.runAction(
           "schedule:run",
@@ -133,13 +133,13 @@ describe("actions/schedules", () => {
 
         const tasks = await specHelper.findEnqueuedTasks("schedule:run");
         expect(tasks.length).toBe(1);
-        expect(tasks[0].args[0].scheduleGuid).toBe(guid);
+        expect(tasks[0].args[0].scheduleId).toBe(id);
       });
 
       test("an administrator can destroy a connection", async () => {
         connection.params = {
           csrfToken,
-          guid: guid,
+          id: id,
         };
 
         const destroyResponse = await specHelper.runAction(

@@ -83,7 +83,7 @@ describe("actions/cluster", () => {
         );
 
         expect(error).toBeUndefined();
-        expect(teamMember.guid).toBeTruthy();
+        expect(teamMember.id).toBeTruthy();
       });
 
       test("log messages were created", async () => {

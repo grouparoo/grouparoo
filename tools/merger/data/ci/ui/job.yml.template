@@ -22,7 +22,9 @@
     steps:
       - checkout
       - restore_cache:
-          <<: *node-module-cache-options
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -39,7 +41,7 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
+          command: cd {{{relative_path}}}/{{{test_section}}} && ./node_modules/.bin/jest --ci --maxWorkers 2
           environment:
             SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
 {{{custom_test}}}

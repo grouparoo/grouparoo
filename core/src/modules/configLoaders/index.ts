@@ -5,7 +5,7 @@ import glob from "glob";
 import {
   ConfigurationObject,
   sortConfigurationObjects,
-  GuidsByClass,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
@@ -32,12 +32,12 @@ export async function loadConfigDirectory(
   configDir: string,
   externallyValidate: boolean = true
 ): Promise<{
-  seenGuids: GuidsByClass;
+  seenIds: IdsByClass;
   errors: string[];
-  deletedGuids: GuidsByClass;
+  deletedIds: IdsByClass;
 }> {
-  let seenGuids: GuidsByClass = {};
-  let deletedGuids: GuidsByClass = {};
+  let seenIds: IdsByClass = {};
+  let deletedIds: IdsByClass = {};
   let errors: string[] = [];
 
   const configObjects = await loadConfigObjects(configDir);
@@ -47,15 +47,15 @@ export async function loadConfigDirectory(
       configObjects,
       externallyValidate
     );
-    seenGuids = response.seenGuids;
+    seenIds = response.seenIds;
     errors = response.errors;
 
     if (errors.length === 0) {
-      deletedGuids = await deleteLockedObjects(seenGuids);
+      deletedIds = await deleteLockedObjects(seenIds);
     }
   }
 
-  return { seenGuids, errors, deletedGuids };
+  return { seenIds, errors, deletedIds };
 }
 
 export async function loadConfigObjects(
@@ -77,7 +77,7 @@ export async function loadConfigObjects(
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
   let payload;
   if (file.match(/\.json$/)) {
-    payload = JSON5.parse(fs.readFileSync(file));
+    payload = JSON5.parse(fs.readFileSync(file).toString());
   } else {
     payload = require(file);
   }
@@ -95,8 +95,8 @@ export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
   validate = false
-): Promise<{ seenGuids: GuidsByClass; errors: string[] }> {
-  const seenGuids: GuidsByClass = {
+): Promise<{ seenIds: IdsByClass; errors: string[] }> {
+  const seenIds: IdsByClass = {
     app: [],
     source: [],
     property: [],
@@ -115,50 +115,42 @@ export async function processConfigObjects(
     const configObject = configObjects[i];
     if (Object.keys(configObject).length === 0) continue;
     let klass = configObject?.class?.toLowerCase();
-    let guids: GuidsByClass;
+    let ids: IdsByClass;
     try {
       switch (klass) {
         case "setting":
-          guids = await loadSetting(configObject, externallyValidate, validate);
+          ids = await loadSetting(configObject, externallyValidate, validate);
           break;
         case "app":
-          guids = await loadApp(configObject, externallyValidate, validate);
+          ids = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          guids = await loadSource(configObject, externallyValidate, validate);
+          ids = await loadSource(configObject, externallyValidate, validate);
           break;
         case "property":
-          guids = await loadProperty(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          ids = await loadProperty(configObject, externallyValidate, validate);
           break;
         case "group":
-          guids = await loadGroup(configObject, externallyValidate, validate);
+          ids = await loadGroup(configObject, externallyValidate, validate);
           break;
         case "schedule":
-          guids = await loadSchedule(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          ids = await loadSchedule(configObject, externallyValidate, validate);
           break;
         case "destination":
-          guids = await loadDestination(
+          ids = await loadDestination(
             configObject,
             externallyValidate,
             validate
           );
           break;
         case "apikey":
-          guids = await loadApiKey(configObject, externallyValidate, validate);
+          ids = await loadApiKey(configObject, externallyValidate, validate);
           break;
         case "team":
-          guids = await loadTeam(configObject, externallyValidate, validate);
+          ids = await loadTeam(configObject, externallyValidate, validate);
           break;
         case "teammember":
-          guids = await loadTeamMember(
+          ids = await loadTeamMember(
             configObject,
             externallyValidate,
             validate
@@ -175,7 +167,7 @@ export async function processConfigObjects(
             externallyValidate,
             validate
           );
-          guids = expanded.seenGuids;
+          ids = expanded.seenIds;
           errors.push(...expanded.errors);
           break;
         default:
@@ -190,18 +182,18 @@ export async function processConfigObjects(
       continue;
     }
 
-    // should set guids in all cases
-    for (const className in guids) {
-      const newGuids = guids[className];
-      seenGuids[className].push(...newGuids);
+    // should set ids in all cases
+    for (const className in ids) {
+      const newIds = ids[className];
+      seenIds[className].push(...newIds);
     }
   }
 
-  return { seenGuids, errors };
+  return { seenIds, errors };
 }
 
-async function deleteLockedObjects(seenGuids): Promise<GuidsByClass> {
-  const deletedGuids: GuidsByClass = {
+export async function deleteLockedObjects(seenIds) {
+  const deletedIds: IdsByClass = {
     app: [],
     source: [],
     property: [],
@@ -213,24 +205,23 @@ async function deleteLockedObjects(seenGuids): Promise<GuidsByClass> {
     teammember: [],
   };
 
-  deletedGuids["teammember"] = await deleteTeamMembers(seenGuids.teammember);
-  deletedGuids["team"] = await deleteTeams(seenGuids.team);
-  deletedGuids["apikey"] = await deleteApiKeys(seenGuids.apikey);
-  deletedGuids["destination"] = await deleteDestinations(seenGuids.destination);
-  deletedGuids["schedule"] = await deleteSchedules(seenGuids.schedule);
-  deletedGuids["group"] = await deleteGroups(seenGuids.group);
-  deletedGuids["property"] = await deleteProperties(seenGuids.property);
+  deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);
+  deletedIds["team"] = await deleteTeams(seenIds.team);
+  deletedIds["apikey"] = await deleteApiKeys(seenIds.apikey);
+  deletedIds["destination"] = await deleteDestinations(seenIds.destination);
+  deletedIds["schedule"] = await deleteSchedules(seenIds.schedule);
+  deletedIds["group"] = await deleteGroups(seenIds.group);
+  deletedIds["property"] = await deleteProperties(seenIds.property);
   // might return a bootstrapped property, needs special processing
-  const deletedSourceGuids = await deleteSources(seenGuids.source);
-  deletedGuids["source"] = deletedSourceGuids.filter((g) => g.match(/^src_/));
-  deletedSourceGuids
-    .filter((g) => g.match(/^rul_/))
-    .filter((g) => !deletedGuids["property"].includes(g))
-    .forEach((g) => deletedGuids["property"].push(g));
+  const deletedSourceIds = await deleteSources(seenIds.source);
+  deletedIds["source"] = deletedSourceIds.source;
+  deletedSourceIds.property.map((id) => {
+    if (!deletedIds["property"].includes(id)) deletedIds["property"].push(id);
+  });
   // back to normal
-  deletedGuids["app"] = await deleteApps(seenGuids.app);
+  deletedIds["app"] = await deleteApps(seenIds.app);
 
-  return deletedGuids;
+  return deletedIds;
 }
 
 export function logFatalError(message) {

@@ -36,7 +36,7 @@ export class TeamInitialize extends CLSAction {
     });
 
     teamMember = await TeamMember.create({
-      teamGuid: team.guid,
+      teamId: team.id,
       email: params.email,
       firstName: params.firstName,
       lastName: params.lastName,
@@ -102,7 +102,7 @@ export class TeamEdit extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
       name: { required: false },
       permissionAllRead: { required: false },
       permissionAllWrite: { required: false },
@@ -113,7 +113,7 @@ export class TeamEdit extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    const team = await Team.findByGuid(params.guid);
+    const team = await Team.findById(params.id);
     const updateParams = Object.assign({}, params);
     if (params.disabledPermissionAllRead) updateParams.permissionAllRead = null;
 
@@ -144,13 +144,13 @@ export class TeamView extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "read" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
     const team = await Team.findOne({
-      where: { guid: params.guid },
+      where: { id: params.id },
       include: [{ model: TeamMember }],
       order: [[api.sequelize.literal(`"teamMembers.email"`), "desc"]],
     });
@@ -176,12 +176,12 @@ export class TeamDestroy extends AuthenticatedAction {
     this.outputExample = {};
     this.permission = { topic: "team", mode: "write" };
     this.inputs = {
-      guid: { required: true },
+      id: { required: true },
     };
   }
 
   async runWithinTransaction({ params }) {
-    const team = await Team.findByGuid(params.guid);
+    const team = await Team.findById(params.id);
     await team.destroy();
     return { success: true };
   }

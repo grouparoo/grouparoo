@@ -14,7 +14,7 @@ export interface ConnectionOptionsMethod {
   (argument: {
     connection: any;
     app: App;
-    appGuid: string;
+    appId: string;
     appOptions: SimpleAppOptions;
     sourceOptions?: SimpleSourceOptions;
     destinationOptions?: SimpleDestinationOptions;
