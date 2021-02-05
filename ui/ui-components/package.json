@@ -31,7 +31,7 @@
     "@fortawesome/react-fontawesome": "0.1.14",
     "@grouparoo/core": "^0.2.0-alpha.20",
     "@grouparoo/spec-helper": "^0.2.0-alpha.20",
-    "@nivo/line": "0.62.0",
+    "@nivo/line": "0.66.0",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
