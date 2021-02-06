@@ -3,12 +3,15 @@ import { Component } from "react";
 export default class Swagger extends Component {
   componentDidMount() {
     // we need to wait for didMount as swagger won't render with SSR
-    const SwaggerUi = require("swagger-ui");
+    const { SwaggerUIBundle } = require("swagger-ui-dist");
 
-    const swagger = SwaggerUi({
+    const swagger = SwaggerUIBundle({
       dom_id: "#swaggerContainer",
       url: `/api/v1/swagger`,
-      presets: [SwaggerUi.presets.apis],
+      presets: [
+        SwaggerUIBundle.presets.apis,
+        SwaggerUIBundle.SwaggerUIStandalonePreset,
+      ],
       deepLinking: true,
       docExpansion: "none",
       filter: true,
