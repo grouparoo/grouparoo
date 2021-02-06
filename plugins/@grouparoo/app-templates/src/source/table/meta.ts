@@ -122,6 +122,7 @@ export const buildConnection: BuildConnectionMethod = ({
       profileProperty,
       profileProperties,
       sourceRunPercentComplete,
+      getColumns, // powers syncTable with the column types
     },
   };
 };

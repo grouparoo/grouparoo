@@ -4,8 +4,8 @@ import fs from "fs";
 import glob from "glob";
 import {
   ConfigurationObject,
-  sortConfigurationObject,
-  validateAndFormatId,
+  sortConfigurationObjects,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
@@ -16,22 +16,11 @@ import { loadTeamMember, deleteTeamMembers } from "./teamMember";
 import { loadGroup, deleteGroups } from "./group";
 import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
+import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
 import { Property } from "../../models/Property";
-
-interface idsByClass {
-  app: string[];
-  source: string[];
-  property: string[];
-  group: string[];
-  schedule: string[];
-  destination: string[];
-  apikey: string[];
-  team: string[];
-  teammember: string[];
-}
 
 export function getConfigDir() {
   const configDir =
@@ -39,16 +28,25 @@ export function getConfigDir() {
   return configDir;
 }
 
-export async function loadConfigDirectory(configDir: string) {
-  let seenIds = {};
-  let deletedIds = {};
-  let errors = [];
+export async function loadConfigDirectory(
+  configDir: string,
+  externallyValidate: boolean = true
+): Promise<{
+  seenIds: IdsByClass;
+  errors: string[];
+  deletedIds: IdsByClass;
+}> {
+  let seenIds: IdsByClass = {};
+  let deletedIds: IdsByClass = {};
+  let errors: string[] = [];
 
-  const { configObjects, configFiles } = await loadConfigObjects(configDir);
+  const configObjects = await loadConfigObjects(configDir);
 
-  if (configFiles.length > 0) {
-    const sortedConfigObjects = sortConfigurationObject(configObjects);
-    const response = await processConfigObjects(sortedConfigObjects, true);
+  if (configObjects !== null) {
+    const response = await processConfigObjects(
+      configObjects,
+      externallyValidate
+    );
     seenIds = response.seenIds;
     errors = response.errors;
 
@@ -60,7 +58,9 @@ export async function loadConfigDirectory(configDir: string) {
   return { seenIds, errors, deletedIds };
 }
 
-export async function loadConfigObjects(configDir: string) {
+export async function loadConfigObjects(
+  configDir: string
+): Promise<ConfigurationObject[]> {
   const globSearch = path.join(configDir, "**", "+(*.json|*.js)");
   const configFiles = glob.sync(globSearch);
   let configObjects: ConfigurationObject[] = [];
@@ -68,7 +68,10 @@ export async function loadConfigObjects(configDir: string) {
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
   configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
-  return { configObjects, configFiles };
+  if (configFiles.length === 0) {
+    return null;
+  }
+  return configObjects;
 }
 
 async function loadConfigFile(file: string): Promise<ConfigurationObject> {
@@ -92,8 +95,8 @@ export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
   validate = false
-) {
-  const seenIds: idsByClass = {
+): Promise<{ seenIds: IdsByClass; errors: string[] }> {
+  const seenIds: IdsByClass = {
     app: [],
     source: [],
     property: [],
@@ -106,70 +109,66 @@ export async function processConfigObjects(
   };
   const errors: string[] = [];
 
+  configObjects = sortConfigurationObjects(configObjects);
+
   for (const i in configObjects) {
     const configObject = configObjects[i];
     if (Object.keys(configObject).length === 0) continue;
-    let klass = configObject?.class?.toLocaleLowerCase();
-    let object;
+    let klass = configObject?.class?.toLowerCase();
+    let ids: IdsByClass;
     try {
       switch (klass) {
         case "setting":
-          object = await loadSetting(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          ids = await loadSetting(configObject, externallyValidate, validate);
           break;
         case "app":
-          object = await loadApp(configObject, externallyValidate, validate);
+          ids = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          object = await loadSource(configObject, externallyValidate, validate);
-          if (configObject.bootstrappedProperty) {
-            seenIds["property"].push(
-              await validateAndFormatId(
-                Property,
-                configObject.bootstrappedProperty.id
-              )
-            );
-          }
+          ids = await loadSource(configObject, externallyValidate, validate);
           break;
         case "property":
-          object = await loadProperty(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          ids = await loadProperty(configObject, externallyValidate, validate);
           break;
         case "group":
-          object = await loadGroup(configObject, externallyValidate, validate);
+          ids = await loadGroup(configObject, externallyValidate, validate);
           break;
         case "schedule":
-          object = await loadSchedule(
-            configObject,
-            externallyValidate,
-            validate
-          );
+          ids = await loadSchedule(configObject, externallyValidate, validate);
           break;
         case "destination":
-          object = await loadDestination(
+          ids = await loadDestination(
             configObject,
             externallyValidate,
             validate
           );
           break;
         case "apikey":
-          object = await loadApiKey(configObject, externallyValidate, validate);
+          ids = await loadApiKey(configObject, externallyValidate, validate);
           break;
         case "team":
-          object = await loadTeam(configObject, externallyValidate, validate);
+          ids = await loadTeam(configObject, externallyValidate, validate);
           break;
         case "teammember":
-          object = await loadTeamMember(
+          ids = await loadTeamMember(
             configObject,
             externallyValidate,
             validate
           );
+          break;
+        case "synctable":
+          const many = await expandSyncTable(
+            configObject,
+            externallyValidate,
+            validate
+          );
+          const expanded = await processConfigObjects(
+            many,
+            externallyValidate,
+            validate
+          );
+          ids = expanded.seenIds;
+          errors.push(...expanded.errors);
           break;
         default:
           throw new Error(`unknown config object class: ${configObject.class}`);
@@ -183,14 +182,18 @@ export async function processConfigObjects(
       continue;
     }
 
-    if (klass !== "setting") seenIds[klass].push(object.id);
+    // should set ids in all cases
+    for (const className in ids) {
+      const newIds = ids[className];
+      seenIds[className].push(...newIds);
+    }
   }
 
   return { seenIds, errors };
 }
 
 export async function deleteLockedObjects(seenIds) {
-  const deletedIds: idsByClass = {
+  const deletedIds: IdsByClass = {
     app: [],
     source: [],
     property: [],

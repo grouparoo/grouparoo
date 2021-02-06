@@ -6,6 +6,7 @@ import {
   getCodeConfigLockKey,
   extractNonNullParts,
   validateConfigObjectKeys,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
@@ -14,7 +15,7 @@ export async function loadSchedule(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   let isNew = false;
   const id = await validateAndFormatId(Schedule, configObject.id);
   validateConfigObjectKeys(Schedule, configObject);
@@ -44,7 +45,7 @@ export async function loadSchedule(
 
   logModel(schedule, validate ? "validated" : isNew ? "created" : "updated");
 
-  return schedule;
+  return { schedule: [schedule.id] };
 }
 
 export async function deleteSchedules(ids: string[]) {

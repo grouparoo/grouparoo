@@ -5,7 +5,6 @@ import {
   loadConfigObjects,
   processConfigObjects,
 } from "../../../src/modules/configLoaders";
-import { sortConfigurationObject } from "../../../src/classes/codeConfig";
 
 import {
   Property,
@@ -63,13 +62,12 @@ describe("modules/codeConfig", () => {
         "initial"
       );
 
-      const { configObjects } = await loadConfigObjects(dir);
-      const sortedConfigObjects = sortConfigurationObject(configObjects);
+      const configObjects = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
           const { errors, seenIds } = await processConfigObjects(
-            sortedConfigObjects,
+            configObjects,
             true,
             true
           );
@@ -104,13 +102,12 @@ describe("modules/codeConfig", () => {
         "error-group"
       );
 
-      const { configObjects } = await loadConfigObjects(dir);
-      const sortedConfigObjects = sortConfigurationObject(configObjects);
+      const configObjects = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
           const { errors } = await processConfigObjects(
-            sortedConfigObjects,
+            configObjects,
             true,
             true
           );
@@ -138,13 +135,12 @@ describe("modules/codeConfig", () => {
         "error-group"
       );
 
-      const { configObjects } = await loadConfigObjects(dir);
-      const sortedConfigObjects = sortConfigurationObject(configObjects);
+      const configObjects = await loadConfigObjects(dir);
 
       await expect(
         api.sequelize.transaction(async () => {
           const { errors } = await processConfigObjects(
-            sortedConfigObjects,
+            configObjects,
             false, // <-- here
             true
           );

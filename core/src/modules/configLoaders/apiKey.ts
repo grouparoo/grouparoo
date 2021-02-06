@@ -4,6 +4,7 @@ import {
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { ApiKey, Permission } from "../..";
 import { Op } from "sequelize";
@@ -12,7 +13,7 @@ export async function loadApiKey(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const id = await validateAndFormatId(ApiKey, configObject.id);
@@ -61,7 +62,7 @@ export async function loadApiKey(
 
   logModel(apiKey, validate ? "validated" : isNew ? "created" : "updated");
 
-  return apiKey;
+  return { apikey: [apiKey.id] };
 }
 
 export async function deleteApiKeys(ids: string[]) {

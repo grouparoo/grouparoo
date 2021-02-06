@@ -100,8 +100,8 @@ export namespace AppOps {
     if (!options) options = await app.getOptions(true);
     options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
 
+    let connection;
     try {
-      let connection;
       if (pluginApp.methods.connect) {
         connection = await pluginApp.methods.connect({
           app,
@@ -118,15 +118,6 @@ export namespace AppOps {
       });
       message = result.message;
       success = result.success;
-
-      if (pluginApp.methods.disconnect) {
-        await pluginApp.methods.disconnect({
-          connection,
-          app,
-          appId: app.id,
-          appOptions: options,
-        });
-      }
     } catch (err) {
       error = err.message || err.toString();
       success = false;
@@ -134,6 +125,15 @@ export namespace AppOps {
         `[ app ] testing app ${app.name} (${app.id}) threw error: ${error}`,
         "notice"
       );
+    } finally {
+      if (connection && pluginApp.methods.disconnect) {
+        await pluginApp.methods.disconnect({
+          connection,
+          app,
+          appId: app.id,
+          appOptions: options,
+        });
+      }
     }
 
     return { success, message, error };

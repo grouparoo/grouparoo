@@ -15,8 +15,7 @@ describe("classes/codeConfig", () => {
         "initial"
       );
 
-      const res = await loadConfigObjects(dir);
-      configObjects = res.configObjects;
+      configObjects = await loadConfigObjects(dir);
     });
 
     test("includes its id as a provided id", async () => {

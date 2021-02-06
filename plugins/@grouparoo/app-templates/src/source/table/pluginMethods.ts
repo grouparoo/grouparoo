@@ -1,4 +1,4 @@
-import { SimpleAppOptions } from "@grouparoo/core";
+import { PropertyTypes, SimpleAppOptions } from "@grouparoo/core";
 export { SimpleAppOptions };
 
 import { DataResponse, DataResponseRow } from "../shared/types";
@@ -46,9 +46,11 @@ export interface MatchCondition {
   //     relativeMatchDirection?: string;
   // }
 }
+export type ColumnType = typeof PropertyTypes[number];
 export interface ColumnDefinition {
   name: string;
   filterOperations: FilterOperation[];
+  type: ColumnType;
   data?: any;
 }
 export interface ColumnDefinitionMap {

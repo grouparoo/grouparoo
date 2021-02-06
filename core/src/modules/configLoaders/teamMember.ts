@@ -2,6 +2,7 @@ import {
   ConfigurationObject,
   getCodeConfigLockKey,
   getParentByName,
+  IdsByClass,
   logModel,
   validateAndFormatId,
   validateConfigObjectKeys,
@@ -13,7 +14,7 @@ export async function loadTeamMember(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const team: Team = await getParentByName(Team, configObject.teamId);
@@ -49,7 +50,7 @@ export async function loadTeamMember(
 
   logModel(teamMember, validate ? "validated" : isNew ? "created" : "updated");
 
-  return teamMember;
+  return { teammember: [teamMember.id] };
 }
 
 export async function deleteTeamMembers(ids: string[]) {

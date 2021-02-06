@@ -4,6 +4,7 @@ import {
   getCodeConfigLockKey,
   validateAndFormatId,
   validateConfigObjectKeys,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { Team, Permission } from "../..";
 import { Op } from "sequelize";
@@ -12,7 +13,7 @@ export async function loadTeam(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   let isNew = false;
 
   const id = await validateAndFormatId(Team, configObject.id);
@@ -61,7 +62,7 @@ export async function loadTeam(
 
   logModel(team, validate ? "validated" : isNew ? "created" : "updated");
 
-  return team;
+  return { team: [team.id] };
 }
 
 export async function deleteTeams(ids: string[]) {

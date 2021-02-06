@@ -5,6 +5,7 @@ import {
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { App } from "../..";
 import { Op } from "sequelize";
@@ -13,7 +14,7 @@ export async function loadApp(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   let isNew = false;
   const id = await validateAndFormatId(App, configObject.id);
   validateConfigObjectKeys(App, configObject);
@@ -49,7 +50,7 @@ export async function loadApp(
 
   logModel(app, validate ? "validated" : isNew ? "created" : "updated");
 
-  return app;
+  return { app: [app.id] };
 }
 
 export async function deleteApps(ids: string[]) {

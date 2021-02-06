@@ -2,10 +2,22 @@ import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
 
+export interface IdsByClass {
+  app?: string[];
+  source?: string[];
+  property?: string[];
+  group?: string[];
+  schedule?: string[];
+  destination?: string[];
+  apikey?: string[];
+  team?: string[];
+  teammember?: string[];
+}
+
 export interface ConfigurationObject {
-  id: string;
-  class: string;
-  type: string;
+  id?: string;
+  class?: string;
+  type?: string;
   name?: string;
   key?: string;
   appId?: string;
@@ -19,13 +31,26 @@ export interface ConfigurationObject {
   isArray?: boolean;
   rules?: GroupRuleWithKey[];
   recurring?: boolean;
-  recurringFrequency: number;
+  recurringFrequency?: number;
   groupId?: string;
   pluginName?: string;
   permissions?: Array<{ id: string; read: boolean; write: boolean }>;
-  value: string | boolean | number;
-  bootstrappedProperty?: ConfigurationObject;
+  value?: string | boolean | number;
   mapping?: { [key: string]: any };
+  bootstrappedProperty?: ConfigurationObject;
+  destinationGroupMemberships?: { [key: string]: string };
+
+  // For SyncTable
+  source?: ConfigurationObject;
+  identityProperty?: ConfigurationObject;
+  schedule?: ConfigurationObject;
+  destination?: ConfigurationObject;
+  group?: ConfigurationObject;
+  sync?: any;
+  table?: string;
+  userKeyColumn?: string;
+  userKeyMapsToPropertyId?: string;
+  highWaterColumn?: string;
 }
 
 interface orderedConfigObject {
@@ -56,7 +81,9 @@ export async function getParentByName(model: any, parentId: string) {
 }
 
 export async function validateAndFormatId(model: any, id: string) {
-  if (!id) throw new Error("id is required");
+  if (!id) {
+    throw new Error("id is required");
+  }
 
   let failing = false;
   if (id.match(/\s/)) failing = true;
@@ -137,7 +164,9 @@ export function extractNonNullParts(
   return cleanedOptions;
 }
 
-export function sortConfigurationObject(configObjects: ConfigurationObject[]) {
+export function sortConfigurationObjects(
+  configObjects: ConfigurationObject[]
+): ConfigurationObject[] {
   const configObjectsWithIds: orderedConfigObject[] = [];
 
   for (const i in configObjects) {
@@ -176,7 +205,7 @@ export function getParentIds(configObject: ConfigurationObject) {
     }
   }
 
-  const objectContainers = ["options"];
+  const objectContainers = ["options", "source", "destination"];
   objectContainers.map((_container) => {
     if (configObject[_container]) {
       const containerKeys = Object.keys(configObject[_container]);

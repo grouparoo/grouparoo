@@ -3,6 +3,7 @@ import {
   logModel,
   getCodeConfigLockKey,
   validateConfigObjectKeys,
+  IdsByClass,
 } from "../../classes/codeConfig";
 import { plugin } from "../..";
 import { Setting } from "../../models/Setting";
@@ -11,7 +12,7 @@ export async function loadSetting(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
   validate = false
-) {
+): Promise<IdsByClass> {
   validateConfigObjectKeys(Setting, configObject);
 
   const setting = await plugin.updateSetting(
@@ -23,5 +24,7 @@ export async function loadSetting(
   await setting.update({ locked: getCodeConfigLockKey() });
 
   logModel(setting, validate ? "validated" : "updated");
-  return setting;
+
+  // Settings is a special case that is not in the seenIds
+  return {};
 }

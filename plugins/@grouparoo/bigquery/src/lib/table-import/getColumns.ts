@@ -2,6 +2,7 @@ import {
   GetColumnDefinitionsMethod,
   ColumnDefinitionMap,
   FilterOperation,
+  ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
@@ -26,37 +27,58 @@ export const getColumnsInternal = async ({ connection, tableName }) => {
   const map: ColumnDefinitionMap = {};
   for (const row of rows) {
     const name = row.column_name;
+    const { type, filterOperations } = getTypeInfo(row.data_type);
     map[row.column_name] = {
       name,
-      filterOperations: getFilterOperations(row.data_type),
+      type,
+      filterOperations,
       data: row,
     };
   }
   return map;
 };
 
-const getFilterOperations = function (dataType: string): FilterOperation[] {
+const getTypeInfo = function (
+  dataType: string
+): { type: ColumnType; filterOperations: FilterOperation[] } {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
+  let type: ColumnType = null;
+  let compare = false;
+  let contains = false;
 
   switch (dataType) {
     case "DATE":
     case "DATETIME":
+      type = "date";
+      compare = true;
+      break;
+
     case "TIME":
     case "TIMESTAMP":
-    case "NUMERIC":
+      // TODO: time type without date
+      compare = true;
+      break;
+
     case "INT64":
+      type = "integer";
+      compare = true;
+      break;
+
+    case "NUMERIC":
     case "FLOAT64":
-      ops.push(FilterOperation.GreaterThan);
-      ops.push(FilterOperation.GreaterThanOrEqual);
-      ops.push(FilterOperation.LessThan);
-      ops.push(FilterOperation.LessThanOrEqual);
+      type = "float";
+      compare = true;
       break;
+
     case "STRING":
-      ops.push(FilterOperation.Contain);
-      ops.push(FilterOperation.NotContain);
+      type = "string";
+      contains = true;
       break;
+
     case "BOOL":
+      type = "boolean";
       break;
+
     case "GEOGRAPHY":
     case "ARRAY":
     case "STRUCT":
@@ -65,5 +87,15 @@ const getFilterOperations = function (dataType: string): FilterOperation[] {
       break;
   }
 
-  return ops;
+  if (compare) {
+    ops.push(FilterOperation.GreaterThan);
+    ops.push(FilterOperation.GreaterThanOrEqual);
+    ops.push(FilterOperation.LessThan);
+    ops.push(FilterOperation.LessThanOrEqual);
+  }
+  if (contains) {
+    ops.push(FilterOperation.Contain);
+    ops.push(FilterOperation.NotContain);
+  }
+  return { type, filterOperations: ops };
 };
