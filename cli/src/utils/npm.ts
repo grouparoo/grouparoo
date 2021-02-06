@@ -10,6 +10,12 @@ export namespace NPM {
     npm_config_loglevel = "error"
   ) {
     const args = ["install"];
+
+    const npmCheck = await spawnPromise("npm", ["--version"]);
+    const npmVersion = npmCheck.stdout.trim();
+    const majorNPMVersion = parseInt(npmVersion.split(".")[0]);
+    if (majorNPMVersion === 7) args.push("--legacy-peer-deps");
+
     if (pkg) args.push(pkg);
     if (args.length > 0 && exact) args.unshift("--save-exact");
 
