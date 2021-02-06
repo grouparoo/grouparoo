@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-community",
   "description": "The Grouparoo Community Web UI",
-  "version": "0.2.0-alpha.21",
+  "version": "0.2.0-alpha.22",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -56,9 +56,9 @@
     "swagger-ui-dist": "3.42.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.0-alpha.21",
-    "@grouparoo/spec-helper": "^0.2.0-alpha.21",
-    "@grouparoo/ui-components": "^0.2.0-alpha.21",
+    "@grouparoo/core": "^0.2.0-alpha.22",
+    "@grouparoo/spec-helper": "^0.2.0-alpha.22",
+    "@grouparoo/ui-components": "^0.2.0-alpha.22",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
@@ -70,6 +70,10 @@
     "prop-types": "15.7.2",
     "ts-jest": "26.4.4",
     "typescript": "4.1.3"
+  },
+  "acceptDependencies": {
+    "react": "^16 || ^17",
+    "react-dom": "^16 || ^17"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
 }
