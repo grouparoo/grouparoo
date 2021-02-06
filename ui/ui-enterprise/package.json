@@ -32,8 +32,8 @@
     "@fortawesome/fontawesome-svg-core": "1.2.34",
     "@fortawesome/free-solid-svg-icons": "5.15.1",
     "@fortawesome/react-fontawesome": "0.1.14",
-    "@nivo/core": "0.66.0",
-    "@nivo/line": "0.66.0",
+    "@nivo/core": "0.67.0",
+    "@nivo/line": "0.67.0",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "0.21.1",
     "date-fns": "2.16.1",
@@ -54,7 +54,7 @@
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
     "styled-jsx": "3.4.1",
-    "swagger-ui": "3.40.0"
+    "swagger-ui-dist": "3.42.0"
   },
   "devDependencies": {
     "@grouparoo/core": "^0.2.0-alpha.21",
