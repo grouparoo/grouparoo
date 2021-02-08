@@ -422,7 +422,6 @@ describe("models/source", () => {
       const property = await Property.findOne({
         where: { identifying: true },
       });
-      console.log({ property });
       property.identifying = false;
       await property.save();
     });
@@ -459,13 +458,13 @@ describe("models/source", () => {
     });
   });
 
-  describe("edge case: bootstrapUniqueProperty", () => {
+  describe("edge cases: bootstrapUniqueProperty", () => {
     let source: Source;
 
     beforeAll(async () => {
       source = await Source.create({
         type: "test-plugin-import",
-        name: "test source",
+        name: "test source 2",
         appId: app.id,
       });
       await source.setOptions({ table: "some table" });
@@ -491,7 +490,6 @@ describe("models/source", () => {
 
     test("bootstrapUniqueProperty will create a new non-identifying property", async () => {
       // there is already an identifying property
-
       const property = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
@@ -505,6 +503,15 @@ describe("models/source", () => {
       expect(property.state).toBe("ready");
       expect(property.unique).toBe(true);
 
+      // can it be changed even though source is not ready
+      await property.update({ name: "changed" });
+      // can get the source ready
+      await source.setMapping({ uniqueId: "uniqueId" });
+      await source.update({ state: "ready" });
+      // and still change
+      await property.update({ name: "changed again" });
+
+      await source.setMapping({});
       await property.destroy();
     });
   });
