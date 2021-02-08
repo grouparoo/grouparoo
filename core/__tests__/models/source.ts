@@ -422,11 +422,12 @@ describe("models/source", () => {
       const property = await Property.findOne({
         where: { identifying: true },
       });
+      console.log({ property });
       property.identifying = false;
       await property.save();
     });
 
-    test("bootstrapUniqueProperty will create a new property", async () => {
+    test("bootstrapUniqueProperty will create a new identifying property", async () => {
       const property = await source.bootstrapUniqueProperty(
         "uniqueId",
         "integer",
@@ -455,6 +456,56 @@ describe("models/source", () => {
       await expect(
         source.bootstrapUniqueProperty("userId", "integer", "id")
       ).rejects.toThrow(/already in use/);
+    });
+  });
+
+  describe("edge case: bootstrapUniqueProperty", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+      await source.setOptions({ table: "some table" });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+    });
+
+    test("it can make a property identifying", async () => {
+      const property = await Property.findOne({
+        where: { identifying: true },
+      });
+      if (!property) {
+        // make sure it really has one
+        const userId = await Property.findOne({
+          where: { key: "userId" },
+        });
+        userId.identifying = true;
+        await userId.save();
+      }
+    });
+
+    test("bootstrapUniqueProperty will create a new non-identifying property", async () => {
+      // there is already an identifying property
+
+      const property = await source.bootstrapUniqueProperty(
+        "uniqueId",
+        "integer",
+        "id"
+      );
+
+      expect(property.key).toBe("uniqueId");
+      expect(property.type).toBe("integer");
+      expect(property.isArray).toBe(false);
+      expect(property.identifying).toBe(false);
+      expect(property.state).toBe("ready");
+      expect(property.unique).toBe(true);
+
+      await property.destroy();
     });
   });
 
