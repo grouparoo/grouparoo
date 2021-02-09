@@ -44,7 +44,7 @@ const isImportant = (key): Boolean => {
   return importantFields.includes(key);
 };
 
-const mapTypesFromIterableToGrouparoo = (fieldKey, iterableType) => {
+const mapTypesFromSendgridToGrouparoo = (fieldKey, sendgridType) => {
   switch (fieldKey) {
     case "phone_number":
       return "phoneNumber";
@@ -53,7 +53,7 @@ const mapTypesFromIterableToGrouparoo = (fieldKey, iterableType) => {
     Text: "string",
     Date: "date",
   };
-  const grouparooType = map[iterableType];
+  const grouparooType = map[sendgridType];
   if (grouparooType) {
     return grouparooType;
   }
@@ -74,7 +74,7 @@ export const getUserFields = async (
 
   for (const field of fields) {
     if (field["name"] !== "email") {
-      const type: DestinationMappingOptionsResponseTypes = mapTypesFromIterableToGrouparoo(
+      const type: DestinationMappingOptionsResponseTypes = mapTypesFromSendgridToGrouparoo(
         field["name"],
         field["field_type"]
       );

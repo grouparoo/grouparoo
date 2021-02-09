@@ -17,11 +17,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/destination-mapping-options");
+const newNock = false;
+require("./../fixtures/destination-mapping-options");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -41,9 +41,6 @@ describe("sendgrid/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client);
-    const user = await client.getUser("ourixilva@gmail.com");
-    console.log(user);
-
     const phoneNumber = fields.find((f) => f.key === "phone_number");
     expect(phoneNumber.type).toBe("phoneNumber");
     expect(phoneNumber.important).toBe(true);

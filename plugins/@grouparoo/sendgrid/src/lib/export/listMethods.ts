@@ -7,12 +7,12 @@ async function getLists(client, appId, appOptions, update = false) {
   return objectCache(
     { objectId: appId, cacheKey, cacheDurationMs, read },
     async () => {
-      return client.lists.get();
+      return client.getLists();
     }
   );
 }
 
-async function getListId(
+export async function getListId(
   client,
   appId,
   appOptions,
@@ -42,21 +42,18 @@ async function ensureList(
   let allLists, listId;
 
   // see if it's already there
-  let listsResponse = await getLists(client, appId, appOptions);
-  allLists = listsResponse.lists;
+  allLists = await getLists(client, appId, appOptions);
   listId = filterLists(allLists, groupName);
   if (listId) {
     return listId;
   }
   // maybe it's just not cached yet
-  listsResponse = await getLists(client, appId, appOptions, true);
-  allLists = listsResponse.lists;
+  allLists = await getLists(client, appId, appOptions, true);
   listId = filterLists(allLists, groupName);
   if (listId) {
     return listId;
   }
-  const response = await client.lists.create({ name: groupName });
-  return response.listId;
+  return await client.createList(groupName);
 }
 
 function filterLists(allLists, groupName) {
@@ -68,24 +65,16 @@ function filterLists(allLists, groupName) {
   return null;
 }
 
-export async function addToList(client, appId, appOptions, email, groupName) {
-  const listId = await getListId(client, appId, appOptions, groupName);
-  await client.lists.subscribe({
-    listId,
-    subscribers: [{ email }],
-  });
-}
-
 export async function removeFromList(
   client,
   appId,
   appOptions,
-  email,
+  userId,
   groupName
 ) {
-  const listId = await getListId(client, appId, appOptions, groupName);
-  await client.lists.unsubscribe({
-    listId,
-    subscribers: [{ email }],
-  });
+  const allLists = await getLists(client, appId, appOptions, true);
+  const listId = filterLists(allLists, groupName);
+  if (listId) {
+    await client.unsubscribe(listId, userId);
+  }
 }

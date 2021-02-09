@@ -18,6 +18,19 @@ class ApiHelper {
     return body.result;
   }
 
+  async createList(name) {
+    const data = {
+      name,
+    };
+    const request = {
+      method: "POST",
+      url: "/v3/marketing/lists",
+      body: data,
+    };
+    const [response, body] = await this.client.request(<ClientRequest>request);
+    return body.id;
+  }
+
   async deleteList(listId: string) {
     const request = {
       method: "DELETE",
@@ -27,10 +40,23 @@ class ApiHelper {
     return body.result;
   }
 
-  async addOrUpdateUser(user: any) {
-    console.log(user);
+  async unsubscribe(listId: string, userId: string) {
     const data = {
-      contacts: [user],
+      contact_ids: userId,
+    };
+    const request = {
+      method: "DELETE",
+      qs: data,
+      url: `/v3/marketing/lists/${listId}/contacts`,
+    };
+    const [response, body] = await this.client.request(<ClientRequest>request);
+    return body.result;
+  }
+
+  async addOrUpdateUser(userData: any, listIds: Array<string>) {
+    const data = {
+      contacts: [userData],
+      list_ids: listIds,
     };
     const request = {
       method: "PUT",
@@ -73,7 +99,11 @@ class ApiHelper {
       url: "/v3/marketing/field_definitions",
     };
     const [response, body] = await this.client.request(<ClientRequest>request);
-    return body["reserved_fields"];
+    let allFields = body["reserved_fields"];
+    if (body["custom_fields"]) {
+      allFields = allFields.concat(body["custom_fields"]);
+    }
+    return allFields;
   }
 }
 

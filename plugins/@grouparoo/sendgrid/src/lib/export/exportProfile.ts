@@ -1,5 +1,6 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
+import { getListId, removeFromList } from "./listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
@@ -30,17 +31,19 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   }
   const client = await connect(appOptions);
   const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const currentEmail = oldProfileProperties["email"];
+  const oldEmail = oldProfileProperties["email"];
   if (!email) {
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
 
+  const user = await client.getUser(email);
+
   if (toDelete) {
     let userToDelete = null;
-    if (currentEmail && currentEmail !== email) {
-      userToDelete = client.getUser(currentEmail);
+    if (oldEmail && oldEmail !== email) {
+      userToDelete = client.getUser(oldEmail);
     } else {
-      userToDelete = client.getUser(email);
+      userToDelete = user;
     }
     if (userToDelete) {
       await client.deleteUsers([userToDelete["id"]]);
@@ -52,23 +55,51 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     const newPropertyKeys = Object.keys(newProfileProperties);
     Object.keys(oldProfileProperties)
       .filter((k) => !newPropertyKeys.includes(k))
-      .forEach((k) => (deletePropertiesPayload[k] = null));
+      .forEach((k) => (deletePropertiesPayload[k] = ""));
 
     const dataFields = Object.assign(
       {},
       deletePropertiesPayload,
       newProfileProperties
     );
-    const formattedDataFields = {};
+    let formattedDataFields = {};
     for (const key of Object.keys(dataFields)) {
       formattedDataFields[key] = formatVar(dataFields[key]);
     }
 
-    // TODO: handle email changing.
+    let listsToAdd = [];
+    let existingLists = user?.["list_ids"] || [];
 
-    await client.addOrUpdateUser(formattedDataFields);
+    // change email
+    if (!user && oldEmail && oldEmail !== email) {
+      const oldUser = await client.getUser(oldEmail);
+      if (oldUser) {
+        formattedDataFields = Object.assign({}, oldUser, formattedDataFields);
+        formattedDataFields["id"] = undefined;
+        formattedDataFields["_metadata"] = undefined;
+        listsToAdd = oldUser["list_ids"] || [];
+        existingLists = oldUser["list_ids"] || [];
+        await client.deleteUsers([oldUser.id]);
+      }
+    }
 
-    // TODO: handle lists.
+    // add to lists
+    for (const groupToAdd of newGroups) {
+      const listId = await getListId(client, appId, appOptions, groupToAdd);
+      if (!existingLists.includes(listId)) {
+        listsToAdd.push(listId);
+      }
+    }
+    await client.addOrUpdateUser(formattedDataFields, listsToAdd);
+
+    // remove from lists
+    if (user) {
+      for (const group of oldGroups) {
+        if (!newGroups.includes(group)) {
+          await removeFromList(client, appId, appOptions, user["id"], group);
+        }
+      }
+    }
 
     return { success: true };
   }
