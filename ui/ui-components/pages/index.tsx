@@ -14,20 +14,11 @@ export default function Page(props) {
     CTAMessage = "View Dashboard";
     CTALink = "/dashboard";
   } else if (
-    process.env.GROUPAROO_UI_EDITION === "enterprise" &&
     navigation?.bottomMenuItems[0] &&
     navigation?.bottomMenuItems[0].href === "/team/initialize"
   ) {
     CTAMessage = "Create Team";
     CTALink = "/team/initialize";
-  } else if (
-    process.env.GROUPAROO_UI_EDITION === "community" &&
-    navigation?.bottomMenuItems[0] &&
-    navigation?.bottomMenuItems[0].href === "/team/initialize"
-  ) {
-    CTAMessage = "Configure your Grouparoo Server";
-    CTALink = "https://www.grouparoo.com/docs";
-    CTATarget = "_blank";
   }
 
   return (

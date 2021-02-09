@@ -6,10 +6,6 @@ describe("pages/index", () => {
   let wrapper;
 
   describe("Enterprise Edition", () => {
-    beforeAll(() => {
-      process.env.GROUPAROO_UI_EDITION = "enterprise";
-    });
-
     test("it shows the Create Team CTA when signed out with teams", async () => {
       wrapper = mount(
         <Page
@@ -25,34 +21,7 @@ describe("pages/index", () => {
 
       const html = wrapper.html();
       expect(html).toContain("Create Team");
-      expect(html).not.toContain("Configure your Grouparoo Server");
       expect(html).not.toContain("Sign In");
-      expect(html).not.toContain("View Dashboard");
-    });
-  });
-
-  describe("Community Edition", () => {
-    beforeAll(() => {
-      process.env.GROUPAROO_UI_EDITION = "community";
-    });
-
-    test("it shows a note to visit www when there are no teams", async () => {
-      wrapper = mount(
-        <Page
-          {...commonProps}
-          navigationMode="unauthenticated"
-          navigation={{
-            bottomMenuItems: [
-              { title: "create first team", href: "/team/initialize" },
-            ],
-          }}
-        />
-      );
-
-      const html = wrapper.html();
-      expect(html).toContain("Configure your Grouparoo Server");
-      expect(html).not.toContain("Sign In");
-      expect(html).not.toContain("Create Team");
       expect(html).not.toContain("View Dashboard");
     });
   });

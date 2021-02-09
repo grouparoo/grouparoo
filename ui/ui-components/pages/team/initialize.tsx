@@ -1,11 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
-import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { useApi } from "../../hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { Form, Card } from "react-bootstrap";
-import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
-import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import LoadingButton from "../../components/loadingButton";
+import { Actions } from "../../utils/apiData";
 
 export default function TeamInitializePage(props) {
   const { errorHandler, successHandler } = props;

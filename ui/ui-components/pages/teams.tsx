@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { Button } from "react-bootstrap";
+import { Button, Alert } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
-import Link from "../components/enterpriseLink";
+import Link from "next/link";
+import EnterpriseLink from "../components/enterpriseLink";
 import { Form } from "react-bootstrap";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
@@ -39,12 +40,15 @@ export default function Page({
             return (
               <tr key={`team-${team.id}`}>
                 <td>
-                  <Link href="/team/[id]/edit" as={`/team/${team.id}/edit`}>
+                  <EnterpriseLink
+                    href="/team/[id]/edit"
+                    as={`/team/${team.id}/edit`}
+                  >
                     <a>
                       <strong>{team.name}</strong>
                       {/* <br /><span className='text-muted'>{team.id}</span> */}
                     </a>
-                  </Link>
+                  </EnterpriseLink>
                 </td>
                 <td>{team.membersCount}</td>
                 <td>
@@ -69,7 +73,16 @@ export default function Page({
         >
           Add Team
         </Button>
-      ) : null}
+      ) : (
+        <Alert variant="primary" style={{ textAlign: "center" }}>
+          Does your organization need additional Teams with finer-grained
+          permissions?{" "}
+          <a target="_blank" href="https://www.grouparoo.com/meet">
+            Contact us
+          </a>
+          .
+        </Alert>
+      )}
 
       <br />
       <br />
@@ -127,16 +140,14 @@ export default function Page({
         </tbody>
       </LoadingTable>
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
-        <Button
-          variant="primary"
-          onClick={() => {
-            router.push("/teamMember/new");
-          }}
-        >
-          Add Team Member
-        </Button>
-      ) : null}
+      <Button
+        variant="primary"
+        onClick={() => {
+          router.push("/teamMember/new");
+        }}
+      >
+        Add Team Member
+      </Button>
     </>
   );
 }
