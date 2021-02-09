@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Team, TeamMember, Permission } from "../../src";
+import { Team, TeamMember, Permission, Setting } from "../../src";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
@@ -15,6 +15,7 @@ describe("actions/teams", () => {
         firstName: "Mario",
         lastName: "Mario",
         password: "P@ssw0rd!",
+        companyName: "Mario Bros. Plumbing",
         email: "mario@example.com",
       });
 
@@ -31,6 +32,13 @@ describe("actions/teams", () => {
           email: "mario@example.com",
         })
       );
+    });
+
+    test("the company name will be used to set the clusterName setting", async () => {
+      const clusterNameSetting = await Setting.findOne({
+        where: { pluginName: "core", key: "cluster-name" },
+      });
+      expect(clusterNameSetting.value).toEqual("Mario Bros. Plumbing - Test");
     });
 
     test("you cannot initialize more than one team on the server", async () => {

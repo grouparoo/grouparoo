@@ -24,6 +24,7 @@ const firstName = "mario";
 const lastName = "mario";
 const email = "mario@example.com";
 const password = "P@ssw0rd";
+const companyName = "Mario Bros. Plumbing";
 
 describe("integration", () => {
   beforeAll(async () => {
@@ -71,6 +72,9 @@ describe("integration", () => {
     "it can create the first team",
     async () => {
       await browser.get(`${env.url}/team/initialize`);
+
+      await browser.findElement(by.name("companyName")).sendKeys(companyName);
+
       await browser.findElement(by.name("firstName")).sendKeys(firstName);
       await browser.findElement(by.name("lastName")).sendKeys(lastName);
       await browser.findElement(by.name("email")).sendKeys(email);
