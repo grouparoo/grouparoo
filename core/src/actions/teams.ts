@@ -55,7 +55,6 @@ export class TeamInitialize extends CLSAction {
         where: { pluginName: "core", key: "cluster-name" },
       });
       const nodeEnv = env || "development";
-      nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1);
       const clusterName = `${params.companyName} - ${
         nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1)
       }`; // the cluster name would be `Grouparoo - Development`
