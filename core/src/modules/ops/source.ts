@@ -283,6 +283,12 @@ export namespace SourceOps {
     mappedColumn: string,
     id?: string
   ) {
+    const existingIdentifying = await Property.findOne({
+      where: { identifying: true },
+    });
+    // if there isn't one already, make this one identifying
+    const identifying = existingIdentifying ? false : true;
+
     const property = Property.build({
       id,
       key,
@@ -291,7 +297,7 @@ export namespace SourceOps {
       unique: true,
       sourceId: source.id,
       isArray: false,
-      identifying: true,
+      identifying,
     });
 
     try {

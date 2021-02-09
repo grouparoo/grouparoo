@@ -123,18 +123,22 @@ describe("integration/runs/mysql", () => {
     expect(editError).toBeUndefined();
   });
 
-  test("the property sets profile data upon import", async () => {
-    let i = 1;
-    while (i <= 10) {
-      const profile = await helper.factories.profile();
-      await profile.addOrUpdateProperties({ userId: [i] });
-      await profile.import();
-      await profile.reload();
+  test(
+    "the property sets profile data upon import",
+    async () => {
+      let i = 1;
+      while (i <= 10) {
+        const profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({ userId: [i] });
+        await profile.import();
+        await profile.reload();
 
-      expect(profile.id).toBeTruthy();
-      const properties = await profile.properties();
-      expect(properties.email.values[0]).toMatch(/.*@example.com/);
-      i++;
-    }
-  });
+        expect(profile.id).toBeTruthy();
+        const properties = await profile.properties();
+        expect(properties.email.values[0]).toMatch(/.*@example.com/);
+        i++;
+      }
+    },
+    helper.longTime
+  );
 });

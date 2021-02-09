@@ -465,12 +465,22 @@ export class Property extends LoggedModel<Property> {
   @BeforeSave
   static async ensureSourceReady(instance: Property) {
     const source = await Source.findById(instance.sourceId);
-    const otherProperties = await Property.scope(null).count({
-      where: { id: { [Op.ne]: instance.id } },
-    });
+    if (source.state !== "ready") {
+      // allow the bootstrap for this source (first one and unique)
+      if (!instance.unique) {
+        throw new Error("source is not ready and property not unique");
+      }
 
-    if (otherProperties > 0 && source.state !== "ready") {
-      throw new Error("source is not ready");
+      const otherProperties = await Property.scope(null).count({
+        where: {
+          sourceId: instance.sourceId,
+          id: { [Op.ne]: instance.id },
+        },
+      });
+      if (otherProperties > 0) {
+        // already has another property
+        throw new Error("source is not ready and property not first");
+      }
     }
   }
 
