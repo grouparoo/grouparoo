@@ -1,8 +1,9 @@
-import { api } from "actionhero";
+import { api, env } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { Setting } from "../models/Setting";
 import { GrouparooSubscription } from "../modules/grouparooSubscription";
 
 export class TeamInitialize extends CLSAction {
@@ -16,6 +17,7 @@ export class TeamInitialize extends CLSAction {
       lastName: { required: true },
       password: { required: true },
       email: { required: true },
+      companyName: { required: false },
       subscribe: { required: false, default: true },
     };
   }
@@ -46,6 +48,18 @@ export class TeamInitialize extends CLSAction {
 
     if (params.subscribe) {
       await GrouparooSubscription(teamMember);
+    }
+
+    if (params.companyName) {
+      const clusterNameSetting = await Setting.findOne({
+        where: { pluginName: "core", key: "cluster-name" },
+      });
+      const nodeEnv = env || "development";
+      nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1);
+      const clusterName = `${params.companyName} - ${
+        nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1)
+      }`; // the cluster name would be `Grouparoo - Development`
+      await clusterNameSetting.update({ value: clusterName });
     }
 
     return {

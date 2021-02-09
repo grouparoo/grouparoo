@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
-import { Form } from "react-bootstrap";
+import { Form, Card } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
@@ -35,83 +35,113 @@ export default function TeamInitializePage(props) {
         <title>Initialize Team</title>
       </Head>
 
-      <h1>Initialize first Team</h1>
-      <p>
-        You are creating an account for yourself and the "Administrators" team.
-      </p>
+      <h1>Initialize First Team</h1>
 
       <Form id="form" onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group>
-          <Form.Label>First Name</Form.Label>
-          <Form.Control
-            autoFocus
-            required
-            type="text"
-            name="firstName"
-            ref={register}
-            placeholder="First Name"
-            disabled={loading}
-          />
-          <Form.Control.Feedback type="invalid">
-            First Name is required
-          </Form.Control.Feedback>
-        </Form.Group>
+        <Card>
+          <Card.Body>
+            <Card.Title>About Your Company</Card.Title>
+            <p>
+              The company or organization are you configuring Grouparoo for.
+            </p>
+            <Form.Group>
+              <Form.Label>Company Name</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="companyName"
+                placeholder=""
+                disabled={loading}
+                ref={register}
+              />
+              <Form.Control.Feedback type="invalid">
+                Company Name is required
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Card.Body>
+        </Card>
 
-        <Form.Group>
-          <Form.Label>Last Name</Form.Label>
-          <Form.Control
-            required
-            type="text"
-            name="lastName"
-            placeholder="Last Name"
-            disabled={loading}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            Last Name is required
-          </Form.Control.Feedback>
-        </Form.Group>
+        <br />
 
-        <Form.Group>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            required
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            disabled={loading}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            Email is required
-          </Form.Control.Feedback>
-        </Form.Group>
+        <Card>
+          <Card.Body>
+            <Card.Title>About You</Card.Title>
+            <p>
+              The first account you use to sign in and manage access for others.
+            </p>
+            <Form.Group>
+              <Form.Label>First Name</Form.Label>
+              <Form.Control
+                autoFocus
+                required
+                type="text"
+                name="firstName"
+                ref={register}
+                placeholder=""
+                disabled={loading}
+              />
+              <Form.Control.Feedback type="invalid">
+                First Name is required
+              </Form.Control.Feedback>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            required
-            type="password"
-            name="password"
-            placeholder="Password"
-            disabled={loading}
-            ref={register}
-          />
-          <Form.Control.Feedback type="invalid">
-            A password is required
-          </Form.Control.Feedback>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                name="lastName"
+                placeholder=""
+                disabled={loading}
+                ref={register}
+              />
+              <Form.Control.Feedback type="invalid">
+                Last Name is required
+              </Form.Control.Feedback>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Check
-            type="checkbox"
-            name="subscribe"
-            label={`Subscribe to Grouparoo Newsletter`}
-            disabled={loading}
-            defaultChecked
-            ref={register}
-          />
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                required
+                type="email"
+                name="email"
+                placeholder=""
+                disabled={loading}
+                ref={register}
+              />
+              <Form.Control.Feedback type="invalid">
+                Email is required
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                required
+                type="password"
+                name="password"
+                placeholder=""
+                disabled={loading}
+                ref={register}
+              />
+              <Form.Control.Feedback type="invalid">
+                A password is required
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Form.Group>
+              <Form.Check
+                type="checkbox"
+                name="subscribe"
+                label={`Subscribe to Grouparoo Newsletter`}
+                disabled={loading}
+                defaultChecked
+                ref={register}
+              />
+            </Form.Group>
+          </Card.Body>
+        </Card>
 
         <br />
 
