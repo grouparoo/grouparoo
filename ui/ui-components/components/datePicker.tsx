@@ -1,35 +1,22 @@
-import { Component } from "react";
-import DatePicker from "react-datepicker";
+import { Form } from "react-bootstrap";
 
-class DatePickerInput extends Component<{
-  onClick: (e) => {};
-  value: string;
-}> {
-  render() {
-    const { onClick, value } = this.props;
+export default function GrouparooDatePicker({
+  selected = new Date(),
+  onChange,
+}: {
+  selected: Date;
+  onChange: Function;
+}) {
+  const selectedString = selected ? selected.toISOString().split("T")[0] : "";
 
-    return (
-      <input
-        type="text"
-        className="form-control"
-        style={{ width: 275 }}
-        onClick={onClick}
-        value={value}
-        onChange={() => {}} // will be overwritten, but needed to suppress warnings
-      />
-    );
-  }
-}
-
-export default function GrouparooDatePicker({ selected, onChange }) {
   return (
-    <DatePicker
-      showTimeSelect
-      dateFormat="MMMM d, yyyy h:mm aa"
-      selected={selected}
-      onChange={onChange}
-      // @ts-ignore
-      customInput={<DatePickerInput />}
+    <Form.Control
+      type="date"
+      value={selectedString}
+      placeholder="yyyy-mm-dd"
+      onChange={(event) => {
+        onChange(new Date(event.target.value));
+      }}
     />
   );
 }
