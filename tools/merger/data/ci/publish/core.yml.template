@@ -1,6 +1,6 @@
   publish:
     docker:
-      - image: circleci/node:12
+      - image: circleci/node:14
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
