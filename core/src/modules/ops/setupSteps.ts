@@ -26,19 +26,6 @@ export namespace SetupStepOps {
   export const setupStepDescriptions: Array<setupStepDescription> = [
     {
       position: 1,
-      key: "create_a_team",
-      title: "Create a Team",
-      description:
-        "Create another team so that your colleagues can use Grouparoo.",
-      href: "/teams",
-      cta: "Create a Team",
-      check: async () => {
-        const count = await Team.count();
-        return count > 1;
-      },
-    },
-    {
-      position: 2,
       key: "name_your_grouparoo_instance",
       title: "Name your Grouparoo Instance",
       description: "Give your Grouparoo cluster a name.",
@@ -50,7 +37,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 3,
+      position: 2,
       key: "add_an_app",
       title: "Add an App",
       description:
@@ -63,7 +50,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 4,
+      position: 3,
       key: "create_a_source",
       title: "Create a Source",
       description:
@@ -76,7 +63,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 5,
+      position: 4,
       key: "create_a_unique_profile_property",
       title: "Create a Unique Profile Property",
       description:
@@ -95,7 +82,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 6,
+      position: 5,
       key: "create_a_schedule",
       title: "Create a Schedule",
       description:
@@ -112,7 +99,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 7,
+      position: 6,
       key: "create_a_group",
       title: "Create a Group",
       description:
@@ -129,7 +116,7 @@ export namespace SetupStepOps {
       },
     },
     {
-      position: 8,
+      position: 7,
       key: "create_a_destination",
       title: "Create a Destination",
       description:

@@ -72,9 +72,9 @@ describe("models/setupStep", () => {
 
   test("setupSteps can getCta", async () => {
     const step = await SetupStep.findOne({
-      where: { key: "create_a_team" },
+      where: { key: "name_your_grouparoo_instance" },
     });
 
-    expect(step.getCta()).toBe("Create a Team");
+    expect(step.getCta()).toBe("Name your Grouparoo Instance");
   });
 });

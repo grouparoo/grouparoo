@@ -54,11 +54,13 @@ describe("actions/setupSteps", () => {
 
       expect(setupSteps.length).toBe(8);
       expect(setupSteps[0].position).toBe(1);
-      expect(setupSteps[0].key).toBe("create_a_team");
-      expect(setupSteps[0].title).toBe("Create a Team");
-      expect(setupSteps[0].description).toMatch(/Create .* team/);
-      expect(setupSteps[0].href).toBe("/teams");
-      expect(setupSteps[0].cta).toBe("Create a Team");
+      expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
+      expect(setupSteps[0].title).toBe("Name your Grouparoo Instance");
+      expect(setupSteps[0].description).toMatch(
+        "Give your Grouparoo cluster a name"
+      );
+      expect(setupSteps[0].href).toBe("/setting");
+      expect(setupSteps[0].cta).toBe("Change your Grouparoo Cluster Name");
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);
