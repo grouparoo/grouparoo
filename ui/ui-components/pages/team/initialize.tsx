@@ -47,6 +47,7 @@ export default function TeamInitializePage(props) {
             <Form.Group>
               <Form.Label>Company Name</Form.Label>
               <Form.Control
+                autoFocus
                 required
                 type="text"
                 name="companyName"
@@ -72,7 +73,6 @@ export default function TeamInitializePage(props) {
             <Form.Group>
               <Form.Label>First Name</Form.Label>
               <Form.Control
-                autoFocus
                 required
                 type="text"
                 name="firstName"
