@@ -1,9 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { SetupStep, Team, Setting } from "../../src";
+import { plugin, SetupStep, Setting } from "../../src";
 
 describe("actions/setupSteps", () => {
-  helper.grouparooTestServer({ truncate: true });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
     await specHelper.runAction("team:initialize", {
@@ -52,13 +52,15 @@ describe("actions/setupSteps", () => {
 
       expect(error).toBeFalsy();
 
-      expect(setupSteps.length).toBe(8);
+      expect(setupSteps.length).toBe(7);
       expect(setupSteps[0].position).toBe(1);
-      expect(setupSteps[0].key).toBe("create_a_team");
-      expect(setupSteps[0].title).toBe("Create a Team");
-      expect(setupSteps[0].description).toMatch(/Create .* team/);
-      expect(setupSteps[0].href).toBe("/teams");
-      expect(setupSteps[0].cta).toBe("Create a Team");
+      expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
+      expect(setupSteps[0].title).toBe("Name your Grouparoo Instance");
+      expect(setupSteps[0].description).toMatch(
+        "Give your Grouparoo cluster a name"
+      );
+      expect(setupSteps[0].href).toBe("/settings/core");
+      expect(setupSteps[0].cta).toBe("Change your Grouparoo Cluster Name");
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);
@@ -85,15 +87,16 @@ describe("actions/setupSteps", () => {
     });
 
     test("setupSteps can be completed outside of the action and re-calculated when viewed", async () => {
-      await Team.create({ name: "new team" });
+      const setting = await plugin.readSetting("core", "cluster-name");
+      await setting.update({ value: "Test Cluster" });
 
       connection.params = { csrfToken };
       const { setupSteps } = await specHelper.runAction(
         "setupSteps:list",
         connection
       );
-      expect(setupSteps.length).toBe(8);
-      expect(setupSteps[0].key).toBe("create_a_team");
+      expect(setupSteps.length).toBe(7);
+      expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
       expect(setupSteps[0].complete).toBe(true);
     });
 

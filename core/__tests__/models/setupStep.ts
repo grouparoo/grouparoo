@@ -1,18 +1,22 @@
 import { helper } from "@grouparoo/spec-helper";
-import { SetupStep, Team } from "../../src";
+import { SetupStep, plugin } from "../../src";
 import { SetupStepOps } from "../../src/modules/ops/setupSteps";
 
 describe("models/setupStep", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   test("setupSteps will be created when the server boots", async () => {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
     });
 
-    expect(setupSteps.length).toBe(8);
+    expect(setupSteps.length).toBe(7);
     expect(setupSteps[0].position).toBe(1);
-    expect(setupSteps[0].key).toBe("create_a_team");
+    expect(setupSteps[0].key).toBe("name_your_grouparoo_instance");
   });
 
   test("setupSteps can return the related title and description", async () => {
@@ -29,16 +33,16 @@ describe("models/setupStep", () => {
 
   test("setup steps have unique keys", async () => {
     await expect(
-      SetupStep.create({ position: 1, key: "create_a_team" })
+      SetupStep.create({ position: 1, key: "name_your_grouparoo_instance" })
     ).rejects.toThrow();
   });
 
   test("setupSteps can performCheck", async () => {
-    await Team.create({ name: "test team" });
-    await Team.create({ name: "other test team" });
+    const setting = await plugin.readSetting("core", "cluster-name");
+    await setting.update({ value: "Test Cluster" });
 
     const teamStep = await SetupStep.findOne({
-      where: { key: "create_a_team" },
+      where: { key: "name_your_grouparoo_instance" },
     });
     const groupStep = await SetupStep.findOne({
       where: { key: "create_a_group" },
@@ -49,32 +53,33 @@ describe("models/setupStep", () => {
   });
 
   test("complete checks will remain complete and not check again", async () => {
-    await Team.truncate();
+    const setting = await plugin.readSetting("core", "cluster-name");
+    await setting.update({ value: setting.defaultValue });
 
     const teamStep = await SetupStep.findOne({
-      where: { key: "create_a_team" },
+      where: { key: "name_your_grouparoo_instance" },
     });
 
     expect(await teamStep.performCheck()).toBe(true);
   });
 
   test("setupSteps can getOutcome", async () => {
-    const teamStep = await SetupStep.findOne({
-      where: { key: "create_a_team" },
+    const nameStep = await SetupStep.findOne({
+      where: { key: "name_your_grouparoo_instance" },
     });
     const groupStep = await SetupStep.findOne({
       where: { key: "create_a_group" },
     });
 
-    expect(await teamStep.getOutcome()).toBe(null);
+    expect(await nameStep.getOutcome()).toBe(null);
     expect(await groupStep.getOutcome()).toBe("0 Group Memberships created");
   });
 
   test("setupSteps can getCta", async () => {
     const step = await SetupStep.findOne({
-      where: { key: "create_a_team" },
+      where: { key: "name_your_grouparoo_instance" },
     });
 
-    expect(step.getCta()).toBe("Create a Team");
+    expect(step.getCta()).toBe("Change your Grouparoo Cluster Name");
   });
 });
