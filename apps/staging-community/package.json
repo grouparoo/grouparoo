@@ -34,8 +34,7 @@
   },
   "scripts": {
     "start": "cd node_modules/@grouparoo/core && ./bin/start",
-    "dev": "cd node_modules/@grouparoo/core && ./bin/dev",
-    "actionhero": "cd node_modules/@grouparoo/core && node_modules/.bin/actionhero"
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev"
   },
   "grouparoo": {
     "grouparoo_monorepo_app": "staging-community",
