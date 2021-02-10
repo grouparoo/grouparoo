@@ -4,11 +4,12 @@ const withSourceMaps = require("@zeit/next-source-maps");
 const { getParentPath } = require("@grouparoo/core/dist/utils/pluginDetails");
 
 function getPluginPath(pluginName) {
-  return path.join(
+  const p = path.join(
     path.dirname(require.resolve(`${pluginName}/package.json`)),
     "..",
     pluginName
   );
+  return p;
 }
 
 const envFile = path.resolve(path.join(getParentPath(), ".env"));
