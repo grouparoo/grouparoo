@@ -49,7 +49,6 @@ describe("actions/object", () => {
       options: { fileId: "abc123" },
     };
     const { app, error } = await specHelper.runAction("app:create", connection);
-    console.log(error);
     appId = app.id;
   });
 
