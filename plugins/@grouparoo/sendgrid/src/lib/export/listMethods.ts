@@ -69,12 +69,12 @@ export async function removeFromList(
   client,
   appId,
   appOptions,
-  userId,
+  user,
   groupName
 ) {
   const allLists = await getLists(client, appId, appOptions, true);
   const listId = filterLists(allLists, groupName);
-  if (listId) {
-    await client.unsubscribe(listId, userId);
+  if (listId && user.list_ids.includes(listId)) {
+    await client.unsubscribe(listId, user.id);
   }
 }

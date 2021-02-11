@@ -1,7 +1,7 @@
 import { Client } from "@sendgrid/client";
 import { ClientRequest } from "@sendgrid/client/src/request";
 
-class ApiHelper {
+class SendgridClient {
   client: Client;
 
   constructor(apiKey: string) {
@@ -107,4 +107,4 @@ class ApiHelper {
   }
 }
 
-export { ApiHelper };
+export { SendgridClient };

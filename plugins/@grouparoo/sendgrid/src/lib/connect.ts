@@ -1,6 +1,6 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import { ApiHelper } from "./apiHelper";
+import { SendgridClient } from "./client";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  return new ApiHelper(appOptions.apiKey);
+  return new SendgridClient(appOptions.apiKey);
 }

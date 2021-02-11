@@ -42,7 +42,13 @@ describe("sendgrid/destinationMappingOptions", () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client);
     const phoneNumber = fields.find((f) => f.key === "phone_number");
+    const textField = fields.find((f) => f.key === "text_field");
+    const numberField = fields.find((f) => f.key === "number_field");
+    const dateField = fields.find((f) => f.key === "date_field");
     expect(phoneNumber.type).toBe("phoneNumber");
+    expect(textField.type).toBe("string");
+    expect(numberField.type).toBe("float");
+    expect(dateField.type).toBe("date");
     expect(phoneNumber.important).toBe(true);
   });
 

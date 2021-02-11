@@ -6,11 +6,11 @@ import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
-import { ApiHelper } from "../../src/lib/apiHelper";
+import { SendgridClient } from "../../src/lib/client";
 
 const appId = "app_78189023490-dfsjklfdsklj90-90-3k";
 
-let apiClient: ApiHelper;
+let apiClient: SendgridClient;
 let user: any;
 const phone_number = "+5583999999999";
 const newPhoneNumber = "+5583999999998";

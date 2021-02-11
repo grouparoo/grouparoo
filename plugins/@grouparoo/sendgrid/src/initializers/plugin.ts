@@ -53,7 +53,7 @@ export class Plugins extends Initializer {
           name: "sendgrid-export-marketing",
           direction: "export",
           description:
-            "Export profiles to Sendgrid marketing as Contacts and put them in static Groups.",
+            "Export profiles to Sendgrid marketing as Contacts and put them in static Lists.",
           app: "sendgrid",
           options: [],
           methods: {

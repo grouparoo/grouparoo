@@ -31,10 +31,6 @@
     "@grouparoo/app-templates": "^0.2.1-alpha.0",
     "@sendgrid/client": "^7.4.2"
   },
-  "peerDependencies": {
-    "@grouparoo/core": "^0.2.0",
-    "actionhero": "25.0.5"
-  },
   "devDependencies": {
     "@grouparoo/core": "^0.2.1-alpha.0",
     "@grouparoo/spec-helper": "^0.2.1-alpha.0",

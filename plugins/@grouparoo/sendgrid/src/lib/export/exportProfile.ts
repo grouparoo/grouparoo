@@ -42,9 +42,9 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   const user = await client.getUser(email);
 
   if (toDelete) {
-    let userToDelete = null;
+    let userToDelete;
     if (oldEmail && oldEmail !== email) {
-      userToDelete = client.getUser(oldEmail);
+      userToDelete = await client.getUser(oldEmail);
     } else {
       userToDelete = user;
     }
@@ -70,22 +70,19 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       formattedDataFields[key] = formatVar(dataFields[key]);
     }
 
-    let listsToAdd = [];
-    let existingLists = user?.["list_ids"] || [];
-
     // change email
     if (!user && oldEmail && oldEmail !== email) {
       const oldUser = await client.getUser(oldEmail);
       if (oldUser) {
         formattedDataFields = Object.assign({}, oldUser, formattedDataFields);
-        formattedDataFields["id"] = undefined;
-        formattedDataFields["_metadata"] = undefined;
-        listsToAdd = oldUser["list_ids"] || [];
-        existingLists = oldUser["list_ids"] || [];
+        delete formattedDataFields["id"];
+        delete formattedDataFields["_metadata"];
         await client.deleteUsers([oldUser.id]);
       }
     }
 
+    let listsToAdd = [];
+    let existingLists = user?.["list_ids"] || [];
     // add to lists
     for (const groupToAdd of newGroups) {
       const listId = await getListId(client, appId, appOptions, groupToAdd);
@@ -99,7 +96,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     if (user) {
       for (const group of oldGroups) {
         if (!newGroups.includes(group)) {
-          await removeFromList(client, appId, appOptions, user["id"], group);
+          await removeFromList(client, appId, appOptions, user, group);
         }
       }
     }
