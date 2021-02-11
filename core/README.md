@@ -38,13 +38,19 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 
 # Running a Grouparoo Application
 
-> This is an abbreviated version of the "Grouparoo Deployment Guide". [The full version can be found here](https://www.grouparoo.com/docs/deployment).
+> This is an abbreviated version of the "Grouparoo Installation Guide". [The full version can be found here](https://www.grouparoo.com/docs/installation).
 
-## Deploy to Heroku
+## Run Locally with Node.js
 
-The simplest way to see Grouparoo in action is to deploy it to Heroku for free:
+Use the Grouparoo CLI to initialize a new Grouparoo Project:
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
+```bash
+npm install -g grouparoo
+grouparoo init .
+grouparoo start
+```
+
+This will generate a `package.json` and `.env` file for configuration.
 
 ## Run locally with Docker & Docker Compose
 
@@ -56,48 +62,8 @@ curl -L https://www.grouparoo.com/docker-compose --output docker-compose.yml
 docker-compose up
 ```
 
-## Run Locally with Node.js
+## Deploy to Heroku
 
-Use the Grouparoo Generator to bootstrap a new Grouparoo Project:
-
-```bash
-npx grouparoo generate
-# configure postgres and redis, you can modify `.env` as needed
-npm start
-```
-
-This will generate a `package.json` and `.env` file for configuration.
-
-## Populating Demo Data
-
-Use the `staging-community` app to try things out.
-
-```bash
-cd apps/staging-community
-# populate the system with 1000 profiles, properties, 1000 purchases, groups, and some events
-(npx) grouparoo demo-data-purchases
-
-# including the --scale param allows you to control how many profiles you make. e.g. --scale 10 makes 10,000 extra profiles.
-(npx) grouparoo demo-data-purchases --scale 10
-
-# populate the system with events
-(npx) grouparoo demo-event-stream
-```
-
-## Running Tests
-
-Grouparoo uses [Jest](https://jestjs.io/) as our testing framework. To run tests, first make sure you've installed all dependencies in the root of the project.
-
-    cd ../
-    pnpm install
-
-Next, create the test databases:
-
-    cd core
-    ./bin/create_test_database
-
-Then you can run the tests. We recommend you run only the test files you're working on. Let our CI server do the bulk of the work:
-
-    npm run test path/to/test/file
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
 
 🦘
