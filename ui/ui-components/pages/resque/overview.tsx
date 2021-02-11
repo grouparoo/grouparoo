@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Row, Col, Card } from "react-bootstrap";
+import { Actions } from "../../utils/apiData";
+import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import RollingChart from "../../components/visualizations/rollingChart";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
@@ -14,6 +15,7 @@ export default function ResqueOverview(props) {
   const { execApi } = useApi(props, errorHandler);
   const [queues, setQueues] = useState({});
   const [workers, setWorkers] = useState({});
+  const [leader, setLeader] = useState("");
   const [failedCount, setFailedCount] = useState(0);
   const [stats, setStats] = useState({});
 
@@ -31,8 +33,9 @@ export default function ResqueOverview(props) {
     let _queues = {};
     let _workers = {};
     let _stats = {};
+    let _leader = "";
 
-    let response = await execApi(
+    const detailsResponse: Actions.ResqueResqueDetails = await execApi(
       "get",
       `/resque/resqueDetails`,
       {},
@@ -40,11 +43,12 @@ export default function ResqueOverview(props) {
       null,
       false
     );
-    _queues = response?.resqueDetails?.queues || {};
-    _workers = response?.resqueDetails?.workers || {};
-    _stats = response?.resqueDetails?.stats || {};
+    _queues = detailsResponse?.resqueDetails?.queues || {};
+    _workers = detailsResponse?.resqueDetails?.workers || {};
+    _stats = detailsResponse?.resqueDetails?.stats || {};
+    _leader = detailsResponse?.resqueDetails?.leader || "";
 
-    response = await execApi(
+    const failedResponse: Actions.ResqueFailedCount = await execApi(
       "get",
       `/resque/resqueFailedCount`,
       {},
@@ -88,7 +92,8 @@ export default function ResqueOverview(props) {
     setWorkers(_workers);
     setStats(_stats);
     setQueues(_queues);
-    setFailedCount(response?.failedCount);
+    setLeader(_leader);
+    setFailedCount(failedResponse?.failedCount);
 
     timer = setTimeout(() => {
       load();
@@ -117,96 +122,131 @@ export default function ResqueOverview(props) {
 
       <Row>
         <Col md={2}>
-          <h3>Stats:</h3>
-          <table className="table table-hover">
-            <tbody>
-              {Object.keys(stats).map((k) => {
-                const v = stats[k];
-                if (k.indexOf(":") > 0) {
-                  return null;
-                }
+          <Card>
+            <Card.Header>
+              <h5>Stats</h5>
+            </Card.Header>
+            <Card.Body>
+              <Table hover striped size="sm">
+                <tbody>
+                  {Object.keys(stats).map((k) => {
+                    const v = stats[k];
+                    if (k.indexOf(":") > 0) {
+                      return null;
+                    }
 
-                return (
-                  <tr key={k}>
-                    <td>{k}</td>
-                    <td>{v}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </Col>
-
-        <Col md={4}>
-          <h2>Queues ({Object.keys(queues).length})</h2>
-
-          <table className="table table-hover ">
-            <thead>
-              <tr>
-                <th>Queue Name</th>
-                <th>Jobs</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="table-warning">
-                <td>
-                  <a href="/resque/failed">
-                    <strong>failed</strong>
-                  </a>
-                </td>
-                <td>
-                  <a href="/resque/failed">
-                    <strong>{failedCount || 0}</strong>
-                  </a>
-                </td>
-              </tr>
-
-              {Object.keys(queues).map((q) => {
-                return (
-                  <tr key={q}>
-                    <td>
-                      <a href={`/resque/queue/${q}`}>{q}</a>
-                    </td>
-                    <td>
-                      <a href={`/resque/queue/${q}`}>{queues[q].length}</a>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+                    return (
+                      <tr key={k}>
+                        <td>{k}</td>
+                        <td>{v}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
         </Col>
 
         <Col md={5}>
-          <h2>Workers ({Object.keys(workers).length})</h2>
-
-          <table className="table table-striped table-hover ">
-            <thead>
-              <tr>
-                <th>Worker Name</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Object.keys(workers).map((name) => {
-                const worker = workers[name];
-                return (
-                  <tr key={name}>
+          <Card>
+            <Card.Header>
+              <h5>Queues ({Object.keys(queues).length})</h5>
+            </Card.Header>
+            <Card.Body>
+              <Table hover striped size="sm">
+                <thead>
+                  <tr>
+                    <th>Queue Name</th>
+                    <th>Jobs</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="table-warning">
                     <td>
-                      <span className={worker.delta > 0 ? "text-success" : ""}>
-                        {name}
-                      </span>
+                      <a href="/resque/failed">
+                        <strong>failed</strong>
+                      </a>
                     </td>
                     <td>
-                      <span className={worker.delta > 0 ? "text-primary" : ""}>
-                        {worker.statusString}
-                      </span>
+                      <a href="/resque/failed">
+                        <strong>{failedCount || 0}</strong>
+                      </a>
                     </td>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
+
+                  {Object.keys(queues).map((q) => {
+                    return (
+                      <tr key={q}>
+                        <td>
+                          <a href={`/resque/queue/${q}`}>{q}</a>
+                        </td>
+                        <td>
+                          <a href={`/resque/queue/${q}`}>{queues[q].length}</a>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        <Col md={5}>
+          <Card>
+            <Card.Header>
+              <h5>Leader</h5>
+            </Card.Header>
+            <Card.Body>
+              {leader !== "" ? (
+                leader
+              ) : (
+                <Alert variant="danger">No Leader</Alert>
+              )}
+            </Card.Body>
+          </Card>
+
+          <br />
+
+          <Card>
+            <Card.Header>
+              <h5>Workers ({Object.keys(workers).length})</h5>
+            </Card.Header>
+            <Card.Body>
+              <Table hover striped size="sm">
+                <thead>
+                  <tr>
+                    <th>Worker Name</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.keys(workers).map((name) => {
+                    const worker = workers[name];
+                    return (
+                      <tr key={name}>
+                        <td>
+                          <span
+                            className={worker.delta > 0 ? "text-success" : ""}
+                          >
+                            {name}
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            className={worker.delta > 0 ? "text-primary" : ""}
+                          >
+                            {worker.statusString}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </>
