@@ -28,7 +28,7 @@ export default function ResqueOverview(props) {
     }, refreshInterval);
 
     return () => {
-      clearTimeout(timer);
+      clearInterval(timer);
     };
   }, []);
 
