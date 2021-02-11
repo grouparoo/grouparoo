@@ -126,8 +126,6 @@ function ActionsTab({ errorHandler, successHandler }) {
       <br />
       <h2>Cluster Actions</h2>
 
-      <br />
-
       <ImportAndUpdateAllProfiles
         errorHandler={errorHandler}
         successHandler={successHandler}

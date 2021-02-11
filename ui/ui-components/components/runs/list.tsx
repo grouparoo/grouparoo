@@ -20,7 +20,7 @@ export default function RunsList(props) {
   const [total, setTotal] = useState<number>(props.total);
   const [runs, setRuns] = useState<Models.RunType[]>(props.runs);
   const [stateFilter, setStateFilter] = useState(
-    router.query.state?.toString() || ""
+    router.query.stateFilter?.toString() || ""
   );
   const [errorFilter, setErrorFilter] = useState(
     router.query.error?.toString() || ""
@@ -205,13 +205,30 @@ export default function RunsList(props) {
                   <td>
                     {/* <code>{JSON.stringify(run.filter)}</code> */}
                     <>
-                      groupMemberLimit: {run.groupMemberLimit} <br />
-                      groupMemberOffset: {run.groupMemberOffset} <br />
-                      groupHighWaterMark: {run.groupHighWaterMark} <br />
-                      sourceOffset: {run.sourceOffset} <br />
+                      {run.creatorType === "group" ? (
+                        <>
+                          groupMemberLimit: {run.groupMemberLimit} <br />
+                        </>
+                      ) : null}
+                      {run.creatorType === "group" ? (
+                        <>
+                          groupMemberOffset: {run.groupMemberOffset} <br />
+                        </>
+                      ) : null}
+                      {run.creatorType === "group" ? (
+                        <>
+                          groupHighWaterMark: {run.groupHighWaterMark} <br />
+                        </>
+                      ) : null}
+                      {run.creatorType !== "group" ? (
+                        <>
+                          sourceOffset: {run.sourceOffset} <br />
+                        </>
+                      ) : null}
                       force: {run.force.toString()}
                     </>
-                    {run.highWaterMark ? (
+                    {run.highWaterMark &&
+                    Object.keys(run.highWaterMark).length > 0 ? (
                       <>
                         <br />
                         {Object.keys(run.highWaterMark)[0]}:{" "}
@@ -260,14 +277,14 @@ export default function RunsList(props) {
 }
 
 RunsList.hydrate = async (ctx, options: { topic?: string } = {}) => {
-  const { id, limit, offset, state, error } = ctx.query;
+  const { id, limit, offset, stateFilter, error } = ctx.query;
   const { execApi } = useApi(ctx);
   const { runs, total } = await execApi("get", `/runs`, {
     id,
     topic: options.topic,
     limit,
     offset,
-    state,
+    state: stateFilter,
     hasError: error,
   });
   return { runs, total, topic: options.topic };

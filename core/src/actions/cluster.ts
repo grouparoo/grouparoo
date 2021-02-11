@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { cache } from "actionhero";
+import { cache, api } from "actionhero";
 
 import { App } from "../models/App";
 // import { ApiKey } from "../models/ApiKey";
@@ -91,6 +91,13 @@ export class ClusterReset extends AuthenticatedAction {
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
     await cache.clear();
+
+    const redisStatKeys = await api.resque.queue.connection.redis.keys(
+      "*resque:stat:*"
+    );
+    await Promise.all(
+      redisStatKeys.map((k) => api.resque.queue.connection.redis.del(k))
+    );
 
     await Log.create({
       topic: "cluster",

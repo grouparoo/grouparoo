@@ -37,21 +37,21 @@ export default function Chart({ data, keys }) {
       formattedData._total.push({ x: sample.time, y: total });
     });
 
-    const chartData = [
+    const _chartData = [
       { id: "total", data: formattedData._total, color: "#DDD" },
     ];
     keys
       .sort()
       .reverse()
       .forEach((q, idx) => {
-        chartData.push({
+        _chartData.push({
           id: q,
           data: formattedData[q],
           color: colors[idx],
         });
       });
 
-    setChartData(chartData);
+    setChartData(_chartData);
   }
 
   return (
