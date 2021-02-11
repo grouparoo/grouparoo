@@ -23,6 +23,9 @@ export default function ResqueOverview(props) {
 
   useEffect(() => {
     load();
+    timer = setInterval(() => {
+      load();
+    }, refreshInterval);
 
     return () => {
       clearTimeout(timer);
@@ -94,10 +97,6 @@ export default function ResqueOverview(props) {
     setQueues(_queues);
     setLeader(_leader);
     setFailedCount(failedResponse?.failedCount);
-
-    timer = setTimeout(() => {
-      load();
-    }, refreshInterval);
   }
 
   return (
