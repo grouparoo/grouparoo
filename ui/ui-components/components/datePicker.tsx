@@ -1,4 +1,5 @@
 import { Form } from "react-bootstrap";
+import { useState } from "react";
 
 export default function GrouparooDatePicker({
   selected = new Date(),
@@ -7,15 +8,28 @@ export default function GrouparooDatePicker({
   selected: Date;
   onChange: Function;
 }) {
-  const selectedString = selected ? selected.toISOString().split("T")[0] : "";
+  const [selectedString, setSelectedString] = useState(
+    selected ? selected.toISOString().split("T")[0] : ""
+  );
+
+  const pattern = "[0-9]{4}-[0-9]{2}-[0-9]{2}";
+
+  function formatInput(s) {
+    return s.replace(/[^0-9-,]+/g, "");
+  }
 
   return (
     <Form.Control
-      type="date"
+      type={"date"}
       value={selectedString}
       placeholder="yyyy-mm-dd"
+      pattern={pattern}
       onChange={(event) => {
-        onChange(new Date(event.target.value));
+        const value = event.target.value;
+        setSelectedString(formatInput(value));
+        if (value.match(new RegExp(pattern))) {
+          onChange(new Date(value));
+        }
       }}
     />
   );
