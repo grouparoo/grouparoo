@@ -61,6 +61,9 @@ describe("actions/setupSteps", () => {
       );
       expect(setupSteps[0].href).toBe("/settings/core");
       expect(setupSteps[0].cta).toBe("Change your Grouparoo Cluster Name");
+      expect(setupSteps[0].helpLink).toBe(
+        "https://www.grouparoo.com/docs/config/settings"
+      );
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);

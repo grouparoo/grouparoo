@@ -62,6 +62,15 @@ export default function SetupStepCard({
               {step.complete ? null : (
                 <Row>
                   <Col md={6}>
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      target="_blank"
+                      href={step.helpLink}
+                    >
+                      Learn More
+                    </Button>
+                    &nbsp;&nbsp;
                     {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
                       <Button size="sm" href={step.href}>
                         {step.cta}
