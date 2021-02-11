@@ -52,6 +52,7 @@ const mapTypesFromSendgridToGrouparoo = (fieldKey, sendgridType) => {
   const map = {
     Text: "string",
     Date: "date",
+    Number: "float",
   };
   const grouparooType = map[sendgridType];
   if (grouparooType) {

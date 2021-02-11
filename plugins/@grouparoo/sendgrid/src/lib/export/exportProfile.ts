@@ -30,12 +30,15 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   }
   const client = await connect(appOptions);
-  const email = newProfileProperties["email"]; // this is how we will identify profiles
-  const oldEmail = oldProfileProperties["email"];
+  let email = newProfileProperties["email"]; // this is how we will identify profiles
+  let oldEmail = oldProfileProperties["email"];
   if (!email) {
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
-
+  email = email.trim().toLowerCase();
+  if (oldEmail) {
+    oldEmail = oldEmail.trim().toLowerCase();
+  }
   const user = await client.getUser(email);
 
   if (toDelete) {
