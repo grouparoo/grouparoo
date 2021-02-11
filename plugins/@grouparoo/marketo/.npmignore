@@ -1,5 +1,6 @@
 # General
 node_modules
+*.tgz
 .DS_Store
 .vscode
 npm-debug.log
