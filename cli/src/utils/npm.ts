@@ -38,4 +38,31 @@ export namespace NPM {
       throw new Error(stderr);
     }
   }
+
+  export async function uninstall(
+    logger: any,
+    workDir: string,
+    pkg: string,
+    npm_config_loglevel = "error"
+  ) {
+    const args = ["uninstall", pkg];
+    logger.start("Uninstalling...");
+
+    const { exitCode, stdout, stderr } = await spawnPromise(
+      "npm",
+      args,
+      workDir,
+      { npm_config_loglevel },
+      logger
+    );
+
+    if (exitCode === 0) {
+      logger.succeed("Uninstall Complete!");
+      console.log("\r\n------\r\n");
+      console.log(Chalk.gray(stdout));
+      console.log("------\r\n");
+    } else {
+      throw new Error(stderr);
+    }
+  }
 }
