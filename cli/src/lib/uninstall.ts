@@ -23,7 +23,7 @@ export default async function Update(pkg: string) {
     logger.fail(
       `package \'${pkg}\' is not present within dependencies of ${packageFile}`
     );
-    process.exit();
+    process.exit(1);
   }
 
   await NPM.uninstall(logger, workDir, pkg);

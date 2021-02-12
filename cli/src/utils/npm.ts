@@ -1,3 +1,4 @@
+import os from "os";
 import { spawnPromise } from "./spawnPromise";
 import Chalk from "chalk";
 
@@ -35,7 +36,8 @@ export namespace NPM {
       console.log(Chalk.gray(stdout));
       console.log("------\r\n");
     } else {
-      throw new Error(stderr);
+      logger.fail("Could not install:");
+      return exitWithError(logger, stdout, stderr);
     }
   }
 
@@ -62,7 +64,26 @@ export namespace NPM {
       console.log(Chalk.gray(stdout));
       console.log("------\r\n");
     } else {
-      throw new Error(stderr);
+      logger.fail("Could not uninstall:");
+      return exitWithError(logger, stdout, stderr);
     }
+  }
+
+  function exitWithError(logger, stdout: string, stderr: string) {
+    const lines = [];
+    function logUniqueLines(s: string, level: "warn" | "fail") {
+      s.split(os.EOL).map((line) => {
+        if (!lines.includes(line)) {
+          line = line.trim();
+          console.info(Chalk.gray(line));
+          lines.push(line.trim());
+        }
+      });
+    }
+
+    logUniqueLines(stderr, "warn");
+    logUniqueLines(stdout, "fail");
+
+    process.exit(1);
   }
 }
