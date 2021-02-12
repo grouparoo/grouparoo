@@ -75,7 +75,7 @@ async function deleteUsers(suppressErrors) {
       alternativeEmail,
       otherEmail,
       newEmail,
-      brandNewEmail
+      brandNewEmail,
     ]) {
       const user = await apiClient.getUser(emailToDelete);
       if (user) {
@@ -114,12 +114,12 @@ async function cleanUp(suppressErrors) {
 }
 
 async function runExport({
-                           oldProfileProperties,
-                           newProfileProperties,
-                           oldGroups,
-                           newGroups,
-                           toDelete
-                         }) {
+  oldProfileProperties,
+  newProfileProperties,
+  oldGroups,
+  newGroups,
+  toDelete,
+}) {
   return exportProfile({
     appOptions,
     appId,
@@ -135,8 +135,8 @@ async function runExport({
       newProfileProperties,
       oldGroups,
       newGroups,
-      toDelete
-    }
+      toDelete,
+    },
   });
 }
 
@@ -159,7 +159,7 @@ describe("sendgrid/exportProfile", () => {
       newProfileProperties: { email, first_name },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -178,11 +178,11 @@ describe("sendgrid/exportProfile", () => {
         first_name,
         last_name,
         city,
-        phone_number
+        phone_number,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -199,7 +199,7 @@ describe("sendgrid/exportProfile", () => {
       oldProfileProperties: {
         email,
         first_name,
-        phone_number
+        phone_number,
       },
       newProfileProperties: {
         email,
@@ -208,11 +208,11 @@ describe("sendgrid/exportProfile", () => {
         text_field: textField,
         number_field: numberField,
         date_field: dateField,
-        other_text_field: otherTextField
+        other_text_field: otherTextField,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
     const user = await apiClient.getUser(email);
@@ -231,14 +231,14 @@ describe("sendgrid/exportProfile", () => {
       oldProfileProperties: {
         email,
         first_name: alternativeName,
-        phone_number: newPhoneNumber
+        phone_number: newPhoneNumber,
       },
       newProfileProperties: {
-        email
+        email,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
     const user = await apiClient.getUser(email);
@@ -249,14 +249,14 @@ describe("sendgrid/exportProfile", () => {
   test("can add user to a list that doesn't exist yet", async () => {
     await runExport({
       oldProfileProperties: {
-        email
+        email,
       },
       newProfileProperties: {
-        email
+        email,
       },
       oldGroups: [],
       newGroups: [listOne, listTwo],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -276,14 +276,14 @@ describe("sendgrid/exportProfile", () => {
   test("can remove a user from a list", async () => {
     await runExport({
       oldProfileProperties: {
-        email
+        email,
       },
       newProfileProperties: {
-        email
+        email,
       },
       oldGroups: [listOne, listTwo],
       newGroups: [listOne],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -297,14 +297,14 @@ describe("sendgrid/exportProfile", () => {
   test("it does not change already subscribed lists", async () => {
     await runExport({
       oldProfileProperties: {
-        email
+        email,
       },
       newProfileProperties: {
-        email
+        email,
       },
       oldGroups: [],
       newGroups: [listTwo, listThree],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -323,14 +323,14 @@ describe("sendgrid/exportProfile", () => {
   test("it tries to unsubscribe non subscribed list", async () => {
     await runExport({
       oldProfileProperties: {
-        email
+        email,
       },
       newProfileProperties: {
-        email
+        email,
       },
       oldGroups: [listFour],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -343,14 +343,14 @@ describe("sendgrid/exportProfile", () => {
   test("it can change the email address", async () => {
     await runExport({
       oldProfileProperties: {
-        email
+        email,
       },
       newProfileProperties: {
-        email: alternativeEmail
+        email: alternativeEmail,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -367,16 +367,16 @@ describe("sendgrid/exportProfile", () => {
       oldProfileProperties: {
         email: alternativeEmail,
         first_name: alternativeName,
-        phone_number: newPhoneNumber
+        phone_number: newPhoneNumber,
       },
       newProfileProperties: {
         email: otherEmail,
         first_name: otherName,
-        phone_number: otherPhoneNumber
+        phone_number: otherPhoneNumber,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -392,14 +392,14 @@ describe("sendgrid/exportProfile", () => {
   test("can delete a user", async () => {
     await runExport({
       oldProfileProperties: {
-        email: otherEmail
+        email: otherEmail,
       },
       newProfileProperties: {
-        email: otherEmail
+        email: otherEmail,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: true
+      toDelete: true,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -413,14 +413,14 @@ describe("sendgrid/exportProfile", () => {
 
     await runExport({
       oldProfileProperties: {
-        email: otherEmail
+        email: otherEmail,
       },
       newProfileProperties: {
-        email: otherEmail
+        email: otherEmail,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: true
+      toDelete: true,
     });
 
     user = await apiClient.getUser(otherEmail);
@@ -435,11 +435,11 @@ describe("sendgrid/exportProfile", () => {
       oldProfileProperties: {},
       newProfileProperties: {
         email: newEmail,
-        first_name: newName
+        first_name: newName,
       },
       oldGroups: [],
       newGroups: [listFour],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -462,11 +462,11 @@ describe("sendgrid/exportProfile", () => {
       oldProfileProperties: { email: nonexistentEmail },
       newProfileProperties: {
         email: brandNewEmail,
-        first_name: brandNewName
+        first_name: brandNewName,
       },
       oldGroups: [],
       newGroups: [],
-      toDelete: false
+      toDelete: false,
     });
     await indexContacts(newNock, 60 * 1000);
 
@@ -480,11 +480,11 @@ describe("sendgrid/exportProfile", () => {
       runExport({
         oldProfileProperties: {},
         newProfileProperties: {
-          email: invalidEmail
+          email: invalidEmail,
         },
         oldGroups: [],
         newGroups: [],
-        toDelete: false
+        toDelete: false,
       })
     ).rejects.toThrow("");
   });

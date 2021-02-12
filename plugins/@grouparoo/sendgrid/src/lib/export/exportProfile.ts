@@ -18,17 +18,17 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 };
 
 export const sendProfile: ExportProfilePluginMethod = async ({
-                                                               appId,
-                                                               appOptions,
-                                                               destinationOptions,
-                                                               export: {
-                                                                 toDelete,
-                                                                 newProfileProperties,
-                                                                 oldProfileProperties,
-                                                                 newGroups,
-                                                                 oldGroups
-                                                               }
-                                                             }) => {
+  appId,
+  appOptions,
+  destinationOptions,
+  export: {
+    toDelete,
+    newProfileProperties,
+    oldProfileProperties,
+    newGroups,
+    oldGroups,
+  },
+}) => {
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
