@@ -22,8 +22,18 @@ export default async function Update(pkg: string) {
   let plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
 
   if (!plugins) {
-    logger.fail("there is no grouparoo section in this package.json");
-    process.exit();
+    logger.fail("There is no `grouparoo` section in this package.json");
+    process.exit(1);
+  }
+
+  if (pkg?.match("@grouparoo/ui-")) {
+    const existingUIPackage = plugins.find((p) => p.match(/@grouparoo\/ui.*/));
+    if (existingUIPackage) {
+      logger.fail(
+        "There is already a ui package in this project. Uninstall the existing ui package before adding another."
+      );
+      process.exit(1);
+    }
   }
 
   await NPM.install(logger, workDir, pkg);
@@ -33,7 +43,8 @@ export default async function Update(pkg: string) {
   plugins = pkgJSONContents?.grouparoo?.plugins;
 
   if (pkg) {
-    let cleanedPackageName = "@" + pkg.split("@")[1];
+    let cleanedPackageName =
+      pkg.split("@").length === 3 ? "@" + pkg.split("@")[1] : pkg.split("@")[0];
     if (!plugins.includes(cleanedPackageName)) {
       plugins.push(cleanedPackageName);
       plugins.sort();
