@@ -1,0 +1,28 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "{{{__pluginName}}}-export-marketing",
+      appId: "sendgridApp", // The id of the App this Source uses
+      groupId: "high_value_customers", // The id of the group whose members you want to export
+
+      options: {},
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "email",
+        first_name: "firstName",
+        last_name: "lastName",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      destinationGroupMemberships: {
+        "High Value Customers!": "highValueCustomers",
+      },
+    },
+  ];
+};
