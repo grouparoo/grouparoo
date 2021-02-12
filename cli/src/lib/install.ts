@@ -5,6 +5,7 @@ import { buildLogger } from "../utils/logger";
 import { ensurePath } from "../utils/ensurePath";
 import { ensurePackageJSON } from "../utils/ensurePackageJSON";
 import { readPackageJSON } from "../utils/readPackageJSON";
+import { isGrouparooPlugin } from "../utils/isGrouparooPlugin";
 
 const JSON_SPACER = 2;
 
@@ -22,7 +23,7 @@ export default async function Update(pkg: string) {
   let plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
 
   if (!plugins) {
-    logger.fail("There is no `grouparoo` section in this package.json");
+    logger.fail("There is no `grouparoo` section in this package.json.");
     process.exit(1);
   }
 
@@ -34,6 +35,11 @@ export default async function Update(pkg: string) {
       );
       process.exit(1);
     }
+  }
+
+  if (!(await isGrouparooPlugin(pkg))) {
+    logger.fail(`Package \`${pkg}\` is not a Grouparoo plugin.`);
+    process.exit(1);
   }
 
   await NPM.install(logger, workDir, pkg);
