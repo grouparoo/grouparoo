@@ -81,7 +81,7 @@
     "@grouparoo/spec-helper": "^0.2.2-alpha.0",
     "@types/faker": "*",
     "@types/jest": "*",
-    "csv-parse": "4.15.0",
+    "csv-parse": "4.15.1",
     "jest": "26.6.3",
     "jest-fetch-mock": "3.0.3",
     "nock": "13.0.6",
