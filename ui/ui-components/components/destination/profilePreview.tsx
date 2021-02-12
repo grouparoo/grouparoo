@@ -6,13 +6,7 @@ import { useRouter } from "next/router";
 import { Actions } from "../../utils/apiData";
 
 export default function ProfilePreview(props) {
-  const {
-    errorHandler,
-    destination,
-    groups,
-    trackedGroupId,
-    mappingOptions,
-  } = props;
+  const { errorHandler, destination, trackedGroupId, mappingOptions } = props;
   const router = useRouter();
   const [profileId, setProfileId] = useState(
     router.query.profileId?.toString()
@@ -47,23 +41,26 @@ export default function ProfilePreview(props) {
     JSON.stringify(destination.destinationGroupMemberships),
   ]);
 
-  function storeProfilePropertyId(profileId: string) {
+  function storeProfilePropertyId(profileId: string = "") {
     setProfileId(profileId);
     let url = `${window.location.pathname}?`;
-    url += `profileId=${profileId}&`;
+
+    if (profileId !== "") {
+      url += `profileId=${profileId}&`;
+    }
 
     const routerMethod =
       url === `${window.location.pathname}?` ? "replace" : "push";
     router[routerMethod](router.route, url, { shallow: true });
   }
 
-  async function load(
-    _profileId = profileId === "" ? undefined : profileId,
-    _sleep = sleep
-  ) {
+  async function load(_profileId = "", _sleep = sleep) {
     setSleeping(true);
+    setToHide(false);
+    storeProfilePropertyId(_profileId);
 
-    if (!destination.destinationGroup?.id && trackedGroupId === "_none") {
+    if (trackedGroupId === "_none") {
+      setToHide(true);
       return;
     }
 
@@ -85,17 +82,19 @@ export default function ProfilePreview(props) {
           groupId,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
-          profileId: _profileId,
+          profileId: _profileId !== "" ? _profileId : undefined,
         }
       );
+
+      setSleeping(false);
 
       if (profile) {
         setToHide(false);
         setProfile(profile);
         storeProfilePropertyId(profile.id);
+      } else {
+        setToHide(true);
       }
-
-      setSleeping(false);
     }, _sleep);
   }
 
