@@ -63,7 +63,7 @@
     "stacktrace-js": "2.0.2",
     "swagger-ui-dist": "3.43.0",
     "ts-jest": "26.5.1",
-    "type-fest": "0.20.2",
+    "type-fest": "0.21.0",
     "typescript": "4.1.5"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
