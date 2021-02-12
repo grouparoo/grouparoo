@@ -59,7 +59,7 @@ export default function ProfilePreview(props) {
     setToHide(false);
     storeProfilePropertyId(_profileId);
 
-    if (!destination.destinationGroup?.id && trackedGroupId === "_none") {
+    if (trackedGroupId === "_none") {
       setToHide(true);
       return;
     }
