@@ -348,10 +348,10 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async checkProfileWillBeExported(profile: Profile) {
-    const profilegroupIds = (
+    const profileGroupIds = (
       await profile.$get("groups", { attributes: ["id"] })
     ).map((group) => group.id);
-    if (!profilegroupIds.includes(this.groupId)) {
+    if (!profileGroupIds.includes(this.groupId)) {
       throw new Error(
         `profile ${profile.id} will not be exported by this destination`
       );
