@@ -73,6 +73,9 @@ export default async function Initialize(
     "    - Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands"
   );
   console.info(
-    `    - Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application`
+    "    - You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+  );
+  console.info(
+    "    - Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
   );
 }

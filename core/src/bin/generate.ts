@@ -155,6 +155,9 @@ Commands:
         "You can filter this list by providing a (partial) template to match template names against. (e.g. `grouparoo generate postgres --list`)"
       );
     }
+    console.log(
+      "You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+    );
   }
 
   async getTemplate(templateName: string) {
