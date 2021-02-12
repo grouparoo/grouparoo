@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.34",
-    "@fortawesome/free-solid-svg-icons": "5.15.1",
+    "@fortawesome/free-solid-svg-icons": "5.15.2",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@grouparoo/core": "^0.2.2-alpha.0",
     "@grouparoo/spec-helper": "^0.2.2-alpha.0",
