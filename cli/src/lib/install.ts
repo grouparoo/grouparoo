@@ -6,13 +6,15 @@ import { ensurePath } from "../utils/ensurePath";
 import { ensurePackageJSON } from "../utils/ensurePackageJSON";
 import { readPackageJSON } from "../utils/readPackageJSON";
 import { isGrouparooPlugin } from "../utils/isGrouparooPlugin";
+import { getCoreVersion } from "../utils/getCoreVersion";
 
 const JSON_SPACER = 2;
 
 export default async function Update(pkg: string) {
   const workDir: string = process.env.INIT_CWD;
 
-  if (pkg && !pkg.match(/^.+@/)) pkg = `${pkg}@latest`;
+  const coreVersion = getCoreVersion(workDir);
+  if (pkg && !pkg.match(/^.+@/)) pkg = `${pkg}@${coreVersion}`;
   const logger = buildLogger(`Installing${pkg ? ` ${pkg}` : ""}`);
 
   ensurePath(workDir, logger);
