@@ -24,13 +24,23 @@ export default async function Initialize(
     logger.succeed(`Created ${workDir}`);
   }
 
-  const configDir = path.join(workDir, "config");
-  if (!fs.existsSync(configDir) || opts.force) {
-    fs.mkdirpSync(configDir);
-    logger.succeed("Created config directory");
-  } else {
-    logger.warn("config directory already exists, not modifying");
-  }
+  /**
+   * Copy Code Config README templates into the work directory. This also
+   * results in a skeleton structure representing the directories in which Code
+   * Config files will be generated.
+   */
+  const templates = Templates.getConfigTemplates();
+  templates.map(({ absoluteFilePath, relativeFilePath }) => {
+    const destDir = path.dirname(relativeFilePath);
+    if (!fs.existsSync(destDir)) {
+      fs.mkdirSync(destDir, { recursive: true });
+    }
+    const destFilePath = path.join(workDir, relativeFilePath);
+    if (!fs.existsSync(destFilePath)) {
+      fs.copyFileSync(absoluteFilePath, destFilePath);
+    }
+  });
+  logger.succeed("Created directories for config objects.");
 
   const packageJson = path.join(workDir, "package.json");
   if (!fs.existsSync(packageJson) || opts.force) {
