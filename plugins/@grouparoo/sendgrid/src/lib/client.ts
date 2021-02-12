@@ -106,20 +106,6 @@ class SendgridClient {
     }
     return allFields;
   }
-
-  async createCustomField(name, type) {
-    const data = {
-      name,
-      field_type: type,
-    };
-    const request = {
-      method: "POST",
-      url: "/v3/marketing/field_definitions",
-      body: data,
-    };
-    const [response, body] = await this.client.request(<ClientRequest>request);
-    return body.id;
-  }
 }
 
 export { SendgridClient };

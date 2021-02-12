@@ -64,18 +64,3 @@ function filterLists(allLists, groupName) {
   }
   return null;
 }
-
-export async function removeFromList(
-  client,
-  appId,
-  appOptions,
-  user,
-  groupName
-) {
-  const allLists = await getLists(client, appId, appOptions, true);
-  const listId = filterLists(allLists, groupName);
-  const existingLists = user?.["list_ids"] || [];
-  if (listId && existingLists.includes(listId)) {
-    await client.unsubscribe(listId, user.id);
-  }
-}

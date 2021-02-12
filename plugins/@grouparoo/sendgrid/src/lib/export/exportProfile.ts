@@ -1,9 +1,10 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-import { getListId, removeFromList } from "./listMethods";
+import { getListId } from "./listMethods";
 import { isReservedField } from "./destinationMappingOptions";
 import { getFieldId } from "./fieldsMethods";
 import { log } from "actionhero";
+
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
     return sendProfile(args);
@@ -17,23 +18,23 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 };
 
 export const sendProfile: ExportProfilePluginMethod = async ({
-  appId,
-  appOptions,
-  destinationOptions,
-  export: {
-    toDelete,
-    newProfileProperties,
-    oldProfileProperties,
-    newGroups,
-    oldGroups,
-  },
-}) => {
+                                                               appId,
+                                                               appOptions,
+                                                               destinationOptions,
+                                                               export: {
+                                                                 toDelete,
+                                                                 newProfileProperties,
+                                                                 oldProfileProperties,
+                                                                 newGroups,
+                                                                 oldGroups
+                                                               }
+                                                             }) => {
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
   const client = await connect(appOptions);
-  let email = cleanEmail(newProfileProperties["email"]); // this is how we will identify profiles
-  let oldEmail = cleanEmail(oldProfileProperties["email"]);
+  const email = cleanEmail(newProfileProperties["email"]); // this is how we will identify profiles
+  const oldEmail = cleanEmail(oldProfileProperties["email"]);
   if (!email) {
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
@@ -44,7 +45,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   }
 
   if (toDelete) {
-    let userToDelete = user || oldUser;
+    const userToDelete = user || oldUser;
     if (userToDelete) {
       await client.deleteUsers([userToDelete["id"]]);
     }
@@ -95,13 +96,17 @@ export const sendProfile: ExportProfilePluginMethod = async ({
         listsToAdd.push(listId);
       }
     }
+
     await client.addOrUpdateUser(formattedDataFields, listsToAdd);
 
     // remove from lists
     if (user) {
       for (const group of oldGroups) {
         if (!newGroups.includes(group)) {
-          await removeFromList(client, appId, appOptions, user, group);
+          const listId = await getListId(client, appId, appOptions, group);
+          if (listId && existingLists.includes(listId)) {
+            await client.unsubscribe(listId, user.id);
+          }
         }
       }
     }
