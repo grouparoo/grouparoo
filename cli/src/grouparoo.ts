@@ -8,6 +8,7 @@ import { checkNodeVersion } from "./utils/checkNodeVersion";
 import Initialize from "./lib/initialize";
 import Update from "./lib/update";
 import Install from "./lib/install";
+import Uninstall from "./lib/uninstall";
 
 const Package = require("../package.json");
 
@@ -43,6 +44,13 @@ async function main() {
       "Install a grouparoo plugin (via npm install) and enable it.  Use package@version for a specific version or tag"
     )
     .action(Install);
+
+  program
+    .command("uninstall <package>")
+    .description(
+      "Uninstall a grouparoo plugin (via npm uninstall) and disable it."
+    )
+    .action(Uninstall);
 
   program.addHelpText(
     "after",
