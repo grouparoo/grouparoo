@@ -31,10 +31,10 @@ export default async function Initialize(
    */
   const templates = Templates.getConfigTemplates();
   templates.map(({ absoluteFilePath, relativeFilePath }) => {
-    const destDir = path.dirname(relativeFilePath);
-    if (!fs.existsSync(destDir)) {
-      fs.mkdirSync(destDir, { recursive: true });
-    }
+    // Create directory for file if it doesn't exist.
+    const destDir = path.join(workDir, path.dirname(relativeFilePath));
+    if (!fs.existsSync(destDir)) fs.mkdirpSync(destDir);
+    // Copy the file into the working project's config directory.
     const destFilePath = path.join(workDir, relativeFilePath);
     if (!fs.existsSync(destFilePath)) {
       fs.copyFileSync(absoluteFilePath, destFilePath);
