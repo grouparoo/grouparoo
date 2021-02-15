@@ -77,7 +77,7 @@ export abstract class ConfigTemplate {
       params[this.parentId] = params["parent"];
       if (!params[this.parentId])
         throw new Error(
-          `option parent (-i, --parent) is required - ${this.parentId} is needed for a ${this.name}`
+          `option parent (-a, --parent) is required - ${this.parentId} is needed for a ${this.name}`
         );
     }
 
