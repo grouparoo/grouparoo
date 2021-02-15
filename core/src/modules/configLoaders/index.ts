@@ -5,6 +5,7 @@ import glob from "glob";
 import {
   ConfigurationObject,
   sortConfigurationObjects,
+  validateConfigObjects,
   IdsByClass,
 } from "../../classes/codeConfig";
 import { loadApp, deleteApps } from "./app";
@@ -110,6 +111,12 @@ export async function processConfigObjects(
   const errors: string[] = [];
 
   configObjects = sortConfigurationObjects(configObjects);
+
+  const { errors: validationErrors } = validateConfigObjects(configObjects);
+  validationErrors.map((err) =>
+    log(`[ config ] ${err}`, env === "test" ? "info" : "error")
+  );
+  errors.push(...validationErrors);
 
   for (const i in configObjects) {
     const configObject = configObjects[i];

@@ -1,6 +1,7 @@
 import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
+import extractDuplicates from "../modules/validators/extractDuplicates";
 
 export interface IdsByClass {
   app?: string[];
@@ -183,6 +184,22 @@ export function sortConfigurationObjects(
     configObjectsWithIds
   );
   return sortedConfigObjectsWithIds.map((o) => o.configObject);
+}
+
+/**
+ * Check a set of config objects for duplicate IDs.
+ *
+ * @param configObjects ConfigurationObject[]
+ */
+export function validateConfigObjects(
+  configObjects: ConfigurationObject[]
+): { configObjects: ConfigurationObject[]; errors: string[] } {
+  let errors = [];
+  const duplicates = extractDuplicates(configObjects, "id");
+  if (duplicates.length > 0) {
+    errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
+  }
+  return { configObjects, errors };
 }
 
 export function getParentIds(configObject: ConfigurationObject) {
