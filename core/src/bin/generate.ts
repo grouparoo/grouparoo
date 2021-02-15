@@ -90,7 +90,7 @@ Commands:
   }
 
   async describe(params) {
-    if (!params.template) this.fatalError(`no template provided`);
+    if (!params.template) return this.fatalError(`no template provided`);
 
     const template = await this.getTemplate(params.template);
     this.logTemplateAndOptions(template);
@@ -101,10 +101,10 @@ Commands:
       "Learn more with `grouparoo generate --help` and `grouparoo generate --list`";
 
     if (!params.template) {
-      this.fatalError(`template is required. ${learnMoreText}`);
+      return this.fatalError(`template is required. ${learnMoreText}`);
     }
     if (!params.id) {
-      this.fatalError(`id is required. ${learnMoreText}`);
+      return this.fatalError(`id is required. ${learnMoreText}`);
     }
 
     const template = await this.getTemplate(params.template);
@@ -113,7 +113,7 @@ Commands:
     try {
       preparedParams = template.prepareParams({ ...params });
     } catch (error) {
-      this.fatalError(error);
+      return this.fatalError(error);
     }
 
     if (preparedParams.id.toString().replace(/['"]+/g, "") !== params.id) {
@@ -126,7 +126,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
-      this.fatalError(error.message);
+      return this.fatalError(error.message);
     }
 
     Object.keys(fileData).forEach((filename) => {
