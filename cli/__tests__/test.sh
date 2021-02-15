@@ -60,6 +60,13 @@ else
     exit 1
 fi
 
+if [ -f "$WORKDIR/config/README.md" ]; then
+    echo "✅ config/README exists."
+else
+    echo "🚫 config/README does not exist."
+    exit 1
+fi
+
 ## try the update command
 echo ""
 echo "--- test: update ---"
