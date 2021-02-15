@@ -122,6 +122,9 @@ Commands:
       );
     }
 
+    console.log(preparedParams);
+    process.exit(1);
+
     let fileData: ConfigTemplateRunResponse = {};
     try {
       fileData = await template.run({ params: preparedParams });
@@ -168,7 +171,7 @@ Commands:
       );
     }
     console.log(
-      "You can add plugins to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+      "\nYou can add plugins to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
     );
   }
 
