@@ -1,6 +1,6 @@
 # Code Configuration
 
-Welcome to your very own Grouparoo project! You are awesome for supporting open-source software!
+Welcome to your very own Grouparoo project!
 
 This directory will contain all your application's configuration files. You can generate them automatically using [the `generate` command](https://www.grouparoo.com/docs/cli/config#generate) from the Grouparoo CLI.
 
