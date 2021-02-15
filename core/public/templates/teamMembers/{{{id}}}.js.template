@@ -3,12 +3,12 @@ exports.default = async function buildConfig() {
     {
       class: "teamMember",
       id: {{{id}}},
-      email: "person@example.com",
-      teamId: "admin_team", // The ID of the Team that this Team Member belongs to
+      email: "...", // The Email address of your Team Member
+      teamId: {{{teamId}}}, // The ID of the Team that this Team Member belongs to
       options: {
         firstName: {{{id}}},
-        lastName: "Team Member",
-        password: "P@ssword!",
+        lastName: "...",
+        password: "...",
       },
     },
   ];

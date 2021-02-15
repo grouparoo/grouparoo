@@ -5,7 +5,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}-import",
-      appId: "...", // Set this value to the ID of the App this Source uses - e.g. `appId: "mailchimp_app"`
+      appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "mailchimp_app"`
       options: {
         listId: "..." // The Mailchimp List ID (https://mailchimp.com/help/find-audience-id/)
       },

@@ -32,6 +32,7 @@ export class GoogleSheetSourceTemplate extends ConfigTemplate {
     this.description = `Config for a Google Sheets Source`;
     this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -47,6 +48,7 @@ export class GoogleSheetScheduleTemplate extends ConfigTemplate {
     this.description = `Config for a Google Sheets Schedule`;
     this.files = [path.join(templateRoot, "schedule", "*.template")];
     this.destinationDir = "schedules";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {
@@ -62,6 +64,7 @@ export class GoogleSheetPropertyTemplate extends ConfigTemplate {
     this.description = `Config for a Google Sheets Property`;
     this.files = [path.join(templateRoot, "property", "*.template")];
     this.destinationDir = "properties";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {

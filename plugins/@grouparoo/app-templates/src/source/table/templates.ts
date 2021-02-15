@@ -21,6 +21,7 @@ export class TableSourceTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Table Source. Construct properties from the data in the table without writing SQL.`;
     this.files = files;
     this.destinationDir = "sources";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -39,6 +40,7 @@ export class TableScheduleTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Table Schedule`;
     this.files = files;
     this.destinationDir = "schedules";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {
@@ -57,6 +59,7 @@ export class TablePropertyTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Table Property`;
     this.files = files;
     this.destinationDir = "properties";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {

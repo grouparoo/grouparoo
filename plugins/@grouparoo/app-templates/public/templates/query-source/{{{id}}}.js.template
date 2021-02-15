@@ -5,7 +5,7 @@ exports.default = async function buildConfig() {
       id: {{{id}}},
       name: {{{id}}},
       type: "{{{__pluginName}}}-query-import",
-      appId: "...", // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
+      appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
     },
   ];
 };

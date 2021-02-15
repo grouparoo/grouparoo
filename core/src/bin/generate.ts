@@ -2,6 +2,7 @@ import { GrouparooCLI } from "../modules/cli";
 import Colors from "colors/safe";
 import {
   ConfigTemplate,
+  ConfigTemplateParams,
   ConfigTemplateRunResponse,
 } from "../classes/configTemplate";
 import { CLI, api } from "actionhero";
@@ -40,6 +41,12 @@ Commands:
         letter: "d",
         flag: true,
         description: "Display the options for the template in detail",
+      },
+      parent: {
+        required: false,
+        letter: "a",
+        description:
+          "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
       },
       overwrite: {
         required: true,
@@ -102,7 +109,12 @@ Commands:
 
     const template = await this.getTemplate(params.template);
 
-    const preparedParams = template.prepareParams({ ...params });
+    let preparedParams: ConfigTemplateParams;
+    try {
+      preparedParams = template.prepareParams({ ...params });
+    } catch (error) {
+      this.fatalError(error);
+    }
 
     if (preparedParams.id.toString().replace(/['"]+/g, "") !== params.id) {
       console.log(

@@ -25,6 +25,7 @@ export class MailchimpSourceTemplate extends ConfigTemplate {
     this.description = `Config for a Mailchimp Source`;
     this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -40,6 +41,7 @@ export class MailchimpScheduleTemplate extends ConfigTemplate {
     this.description = `Config for a Mailchimp Schedule`;
     this.files = [path.join(templateRoot, "schedule", "*.template")];
     this.destinationDir = "schedules";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {
@@ -55,6 +57,7 @@ export class MailchimpPropertyTemplate extends ConfigTemplate {
     this.description = `Config for a Mailchimp Property`;
     this.files = [path.join(templateRoot, "property", "*.template")];
     this.destinationDir = "properties";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {
@@ -71,6 +74,7 @@ export class MailchimpIdDestinationTemplate extends ConfigTemplate {
     this.description = `Config for a Mailchimp ID Destination. Note: Use the email destination unless you know you need this.`;
     this.files = [path.join(templateRoot, "destination", "id", "*.template")];
     this.destinationDir = "destinations";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -88,6 +92,7 @@ export class MailchimpEmailDestinationTemplate extends ConfigTemplate {
       path.join(templateRoot, "destination", "email", "*.template"),
     ];
     this.destinationDir = "destinations";
+    this.parentId = "appId";
   }
 
   async run({ params }) {

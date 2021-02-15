@@ -7,6 +7,7 @@ export class DestinationTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Destination`;
     this.files = files;
     this.destinationDir = "destinations";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
