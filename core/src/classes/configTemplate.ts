@@ -4,6 +4,7 @@ import fs from "fs-extra";
 import glob from "glob";
 
 export interface ConfigTemplateParams {
+  id: string;
   [key: string]: string | number | boolean;
 }
 
@@ -160,5 +161,13 @@ export abstract class ConfigTemplate {
     }
 
     return files;
+  }
+
+  unquotedId(params: ConfigTemplateParams) {
+    return params.id.replace(/"/g, "");
+  }
+
+  makeFromId(params: ConfigTemplateParams, extension: string) {
+    return `"${this.unquotedId(params)}_${extension}"`;
   }
 }

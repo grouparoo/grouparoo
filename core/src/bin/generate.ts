@@ -122,9 +122,6 @@ Commands:
       );
     }
 
-    console.log(preparedParams);
-    process.exit(1);
-
     let fileData: ConfigTemplateRunResponse = {};
     try {
       fileData = await template.run({ params: preparedParams });
