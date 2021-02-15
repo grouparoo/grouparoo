@@ -53,7 +53,7 @@ export class GoogleSheetScheduleTemplate extends ConfigTemplate {
 
   async run({ params }) {
     params["__pluginName"] = this.name.split(":")[0];
-    params["schedule_id"] = this.makeFromId(params, "schedule");
+    params["schedule_id"] = this.extendId("schedule");
     return this.mustacheAllFiles(params);
   }
 }
