@@ -35,6 +35,7 @@ importers:
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
+      '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-community': link:../../ui/ui-community
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
@@ -58,6 +59,7 @@ importers:
       '@grouparoo/redshift': ^0.2.2-alpha.0
       '@grouparoo/sailthru': ^0.2.2-alpha.0
       '@grouparoo/salesforce': ^0.2.2-alpha.0
+      '@grouparoo/sendgrid': ^0.2.2-alpha.0
       '@grouparoo/snowflake': ^0.2.2-alpha.0
       '@grouparoo/ui-community': ^0.2.2-alpha.0
       '@grouparoo/zendesk': ^0.2.2-alpha.0
@@ -82,6 +84,7 @@ importers:
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
+      '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
@@ -105,6 +108,7 @@ importers:
       '@grouparoo/redshift': ^0.2.2-alpha.0
       '@grouparoo/sailthru': ^0.2.2-alpha.0
       '@grouparoo/salesforce': ^0.2.2-alpha.0
+      '@grouparoo/sendgrid': ^0.2.2-alpha.0
       '@grouparoo/snowflake': ^0.2.2-alpha.0
       '@grouparoo/ui-enterprise': ^0.2.2-alpha.0
       '@grouparoo/zendesk': ^0.2.2-alpha.0
