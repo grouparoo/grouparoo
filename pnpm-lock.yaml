@@ -167,7 +167,7 @@ importers:
       '@types/validator': 13.1.3
       actionhero: 25.0.6
       ah-next-plugin: 0.5.0_actionhero@25.0.6
-      ah-sequelize-plugin: 3.0.1_7f390017760487b9a6ab263f6def5edc
+      ah-sequelize-plugin: 3.0.1_96190f3d4c64c35bb4d86bd12f189f29
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -194,7 +194,7 @@ importers:
       prettier: 2.2.1
       reflect-metadata: 0.1.13
       sequelize: 6.5.0_8222121c541e29ff6dc977ab76aac44f
-      sequelize-typescript: 2.0.0_ae0c0f080b5f5ab07bde2879c1e21bc5
+      sequelize-typescript: 2.1.0_ae0c0f080b5f5ab07bde2879c1e21bc5
       sqlite3: 5.0.1
       ts-node: 9.1.1_typescript@4.1.5
       umzug: 2.3.0
@@ -255,7 +255,7 @@ importers:
       prettier: 2.2.1
       reflect-metadata: 0.1.13
       sequelize: 6.5.0
-      sequelize-typescript: 2.0.0
+      sequelize-typescript: 2.1.0
       sqlite3: 5.0.1
       ts-jest: 26.5.1
       ts-node: 9.1.1
@@ -444,7 +444,7 @@ importers:
       typescript: 4.1.5
   plugins/@grouparoo/files-s3:
     dependencies:
-      aws-sdk: 2.842.0
+      aws-sdk: 2.843.0
       fs-extra: 9.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -460,7 +460,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.6
-      aws-sdk: 2.842.0
+      aws-sdk: 2.843.0
       fs-extra: 9.1.0
       jest: 26.6.3
       prettier: 2.2.1
@@ -3837,11 +3837,11 @@ packages:
       react-dom: ^16.6.0 || ^17
     resolution:
       integrity: sha512-Xkyag+yQpnpr/QRoRX3S3FhvrW0oxLCKQ9fz+NGA+BO2HdZVZJANnXw6MVefWZRIkphDZSyqKVVo6uc8TOwJKg==
-  /ah-sequelize-plugin/3.0.1_7f390017760487b9a6ab263f6def5edc:
+  /ah-sequelize-plugin/3.0.1_96190f3d4c64c35bb4d86bd12f189f29:
     dependencies:
       actionhero: 25.0.6
       sequelize: 6.5.0_8222121c541e29ff6dc977ab76aac44f
-      sequelize-typescript: 2.0.0_ae0c0f080b5f5ab07bde2879c1e21bc5
+      sequelize-typescript: 2.1.0_ae0c0f080b5f5ab07bde2879c1e21bc5
       umzug: 3.0.0-beta.5
     dev: false
     engines:
@@ -4252,7 +4252,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  /aws-sdk/2.842.0:
+  /aws-sdk/2.843.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -4267,7 +4267,7 @@ packages:
     engines:
       node: '>= 0.8.0'
     resolution:
-      integrity: sha512-9vjVDxsLzNI79JChUgEHDUpv2obkTe35F3oGFGViKsf4C7xlOexzKOCfTRNcgzh0MON6rVDFpYBtF2LlEyDGKg==
+      integrity: sha512-wTHKHDzblaNjWsdCuKTnfAr2zSLgN+Nc2yGpqPxnr7emEQG4V3B0gYEfV9rvv9dVq5Jw8Y1q6VNWS6k8oclnSw==
   /aws-sign2/0.7.0:
     resolution:
       integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
@@ -4678,7 +4678,7 @@ packages:
   /buffer/4.9.2:
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
     resolution:
       integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==
@@ -7536,17 +7536,6 @@ packages:
     optional: true
     resolution:
       integrity: sha1-DwiGD2oVUSey+t1PnOJLGqtuTSI=
-  /glob/7.1.2:
-    dependencies:
-      fs.realpath: 1.0.0
-      inflight: 1.0.6
-      inherits: 2.0.4
-      minimatch: 3.0.4
-      once: 1.4.0
-      path-is-absolute: 1.0.1
-    dev: false
-    resolution:
-      integrity: sha512-MJTUg1kjuLeQCJ+ccE4Vpa6kKVXkPYJ2mOCQyUuKLcLQsdrMCpBPUi8qVE6+YuaJkozeA9NusTAw3hLr8Xe5EQ==
   /glob/7.1.6:
     dependencies:
       fs.realpath: 1.0.0
@@ -8106,6 +8095,7 @@ packages:
     resolution:
       integrity: sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
   /ieee754/1.1.13:
+    dev: false
     resolution:
       integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==
   /ieee754/1.2.1:
@@ -13657,24 +13647,23 @@ packages:
       node: '>= 10.0.0'
     resolution:
       integrity: sha512-4YwEw3ZgK/tY/so+GfnSgXkdwIJJ1I32uZJztIEgZeAO6HMgj64OzySbWLgxj+tXhZCJnzRfkY9gINw8Ft8ZMg==
-  /sequelize-typescript/2.0.0_ae0c0f080b5f5ab07bde2879c1e21bc5:
+  /sequelize-typescript/2.1.0_ae0c0f080b5f5ab07bde2879c1e21bc5:
     dependencies:
       '@types/node': 14.14.27
       '@types/validator': 13.1.3
-      glob: 7.1.2
+      glob: 7.1.6
       reflect-metadata: 0.1.13
       sequelize: 6.5.0_8222121c541e29ff6dc977ab76aac44f
     dev: false
     engines:
       node: '>=10.0.0'
     peerDependencies:
-      '@types/bluebird': '*'
       '@types/node': '*'
       '@types/validator': '*'
       reflect-metadata: '*'
-      sequelize: ^6.0.0
+      sequelize: '>=6.2.0'
     resolution:
-      integrity: sha512-4nCX18iNAkuRCgxsFOOH9FsUyeqsqLuj7VIZPOWgdRT8ZeQkQl3SgU5MXlji5o2NVekaV9QQzSE0D/6xtUKCmQ==
+      integrity: sha512-wwPxydBQ/wIZ92pFxDQEAhW8uRHqwFZGm6JkPmpsCjrODWrH8TANZiOCjwGouygFMgBwCNK91RNwLe5TYoy5pg==
   /sequelize/6.5.0:
     dependencies:
       debug: 4.3.1
@@ -16091,7 +16080,7 @@ packages:
       integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==
   /xml2js/0.4.19:
     dependencies:
-      sax: 1.2.1
+      sax: 1.2.4
       xmlbuilder: 9.0.7
     dev: false
     resolution:

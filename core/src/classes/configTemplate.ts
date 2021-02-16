@@ -28,6 +28,7 @@ export abstract class ConfigTemplate {
   };
   files: string[]; // a list of files or a glob of files
   destinationDir: string;
+  parentId?: string;
 
   constructor() {
     this.inputs = {
@@ -70,6 +71,15 @@ export abstract class ConfigTemplate {
         params[k] = "null";
       }
     });
+
+    // parentId
+    if (this.parentId) {
+      params[this.parentId] = params["parent"];
+      if (!params[this.parentId])
+        throw new Error(
+          `option parent (-a, --parent) is required - ${this.parentId} is needed for a ${this.name}`
+        );
+    }
 
     // format inputs
     Object.keys(this.inputs).forEach((k) => {

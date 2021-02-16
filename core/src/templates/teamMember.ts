@@ -18,6 +18,7 @@ export class TeamMemberTemplate extends ConfigTemplate {
       ),
     ];
     this.destinationDir = "teamMembers";
+    this.parentId = "teamId";
   }
 
   async run({ params }) {

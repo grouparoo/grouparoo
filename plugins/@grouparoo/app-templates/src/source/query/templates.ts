@@ -20,6 +20,7 @@ export class QuerySourceTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Query Source. Work with multiple tables and build custom queries for its properties.`;
     this.files = files;
     this.destinationDir = "sources";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -38,6 +39,7 @@ export class QueryScheduleTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Query Schedule`;
     this.files = files;
     this.destinationDir = "schedules";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {
@@ -56,6 +58,7 @@ export class QueryPropertyTemplate extends ConfigTemplate {
     this.description = `Config for a ${name} Query Property`;
     this.files = files;
     this.destinationDir = "properties";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {

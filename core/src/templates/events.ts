@@ -32,6 +32,7 @@ export class EventsSourceTemplate extends ConfigTemplate {
     this.description = "Config for a Grouparoo Source based on an Events App";
     this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
+    this.parentId = "appId";
   }
 
   async run({ params }) {
@@ -47,6 +48,7 @@ export class EventsPropertyTemplate extends ConfigTemplate {
       "Config for a Grouparoo Property based on an Events Source";
     this.files = [path.join(templateRoot, "property", "*.template")];
     this.destinationDir = "properties";
+    this.parentId = "sourceId";
   }
 
   async run({ params }) {

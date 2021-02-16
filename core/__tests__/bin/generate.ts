@@ -136,6 +136,33 @@ describe("bin/generate", () => {
     });
 
     const output = messages.join(" ");
-    expect(output).not.toContain(`ID was changed to \"new-group\"`);
+    expect(output).not.toContain(`ID was changed`);
+  });
+
+  test("if a parent is required and not provided an error will be shown", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "team:member",
+        id: "new-team-member",
+      },
+    });
+    const output = messages.join(" ");
+    expect(output).toMatch("teamId is needed for a team:member");
+  });
+
+  test("if a parent is required and provided it will be used", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "team:member",
+        id: "new-team-member",
+        parent: "admin_team",
+      },
+    });
+    const output = messages.join(" ");
+    expect(output).toMatch("/config/teamMembers/new-team-member.js"); // success
   });
 });
