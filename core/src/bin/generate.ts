@@ -168,7 +168,7 @@ Commands:
       );
     }
     console.log(
-      "You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+      "You can add plugins to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
     );
   }
 
