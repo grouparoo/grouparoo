@@ -118,6 +118,8 @@ export async function processConfigObjects(
   );
   errors.push(...validationErrors);
 
+  if (errors.length > 0) return { seenIds, errors };
+
   for (const i in configObjects) {
     const configObject = configObjects[i];
     if (Object.keys(configObject).length === 0) continue;
