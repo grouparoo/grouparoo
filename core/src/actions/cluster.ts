@@ -1,5 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { cache, api } from "actionhero";
+import { cache, api, task, config } from "actionhero";
 
 import { App } from "../models/App";
 // import { ApiKey } from "../models/ApiKey";
@@ -107,6 +107,12 @@ export class ClusterReset extends AuthenticatedAction {
       data: { counts },
     });
 
+    // wait for any currently-running workers
+    await new Promise((resolve) =>
+      setTimeout(resolve, config.tasks.timeout * 2)
+    );
+    await clearFailedTasks();
+
     return { success: true, counts };
   }
 }
@@ -124,5 +130,14 @@ export class ClusterClearCache extends AuthenticatedAction {
   async runWithinTransaction() {
     await cache.clear();
     return { success: true };
+  }
+}
+
+async function clearFailedTasks() {
+  const failed = await task.failed(0, 0);
+  if (failed && failed.length > 0) {
+    const failedJob = failed[0];
+    await task.removeFailed(failedJob);
+    return clearFailedTasks();
   }
 }
