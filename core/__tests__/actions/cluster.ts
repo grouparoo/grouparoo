@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { cache, Connection, specHelper } from "actionhero";
+import { cache, Connection, specHelper, api, task } from "actionhero";
 import { App, Log, SetupStep } from "../../src";
 
 describe("actions/cluster", () => {
@@ -51,6 +51,31 @@ describe("actions/cluster", () => {
     });
 
     describe("cluster:destroy", () => {
+      beforeAll(async () => {
+        api.resque.queue.connection.redis.set("resque:stat:test", 100);
+
+        // from https://github.com/actionhero/node-resque/blob/master/__tests__/core/queue.ts
+        const errorPayload = function (id) {
+          return JSON.stringify({
+            worker: "busted-worker-" + id,
+            queue: "busted-queue",
+            payload: {
+              class: "busted_job",
+              queue: "busted-queue",
+              args: [1, 2, 3],
+            },
+            exception: "ERROR_NAME",
+            error: "I broke",
+            failed_at: new Date().toString(),
+          });
+        };
+
+        await api.resque.queue.connection.redis.rpush(
+          api.resque.queue.connection.key("failed"),
+          errorPayload(1)
+        );
+      });
+
       test("the action will delete the data from most models", async () => {
         connection.params = { csrfToken };
         const { error, success, counts } = await specHelper.runAction(
@@ -73,6 +98,26 @@ describe("actions/cluster", () => {
           where: { complete: true },
         });
         expect(completeSetupSteps).toBe(0);
+      });
+
+      test("resque stats will be reset to 0", async () => {
+        const redisStatKeys = await api.resque.queue.connection.redis.keys(
+          "*resque:stat:*"
+        );
+        const counts = await Promise.all(
+          redisStatKeys.map((k) => api.resque.queue.connection.redis.get(k))
+        );
+        counts.map((v) => expect(v).toEqual(0));
+      });
+
+      test("there will be no resque errors", async () => {
+        const { total, failed, error } = await specHelper.runAction(
+          "resque:resqueFailed",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(total).toBe(0);
+        expect(failed).toEqual([]);
       });
 
       test("teams still remain and the user is still logged in", async () => {
