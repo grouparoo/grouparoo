@@ -22,7 +22,6 @@ const first_name = "Caio";
 const last_name = "Silveira";
 const alternativeName = "Evan";
 const otherName = "Lucas";
-const city = "Campina Grande";
 const newEmail = "carlos.solimoes@mailinator.com";
 const newName = "Carlos";
 const listOne = "List One";
@@ -40,6 +39,8 @@ const brandNewName = "Jake";
 const nonexistentEmail = "pilo.paz@mailinator.com";
 
 const invalidEmail = "000";
+const invalidPhone = "000";
+const invalidDate = "AAAAA";
 
 let listIds = {};
 
@@ -177,8 +178,9 @@ describe("sendgrid/exportProfile", () => {
         email,
         first_name,
         last_name,
-        city,
         phone_number,
+        //read only
+        created_at: dateField,
       },
       oldGroups: [],
       newGroups: [],
@@ -189,7 +191,7 @@ describe("sendgrid/exportProfile", () => {
     const user = await apiClient.getUser(email);
     expect(user.first_name).toBe(first_name);
     expect(user.last_name).toBe(last_name);
-    expect(user.city).toBe(city);
+    expect(user.created_at).not.toBe("2021-02-11T23:03:03Z");
     expect(user.phone_number).toBe(phone_number);
   });
 
@@ -208,6 +210,7 @@ describe("sendgrid/exportProfile", () => {
         text_field: textField,
         number_field: numberField,
         date_field: dateField,
+        created_at: dateField,
         other_text_field: otherTextField,
       },
       oldGroups: [],
@@ -222,8 +225,41 @@ describe("sendgrid/exportProfile", () => {
     expect(user.custom_fields.text_field).toBe(textField);
     expect(user.custom_fields.number_field).toBe(numberField);
     expect(user.custom_fields.date_field).toBe("2021-02-11T23:03:03Z");
+    expect(user.created_at).not.toBe("2021-02-11T23:03:03Z");
     expect(user.custom_fields.other_text_field).toBeUndefined();
     expect(user.unknown_junk).toBeUndefined();
+  });
+
+  test("can try to change user variables using invalid data", async () => {
+    // Phone must be valid.
+    await runExport({
+      oldProfileProperties: {
+        email,
+        first_name: alternativeName,
+        phone_number: newPhoneNumber,
+        text_field: textField,
+        number_field: numberField,
+        date_field: dateField,
+      },
+      newProfileProperties: {
+        email,
+        first_name: alternativeName,
+        phone_number: invalidPhone,
+        text_field: textField,
+        number_field: numberField,
+        date_field: invalidDate,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock, 60 * 1000);
+    const user = await apiClient.getUser(email);
+    expect(user.first_name).toBe(alternativeName);
+    expect(user.phone_number).toBe(newPhoneNumber);
+    expect(user.custom_fields.text_field).toBe(textField);
+    expect(user.custom_fields.number_field).toBe(numberField);
+    expect(user.custom_fields.date_field).toBe("2021-02-11T23:03:03Z");
   });
 
   test("can clear user variables", async () => {
@@ -486,6 +522,6 @@ describe("sendgrid/exportProfile", () => {
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow("");
+    ).rejects.toThrow();
   });
 });

@@ -1,7 +1,7 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId } from "./listMethods";
-import { isReservedField } from "./destinationMappingOptions";
+import { isReservedField, isReadOnlyField } from "./destinationMappingOptions";
 import { getFieldId } from "./fieldsMethods";
 import { log } from "actionhero";
 
@@ -68,7 +68,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     for (const key of Object.keys(dataFields)) {
       if (isReservedField(key)) {
         formattedDataFields[key] = formatVar(dataFields[key]);
-      } else {
+      } else if (!isReadOnlyField(key)) {
         const customFieldId = await getFieldId(client, appId, appOptions, key);
         if (customFieldId) {
           formattedDataFields["custom_fields"][customFieldId] = formatVar(
@@ -117,7 +117,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
 function formatVar(value) {
   if (value === undefined || value === null) {
-    return null;
+    return "";
   }
   if (value instanceof Date) {
     return value.toISOString();

@@ -7,8 +7,8 @@ import { getFields } from "./fieldsMethods";
 import { connect } from "./../connect";
 import { SendgridClient } from "../client";
 
-const importantFields = ["first_name", "phone_number", "created_at"];
-const reservedTypes = [
+const importantFields = ["first_name", "last_name"];
+const reservedFields = [
   "first_name",
   "last_name",
   "email",
@@ -24,6 +24,17 @@ const reservedTypes = [
   "line",
   "facebook",
   "unique_name",
+];
+const readOnlyFields = [
+  "email_domains",
+  "last_clicked",
+  "last_opened",
+  "last_emailed",
+  "singlesend_id",
+  "automation_id",
+  "created_at",
+  "updated_at",
+  "contact_id",
 ];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
@@ -54,7 +65,11 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 };
 
 export const isReservedField = (key): boolean => {
-  return reservedTypes.includes(key);
+  return reservedFields.includes(key);
+};
+
+export const isReadOnlyField = (key): boolean => {
+  return readOnlyFields.includes(key);
 };
 
 export const getRequiredFields = (): Array<{
@@ -100,7 +115,7 @@ export const getUserFields = async (
   const out = [];
 
   for (const field of fields) {
-    if (field["name"] !== "email") {
+    if (field["name"] !== "email" && !field["read_only"]) {
       const type: DestinationMappingOptionsResponseTypes = mapTypesFromSendgridToGrouparoo(
         field["name"],
         field["field_type"]
