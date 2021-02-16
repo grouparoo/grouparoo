@@ -3,7 +3,10 @@ import { Setting, Team } from "../../../src";
 import path from "path";
 import { api } from "actionhero";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
-import { validateConfigObjectKeys } from "../../../src/classes/codeConfig";
+import {
+  validateConfigObjectKeys,
+  validateConfigObjects,
+} from "../../../src/classes/codeConfig";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({
@@ -24,6 +27,24 @@ describe("modules/codeConfig", () => {
       expect(() => validateConfigObjectKeys(Team, configObject)).toThrow(
         /id is required for a Team/
       );
+    });
+
+    test("catches duplicate ID values", async () => {
+      const objs = [
+        {
+          id: "marketing_team",
+          name: "Marketing Team",
+          class: "team",
+        },
+        {
+          id: "marketing_team",
+          name: "Marketing Team",
+          class: "team",
+        },
+      ];
+
+      const { errors } = validateConfigObjects(objs);
+      expect(errors).toContain("Duplicate ID values found: marketing_team");
     });
 
     test("extraneous keys throw an error", async () => {
