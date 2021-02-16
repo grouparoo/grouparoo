@@ -25,25 +25,7 @@ export class QuerySourceTemplate extends ConfigTemplate {
 
   async run({ params }) {
     params["__pluginName"] = this.name.split(":")[0];
-    return this.mustacheAllFiles(params);
-  }
-}
-
-export class QueryScheduleTemplate extends ConfigTemplate {
-  constructor(
-    name: string,
-    files = [path.join(templateRoot, "query-schedule", "*.template")]
-  ) {
-    super();
-    this.name = `${name}:query:schedule`;
-    this.description = `Config for a ${name} Query Schedule`;
-    this.files = files;
-    this.destinationDir = "schedules";
-    this.parentId = "sourceId";
-  }
-
-  async run({ params }) {
-    params["__pluginName"] = this.name.split(":")[0];
+    params["schedule_id"] = this.extendId("schedule");
     return this.mustacheAllFiles(params);
   }
 }

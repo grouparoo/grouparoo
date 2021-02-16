@@ -17,7 +17,6 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -40,7 +39,6 @@ export class Plugins extends Initializer {
         new TableSourceTemplate("snowflake"),
         new TablePropertyTemplate("snowflake"),
         new QuerySourceTemplate("snowflake"),
-        new QueryScheduleTemplate("snowflake"),
         new QueryPropertyTemplate("snowflake"),
       ],
       apps: [

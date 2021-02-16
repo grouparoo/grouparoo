@@ -17,7 +17,6 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -40,7 +39,6 @@ export class Plugins extends Initializer {
         new TableSourceTemplate("bigquery"),
         new TablePropertyTemplate("bigquery"),
         new QuerySourceTemplate("bigquery"),
-        new QueryScheduleTemplate("bigquery"),
         new QueryPropertyTemplate("bigquery"),
       ],
       apps: [

@@ -23,7 +23,6 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -46,7 +45,6 @@ export class Plugins extends Initializer {
         new TableSourceTemplate("postgres"),
         new TablePropertyTemplate("postgres"),
         new QuerySourceTemplate("postgres"),
-        new QueryScheduleTemplate("postgres"),
         new QueryPropertyTemplate("postgres"),
         new DestinationTemplate("postgres", [
           path.join(templateRoot, "destination", "*.template"),
