@@ -1,0 +1,94 @@
+import path from "path";
+import "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
+import {
+  destinationMappingOptions,
+  getUserFields,
+} from "../../src/lib/export/destinationMappingOptions";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import { connect } from "../../src/lib/connect";
+
+const nockFile = path.join(
+  __dirname,
+  "../",
+  "fixtures",
+  "destination-mapping-options.js"
+);
+
+// these comments to use nock
+const newNock = false;
+require("./../fixtures/destination-mapping-options");
+// or these to make it true
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
+
+const appOptions = loadAppOptions(newNock);
+const appId = "app_78189023490-231123231231123-90-3k";
+
+async function runDestinationMappingOptions({}) {
+  return destinationMappingOptions({
+    appOptions,
+    app: null,
+    appId: appId,
+    connection: null,
+    destination: null,
+    destinationId: null,
+    destinationOptions: null,
+  });
+}
+
+describe("sendgrid/destinationMappingOptions", () => {
+  test("can fetch user fields", async () => {
+    const client = await connect(appOptions);
+    const fields = await getUserFields(client, appOptions);
+    const phone = fields.find((f) => f.key === "phone");
+    const mobilePhone = fields.find((f) => f.key === "mobilephone");
+    const firstName = fields.find((f) => f.key === "firstname");
+    const lastName = fields.find((f) => f.key === "lastname");
+    const startDate = fields.find((f) => f.key === "start_date");
+    const birthDate = fields.find((f) => f.key === "date_of_birth");
+    const message = fields.find((f) => f.key === "message");
+    const companyId = fields.find((f) => f.key === "associatedcompanyid");
+    expect(phone.type).toBe("phoneNumber");
+    expect(phone.important).toBe(false);
+    expect(mobilePhone.type).toBe("phoneNumber");
+    expect(mobilePhone.important).toBe(false);
+    expect(firstName.type).toBe("string");
+    expect(firstName.important).toBe(true);
+    expect(lastName.type).toBe("string");
+    expect(lastName.important).toBe(true);
+    expect(startDate.type).toBe("date");
+    expect(startDate.important).toBe(true);
+    expect(birthDate.type).toBe("date");
+    expect(birthDate.important).toBe(false);
+    expect(message.type).toBe("string");
+    expect(message.important).toBe(false);
+    expect(companyId.type).toBe("float");
+    expect(companyId.important).toBe(false);
+  });
+
+  test("can load all destinationMappingOptions", async () => {
+    const options = await runDestinationMappingOptions({});
+    const { properties } = options;
+    const { required, known } = properties;
+
+    expect(required.length).toBe(1);
+
+    const requiredFieldEmail = required.find((f) => f.key === "email");
+    expect(requiredFieldEmail.key).toBe("email");
+    expect(requiredFieldEmail.type).toBe("email");
+
+    const knownFieldPhoneNumber = known.find((f) => f.key === "phone");
+    expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
+    expect(knownFieldPhoneNumber.important).toBe(false);
+
+    const knownFieldMobilePhoneNumber = known.find(
+      (f) => f.key === "mobilephone"
+    );
+    expect(knownFieldMobilePhoneNumber.type).toBe("phoneNumber");
+    expect(knownFieldMobilePhoneNumber.important).toBe(false);
+
+    const readOnlyField = known.find((f) => f.key === "days_to_close");
+    expect(readOnlyField).toBe(undefined);
+  });
+});
