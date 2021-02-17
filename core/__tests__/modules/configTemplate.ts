@@ -85,4 +85,34 @@ describe("bin/generate", () => {
       expect(fileData[newFile]).toContain('propertyId: "ltv",');
     });
   });
+
+  describe("params", () => {
+    let template;
+
+    beforeEach(() => {
+      template = templates.find((t) => t.name === "team");
+    });
+
+    describe("#unquotedId", () => {
+      test("Returns null when there is no ID param", () => {
+        template.params = {};
+        expect(template.unquotedId()).toBe(null);
+      });
+      test("Removes the surrounding quotes from an ID param", () => {
+        template.params.id = `"my_team"`;
+        expect(template.unquotedId()).toBe("my_team");
+      });
+    });
+
+    describe("#extendId", () => {
+      test("Returns null when there is no ID param", () => {
+        template.params = {};
+        expect(template.extendId()).toBe(null);
+      });
+      test("Appends some string to the ID, separated by an underscore, then wraps in quotes", () => {
+        template.params.id = `"my_team"`;
+        expect(template.extendId("is_cool")).toBe(`"my_team_is_cool"`);
+      });
+    });
+  });
 });

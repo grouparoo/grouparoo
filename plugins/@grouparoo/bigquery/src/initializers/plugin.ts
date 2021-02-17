@@ -13,12 +13,10 @@ const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import {
   TableSourceTemplate,
-  TableScheduleTemplate,
   TablePropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -39,10 +37,8 @@ export class Plugins extends Initializer {
           path.join(templateRoot, "app", "*.template"),
         ]),
         new TableSourceTemplate("bigquery"),
-        new TableScheduleTemplate("bigquery"),
         new TablePropertyTemplate("bigquery"),
         new QuerySourceTemplate("bigquery"),
-        new QueryScheduleTemplate("bigquery"),
         new QueryPropertyTemplate("bigquery"),
       ],
       apps: [

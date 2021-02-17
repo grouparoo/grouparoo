@@ -12,7 +12,6 @@ import importSource from "../lib/import/connection";
 import {
   MailchimpAppTemplate,
   MailchimpSourceTemplate,
-  MailchimpScheduleTemplate,
   MailchimpPropertyTemplate,
   MailchimpEmailDestinationTemplate,
   MailchimpIdDestinationTemplate,
@@ -33,7 +32,6 @@ export class Plugins extends Initializer {
       templates: [
         MailchimpAppTemplate,
         MailchimpSourceTemplate,
-        MailchimpScheduleTemplate,
         MailchimpPropertyTemplate,
         MailchimpEmailDestinationTemplate,
         MailchimpIdDestinationTemplate,

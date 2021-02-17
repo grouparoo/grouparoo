@@ -21,12 +21,10 @@ import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import {
   TableSourceTemplate,
-  TableScheduleTemplate,
   TablePropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -45,10 +43,8 @@ export class Plugins extends Initializer {
           path.join(templateRoot, "app", "*.template"),
         ]),
         new TableSourceTemplate("redshift"),
-        new TableScheduleTemplate("redshift"),
         new TablePropertyTemplate("redshift"),
         new QuerySourceTemplate("redshift"),
-        new QueryScheduleTemplate("redshift"),
         new QueryPropertyTemplate("redshift"),
         new DestinationTemplate("redshift", [
           path.join(templateRoot, "destination", "*.template"),
