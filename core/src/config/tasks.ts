@@ -5,7 +5,7 @@ export const DEFAULT = {
 
       // Run node as a scheduler to promote delayed tasks if there is at least
       // one worker.
-      scheduler: (parseInt(process.env.WORKERS) || 0) > 0,
+      scheduler: (process.env.WORKERS ? parseInt(process.env.WORKERS) : 0) > 0,
       // what queues should the taskProcessors work?
       queues: async () => {
         const { api } = await import("actionhero"); // this needs to be async loaded as we are within the config system, to avoid circular dependencies
