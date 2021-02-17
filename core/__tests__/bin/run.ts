@@ -20,9 +20,8 @@ describe("bin/run", () => {
     spy.mockRestore();
   });
 
-  test("workers and scheduler are required", async () => {
+  test("workers are required", async () => {
     process.env.WORKERS = "0";
-    process.env.SCHEDULER = "false";
 
     const command = new RunCLI();
     await expect(command.run({ params: {} })).rejects.toThrow();
