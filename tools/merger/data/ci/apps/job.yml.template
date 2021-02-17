@@ -1,4 +1,4 @@
-{{{job_name}}}:
+  {{{job_name}}}:
     docker:
       - image: circleci/node:14
         auth:
