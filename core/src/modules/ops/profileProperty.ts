@@ -32,14 +32,14 @@ export namespace ProfilePropertyOps {
       case "url":
         return formatURL(value.toString());
       case "boolean":
-        if (![true, false, 0, 1, "true", "false"].includes(value)) {
-          throw new Error(`${value} is not a valid boolean value`);
-        }
-        if ([true, 1, "true"].includes(value)) {
+        const check = value.toString().toLowerCase();
+        if (["1", "true"].includes(check)) {
           return "true";
-        } else {
+        }
+        if (["0", "false"].includes(check)) {
           return "false";
         }
+        throw new Error(`${value} is not a valid boolean value`);
       default:
         throw new Error(`cannot coerce profileProperty type ${type}`);
     }
