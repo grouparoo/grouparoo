@@ -8,6 +8,7 @@ import {
   TableDefinitionMap,
   ColumnDefinitionMap,
 } from "./";
+import { TableSpeculation } from "./tableSpeculation";
 
 interface ConfigTemplateColumn {
   column: string;
@@ -165,8 +166,8 @@ async function loadTablesAndColumns(
         if (withColumns.includes(k) || withColumns[0] === "*") {
           map.push({
             column: k,
-            type: columns[k].type,
-            unique: uniqueColumnNames.includes(k),
+            type: TableSpeculation.columnType(k, columns[k].type),
+            unique: TableSpeculation.isUniqueColumn(k),
           });
         }
       }
@@ -177,14 +178,3 @@ async function loadTablesAndColumns(
 
   return map;
 }
-
-// TODO: Hack!
-const uniqueColumnNames = [
-  "email",
-  "email_address",
-  "id",
-  "user_id",
-  "userId",
-  "uuid",
-  "guid",
-];
