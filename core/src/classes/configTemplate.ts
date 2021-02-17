@@ -49,7 +49,7 @@ export abstract class ConfigTemplate {
     params,
   }: {
     params: ConfigTemplateParams;
-  }): Promise<ConfigTemplateRunResponse>;
+  }): Promise<ConfigTemplateRunResponse[]>;
 
   prepareParams(params: ConfigTemplateParams) {
     this.params = params;
@@ -119,10 +119,14 @@ export abstract class ConfigTemplate {
   /**
    * The nominal case where all provided mustache files are computed and copied into the client project
    */
-  async mustacheAllFiles(params: ConfigTemplateParams) {
+  async mustacheAllFiles(
+    params: ConfigTemplateParams,
+    files = this.files,
+    destinationDir = this.destinationDir
+  ) {
     const response: ConfigTemplateRunResponse = {};
     const errorPrefix = "Missing required input";
-    const fileNames = await this.resolveFiles(this);
+    const fileNames = await this.resolveFiles(files);
 
     if (!params.path) throw new Error(`params.path missing`);
 
@@ -137,7 +141,7 @@ export abstract class ConfigTemplate {
         )
       );
       const newFilePath = path
-        .join(params.path.toString(), this.destinationDir, relativeFileName)
+        .join(params.path.toString(), destinationDir, relativeFileName)
         .replace(/.template$/, "");
       const content = fs.readFileSync(fileName).toString();
       const newContent = MustacheUtils.strictlyRender(
@@ -149,19 +153,19 @@ export abstract class ConfigTemplate {
       response[newFilePath] = newContent;
     }
 
-    return response;
+    return [response];
   }
 
-  async resolveFiles(template: ConfigTemplate) {
+  async resolveFiles(filesList: string[]) {
     let files: string[] = [];
 
-    for (const i in template.files) {
-      const foundFiles = glob.sync(template.files[i]);
+    for (const i in filesList) {
+      const foundFiles = glob.sync(filesList[i]);
       files = files.concat(foundFiles);
     }
 
     if (files.length === 0) {
-      console.error(`no files found matching ${template.files}`);
+      console.error(`no files found matching ${filesList}`);
     }
 
     return files;

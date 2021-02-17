@@ -38,14 +38,11 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     getters: {
       getTables: GetTablesMethod;
       getColumns: GetColumnDefinitionsMethod;
-    },
-    files = [path.join(templateRoot, "table-source", "*.template")]
+    }
   ) {
     super();
     this.name = `${name}:table:source`;
     this.description = `Config for a ${name} Table Source. Construct properties from the data in the table without writing SQL.`;
-    this.files = files;
-    this.destinationDir = "sources";
     this.parentId = "appId";
     this.getters = getters;
   }
@@ -78,21 +75,39 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       }
     }
 
-    if (Object.keys(columnsMap).length > 0) {
-      params.columnsMap = columnsMap;
-      // mustache helpers to pluck a property from the object
-      params.__column = function () {
-        return JSON.stringify(this.column);
-      };
-      params.__type = function () {
-        return JSON.stringify(this.type);
-      };
-      params.__unique = function () {
-        return this.unique;
-      };
-    }
+    // write the source + schedule
+    let responses = await this.mustacheAllFiles(
+      params,
+      [path.join(templateRoot, "table-source", "*.template")],
+      "sources"
+    );
 
-    return this.mustacheAllFiles(params);
+    // write the properties
+    params.sourceId = params.id;
+    params["__typeOptions"] = PropertyTypes.map((v) => `"${v}"`).join(", ");
+    params["__aggregationMethodOptions"] = Object.values(AggregationMethod)
+      .map((v) => `"${v}"`)
+      .join(", ");
+    params["__filterOptions"] = Object.values(FilterOperation).join(", ");
+
+    const propertyResponses = await Promise.all(
+      columnsMap.map(async (col) => {
+        const propertyParams = Object.assign({}, params);
+        propertyParams.id = JSON.stringify(col.column);
+        propertyParams.column = JSON.stringify(col.column);
+        propertyParams.type = JSON.stringify(col.type);
+        propertyParams.unique = JSON.stringify(col.unique);
+        return this.mustacheAllFiles(
+          propertyParams,
+          [path.join(templateRoot, "table-property", "*.template")],
+          "properties"
+        );
+      })
+    );
+
+    propertyResponses.forEach((r) => (responses = responses.concat(r)));
+
+    return responses;
   }
 }
 
