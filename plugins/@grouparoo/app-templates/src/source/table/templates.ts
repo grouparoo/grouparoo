@@ -88,7 +88,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       };
     }
 
-    return this.mustacheAllFiles(params, columnsMap);
+    return this.mustacheAllFiles(params);
   }
 }
 
