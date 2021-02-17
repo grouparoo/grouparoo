@@ -1,7 +1,6 @@
 import {
   GetSampleRowsMethod,
   GetColumnDefinitionsMethod,
-  FilterOperation,
   columnNameKey,
   tableNameKey,
 } from "./pluginMethods";

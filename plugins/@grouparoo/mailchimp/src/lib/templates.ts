@@ -30,22 +30,7 @@ export class MailchimpSourceTemplate extends ConfigTemplate {
 
   async run({ params }) {
     params["__pluginName"] = this.name.split(":")[0];
-    return this.mustacheAllFiles(params);
-  }
-}
-
-export class MailchimpScheduleTemplate extends ConfigTemplate {
-  constructor() {
-    super();
-    this.name = `mailchimp:schedule`;
-    this.description = `Config for a Mailchimp Schedule`;
-    this.files = [path.join(templateRoot, "schedule", "*.template")];
-    this.destinationDir = "schedules";
-    this.parentId = "sourceId";
-  }
-
-  async run({ params }) {
-    params["__pluginName"] = this.name.split(":")[0];
+    params["schedule_id"] = this.extendId("schedule");
     return this.mustacheAllFiles(params);
   }
 }

@@ -19,12 +19,10 @@ import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import {
   TableSourceTemplate,
-  TableScheduleTemplate,
   TablePropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/table";
 import {
   QuerySourceTemplate,
-  QueryScheduleTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
 
@@ -45,10 +43,8 @@ export class Plugins extends Initializer {
           path.join(templateRoot, "app", "*.template"),
         ]),
         new TableSourceTemplate("mysql"),
-        new TableScheduleTemplate("mysql"),
         new TablePropertyTemplate("mysql"),
         new QuerySourceTemplate("mysql"),
-        new QueryScheduleTemplate("mysql"),
         new QueryPropertyTemplate("mysql"),
         new DestinationTemplate("mysql", [
           path.join(templateRoot, "destination", "*.template"),

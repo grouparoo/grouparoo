@@ -11,7 +11,6 @@ import { sourceRunPercentComplete } from "../lib/file-import/sourceRunPercentCom
 import {
   CSVAppTemplate,
   CSVSourceTemplate,
-  CSVScheduleTemplate,
   CSVPropertyTemplate,
 } from "../lib/templates";
 
@@ -27,12 +26,7 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/csv/csv.svg",
-      templates: [
-        CSVAppTemplate,
-        CSVSourceTemplate,
-        CSVScheduleTemplate,
-        CSVPropertyTemplate,
-      ],
+      templates: [CSVAppTemplate, CSVSourceTemplate, CSVPropertyTemplate],
       apps: [
         {
           name: "csv",

@@ -7,8 +7,7 @@ import { ensurePackageJSON } from "../utils/ensurePackageJSON";
 import { readPackageJSON } from "../utils/readPackageJSON";
 import { isGrouparooPlugin } from "../utils/isGrouparooPlugin";
 import { getCoreVersion } from "../utils/getCoreVersion";
-
-const JSON_SPACER = 2;
+import { JSONUtils } from "../utils/JSONUtils";
 
 export default async function Update(pkg: string) {
   const workDir: string = process.env.INIT_CWD;
@@ -58,7 +57,7 @@ export default async function Update(pkg: string) {
       plugins.sort();
       fs.writeFileSync(
         packageFile,
-        JSON.stringify(pkgJSONContents, null, JSON_SPACER)
+        JSON.stringify(pkgJSONContents, null, JSONUtils.spacer)
       );
     }
   }

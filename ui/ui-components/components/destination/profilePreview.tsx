@@ -73,13 +73,11 @@ export default function ProfilePreview(props) {
           (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
       );
 
-      const groupId = destination.destinationGroup?.id || trackedGroupId;
-
       const { profile }: Actions.DestinationProfilePreview = await execApi(
         "get",
         `/destination/${destination.id}/profilePreview`,
         {
-          groupId,
+          groupId: trackedGroupId,
           mapping: destination.mapping,
           destinationGroupMemberships: destinationGroupMembershipsObject,
           profileId: _profileId !== "" ? _profileId : undefined,

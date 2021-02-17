@@ -4,6 +4,7 @@ import fs from "fs-extra";
 import glob from "glob";
 
 export interface ConfigTemplateParams {
+  id?: string;
   [key: string]: string | number | boolean;
 }
 
@@ -17,6 +18,7 @@ export interface ConfigTemplateRunResponse {
 export abstract class ConfigTemplate {
   name: string;
   description: string;
+  params: ConfigTemplateParams;
   inputs?: {
     [name: string]: {
       required: boolean;
@@ -31,6 +33,7 @@ export abstract class ConfigTemplate {
   parentId?: string;
 
   constructor() {
+    this.params = {};
     this.inputs = {
       id: {
         required: true,
@@ -49,13 +52,15 @@ export abstract class ConfigTemplate {
   }): Promise<ConfigTemplateRunResponse>;
 
   prepareParams(params: ConfigTemplateParams) {
+    this.params = params;
+
     // source from other params
     Object.keys(this.inputs).forEach((k) => {
       if (
         this.inputs[k].copyDefaultFrom &&
-        (!params[k] || params[k].toString().length === 0)
+        (!this.params[k] || this.params[k].toString().length === 0)
       ) {
-        params[k] = params[this.inputs[k].copyDefaultFrom];
+        this.params[k] = this.params[this.inputs[k].copyDefaultFrom];
       }
     });
 
@@ -63,12 +68,12 @@ export abstract class ConfigTemplate {
     Object.keys(this.inputs).forEach((k) => {
       if (
         this.inputs[k].default !== undefined &&
-        (!params[k] || params[k].toString().length === 0)
+        (!this.params[k] || this.params[k].toString().length === 0)
       ) {
-        params[k] = this.inputs[k].default;
+        this.params[k] = this.inputs[k].default;
       }
-      if (!params[k] && this.inputs[k].default === null) {
-        params[k] = "null";
+      if (!this.params[k] && this.inputs[k].default === null) {
+        this.params[k] = "null";
       }
     });
 
@@ -84,19 +89,19 @@ export abstract class ConfigTemplate {
     // format inputs
     Object.keys(this.inputs).forEach((k) => {
       if (typeof this.inputs[k].formatter === "function") {
-        params[k] = this.inputs[k].formatter(params[k].toString());
+        this.params[k] = this.inputs[k].formatter(this.params[k].toString());
       }
     });
 
     // escape for JSON/JS
-    for (const k in params) {
+    for (const k in this.params) {
       if (k === "path") continue;
-      if (typeof params[k] === "string" && params[k] !== "null") {
-        params[k] = JSON.stringify(params[k]);
+      if (typeof this.params[k] === "string" && this.params[k] !== "null") {
+        this.params[k] = JSON.stringify(this.params[k]);
       }
     }
 
-    return params;
+    return this.params;
   }
 
   formatForFilesystem(s: string) {
@@ -160,5 +165,15 @@ export abstract class ConfigTemplate {
     }
 
     return files;
+  }
+
+  unquotedId(): null | string {
+    if (!this.params.id) return null;
+    return this.params.id.replace(/"/g, "");
+  }
+
+  extendId(extension: string): null | string {
+    if (!this.params.id) return null;
+    return `"${this.unquotedId()}_${extension}"`;
   }
 }
