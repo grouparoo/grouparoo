@@ -49,7 +49,7 @@ export abstract class ConfigTemplate {
     params,
   }: {
     params: ConfigTemplateParams;
-  }): Promise<ConfigTemplateRunResponse[]>;
+  }): Promise<ConfigTemplateRunResponse>;
 
   prepareParams(params: ConfigTemplateParams) {
     this.params = params;
@@ -153,7 +153,7 @@ export abstract class ConfigTemplate {
       response[newFilePath] = newContent;
     }
 
-    return [response];
+    return response;
   }
 
   async resolveFiles(filesList: string[]) {

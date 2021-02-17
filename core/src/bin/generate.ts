@@ -147,7 +147,7 @@ Commands:
       );
     }
 
-    let fileData: ConfigTemplateRunResponse[] = [];
+    let fileData: ConfigTemplateRunResponse = {};
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
@@ -155,19 +155,17 @@ Commands:
       return this.fatalError(error.message);
     }
 
-    fileData.forEach((fileDataCollection) => {
-      Object.keys(fileDataCollection).forEach((filename) => {
-        if (params.overwrite || !fs.existsSync(filename)) {
-          fs.mkdirpSync(path.dirname(filename));
-          fs.writeFileSync(
-            filename,
-            prettier.format(fileDataCollection[filename], { parser: "babel" })
-          );
-          console.log(`✅ wrote ${filename}`);
-        } else {
-          this.fatalError(`${filename} already exists`);
-        }
-      });
+    Object.keys(fileData).forEach((filename) => {
+      if (params.overwrite || !fs.existsSync(filename)) {
+        fs.mkdirpSync(path.dirname(filename));
+        fs.writeFileSync(
+          filename,
+          prettier.format(fileData[filename], { parser: "babel" })
+        );
+        console.log(`✅ wrote ${filename}`);
+      } else {
+        this.fatalError(`${filename} already exists`);
+      }
     });
   }
 

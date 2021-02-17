@@ -76,7 +76,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     }
 
     // write the source + schedule
-    let responses = await this.mustacheAllFiles(
+    let response = await this.mustacheAllFiles(
       params,
       [path.join(templateRoot, "table-source", "*.template")],
       "sources"
@@ -105,9 +105,9 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       })
     );
 
-    propertyResponses.forEach((r) => (responses = responses.concat(r)));
+    propertyResponses.forEach((r) => Object.assign(response, r));
 
-    return responses;
+    return response;
   }
 }
 
