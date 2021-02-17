@@ -4,7 +4,7 @@ export const DEFAULT = {
       _toExpand: false,
 
       // Should this node run a scheduler to promote delayed tasks?
-      scheduler: process.env.SCHEDULER === "true",
+      scheduler: true,
       // what queues should the taskProcessors work?
       queues: async () => {
         const { api } = await import("actionhero"); // this needs to be async loaded as we are within the config system, to avoid circular dependencies

@@ -1,4 +1,4 @@
-  {{{job_name}}}:
+{{{job_name}}}:
     docker:
       - image: circleci/node:14
         auth:
@@ -42,6 +42,5 @@
             PORT: 3000
             GROUPAROO_TELEMETRY_ENABLED: "false"
             WEB_SERVER: "true"
-            SCHEDULER: "true"
             WORKERS: 1
 {{{custom_test}}}
