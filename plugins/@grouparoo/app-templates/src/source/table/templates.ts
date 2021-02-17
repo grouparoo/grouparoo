@@ -86,6 +86,9 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       params.__type = function () {
         return JSON.stringify(this.type);
       };
+      params.__unique = function () {
+        return this.unique;
+      };
     }
 
     return this.mustacheAllFiles(params);
