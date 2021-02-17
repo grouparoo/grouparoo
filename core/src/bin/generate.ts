@@ -44,9 +44,34 @@ Commands:
       },
       parent: {
         required: false,
-        letter: "a",
+        letter: "P",
         description:
           "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
+      },
+      from: {
+        required: false,
+        letter: "f",
+        description:
+          "For complex generators, where should we source the objects from?",
+      },
+      with: {
+        required: false,
+        letter: "w",
+        description:
+          'For complex generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name").',
+        default: "*",
+      },
+      mapping: {
+        required: false,
+        letter: "m",
+        description:
+          'For complex generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+      },
+      "high-water-mark": {
+        required: false,
+        letter: "H",
+        description:
+          "For complex generators, what should we use for the high-water-mark?",
       },
       overwrite: {
         required: true,

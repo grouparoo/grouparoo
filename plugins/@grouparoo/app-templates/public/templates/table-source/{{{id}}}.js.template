@@ -12,7 +12,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}-table-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       options: {
-        table: "...", // Name of the table in your DB - e.g. `table: "users"`
+        table: {{#from}}{{{from}}}{{/from}}{{^from}}"..."{{/from}}, // Name of the table in your DB - e.g. `table: "users"`
       },
 
       /**
@@ -30,7 +30,7 @@ exports.default = async function buildConfig() {
        * CLI.
        */
       mapping: {
-        id: "user_id",
+        {{#__mappingKey}}{{{__mappingKey}}}: {{{__mappingValue}}}{{/__mappingKey}}{{^__mappingKey}}"...": "user_id"{{/__mappingKey}},
       },
 
       /**
@@ -38,6 +38,17 @@ exports.default = async function buildConfig() {
        * To do so, uncomment the lines below and fill in the appropriate values. Otherwise, you can
        * create properties with the Grouparoo CLI.
        */
+      {{#__bootstrappedId}}
+      bootstrappedProperty: {
+        id: {{{__bootstrappedId}}},
+        name: {{{__bootstrappedId}}},
+        type: {{{__bootstrappedType}}},
+        options: {
+          column: {{{__bootstrappedColumn}}}
+        }
+      },
+      {{/__bootstrappedId}}
+      {{^__bootstrappedId}}
       // bootstrappedProperty: {
       //   id: "user_id",
       //   name: "User Id",
@@ -46,6 +57,7 @@ exports.default = async function buildConfig() {
       //     column: "id",
       //   },
       // },
+      {{/__bootstrappedId}}
     },
 
     /**
@@ -68,5 +80,24 @@ exports.default = async function buildConfig() {
     //     column: "updated_at", // the column to check for new records in table which this Schedule's Source is using
     //   },
     // },
+
+    {{#columnsMap}}
+    {
+      class: "property",
+      id: {{{__column}}},
+      sourceId: {{{id}}},
+      type: {{{__type}}},
+      unique: false, // Will Profiles have unique records for this Property?
+      identifying: false, // Should we consider this property Identifying in the UI? Only one Property can be identifying.
+      isArray: false, // Is this an Array Property?
+      options: {
+        column: {{{__column}}}, // The column to use for this Property - e.g. `column: "first_name"`
+        aggregationMethod: "exact", // The aggregation method.  Options are: {{{__aggregationMethodOptions}}}
+        sort: null, // You can sort the results by another column in this table
+      },
+      filters: [],
+    },
+
+    {{/columnsMap}}
   ];
 };
