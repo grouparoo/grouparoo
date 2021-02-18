@@ -58,6 +58,15 @@ describe("tasks/telemetry", () => {
 
       expect(metrics[3]).toEqual(
         expect.objectContaining({
+          collection: "cluster",
+          topic: "@grouparoo/core",
+          aggregation: "exact",
+          key: "version",
+        })
+      );
+
+      expect(metrics[4]).toEqual(
+        expect.objectContaining({
           collection: "totals",
           topic: "App",
           aggregation: "count",
