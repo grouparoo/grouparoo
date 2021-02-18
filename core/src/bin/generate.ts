@@ -9,6 +9,7 @@ import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
+import { getConfigDir } from "../modules/configLoaders";
 
 export class Generate extends CLI {
   constructor() {
@@ -44,7 +45,7 @@ Commands:
       },
       parent: {
         required: false,
-        letter: "P",
+        letter: "p",
         description:
           "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
       },
@@ -80,12 +81,6 @@ Commands:
         flag: true,
         description: "Overwrite existing files?",
       },
-      path: {
-        required: true,
-        letter: "p",
-        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
-        description: "The location of the config directory",
-      },
     };
     this.example = "grouparoo generate postgres:app data_warehouse";
 
@@ -96,6 +91,7 @@ Commands:
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
+    params.path = getConfigDir();
 
     GrouparooCLI.logCLI(
       this.name
