@@ -13,6 +13,8 @@ export namespace TableSpeculation {
         "userid",
         "uuid",
         "guid",
+        "phonenumber",
+        "phone_number",
       ].includes(columnName)
     ) {
       return true;
@@ -33,6 +35,13 @@ export namespace TableSpeculation {
 
     if (columnName.includes("email")) {
       return "email";
+    }
+
+    if (
+      columnName.includes("phonenumber") ||
+      columnName.includes("phone_number")
+    ) {
+      return "phoneNumber";
     }
 
     return "string";
