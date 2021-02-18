@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { readFileSync, unlinkSync, existsSync } from "fs";
+import { readFileSync, existsSync, writeFileSync } from "fs";
 import { Validate } from "../../src/bin/validate";
 import os from "os";
 import { join } from "path";
@@ -19,18 +19,15 @@ function readLogFile() {
   return messages.slice(Math.max(messages.length - 100, 1));
 }
 function clearTestLog() {
-  if (!existsSync(filename)) return;
-  return unlinkSync(filename);
+  writeFileSync(filename, "");
 }
 
 describe("bin/config-validate", () => {
   beforeAll(async () => {
-    clearTestLog();
     const { Process } = await import("actionhero");
     actionhero = new Process();
     await actionhero.initialize();
     await helper.enableTestPlugin();
-    await helper.truncate();
   }, helper.setupTime);
 
   let messages = [];
@@ -57,6 +54,8 @@ describe("bin/config-validate", () => {
         __dirname,
         "../fixtures/codeConfig/initial"
       );
+      await helper.truncate();
+      clearTestLog();
     });
 
     test("the validate command can be run", async () => {
@@ -80,6 +79,8 @@ describe("bin/config-validate", () => {
         __dirname,
         "../fixtures/codeConfig/error-app"
       );
+      await helper.truncate();
+      clearTestLog();
     });
 
     test("the validate command will fail for invalid configs", async () => {
