@@ -4,7 +4,7 @@ async function main() {
   const { Process, log, api } = await import("actionhero");
 
   log(
-    `Starting Grouparoo ${getCoreVersion()} on node.js ${getNodeVersion()}`,
+    `Starting Grouparoo v${getCoreVersion()} on node.js ${getNodeVersion()}`,
     "notice"
   );
 
