@@ -8,16 +8,24 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 import { helper } from "@grouparoo/spec-helper";
 import { Generate } from "@grouparoo/core/src/bin/generate";
+import { Apply } from "@grouparoo/core/src/bin/apply";
+import { beforeData, afterData } from "../utils/data";
 
-const tmpDir = `${os.tmpdir()}/test/${process.env.JEST_WORKER_ID}/config`;
+process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
+  process.env.JEST_WORKER_ID
+}/config`;
 
 describe("postgres cli tests", () => {
+  beforeAll(() => {
+    fs.mkdirpSync(process.env.GROUPAROO_CONFIG_DIR);
+    fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
+    console.log(process.env.GROUPAROO_CONFIG_DIR);
+  });
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: false });
 
-  beforeAll(() => {
-    fs.mkdirpSync(tmpDir);
-    fs.emptyDirSync(tmpDir);
-  });
+  beforeAll(async () => await beforeData());
+  afterAll(async () => await afterData());
 
   let messages = [];
   let spies = [];
@@ -42,7 +50,7 @@ describe("postgres cli tests", () => {
 
   test("the postgres commands appear in the generate list", async () => {
     const command = new Generate();
-    await command.run({ params: { path: tmpDir, list: true } });
+    await command.run({ params: { list: true } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -57,10 +65,10 @@ describe("postgres cli tests", () => {
   test("an app can be generated", async () => {
     const command = new Generate();
     await command.run({
-      params: { path: tmpDir, template: "postgres:app", id: "postgres_app" },
+      params: { template: "postgres:app", id: "postgres_app" },
     });
 
-    const file = `${tmpDir}/apps/postgres_app.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/apps/postgres_app.js`;
     const output = messages.join(" ");
     expect(output).toContain(`wrote ${file}`);
 
@@ -74,14 +82,13 @@ describe("postgres cli tests", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "postgres:table:source",
         id: "users_table",
         parent: "postgres_app",
       },
     });
 
-    const file = `${tmpDir}/sources/users_table.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/users_table.js`;
     const output = messages.join(" ");
     expect(output).toContain(`wrote ${file}`);
 
@@ -89,28 +96,57 @@ describe("postgres cli tests", () => {
     expect(contents).toContain('class: "source"');
     expect(contents).toContain('id: "users_table"');
     expect(contents).toContain('name: "users_table"');
+
+    fs.unlinkSync(file);
   });
 
-  test("a single property can be generated", async () => {
+  // test("a single property can be generated", async () => {
+  //   const command = new Generate();
+  //   await command.run({
+  //     params: {
+  //       template: "postgres:table:property",
+  //       id: "first_name",
+  //       parent: "users_table",
+  //     },
+  //   });
+
+  //   const file = `${process.env.GROUPAROO_CONFIG_DIR}/properties/first_name.js`;
+  //   const output = messages.join(" ");
+  //   expect(output).toContain(`wrote ${file}`);
+
+  //   const contents = fs.readFileSync(file).toString();
+  //   expect(contents).toContain('class: "property"');
+  //   expect(contents).toContain('id: "first_name"');
+  //   expect(contents).toContain('name: "first_name"');
+
+  //   fs.unlinkSync(file);
+  // });
+
+  test("a source can be generated with all of its properties", async () => {
+    await new Apply().run({ params: {} });
+
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
-        template: "postgres:table:property",
-        id: "first_name",
-        parent: "users_table",
+        template: "postgres:table:source",
+        id: "users_table",
+        parent: "postgres_app",
+        from: "users",
+        with: "*",
+        mapping: "id=user_id",
+        "high-water-mark": "updated_at",
+        overwrite: true,
       },
     });
 
-    const file = `${tmpDir}/properties/first_name.js`;
-    const output = messages.join(" ");
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/users_table.js`;
+    const output = messages.join("\n");
     expect(output).toContain(`wrote ${file}`);
+    process.stdout.write("----\n" + output + "\n----\n");
 
     const contents = fs.readFileSync(file).toString();
-    expect(contents).toContain('class: "property"');
-    expect(contents).toContain('id: "first_name"');
-    expect(contents).toContain('name: "first_name"');
+    expect(contents).toContain('class: "source"');
+    expect(contents).toContain('id: "users_table"');
+    expect(contents).toContain('name: "users_table"');
   });
-
-  test("a source can be generated with all of its properties", async () => {});
 });
