@@ -69,4 +69,48 @@ describe("postgres cli tests", () => {
     expect(contents).toContain('id: "postgres_app"');
     expect(contents).toContain('name: "postgres_app"');
   });
+
+  test("a single source can be generated", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "postgres:table:source",
+        id: "users_table",
+        parent: "postgres_app",
+      },
+    });
+
+    const file = `${tmpDir}/sources/users_table.js`;
+    const output = messages.join(" ");
+    expect(output).toContain(`wrote ${file}`);
+
+    const contents = fs.readFileSync(file).toString();
+    expect(contents).toContain('class: "source"');
+    expect(contents).toContain('id: "users_table"');
+    expect(contents).toContain('name: "users_table"');
+  });
+
+  test("a single property can be generated", async () => {
+    const command = new Generate();
+    await command.run({
+      params: {
+        path: tmpDir,
+        template: "postgres:table:property",
+        id: "first_name",
+        parent: "users_table",
+      },
+    });
+
+    const file = `${tmpDir}/properties/first_name.js`;
+    const output = messages.join(" ");
+    expect(output).toContain(`wrote ${file}`);
+
+    const contents = fs.readFileSync(file).toString();
+    expect(contents).toContain('class: "property"');
+    expect(contents).toContain('id: "first_name"');
+    expect(contents).toContain('name: "first_name"');
+  });
+
+  test("a source can be generated with all of its properties", async () => {});
 });
