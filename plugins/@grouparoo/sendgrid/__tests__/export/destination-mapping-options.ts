@@ -72,5 +72,11 @@ describe("sendgrid/destinationMappingOptions", () => {
     const knownFieldPhoneNumber = known.find((f) => f.key === "phone_number");
     expect(knownFieldPhoneNumber.type).toBe("phoneNumber");
     expect(knownFieldPhoneNumber.important).toBe(false);
+
+    const created_at = known.find((f) => f.key === "created_at");
+    expect(created_at).toBe(undefined);
+
+    const updated_at = known.find((f) => f.key === "updated_at");
+    expect(updated_at).toBe(undefined);
   });
 });
