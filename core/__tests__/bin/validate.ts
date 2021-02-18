@@ -19,10 +19,7 @@ function readLogFile() {
   return messages.slice(Math.max(messages.length - 100, 1));
 }
 function clearTestLog() {
-  if (!existsSync(filename)) {
-    return;
-  }
-
+  if (!existsSync(filename)) return;
   return unlinkSync(filename);
 }
 
@@ -35,11 +32,6 @@ describe("bin/config-validate", () => {
     await helper.enableTestPlugin();
     await helper.truncate();
   }, helper.setupTime);
-
-  afterAll(async () => {
-    await actionhero.start();
-    await actionhero.stop();
-  });
 
   let messages = [];
   let spy;
@@ -55,29 +47,52 @@ describe("bin/config-validate", () => {
     spy.mockRestore();
   });
 
-  test("the validate command can be run", async () => {
-    process.env.GROUPAROO_CONFIG_DIR = join(
-      __dirname,
-      "../fixtures/codeConfig/initial"
-    );
-
-    const command = new Validate();
-    const toStop = await command.run({ params: {} });
-    expect(toStop).toBe(true);
-    const output = readLogFile().join(" ");
-    expect(output).toContain("✅ Validation succeeded - 13 config objects OK!");
+  afterAll(async () => {
+    await actionhero.stop();
   });
 
-  test("the validate command will fail for invalid configs", async () => {
-    process.env.GROUPAROO_CONFIG_DIR = join(
-      __dirname,
-      "../fixtures/codeConfig/error-app"
-    );
+  describe("valid config", () => {
+    beforeAll(async () => {
+      process.env.GROUPAROO_CONFIG_DIR = join(
+        __dirname,
+        "../fixtures/codeConfig/initial"
+      );
+    });
 
-    const command = new Validate();
-    const toStop = await command.run({ params: {} });
-    expect(toStop).toBe(true);
-    const output = readLogFile().join(" ");
-    expect(output).toContain("❌ Validation failed - 1 validation error");
+    test("the validate command can be run", async () => {
+      const command = new Validate();
+      const toStop = await command.run({ params: {} });
+      expect(toStop).toBe(true);
+      const output = readLogFile().join(" ");
+      expect(output).toContain(
+        "✅ Validation succeeded - 13 config objects OK!"
+      );
+    });
+
+    test("valid configurations can boot", async () => {
+      await actionhero.start();
+    });
+  });
+
+  describe("invalid config", () => {
+    beforeAll(async () => {
+      process.env.GROUPAROO_CONFIG_DIR = join(
+        __dirname,
+        "../fixtures/codeConfig/error-app"
+      );
+    });
+
+    test("the validate command will fail for invalid configs", async () => {
+      const command = new Validate();
+      const toStop = await command.run({ params: {} });
+      expect(toStop).toBe(true);
+      const output = readLogFile().join(" ");
+      expect(output).toContain("❌ Validation failed - 1 validation error");
+    });
+
+    /* this cannot actually be tested - actionhero wants to shut down the process */
+    // test("invalid configurations cannot boot", async () => {
+    //   await expect(actionhero.start()).rejects.toThrow(/foo/);
+    // });
   });
 });
