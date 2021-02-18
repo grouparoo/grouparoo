@@ -78,6 +78,15 @@ export namespace TelemetryReporters {
   export namespace Plugins {
     export async function Versions() {
       const metrics: TelemetryMetric[] = [];
+
+      metrics.push({
+        collection: "cluster",
+        topic: "@grouparoo/core",
+        aggregation: "exact",
+        key: "version",
+        value: PluginDetails.getCoreVersion(),
+      });
+
       const pluginManifest = PluginDetails.getPluginManifest();
       pluginManifest.plugins.forEach((plugin) => {
         metrics.push({
