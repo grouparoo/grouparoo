@@ -62,6 +62,8 @@ describe("bin/config-validate", () => {
       const command = new Validate();
       const toStop = await command.run({ params: {} });
       expect(toStop).toBe(true);
+      await helper.sleep(100);
+
       const output = readLogFile().join(" ");
       expect(output).toContain(
         "✅ Validation succeeded - 13 config objects OK!"
@@ -87,6 +89,8 @@ describe("bin/config-validate", () => {
       const command = new Validate();
       const toStop = await command.run({ params: {} });
       expect(toStop).toBe(true);
+      await helper.sleep(100);
+
       const output = readLogFile().join(" ");
       expect(output).toContain("❌ Validation failed - 1 validation error");
     });
