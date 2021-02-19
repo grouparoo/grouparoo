@@ -57,11 +57,10 @@ describe("actions/teamMembers", () => {
     test("when a team member is created, they can subscribe to the grouparoo newsletter", async () => {
       GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
 
-      const customerId = (
-        await Setting.findOne({
-          where: { key: "cluster-id" },
-        })
-      ).value;
+      const setting = await Setting.findOne({
+        where: { key: "customer-id" },
+      });
+      const customerId = setting.value;
 
       expect(customerId.length).toBeGreaterThan(0);
 
