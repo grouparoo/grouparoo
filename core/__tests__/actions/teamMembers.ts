@@ -57,13 +57,6 @@ describe("actions/teamMembers", () => {
     test("when a team member is created, they can subscribe to the grouparoo newsletter", async () => {
       GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
 
-      const setting = await Setting.findOne({
-        where: { key: "customer-id" },
-      });
-      const customerId = setting.value;
-
-      expect(customerId.length).toBeGreaterThan(0);
-
       connection.params = {
         csrfToken,
         teamId,
@@ -82,7 +75,6 @@ describe("actions/teamMembers", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "toad@example.com",
-          customerId,
         })
       );
 
