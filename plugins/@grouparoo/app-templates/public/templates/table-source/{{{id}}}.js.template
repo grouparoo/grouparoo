@@ -12,7 +12,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}-table-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       options: {
-        table: "...", // Name of the table in your DB - e.g. `table: "users"`
+        table: {{#from}}{{{from}}}{{/from}}{{^from}}"..."{{/from}}, // Name of the table in your DB - e.g. `table: "users"`
       },
 
       /**
@@ -30,7 +30,7 @@ exports.default = async function buildConfig() {
        * CLI.
        */
       mapping: {
-        id: "user_id",
+        {{#__mappingKey}}{{{__mappingKey}}}: {{{__mappingValue}}}{{/__mappingKey}}{{^__mappingKey}}"...": "user_id"{{/__mappingKey}},
       },
 
       /**
@@ -38,6 +38,17 @@ exports.default = async function buildConfig() {
        * To do so, uncomment the lines below and fill in the appropriate values. Otherwise, you can
        * create properties with the Grouparoo CLI.
        */
+      {{#__bootstrappedId}}
+      bootstrappedProperty: {
+        id: {{{__bootstrappedId}}},
+        name: {{{__bootstrappedId}}},
+        type: {{{__bootstrappedType}}},
+        options: {
+          column: {{{__bootstrappedColumn}}}
+        }
+      },
+      {{/__bootstrappedId}}
+      {{^__bootstrappedId}}
       // bootstrappedProperty: {
       //   id: "user_id",
       //   name: "User Id",
@@ -46,6 +57,7 @@ exports.default = async function buildConfig() {
       //     column: "id",
       //   },
       // },
+      {{/__bootstrappedId}}
     },
 
     /**
@@ -57,16 +69,16 @@ exports.default = async function buildConfig() {
      * data and import it into the application database. If you would like to
      * set a Schedule for this Source, uncomment the following section.
      */
-    // {
-    //   id: {{{schedule_id}}},
-    //   name: {{{schedule_id}}},
-    //   class: "schedule",
-    //   sourceId: {{{id}}}, // The ID of the Source above
-    //   recurring: true, // should this Schedule regularly run?
-    //   recurringFrequency: 1000 * 60 * 15, // 15 minutes, in ms
-    //   options: {
-    //     column: "updated_at", // the column to check for new records in table which this Schedule's Source is using
-    //   },
-    // },
+    {{^highWaterMark}}//{{/highWaterMark}} {
+    {{^highWaterMark}}//{{/highWaterMark}}   id: {{{schedule_id}}},
+    {{^highWaterMark}}//{{/highWaterMark}}   name: {{{schedule_id}}},
+    {{^highWaterMark}}//{{/highWaterMark}}   class: "schedule",
+    {{^highWaterMark}}//{{/highWaterMark}}   sourceId: {{{id}}}, // The ID of the Source above
+    {{^highWaterMark}}//{{/highWaterMark}}   recurring: true, // should this Schedule regularly run?
+    {{^highWaterMark}}//{{/highWaterMark}}   recurringFrequency: 1000 * 60 * 15, // 15 minutes, in ms
+    {{^highWaterMark}}//{{/highWaterMark}}   options: {
+    {{^highWaterMark}}//{{/highWaterMark}}     column: {{#highWaterMark}}{{{highWaterMark}}}{{/highWaterMark}}{{^highWaterMark}}"..."{{/highWaterMark}}, // the column to check for new records in table which this Schedule's Source is using (e.g. column: 'updated_at')
+    {{^highWaterMark}}//{{/highWaterMark}}   },
+    {{^highWaterMark}}//{{/highWaterMark}} },
   ];
 };

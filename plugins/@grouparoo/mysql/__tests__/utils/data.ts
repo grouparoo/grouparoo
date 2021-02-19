@@ -2,16 +2,18 @@ import { connect } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
 import parse from "csv-parse/lib/sync";
-import { SimpleAppOptions } from "@grouparoo/core";
 
-const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-const purchasesTableName = `purchases_${process.env.JEST_WORKER_ID || 1}`;
-const profilesDestinationTableName = `output_users_${
+export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
+export const purchasesTableName = `purchases_${
   process.env.JEST_WORKER_ID || 1
 }`;
-const groupsDestinationTableName = `output_groups_${
+export const profilesDestinationTableName = `output_users_${
   process.env.JEST_WORKER_ID || 1
 }`;
+export const groupsDestinationTableName = `output_groups_${
+  process.env.JEST_WORKER_ID || 1
+}`;
+
 const allTables = {
   [usersTableName]: `
 CREATE TABLE ${usersTableName} (
@@ -61,7 +63,7 @@ CREATE TABLE ${groupsDestinationTableName} (
 `,
 };
 
-const appOptions = {
+export const appOptions = {
   user: "root",
   database: "grouparoo_test",
 };

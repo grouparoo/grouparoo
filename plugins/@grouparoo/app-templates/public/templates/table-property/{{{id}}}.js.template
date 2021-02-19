@@ -5,12 +5,12 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       class: "property",
       sourceId: {{{sourceId}}}, // The ID of the Source that this Property belongs to - e.g. `sourceId: "users_table"`
-      type: "string", // The type of the Property.  Options are: {{{__typeOptions}}}
-      unique: true, // Will Profiles have unique records for this Property?
+      type: {{#type}}{{{type}}}{{/type}}{{^type}}"string"{{/type}}, // The type of the Property.  Options are: {{{__typeOptions}}}
+      unique: {{#unique}}{{{unique}}}{{/unique}}{{^unique}}false{{/unique}}, // Will Profiles have unique records for this Property?
       identifying: true, // Should we consider this property Identifying in the UI? Only one Property can be identifying.
       isArray: false, // Is this an Array Property?
       options: {
-        column: "...", // The column to use for this Property - e.g. `column: "first_name"`
+        column: {{#column}}{{{column}}}{{/column}}{{^column}}'...'{{/column}}, // The column to use for this Property - e.g. `column: "first_name"`
         aggregationMethod: "exact", // The aggregation method.  Options are: {{{__aggregationMethodOptions}}}
         sort: null, // You can sort the results by another column in this table
       },

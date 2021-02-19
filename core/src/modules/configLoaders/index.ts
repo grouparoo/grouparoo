@@ -21,7 +21,6 @@ import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
-import { Property } from "../../models/Property";
 
 export function getConfigDir() {
   const configDir =
