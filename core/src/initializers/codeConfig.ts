@@ -26,7 +26,10 @@ export class CodeConfig extends Initializer {
 
   async start() {
     const configDir = getConfigDir();
-    await CLS.wrap(async () => loadConfigDirectory(configDir));
+    await CLS.wrap(async () => {
+      const { errors } = await loadConfigDirectory(configDir);
+      if (errors.length > 0) throw new Error("code config error");
+    });
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     api.codeConfig.allowLockedModelChanges = false;
