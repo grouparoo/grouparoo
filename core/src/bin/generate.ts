@@ -82,7 +82,21 @@ Commands:
         description: "Overwrite existing files?",
       },
     };
-    this.example = "grouparoo generate postgres:app data_warehouse";
+    this.example = `App generation:
+    grouparoo generate postgres:app data_warehouse
+
+  Simple Source Generation (needs parent app):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse
+
+  Complex Source Generation (needs parent app to be \`applied\`):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse \\
+      --from users \\
+      --with id,first_name,email,last_name \\
+      --mapping 'id=user_id' \\
+      --high-water-mark updated_at
+    `;
 
     GrouparooCLI.setGrouparooRunMode(this);
   }
