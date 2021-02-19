@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { TeamMember } from "../../src";
+import { TeamMember, Setting } from "../../src";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
@@ -57,6 +57,14 @@ describe("actions/teamMembers", () => {
     test("when a team member is created, they can subscribe to the grouparoo newsletter", async () => {
       GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
 
+      const customerId = (
+        await Setting.findOne({
+          where: { key: "cluster-id" },
+        })
+      ).value;
+
+      expect(customerId.length).toBeGreaterThan(0);
+
       connection.params = {
         csrfToken,
         teamId,
@@ -75,6 +83,7 @@ describe("actions/teamMembers", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "toad@example.com",
+          customerId,
         })
       );
 
