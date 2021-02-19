@@ -5,7 +5,7 @@ import {
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 
-const importantFields = ["start_date", "firstname", "lastname", "company"];
+const importantFields = ["firstname", "lastname", "company"];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
@@ -37,14 +37,12 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, sendgridType) => {
     case "mobilephone":
     case "phone":
       return "phoneNumber";
-    case "date_of_birth":
-    case "start_date":
-      return "date";
   }
   const map = {
-    text: "string",
-    textarea: "string",
+    string: "string",
+    enumeration: "string",
     datetime: "date",
+    bool: "boolean",
     // date: "date", // TODO: add parser treatment for this type.
     number: "float",
   };
@@ -82,7 +80,7 @@ export const getUserFields = async (
     if (field["name"] !== "email" && !field["readOnlyValue"]) {
       const type: DestinationMappingOptionsResponseTypes = mapTypesFromHubspotToGrouparoo(
         field["name"],
-        field["fieldType"]
+        field["type"]
       );
       if (type) {
         out.push({

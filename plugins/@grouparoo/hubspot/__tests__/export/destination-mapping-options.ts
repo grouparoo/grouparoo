@@ -17,7 +17,7 @@ const nockFile = path.join(
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/destination-mapping-options");
+require("../fixtures/destination-mapping-options");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
@@ -49,6 +49,7 @@ describe("sendgrid/destinationMappingOptions", () => {
     const birthDate = fields.find((f) => f.key === "date_of_birth");
     const message = fields.find((f) => f.key === "message");
     const companyId = fields.find((f) => f.key === "associatedcompanyid");
+    const persona = fields.find((f) => f.key === "hs_persona");
     expect(phone.type).toBe("phoneNumber");
     expect(phone.important).toBe(false);
     expect(mobilePhone.type).toBe("phoneNumber");
@@ -57,14 +58,16 @@ describe("sendgrid/destinationMappingOptions", () => {
     expect(firstName.important).toBe(true);
     expect(lastName.type).toBe("string");
     expect(lastName.important).toBe(true);
-    expect(startDate.type).toBe("date");
-    expect(startDate.important).toBe(true);
-    expect(birthDate.type).toBe("date");
+    expect(startDate.type).toBe("string");
+    expect(startDate.important).toBe(false);
+    expect(birthDate.type).toBe("string");
     expect(birthDate.important).toBe(false);
     expect(message.type).toBe("string");
     expect(message.important).toBe(false);
     expect(companyId.type).toBe("float");
     expect(companyId.important).toBe(false);
+    expect(persona.type).toBe("string");
+    expect(persona.important).toBe(false);
   });
 
   test("can load all destinationMappingOptions", async () => {
