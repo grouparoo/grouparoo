@@ -14,7 +14,7 @@ const nockFile = path.join(__dirname, "../", "fixtures", "cli.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/table-profiles");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
