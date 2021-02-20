@@ -1,5 +1,6 @@
 import { TeamMember } from "../models/TeamMember";
 import { CLS } from "../modules/cls";
+import { plugin } from "../modules/plugin";
 import { log } from "actionhero";
 import path from "path";
 
@@ -16,11 +17,15 @@ const campaign = `v${packageJSON.version}`;
 /**
  * We want this run "in-thread" but not to be blocking.  We cannot rely on tasks, as the user may not be running them.
  * We also want to allow for this method to fail, and not block anything else in the server.
+ * Therefore, we don't await the top-level CLS.afterCommit method
  */
 export async function GrouparooSubscription(teamMember: TeamMember) {
   if (process.env.NODE_ENV === "test") return;
 
   CLS.afterCommit(async () => {
+    const setting = await plugin.readSetting("telemetry", "customer-id");
+    const customerId = setting.value;
+
     try {
       const response = await fetch(`${host}${route}`, {
         method,
@@ -32,11 +37,14 @@ export async function GrouparooSubscription(teamMember: TeamMember) {
           source,
           medium,
           campaign,
+          customerId,
         }),
       }).then((r) => r.json());
 
       if (response.error) throw response.error;
-      log(`Registered ${teamMember.email} for Grouparoo subscription`);
+      log(
+        `Registered ${teamMember.email} for Grouparoo subscription to ${customerId}`
+      );
     } catch (error) {
       log(`Error subscribing to Grouparoo Subscription: ${error}`, "error");
     }

@@ -1,12 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { TeamMember } from "../../src";
+import { TeamMember, Setting } from "../../src";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 describe("actions/teamMembers", () => {
-  helper.grouparooTestServer({ truncate: true });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
   let teamId: string;
   let teamMemberId: string;
 
