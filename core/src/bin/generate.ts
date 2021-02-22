@@ -59,7 +59,7 @@ Commands:
         required: false,
         letter: "w",
         description:
-          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or * for all (`--with *`). Default is ``',
+          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
         default: "",
       },
       mapping: {
