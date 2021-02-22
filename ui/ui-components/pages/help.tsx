@@ -18,7 +18,7 @@ export default function Page() {
               We strive to respond to bugs, questions, and problems
               transparently in the open
             </b>
-            . We believe this this is important so that future Grouparoo users
+            . We believe that this is important so that future Grouparoo users
             can find previous questions and answers to help themselves,
             ultimately leading to a stronger and more informed community.
           </p>
