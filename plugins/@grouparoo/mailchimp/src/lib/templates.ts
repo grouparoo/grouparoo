@@ -8,6 +8,13 @@ export class MailchimpAppTemplate extends ConfigTemplate {
     super();
     this.name = `mailchimp:app`;
     this.description = `Config for a Mailchimp App`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new App`,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [path.join(templateRoot, "app", "*.template")];
     this.destinationDir = "apps";
   }
