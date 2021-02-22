@@ -1,8 +1,9 @@
 import Head from "next/head";
+import Link from "next/link";
 import { useState } from "react";
 import { useApi } from "../hooks/useApi";
 import { Models } from "../utils/apiData";
-import { Row, Col, ProgressBar, Alert, Button } from "react-bootstrap";
+import { Row, Col, ProgressBar, Alert } from "react-bootstrap";
 import SetupStepCard from "../components/setupSteps/setupStepCard";
 
 export default function Page(props) {
@@ -45,7 +46,7 @@ export default function Page(props) {
         </p>
       ) : (
         <Alert variant="success">
-          You’ve finished the Setup Ide! 🎉 <br />
+          You’ve finished the Setup Guide! 🎉 <br />
           If you have additional questions, please read our{" "}
           <a target="_blank" href="https://www.grouparoo.com/docs">
             Docs
@@ -89,7 +90,7 @@ export default function Page(props) {
 
       <Row>
         <Col style={{ textAlign: "center" }}>
-          <HideSetupButton />
+          <HideSetupButton /> <br /> <br />
         </Col>
       </Row>
     </>
@@ -104,8 +105,10 @@ Page.getInitialProps = async (ctx) => {
 
 function HideSetupButton() {
   return (
-    <Button href="/settings/interface" size="sm">
-      Hide this Setup Ide from everyone in your team
-    </Button>
+    <Link href="/settings/interface">
+      <a>
+        Hide this Setup Guide for everyone in your organization via settings
+      </a>
+    </Link>
   );
 }
