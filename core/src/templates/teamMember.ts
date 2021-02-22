@@ -6,6 +6,18 @@ export class TeamMemberTemplate extends ConfigTemplate {
     super();
     this.name = "team:member";
     this.description = "Config for a Grouparoo Team Member";
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Team Member`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of Team to use, e.g: \`--parent admin_team\``,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [
       path.join(
         __dirname,

@@ -42,8 +42,38 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
   ) {
     super();
     this.name = `${name}:table:source`;
-    this.description = `Config for a ${name} Table Source. Construct properties from the data in the table without writing SQL.`;
+    this.description = `Config for a ${name} table Source. Construct Sources and Properties without writing SQL.`;
     this.parentId = "appId";
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Source`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
+      from: {
+        required: false,
+        description: "The table to use for this source, e.g: `--from users`",
+      },
+      mapping: {
+        required: false,
+        description:
+          'The mapping between a column in this table and a Grouparoo Property, e.g: `--mapping "id=user_id"`',
+      },
+      with: {
+        required: false,
+        description:
+          "The names of the columns to create properties from, e.g: `--with users,id,first_name,last_name`. Defaults to '*'",
+      },
+      "high-water-mark": {
+        required: false,
+        description:
+          "The name of the column to uses for this Source's Schedule, e.g: `--high-water-mark updated_at`.",
+      },
+    };
     this.getters = getters;
   }
 
@@ -119,6 +149,17 @@ export class TablePropertyTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:table:property`;
     this.description = `Config for a ${name} Table Property`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Property`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of the ${name} Source to use for this Property, e.g: \`--parent table_source\``,
+      },
+    };
     this.files = files;
     this.destinationDir = "properties";
     this.parentId = "sourceId";
@@ -149,11 +190,17 @@ async function loadTablesAndColumns(
     ? JSON.parse(params.with)
         .split(",")
         .map((e) => e.trim())
-    : ["*"];
+    : []; // by default, we use no columns from the source table
 
   if (!appId || !tableName) return map;
 
-  const app = await App.findById(appId);
+  let app: App;
+  try {
+    app = await App.findById(appId);
+  } catch (error) {
+    error.message += ".  Did you `grouparoo apply` to add your parent?";
+    throw error;
+  }
   const appOptions = await app.getOptions();
   const connection = await app.getConnection();
 

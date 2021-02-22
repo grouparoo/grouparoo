@@ -47,32 +47,32 @@ Commands:
         required: false,
         letter: "p",
         description:
-          "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
+          "The id of the object that is the direct parent of this new object, e.g. the appId if you are creating a new Source.",
       },
       from: {
         required: false,
         letter: "f",
         description:
-          "For complex generators, where should we source the objects from?",
+          "For batch generators, where should we read the objects from?",
       },
       with: {
         required: false,
         letter: "w",
         description:
-          'For complex generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name").',
-        default: "*",
+          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
+        default: "",
       },
       mapping: {
         required: false,
         letter: "m",
         description:
-          'For complex generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+          'For batch generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
       },
       "high-water-mark": {
         required: false,
         letter: "H",
         description:
-          "For complex generators, what should we use for the high-water-mark?",
+          "For batch generators, what should we use for the high-water-mark?",
       },
       overwrite: {
         required: true,
@@ -89,7 +89,7 @@ Commands:
     grouparoo generate postgres:table:source users_table \\
       --parent data_warehouse
 
-  Complex Source Generation (needs parent app to be \`applied\`):
+  Batch Source Generation (needs parent app to be applied first):
     grouparoo generate postgres:table:source users_table \\
       --parent data_warehouse \\
       --from users \\
@@ -161,7 +161,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return this.fatalError(error.message);
     }
 
@@ -218,38 +218,58 @@ Commands:
   }
 
   logTemplateAndOptions(template: ConfigTemplate, compact = false) {
+    const inputs = template.inputs;
+
+    if (!inputs["id"]) {
+      inputs["id"] = {
+        required: true,
+        description: "The id to use for this new object.",
+      };
+    }
+
     if (compact) {
       console.log(
         "  " +
           GrouparooCLI.underlineBold(template.name) +
-          ` (${Object.keys(template.inputs).join(", ")}) - ${
-            template.description
-          }`
+          ` (${Object.keys(inputs).join(", ")}) - ${template.description}`
       );
     } else {
-      console.log(`${template.description}`);
-      console.log("");
-      console.log("Options:");
-      Object.keys(template.inputs).forEach((k) => {
+      const requiredInputs = Object.keys(template.inputs)
+        .filter((i) => template.inputs[i].required)
+        .sort();
+      const optionalInputs = Object.keys(template.inputs)
+        .filter((i) => !template.inputs[i].required)
+        .sort();
+
+      function displayInput(k: string) {
         const req =
-          template.inputs[k].required &&
-          (template.inputs[k].default === null ||
-            template.inputs[k].default === undefined);
+          inputs[k].required &&
+          (inputs[k].default === null || inputs[k].default === undefined);
+
         console.log(
-          `  * ${k}${req ? " (required)" : ""} - ${
-            template.inputs[k].description
-          } ${
-            template.inputs[k].default !== null &&
-            template.inputs[k].default !== undefined
-              ? `(default: ${JSON.stringify(template.inputs[k].default)})`
+          `  * ${k}${req ? " (required)" : ""} - ${inputs[k].description} ${
+            inputs[k].default !== null && inputs[k].default !== undefined
+              ? `(default: ${JSON.stringify(inputs[k].default)})`
               : ""
           }${
-            template.inputs[k].copyDefaultFrom
-              ? `(default copied from ${template.inputs[k].copyDefaultFrom})`
+            inputs[k].copyDefaultFrom
+              ? `(default copied from ${inputs[k].copyDefaultFrom})`
               : ""
           }`
         );
-      });
+      }
+
+      console.log(`${template.description}`);
+      console.log("");
+      console.log("Required Inputs:");
+      requiredInputs.length > 0
+        ? requiredInputs.forEach((k) => displayInput(k))
+        : console.log("  None");
+      console.log("");
+      console.log("Optional Inputs:");
+      optionalInputs.length > 0
+        ? optionalInputs.forEach((k) => displayInput(k))
+        : console.log("  None");
       console.log("");
     }
   }
