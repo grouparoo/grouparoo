@@ -161,7 +161,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return this.fatalError(error.message);
     }
 

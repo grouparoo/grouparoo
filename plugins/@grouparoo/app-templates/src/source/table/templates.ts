@@ -194,7 +194,13 @@ async function loadTablesAndColumns(
 
   if (!appId || !tableName) return map;
 
-  const app = await App.findById(appId);
+  let app: App;
+  try {
+    app = await App.findById(appId);
+  } catch (error) {
+    error.message += ".  Did you `grouparoo apply` to add your parent?";
+    throw error;
+  }
   const appOptions = await app.getOptions();
   const connection = await app.getConnection();
 
