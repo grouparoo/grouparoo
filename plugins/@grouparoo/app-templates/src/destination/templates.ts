@@ -9,6 +9,7 @@ export class DestinationTemplate extends ConfigTemplate {
       id: {
         required: true,
         description: `The name of this new Destination`,
+        formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,

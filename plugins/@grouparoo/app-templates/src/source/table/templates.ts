@@ -48,6 +48,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       id: {
         required: true,
         description: `The name of this new Source`,
+        formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,
@@ -152,6 +153,7 @@ export class TablePropertyTemplate extends ConfigTemplate {
       id: {
         required: true,
         description: `The name of this new Property`,
+        formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,

@@ -22,6 +22,7 @@ export class QuerySourceTemplate extends ConfigTemplate {
       id: {
         required: true,
         description: `The name of this new Source`,
+        formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,
@@ -51,6 +52,7 @@ export class QueryPropertyTemplate extends ConfigTemplate {
       id: {
         required: true,
         description: `The name of this new Property`,
+        formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,

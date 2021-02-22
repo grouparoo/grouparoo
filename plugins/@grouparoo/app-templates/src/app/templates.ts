@@ -9,6 +9,7 @@ export class AppTemplate extends ConfigTemplate {
       id: {
         required: true,
         description: `The name of this new App`,
+        formatter: (p) => this.formatId(p),
       },
     };
     this.files = files;

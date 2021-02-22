@@ -34,14 +34,7 @@ export abstract class ConfigTemplate {
 
   constructor() {
     this.params = {};
-    this.inputs = {
-      id: {
-        required: true,
-        description:
-          "The ID of the new object being generated.  Will be used to construct the object's id",
-        formatter: (p) => this.formatId(p),
-      },
-    };
+    this.inputs = {};
   }
 
   /** The main 'do something' method.  Throw is there was an error */
