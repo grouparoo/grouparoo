@@ -14,10 +14,10 @@
   },
   "devDependencies": {
     "glob": "7.1.6",
-    "lerna": "3.22.1",
+    "lerna": "4.0.0",
     "lerna-changelog": "1.0.1",
     "license-checker": "github:grouparoo/license-checker",
-    "npm-check-updates": "11.1.1",
+    "npm-check-updates": "11.1.5",
     "prettier": "2.2.1"
   },
   "scripts": {

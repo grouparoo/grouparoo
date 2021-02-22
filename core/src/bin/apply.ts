@@ -8,7 +8,7 @@ import {
   deleteLockedObjects,
 } from "../modules/configLoaders";
 
-export class Validate extends CLI {
+export class Apply extends CLI {
   constructor() {
     super();
     this.name = "apply";

@@ -9,6 +9,7 @@ import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
+import { getConfigDir } from "../modules/configLoaders";
 
 export class Generate extends CLI {
   constructor() {
@@ -44,9 +45,34 @@ Commands:
       },
       parent: {
         required: false,
-        letter: "a",
+        letter: "p",
         description:
           "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
+      },
+      from: {
+        required: false,
+        letter: "f",
+        description:
+          "For complex generators, where should we source the objects from?",
+      },
+      with: {
+        required: false,
+        letter: "w",
+        description:
+          'For complex generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name").',
+        default: "*",
+      },
+      mapping: {
+        required: false,
+        letter: "m",
+        description:
+          'For complex generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+      },
+      "high-water-mark": {
+        required: false,
+        letter: "H",
+        description:
+          "For complex generators, what should we use for the high-water-mark?",
       },
       overwrite: {
         required: true,
@@ -55,14 +81,22 @@ Commands:
         flag: true,
         description: "Overwrite existing files?",
       },
-      path: {
-        required: true,
-        letter: "p",
-        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
-        description: "The location of the config directory",
-      },
     };
-    this.example = "grouparoo generate postgres:app data_warehouse";
+    this.example = `App generation:
+    grouparoo generate postgres:app data_warehouse
+
+  Simple Source Generation (needs parent app):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse
+
+  Complex Source Generation (needs parent app to be \`applied\`):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse \\
+      --from users \\
+      --with id,first_name,email,last_name \\
+      --mapping 'id=user_id' \\
+      --high-water-mark updated_at
+    `;
 
     GrouparooCLI.setGrouparooRunMode(this);
   }
@@ -71,6 +105,7 @@ Commands:
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
+    params.path = getConfigDir();
 
     GrouparooCLI.logCLI(
       this.name
@@ -126,6 +161,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
+      console.error(error);
       return this.fatalError(error.message);
     }
 

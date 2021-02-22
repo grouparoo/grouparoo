@@ -6,7 +6,7 @@ const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscrip
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 describe("actions/teams", () => {
-  helper.grouparooTestServer({ truncate: true });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
   let id: string;
 
   describe("team:initialize", () => {

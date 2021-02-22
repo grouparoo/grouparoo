@@ -14,6 +14,9 @@ import { getConnection as getQueryConnection } from "../lib/query-import/connect
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 
+import { getTables } from "../lib/table-import/getTables";
+import { getColumns } from "../lib/table-import/getColumns";
+
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
@@ -42,7 +45,7 @@ export class Plugins extends Initializer {
         new AppTemplate("postgres", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new TableSourceTemplate("postgres"),
+        new TableSourceTemplate("postgres", { getTables, getColumns }),
         new TablePropertyTemplate("postgres"),
         new QuerySourceTemplate("postgres"),
         new QueryPropertyTemplate("postgres"),

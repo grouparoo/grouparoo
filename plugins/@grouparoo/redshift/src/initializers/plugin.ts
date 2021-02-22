@@ -14,6 +14,9 @@ import { getConnection as getQueryConnection } from "../lib/query-import/connect
 import { destinationOptions } from "@grouparoo/postgres/dist/lib/export/destinationOptions";
 import { destinationMappingOptions } from "@grouparoo/postgres/dist/lib/export/destinationMappingOptions";
 
+import { getTables } from "@grouparoo/postgres/dist/lib/table-import/getTables";
+import { getColumns } from "@grouparoo/postgres/dist/lib/table-import/getColumns";
+
 const packageJSON = require("./../../package.json");
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
@@ -42,7 +45,7 @@ export class Plugins extends Initializer {
         new AppTemplate("redshift", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new TableSourceTemplate("redshift"),
+        new TableSourceTemplate("redshift", { getTables, getColumns }),
         new TablePropertyTemplate("redshift"),
         new QuerySourceTemplate("redshift"),
         new QueryPropertyTemplate("redshift"),

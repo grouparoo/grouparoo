@@ -4,14 +4,17 @@ import fs from "fs";
 import parse from "csv-parse/lib/sync";
 import { config } from "actionhero";
 
-const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-const purchasesTableName = `purchases_${process.env.JEST_WORKER_ID || 1}`;
-const profilesDestinationTableName = `output_users_${
+export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
+export const purchasesTableName = `purchases_${
   process.env.JEST_WORKER_ID || 1
 }`;
-const groupsDestinationTableName = `output_groups_${
+export const profilesDestinationTableName = `output_users_${
   process.env.JEST_WORKER_ID || 1
 }`;
+export const groupsDestinationTableName = `output_groups_${
+  process.env.JEST_WORKER_ID || 1
+}`;
+
 const allTables = {
   [usersTableName]: `
 CREATE TABLE ${usersTableName} (
@@ -58,7 +61,7 @@ CREATE TABLE ${groupsDestinationTableName}(
 `,
 };
 
-const appOptions = {
+export const appOptions = {
   user: config.sequelize.username || require("os").userInfo().username,
   password: config.sequelize.password || "password",
   host: config.sequelize.host,
