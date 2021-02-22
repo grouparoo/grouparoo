@@ -32,7 +32,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   };
 };
 
-const mapTypesFromHubspotToGrouparoo = (fieldKey, sendgridType) => {
+const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
   switch (fieldKey) {
     case "mobilephone":
     case "phone":
@@ -46,7 +46,7 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, sendgridType) => {
     // date: "date", // TODO: add parser treatment for this type.
     number: "float",
   };
-  const grouparooType = map[sendgridType];
+  const grouparooType = map[hubspotType];
   if (grouparooType) {
     return grouparooType;
   }

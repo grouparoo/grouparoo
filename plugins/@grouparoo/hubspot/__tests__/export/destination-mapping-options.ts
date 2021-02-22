@@ -37,7 +37,7 @@ async function runDestinationMappingOptions({}) {
   });
 }
 
-describe("sendgrid/destinationMappingOptions", () => {
+describe("hubspot/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client, appOptions);
