@@ -220,17 +220,11 @@ Commands:
   logTemplateAndOptions(template: ConfigTemplate, compact = false) {
     const inputs = template.inputs;
 
-    if (!compact) {
+    if (!inputs["id"]) {
       inputs["id"] = {
         required: true,
         description: "The id to use for this new object.",
       };
-      if (template.parentId) {
-        inputs["parent"] = {
-          required: true,
-          description: this.inputs["parent"].description,
-        };
-      }
     }
 
     if (compact) {

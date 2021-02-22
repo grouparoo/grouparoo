@@ -5,6 +5,16 @@ export class DestinationTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:destination`;
     this.description = `Config for a ${name} Destination`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new Destination`,
+      },
+      parent: {
+        required: true,
+        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
+    };
     this.files = files;
     this.destinationDir = "destinations";
     this.parentId = "appId";

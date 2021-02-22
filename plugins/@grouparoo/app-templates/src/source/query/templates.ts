@@ -18,7 +18,16 @@ export class QuerySourceTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:query:source`;
     this.description = `Config for a ${name} query Source. Work with multiple tables and build custom queries for its properties.`;
-    this.files = files;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new Source`,
+      },
+      parent: {
+        required: true,
+        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
+    };
     this.destinationDir = "sources";
     this.parentId = "appId";
   }
@@ -38,6 +47,16 @@ export class QueryPropertyTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:query:property`;
     this.description = `Config for a ${name} Query Property`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new Property`,
+      },
+      parent: {
+        required: true,
+        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
+    };
     this.files = files;
     this.destinationDir = "properties";
     this.parentId = "sourceId";

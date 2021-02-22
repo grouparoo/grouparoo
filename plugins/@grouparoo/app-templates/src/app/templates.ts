@@ -5,6 +5,12 @@ export class AppTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:app`;
     this.description = `Config for a Grouparoo ${name} App`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new App`,
+      },
+    };
     this.files = files;
     this.destinationDir = "apps";
   }

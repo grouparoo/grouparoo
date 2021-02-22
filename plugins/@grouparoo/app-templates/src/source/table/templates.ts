@@ -45,6 +45,14 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     this.description = `Config for a ${name} table Source. Construct Sources and Properties without writing SQL.`;
     this.parentId = "appId";
     this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new Source`,
+      },
+      parent: {
+        required: true,
+        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
       from: {
         required: false,
         description: "The table to use for this source, e.g: `--from users`",
@@ -140,6 +148,16 @@ export class TablePropertyTemplate extends ConfigTemplate {
     super();
     this.name = `${name}:table:property`;
     this.description = `Config for a ${name} Table Property`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The name of this new Property`,
+      },
+      parent: {
+        required: true,
+        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+      },
+    };
     this.files = files;
     this.destinationDir = "properties";
     this.parentId = "sourceId";
