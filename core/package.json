@@ -57,7 +57,7 @@
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
     "libphonenumber-js": "1.9.11",
-    "mime": "2.5.0",
+    "mime": "2.5.2",
     "moment": "2.29.1",
     "mustache": "4.1.0",
     "node-resque": "8.2.3",
