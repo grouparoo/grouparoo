@@ -53,26 +53,26 @@ Commands:
         required: false,
         letter: "f",
         description:
-          "For complex generators, where should we source the objects from?",
+          "For batch generators, where should we read the objects from?",
       },
       with: {
         required: false,
         letter: "w",
         description:
-          'For complex generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name").',
+          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name"). Default  is `*`',
         default: "*",
       },
       mapping: {
         required: false,
         letter: "m",
         description:
-          'For complex generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+          'For batch generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
       },
       "high-water-mark": {
         required: false,
         letter: "H",
         description:
-          "For complex generators, what should we use for the high-water-mark?",
+          "For batch generators, what should we use for the high-water-mark?",
       },
       overwrite: {
         required: true,
@@ -89,7 +89,7 @@ Commands:
     grouparoo generate postgres:table:source users_table \\
       --parent data_warehouse
 
-  Complex Source Generation (needs parent app to be \`applied\`):
+  Batch Source Generation (needs parent app to be applied first):
     grouparoo generate postgres:table:source users_table \\
       --parent data_warehouse \\
       --from users \\
