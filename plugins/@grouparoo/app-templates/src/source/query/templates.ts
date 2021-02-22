@@ -17,7 +17,7 @@ export class QuerySourceTemplate extends ConfigTemplate {
   ) {
     super();
     this.name = `${name}:query:source`;
-    this.description = `Config for a ${name} Query Source. Work with multiple tables and build custom queries for its properties.`;
+    this.description = `Config for a ${name} query Source. Work with multiple tables and build custom queries for its properties.`;
     this.files = files;
     this.destinationDir = "sources";
     this.parentId = "appId";

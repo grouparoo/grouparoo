@@ -42,8 +42,29 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
   ) {
     super();
     this.name = `${name}:table:source`;
-    this.description = `Config for a ${name} Table Source. Construct properties from the data in the table without writing SQL.`;
+    this.description = `Config for a ${name} table Source. Construct Sources and Properties without writing SQL.`;
     this.parentId = "appId";
+    this.inputs = {
+      from: {
+        required: false,
+        description: "The table to use for this source, e.g: `--from users`",
+      },
+      mapping: {
+        required: false,
+        description:
+          'The mapping between a column in this table and a Grouparoo Property, e.g: `--mapping "id=user_id"`',
+      },
+      with: {
+        required: false,
+        description:
+          "The names of the columns to create properties from, e.g: `--with users,id,first_name,last_name`. Defaults to '*'",
+      },
+      "high-water-mark": {
+        required: false,
+        description:
+          "The name of the column to uses for this Source's Schedule, e.g: `--high-water-mark updated_at`.",
+      },
+    };
     this.getters = getters;
   }
 
