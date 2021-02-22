@@ -6,6 +6,13 @@ export class ApiKeyTemplate extends ConfigTemplate {
     super();
     this.name = "apikey";
     this.description = "Config for a Grouparoo API Key";
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new API Key`,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [
       path.join(
         __dirname,

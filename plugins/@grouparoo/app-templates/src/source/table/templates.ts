@@ -47,12 +47,12 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     this.inputs = {
       id: {
         required: true,
-        description: `The name of this new Source`,
+        description: `The id of this new Source`,
         formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,
-        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+        description: `The id of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
       },
       from: {
         required: false,
@@ -152,12 +152,12 @@ export class TablePropertyTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        description: `The name of this new Property`,
+        description: `The id of this new Property`,
         formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,
-        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+        description: `The id of the ${name} Source to use for this Property, e.g: \`--parent table_source\``,
       },
     };
     this.files = files;

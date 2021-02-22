@@ -8,12 +8,12 @@ export class DestinationTemplate extends ConfigTemplate {
     this.inputs = {
       id: {
         required: true,
-        description: `The name of this new Destination`,
+        description: `The id of this new Destination`,
         formatter: (p) => this.formatId(p),
       },
       parent: {
         required: true,
-        description: `The name of the ${name} App to use for this Source, e.g: \`--parent data_warehouse\``,
+        description: `The id of the ${name} App to use for this Destination, e.g: \`--parent data_warehouse\``,
       },
     };
     this.files = files;
