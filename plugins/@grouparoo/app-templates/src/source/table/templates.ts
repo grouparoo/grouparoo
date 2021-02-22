@@ -190,7 +190,7 @@ async function loadTablesAndColumns(
     ? JSON.parse(params.with)
         .split(",")
         .map((e) => e.trim())
-    : ["*"];
+    : []; // by default, we use no columns from the source table
 
   if (!appId || !tableName) return map;
 
