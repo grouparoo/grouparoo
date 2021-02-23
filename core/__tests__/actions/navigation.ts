@@ -18,6 +18,7 @@ describe("actions/navigation", () => {
 
     expect(navigation.bottomMenuItems).toEqual([
       { type: "link", title: "Create Team", href: "/team/initialize" },
+      { href: "/help", title: "Help", type: "link" },
     ]);
   });
 
