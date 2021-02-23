@@ -68,6 +68,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           { type: "link", title: "Create Team", href: "/team/initialize" },
         ];
       }
+      bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
     }
 
     if (navigationMode === "authenticated") {
