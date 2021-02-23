@@ -1,9 +1,7 @@
-import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
-import { CLS } from "../../modules/cls";
 
 export class RunGroup extends CLSTask {
   constructor() {
@@ -15,14 +13,7 @@ export class RunGroup extends CLSTask {
     this.plugins = ["QueueLock"];
     this.queue = "groups";
     this.inputs = {
-      groupId: { required: true },
       runId: { required: true },
-      method: { required: false },
-      offset: { required: false },
-      highWaterMark: { required: false },
-      limit: { required: false },
-      force: { required: false },
-      destinationId: { required: false },
     };
   }
 
@@ -34,28 +25,20 @@ export class RunGroup extends CLSTask {
     //    > Create imports for those profiles whose last update is older than the run's start time to remove them
     // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
-    const force = params.force || false;
-    const destinationId = params.destinationId;
-    const method = params.method || "runAddGroupMembers";
-    const offset: number = params.offset || 0;
-    const highWaterMark: number = params.highWaterMark || 0;
+    const run = await Run.findById(params.runId);
+    if (run.state === "stopped") return;
+    const group = await Group.findById(run.creatorId);
+
+    const force = run.force || false;
+    const destinationId = run.destinationId;
+    const method = run.groupMethod || "runAddGroupMembers";
+    const highWaterMark: number = run.groupHighWaterMark || 0;
+    const offset: number = run.groupMemberOffset || 0;
     const limit: number =
-      params.limit ||
+      run.groupMemberLimit ||
       parseInt(
         (await plugin.readSetting("core", "runs-profile-batch-size")).value
       );
-
-    const group = await Group.findById(params.groupId);
-    const run = await Run.findById(params.runId);
-
-    if (run.state === "stopped") return;
-
-    await run.update({
-      groupMemberLimit: limit,
-      groupMemberOffset: offset,
-      groupHighWaterMark: highWaterMark,
-      groupMethod: method,
-    });
 
     let groupMembersCount = 0;
     let nextHighWaterMark = 0;
@@ -86,53 +69,37 @@ export class RunGroup extends CLSTask {
       throw new Error(`${method} is not now a known method`);
     }
 
-    await run.afterBatch();
-
-    if (groupMembersCount === 0 && method === "runAddGroupMembers") {
-      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runId: run.id,
-        groupId: group.id,
-        method: "runRemoveGroupMembers",
-        limit,
-        offset: 0,
-        highWaterMark: 0,
-        force,
-        destinationId,
-      });
-    } else if (groupMembersCount === 0 && method === "runRemoveGroupMembers") {
-      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runId: run.id,
-        groupId: group.id,
-        method: "removePreviousRunGroupMembers",
-        limit,
-        offset: 0,
-        highWaterMark: 0,
-        force,
-        destinationId,
-      });
-    } else if (groupMembersCount > 0) {
-      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runId: run.id,
-        groupId: group.id,
-        method,
-        limit,
-        offset: nextOffset,
-        highWaterMark: nextHighWaterMark,
-        force,
-        destinationId,
-      });
-    } else {
-      const pendingImports = await run.$count("imports", {
-        where: { groupsUpdatedAt: null },
-      });
-
-      // we don't want to denote the group as ready until all the imports are imported
-      if (pendingImports === 0) {
-        await run.afterBatch("complete");
-        await group.update({ state: "ready" });
-      } else {
-        await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
+    let nextMethod = method;
+    if (groupMembersCount === 0) {
+      if (method === "runAddGroupMembers") {
+        nextMethod = "runRemoveGroupMembers";
+      } else if (method === "runRemoveGroupMembers") {
+        nextMethod = "removePreviousRunGroupMembers";
+      } else if (method === "removePreviousRunGroupMembers") {
+        nextMethod = "";
       }
+    }
+
+    console.log({ method, nextMethod, groupMembersCount });
+
+    await run.update({
+      groupMemberLimit: limit,
+      groupMemberOffset: nextOffset,
+      groupHighWaterMark: nextHighWaterMark,
+      groupMethod: nextMethod,
+      force,
+    });
+
+    const pendingImports = await run.$count("imports", {
+      where: { groupsUpdatedAt: null },
+    });
+
+    // we don't want to denote the group as ready until all the imports are imported
+    if (pendingImports === 0 && groupMembersCount === 0) {
+      await run.afterBatch("complete");
+      await group.update({ state: "ready" });
+    } else {
+      await run.afterBatch();
     }
 
     return groupMembersCount;

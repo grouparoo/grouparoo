@@ -130,6 +130,10 @@ export class Run extends Model {
   @Column
   force: boolean;
 
+  @AllowNull(true)
+  @Column
+  destinationId: string;
+
   @BelongsTo(() => Schedule)
   schedule: Schedule;
 
@@ -278,6 +282,7 @@ export class Run extends Model {
       groupHighWaterMark: this.groupHighWaterMark,
       groupMethod: this.groupMethod,
       force: this.force,
+      destinationId: this.destinationId,
       completedAt: this.completedAt ? this.completedAt.getTime() : null,
       createdAt: this.createdAt ? this.createdAt.getTime() : null,
       updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
