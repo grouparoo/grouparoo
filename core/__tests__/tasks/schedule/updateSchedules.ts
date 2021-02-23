@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { Schedule, Run } from "../../../src";
+import { Op } from "sequelize";
 
 describe("tasks/schedule:updateSchedules", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -18,13 +19,12 @@ describe("tasks/schedule:updateSchedules", () => {
       schedule = await helper.factories.schedule();
     });
 
+    beforeEach(async () => {
+      await Run.truncate();
+    });
+
     test("can be enqueued", async () => {
-      await task.enqueue("schedule:updateSchedules", {});
-      const found = await specHelper.findEnqueuedTasks(
-        "schedule:updateSchedules"
-      );
-      expect(found.length).toEqual(1);
-      expect(found[0].timestamp).toBeNull();
+      await task.enqueue("schedule:updateSchedules", {}); // does nto throw
     });
 
     test("it will not enqueue a run for a non-recurring schedule", async () => {
@@ -35,8 +35,8 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(0);
+      const runs = await Run.findAll({ where: { state: "running" } });
+      expect(runs.length).toBe(0);
     });
 
     test("it will not enqueue a run for a recurring schedule that has never run but is a draft", async () => {
@@ -55,8 +55,8 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(0);
+      const runs = await Run.findAll({ where: { state: "running" } });
+      expect(runs.length).toBe(0);
 
       await schedule.destroy();
       await source.destroy();
@@ -73,8 +73,8 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(1);
+      const runs = await Run.findAll({ where: { state: "running" } });
+      expect(runs.length).toBe(1);
     });
 
     test("it will enqueue a run for a recurring schedule that ran in the past", async () => {
@@ -92,8 +92,8 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(1);
+      const runs = await Run.findAll({ where: { state: "running" } });
+      expect(runs.length).toBe(1);
 
       await run.destroy();
     });
@@ -113,8 +113,8 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(0);
+      const runs = await Run.findAll({ where: { state: "running" } });
+      expect(runs.length).toBe(0);
 
       await run.destroy();
     });
@@ -133,8 +133,10 @@ describe("tasks/schedule:updateSchedules", () => {
 
       await specHelper.runTask("schedule:updateSchedules", {});
 
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toBe(0);
+      const runs = await Run.findAll({
+        where: { state: "running", id: { [Op.ne]: run.id } },
+      });
+      expect(runs.length).toBe(0);
 
       await run.destroy();
     });

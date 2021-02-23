@@ -65,6 +65,8 @@ export class RunGroup extends CLSTask {
       );
     } else if (method === "removePreviousRunGroupMembers") {
       groupMembersCount = await group.removePreviousRunGroupMembers(run, limit);
+    } else if (method === "complete") {
+      // waiting for imports...
     } else {
       throw new Error(`${method} is not now a known method`);
     }
@@ -76,7 +78,7 @@ export class RunGroup extends CLSTask {
       } else if (method === "runRemoveGroupMembers") {
         nextMethod = "removePreviousRunGroupMembers";
       } else if (method === "removePreviousRunGroupMembers") {
-        nextMethod = "";
+        nextMethod = "complete";
       }
     }
 
@@ -93,7 +95,11 @@ export class RunGroup extends CLSTask {
     });
 
     // we don't want to denote the group as ready until all the imports are imported
-    if (pendingImports === 0 && groupMembersCount === 0) {
+    if (
+      method === "complete" &&
+      pendingImports === 0 &&
+      groupMembersCount === 0
+    ) {
       await run.afterBatch("complete");
       await group.update({ state: "ready" });
     } else {

@@ -12,20 +12,19 @@ describe("tasks/run:internalRun", () => {
 
   describe("run:internalRun", () => {
     beforeAll(async () => {
+      await Run.truncate();
       profile = await helper.factories.profile();
     });
 
     test("the task will create an import for every profile", async () => {
       await internalRun("test", "testId");
 
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      expect(foundTasks.length).toBe(1);
-      const run = await Run.findById(foundTasks[0].args[0].runId);
-      await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
+      const run = await Run.findOne({ where: { state: "running" } });
+      await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMemberOffset).toBe(100);
       expect(run.groupMethod).toBe("internalRun");
 
       const imports = await Import.findAll();

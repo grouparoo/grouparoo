@@ -64,6 +64,7 @@ describe("tasks/destination:destroy", () => {
       });
 
       run = await Run.findOne({ where: { creatorId: group.id } });
+      expect(run.state).toBe("running");
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "destination:destroy"
@@ -91,27 +92,16 @@ describe("tasks/destination:destroy", () => {
     });
 
     test("the group run can be completed and create exports", async () => {
-      // add
-      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.deleteEnqueuedTasks("group:run", foundTasks[0].args[0]);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
-      // remove
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.deleteEnqueuedTasks("group:run", foundTasks[0].args[0]);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
-      // removeOld
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.deleteEnqueuedTasks("group:run", foundTasks[0].args[0]);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
 
       await ImportWorkflow();
 
-      // complete
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.deleteEnqueuedTasks("group:run", foundTasks[0].args[0]);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      run = await Run.findById(run.id);
+      run = await run.reload();
       group = await Group.findById(group.id);
       expect(group.state).toBe("ready");
       expect(run.state).toBe("complete");

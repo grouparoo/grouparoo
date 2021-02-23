@@ -41,15 +41,11 @@ describe("tasks/export:sendBatch", () => {
       await destination.update({ state: "ready" });
 
       await destination.exportGroupMembers(true);
-      const foundGroupRunTasks = await specHelper.findEnqueuedTasks(
-        "group:run"
-      );
-      expect(foundGroupRunTasks.length).toBe(1);
-      await specHelper.runTask("group:run", foundGroupRunTasks[0].args[0]);
 
       run = await Run.findOne({
         where: { creatorId: group.id },
       });
+      await specHelper.runTask("group:run", { runId: run.id });
 
       await run.updateTotals();
 
