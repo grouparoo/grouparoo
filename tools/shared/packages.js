@@ -53,7 +53,7 @@ function readPackageJSON(file) {
 }
 
 function writePackageJSON(file, data) {
-  return fs.writeFileSync(file, JSON.stringify(data, null, 2));
+  return fs.writeFileSync(file, JSON.stringify(data, null, 2) + "\n");
 }
 
 module.exports = {

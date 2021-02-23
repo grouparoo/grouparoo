@@ -10,6 +10,11 @@ const {
 const execSync = require("../shared/exec");
 
 function main() {
+  fixPackages();
+  updateLockfile();
+}
+
+function fixPackages() {
   const packages = allPackagePaths(glob);
   packages.forEach((package) => {
     const packageJSON = path.join(package, "package.json");
@@ -19,12 +24,12 @@ function main() {
     lockVersions(packageJSONContents, "devDependencies");
     lockVersions(packageJSONContents, "peerDependencies");
 
-    if (changes) {
-      writePackageJSON(packageJSON, packageJSONContents);
-    }
-
-    // execSync(`pnpm install --prefer-frozen-lockfile --ignore-scripts`);
+    writePackageJSON(packageJSON, packageJSONContents);
   });
+}
+
+function updateLockfile() {
+  execSync(`pnpm install --prefer-frozen-lockfile --ignore-scripts`);
 }
 
 function lockVersions(packageJSONContents, collection) {
