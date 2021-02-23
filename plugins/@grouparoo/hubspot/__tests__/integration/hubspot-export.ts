@@ -13,11 +13,11 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/hubspot-export");
+// const newNock = false;
+// require("./../fixtures/hubspot-export");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -41,9 +41,9 @@ async function deleteUsers() {
   const emails = [email1];
   for (const email of emails) {
     try {
-      const contact = await client.contacts.getByEmail(email);
+      const contact = await client.getContactByEmail(email);
       if (contact) {
-        await client.contacts.deleteContact(contact.vid);
+        await client.deleteContact(contact.vid);
       }
     } catch (error) {
       if (!error.toString().match(/Request failed with status code 404/)) {
@@ -268,7 +268,7 @@ describe("integration/runs/hubspot", () => {
   });
 
   test("hubspot has the profile data", async () => {
-    const contact = await client.contacts.getByEmail(email1);
+    const contact = await client.getContactByEmail(email1);
     expect(contact.properties.email.value).toBe(email1);
     expect(contact.properties.firstname.value).toBe("Luigi");
     expect(contact.properties.lastname.value).toBe("Plumber");
