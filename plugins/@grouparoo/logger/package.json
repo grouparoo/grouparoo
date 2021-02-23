@@ -28,8 +28,8 @@
     "watch": "tsc --watch"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.3-alpha.2",
-    "@grouparoo/spec-helper": "^0.2.3-alpha.2",
+    "@grouparoo/core": "0.2.3-alpha.2",
+    "@grouparoo/spec-helper": "0.2.3-alpha.2",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "25.0.6",
