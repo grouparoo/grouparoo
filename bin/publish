@@ -2,6 +2,7 @@
 
 set -e
 cd "$(dirname "$0")"
+cd '..'
 
 GITHUB_ORG='grouparoo'
 GITHUB_REPO='grouparoo'
@@ -42,7 +43,7 @@ then
 fi
 
 # re-lock all version numbers
-../tools/package-fixer/github_action
+./tools/package-fixer/github_action
 git add */package.json
 git commit -m "lock package versions [ci skip]"
 git push
