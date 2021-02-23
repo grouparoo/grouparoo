@@ -42,12 +42,6 @@ then
   PRERELEASE='false'
 fi
 
-# re-lock all version numbers
-./tools/package-fixer/github_action
-git add */**/package.json pnpm-lock.yaml
-git commit -m "lock package versions [ci skip]"
-git push
-
 # only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
 git describe --exact-match
 if [[ ! $? -eq 0 ]];then
