@@ -36,7 +36,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.3-alpha.3",
+    "@grouparoo/core": "0.2.3-alpha.3",
     "@types/faker": "*",
     "@types/jest": "*",
     "@types/node": "*",

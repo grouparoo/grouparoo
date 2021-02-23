@@ -36,8 +36,8 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "^0.2.3-alpha.3",
-    "@grouparoo/spec-helper": "^0.2.3-alpha.3",
+    "@grouparoo/core": "0.2.3-alpha.3",
+    "@grouparoo/spec-helper": "0.2.3-alpha.3",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "25.0.6",
