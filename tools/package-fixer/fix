@@ -29,6 +29,7 @@ function fixPackages() {
 }
 
 function updateLockfile() {
+  console.log("updating PNPM...");
   execSync(`pnpm install --prefer-frozen-lockfile --ignore-scripts`);
 }
 
