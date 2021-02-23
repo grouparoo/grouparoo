@@ -1,8 +1,9 @@
 import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
 
-export class SessionCreate extends Action {
+export class SessionCreate extends CLSAction {
   constructor() {
     super();
     this.name = "session:create";
@@ -14,7 +15,7 @@ export class SessionCreate extends Action {
     this.outputExample = {};
   }
 
-  async run({
+  async runWithinTransaction({
     connection,
     params,
   }: {
