@@ -614,7 +614,7 @@ export namespace Actions {
   >;
 
   export type SessionCreate = AsyncReturnType<
-    typeof SessionCreate.prototype.run
+    typeof SessionCreate.prototype.runWithinTransaction
   >;
   export type SessionDestroy = AsyncReturnType<
     typeof SessionDestroy.prototype.run
