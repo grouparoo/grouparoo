@@ -80,8 +80,6 @@ export class RunGroup extends CLSTask {
       }
     }
 
-    console.log({ method, nextMethod, groupMembersCount });
-
     await run.update({
       groupMemberLimit: limit,
       groupMemberOffset: nextOffset,

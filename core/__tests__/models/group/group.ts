@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
-import { Log, Profile, Group, Import, GroupMember } from "../../../src";
+import { Log, Profile, Group, Import, GroupMember, Run } from "../../../src";
 
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -186,21 +185,15 @@ describe("models/group", () => {
           destinationGroupMemberships
         );
         await destination.update({ state: "ready" });
-
-        await api.resque.queue.connection.redis.flushdb();
         await taggedGroup.destroy(); // does not throw
 
-        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-        expect(foundTasks[0].args[0]).toEqual(
-          expect.objectContaining({
-            destinationId: destination.id,
-            groupId: trackedGroup.id,
-            force: false,
-          })
-        );
-        expect(foundTasks[0].args[0].runId).toBeTruthy();
-        expect(foundTasks[0].args[0].runId).not.toEqual(run.id);
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorId: trackedGroup.id },
+        });
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0].destinationId).toBe(destination.id);
+        expect(runningRuns[0].force).toBe(false);
+        expect(runningRuns[0].id).not.toBe(run.id);
       });
     });
   });

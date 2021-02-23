@@ -60,44 +60,30 @@ describe("models/group", () => {
     }
 
     test("changing group rules changes the state to initializing and enquires a run, and then back to ready when complete", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-
       await group.setRules([
         { key: "firstName", match: "nobody", operation: { op: "eq" } },
       ]);
       expect(group.state).toBe("updating");
 
-      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].groupId).toBe(group.id);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // first run to check additions
+      const run = await Run.findOne({
+        where: { state: "running", creatorId: group.id },
+      });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(2);
-      expect(foundTasks[1].args[0].groupId).toBe(group.id);
-      expect(foundTasks[1].args[0].method).toBe("runRemoveGroupMembers");
-      await specHelper.runTask("group:run", foundTasks[1].args[0]); // second run to check subtractions
+      await specHelper.runTask("group:run", { runId: run.id }); // first run to check additions
+      await specHelper.runTask("group:run", { runId: run.id }); // second run to check subtractions
+      await specHelper.runTask("group:run", { runId: run.id }); // third run to check old group members
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(3);
-      expect(foundTasks[2].args[0].groupId).toBe(group.id);
-      expect(foundTasks[2].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
-      await specHelper.runTask("group:run", foundTasks[2].args[0]); // third run to check old group members
+      await run.reload();
+      expect(run.state).toBe("complete");
 
       await group.reload();
       expect(group.state).toBe("ready");
     });
 
     test("changing the rules will stop previously running runs", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-
       await group.setRules([
         { key: "firstName", match: "nobody", operation: { op: "eq" } },
       ]);
-      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
       const firstRun = await Run.findOne({
         where: { creatorId: group.id },
       });
@@ -106,7 +92,7 @@ describe("models/group", () => {
       await group.setRules([
         { key: "lastName", match: "nobody", operation: { op: "eq" } },
       ]);
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
+
       await firstRun.reload();
       expect(firstRun.state).toBe("stopped");
     });
@@ -258,8 +244,6 @@ describe("models/group", () => {
     });
 
     test("group#run will create imports for every group member when force=true", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-
       await group.update({ type: "manual", state: "ready" });
       await group.addProfile(mario);
       await group.addProfile(luigi);
@@ -268,10 +252,8 @@ describe("models/group", () => {
       expect(imports.length).toBe(2);
       await Import.truncate();
 
-      await group.run(true);
-      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      const run = await group.run(true);
+      await specHelper.runTask("group:run", { runId: run.id });
 
       imports = await Import.findAll();
       expect(imports.map((i) => i.profileId).sort()).toEqual(
@@ -285,8 +267,6 @@ describe("models/group", () => {
     });
 
     test("runUpdateMembers will create imports which include a destinationId in _meta if provided", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-
       await group.update({ type: "manual", state: "ready" });
       await group.addProfile(mario);
       await group.addProfile(luigi);
@@ -295,10 +275,8 @@ describe("models/group", () => {
       expect(imports.length).toBe(2);
       await Import.truncate();
 
-      await group.run(true, "abc123");
-      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      const run = await group.run(true, "abc123");
+      await specHelper.runTask("group:run", { runId: run.id });
 
       imports = await Import.findAll();
       expect(imports.map((i) => i.profileId).sort()).toEqual(

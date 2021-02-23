@@ -200,6 +200,7 @@ describe("models/destination", () => {
       const newTable = "__test_table";
       let destination: Destination;
       let group: Group;
+      let run: Run;
 
       beforeAll(async () => {
         destination = await Destination.create({
@@ -212,24 +213,30 @@ describe("models/destination", () => {
         await destination.trackGroup(group);
       });
 
-      beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
-
       afterAll(async () => await destination.destroy());
       afterAll(async () => await group.destroy());
 
       test("setting a destination's options triggers a group run", async () => {
         await destination.setOptions({ table: newTable });
-        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(1);
-        expect(foundTasks[0].args[0].force).toBe(true);
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0].destinationId).toBe(destination.id);
+        expect(runningRuns[0].force).toBe(true);
+        run = runningRuns[0];
       });
 
       test("re-setting options with the same value will not trigger a group run ", async () => {
         await destination.setOptions({ table: newTable });
-        await api.resque.queue.connection.redis.flushdb();
         await destination.setOptions({ table: newTable });
-        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        expect(foundTasks.length).toBe(0);
+
+        await destination.setOptions({ table: newTable });
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+        expect(runningRuns.length).toEqual(1);
+        expect(runningRuns[0].id).toEqual(run.id);
       });
     });
 
@@ -563,57 +570,29 @@ describe("models/destination", () => {
         });
 
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
-          await api.resque.queue.connection.redis.flushdb();
-
           const runA = await destination.trackGroup(group);
-          let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-          expect(foundTasks.length).toBe(1);
-          expect(foundTasks[0].args[0]).toEqual(
-            expect.objectContaining({
-              force: true,
-              destinationId: destination.id,
-              groupId: group.id,
-              runId: runA.id,
-            })
-          );
-
-          await api.resque.queue.connection.redis.flushdb();
           const runB = await destination.unTrackGroup();
-          foundTasks = await specHelper.findEnqueuedTasks("group:run");
-          expect(foundTasks.length).toBe(1);
-          expect(foundTasks[0].args[0]).toEqual({
-            force: true,
-            destinationId: destination.id,
-            groupId: group.id,
-            runId: runB.id,
-          });
+          await runA.reload();
+
+          expect(runA.creatorId).toEqual(runB.creatorId);
+          expect(runA.state).toBe("stopped");
+          expect(runB.state).toBe("running");
+          expect(runB.destinationId).toBe(destination.id);
+          expect(runB.force).toBe(true);
         });
 
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
           const otherGroup = await helper.factories.group();
           await otherGroup.update({ state: "ready" });
-          await destination.trackGroup(group);
-          await api.resque.queue.connection.redis.flushdb();
+          const runA = await destination.trackGroup(group);
+          const runB = await destination.trackGroup(otherGroup);
 
-          const run = await destination.trackGroup(otherGroup);
-
-          let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-          expect(foundTasks.length).toBe(2);
-          expect(foundTasks[0].args[0]).toEqual(
-            expect.objectContaining({
-              force: true,
-              destinationId: destination.id,
-              groupId: group.id,
-            })
-          );
-          expect(foundTasks[0].args[0].runId).not.toEqual(run.id);
-
-          expect(foundTasks[1].args[0]).toEqual({
-            force: true,
-            destinationId: destination.id,
-            groupId: otherGroup.id,
-            runId: run.id,
-          });
+          expect(runA.creatorId).toEqual(group.id);
+          expect(runB.creatorId).toEqual(otherGroup.id);
+          expect(runA.state).toBe("running");
+          expect(runB.state).toBe("running");
+          expect(runB.destinationId).toBe(destination.id);
+          expect(runB.force).toBe(true);
 
           await otherGroup.destroy();
         });
