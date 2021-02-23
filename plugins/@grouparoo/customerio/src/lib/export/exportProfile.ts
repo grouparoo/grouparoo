@@ -1,133 +1,88 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
-import { getListId } from "./listMethods";
-import { getFieldId } from "./fieldsMethods";
-import { log } from "actionhero";
 
-export const exportProfile: ExportProfilePluginMethod = async (args) => {
-  try {
-    return sendProfile(args);
-  } catch (error) {
-    if (error?.response?.status === 429) {
-      const retryIn = Math.floor(Math.random() * 10) + 1;
-      return { error, success: false, retryDelay: 1000 * retryIn };
-    }
-    throw error;
-  }
-};
-
-export const sendProfile: ExportProfilePluginMethod = async ({
-  appId,
+export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
-  destinationOptions,
   export: {
-    toDelete,
     newProfileProperties,
     oldProfileProperties,
     newGroups,
     oldGroups,
+    toDelete,
   },
 }) => {
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
+
   const client = await connect(appOptions);
-  const email = cleanEmail(newProfileProperties["email"]); // this is how we will identify profiles
-  const oldEmail = cleanEmail(oldProfileProperties["email"]);
-  if (!email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
+
+  const customerId = newProfileProperties["customer_id"];
+  const oldCustomerId = oldProfileProperties["customer_id"];
+
+  if (!customerId) {
+    throw new Error(`newProfileProperties[customer_id] is a required mapping`);
   }
-  const user = await client.getUser(email);
-  let oldUser = null;
-  if (oldEmail && oldEmail !== email) {
-    oldUser = await client.getUser(oldEmail);
+
+  if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
+    // Must delete old customer if ID has changed
+    await client.destroy(oldCustomerId);
   }
 
   if (toDelete) {
-    const userToDelete = user || oldUser;
-    if (userToDelete) {
-      await client.deleteUsers([userToDelete["id"]]);
-    }
-    return { success: true };
-  } else {
-    // create the user and set properties
-    const deletePropertiesPayload = {};
-    const newPropertyKeys = Object.keys(newProfileProperties);
-    Object.keys(oldProfileProperties)
-      .filter((k) => !newPropertyKeys.includes(k))
-      .forEach((k) => (deletePropertiesPayload[k] = ""));
-
-    const dataFields = Object.assign(
-      {},
-      deletePropertiesPayload,
-      newProfileProperties
-    );
-    const formattedDataFields = {};
-    formattedDataFields["custom_fields"] = {};
-    for (const key of Object.keys(dataFields)) {
-      const customFieldId = await getFieldId(client, appId, appOptions, key);
-      if (customFieldId) {
-        formattedDataFields["custom_fields"][customFieldId] = formatVar(
-          dataFields[key]
-        );
-      } else {
-        log(
-          `trying to add the nonexistent custom field "${key}" to a Sendgrid Contact.`
-        );
-      }
-    }
-
-    // change email
-    if (oldUser) {
-      await client.deleteUsers([oldUser.id]);
-    }
-
-    const listsToAdd = [];
-    const existingLists = user?.["list_ids"] || [];
-    // add to lists
-    for (const groupToAdd of newGroups) {
-      const listId = await getListId(client, appId, appOptions, groupToAdd);
-      if (!existingLists.includes(listId)) {
-        listsToAdd.push(listId);
-      }
-    }
-
-    await client.addOrUpdateUser(formattedDataFields, listsToAdd);
-
-    // remove from lists
-    if (user) {
-      for (const group of oldGroups) {
-        if (!newGroups.includes(group)) {
-          const listId = await getListId(client, appId, appOptions, group);
-          if (listId && existingLists.includes(listId)) {
-            await client.unsubscribe(listId, user.id);
-          }
-        }
-      }
-    }
-
+    await client.destroy(customerId);
     return { success: true };
   }
+
+  const payload: any = {};
+
+  // set profile properties, including old ones
+  const newKeys = Object.keys(newProfileProperties);
+  const oldKeys = Object.keys(oldProfileProperties);
+  const allKeys = oldKeys.concat(newKeys);
+
+  for (const key of allKeys) {
+    if (key === "customer_id") {
+      // not doing this one
+      continue;
+    }
+
+    const value = newProfileProperties[key];
+    payload[key] = formatVar(value);
+  }
+
+  // Groups are managed as customer attributes
+  // If user is in group "High Value", the attribute "In High Value" will be set to true
+  for (const group of newGroups) {
+    const groupAttribute = getGroupAttribute(group);
+    payload[groupAttribute] = true;
+  }
+
+  for (const group of oldGroups) {
+    if (!newGroups.includes(group)) {
+      const groupAttribute = getGroupAttribute(group);
+      payload[groupAttribute] = null;
+    }
+  }
+
+  await client.identify(customerId, payload);
+
+  return { success: true };
 };
 
 function formatVar(value) {
-  if (value === undefined || value === null) {
-    return "";
+  if (value === undefined) {
+    return null;
   }
+
+  // Dates are stored as unix timestamps (int)
   if (value instanceof Date) {
-    return value.toISOString();
-  } else {
-    return value;
+    return Math.floor(value.getTime() / 1000);
   }
+
+  return value;
 }
 
-function cleanEmail(value) {
-  if (!value) {
-    return null;
-  }
-  value = value.toString().toLowerCase().trim();
-  if (value.length === 0) {
-    return null;
-  }
-  return value;
+function getGroupAttribute(groupName: string) {
+  return `In ${groupName}`;
 }
