@@ -72,9 +72,11 @@ describe("models/group", () => {
       await specHelper.runTask("group:run", { runId: run.id }); // first run to check additions
       await specHelper.runTask("group:run", { runId: run.id }); // second run to check subtractions
       await specHelper.runTask("group:run", { runId: run.id }); // third run to check old group members
+      await specHelper.runTask("group:run", { runId: run.id }); // final run to mark complete
 
       await run.reload();
       expect(run.state).toBe("complete");
+      expect(run.groupMethod).toBe("complete");
 
       await group.reload();
       expect(group.state).toBe("ready");
