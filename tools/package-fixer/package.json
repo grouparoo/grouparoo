@@ -1,7 +1,7 @@
 {
   "author": "Grouparoo Inc <hello@grouparoo.com>",
-  "name": "@grouparoo/merger",
-  "description": "Combining things from monorepo packages for fun and profit",
+  "name": "@grouparoo/package-fixer",
+  "description": "Fixup pakage.json files",
   "version": "0.1.0",
   "license": "UNLICENSED",
   "private": true,

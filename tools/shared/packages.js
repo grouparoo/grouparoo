@@ -48,10 +48,20 @@ function allPluginPaths(glob) {
   return allJson.map((f) => path.resolve(path.join(f, "..")));
 }
 
+function readPackageJSON(file) {
+  return JSON.parse(fs.readFileSync(file).toString());
+}
+
+function writePackageJSON(file, data) {
+  return fs.writeFileSync(file, JSON.stringify(data, null, 2));
+}
+
 module.exports = {
   allPackageFiles,
   allPackagePaths,
   allPluginPaths,
   allUiFiles,
   appPackageFiles,
+  readPackageJSON,
+  writePackageJSON,
 };

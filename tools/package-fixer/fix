@@ -1,0 +1,48 @@
+#!/usr/bin/env node
+
+const glob = require("glob");
+const path = require("path");
+const {
+  allPackagePaths,
+  readPackageJSON,
+  writePackageJSON,
+} = require("../shared/packages");
+const execSync = require("../shared/exec");
+
+function main() {
+  const packages = allPackagePaths(glob);
+  packages.forEach((package) => {
+    const packageJSON = path.join(package, "package.json");
+    const packageJSONContents = readPackageJSON(packageJSON);
+
+    lockVersions(packageJSONContents, "dependencies");
+    lockVersions(packageJSONContents, "devDependencies");
+    lockVersions(packageJSONContents, "peerDependencies");
+
+    if (changes) {
+      writePackageJSON(packageJSON, packageJSONContents);
+    }
+
+    // execSync(`pnpm install --prefer-frozen-lockfile --ignore-scripts`);
+  });
+}
+
+function lockVersions(packageJSONContents, collection) {
+  const packages = packageJSONContents[collection];
+  for (const packageName in packages) {
+    let version = packages[packageName];
+    version = version.replace("^", "");
+    version = version.replace("~", "");
+
+    if (packages[packageName] !== version) {
+      changes = true;
+      console.log(
+        `${packageJSONContents.name}: ${packageName} [${packages[packageName]} => ${version}]`
+      );
+    }
+
+    packages[packageName] = version;
+  }
+}
+
+main();
