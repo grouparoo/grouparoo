@@ -17,7 +17,8 @@ export namespace GroupOps {
     force = false,
     destinationId?: string
   ) {
-    if (!api.process.running) return; // we are in an initializer (validating)
+    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+
     await group.stopPreviousRuns();
     await group.update({ state: "updating" });
 
