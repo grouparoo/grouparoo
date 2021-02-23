@@ -24,10 +24,13 @@ export class SyncCLI extends CLI {
     };
     this.example = `grouparoo sync person@example.com --property email`;
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
     GrouparooCLI.jsonOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     const [profileProperty] = params._arguments || [];

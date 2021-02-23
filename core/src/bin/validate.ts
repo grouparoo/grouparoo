@@ -22,9 +22,12 @@ export class Validate extends CLI {
       },
     };
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);

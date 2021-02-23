@@ -97,9 +97,11 @@ Commands:
       --mapping 'id=user_id' \\
       --high-water-mark updated_at
     `;
-
-    GrouparooCLI.setGrouparooRunMode(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     const [template, id] = params._arguments || [];
