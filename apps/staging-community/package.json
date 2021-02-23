@@ -46,6 +46,7 @@
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
+      "@grouparoo/customerio",
       "@grouparoo/demo",
       "@grouparoo/facebook",
       "@grouparoo/files-s3",
