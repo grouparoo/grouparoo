@@ -1,5 +1,6 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { Run } from "../../src";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -307,14 +308,16 @@ describe("integration/happyPath", () => {
       groupId = group.id;
     });
 
-    test("the group#run task can be run, along with the associated import chain", async () => {
+    test("the run can be processed, along with the associated import chain", async () => {
       let tasks = [];
 
       // group
-      tasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(tasks.length).toBe(1);
-      await specHelper.runTask("group:run", tasks[0].args[0]);
+      const runningRuns = await Run.findAll({
+        where: { state: "running", creatorType: "group" },
+      });
+      expect(runningRuns.length).toBe(1);
 
+      await specHelper.runTask("runs:tick", {});
       await ImportWorkflow();
     });
 
