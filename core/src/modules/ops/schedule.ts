@@ -37,14 +37,10 @@ export namespace ScheduleOps {
       highWaterMark = run.highWaterMark;
     } else {
       const previousRun = await run.previousRun();
-      if (previousRun?.highWaterMark) {
-        highWaterMark = previousRun.highWaterMark;
-      }
+      if (previousRun?.highWaterMark) highWaterMark = previousRun.highWaterMark;
     }
 
-    if (run.sourceOffset) {
-      sourceOffset = run.sourceOffset;
-    }
+    if (run.sourceOffset) sourceOffset = run.sourceOffset;
 
     let importsCount = 0;
     let nextHighWaterMark: HighWaterMark;

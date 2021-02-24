@@ -28,10 +28,12 @@ export class ScheduleRun extends RetryableTask {
 
     const { importsCount } = await schedule.run(run);
 
-    await run.afterBatch();
-
     if (importsCount === 0) {
       await run.afterBatch("complete");
+    } else {
+      await run.afterBatch();
     }
+
+    return importsCount;
   }
 }
