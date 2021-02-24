@@ -21,24 +21,30 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const client = await connect(appOptions);
 
   const email = newProfileProperties["email"]; // this is how we will identify profiles
+  const oldEmail = oldProfileProperties["email"];
   if (!email) {
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
 
   try {
     let contact;
+    let oldContact;
     try {
-      contact = await client.contacts.getByEmail(email);
+      contact = await client.getContactByEmail(email);
+      if (oldEmail && oldEmail !== email) {
+        oldContact = await client.getContactByEmail(oldEmail);
+      }
     } catch (error) {
       if (!error.toString().match(/Request failed with status code 404/)) {
         throw error;
       }
     }
-
     if (toDelete) {
-      if (contact) {
-        await client.contacts.deleteContact(contact.vid);
+      const contactToDelete = contact || oldContact;
+      if (contactToDelete) {
+        await client.deleteContact(contactToDelete["vid"]);
       }
+      return { success: true };
     } else {
       // create the contact and set properties
       const deletePropertiesPayload = {};
@@ -53,19 +59,29 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         newProfileProperties,
         deletePropertiesPayload
       );
-      await client.contacts.createOrUpdateContact(payload);
+      const formattedDataFields = {};
+      for (const key of Object.keys(payload)) {
+        formattedDataFields[key] = formatVar(payload[key]);
+      }
+
+      // change email
+      if (oldContact) {
+        await client.deleteContact(oldContact.vid);
+      }
+
+      await client.createOrUpdateContact(formattedDataFields);
 
       // add to lists
       for (const i in newGroups) {
         const group = newGroups[i];
-        await addToList(appId, appOptions, email, group);
+        await addToList(client, appId, appOptions, email, group);
       }
 
       // remove from lists
       for (const i in oldGroups) {
         const group = oldGroups[i];
         if (!newGroups.includes(group))
-          await removeFromList(appId, appOptions, email, group);
+          await removeFromList(client, appId, appOptions, email, group);
       }
     }
 
@@ -78,3 +94,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
   }
 };
+
+function formatVar(value) {
+  if (value === undefined || value === null) {
+    return "";
+  }
+  if (value instanceof Date) {
+    return value.getTime();
+  } else {
+    return value;
+  }
+}

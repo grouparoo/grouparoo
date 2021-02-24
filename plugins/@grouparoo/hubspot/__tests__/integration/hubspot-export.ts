@@ -41,9 +41,9 @@ async function deleteUsers() {
   const emails = [email1];
   for (const email of emails) {
     try {
-      const contact = await client.contacts.getByEmail(email);
+      const contact = await client.getContactByEmail(email);
       if (contact) {
-        await client.contacts.deleteContact(contact.vid);
+        await client.deleteContact(contact.vid);
       }
     } catch (error) {
       if (!error.toString().match(/Request failed with status code 404/)) {
@@ -268,7 +268,7 @@ describe("integration/runs/hubspot", () => {
   });
 
   test("hubspot has the profile data", async () => {
-    const contact = await client.contacts.getByEmail(email1);
+    const contact = await client.getContactByEmail(email1);
     expect(contact.properties.email.value).toBe(email1);
     expect(contact.properties.firstname.value).toBe("Luigi");
     expect(contact.properties.lastname.value).toBe("Plumber");
