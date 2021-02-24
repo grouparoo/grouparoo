@@ -39,6 +39,9 @@ importers:
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-community': link:../../ui/ui-community
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
+    devDependencies:
+      '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
+      jest: 26.6.3
     specifiers:
       '@grouparoo/bigquery': 0.2.3-alpha.4
       '@grouparoo/core': 0.2.3-alpha.4
@@ -61,8 +64,10 @@ importers:
       '@grouparoo/salesforce': 0.2.3-alpha.4
       '@grouparoo/sendgrid': 0.2.3-alpha.4
       '@grouparoo/snowflake': 0.2.3-alpha.4
+      '@grouparoo/spec-helper': 0.2.3-alpha.4
       '@grouparoo/ui-community': 0.2.3-alpha.4
       '@grouparoo/zendesk': 0.2.3-alpha.4
+      jest: 26.6.3
   apps/staging-enterprise:
     dependencies:
       '@grouparoo/bigquery': link:../../plugins/@grouparoo/bigquery
@@ -88,6 +93,9 @@ importers:
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
+    devDependencies:
+      '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
+      jest: 26.6.3
     specifiers:
       '@grouparoo/bigquery': 0.2.3-alpha.4
       '@grouparoo/core': 0.2.3-alpha.4
@@ -110,8 +118,10 @@ importers:
       '@grouparoo/salesforce': 0.2.3-alpha.4
       '@grouparoo/sendgrid': 0.2.3-alpha.4
       '@grouparoo/snowflake': 0.2.3-alpha.4
+      '@grouparoo/spec-helper': 0.2.3-alpha.4
       '@grouparoo/ui-enterprise': 0.2.3-alpha.4
       '@grouparoo/zendesk': 0.2.3-alpha.4
+      jest: 26.6.3
   cli:
     dependencies:
       chalk: 4.1.0
