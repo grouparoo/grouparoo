@@ -39,7 +39,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   // set profile properties, including old ones
   const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
-  const allKeys = oldKeys.concat(newKeys);
+  const allKeys = new Set([...newKeys, ...oldKeys]);
 
   for (const key of allKeys) {
     if (key === "customer_id") {
