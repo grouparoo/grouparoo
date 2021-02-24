@@ -30,17 +30,15 @@ export namespace ScheduleOps {
       (await plugin.readSetting("core", "runs-profile-batch-size")).value
     );
 
-    let highWaterMark = {};
-    let sourceOffset: number | string = 0;
+    const sourceOffset: number | string = run.sourceOffset || 0;
 
+    let highWaterMark = {};
     if (run.highWaterMark && Object.keys(run.highWaterMark).length > 0) {
       highWaterMark = run.highWaterMark;
     } else {
       const previousRun = await run.previousRun();
       if (previousRun?.highWaterMark) highWaterMark = previousRun.highWaterMark;
     }
-
-    if (run.sourceOffset) sourceOffset = run.sourceOffset;
 
     let importsCount = 0;
     let nextHighWaterMark: HighWaterMark;
@@ -70,10 +68,6 @@ export namespace ScheduleOps {
       importsCount = response.importsCount || 0;
       nextHighWaterMark = response.highWaterMark || {};
       nextSourceOffset = response.sourceOffset || 0;
-      await run.update({
-        highWaterMark: nextHighWaterMark,
-        sourceOffset: nextSourceOffset,
-      });
     } catch (error) {
       log(
         `failed run ${run.id} for schedule ${schedule.id}: ${error}`,

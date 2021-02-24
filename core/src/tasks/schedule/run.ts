@@ -23,17 +23,22 @@ export class ScheduleRun extends RetryableTask {
     if (!schedule) return;
 
     if (schedule.state !== "ready") {
-      throw new Error(`schedule ${params.creatorId} is not ready`);
+      throw new Error(`schedule ${run.creatorId} is not ready`);
     }
 
-    const { importsCount } = await schedule.run(run);
+    const response = await schedule.run(run);
 
-    if (importsCount === 0) {
+    await run.update({
+      highWaterMark: response.highWaterMark,
+      sourceOffset: response.sourceOffset,
+    });
+
+    if (response.importsCount === 0) {
       await run.afterBatch("complete");
     } else {
       await run.afterBatch();
     }
 
-    return importsCount;
+    return response.importsCount;
   }
 }
