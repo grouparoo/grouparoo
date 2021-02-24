@@ -74,8 +74,12 @@ export const DEFAULT = {
         storage = `${parsed.hostname}${parsed.pathname}`;
       }
 
-      if (process.env.NODE_ENV === "test") {
-        storage = join(getCoreRootPath(), `${database}.sqlite`);
+      if (
+        process.env.NODE_ENV === "test" &&
+        !parsed.hostname &&
+        !parsed.pathname
+      ) {
+        storage = join(getParentPath(), `${database}.sqlite`);
       }
 
       // without a starting "/" we assume relative locations are against project root

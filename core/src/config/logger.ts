@@ -24,8 +24,7 @@ export const DEFAULT = {
 export const test = {
   logger: (config) => {
     const loggers = [];
-
-    loggers.push(buildConsoleLogger("crit"));
+    loggers.push(buildConsoleLogger(process.env.GROUPAROO_LOG_LEVEL || "crit"));
     config.general.paths.log.forEach((p) => {
       loggers.push(buildFileLogger(p, "debug", 1));
     });
