@@ -317,7 +317,7 @@ describe("integration/happyPath", () => {
       });
       expect(runningRuns.length).toBe(1);
 
-      await specHelper.runTask("runs:tick", {});
+      await specHelper.runTask("run:tick", {});
       await ImportWorkflow();
     });
 
