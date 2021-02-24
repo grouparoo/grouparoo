@@ -126,6 +126,9 @@ export namespace RunOps {
     if (run.state === "stopped") return 100;
 
     if (run.creatorType === "group") {
+      if (run.groupMethod === "complete") return 100;
+      if (!run.groupMethod) return 100; // we are exporting the group to CSV
+
       const group = await Group.findById(run.creatorId);
       const totalGroupMembers =
         group.type === "calculated"
@@ -138,9 +141,6 @@ export namespace RunOps {
           updatedAt: { [Op.gte]: run.createdAt },
         },
       });
-
-      // we are exporting the group to CSV
-      if (!run.groupMethod) return 100;
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
