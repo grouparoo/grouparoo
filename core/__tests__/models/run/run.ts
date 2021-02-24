@@ -170,6 +170,17 @@ describe("models/run", () => {
         expect(run.percentComplete).toBe(50);
       });
 
+      test("running - group - complete", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorId: group.id,
+          creatorType: "group",
+          groupMethod: "complete",
+        });
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(100);
+      });
+
       test("running - teamMember", async () => {
         const profileA = await helper.factories.profile();
         const profileB = await helper.factories.profile();
