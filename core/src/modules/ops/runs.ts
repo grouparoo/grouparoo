@@ -5,7 +5,7 @@ import { Schedule } from "../../models/Schedule";
 import { GroupMember } from "../../models/GroupMember";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
-import { log } from "actionhero";
+import { log, api, task } from "actionhero";
 
 export namespace RunOps {
   /**
@@ -173,5 +173,39 @@ export namespace RunOps {
         100 * (run.importsCreated / (totalProfiles > 0 ? totalProfiles : 1))
       );
     }
+  }
+
+  /**
+   * Is there already a task enqueued to process this run?
+   */
+  export async function isRunEnqueued(taskName: string, runId: string) {
+    let found = [];
+
+    // normal queues
+    const queues = await api.resque.queue.queues();
+    for (const i in queues) {
+      const q = queues[i];
+      const length = await api.resque.queue.length(q);
+      const batchFound = await task.queued(q, 0, length + 1);
+      const matches = batchFound.filter((t) => t.class === taskName);
+      found = found.concat(matches);
+    }
+
+    // delayed queues
+    const allDelayed = await api.resque.queue.allDelayed();
+    for (const timestamp in allDelayed) {
+      const matches = allDelayed[timestamp].filter((t) => t.class === taskName);
+      found = found.concat(matches);
+    }
+
+    // working tasks
+    const workingOn = await task.allWorkingOn();
+    for (const worker in workingOn) {
+      if (typeof workingOn[worker] === "string") continue;
+      const payload = workingOn[worker].payload;
+      if (payload.class === taskName) found = found.concat(payload);
+    }
+
+    return found.filter((t) => t.args[0].runId === runId).length > 0;
   }
 }

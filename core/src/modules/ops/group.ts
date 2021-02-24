@@ -6,7 +6,6 @@ import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAsso
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { api, log } from "actionhero";
-import { CLS } from "../../modules/cls";
 
 export namespace GroupOps {
   /**
@@ -17,7 +16,8 @@ export namespace GroupOps {
     force = false,
     destinationId?: string
   ) {
-    if (!api.process.running) return; // we are in an initializer (validating)
+    if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+
     await group.stopPreviousRuns();
     await group.update({ state: "updating" });
 
@@ -25,6 +25,7 @@ export namespace GroupOps {
       creatorId: group.id,
       creatorType: "group",
       state: "running",
+      destinationId,
       force,
     });
 
@@ -32,13 +33,6 @@ export namespace GroupOps {
       `[ run ] starting run ${run.id} for group ${group.name} (${group.id})`,
       "notice"
     );
-
-    await CLS.enqueueTask("group:run", {
-      groupId: group.id,
-      runId: run.id,
-      force,
-      destinationId,
-    });
 
     return run;
   }

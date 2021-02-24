@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Profile, Group, Team, TeamMember, Property } from "../../src";
+import { Profile, Group, Team, TeamMember, Property, Run } from "../../src";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -208,9 +208,10 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(run.id).toBeTruthy();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      const rulesCount = await Property.count();
-      expect(foundTasks.length).toBe(rulesCount + 1);
+      const runningRuns = await Run.findAll({
+        where: { state: "running", creatorType: "teamMember" },
+      });
+      expect(runningRuns.length).toBe(1);
     });
 
     test("a writer can destroy a profile", async () => {

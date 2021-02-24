@@ -460,18 +460,15 @@ describe("actions/destinations", () => {
           connection
         );
 
-        const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-        const runs = await Run.scope(null).findAll();
-        const runningRunTasks = foundTasks.filter((t) => {
-          const run = runs.filter((r) => r.id === t.args[0].runId)[0];
-          return run.state === "running";
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
         });
 
-        expect(runningRunTasks.length).toBe(1);
-        expect(runningRunTasks[0].args[0]).toEqual(
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0]).toEqual(
           expect.objectContaining({
             destinationId: id,
-            groupId: destination.destinationGroup.id,
+            creatorId: destination.destinationGroup.id,
             force: true,
           })
         );

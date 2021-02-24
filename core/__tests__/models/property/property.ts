@@ -20,9 +20,8 @@ describe("models/property", () => {
   });
 
   test("creating a property for non-manual apps with options enqueued an internalRun", async () => {
-    const rulesCount = await Property.count();
-    const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-    expect(foundTasks.length).toBe(rulesCount);
+    const runningRuns = await Run.findAll({ where: { state: "running" } });
+    expect(runningRuns.length).toBe(1);
   });
 
   test("a property cannot be created if the source does not have all the required options set", async () => {
@@ -231,19 +230,18 @@ describe("models/property", () => {
       },
     ]);
 
-    let foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
-    expect(foundGroupRunTasks.length).toBe(1); // the group's rules changed
+    const runningRuns = await Run.findAll({
+      where: { state: "running", creatorType: "group" },
+    });
+    expect(runningRuns.length).toBe(1);
 
     await property.setOptions({ column: "id" });
 
-    const foundInternalRunTasks = await specHelper.findEnqueuedTasks(
-      "run:internalRun"
-    );
-    expect(foundInternalRunTasks.length).toBe(1);
-
-    expect(group.state).toBe("updating");
-    foundGroupRunTasks = await specHelper.findEnqueuedTasks("group:run");
-    expect(foundGroupRunTasks.length).toBe(2); // + the one from the profile property change
+    const runningRunsAgain = await Run.findAll({
+      where: { state: "running", creatorType: "group" },
+    });
+    expect(runningRunsAgain.length).toBe(1);
+    expect(runningRunsAgain[0].id).not.toEqual(runningRuns[0].id);
   });
 
   test("when a property with no options or filters first becomes ready, a run will be started", async () => {

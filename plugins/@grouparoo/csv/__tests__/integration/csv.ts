@@ -236,15 +236,10 @@ describe("integration/runs/csv", () => {
           creatorType: "schedule",
           state: "running",
         });
-        await specHelper.runTask("schedule:run", {
-          runId: run.id,
-          scheduleId: schedule.id,
-        });
 
-        // run the schedule task again to enqueue the determineState task
-        const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(foundAgain.length).toEqual(2);
-        await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
@@ -318,7 +313,7 @@ describe("integration/runs/csv", () => {
 
         // check that the run is enqueued
         const found = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(found.length).toEqual(3);
+        expect(found.length).toEqual(2);
         expect(found[1].args[0].scheduleId).toBe(schedule.id);
 
         // run the schedule
@@ -327,15 +322,10 @@ describe("integration/runs/csv", () => {
           creatorType: "schedule",
           state: "running",
         });
-        await specHelper.runTask("schedule:run", {
-          scheduleId: schedule.id,
-          runId: run.id,
-        });
 
-        // run the schedule task again to enqueue the determineState task
-        const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(foundAgain.length).toEqual(4);
-        await specHelper.runTask("schedule:run", foundAgain[3].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(

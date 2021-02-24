@@ -1,11 +1,8 @@
-import { config } from "actionhero";
-import { CLS } from "../../modules/cls";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { ProfilePropertyType } from "../../modules/ops/profile";
 import { waitForLock } from "../../modules/locks";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
@@ -18,8 +15,6 @@ export class RunInternalRun extends CLSTask {
     this.queue = "runs";
     this.inputs = {
       runId: { required: true },
-      limit: { required: false },
-      offset: { required: false },
     };
   }
 
@@ -62,13 +57,6 @@ export class RunInternalRun extends CLSTask {
   }
 
   async runWithinTransaction(params) {
-    const offset: number = params.offset || 0;
-    const limit: number =
-      params.limit ||
-      parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
-      );
-
     const run = await Run.scope(null).findOne({
       where: { id: params.runId },
     });
@@ -76,14 +64,12 @@ export class RunInternalRun extends CLSTask {
     if (!run) return;
     if (run.state === "stopped") return;
 
-    await run.update(
-      {
-        groupMemberLimit: limit,
-        groupMemberOffset: offset,
-        groupMethod: "internalRun",
-      },
-      { silent: true }
-    );
+    const offset: number = run.groupMemberOffset || 0;
+    const limit: number =
+      run.groupMemberLimit ||
+      parseInt(
+        (await plugin.readSetting("core", "runs-profile-batch-size")).value
+      );
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
@@ -96,15 +82,14 @@ export class RunInternalRun extends CLSTask {
       await this.updateProfileWithLock(profile, run);
     }
 
+    await run.update({
+      groupMemberLimit: limit,
+      groupMemberOffset: offset + limit,
+    });
+
     await run.afterBatch();
 
-    if (profiles.length > 0) {
-      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runId: run.id,
-        offset: offset + limit,
-        limit,
-      });
-    } else {
+    if (profiles.length === 0) {
       await run.afterBatch("complete");
     }
   }

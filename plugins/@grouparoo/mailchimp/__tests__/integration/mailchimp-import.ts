@@ -260,26 +260,9 @@ describe("integration/runs/mailchimp-import", () => {
           state: "running",
         });
 
-        // TODO: these sleeps are for re-enqueing at the same time
-        // maybe we should use specHelper.deleteEnqueuedTasks() from actionhero
-        await helper.sleep();
-        await specHelper.runTask("schedule:run", {
-          runId: run.id,
-          scheduleId: schedule.id,
-        });
-
-        let queue;
-        // this made another one
-        queue = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(queue.length).toEqual(2);
-        await helper.sleep();
-        await specHelper.runTask("schedule:run", queue[1].args[0]);
-
-        // run the schedule task again to enqueue the determineState task
-        queue = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(queue.length).toEqual(3);
-        await helper.sleep();
-        await specHelper.runTask("schedule:run", queue[2].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
@@ -307,6 +290,8 @@ describe("integration/runs/mailchimp-import", () => {
           )
         );
 
+        // check the run's completion percentage (before the run is complete)
+        await specHelper.runTask("schedule:run", { runId: run.id });
         await run.afterBatch();
         expect(run.percentComplete).toBe(100);
 
@@ -362,27 +347,16 @@ describe("integration/runs/mailchimp-import", () => {
         expect(error).toBeUndefined();
         expect(success).toBe(true);
 
-        // check that the run is enqueued
-        let queue;
-        queue = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(queue.length).toEqual(4);
-        expect(queue[1].args[0].scheduleId).toBe(schedule.id);
-
         // run the schedule
         const run = await Run.create({
           creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
-        await specHelper.runTask("schedule:run", {
-          runId: run.id,
-          scheduleId: schedule.id,
-        });
 
-        // run the schedule task again to enqueue the determineState task
-        queue = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(queue.length).toEqual(5);
-        await specHelper.runTask("schedule:run", queue[4].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(

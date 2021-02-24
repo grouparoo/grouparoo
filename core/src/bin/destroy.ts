@@ -8,9 +8,12 @@ export class Destroy extends CLI {
     this.description =
       "Remove imported Profiles, Groups, Imports, and Exports from your cluster.  Properties, Groups and other configuration will remain.";
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run() {
     GrouparooCLI.logCLI(this.name, false);

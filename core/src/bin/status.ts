@@ -11,9 +11,12 @@ export class Status extends CLI {
     this.name = "status";
     this.description = "Display the status of your Grouparoo cluster";
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run() {
     GrouparooCLI.logCLI(this.name);

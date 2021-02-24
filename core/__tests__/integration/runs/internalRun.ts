@@ -33,9 +33,6 @@ describe("integration/runs/internalRun", () => {
       await property.setOptions({ column: "email" });
       await property.update({ state: "ready" });
 
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      expect(foundTasks.length).toBe(1);
-
       const runs = await Run.findAll();
       expect(runs.length).toBe(1);
       expect(runs[0].creatorType).toBe("property");
@@ -45,14 +42,10 @@ describe("integration/runs/internalRun", () => {
     });
 
     test("the internalRun task will create an import for every profile", async () => {
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      expect(foundTasks.length).toBe(1);
-
-      await specHelper.deleteEnqueuedTasks(
-        "run:internalRun",
-        foundTasks[0].args[0]
-      );
-      await specHelper.runTask("run:internalRun", foundTasks[0].args[0]);
+      await specHelper.deleteEnqueuedTasks("run:internalRun", {
+        runId: run.id,
+      });
+      await specHelper.runTask("run:internalRun", { runId: run.id });
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1);
@@ -60,14 +53,10 @@ describe("integration/runs/internalRun", () => {
     });
 
     test("the run will be complete when all imports are created", async () => {
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      expect(foundTasks.length).toBe(2);
-
-      await specHelper.deleteEnqueuedTasks(
-        "run:internalRun",
-        foundTasks[1].args[0]
-      );
-      await specHelper.runTask("run:internalRun", foundTasks[1].args[0]);
+      await specHelper.deleteEnqueuedTasks("run:internalRun", {
+        runId: run.id,
+      });
+      await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
       expect(run.state).toBe("complete");
@@ -121,9 +110,6 @@ describe("integration/runs/internalRun", () => {
       });
       await lastNameProperty.setOptions({ column: "lastName" });
       await lastNameProperty.update({ state: "ready" });
-
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      expect(foundTasks.length).toBe(2);
 
       const runs = await Run.findAll();
       const firstNameRun = runs.find(

@@ -8,9 +8,12 @@ export class Start extends CLI {
     this.description =
       "Run the Grouparoo server.  Use GROUPAROO_LOG_LEVEL env to set log level.";
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run() {
     GrouparooCLI.logCLI(this.name, false);
