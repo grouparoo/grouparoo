@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Source, Schedule } from "../../../src";
+import { Source, Schedule, App, Run, plugin } from "../../../src";
 
 describe("tasks/schedule:run", () => {
   let source: Source;
@@ -49,6 +49,98 @@ describe("tasks/schedule:run", () => {
         scheduleId: "abc123",
         runId: run.id,
       }); // doesn't throw
+    });
+  });
+
+  describe("with custom plugin", () => {
+    let app: App;
+    let source: Source;
+
+    beforeAll(async () => {
+      plugin.registerPlugin({
+        name: "test-plugin",
+        apps: [
+          {
+            name: "test-template-app",
+            options: [],
+            methods: {
+              test: async () => {
+                return { success: true };
+              },
+            },
+          },
+        ],
+        connections: [
+          {
+            name: "import-from-test-template-app",
+            description: "a test app connection",
+            app: "test-template-app",
+            direction: "import" as "import",
+            options: [],
+            scheduleOptions: [
+              {
+                key: "maxColumn",
+                required: true,
+                description: "the column to choose",
+                type: "list",
+                options: async () => {
+                  return [
+                    { key: "created_at", examples: [1, 2, 3] },
+                    { key: "updated_at", examples: [1, 2, 3] },
+                  ];
+                },
+              },
+            ],
+            methods: {
+              profiles: async () => {
+                return {
+                  highWaterMark: { updated_at: 200 },
+                  sourceOffset: 100,
+                  importsCount: 100,
+                };
+              },
+            },
+          },
+        ],
+      });
+
+      app = await App.create({
+        name: "test app with real methods",
+        type: "test-template-app",
+        state: "ready",
+      });
+
+      source = await Source.create({
+        name: "test source from plugin",
+        type: "import-from-test-template-app",
+        appId: app.id,
+      });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+    });
+
+    test("running a schedule will save the highWaterMark sourceOffset on the run", async () => {
+      const schedule = await Schedule.create({
+        name: "test plugin schedule",
+        sourceId: source.id,
+      });
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      const run = await Run.create({
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "running",
+      });
+
+      specHelper.runTask("schedule:run", {
+        scheduleId: schedule.id,
+        runId: run.id,
+      });
+
+      await run.reload();
+      expect(run.highWaterMark).toEqual({ updated_at: 200 });
+      expect(run.sourceOffset).toBe("100");
     });
   });
 });

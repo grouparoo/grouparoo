@@ -87,10 +87,12 @@ export class RunInternalRun extends CLSTask {
       groupMemberOffset: offset + limit,
     });
 
-    await run.afterBatch();
-
     if (profiles.length === 0) {
       await run.afterBatch("complete");
+    } else {
+      await run.afterBatch();
     }
+
+    return profiles.length;
   }
 }
