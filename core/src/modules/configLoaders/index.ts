@@ -186,7 +186,7 @@ export async function processConfigObjects(
         configObject.key || configObject.name
       }\` (${configObject.id}): ${error}`;
       errors.push(errorMessage);
-      log(errorMessage, env === "test" ? "info" : "error");
+      log(errorMessage, "warning");
       continue;
     }
 
