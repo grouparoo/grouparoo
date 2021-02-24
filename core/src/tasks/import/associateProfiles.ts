@@ -46,7 +46,7 @@ export class ImportAssociateProfiles extends CLSTask {
     if (runIds.length > 0) {
       await Run.update(
         { state: "running" },
-        { where: { state: "complete", id: { [Op.in]: runIds } }, logging: true }
+        { where: { state: "complete", id: { [Op.in]: runIds } } }
       );
     }
 
