@@ -19,7 +19,9 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    apiKey: parsed.SENDGRID_API_KEY,
+    apiKey: parsed.CUSTOMERIO_API_KEY,
+    siteId: parsed.CUSTOMERIO_SITE_ID,
+    appApiKey: parsed.CUSTOMERIO_APP_API_KEY,
   };
 }
 
@@ -29,9 +31,20 @@ export const updater = {
     const nockEnv = readEnv(nockPath);
 
     nockCall = nockCall.replace(
-      new RegExp(realEnv.SENDGRID_API_KEY, "gi"),
-      nockEnv.SENDGRID_API_KEY
+      new RegExp(realEnv.CUSTOMERIO_API_KEY, "gi"),
+      nockEnv.CUSTOMERIO_API_KEY
     );
+
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.CUSTOMERIO_SITE_ID, "gi"),
+      nockEnv.CUSTOMERIO_SITE_ID
+    );
+
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.CUSTOMERIO_APP_API_KEY, "gi"),
+      nockEnv.CUSTOMERIO_APP_API_KEY
+    );
+
     return nockCall;
   },
 };

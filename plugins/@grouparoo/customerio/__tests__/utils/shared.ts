@@ -1,8 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 
-export async function indexContacts(isNewNock, delayTime = 30 * 1000) {
-  // search index takes a while to catch up after important change or add
+export async function indexCustomers(isNewNock) {
+  // beta api takes a while to reflect changes
   if (isNewNock) {
-    await helper.sleep(delayTime);
+    await helper.sleep(helper.shortTime);
   }
 }
