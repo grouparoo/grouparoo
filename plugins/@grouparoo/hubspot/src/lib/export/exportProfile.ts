@@ -64,12 +64,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         formattedDataFields[key] = formatVar(payload[key]);
       }
 
+      const sortedDataFields = {};
+      Object.keys(formattedDataFields)
+        .sort()
+        .forEach(function (v, i) {
+          sortedDataFields[v] = formattedDataFields[v];
+        });
+
       // change email
       if (oldContact) {
         await client.deleteContact(oldContact.vid);
       }
 
-      await client.createOrUpdateContact(formattedDataFields);
+      await client.createOrUpdateContact(sortedDataFields);
 
       // add to lists
       for (const i in newGroups) {

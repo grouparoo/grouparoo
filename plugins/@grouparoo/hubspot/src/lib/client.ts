@@ -11,7 +11,7 @@ class HubspotClient {
     this.hapikey = appOptions["hapikey"];
   }
 
-  async getLists() {
+  async getLists(): Promise<any> {
     // TODO: This is not paginated, it will need to be
     // https://legacydocs.hubspot.com/docs/methods/lists/get_static_lists
     const url = `https://api.hubapi.com/contacts/v1/lists/static?hapikey=${this.hapikey}&count=999`;
@@ -67,7 +67,7 @@ class HubspotClient {
     return await this.client.account.getAccountDetails();
   }
 
-  async getContactByEmail(email: string) {
+  async getContactByEmail(email: string): Promise<any> {
     try {
       return await this.client.contacts.getByEmail(email);
     } catch (error) {
@@ -80,15 +80,15 @@ class HubspotClient {
     return null;
   }
 
-  async deleteContact(contactId: string) {
+  async deleteContact(contactId: string): Promise<any> {
     return await this.client.contacts.deleteContact(contactId);
   }
 
-  async createOrUpdateContact(payload: any) {
+  async createOrUpdateContact(payload: any): Promise<any> {
     return await this.client.contacts.createOrUpdateContact(payload);
   }
 
-  async getAllContactsProperties() {
+  async getAllContactsProperties(): Promise<any> {
     return await this.client.contactsProperties.getAllContactsProperties();
   }
 }

@@ -13,11 +13,11 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 const nockFile = path.join(__dirname, "../", "fixtures", "hubspot-export.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/hubspot-export");
+// const newNock = false;
+// require("./../fixtures/hubspot-export");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
