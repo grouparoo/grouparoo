@@ -341,21 +341,10 @@ describe("integration/runs/postgres", () => {
         creatorType: "schedule",
         state: "running",
       });
-      await specHelper.runTask("schedule:run", {
-        runId: run.id,
-        scheduleId: schedule.id,
-      });
 
-      // run the schedule task again to enqueue the determineState task
-      await helper.sleep();
-      let foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(foundAgain.length).toEqual(2);
-      await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
-
-      await helper.sleep();
-      foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(foundAgain.length).toEqual(3);
-      await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
+      // run the schedule twice to complete the run
+      await specHelper.runTask("schedule:run", { runId: run.id });
+      await specHelper.runTask("schedule:run", { runId: run.id });
 
       // run all enqueued associateProfile tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
@@ -396,6 +385,7 @@ describe("integration/runs/postgres", () => {
       );
 
       // check the run's completion percentage (before the run is complete)
+      await specHelper.runTask("schedule:run", { runId: run.id });
       await run.determinePercentComplete();
       expect(run.percentComplete).toBe(100);
 
@@ -472,15 +462,10 @@ describe("integration/runs/postgres", () => {
         creatorType: "schedule",
         state: "running",
       });
-      await specHelper.runTask("schedule:run", {
-        runId: run.id,
-        scheduleId: schedule.id,
-      });
 
-      // run the schedule task again to enqueue the determineState task
-      const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(foundAgain.length).toEqual(5);
-      await specHelper.runTask("schedule:run", foundAgain[4].args[0]);
+      // run the schedule twice to complete the run
+      await specHelper.runTask("schedule:run", { runId: run.id });
+      await specHelper.runTask("schedule:run", { runId: run.id });
 
       // run all enqueued associateProfile tasks
       const foundAssociateTasks = await specHelper.findEnqueuedTasks(
