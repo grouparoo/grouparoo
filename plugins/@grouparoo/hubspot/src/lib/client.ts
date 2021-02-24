@@ -63,7 +63,7 @@ class HubspotClient {
     });
   }
 
-  async getAccountDetails() {
+  async getAccountDetails(): Promise<any> {
     return await this.client.account.getAccountDetails();
   }
 
