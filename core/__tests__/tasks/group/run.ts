@@ -1,5 +1,5 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api, specHelper, task } from "actionhero";
 import { Group, Import, Profile, GroupMember, Run } from "../../../src";
 
 describe("tasks/group:run", () => {
@@ -25,6 +25,7 @@ describe("tasks/group:run", () => {
         name: "test calculated group",
         type: "calculated",
       });
+      await group.update({ state: "ready" });
 
       await Profile.truncate();
 
@@ -63,78 +64,40 @@ describe("tasks/group:run", () => {
     });
 
     test("can be enqueued", async () => {
-      await group.run();
-      const found = await specHelper.findEnqueuedTasks("group:run");
-      expect(found.length).toEqual(1);
-    });
-
-    test("if the run has not yet exported all profiles, the task will be re-enqueued", async () => {
-      const run = await helper.factories.run(group, { state: "running" });
-      await run.update({ exportsCreated: 1 });
-
-      await specHelper.runTask("group:run", {
-        groupId: group.id,
-        runId: run.id,
-      });
-
-      const found = await specHelper.findEnqueuedTasks("group:run");
-      expect(found.length).toEqual(1);
-      expect(found[0].timestamp).toBeGreaterThan(0);
+      await task.enqueue("group:run", { runId: "abc123" }); // does not throw
     });
 
     it("can create imports for profiles which should be added", async () => {
-      let foundTasks = [];
       let imports = [];
       await group.setRules([
         { key: "email", match: "%@%", operation: { op: "like" } },
       ]);
 
       expect(group.state).toBe("updating");
+      const run = await Run.findOne({
+        where: { state: "running", creatorId: group.id },
+      });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBeUndefined();
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (some found, enqueue add again)
+      await specHelper.runTask("group:run", { runId: run.id }); // adding profiles (some found, enqueue add again)
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
-      const run = await Run.findById(foundTasks[0].args[0].runId);
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runAddGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runAddGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
+      await specHelper.runTask("group:run", { runId: run.id }); // adding profiles (none found, enqueue remove)
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
       expect(run.groupMemberOffset).toBe(0);
       expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      await specHelper.runTask("group:run", { runId: run.id }); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
 
-      // complete pending imports
-      await ImportWorkflow();
-
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(0);
+      await run.reload();
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.state).toBe("running");
+      await specHelper.runTask("group:run", { runId: run.id }); // remove profiles, (none found)
 
       imports = await Import.findAll();
       expect(imports.length).toBe(4);
@@ -142,12 +105,19 @@ describe("tasks/group:run", () => {
         [mario, luigi, peach, toad].map((p) => p.id).sort()
       );
 
-      await group.reload();
-      expect(group.state).toBe("ready");
-
+      // complete pending imports
+      await ImportWorkflow();
       await Promise.all(
         [mario, luigi, peach, toad].map(async (p) => p.updateGroupMembership())
       );
+
+      await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
+
+      await run.reload();
+      expect(run.groupMethod).toBe("complete");
+      expect(run.state).toBe("complete");
+      await group.reload();
+      expect(group.state).toBe("ready");
 
       const groupMembers = await group.$get("groupMembers");
       expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
@@ -156,7 +126,6 @@ describe("tasks/group:run", () => {
     });
 
     it("can create imports for profiles which should be removed", async () => {
-      let foundTasks = [];
       let imports = [];
       await group.setRules([
         {
@@ -167,48 +136,35 @@ describe("tasks/group:run", () => {
       ]);
 
       expect(group.state).toBe("updating");
+      const run = await Run.findOne({
+        where: { state: "running", creatorId: group.id },
+      });
 
       imports = await Import.findAll();
       expect(imports.length).toBe(0); // no imports to add profiles to the group
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBeUndefined();
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (some found, enqueue add again)
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runAddGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
+      await run.reload();
+      expect(run.groupMethod).toBe("runAddGroupMembers");
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // removing profiles (found some, enqueue remove)
+      await run.reload();
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers
+      await run.reload();
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      expect(run.state).toBe("running");
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
+      await run.reload();
+      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.state).toBe("running");
+      await specHelper.runTask("group:run", { runId: run.id });
 
       // complete pending imports
       await ImportWorkflow();
-
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(0);
 
       imports = await Import.findAll();
       expect(imports.length).toBe(2); // only the removals
@@ -216,12 +172,17 @@ describe("tasks/group:run", () => {
         [peach, toad].map((p) => p.id).sort()
       );
 
-      await group.reload();
-      expect(group.state).toBe("ready");
-
       await Promise.all(
         [mario, luigi, peach, toad].map(async (p) => p.updateGroupMembership())
       );
+
+      await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
+
+      await run.reload();
+      expect(run.groupMethod).toBe("complete");
+      expect(run.state).toBe("complete");
+      await group.reload();
+      expect(group.state).toBe("ready");
 
       const groupMembers = await group.$get("groupMembers");
       expect(groupMembers.map((mem) => mem.profileId).sort()).toEqual(
@@ -230,7 +191,6 @@ describe("tasks/group:run", () => {
     });
 
     it("can remove profiles which should be removed by a previous run that was stopped", async () => {
-      let foundTasks = [];
       await group.setRules([
         {
           key: "lastName",
@@ -253,91 +213,45 @@ describe("tasks/group:run", () => {
 
       expect((await group.$get("groupMembers")).length).toBe(1);
 
-      await api.resque.queue.connection.redis.flushdb();
       await group.run();
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBeUndefined();
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue remove
+      const run = await Run.findOne({
+        where: { state: "running", creatorId: group.id },
+      });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue removePreviousRunGroupMembers
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, found some, enqueue again
+      await run.reload();
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+      await specHelper.runTask("group:run", { runId: run.id });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
+      await run.reload();
+      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.state).toBe("running");
+      await specHelper.runTask("group:run", { runId: run.id });
+
+      await run.reload();
+      expect(run.groupMethod).toBe("removePreviousRunGroupMembers");
+      expect(run.state).toBe("running");
+      await specHelper.runTask("group:run", { runId: run.id });
 
       // complete pending imports
       await ImportWorkflow();
-
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // found none, enqueue state
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(0);
 
       const imports = await Import.findAll();
       expect(imports.length).toBe(1); // only the removal
       await bowser.updateGroupMembership();
 
+      await specHelper.runTask("group:run", { runId: run.id }); // run is complete, mark group as ready
+
+      await run.reload();
+      expect(run.groupMethod).toBe("complete");
+      expect(run.state).toBe("complete");
+      await group.reload();
+      expect(group.state).toBe("ready");
+
       expect((await group.$get("groupMembers")).length).toBe(0);
       await bowser.destroy();
-    });
-
-    it("will pass destinationId to all run steps", async () => {
-      let foundTasks = [];
-      await group.run(false, "abc123");
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue remove
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe("runRemoveGroupMembers");
-      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // none found, enqueue removePreviousRunGroupMembers
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].method).toBe(
-        "removePreviousRunGroupMembers"
-      );
-      expect(foundTasks[0].args[0].destinationId).toBe("abc123");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // found none, enqueue state
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      expect(foundTasks.length).toBe(0);
-      foundTasks = await specHelper.findEnqueuedTasks("run:determineState"); // run state
-    });
-
-    it("will set run.force if that option is provided to the task", async () => {
-      const group = await helper.factories.group();
-      await group.run(true);
-      const foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
-      const run = await Run.findOne({ where: { creatorId: group.id } });
-      expect(run.state).toBe("running");
-      expect(run.force).toBe(true);
     });
 
     it("the group run will not complete until all imports are complete", async () => {
@@ -347,50 +261,35 @@ describe("tasks/group:run", () => {
 
       expect(group.state).toBe("updating");
 
-      let foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (some found, enqueue add again)
+      const run = await Run.findOne({
+        where: { state: "running", creatorId: group.id },
+      });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-
-      const run = await Run.findById(foundTasks[0].args[0].runId);
-      expect(run.state).toBe("running");
-
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // adding profiles (none found, enqueue remove)
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue removePreviousRunGroupMembers)
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]); // remove profiles, (none found, enqueue run state)
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
+      await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
       await group.reload();
 
       expect(group.state).toBe("updating");
       expect(run.state).toBe("running");
+      expect(run.groupMethod).toBe("complete");
 
       // check again
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
       await group.reload();
 
       expect(group.state).toBe("updating");
       expect(run.state).toBe("running");
+      expect(run.groupMethod).toBe("complete");
 
       // complete pending imports
       await ImportWorkflow();
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:run");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:run", foundTasks[0].args[0]);
+      await specHelper.runTask("group:run", { runId: run.id });
 
       await run.reload();
       await group.reload();

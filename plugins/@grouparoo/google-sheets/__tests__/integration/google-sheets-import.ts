@@ -243,15 +243,10 @@ describe("integration/runs/google-sheets", () => {
           creatorType: "schedule",
           state: "running",
         });
-        await specHelper.runTask("schedule:run", {
-          runId: run.id,
-          scheduleId: schedule.id,
-        });
 
-        // run the schedule task again to enqueue the determineState task
-        const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(foundAgain.length).toEqual(2);
-        await specHelper.runTask("schedule:run", foundAgain[1].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
@@ -279,6 +274,8 @@ describe("integration/runs/google-sheets", () => {
           )
         );
 
+        // check the run's completion percentage (before the run is complete)
+        await specHelper.runTask("schedule:run", { runId: run.id });
         await run.afterBatch();
         expect(run.percentComplete).toBe(100);
 
@@ -333,26 +330,16 @@ describe("integration/runs/google-sheets", () => {
         expect(error).toBeUndefined();
         expect(success).toBe(true);
 
-        // check that the run is enqueued
-        const found = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(found.length).toEqual(3);
-        expect(found[1].args[0].scheduleId).toBe(schedule.id);
-
         // run the schedule
         const run = await Run.create({
           creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
         });
-        await specHelper.runTask("schedule:run", {
-          runId: run.id,
-          scheduleId: schedule.id,
-        });
 
-        // run the schedule task again to enqueue the determineState task
-        const foundAgain = await specHelper.findEnqueuedTasks("schedule:run");
-        expect(foundAgain.length).toEqual(4);
-        await specHelper.runTask("schedule:run", foundAgain[3].args[0]);
+        // run the schedule twice to complete the run
+        await specHelper.runTask("schedule:run", { runId: run.id });
+        await specHelper.runTask("schedule:run", { runId: run.id });
 
         // run all enqueued associateProfile tasks
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(

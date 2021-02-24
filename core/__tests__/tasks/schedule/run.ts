@@ -22,21 +22,7 @@ describe("tasks/schedule:run", () => {
 
   describe("schedule:run", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("schedule:run", {
-        scheduleId: "abc123",
-        runId: "abc123",
-      });
-      const found = await specHelper.findEnqueuedTasks("schedule:run");
-      expect(found.length).toEqual(1);
-      expect(found[0].timestamp).toBeNull();
-    });
-
-    test("throws without a scheduleId", async () => {
-      await expect(
-        task.enqueue("schedule:run", {
-          runId: "abc123",
-        })
-      ).rejects.toThrow(/scheduleId is a required input/);
+      await task.enqueue("schedule:run", { runId: "12345" }); // does not throw
     });
 
     test("throws without a runId", async () => {
@@ -57,9 +43,11 @@ describe("tasks/schedule:run", () => {
     });
 
     test("doesn't throw when scheduleId is **not found** in DB", async () => {
+      const run = await helper.factories.run(schedule);
+
       specHelper.runTask("schedule:run", {
         scheduleId: "abc123",
-        runId: "abc123",
+        runId: run.id,
       }); // doesn't throw
     });
   });

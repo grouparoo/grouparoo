@@ -183,6 +183,10 @@ async function runCommand(instance, _arg1, _arg2, _arg3, _arg4) {
     toStop = await instance.run({ params });
   } else {
     try {
+      if (typeof instance.preInitialize === "function") {
+        await instance.preInitialize();
+      }
+
       const { Process } = getActionhero();
       const actionHeroProcess = new Process();
 
