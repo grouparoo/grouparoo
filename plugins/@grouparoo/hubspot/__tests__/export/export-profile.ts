@@ -28,6 +28,7 @@ const listOne = "List One";
 const listTwo = "List Two";
 const listThree = "List Three";
 const listFour = "List Four";
+const dateField = new Date("2021-02-11T23:03:03Z");
 
 const ltv = 3039;
 
@@ -39,8 +40,7 @@ const message =
   "in, accumsan non quam.";
 
 const invalidEmail = "000";
-const invalidPhone = "000";
-const invalidDate = "AAAAA";
+const invalidDate = "asd000";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -194,6 +194,7 @@ describe("hubspot/exportProfile", () => {
         mobilephone: newPhoneNumber,
         message,
         lifetime_value__custom_: ltv,
+        closedate: dateField,
       },
       oldGroups: [],
       newGroups: [],
@@ -205,9 +206,30 @@ describe("hubspot/exportProfile", () => {
     expect(user["properties"]["lastname"]["value"]).toBe(alternativeLastName);
     expect(user["properties"]["mobilephone"]["value"]).toBe(newPhoneNumber);
     expect(user["properties"]["message"]["value"]).toBe(message);
+    expect(user["properties"]["closedate"]["value"]).toBe(
+      dateField.getTime().toString()
+    );
     expect(user["properties"]["lifetime_value__custom_"]["value"]).toBe(
       ltv.toString()
     );
+  });
+
+  test("can try change user variables with invalid date type", async () => {
+    await expect(
+      runExport({
+        oldProfileProperties: {
+          email,
+          closedate: dateField,
+        },
+        newProfileProperties: {
+          email,
+          closedate: invalidDate,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/Request failed/);
   });
 
   test("can clear user variables", async () => {
@@ -476,6 +498,6 @@ describe("hubspot/exportProfile", () => {
         newGroups: [],
         toDelete: false,
       })
-    ).rejects.toThrow();
+    ).rejects.toThrow(/Request failed/);
   });
 });
