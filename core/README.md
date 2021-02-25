@@ -24,17 +24,17 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 
 - 🦘 **Ready to Try Grouparoo?**
   - Grouparoo is Open Source, and easy to run on your laptop or in the cloud.
-  - → View the [Deployment Docs](https://www.grouparoo.com/docs/deployment).
+  - → View the [Getting Started Docs](https://www.grouparoo.com/docs/getting-started).
 - 📚 **Want to learn more about how to configure and use Grouparoo?**
   - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
   - → View the [Configuration Guides](https://www.grouparoo.com/docs/config).
-  - → View the [Runtime Guides](https://www.grouparoo.com/docs/running-grouparoo).
+  - → View the [Runtime Guides](https://www.grouparoo.com/docs/running).
+- 👨‍👩‍👧‍👧 **Want to collaborate with the Community to enhance Grouparoo?**
+  - Join other Grouparoo Community members to share best practices and tackle problems.
+  - → Join the [Community](https://www.grouparoo.com/docs/community).
 - ⚙️ **Want to learn more about how Grouparoo works?**
   - Grouparoo is Open Source, and we welcome community contributions. You can add your own plugins to connect to new Sources and Destinations.
   - → View the [Development Guide](https://www.grouparoo.com/docs/development).
-- 👨‍👩‍👧‍👧 **Want to collaborate with the Community to enhance Grouparoo?**
-  - Join other Grouparoo Community members to share best practices and tackle problems.
-  - → View the [Community Guidelines](https://www.grouparoo.com/docs/community).
 
 # Running a Grouparoo Application
 
@@ -45,25 +45,12 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
 Use the Grouparoo CLI to initialize a new Grouparoo Project:
 
 ```bash
+# Assuming you have node.js v12+ installed
 npm install -g grouparoo
 grouparoo init .
 grouparoo start
 ```
 
-This will generate a `package.json` and `.env` file for configuration.
-
-## Run locally with Docker & Docker Compose
-
-Assuming you have Docker installed:
-
-```bash
-# in a new directory
-curl -L https://www.grouparoo.com/docker-compose --output docker-compose.yml
-docker-compose up
-```
-
-## Deploy to Heroku
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grouparoo/app-example)
+This will generate a `package.json`, `config` directory, and `.env` file for configuration.
 
 🦘
