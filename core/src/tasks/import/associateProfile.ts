@@ -11,6 +11,8 @@ export class ImportAssociateProfile extends Task {
     this.description = "find or create the profile this import is about";
     this.frequency = 0;
     this.queue = "imports";
+    this.plugins = ["QueueLock", "JobLock"];
+    this.pluginOptions = { JobLock: { reEnqueue: false } };
     this.inputs = {
       importId: { required: true },
     };
@@ -22,18 +24,21 @@ export class ImportAssociateProfile extends Task {
 
     const { importId } = params;
     const _import = await Import.findById(importId);
+    if (_import.profileId) return;
 
     try {
       const { profile, isNew } = await _import.associateProfile();
-      await profile.markPending();
 
       const oldProfileProperties = await profile.simplifiedProperties();
       const oldGroups = await profile.$get("groups");
 
-      _import.createdProfile = isNew;
-      _import.oldProfileProperties = oldProfileProperties;
-      _import.oldGroupIds = oldGroups.map((g) => g.id);
-      await _import.save();
+      await _import.update({
+        createdProfile: isNew,
+        oldProfileProperties,
+        oldGroupIds: oldGroups.map((g) => g.id),
+      });
+
+      await profile.markPending();
     } catch (error) {
       if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
       await _import.setError(error, this.name);
