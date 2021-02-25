@@ -1,7 +1,10 @@
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
 import ExportsList from "../../../components/export/list";
-import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
+import {
+  getProfileDisplayName,
+  getProfilePageTitle,
+} from "../../../components/profile/getProfileDisplayName";
 import ProfileTabs from "../../../components/tabs/profile";
 
 export default function Page(props) {
@@ -10,7 +13,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {getProfileDisplayName(profile)}</title>
+        <title>Grouparoo: {getProfilePageTitle(profile)}</title>
       </Head>
 
       <ProfileTabs profile={profile} />

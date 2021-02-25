@@ -1,6 +1,6 @@
 import Tabs from "../tabs";
 import { Models } from "../../utils/apiData";
-import getProfileDisplayName from "../profile/getProfileDisplayName";
+import { getProfileDisplayName } from "../profile/getProfileDisplayName";
 
 export default function ProfileTabs({
   profile,
