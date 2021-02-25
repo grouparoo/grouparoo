@@ -3,7 +3,11 @@ import { Models } from "../../utils/apiData";
 
 export default function RunDurationChart({ runs }: { runs: Models.RunType[] }) {
   const chartData: ChartLinData = [];
-  const types = [...new Set(runs.map((run) => run.creatorType))];
+
+  const types: string[] = [];
+  runs.map((run) => {
+    if (!types.includes(run.creatorType)) types.push(run.creatorType);
+  });
 
   runs
     .sort((a, b) => {
