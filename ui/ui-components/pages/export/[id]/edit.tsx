@@ -1,5 +1,5 @@
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Alert } from "react-bootstrap";
+import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import EnterpriseLink from "../../../components/enterpriseLink";
 import Head from "next/head";
@@ -26,38 +26,43 @@ export default function Page({
 
       <ExportTabs export={_export} />
 
-      <h1>{_export.id}</h1>
+      <h1>Export {_export.id}</h1>
 
-      <p>
-        Destination:{" "}
-        <EnterpriseLink
-          href="/destination/[id]/edit"
-          as={`/destination/${_export.destination.id}/edit`}
-        >
-          <a>{_export.destination.name}</a>
-        </EnterpriseLink>
-        <br />
-        Profile:{" "}
-        <Link
-          href="/profile/[id]/edit"
-          as={`/profile/${_export.profileId}/edit`}
-        >
-          <a>{_export.profileId}</a>
-        </Link>
-        <br />
-        <br />
-        Forced: {_export.force.toString()}
-      </p>
-      {_export.errorMessage ? (
-        <Alert variant="warning">
-          <p>{_export.errorMessage}</p>
-        </Alert>
-      ) : null}
+      <Card>
+        <Card.Body>
+          <h2>Details</h2>
+          <p>
+            Destination:{" "}
+            <EnterpriseLink
+              href="/destination/[id]/edit"
+              as={`/destination/${_export.destination.id}/edit`}
+            >
+              <a>{_export.destination.name}</a>
+            </EnterpriseLink>
+            <br />
+            Profile:{" "}
+            <Link
+              href="/profile/[id]/edit"
+              as={`/profile/${_export.profileId}/edit`}
+            >
+              <a>{_export.profileId}</a>
+            </Link>
+            <br />
+            <br />
+            Forced: {_export.force.toString()}
+          </p>
+          {_export.errorMessage ? (
+            <Alert variant="warning">
+              <p>{_export.errorMessage}</p>
+            </Alert>
+          ) : null}
+        </Card.Body>
+      </Card>
 
-      <hr />
+      <br />
 
-      <Row>
-        <Col>
+      <Card>
+        <Card.Body>
           <h2>Data</h2>
 
           <Row>
@@ -70,11 +75,13 @@ export default function Page({
               <ExportGroupsDiff _export={_export} groups={groups} />
             </Col>
           </Row>
-        </Col>
-      </Row>
+        </Card.Body>
+      </Card>
 
-      <Row>
-        <Col>
+      <br />
+
+      <Card>
+        <Card.Body>
           <h2>Timeline</h2>
           <p>
             Total duration:{" "}
@@ -132,8 +139,8 @@ export default function Page({
               </tr>
             </tbody>
           </Table>
-        </Col>
-      </Row>
+        </Card.Body>
+      </Card>
     </>
   );
 }
