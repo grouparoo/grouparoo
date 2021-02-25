@@ -3,6 +3,7 @@ import { useApi } from "../hooks/useApi";
 
 import Injection from "../components/componentInjection";
 import Layout from "../components/layouts/main";
+import PageTransition from "../components/pageTransition";
 import "../components/icons";
 
 import { AxiosError } from "axios";
@@ -71,6 +72,7 @@ export default function GrouparooWebApp(props) {
 
   return (
     <Injection {...combinedProps}>
+      <PageTransition />
       <Layout hydrationError={hydrationError} {...combinedProps}>
         <Component {...combinedProps} err={err} />
       </Layout>

@@ -1014,6 +1014,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7_a2387ec113d27ac26ce0a241efd8d4d6
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.1
       react-bootstrap: 1.5.0_react-dom@17.0.1+react@17.0.1
@@ -1064,6 +1065,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
@@ -1104,6 +1106,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7_a2387ec113d27ac26ce0a241efd8d4d6
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
@@ -1143,6 +1146,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
@@ -1173,6 +1177,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7_a2387ec113d27ac26ce0a241efd8d4d6
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.1
       react-bootstrap: 1.5.0_react-dom@17.0.1+react@17.0.1
@@ -1223,6 +1228,7 @@ importers:
       moment: 2.29.1
       next: 10.0.7
       node-sass: 5.0.0
+      nprogress: 0.2.0
       pluralize: 8.0.0
       prettier: 2.2.1
       prop-types: 15.7.2
@@ -10670,6 +10676,9 @@ packages:
       set-blocking: 2.0.0
     resolution:
       integrity: sha512-2uUqazuKlTaSI/dC8AzicUck7+IrEaOnN/e0jd3Xtt1KcGpwx30v50mL7oPyr/h9bL3E4aZccVwpwP+5W9Vjkg==
+  /nprogress/0.2.0:
+    resolution:
+      integrity: sha1-y480xTIT2JVyP8urkH6UIq28r7E=
   /nth-check/2.0.0:
     dependencies:
       boolbase: 1.0.0
