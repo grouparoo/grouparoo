@@ -12,6 +12,7 @@
     "@grouparoo/bigquery": "0.2.3",
     "@grouparoo/core": "0.2.3",
     "@grouparoo/csv": "0.2.3",
+    "@grouparoo/customerio": "0.2.3",
     "@grouparoo/demo": "0.2.3",
     "@grouparoo/facebook": "0.2.3",
     "@grouparoo/files-s3": "0.2.3",
@@ -46,6 +47,7 @@
     "plugins": [
       "@grouparoo/bigquery",
       "@grouparoo/csv",
+      "@grouparoo/customerio",
       "@grouparoo/demo",
       "@grouparoo/facebook",
       "@grouparoo/files-s3",
