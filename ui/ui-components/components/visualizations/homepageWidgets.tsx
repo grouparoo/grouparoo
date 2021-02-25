@@ -8,6 +8,7 @@ import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
 
 const TIMEOUT = 5 * 1000;
 const maxSampleLength = 20;
+const useCache = false;
 
 export function BigNumber({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState<number>(null);
@@ -27,9 +28,14 @@ export function BigNumber({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const { total }: Actions.TotalsAction = await execApi("get", `/totals`, {
-      model,
-    });
+    const { total }: Actions.TotalsAction = await execApi(
+      "get",
+      `/totals`,
+      { model },
+      null,
+      null,
+      useCache
+    );
 
     if (total) setTotal(total);
   }
@@ -79,7 +85,10 @@ export function GroupsByNewestMember({ execApi }) {
       newestMembersAdded,
     }: Actions.GroupsListByNewestMember = await execApi(
       "get",
-      `/groups/byNewestMember`
+      `/groups/byNewestMember`,
+      null,
+      null,
+      useCache
     );
 
     if (groups) setGroups(groups);
@@ -155,9 +164,16 @@ export function RunningRuns({ execApi }) {
   }, []);
 
   async function load() {
-    const { runs }: Actions.RunsList = await execApi("get", `/runs`, {
-      state: "running",
-    });
+    const { runs }: Actions.RunsList = await execApi(
+      "get",
+      `/runs`,
+      {
+        state: "running",
+      },
+      null,
+      null,
+      useCache
+    );
 
     if (runs) {
       setRuns(runs);
@@ -243,7 +259,14 @@ export function ScheduleRuns({ execApi }) {
   }
 
   async function load() {
-    const { sources }: Actions.SourcesList = await execApi("get", `/sources`);
+    const { sources }: Actions.SourcesList = await execApi(
+      "get",
+      `/sources`,
+      null,
+      null,
+      null,
+      useCache
+    );
     if (!sources) return;
 
     const sourcesWithSchedules = sources.filter(
@@ -272,7 +295,7 @@ export function ScheduleRuns({ execApi }) {
       },
       null,
       null,
-      false
+      useCache
     );
     return runs[0];
   }
@@ -390,12 +413,23 @@ export function PendingImports({ execApi }) {
 
     const { counts }: Actions.SourcesCountPending = await execApi(
       "get",
-      `/sources/countPending`
+      `/sources/countPending`,
+      null,
+      null,
+      null,
+      useCache
     );
 
-    const { imports }: Actions.ImportsList = await execApi("get", "/imports", {
-      limit: 1,
-    });
+    const { imports }: Actions.ImportsList = await execApi(
+      "get",
+      "/imports",
+      {
+        limit: 1,
+      },
+      null,
+      null,
+      useCache
+    );
 
     const now = new Date().getTime();
     for (const i in sources) {
@@ -476,13 +510,20 @@ export function PendingExports({ execApi }) {
   async function load() {
     const { destinations }: Actions.DestinationsList = await execApi(
       "get",
-      `/destinations`
+      `/destinations`,
+      null,
+      null,
+      null,
+      useCache
     );
 
     const { exports: _exports }: Actions.ExportsList = await execApi(
       "get",
       "/exports",
-      { limit: 1 }
+      { limit: 1 },
+      null,
+      null,
+      useCache
     );
 
     const now = new Date().getTime();
