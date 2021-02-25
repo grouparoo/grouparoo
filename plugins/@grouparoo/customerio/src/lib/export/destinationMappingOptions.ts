@@ -16,7 +16,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       required: [{ key: "customer_id", type: "string" }],
       known: [
         { key: "email", type: "email", important: true },
-        { key: "created_at", type: "integer", important: true },
+        { key: "created_at", type: "date", important: true },
       ],
       allowOptionalFromProperties: true,
     },
