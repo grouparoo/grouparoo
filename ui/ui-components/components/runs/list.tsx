@@ -2,7 +2,7 @@ import { useApi } from "../../hooks/useApi";
 import { useOffset, updateURLParams } from "../../hooks/URLParams";
 import { Fragment, useState, useEffect } from "react";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Button, Alert, Card } from "react-bootstrap";
 import Moment from "react-moment";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -145,10 +145,20 @@ export default function RunsList(props) {
         offset={offset}
         onPress={setOffset}
       />
-      <RunDurationChart runs={runs} />
-      <br />
-      <br />
-      <br />
+
+      {runs.length > 0 ? (
+        <>
+          <Card>
+            <Card.Body>
+              <h2>Run Durations</h2>
+              <RunDurationChart runs={runs} />
+            </Card.Body>
+          </Card>
+          <br />
+          <br />
+        </>
+      ) : null}
+
       <LoadingTable loading={loading}>
         <thead>
           <tr>

@@ -5,7 +5,7 @@ import { updateURLParams } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Loader from "../loader";
 import { useRouter } from "next/router";
-import { ResponsiveLine } from "@nivo/line";
+import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
 
@@ -18,7 +18,9 @@ export default function EventsTotals(props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [total, setTotal] = useState<number>(props.total);
-  const [counts, setCounts] = useState(props.counts);
+  const [counts, setCounts] = useState<Actions.EventsCounts["counts"]>(
+    props.counts
+  );
   const { execApi } = useApi(props, errorHandler);
   const [dateTrunc, setDateTrunc] = useState(
     router.query.dateTrunc?.toString() || "day"
@@ -36,15 +38,14 @@ export default function EventsTotals(props) {
 
   const { hideDateRange } = router.query;
 
-  const chartData = {};
+  const types = [];
+  const chartData: ChartLinData = [];
+
   counts.map((c) => {
-    if (!chartData[c.type]) {
-      chartData[c.type] = { id: c.type, data: [] };
-    }
-    chartData[c.type].data.push({
-      x: NodeMoment(c.time).format("YYYY-MM-DDTHH:mm:ss"),
-      y: c.count,
-    });
+    if (!types.includes(c.type)) types.push(c.type);
+    const idx = types.indexOf(c.type);
+    if (!chartData[idx]) chartData[idx] = [];
+    chartData[idx].push({ x: new Date(c.time).getTime(), y: c.count });
   });
 
   const dateTruncOptions = ["month", "day", "hour", "minute"];
@@ -145,7 +146,7 @@ export default function EventsTotals(props) {
           {loading ? (
             <Loader />
           ) : (
-            <EventsBar data={Object.keys(chartData).map((k) => chartData[k])} />
+            <GrouparooChart keys={types} data={chartData} />
           )}
         </Col>
       </Row>
@@ -165,69 +166,3 @@ EventsTotals.hydrate = async (ctx) => {
 
   return { counts, total };
 };
-
-function EventsBar({ data }) {
-  if (data.length === 0) {
-    return <p>no data</p>;
-  }
-
-  return (
-    <ResponsiveLine
-      data={data}
-      colors={{ scheme: "category10" }}
-      useMesh={true}
-      margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
-      curve={"monotoneX"}
-      lineWidth={3}
-      pointSize={6}
-      xScale={{
-        type: "time",
-        format: "%Y-%m-%dT%H:%M:%S",
-        precision: "second",
-      }}
-      xFormat="time:%Y-%m-%dT%H:%M:%S"
-      yScale={{
-        type: "linear",
-      }}
-      axisBottom={{
-        format: "%Y-%m-%d %H:%M",
-        tickValues: 5,
-      }}
-      axisLeft={{
-        orient: "left",
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: "events",
-        legendOffset: -40,
-        legendPosition: "middle",
-      }}
-      legends={[
-        {
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 100,
-          translateY: 0,
-          itemsSpacing: 0,
-          itemDirection: "left-to-right",
-          itemWidth: 80,
-          itemHeight: 20,
-          itemOpacity: 0.75,
-          symbolSize: 12,
-          symbolShape: "circle",
-          symbolBorderColor: "rgba(0, 0, 0, .5)",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
-            },
-          ],
-        },
-      ]}
-    />
-  );
-}

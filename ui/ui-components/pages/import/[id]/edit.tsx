@@ -1,7 +1,7 @@
 import ImportTabs from "../../../components/tabs/import";
 import Head from "next/head";
 import { useApi } from "../../../hooks/useApi";
-import { Row, Col, Table, Alert } from "react-bootstrap";
+import { Row, Col, Table, Alert, Card } from "react-bootstrap";
 import Link from "next/link";
 import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
@@ -35,74 +35,83 @@ export default function Page(props) {
 
       <ImportTabs import={_import} />
 
-      <h1>{_import.id}</h1>
-      <p>
-        Creator:{" "}
-        <Link href={`/object/${_import.creatorId}`} prefetch={false}>
-          <a>
-            {_import.creatorType === "group"
-              ? `"${groupName(_import.creatorId)}"`
-              : null}{" "}
-            {_import.creatorId}
-          </a>
-        </Link>
-        <br />
-        Profile:{" "}
-        <Link
-          href="/profile/[id]/edit"
-          as={`/profile/${_import.profileId}/edit`}
-        >
-          <a>{_import.profileId}</a>
-        </Link>
-      </p>
-      {_import.errorMessage ? (
-        <Alert variant="warning">
-          <p>{_import.errorMessage}</p>
-          <p>Step: {errorMetadata.step}</p>
-          stack:
-          <ul>
-            {errorMetadata.stack.split("\n").map((line, idx) => (
-              <li key={`err-${idx}`}>{line}</li>
-            ))}
-          </ul>
-        </Alert>
-      ) : null}
-      <hr />
+      <h1>Import {_import.id}</h1>
 
-      <Row>
-        <Col>
+      <Card>
+        <Card.Body>
+          <h2>Details</h2>
+          <p>
+            Creator:{" "}
+            <Link href={`/object/${_import.creatorId}`} prefetch={false}>
+              <a>
+                {_import.creatorType === "group"
+                  ? `"${groupName(_import.creatorId)}"`
+                  : null}{" "}
+                {_import.creatorId}
+              </a>
+            </Link>
+            <br />
+            Profile:{" "}
+            <Link
+              href="/profile/[id]/edit"
+              as={`/profile/${_import.profileId}/edit`}
+            >
+              <a>{_import.profileId}</a>
+            </Link>
+          </p>
+          {_import.errorMessage ? (
+            <Alert variant="warning">
+              <p>{_import.errorMessage}</p>
+              <p>Step: {errorMetadata.step}</p>
+              stack:
+              <ul>
+                {errorMetadata.stack.split("\n").map((line, idx) => (
+                  <li key={`err-${idx}`}>{line}</li>
+                ))}
+              </ul>
+            </Alert>
+          ) : null}
+        </Card.Body>
+      </Card>
+
+      <br />
+
+      <Card>
+        <Card.Body>
           <h2>Data</h2>
 
           <Row>
-            <Col>
+            <Col md={6}>
               <strong>Profile Properties</strong>
               <ImportProfilePropertiesDiff _import={_import} />
             </Col>
-            <Col>
+            <Col md={6}>
               <strong>Groups</strong>
               <ImportGroupsDiff _import={_import} groups={groups} />
             </Col>
           </Row>
 
           <Row>
-            <Col>
+            <Col md={6}>
               <strong>Data</strong>
               <pre>
                 <code>{JSON.stringify(_import.data, null, 4)}</code>
               </pre>
             </Col>
-            <Col>
+            <Col md={6}>
               <strong>Raw Data</strong>
               <pre>
                 <code>{JSON.stringify(_import.rawData, null, 4)}</code>
               </pre>
             </Col>
           </Row>
-        </Col>
-      </Row>
+        </Card.Body>
+      </Card>
 
-      <Row>
-        <Col>
+      <br />
+
+      <Card>
+        <Card.Body>
           <h2>Timeline</h2>
           <p>
             Total duration:{" "}
@@ -164,8 +173,8 @@ export default function Page(props) {
               </tr>
             </tbody>
           </Table>
-        </Col>
-      </Row>
+        </Card.Body>
+      </Card>
     </>
   );
 }
