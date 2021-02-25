@@ -21,6 +21,7 @@ import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
 import { ImportOps } from "../modules/ops/import";
+import { APIData } from "../modules/apiData";
 
 export interface ImportData {
   [key: string]: any;
@@ -172,20 +173,14 @@ export class Import extends Model {
       rawData,
 
       // lifecycle timestamps
-      createdAt: this.createdAt.getTime(),
-      createdProfile: this.createdProfile,
-      profileAssociatedAt: this.profileAssociatedAt
-        ? this.profileAssociatedAt.getTime()
-        : null,
-      profileUpdatedAt: this.profileUpdatedAt
-        ? this.profileUpdatedAt.getTime()
-        : null,
-      groupsUpdatedAt: this.groupsUpdatedAt
-        ? this.groupsUpdatedAt.getTime()
-        : null,
-      exportedAt: this.exportedAt ? this.exportedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      profileAssociatedAt: APIData.formatDate(this.profileAssociatedAt),
+      profileUpdatedAt: APIData.formatDate(this.profileUpdatedAt),
+      groupsUpdatedAt: APIData.formatDate(this.groupsUpdatedAt),
+      exportedAt: APIData.formatDate(this.exportedAt),
 
       // data before and after
+      createdProfile: this.createdProfile,
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
       oldGroupIds: this.oldGroupIds,

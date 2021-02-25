@@ -1,5 +1,6 @@
 import { Table, Column, AllowNull } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "notifications", paranoid: false })
 export class Notification extends LoggedModel<Notification> {
@@ -39,9 +40,9 @@ export class Notification extends LoggedModel<Notification> {
       body: this.body,
       cta: this.cta,
       ctaLink: this.ctaLink,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-      readAt: this.readAt ? this.readAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      readAt: APIData.formatDate(this.readAt),
     };
   }
 

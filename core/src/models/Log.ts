@@ -14,6 +14,7 @@ import * as uuid from "uuid";
 import Moment from "moment";
 import { Op } from "sequelize";
 import { chatRoom } from "actionhero";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "logs", paranoid: false })
 export class Log extends Model {
@@ -74,7 +75,7 @@ export class Log extends Model {
       who: this.who,
       data: this.data,
       message: this.message,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
     };
   }
 

@@ -17,6 +17,7 @@ import { Op } from "sequelize";
 import { Group } from "./Group";
 import { Profile } from "./Profile";
 import { Log } from "./Log";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "groupMembers", paranoid: false })
 export class GroupMember extends Model {
@@ -56,9 +57,9 @@ export class GroupMember extends Model {
     return {
       profileId: this.profileId,
       groupId: this.groupId,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
-      removedAt: this.removedAt ? this.removedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      removedAt: APIData.formatDate(this.removedAt),
     };
   }
 

@@ -34,6 +34,7 @@ import { StateMachine } from "../modules/stateMachine";
 import { Mapping } from "./Mapping";
 import { PropertyOps } from "../modules/ops/property";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -367,8 +368,8 @@ export class Property extends LoggedModel<Property> {
       options,
       filters,
       isArray: this.isArray,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

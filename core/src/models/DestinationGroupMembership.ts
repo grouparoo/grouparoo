@@ -11,6 +11,7 @@ import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Group } from "./Group";
 import { Destination } from "./Destination";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "destinationGroupMemberships", paranoid: false })
 export class DestinationGroupMembership extends LoggedModel<DestinationGroupMembership> {
@@ -44,8 +45,8 @@ export class DestinationGroupMembership extends LoggedModel<DestinationGroupMemb
       destinationId: this.destinationId,
       groupId: this.groupId,
       remoteKey: this.remoteKey,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

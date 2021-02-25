@@ -11,6 +11,7 @@ import {
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Property } from "./Property";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "propertyFilters", paranoid: false })
 export class PropertyFilter extends Model {
@@ -70,8 +71,8 @@ export class PropertyFilter extends Model {
       relativeMatchNumber: this.relativeMatchNumber,
       relativeMatchUnit: this.relativeMatchUnit,
       relativeMatchDirection: this.relativeMatchDirection,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

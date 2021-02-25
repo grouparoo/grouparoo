@@ -31,6 +31,7 @@ import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -278,10 +279,10 @@ export class Group extends LoggedModel<Group> {
       state: this.state,
       locked: this.locked,
       profilesCount,
-      calculatedAt: this.calculatedAt ? this.calculatedAt.getTime() : null,
-      nextCalculatedAt: nextCalculatedAt ? nextCalculatedAt.getTime() : null,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      nextCalculatedAt: APIData.formatDate(nextCalculatedAt),
+      calculatedAt: APIData.formatDate(this.calculatedAt),
     };
   }
 

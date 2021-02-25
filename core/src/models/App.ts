@@ -22,6 +22,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export interface AppOption {
   key: string;
@@ -171,8 +172,8 @@ export class App extends LoggedModel<App> {
       locked: this.locked,
       options,
       provides,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 
