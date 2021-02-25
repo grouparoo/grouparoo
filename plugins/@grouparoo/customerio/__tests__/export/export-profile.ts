@@ -14,7 +14,9 @@ const customerId = "grouparoo";
 const otherCustomerId = "grouparoo-new";
 const nonexistentCustomerId = "grouparoo-fake";
 const email = "grouparoo@demo.com";
-const newEmail = "notgrouparoo@demo.com";
+const otherEmail = "notgrouparoo@demo.com";
+const name = "Grouparoo Kangaroo";
+const age = 30;
 const groupOne = "High Value";
 const groupTwo = "Spanish Speaking";
 
@@ -127,7 +129,7 @@ describe("customer.io/exportProfile", () => {
   test("can add user attributes", async () => {
     await runExport({
       oldProfileProperties: { customer_id: customerId },
-      newProfileProperties: { customer_id: customerId, email },
+      newProfileProperties: { customer_id: customerId, email, name, age },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -138,6 +140,8 @@ describe("customer.io/exportProfile", () => {
     const customer = await getCustomer(customerId);
     expect(customer.id).toBe(customerId);
     expect(customer.attributes.email).toBe(email);
+    expect(customer.attributes.name).toBe(name);
+    expect(customer.attributes.age).toBe(age.toString());
   });
 
   test("can add date attribute as unix timestamp", async () => {
@@ -167,8 +171,12 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer.attributes.email).toBe(email);
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId, email },
-      newProfileProperties: { customer_id: customerId, email: newEmail },
+      oldProfileProperties: { customer_id: customerId, email, name },
+      newProfileProperties: {
+        customer_id: customerId,
+        email: otherEmail,
+        name,
+      },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -177,16 +185,19 @@ describe("customer.io/exportProfile", () => {
     await indexCustomers(newNock);
 
     const customer = await getCustomer(customerId);
-    expect(customer.attributes.email).toBe(newEmail);
+    expect(customer.attributes.email).toBe(otherEmail);
+    expect(customer.attributes.name).toBe(name);
   });
 
   test("can clear user attributes", async () => {
     const oldCustomer = await getCustomer(customerId);
     expect(oldCustomer.attributes.email).toBeTruthy();
+    expect(oldCustomer.attributes.name).toBeTruthy();
+    expect(oldCustomer.attributes.age).toBeTruthy();
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId, email },
-      newProfileProperties: { customer_id: customerId },
+      oldProfileProperties: { customer_id: customerId, email, name, age },
+      newProfileProperties: { customer_id: customerId, name },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -196,6 +207,8 @@ describe("customer.io/exportProfile", () => {
 
     const customer = await getCustomer(customerId);
     expect(customer.attributes.email).toBeUndefined();
+    expect(customer.attributes.age).toBeUndefined();
+    expect(customer.attributes.name).toBeTruthy();
   });
 
   test("can add groups as attributes", async () => {
@@ -266,13 +279,14 @@ describe("customer.io/exportProfile", () => {
   test("can change customer_id along with other properties", async () => {
     let oldCustomer = await getCustomer(otherCustomerId);
     expect(oldCustomer.id).toBe(otherCustomerId);
+    expect(oldCustomer.attributes.email).toBe(email);
 
     let newCustomer = await getCustomer(customerId);
     expect(newCustomer).toBe(null);
 
     await runExport({
       oldProfileProperties: { customer_id: otherCustomerId, email },
-      newProfileProperties: { customer_id: customerId, email: newEmail },
+      newProfileProperties: { customer_id: customerId, email: otherEmail },
       oldGroups: [],
       newGroups: [],
       toDelete: false,
@@ -285,7 +299,7 @@ describe("customer.io/exportProfile", () => {
 
     newCustomer = await getCustomer(customerId);
     expect(newCustomer.id).toBe(customerId);
-    expect(newCustomer.attributes.email).toBe(newEmail);
+    expect(newCustomer.attributes.email).toBe(otherEmail);
   });
 
   test("can delete a customer", async () => {
