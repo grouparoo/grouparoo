@@ -42,7 +42,7 @@ describe("customer.io/destinationMappingOptions", () => {
     expect(knownFieldEmail.important).toBe(true);
 
     const knownFieldCreatedAt = known.find((f) => f.key === "created_at");
-    expect(knownFieldCreatedAt.type).toBe("integer");
+    expect(knownFieldCreatedAt.type).toBe("date");
     expect(knownFieldCreatedAt.important).toBe(true);
 
     const unknownField = known.find((f) => f.key === "some_unknown_field");
