@@ -28,7 +28,6 @@ export class ImportAssociateProfiles extends CLSTask {
     });
 
     const runIds: string[] = [];
-    console.log(imports);
     for (const i in imports) {
       const _import = imports[i];
       await CLS.enqueueTask("import:associateProfile", {
@@ -45,7 +44,7 @@ export class ImportAssociateProfiles extends CLSTask {
 
     if (runIds.length > 0) {
       await Run.update(
-        { state: "running" },
+        { state: "running", completedAt: null },
         { where: { state: "complete", id: { [Op.in]: runIds } } }
       );
     }
