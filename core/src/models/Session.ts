@@ -1,0 +1,57 @@
+import { Table, Column, AllowNull, ForeignKey } from "sequelize-typescript";
+import { LoggedModel } from "../classes/loggedModel";
+import { TeamMember } from "./TeamMember";
+import { APIData } from "../modules/apiData";
+import { Op } from "sequelize";
+import { api } from "actionhero";
+
+@Table({ tableName: "sessions", paranoid: false })
+export class Session extends LoggedModel<Session> {
+  idPrefix() {
+    return "ses";
+  }
+
+  @AllowNull(false)
+  @Column
+  @ForeignKey(() => TeamMember)
+  teamMemberId: string;
+
+  @AllowNull(false)
+  @Column
+  fingerprint: string;
+
+  @AllowNull(false)
+  @Column
+  expiresAt: Date;
+
+  async apiData() {
+    return {
+      id: this.id,
+      teamMemberId: this.teamMemberId,
+      fingerprint: this.fingerprint,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      expiresAt: APIData.formatDate(this.expiresAt),
+    };
+  }
+
+  // --- Class Methods --- //
+
+  static async findById(id: string) {
+    const instance = await this.scope(null).findOne({ where: { id } });
+    if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
+    return instance;
+  }
+
+  static async sweep() {
+    const now = new Date();
+    const count = await Session.destroy({
+      where: { expiresAt: { [Op.lt]: now } },
+      force: true,
+    });
+
+    const days = api.session.ttl / 1000 / 60 / 60 / 24;
+
+    return { count, days };
+  }
+}
