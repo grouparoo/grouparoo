@@ -46,7 +46,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       const newPropertyKeys = Object.keys(newProfileProperties);
       Object.keys(oldProfileProperties)
         .filter((k) => !newPropertyKeys.includes(k))
-        .forEach((k) => (deletePropertiesPayload[k] = ""));
+        .forEach((k) => (deletePropertiesPayload[k] = null));
 
       const payload = Object.assign(
         { email },
@@ -98,7 +98,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
 function formatVar(value) {
   if (value === undefined || value === null) {
-    return "";
+    return null;
   }
   if (value instanceof Date) {
     return value.getTime();
