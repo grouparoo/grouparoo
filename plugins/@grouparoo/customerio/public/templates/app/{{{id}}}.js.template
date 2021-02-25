@@ -6,7 +6,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiKey: "abc123", // Sendgrid api key
+        siteId: "abc123", // Customer.io Site ID
+        apiKey: "abc123 // Customer.io Track API Key
       }
     },
   ];
