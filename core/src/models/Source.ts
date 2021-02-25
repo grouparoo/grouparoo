@@ -32,6 +32,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { PropertyFiltersWithKey } from "../classes/plugin";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -183,8 +184,8 @@ export class Source extends LoggedModel<Source> {
       locked: this.locked,
       options,
       connection: pluginConnection,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

@@ -13,6 +13,7 @@ import {
 import * as uuid from "uuid";
 import { Group } from "./Group";
 import { Property } from "./Property";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "groupRules", paranoid: false })
 export class GroupRule extends Model {
@@ -81,8 +82,8 @@ export class GroupRule extends Model {
       relativeMatchNumber: this.relativeMatchNumber,
       relativeMatchUnit: this.relativeMatchUnit,
       relativeMatchDirection: this.relativeMatchDirection,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

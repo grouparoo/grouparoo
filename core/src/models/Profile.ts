@@ -21,6 +21,7 @@ import { Export } from "./Export";
 import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
+import { APIData } from "../modules/apiData";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -80,8 +81,8 @@ export class Profile extends LoggedModel<Profile> {
       anonymousId: this.anonymousId,
       state: this.state,
       properties,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

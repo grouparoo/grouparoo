@@ -16,6 +16,7 @@ import { Profile } from "./Profile";
 import { Property } from "./Property";
 import { ProfilePropertyOps } from "../modules/ops/profileProperty";
 import { StateMachine } from "./../modules/stateMachine";
+import { APIData } from "../modules/apiData";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -81,13 +82,9 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       profileId: this.profileId,
       property: this.property,
       state: this.state,
-      valueChangedAt: this.valueChangedAt
-        ? this.valueChangedAt.getTime()
-        : null,
-      stateChangedAt: this.stateChangedAt
-        ? this.stateChangedAt.getTime()
-        : null,
-      confirmedAt: this.confirmedAt ? this.confirmedAt.getTime() : null,
+      valueChangedAt: APIData.formatDate(this.valueChangedAt),
+      stateChangedAt: APIData.formatDate(this.stateChangedAt),
+      confirmedAt: APIData.formatDate(this.confirmedAt),
       position: this.position,
       key: property.key,
       value: await this.getValue(),

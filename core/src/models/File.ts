@@ -1,6 +1,7 @@
 import { api } from "actionhero";
 import { Table, Column, AllowNull, BeforeSave } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "files", paranoid: false })
 export class File extends LoggedModel<File> {
@@ -46,8 +47,8 @@ export class File extends LoggedModel<File> {
       extension: this.extension,
       mime: this.mime,
       sizeBytes: this.sizeBytes,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

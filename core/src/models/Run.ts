@@ -29,6 +29,7 @@ import { TeamMember } from "./TeamMember";
 import { RunOps } from "../modules/ops/runs";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
+import { APIData } from "../modules/apiData";
 
 export interface HighWaterMark {
   [key: string]: string | number | Date;
@@ -283,9 +284,9 @@ export class Run extends Model {
       groupMethod: this.groupMethod,
       force: this.force,
       destinationId: this.destinationId,
-      completedAt: this.completedAt ? this.completedAt.getTime() : null,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      completedAt: APIData.formatDate(this.completedAt),
     };
   }
 

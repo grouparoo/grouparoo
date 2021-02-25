@@ -33,6 +33,7 @@ import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -135,8 +136,8 @@ export class Destination extends LoggedModel<Destination> {
       connection: pluginConnection,
       destinationGroup: group ? await group.apiData() : null,
       destinationGroupMemberships,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
       exportTotals,
     };
   }

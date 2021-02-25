@@ -9,6 +9,7 @@ import {
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 export const settingTypes = ["string", "number", "boolean"] as const;
 
@@ -75,8 +76,8 @@ export class Setting extends LoggedModel<Setting> {
       defaultValue: this.defaultValue,
       description: this.description,
       locked: this.locked,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

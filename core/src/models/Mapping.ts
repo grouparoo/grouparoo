@@ -12,6 +12,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Property } from "./Property";
 import { Destination } from "./Destination";
 import { Source } from "./Source";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "mappings", paranoid: false })
 export class Mapping extends LoggedModel<Mapping> {
@@ -55,8 +56,8 @@ export class Mapping extends LoggedModel<Mapping> {
       ownerType: this.ownerType,
       propertyId: this.propertyId,
       remoteKey: this.remoteKey,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

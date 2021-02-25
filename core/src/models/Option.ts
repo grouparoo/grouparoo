@@ -11,6 +11,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
 import { Source } from "./Source";
 import { Destination } from "./Destination";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "options", paranoid: false })
 export class Option extends LoggedModel<Option> {
@@ -51,8 +52,8 @@ export class Option extends LoggedModel<Option> {
       ownerType: this.ownerType,
       key: this.key,
       value: this.value,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

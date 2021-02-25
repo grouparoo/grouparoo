@@ -15,6 +15,7 @@ import { LoggedModel } from "../classes/loggedModel";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "apiKeys", paranoid: false })
 export class ApiKey extends LoggedModel<ApiKey> {
@@ -72,8 +73,8 @@ export class ApiKey extends LoggedModel<ApiKey> {
       permissionAllRead: this.permissionAllRead,
       permissionAllWrite: this.permissionAllWrite,
       permissions: permissionsApiData,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

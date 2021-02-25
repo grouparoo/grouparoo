@@ -29,6 +29,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
 import { LockableHelper } from "../modules/lockableHelper";
 import { CLS } from "../modules/cls";
+import { APIData } from "../modules/apiData";
 
 /**
  * Metadata and methods to return the options a Schedule for this connection/app.
@@ -158,8 +159,8 @@ export class Schedule extends LoggedModel<Schedule> {
       locked: this.locked,
       options,
       recurringFrequency: this.recurringFrequency,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 
