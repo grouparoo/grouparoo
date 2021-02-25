@@ -29,15 +29,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   try {
     let contact;
     let oldContact;
-    try {
-      contact = await client.getContactByEmail(email);
-      if (oldEmail && oldEmail !== email) {
-        oldContact = await client.getContactByEmail(oldEmail);
-      }
-    } catch (error) {
-      if (!error.toString().match(/Request failed with status code 404/)) {
-        throw error;
-      }
+    contact = await client.getContactByEmail(email);
+    if (oldEmail && oldEmail !== email) {
+      oldContact = await client.getContactByEmail(oldEmail);
     }
     if (toDelete) {
       const contactToDelete = contact || oldContact;

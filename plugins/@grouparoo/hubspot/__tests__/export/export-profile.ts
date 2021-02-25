@@ -92,7 +92,6 @@ async function deleteLists(suppressErrors) {
       }
     }
   } catch (err) {
-    console.log(err);
     if (!suppressErrors) {
       throw err;
     }
