@@ -62,11 +62,16 @@ export class SessionInitializer extends Initializer {
       },
 
       create: async (connection, teamMember) => {
+        await Session.destroy({
+          where: { fingerprint: connection.fingerprint },
+        });
+
         const session = await Session.create({
           fingerprint: connection.fingerprint,
           teamMemberId: teamMember.id,
           expiresAt: new Date().getTime() + api.session.ttl,
         });
+
         await teamMember.update({ lastLoginAt: new Date() });
 
         return session;
