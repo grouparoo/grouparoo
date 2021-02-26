@@ -135,7 +135,7 @@ Commands:
 
   async generate(params) {
     const learnMoreText =
-      "Learn more with `grouparoo generate --help` and `grouparoo generate --list`";
+      "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
 
     if (!params.template) {
       return this.fatalError(`template is required. ${learnMoreText}`);
@@ -238,6 +238,7 @@ Commands:
     } else {
       const requiredInputs = Object.keys(template.inputs)
         .filter((i) => template.inputs[i].required)
+        .filter((i) => i !== "id")
         .sort();
       const optionalInputs = Object.keys(template.inputs)
         .filter((i) => !template.inputs[i].required)
@@ -263,12 +264,19 @@ Commands:
 
       console.log(`${template.description}`);
       console.log("");
-      console.log("Required Inputs:");
+
+      if (template.inputs.id) {
+        console.log("Required Arguments:");
+        console.log(`  * id (required) - ${inputs.id.description}`);
+        console.log("");
+      }
+
+      console.log("Required Options:");
       requiredInputs.length > 0
         ? requiredInputs.forEach((k) => displayInput(k))
         : console.log("  None");
       console.log("");
-      console.log("Optional Inputs:");
+      console.log("Optional Options:");
       optionalInputs.length > 0
         ? optionalInputs.forEach((k) => displayInput(k))
         : console.log("  None");
