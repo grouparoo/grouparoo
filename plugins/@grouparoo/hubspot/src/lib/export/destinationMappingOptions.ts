@@ -78,7 +78,7 @@ export const getUserFields = async (
     important?: boolean;
   }>
 > => {
-  const fields = await client.contactsProperties.getAllContactsProperties();
+  const fields = await client.getAllContactsProperties();
   const out = [];
   for (const field of fields) {
     if (field["name"] !== "email" && !field["readOnlyValue"]) {
