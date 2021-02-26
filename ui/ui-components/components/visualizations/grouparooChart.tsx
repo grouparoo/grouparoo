@@ -31,12 +31,17 @@ export function GrouparooChart({
     | "cardinalClosed"
     | "cardinalOpen";
 }) {
+  if (!data || data.length < 1) return null;
+
   let yMax = 1.25;
 
-  data.forEach((line) => {
+  data.forEach((line, idx) => {
     line.forEach((point) => {
       if (point.y > yMax) yMax = point.y + 0.25;
     });
+
+    if (line.length === 1)
+      data[idx].push({ x: data[idx][0].x + 1, y: data[idx][0].y });
   });
 
   return (

@@ -103,9 +103,9 @@ describe("actions/apiKeys", () => {
         apiKey: key,
       });
       expect(error).toEqual({
-        code: "AUTHENTICATION_ERROR",
+        code: "AUTHORIZATION_ERROR",
         fields: [],
-        message: 'not authorized for mode "read" on topic "apiKey"',
+        message: 'Not authorized for mode "read" on topic "apiKey"',
       });
     });
 

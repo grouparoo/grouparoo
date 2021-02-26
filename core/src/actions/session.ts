@@ -30,12 +30,12 @@ export class SessionCreate extends CLSAction {
     const match = await teamMember.checkPassword(params.password);
     if (!match) throw new Error("password does not match");
 
-    const sessionData = await api.session.create(connection, teamMember);
+    const session = await api.session.create(connection, teamMember);
 
     return {
       success: true,
       teamMember: await teamMember.apiData(),
-      csrfToken: sessionData.csrfToken,
+      csrfToken: session.id,
     };
   }
 }
@@ -56,13 +56,13 @@ export class SessionView extends AuthenticatedAction {
     connection: Connection;
     session: { teamMember: TeamMember };
   }) {
-    const sessionData = await api.session.load(connection);
-    if (sessionData) {
-      return {
-        teamMember: await teamMember.apiData(),
-        csrfToken: sessionData.csrfToken,
-      };
-    }
+    const session = await api.session.load(connection);
+    if (!session) throw new Error("session not found");
+
+    return {
+      teamMember: await teamMember.apiData(),
+      csrfToken: session.id,
+    };
   }
 }
 

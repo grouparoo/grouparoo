@@ -6,194 +6,13 @@ import {
   Connection,
   chatRoom,
 } from "actionhero";
-import { Team, TeamMember, ApiKey } from "../index";
-import crypto from "crypto";
-
-class AuthenticationError extends Error {
-  code: string;
-
-  constructor(message, code = "AUTHENTICATION_ERROR") {
-    super(message);
-    this.code = code;
-  }
-}
-
-const authenticatedActionMiddleware: action.ActionMiddleware = {
-  name: "authenticated-action",
-  global: false,
-  priority: 1000,
-  preProcessor: async (data) => {
-    // authenticate a web user with session cookie & csrfToken
-    async function authenticateTeamMember() {
-      const sessionData = await api.session.load(data.connection);
-      if (!sessionData || !sessionData.id) {
-        throw new AuthenticationError("Please log in to continue");
-      } else if (
-        (data.params.csrfToken &&
-          data.params.csrfToken !== sessionData.csrfToken) ||
-        (!data.params.csrfToken &&
-          data.connection.rawConnection?.req?.headers[
-            "x-grouparoo-server_token"
-          ] !== config.general.serverToken)
-      ) {
-        await api.session.destroy(data.connection);
-        throw new AuthenticationError("CSRF error");
-      } else {
-        const teamMember = await TeamMember.findOne({
-          where: { id: sessionData.id },
-          include: [Team],
-        });
-
-        if (!teamMember) throw new AuthenticationError("Team member not found");
-
-        const team = await teamMember.$get("team");
-        const authorized = await team.authorizeAction(
-          data.actionTemplate.permission.topic,
-          data.actionTemplate.permission.mode
-        );
-        if (!authorized) {
-          throw new AuthenticationError(
-            `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
-          );
-        }
-
-        data.session.data = sessionData;
-        data.session.teamMember = teamMember;
-      }
-    }
-
-    // authenticate an API Request
-    async function authenticateApiKey() {
-      const apiKey = await ApiKey.findOne({
-        where: { apiKey: data.params.apiKey },
-      });
-      if (!apiKey) throw new AuthenticationError("apiKey not found");
-
-      const authorized = await apiKey.authorizeAction(
-        data.actionTemplate.permission.topic,
-        data.actionTemplate.permission.mode
-      );
-      if (!authorized) {
-        throw new AuthenticationError(
-          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
-        );
-      }
-
-      data.session.apiKey = apiKey;
-    }
-
-    // choose which mode to authenticate with
-    if (data.params.apiKey) {
-      return authenticateApiKey();
-    } else {
-      return authenticateTeamMember();
-    }
-  },
-};
-
-const optionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
-  name: "optionally-authenticated-action",
-  global: false,
-  priority: 1000,
-  preProcessor: async (data) => {
-    // authenticate a web user with session cookie & csrfToken
-    async function authenticateTeamMember() {
-      const sessionData = await api.session.load(data.connection);
-      if (sessionData) {
-        if (
-          (data.params.csrfToken &&
-            data.params.csrfToken !== sessionData.csrfToken) ||
-          (!data.params.csrfToken &&
-            data.connection.rawConnection?.req?.headers[
-              "x-grouparoo-server_token"
-            ] !== config.general.serverToken)
-        ) {
-          await api.session.destroy(data.connection);
-          throw new AuthenticationError("CSRF error");
-        } else if (!sessionData.id) {
-          throw new AuthenticationError("Please log in to continue");
-        } else {
-          const teamMember = await TeamMember.findOne({
-            where: { id: sessionData.id },
-            include: [Team],
-          });
-
-          if (teamMember) {
-            const team = await teamMember.$get("team");
-            const authorized = await team.authorizeAction(
-              data.actionTemplate.permission.topic,
-              data.actionTemplate.permission.mode
-            );
-            if (!authorized) {
-              throw new AuthenticationError(
-                `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
-              );
-            }
-
-            data.session.data = sessionData;
-            data.session.teamMember = teamMember;
-          }
-        }
-      }
-    }
-
-    // authenticate an API Request
-    async function authenticateApiKey() {
-      const apiKey = await ApiKey.findOne({
-        where: { apiKey: data.params.apiKey },
-      });
-      if (!apiKey) throw new AuthenticationError("apiKey not found");
-
-      const authorized = await apiKey.authorizeAction(
-        data.actionTemplate.permission.topic,
-        data.actionTemplate.permission.mode
-      );
-      if (!authorized) {
-        throw new AuthenticationError(
-          `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
-        );
-      }
-    }
-
-    // choose which mode to authenticate with
-    if (data.params.apiKey) {
-      return authenticateApiKey();
-    } else {
-      return authenticateTeamMember();
-    }
-  },
-};
-
-const modelChatRoomMiddleware: chatRoom.ChatMiddleware = {
-  name: "model chat room middleware",
-  join: async (connection: Connection, room: string) => {
-    if (!room.match(/^model:/)) {
-      return;
-    }
-
-    const topic = room.split(":")[1];
-    const mode = "read";
-    const sessionData = await api.session.load(connection);
-    if (!sessionData || !sessionData.id) {
-      throw new AuthenticationError("Please log in to continue");
-    } else {
-      const teamMember = await TeamMember.findOne({
-        where: { id: sessionData.id },
-        include: [Team],
-      });
-
-      if (!teamMember) throw new AuthenticationError("Team member not found");
-
-      const team = await teamMember.$get("team");
-      const authorized = await team.authorizeAction(topic, "read");
-      if (!authorized) {
-        throw new AuthenticationError(
-          `not authorized for mode "${mode}" on topic "${topic}"`
-        );
-      }
-    }
-  },
-};
+import { TeamMember } from "../index";
+import { Session } from "../models/Session";
+import {
+  ModelChatRoomMiddleware,
+  AuthenticatedActionMiddleware,
+  OptionallyAuthenticatedActionMiddleware,
+} from "../modules/middleware/authentication";
 
 interface SessionData {
   id: string;
@@ -206,18 +25,18 @@ declare module "actionhero" {
     session: {
       prefix: string;
       ttl: number;
-      key: (connection: Connection) => string;
-      load: (connection: Connection) => Promise<SessionData>;
+      // key: (connection: Connection) => string;
+      load: (connection: Connection) => Promise<Session>;
       destroy: (connection: Connection) => Promise<void>;
       create: (
         connection: Connection,
         teamMember: TeamMember
-      ) => Promise<SessionData>;
+      ) => Promise<Session>;
     };
   }
 }
 
-export class Session extends Initializer {
+export class SessionInitializer extends Initializer {
   constructor() {
     super();
     this.name = "session";
@@ -229,41 +48,39 @@ export class Session extends Initializer {
 
     api.session = {
       prefix: "session",
-      ttl: 60 * 60 * 24 * 30, // 1 month; in seconds
-
-      key: (connection: Connection) => {
-        return `${api.session.prefix}:${connection.fingerprint}`;
-      },
+      ttl: 1000 * 60 * 60 * 24 * 30, // 30 days; in milliseconds
 
       load: async (connection: Connection) => {
-        const key = api.session.key(connection);
-        const data = await redis.get(key);
-        if (!data) {
-          return false;
-        }
-        await redis.expire(key, api.session.ttl);
-        return JSON.parse(data);
+        const session = await Session.findOne({
+          where: { fingerprint: connection.fingerprint },
+        });
+        if (!session) return null;
+        await session.update({
+          expiresAt: new Date().getTime() + api.session.ttl,
+        });
+        return session;
       },
 
-      create: async (connection: Connection, teamMember) => {
-        const key = api.session.key(connection);
-        const csrfToken = await randomBytesAsync();
+      create: async (connection, teamMember) => {
+        await Session.destroy({
+          where: { fingerprint: connection.fingerprint },
+        });
 
-        const sessionData = {
-          id: teamMember.id,
-          csrfToken: csrfToken,
-          createdAt: new Date().getTime(),
-        };
+        const session = await Session.create({
+          fingerprint: connection.fingerprint,
+          teamMemberId: teamMember.id,
+          expiresAt: new Date().getTime() + api.session.ttl,
+        });
 
         await teamMember.update({ lastLoginAt: new Date() });
-        await redis.set(key, JSON.stringify(sessionData));
-        await redis.expire(key, api.session.ttl);
-        return sessionData;
+
+        return session;
       },
 
       destroy: async (connection: Connection) => {
-        const key = api.session.key(connection);
-        await redis.del(key);
+        await Session.destroy({
+          where: { fingerprint: connection.fingerprint },
+        });
       },
     };
   }
@@ -273,22 +90,11 @@ export class Session extends Initializer {
       throw new Error("SERVER_TOKEN environment variable missing");
     }
 
-    action.addMiddleware(authenticatedActionMiddleware);
-    action.addMiddleware(optionallyAuthenticatedActionMiddleware);
-    chatRoom.addMiddleware(modelChatRoomMiddleware);
+    action.addMiddleware(AuthenticatedActionMiddleware);
+    action.addMiddleware(OptionallyAuthenticatedActionMiddleware);
+    chatRoom.addMiddleware(ModelChatRoomMiddleware);
 
     api.params.globalSafeParams.push("csrfToken");
     api.params.globalSafeParams.push("apiKey");
   }
 }
-
-const randomBytesAsync = function (bytes = 64): Promise<string> {
-  return new Promise((resolve, reject) => {
-    crypto.randomBytes(bytes, (error, buf) => {
-      if (error) {
-        return reject(error);
-      }
-      return resolve(buf.toString("hex"));
-    });
-  });
-};
