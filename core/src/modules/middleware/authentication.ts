@@ -10,6 +10,16 @@ export class AuthenticationError extends Error {
   }
 }
 
+export class AuthorizationError extends Error {
+  code: string;
+
+  constructor(mode: string, topic: string, code = "AUTHORIZATION_ERROR") {
+    const message = `Not authorized for mode "${mode}" on topic "${topic}"`;
+    super(message);
+    this.code = code;
+  }
+}
+
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
   global: false,
@@ -59,9 +69,7 @@ export const ModelChatRoomMiddleware: chatRoom.ChatMiddleware = {
       const team = await teamMember.$get("team");
       const authorized = await team.authorizeAction(topic, "read");
       if (!authorized) {
-        throw new AuthenticationError(
-          `not authorized for mode "${mode}" on topic "${topic}"`
-        );
+        throw new AuthorizationError(mode, topic);
       }
     }
   },
@@ -101,8 +109,9 @@ async function authenticateTeamMember(
       data.actionTemplate.permission.mode
     );
     if (!authorized) {
-      throw new AuthenticationError(
-        `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+      throw new AuthorizationError(
+        data.actionTemplate.permission.mode,
+        data.actionTemplate.permission.topic
       );
     }
 
@@ -123,8 +132,9 @@ async function authenticateApiKey(data: { [key: string]: any }) {
     data.actionTemplate.permission.mode
   );
   if (!authorized) {
-    throw new AuthenticationError(
-      `not authorized for mode "${data.actionTemplate.permission.mode}" on topic "${data.actionTemplate.permission.topic}"`
+    throw new AuthorizationError(
+      data.actionTemplate.permission.mode,
+      data.actionTemplate.permission.topic
     );
   }
 

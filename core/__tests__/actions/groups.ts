@@ -392,9 +392,7 @@ describe("actions/groups", () => {
         type: "manual",
       };
       const { error } = await specHelper.runAction("group:create", connection);
-      expect(error.message).toBe(
-        'not authorized for mode "write" on topic "group"'
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can list all the groups", async () => {
@@ -448,9 +446,7 @@ describe("actions/groups", () => {
         name: "new group name",
       };
       const { error } = await specHelper.runAction("group:edit", connection);
-      expect(error.message).toBe(
-        'not authorized for mode "write" on topic "group"'
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can view a team", async () => {
@@ -477,9 +473,7 @@ describe("actions/groups", () => {
         connection
       );
 
-      expect(destroyResponse.error.message).toBe(
-        'not authorized for mode "write" on topic "group"'
-      );
+      expect(destroyResponse.error.code).toBe("AUTHORIZATION_ERROR");
     });
   });
 });

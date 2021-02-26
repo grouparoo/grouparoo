@@ -718,9 +718,7 @@ describe("actions/profiles", () => {
         "profile:create",
         connection
       );
-      expect(error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can list all the profiles", async () => {
@@ -741,9 +739,7 @@ describe("actions/profiles", () => {
         id,
       };
       const { error } = await specHelper.runAction("profile:edit", connection);
-      expect(error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can view a profile", async () => {
@@ -780,9 +776,7 @@ describe("actions/profiles", () => {
         connection
       );
 
-      expect(destroyResponse.error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(destroyResponse.error.code).toBe("AUTHORIZATION_ERROR");
     });
   });
 });
