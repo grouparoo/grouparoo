@@ -276,12 +276,7 @@ export class Source extends LoggedModel<Source> {
 
   @BeforeCreate
   static async ensurePluginConnection(instance: Source) {
-    const { plugin } = await instance.getPlugin();
-    if (!plugin) {
-      throw new Error(
-        `cannot find an import connection for a source of ${instance.type}`
-      );
-    }
+    await instance.getPlugin(); // will throw if not found
   }
 
   @BeforeCreate
