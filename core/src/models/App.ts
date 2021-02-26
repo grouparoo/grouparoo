@@ -250,10 +250,7 @@ export class App extends LoggedModel<App> {
 
   @BeforeSave
   static async validateType(instance: App) {
-    const { pluginApp } = await instance.getPlugin();
-    if (!pluginApp) {
-      throw new Error(`cannot find a pluginApp for type ${instance.type}`);
-    }
+    await instance.getPlugin(); // will throw if not found
   }
 
   @BeforeSave
