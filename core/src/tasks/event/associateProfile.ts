@@ -2,7 +2,6 @@ import { Event } from "../../models/Event";
 import { App } from "../../models/App";
 import { Task, log } from "actionhero";
 import { CLS } from "../../modules/cls";
-import { TaskUtils } from "../../modules/taskUtils";
 
 export class EventAssociateProfile extends Task {
   // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction.
@@ -32,9 +31,6 @@ export class EventAssociateProfile extends Task {
   }
 
   async run(params: { eventId: string; count: number }) {
-    const { reEnqueued } = await TaskUtils.reEnqueueIfGuidParams(this, params);
-    if (reEnqueued) return;
-
     const { eventId } = params;
     const event = await Event.findById(eventId);
 
