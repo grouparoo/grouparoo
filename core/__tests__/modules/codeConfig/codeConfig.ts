@@ -476,6 +476,26 @@ describe("modules/codeConfig", () => {
   });
 
   describe("errors", () => {
+    describe("plugin not installed", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+      });
+
+      test("errors will be thrown if the configuration is invalid", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-not-installed"
+          )
+        );
+        expect(errors[0]).toMatch(/Cannot find a "missing-plugin" plugin/);
+      });
+    });
+
     describe("app", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
