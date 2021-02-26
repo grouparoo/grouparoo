@@ -1,15 +1,33 @@
-import { Table, Column, AllowNull, ForeignKey } from "sequelize-typescript";
-import { LoggedModel } from "../classes/loggedModel";
+import {
+  Model,
+  Table,
+  Column,
+  AllowNull,
+  ForeignKey,
+  CreatedAt,
+  UpdatedAt,
+  BeforeCreate,
+} from "sequelize-typescript";
+import * as uuid from "uuid";
 import { TeamMember } from "./TeamMember";
 import { APIData } from "../modules/apiData";
 import { Op } from "sequelize";
 import { api } from "actionhero";
 
 @Table({ tableName: "sessions", paranoid: false })
-export class Session extends LoggedModel<Session> {
+export class Session extends Model {
+  @Column({ primaryKey: true })
+  id: string;
+
   idPrefix() {
     return "ses";
   }
+
+  @CreatedAt
+  createdAt: Date;
+
+  @UpdatedAt
+  updatedAt: Date;
 
   @AllowNull(false)
   @Column
@@ -41,6 +59,13 @@ export class Session extends LoggedModel<Session> {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeCreate
+  static generateId(instance) {
+    if (!instance.id) {
+      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
+    }
   }
 
   static async sweep() {
