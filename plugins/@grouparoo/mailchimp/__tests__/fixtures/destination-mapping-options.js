@@ -12,11 +12,11 @@ nock('https://us3.api.mailchimp.com:443', {"encodedQueryParams":true})
   'Vary',
   'Accept-Encoding',
   'X-Request-Id',
-  '2a4de6cf-53a7-4a7e-87b4-d2c234ce64c9',
+  '6d08177b-0fc6-480b-9f1e-6d06d8d63c71',
   'Link',
   '<https://us3.api.mailchimp.com/schema/3.0/Lists/MergeFields/Collection.json>; rel="describedBy"',
   'Date',
-  'Fri, 26 Feb 2021 01:20:38 GMT',
+  'Sat, 27 Feb 2021 00:32:02 GMT',
   'Connection',
   'close'
 ]);
@@ -32,11 +32,11 @@ nock('https://us3.api.mailchimp.com:443', {"encodedQueryParams":true})
   'Vary',
   'Accept-Encoding',
   'X-Request-Id',
-  '9e18b5b9-cb23-4395-b353-35a41083a6a5',
+  '5978a134-3d66-4dcb-8dfe-5b3967be21d2',
   'Link',
   '<https://us3.api.mailchimp.com/schema/3.0/Lists/MergeFields/Collection.json>; rel="describedBy"',
   'Date',
-  'Fri, 26 Feb 2021 01:20:38 GMT',
+  'Sat, 27 Feb 2021 00:32:02 GMT',
   'Connection',
   'close'
 ]);
