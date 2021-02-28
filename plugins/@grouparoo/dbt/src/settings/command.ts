@@ -1,31 +1,24 @@
 import { runCommand, CommandResponse } from "../utils/exec";
 
-export interface dbtProfileResponse {
-  type: string;
+export interface dbtConnectionResponse {
   options: { [key: string]: any };
   error: string;
 }
 
-export interface dbtProfileMethod {
-  (argument: {
-    profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
-    target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
-    projectDirRelativePath?: string;
-    profileDirRelativePath?: string;
-    projectDirFullPath?: string;
-    profileDirFullPath?: string;
-  }): Promise<dbtProfileResponse>;
+export interface dbtConnectionRequest {
+  profile?: string; // Which profile to load. Overrides setting in dbt_project.yml.
+  target?: string; // Which target to load for the given profile. Overrides default in profiles.yml
+  projectDirRelativePath?: string;
+  profileDirRelativePath?: string;
+  projectDirFullPath?: string;
+  profileDirFullPath?: string;
 }
 
-export const dbtProfile: dbtProfileMethod = async (args) => {
-  const command = await dbtProfileFromDebugCommand(args);
-  if (command && !command.error) {
-    return command;
-  }
-  return null;
-};
+export interface dbtConnectionMethod {
+  (argument: dbtConnectionRequest): Promise<dbtConnectionResponse>;
+}
 
-export const dbtProfileFromDebugCommand: dbtProfileMethod = async ({
+const dbtConnection: dbtConnectionMethod = async ({
   profile,
   projectDirRelativePath,
   profileDirRelativePath,
@@ -48,7 +41,7 @@ export const dbtProfileFromDebugCommand: dbtProfileMethod = async ({
 function parseCommandResponse(
   output: CommandResponse,
   cmd: string
-): dbtProfileResponse {
+): dbtConnectionResponse {
   // if command not found
   //    stderr: '/bin/sh: dbst: command not found\n',
   //    err: truthy
@@ -105,7 +98,6 @@ function parseCommandResponse(
     }
     debug += ` Command run: ${cmd}`;
     return {
-      type: "unknown",
       options: {},
       error: debug,
     };
@@ -115,7 +107,6 @@ function parseCommandResponse(
     let debug = "No command response";
     debug += ` Command run: ${cmd}`;
     return {
-      type: "unknown",
       options: {},
       error: debug,
     };
@@ -125,17 +116,16 @@ function parseCommandResponse(
   let type: string = "postgres";
   let options: { [key: string]: any } = {};
 
-  console.log({ stdout });
+  // console.log({ stdout });
 
   const lines = stdout.split("\n");
-  console.log({ lines });
+  // console.log({ lines });
   let i = lines.indexOf("Connection:");
   if (i <= 0) {
     let debug = "Connection not found";
     debug += ` Command run: ${cmd}`;
     debug += ` Output: ${stdout}`;
     return {
-      type: "unknown",
       options: {},
       error: debug,
     };
@@ -156,6 +146,6 @@ function parseCommandResponse(
     options[key] = value;
   }
 
-  console.log(options);
-  return { type, options, error };
+  // console.log(options);
+  return { options, error };
 }

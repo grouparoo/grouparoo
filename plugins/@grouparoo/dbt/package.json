@@ -22,6 +22,9 @@
   },
   "main": "dist/index",
   "types": "dist/index",
+  "dependencies": {
+    "js-yaml": "4.0.0"
+  },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
