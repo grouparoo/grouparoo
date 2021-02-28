@@ -36,12 +36,38 @@ const getProjectPath: GetProjectPathMethod = async ({
 }) => {
   let projectDirPath = projectDirFullPath;
 
-  // TODO: look
-  //    projectDirRelativePath
-  //    parents of cwd looking for dbt_project.yml
+  if (!projectDirPath && projectDirRelativePath) {
+    projectDirPath = path.resolve(
+      path.join(process.cwd(), projectDirRelativePath)
+    );
+  }
+  if (!projectDirPath) {
+    projectDirPath = findProjectIn(process.cwd(), 0);
+  }
 
   return projectDirPath;
 };
+
+function findProjectIn(dirPath: string, depth: number): string {
+  // look in this and then in parent
+  dirPath = path.resolve(dirPath);
+  const projectPath = path.join(dirPath, "dbt_project.yml");
+  if (fs.existsSync(projectPath)) {
+    return dirPath;
+  }
+  // otherwise look up a level
+  const parentPath = path.resolve(path.join(dirPath, "../"));
+  if (dirPath === parentPath) {
+    // at root, not going to happen
+    return null;
+  }
+  depth++;
+  if (depth > 20) {
+    // protection against infinite recursion
+    return null;
+  }
+  return findProjectIn(parentPath, ++depth);
+}
 
 interface GetProfilePathMethod {
   (argument: dbtProfileRequest): Promise<string>;
