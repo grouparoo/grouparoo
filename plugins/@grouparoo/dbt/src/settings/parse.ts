@@ -1,5 +1,6 @@
 import path from "path";
 import fs from "fs";
+import os from "os";
 import yaml from "js-yaml";
 import { dbtSettingsResponse } from "./types";
 import { dbtConnectionToGrouparooOptions } from "./plugins";
@@ -78,10 +79,23 @@ const getProfilePath: GetProfilePathMethod = async ({
 }) => {
   let profileDirPath = profileDirFullPath;
 
-  // TODO: look
-  //    profileDirRelativePath
-  //    process.env.DBT_PROFILES_DIR
-  //    ~/.dbt (default) should have profiles.yml
+  if (!profileDirPath && profileDirRelativePath) {
+    profileDirPath = path.resolve(
+      path.join(process.cwd(), profileDirRelativePath)
+    );
+  }
+
+  if (!profileDirPath && process.env.DBT_PROFILES_DIR) {
+    profileDirPath = path.resolve(process.env.DBT_PROFILES_DIR);
+  }
+
+  const defaultDir = path.resolve(path.join(os.homedir(), ".dbt"));
+  const defaultProfilePath = path.resolve(
+    path.join(defaultDir, "profiles.yml")
+  );
+  if (fs.existsSync(defaultProfilePath)) {
+    profileDirPath = defaultDir;
+  }
 
   return profileDirPath;
 };
@@ -155,9 +169,9 @@ const parseProfile: ParseProfileMethod = async (
 
   const settings = document[profile];
   if (!settings) {
-    let debug = `Unknown profile (${profile}) yml (${profilePath}).`;
+    let debug = `Unknown profile (${profile}) in yml (${profilePath}).`;
     debug += " Use `profile` in dbtProfile to specify which should be used.";
-    debug += ` Valid profiles are: ${Object.keys(settings).join(", ")}`;
+    debug += ` Valid profiles are: ${Object.keys(document).join(", ")}`;
     throw new Error(debug);
   }
 

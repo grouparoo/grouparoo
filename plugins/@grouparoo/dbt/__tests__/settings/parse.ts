@@ -1,22 +1,78 @@
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
+import fs from "fs";
+import os from "os";
 import { dbtProfile } from "../../src/settings/parse";
+import { dbtSettingsResponse } from "../../src/settings/types";
 
 let previousCwd = null;
 const defaultDirFullPath = path.resolve(
   path.join(__dirname, "..", "projects", "default")
 );
+
+const postgresDirFullPath = path.resolve(
+  path.join(__dirname, "..", "projects", "postgres")
+);
+const invalidNameDirFullPath = path.resolve(
+  path.join(__dirname, "..", "projects", "invalid_name")
+);
+const invalidTargetDirFullPath = path.resolve(
+  path.join(__dirname, "..", "projects", "invalid_target")
+);
+
+const homeDir = os.homedir();
+const userProfilePath = path.resolve(
+  path.join(homeDir, ".dbt", "profiles.yml")
+);
+const backupProfilePath = path.resolve(
+  path.join(homeDir, ".dbt", "profiles.backup.yml")
+);
+
+function checkPostgres(result: dbtSettingsResponse) {
+  const { type, options } = result;
+  expect(type).toEqual("postgres");
+  expect(options).toEqual({
+    host: "127.0.0.1",
+    port: 5432,
+    database: "dbt_db",
+    user: "myuser",
+    password: "mypass",
+    schema: "dbt_schema",
+  });
+}
+
+function backupProfile() {
+  // if this system already has a ~/profile.yml, back it up
+  if (fs.existsSync(userProfilePath)) {
+    fs.renameSync(userProfilePath, backupProfilePath);
+  }
+}
+function restoreProfile() {
+  // put it back
+  if (fs.existsSync(backupProfilePath)) {
+    fs.renameSync(backupProfilePath, userProfilePath);
+  }
+}
+function deleteProfile() {
+  // put it back
+  if (fs.existsSync(userProfilePath)) {
+    fs.rmSync(userProfilePath);
+  }
+}
+
 describe("dbt/profile", () => {
   beforeAll(() => {
     previousCwd = process.cwd();
+    backupProfile();
   });
-  beforeEach(() => {
-    process.env.DBT_PROFILES_DIR = null;
+  afterEach(() => {
+    delete process.env.DBT_PROFILES_DIR;
+    deleteProfile();
   });
   afterAll(() => {
     // be sure to put it back
     process.chdir(previousCwd);
-    process.env.DBT_PROFILES_DIR = null;
+    restoreProfile();
   });
   describe("when in random directory", () => {
     beforeAll(() => {
@@ -25,68 +81,60 @@ describe("dbt/profile", () => {
     });
 
     it("reads full paths", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
-      const { type, options } = await dbtProfile({
+      const result = await dbtProfile({
         projectDirFullPath: defaultDirFullPath,
-        profileDirFullPath,
+        profileDirFullPath: postgresDirFullPath,
       });
-      expect(type).toEqual("postgres");
-      expect(options).toEqual({
-        host: "127.0.0.1",
-        port: 5432,
-        database: "dbt_db",
-        user: "myuser",
-        password: "mypass",
-        schema: "dbt_schema",
+      checkPostgres(result);
+    });
+
+    it("does not need profile path when specifying profile name and path", async () => {
+      const result = await dbtProfile({
+        profile: "test_grouparoo_profile",
+        profileDirFullPath: postgresDirFullPath,
       });
+      checkPostgres(result);
+    });
+
+    it("does not need profile path when specifying profile name with default location", async () => {
+      fs.copyFileSync(
+        path.join(postgresDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      const result = await dbtProfile({
+        profile: "test_grouparoo_profile",
+      });
+      checkPostgres(result);
     });
   });
 
   describe("when in parent directory", () => {
+    const parentDir = path.resolve(path.join(defaultDirFullPath, "..", ".."));
     beforeAll(() => {
-      process.chdir(path.resolve(path.join(defaultDirFullPath, "..", "..")));
+      process.chdir(parentDir);
     });
 
-    it("reads setup", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
-      const { type, options } = await dbtProfile({
+    it("reads setup from relative", async () => {
+      const result = await dbtProfile({
         projectDirRelativePath: "projects/default",
-        profileDirFullPath, // still needs full one since not given
+        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
-      expect(type).toEqual("postgres");
-      expect(options).toEqual({
-        host: "127.0.0.1",
-        port: 5432,
-        database: "dbt_db",
-        user: "myuser",
-        password: "mypass",
-        schema: "dbt_schema",
-      });
+      checkPostgres(result);
     });
 
     it("fails if it can't find the project directory", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
       await expect(
         dbtProfile({
-          profileDirFullPath,
+          profileDirFullPath: postgresDirFullPath,
         })
       ).rejects.toThrow(/Unknown dbt project directory/);
     });
 
     it("fails if incorrect relative directory", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
       await expect(
         dbtProfile({
           projectDirRelativePath: "x/default",
-          profileDirFullPath,
+          profileDirFullPath: postgresDirFullPath,
         })
       ).rejects.toThrow(/does not exist/);
     });
@@ -98,47 +146,124 @@ describe("dbt/profile", () => {
     });
 
     it("reads setup", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
-      const { type, options } = await dbtProfile({
+      const result = await dbtProfile({
         // finds relative in this dir
-        profileDirFullPath, // still needs full one since not given
+        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
-      expect(type).toEqual("postgres");
-      expect(options).toEqual({
-        host: "127.0.0.1",
-        port: 5432,
-        database: "dbt_db",
-        user: "myuser",
-        password: "mypass",
-        schema: "dbt_schema",
-      });
+      checkPostgres(result);
     });
   });
 
   describe("when in subdir of project directory", () => {
+    const subDir = path.resolve(path.join(defaultDirFullPath, "sub"));
     beforeAll(() => {
-      process.chdir(path.resolve(path.join(defaultDirFullPath, "sub")));
+      process.chdir(subDir);
     });
 
     it("reads setup", async () => {
-      const profileDirFullPath = path.resolve(
-        path.join(__dirname, "..", "projects", "postgres")
-      );
-      const { type, options } = await dbtProfile({
+      const result = await dbtProfile({
         // finds relative in parent
-        profileDirFullPath, // still needs full one since not given
+        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
-      expect(type).toEqual("postgres");
-      expect(options).toEqual({
-        host: "127.0.0.1",
-        port: 5432,
-        database: "dbt_db",
-        user: "myuser",
-        password: "mypass",
-        schema: "dbt_schema",
+      checkPostgres(result);
+    });
+
+    it("reads setup from relative", async () => {
+      const result = await dbtProfile({
+        projectDirRelativePath: "../",
+        profileDirFullPath: postgresDirFullPath, // still needs full one since not given
       });
+      checkPostgres(result);
+    });
+
+    it("can use relative path to find profile", async () => {
+      const result = await dbtProfile({
+        // finds relative in parent
+        profileDirRelativePath: "../../postgres",
+      });
+      checkPostgres(result);
+    });
+
+    it("can use env variable to find profile", async () => {
+      process.env.DBT_PROFILES_DIR = postgresDirFullPath;
+      const result = await dbtProfile({
+        // finds relative in parent
+        // uses env variable for profile
+      });
+      checkPostgres(result);
+    });
+
+    it("will find it in ~/.dbt/profiles.yml", async () => {
+      fs.copyFileSync(
+        path.join(postgresDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      const result = await dbtProfile({
+        // finds relative in parent
+        // looks in default place for profile
+      });
+      checkPostgres(result);
+    });
+
+    it("fails if invalid profile name", async () => {
+      fs.copyFileSync(
+        path.join(invalidNameDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      await expect(
+        dbtProfile({
+          // finds relative in parent
+          // looks in default place for profile
+        })
+      ).rejects.toThrow(/Unknown profile \(test_grouparoo_profile\) in yml/);
+    });
+
+    it("can specify profile name", async () => {
+      fs.copyFileSync(
+        path.join(invalidNameDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      const result = await dbtProfile({
+        // finds relative in parent
+        // looks in default place for profile
+        profile: "like_postgres_but_bad_name_here",
+      });
+      checkPostgres(result);
+    });
+
+    it("fails if invalid target name", async () => {
+      fs.copyFileSync(
+        path.join(invalidTargetDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      await expect(
+        dbtProfile({
+          // finds relative in parent
+          // looks in default place for profile
+        })
+      ).rejects.toThrow(/Target dev does not exist in profile/);
+    });
+
+    it("can specify target name", async () => {
+      fs.copyFileSync(
+        path.join(invalidTargetDirFullPath, "profiles.yml"),
+        userProfilePath
+      );
+      const result = await dbtProfile({
+        // finds relative in parent
+        // looks in default place for profile
+        target: "custom_target",
+      });
+      checkPostgres(result);
+    });
+
+    it("fails if can't find profile is there", async () => {
+      await expect(
+        dbtProfile({
+          // finds relative in parent
+          // won't find it
+        })
+      ).rejects.toThrow(/Unknown dbt profile directory/);
     });
   });
 });
