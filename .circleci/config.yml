@@ -41,6 +41,7 @@ jobs:
             - plugins/@grouparoo/bigquery/node_modules
             - plugins/@grouparoo/csv/node_modules
             - plugins/@grouparoo/customerio/node_modules
+            - plugins/@grouparoo/dbt/node_modules
             - plugins/@grouparoo/demo/node_modules
             - plugins/@grouparoo/facebook/node_modules
             - plugins/@grouparoo/files-local/node_modules
@@ -84,6 +85,7 @@ jobs:
             - plugins/@grouparoo/bigquery/dist
             - plugins/@grouparoo/csv/dist
             - plugins/@grouparoo/customerio/dist
+            - plugins/@grouparoo/dbt/dist
             - plugins/@grouparoo/demo/dist
             - plugins/@grouparoo/facebook/dist
             - plugins/@grouparoo/files-local/dist
@@ -914,6 +916,44 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/customerio && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-dbt:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/dbt && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-demo:
     docker:
       - image: circleci/node:14
@@ -1934,6 +1974,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-dbt:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-demo:
           filters:
             <<: *ignored-branches
@@ -2075,6 +2120,7 @@ workflows:
             - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-customerio
+            - test-plugin-dbt
             - test-plugin-demo
             - test-plugin-facebook
             - test-plugin-files-local
@@ -2229,6 +2275,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-dbt:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-demo:
           filters:
             <<: *ignored-branches
@@ -2370,6 +2421,7 @@ workflows:
             - test-plugin-bigquery
             - test-plugin-csv
             - test-plugin-customerio
+            - test-plugin-dbt
             - test-plugin-demo
             - test-plugin-facebook
             - test-plugin-files-local
