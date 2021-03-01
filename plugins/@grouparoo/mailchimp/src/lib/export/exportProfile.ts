@@ -1,7 +1,7 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
-import { updateProfile } from "../shared/updateProfile";
+import { deleteMember, updateProfile } from "../shared/updateProfile";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -40,26 +40,16 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       oldProfileProperties["email_address"]
     );
     try {
+      // this will update the email of existing member only if the new email (email_address) do not exists yet.
       await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
         email_address,
         status: "subscribed",
         merge_fields: { email_address },
       });
     } catch (error) {
-      if (
-        error?.errors[0]?.message?.match(
-          /is already in this list with a status of "subscribed"./i
-        )
-      ) {
-        await client.patch(`/lists/${listId}/members/${mailchimpId}`, {
-          email_address,
-          status: "subscribed",
-          merge_fields: { email_address },
-        });
-        await client.delete(`/lists/${listId}/members/${oldMailchimpId}`);
-      } else {
-        throw error;
-      }
+      // Another user with the new email address (email_address) already exists,
+      // so we need to delete the old one and let the updateProfile reuse the existing one.
+      await deleteMember(client, listId, oldMailchimpId);
     }
   }
 

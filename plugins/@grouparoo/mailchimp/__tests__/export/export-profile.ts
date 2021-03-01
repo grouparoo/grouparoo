@@ -374,13 +374,18 @@ describe("mailchimp/exportProfile", () => {
         email_address: emails["alternativeEmail"],
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: [listOne],
       toDelete: false,
     });
 
     user = await getUser(emails["alternativeEmail"]);
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["alternativeEmail"]);
+    expect(user["tags"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+      ])
+    );
     const oldUser = await getUser(emails["email"]);
     expect(oldUser).toBe(null);
   });
@@ -430,20 +435,19 @@ describe("mailchimp/exportProfile", () => {
   test("can try to delete a user that does not exist.", async () => {
     user = await getUser(emails["otherEmail"]);
     expect(user).toBe(null);
-
-    await expect(
-      runExport({
-        oldProfileProperties: {
-          email_address: emails["otherEmail"],
-        },
-        newProfileProperties: {
-          email_address: emails["otherEmail"],
-        },
-        oldGroups: [],
-        newGroups: [],
-        toDelete: true,
-      })
-    ).rejects.toThrow(/this list member cannot be removed./i);
+    await runExport({
+      oldProfileProperties: {
+        email_address: emails["otherEmail"],
+      },
+      newProfileProperties: {
+        email_address: emails["otherEmail"],
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+    user = await getUser(emails["otherEmail"]);
+    expect(user).toBe(null);
   });
 
   test("can add a user and add this user to a list at the same time.", async () => {
@@ -477,7 +481,7 @@ describe("mailchimp/exportProfile", () => {
   test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).toBe(null);
-    const nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
 
     await runExport({
@@ -495,6 +499,8 @@ describe("mailchimp/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["brandNewEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(brandNewName);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
   });
 
   test("can add a user passing a invalid email", async () => {
