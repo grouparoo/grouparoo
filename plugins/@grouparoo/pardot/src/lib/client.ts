@@ -12,6 +12,14 @@ interface SalesforceUserInfo {
   userFullName: string;
 }
 
+interface PardotCustomField {
+  id: number;
+  name: string;
+  fieldId: string;
+  type: string;
+  isRecordMultipleResponses: boolean;
+}
+
 class PardotClient {
   private loginUrl: string;
   private pardotUrl: string;
@@ -98,6 +106,30 @@ class PardotClient {
       "/prospect/version/4/do/query?format=json"
     );
     return res.data.result;
+  }
+
+  async getCustomFields(): Promise<PardotCustomField[]> {
+    const res = await this.request.get(
+      "/customField/version/4/do/query?format=json"
+    );
+
+    const { result } = res.data;
+
+    const mapResult = (field: any): PardotCustomField => ({
+      id: field.id,
+      name: field.name,
+      fieldId: field.field_id,
+      type: field.type,
+      isRecordMultipleResponses: field.is_record_multiple_responses,
+    });
+
+    if (result.total_results === 0) {
+      return [];
+    } else if (result.total_results === 1) {
+      return [mapResult(result.customField)];
+    }
+
+    return result.customField.map(mapResult);
   }
 }
 
