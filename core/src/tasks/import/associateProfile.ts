@@ -1,6 +1,5 @@
 import { log, env, Task } from "actionhero";
 import { Import } from "../../models/Import";
-import { TaskUtils } from "../../modules/taskUtils";
 
 export class ImportAssociateProfile extends Task {
   // This Task extends Task rather than CLSTask as we want to be able to view newly created profiles happening in parallel to this task/transaction
@@ -11,29 +10,31 @@ export class ImportAssociateProfile extends Task {
     this.description = "find or create the profile this import is about";
     this.frequency = 0;
     this.queue = "imports";
+    this.plugins = ["QueueLock", "JobLock"];
+    this.pluginOptions = { JobLock: { reEnqueue: false } };
     this.inputs = {
       importId: { required: true },
     };
   }
 
   async run(params) {
-    const { reEnqueued } = await TaskUtils.reEnqueueIfGuidParams(this, params);
-    if (reEnqueued) return;
-
     const { importId } = params;
     const _import = await Import.findById(importId);
+    if (_import.profileId) return;
 
     try {
       const { profile, isNew } = await _import.associateProfile();
-      await profile.markPending();
 
       const oldProfileProperties = await profile.simplifiedProperties();
       const oldGroups = await profile.$get("groups");
 
-      _import.createdProfile = isNew;
-      _import.oldProfileProperties = oldProfileProperties;
-      _import.oldGroupIds = oldGroups.map((g) => g.id);
-      await _import.save();
+      await _import.update({
+        createdProfile: isNew,
+        oldProfileProperties,
+        oldGroupIds: oldGroups.map((g) => g.id),
+      });
+
+      await profile.markPending();
     } catch (error) {
       if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
       await _import.setError(error, this.name);

@@ -4,10 +4,11 @@ import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import Moment from "react-moment";
-import RollingChart from "./rollingChart";
+import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
 
 const TIMEOUT = 5 * 1000;
 const maxSampleLength = 20;
+const useCache = false;
 
 export function BigNumber({ execApi, model, title, href = null }) {
   const [total, setTotal] = useState<number>(null);
@@ -27,9 +28,14 @@ export function BigNumber({ execApi, model, title, href = null }) {
   }
 
   async function load() {
-    const { total }: Actions.TotalsAction = await execApi("get", `/totals`, {
-      model,
-    });
+    const { total }: Actions.TotalsAction = await execApi(
+      "get",
+      `/totals`,
+      { model },
+      null,
+      null,
+      useCache
+    );
 
     if (total) setTotal(total);
   }
@@ -79,7 +85,10 @@ export function GroupsByNewestMember({ execApi }) {
       newestMembersAdded,
     }: Actions.GroupsListByNewestMember = await execApi(
       "get",
-      `/groups/byNewestMember`
+      `/groups/byNewestMember`,
+      null,
+      null,
+      useCache
     );
 
     if (groups) setGroups(groups);
@@ -155,9 +164,16 @@ export function RunningRuns({ execApi }) {
   }, []);
 
   async function load() {
-    const { runs }: Actions.RunsList = await execApi("get", `/runs`, {
-      state: "running",
-    });
+    const { runs }: Actions.RunsList = await execApi(
+      "get",
+      `/runs`,
+      {
+        state: "running",
+      },
+      null,
+      null,
+      useCache
+    );
 
     if (runs) {
       setRuns(runs);
@@ -243,7 +259,14 @@ export function ScheduleRuns({ execApi }) {
   }
 
   async function load() {
-    const { sources }: Actions.SourcesList = await execApi("get", `/sources`);
+    const { sources }: Actions.SourcesList = await execApi(
+      "get",
+      `/sources`,
+      null,
+      null,
+      null,
+      useCache
+    );
     if (!sources) return;
 
     const sourcesWithSchedules = sources.filter(
@@ -272,7 +295,7 @@ export function ScheduleRuns({ execApi }) {
       },
       null,
       null,
-      false
+      useCache
     );
     return runs[0];
   }
@@ -355,7 +378,8 @@ export function ScheduleRuns({ execApi }) {
   );
 }
 
-const pendingImportSamples = [];
+const pendingImportSamples: ChartLinData = [];
+const pendingImportKeys: string[] = [];
 export function PendingImports({ execApi }) {
   const [sources, setSources] = useState<Models.SourceType[]>([]);
   const [pendingProfilesCount, setPendingProfilesCount] = useState(0);
@@ -389,22 +413,36 @@ export function PendingImports({ execApi }) {
 
     const { counts }: Actions.SourcesCountPending = await execApi(
       "get",
-      `/sources/countPending`
+      `/sources/countPending`,
+      null,
+      null,
+      null,
+      useCache
     );
 
-    const { imports }: Actions.ImportsList = await execApi("get", "/imports", {
-      limit: 1,
-    });
+    const { imports }: Actions.ImportsList = await execApi(
+      "get",
+      "/imports",
+      {
+        limit: 1,
+      },
+      null,
+      null,
+      useCache
+    );
 
-    const sample = { time: new Date() };
+    const now = new Date().getTime();
     for (const i in sources) {
       const source = sources[i];
-      sample[source.name] = counts[source.id] || 0;
-    }
-
-    pendingImportSamples.push(sample);
-    if (pendingImportSamples.length > maxSampleLength) {
-      pendingImportSamples.shift();
+      if (!pendingImportKeys.includes(source.name)) {
+        pendingImportKeys.push(source.name);
+      }
+      const idx = pendingImportKeys.indexOf(source.name);
+      if (!pendingImportSamples[idx]) pendingImportSamples[idx] = [];
+      pendingImportSamples[idx].push({ x: now, y: counts[source.id] || 0 });
+      if (pendingImportSamples[idx].length > maxSampleLength) {
+        pendingImportSamples[idx].shift();
+      }
     }
 
     if (sources) setSources(sources);
@@ -428,10 +466,11 @@ export function PendingImports({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Pending Profiles ({pendingProfilesCount})</Card.Title>
-        <div style={{ height: 200 }}>
-          <RollingChart
+        <div style={{ height: 300 }}>
+          <GrouparooChart
             data={pendingImportSamples}
-            keys={sources.map((d) => d.name)}
+            keys={pendingImportKeys}
+            interpolation="linear"
           />
         </div>
         Most Recent Import:{" "}
@@ -445,7 +484,8 @@ export function PendingImports({ execApi }) {
   );
 }
 
-const pendingExportSamples = [];
+const pendingExportSamples: ChartLinData = [];
+const pendingExportKeys: string[] = [];
 export function PendingExports({ execApi }) {
   const [destinations, setDestinations] = useState<Models.DestinationType[]>(
     []
@@ -470,28 +510,41 @@ export function PendingExports({ execApi }) {
   async function load() {
     const { destinations }: Actions.DestinationsList = await execApi(
       "get",
-      `/destinations`
+      `/destinations`,
+      null,
+      null,
+      null,
+      useCache
     );
 
     const { exports: _exports }: Actions.ExportsList = await execApi(
       "get",
       "/exports",
-      { limit: 1 }
+      { limit: 1 },
+      null,
+      null,
+      useCache
     );
 
+    const now = new Date().getTime();
     let _pendingExportsCount = 0;
-    const sample = { time: new Date() };
+
     for (const i in destinations) {
       const destination = destinations[i];
-      sample[destination.name] =
-        destination.exportTotals.created + destination.exportTotals.started;
+      if (!pendingExportKeys.includes(destination.name)) {
+        pendingExportKeys.push(destination.name);
+      }
+      const idx = pendingExportKeys.indexOf(destination.name);
+      if (!pendingExportSamples[idx]) pendingExportSamples[idx] = [];
+      pendingExportSamples[idx].push({
+        x: now,
+        y: destination.exportTotals.created + destination.exportTotals.started,
+      });
+      if (pendingExportSamples[idx].length > maxSampleLength) {
+        pendingExportSamples[idx].shift();
+      }
       _pendingExportsCount +=
         destination.exportTotals.created + destination.exportTotals.started;
-    }
-
-    pendingExportSamples.push(sample);
-    if (pendingExportSamples.length > maxSampleLength) {
-      pendingExportSamples.shift();
     }
 
     if (destinations) setDestinations(destinations);
@@ -511,10 +564,11 @@ export function PendingExports({ execApi }) {
     <Card>
       <Card.Body>
         <Card.Title>Pending Exports ({pendingExportsCount})</Card.Title>
-        <div style={{ height: 200 }}>
-          <RollingChart
+        <div style={{ height: 300 }}>
+          <GrouparooChart
             data={pendingExportSamples}
-            keys={destinations.map((d) => d.name)}
+            keys={pendingExportKeys}
+            interpolation="linear"
           />
         </div>
         Most Recent Export:{" "}

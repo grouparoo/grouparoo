@@ -11,7 +11,8 @@ import {
   Team,
   TeamMember,
   Profile,
-} from "../../src";
+} from "../../../src";
+import { utils } from "actionhero";
 
 describe("models/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -22,12 +23,6 @@ describe("models/run", () => {
     await helper.factories.properties();
     schedule = await helper.factories.schedule();
   });
-
-  const sleep = (t) => {
-    return new Promise((resolve) => {
-      setTimeout(resolve, t);
-    });
-  };
 
   test("a run can be created", async () => {
     const run = new Run({
@@ -173,6 +168,17 @@ describe("models/run", () => {
         });
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(50);
+      });
+
+      test("running - group - complete", async () => {
+        run = await Run.create({
+          state: "running",
+          creatorId: group.id,
+          creatorType: "group",
+          groupMethod: "complete",
+        });
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(100);
       });
 
       test("running - teamMember", async () => {
@@ -455,7 +461,7 @@ describe("models/run", () => {
         state: "running",
       });
 
-      await sleep(100);
+      await utils.sleep(100);
 
       await Import.create({
         profileId: "a",
@@ -468,7 +474,7 @@ describe("models/run", () => {
         createdProfile: true,
       });
 
-      await sleep(100);
+      await utils.sleep(100);
 
       await Import.create({
         profileId: "a",
@@ -480,7 +486,7 @@ describe("models/run", () => {
         exportedAt: new Date(),
       });
 
-      await sleep(100);
+      await utils.sleep(100);
 
       await Import.create({
         profileId: "b",
@@ -492,7 +498,7 @@ describe("models/run", () => {
         exportedAt: new Date(),
       });
 
-      await sleep(100);
+      await utils.sleep(100);
 
       await run.update({ state: "complete", completedAt: new Date() });
     });

@@ -1,12 +1,18 @@
-import { DestinationMappingOptionsMethod } from "@grouparoo/core";
+import {
+  DestinationMappingOptionsMethod,
+  DestinationMappingOptionsResponseTypes,
+  SimpleAppOptions,
+} from "@grouparoo/core";
 import { connect } from "./../connect";
+
+const importantFields = ["firstname", "lastname", "company"];
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   appOptions,
 }) => {
   const client = await connect(appOptions);
-  const contactsProperties = await client.contactsProperties.getAllContactsProperties();
-
+  const required = getRequiredFields();
+  const known = await getUserFields(client, appOptions);
   return {
     labels: {
       property: {
@@ -19,33 +25,75 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       },
     },
     properties: {
-      required: [{ key: "email", type: "email" }],
-      known: contactsProperties
-        .filter((contactProperty) => contactProperty.name !== "email")
-        .sort((a, b) => {
-          if (a.name > b.name) return 1;
-          if (a.name < b.name) return -1;
-          return 0;
-        })
-        .map((contactProperty) => {
-          let important = true;
-          if (contactProperty.name.match(/^hs_/)) important = false;
-          if (contactProperty.name.match(/^hubspot_/)) important = false;
-          if (contactProperty.name.match(/^ip_/)) important = false;
-          if (contactProperty.name.match(/^notes_/)) important = false;
-          if (contactProperty.name.match(/^num/)) important = false;
-          if (contactProperty.name.match(/^first_/)) important = false;
-          if (contactProperty.name.match(/^recent_/)) important = false;
-          if (contactProperty.name.match(/^engagements_/)) important = false;
-
-          return {
-            key: contactProperty.name,
-            type: "any",
-            // type: contactProperty.type
-            important,
-          };
-        }),
+      required: required,
+      known: known,
       allowOptionalFromProperties: false,
     },
   };
+};
+
+const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
+  switch (fieldKey) {
+    case "mobilephone":
+    case "phone":
+      return "phoneNumber";
+  }
+
+  // TODO: "date" (no time) are strings, but there are a few known names
+  // date_of_birth, start_date
+  // these are both for Facebook Ads
+
+  const map = {
+    string: "string",
+    enumeration: "string",
+    datetime: "date",
+    bool: "boolean",
+    number: "float",
+  };
+  const grouparooType = map[hubspotType];
+  if (grouparooType) {
+    return grouparooType;
+  }
+  return null;
+};
+
+export const getRequiredFields = (): Array<{
+  key: string;
+  type: DestinationMappingOptionsResponseTypes;
+}> => {
+  return [{ key: "email", type: "email" }];
+};
+
+const isImportant = (key): Boolean => {
+  return importantFields.includes(key);
+};
+
+export const getUserFields = async (
+  client: any,
+  appOptions: SimpleAppOptions
+): Promise<
+  Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    important?: boolean;
+  }>
+> => {
+  const fields = await client.getAllContactsProperties();
+  const out = [];
+  for (const field of fields) {
+    if (field["name"] !== "email" && !field["readOnlyValue"]) {
+      const type: DestinationMappingOptionsResponseTypes = mapTypesFromHubspotToGrouparoo(
+        field["name"],
+        field["type"]
+      );
+      if (type) {
+        out.push({
+          key: field["name"],
+          type,
+          important: isImportant(field["name"]),
+        });
+      }
+    }
+  }
+  return out;
 };

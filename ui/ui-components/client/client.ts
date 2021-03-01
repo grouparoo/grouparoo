@@ -85,6 +85,8 @@ export class Client {
           res.end();
         }
       }
+    } else if (code === "AUTHORIZATION_ERROR") {
+      // ok, it will be rendered on the page
     }
   }
 

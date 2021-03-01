@@ -15,6 +15,13 @@ export class GoogleSheetAppTemplate extends ConfigTemplate {
     super();
     this.name = `google-sheets:app`;
     this.description = `Config for a Google Sheets App`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new App`,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [path.join(templateRoot, "app", "*.template")];
     this.destinationDir = "apps";
   }
@@ -30,6 +37,17 @@ export class GoogleSheetSourceTemplate extends ConfigTemplate {
     super();
     this.name = `google-sheets:source`;
     this.description = `Config for a Google Sheets Source`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Source`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of the App to use for this Source, e.g: \`--parent google_sheet_app\``,
+      },
+    };
     this.files = [path.join(templateRoot, "source", "*.template")];
     this.destinationDir = "sources";
     this.parentId = "appId";
@@ -47,6 +65,17 @@ export class GoogleSheetPropertyTemplate extends ConfigTemplate {
     super();
     this.name = `google-sheets:property`;
     this.description = `Config for a Google Sheets Property`;
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Property`,
+        formatter: (p) => this.formatId(p),
+      },
+      parent: {
+        required: true,
+        description: `The id of the Source to use for this Property, e.g: \`--parent google_sheet_source\``,
+      },
+    };
     this.files = [path.join(templateRoot, "property", "*.template")];
     this.destinationDir = "properties";
     this.parentId = "sourceId";

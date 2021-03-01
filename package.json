@@ -14,18 +14,18 @@
   },
   "devDependencies": {
     "glob": "7.1.6",
-    "lerna": "3.22.1",
+    "lerna": "4.0.0",
     "lerna-changelog": "1.0.1",
     "license-checker": "github:grouparoo/license-checker",
-    "npm-check-updates": "11.1.1",
+    "npm-check-updates": "11.1.5",
     "prettier": "2.2.1"
   },
   "scripts": {
     "preinstall": "./bin/preinstall",
     "license-checker": "./tools/license-checker/check",
     "spell-checker": "./tools/spell-checker/check",
-    "version-alpha": "lerna version prerelease --preid alpha --force-publish --yes",
-    "version-stable": "lerna version patch --force-publish --yes",
+    "version-alpha": "lerna version prerelease --exact --preid alpha --force-publish --yes",
+    "version-stable": "lerna version patch --exact --force-publish --yes",
     "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
     "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist",

@@ -7,6 +7,7 @@ import {
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { SetupStepOps } from "../modules/ops/setupSteps";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "setupSteps", paranoid: false })
 export class SetupStep extends LoggedModel<SetupStep> {
@@ -54,8 +55,8 @@ export class SetupStep extends LoggedModel<SetupStep> {
       outcome,
       skipped: this.skipped,
       complete: this.complete,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
     };
   }
 

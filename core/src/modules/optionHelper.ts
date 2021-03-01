@@ -131,6 +131,10 @@ export namespace OptionHelper {
       }
     });
 
+    if (!match.plugin) {
+      throw new Error(`Cannot find a "${type}" plugin.  Did you install it?`);
+    }
+
     return match;
   }
 

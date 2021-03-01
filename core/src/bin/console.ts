@@ -9,9 +9,12 @@ export class Console extends CLI {
     this.description =
       "Start an interactive REPL session with the api object in-scope";
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run() {
     GrouparooCLI.logCLI(this.name);

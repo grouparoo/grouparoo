@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import ProfileImageFromEmail from "../../../components/visualizations/profileImageFromEmail";
 import Moment from "react-moment";
 import LoadingTable from "../../../components/loadingTable";
-import getProfileDisplayName from "../../../components/profile/getProfileDisplayName";
+import { getProfilePageTitle } from "../../../components/profile/getProfileDisplayName";
 import ArrayProfilePropertyList from "../../../components/profile/arrayProfilePropertyList";
 import { Models, Actions } from "../../../utils/apiData";
 import { ErrorHandler } from "../../../utils/errorHandler";
@@ -190,7 +190,7 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: {getProfileDisplayName(profile)}</title>
+        <title>Grouparoo: {getProfilePageTitle(profile)}</title>
       </Head>
 
       <ProfileTabs profile={profile} />

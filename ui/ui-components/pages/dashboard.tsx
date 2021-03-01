@@ -25,7 +25,7 @@ export default function Page(props) {
         <Col>
           <BigNumber
             execApi={execApi}
-            href="profiles"
+            href="/profiles"
             model="Profile"
             title="Profiles"
           />
@@ -34,7 +34,7 @@ export default function Page(props) {
         <Col>
           <BigNumber
             execApi={execApi}
-            href="groups"
+            href="/groups"
             model="Group"
             title="Groups"
           />

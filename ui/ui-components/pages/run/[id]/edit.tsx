@@ -1,9 +1,9 @@
 import { useApi } from "../../../hooks/useApi";
 import { useState } from "react";
-import { Row, Col, Badge, Alert } from "react-bootstrap";
+import { Row, Col, Badge, Alert, Card } from "react-bootstrap";
 import Moment from "react-moment";
 import Link from "../../../components/enterpriseLink";
-import { ResponsiveLine } from "@nivo/line";
+import { GrouparooChart } from "../../../components/visualizations/grouparooChart";
 import RunTabs from "../../../components/tabs/run";
 import Head from "next/head";
 import LoadingButton from "../../../components/loadingButton";
@@ -13,7 +13,7 @@ export default function Page(props) {
   const { quantizedTimeline, successHandler, errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [run, setRun] = useState<Models.RunType>(props.run);
-  const chartData = buildChartData(quantizedTimeline);
+  const { chartData, chartKeys } = buildChartData(quantizedTimeline);
   const [loading, setLoading] = useState(false);
 
   async function stopRun() {
@@ -36,9 +36,11 @@ export default function Page(props) {
 
       <RunTabs run={run} />
 
-      <Row>
-        <Col>
-          <h1>Run {run.id}</h1>
+      <h1>Run {run.id}</h1>
+
+      <Card>
+        <Card.Body>
+          <h2>Details</h2>
           <p>
             Creator:{" "}
             <Link href="/object/[id]" as={`/object/${run.creatorId}`}>
@@ -119,61 +121,17 @@ export default function Page(props) {
               </Col>
             </Row>
           ) : null}
+        </Card.Body>
+      </Card>
 
+      <br />
+
+      <Card>
+        <Card.Body style={{ height: 500 }}>
           <h2>Timeline</h2>
-          <div style={{ height: 500 }}>
-            <ResponsiveLine
-              data={chartData}
-              margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-              colors={{ scheme: "category10" }}
-              lineWidth={2}
-              //@ts-ignore
-              animate={false}
-              enableSlices={"x"}
-              useMesh={true}
-              curve={"monotoneX"}
-              xScale={{
-                type: "time",
-                format: "native",
-                precision: "second",
-              }}
-              xFormat="time:%H:%M:%S"
-              yScale={{
-                type: "linear",
-              }}
-              axisBottom={{
-                format: "%H:%M:%S",
-              }}
-              legends={[
-                {
-                  anchor: "bottom-right",
-                  direction: "column",
-                  justify: false,
-                  translateX: 100,
-                  translateY: 0,
-                  itemsSpacing: 0,
-                  itemDirection: "left-to-right",
-                  itemWidth: 80,
-                  itemHeight: 20,
-                  itemOpacity: 0.75,
-                  symbolSize: 12,
-                  symbolShape: "circle",
-                  symbolBorderColor: "rgba(0, 0, 0, .5)",
-                  effects: [
-                    {
-                      on: "hover",
-                      style: {
-                        itemBackground: "rgba(0, 0, 0, .03)",
-                        itemOpacity: 1,
-                      },
-                    },
-                  ],
-                },
-              ]}
-            />
-          </div>
-        </Col>
-      </Row>
+          <GrouparooChart keys={chartKeys} data={chartData} />
+        </Card.Body>
+      </Card>
     </>
   );
 }
@@ -186,20 +144,16 @@ Page.getInitialProps = async (ctx) => {
 };
 
 function buildChartData(quantizedTimeline) {
-  const keys = Object.keys(quantizedTimeline[0].steps);
-  const points = {};
-  keys.forEach((k) => {
-    points[k] = [];
-  });
+  const chartData: { x: number; y: number }[][] = [];
+  const chartKeys = Object.keys(quantizedTimeline[0].steps);
 
   quantizedTimeline.forEach((chunk) => {
-    const x = new Date(chunk.lastBoundary);
-    keys.forEach((k) => {
-      points[k].push({ x, y: chunk.steps[k] });
+    const x = new Date(chunk.lastBoundary).getTime();
+    chartKeys.forEach((k, idx) => {
+      if (!chartData[idx]) chartData[idx] = [];
+      chartData[idx].push({ x, y: chunk.steps[k] });
     });
   });
 
-  return keys.map((k) => {
-    return { id: k, data: points[k] };
-  });
+  return { chartData, chartKeys };
 }

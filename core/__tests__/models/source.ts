@@ -77,9 +77,7 @@ describe("models/source", () => {
           name: "test source",
           appId: app.id,
         })
-      ).rejects.toThrow(
-        /cannot find an import connection for a source of missing-source/
-      );
+      ).rejects.toThrow(/Cannot find a \"missing-source\" plugin./);
     });
 
     test("a new source will have a '' name", async () => {

@@ -20,6 +20,7 @@ import { plugin } from "../modules/plugin";
 import Moment from "moment";
 import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
+import { APIData } from "../modules/apiData";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -192,9 +193,9 @@ export class Export extends Model {
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
       force: this.force,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      startedAt: this.startedAt ? this.startedAt.getTime() : null,
-      completedAt: this.completedAt ? this.completedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      startedAt: APIData.formatDate(this.startedAt),
+      completedAt: APIData.formatDate(this.completedAt),
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
       oldGroups: this.oldGroups,

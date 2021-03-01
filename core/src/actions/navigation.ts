@@ -68,6 +68,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           { type: "link", title: "Create Team", href: "/team/initialize" },
         ];
       }
+      bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
     }
 
     if (navigationMode === "authenticated") {
@@ -176,6 +177,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         href: "/account",
       });
       bottomMenuItems.push({ type: "link", title: "About", href: "/about" });
+      bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
 
       bottomMenuItems.push({ type: "divider" });
 

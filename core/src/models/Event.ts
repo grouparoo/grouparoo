@@ -16,6 +16,7 @@ import { PropertyFiltersWithKey } from "./Property";
 import { api, config } from "actionhero";
 import { CLS } from "../modules/cls";
 import { EventOps } from "../modules/ops/event";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "events", paranoid: false })
 export class Event extends LoggedModel<Event> {
@@ -102,12 +103,10 @@ export class Event extends LoggedModel<Event> {
       ipAddress: this.ipAddress,
       userId: this.userId,
       anonymousId: this.anonymousId,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      occurredAt: this.occurredAt ? this.occurredAt.getTime() : null,
-      profileAssociatedAt: this.profileAssociatedAt
-        ? this.profileAssociatedAt.getTime()
-        : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
+      occurredAt: APIData.formatDate(this.occurredAt),
+      profileAssociatedAt: APIData.formatDate(this.profileAssociatedAt),
       data,
     };
   }

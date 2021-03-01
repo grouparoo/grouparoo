@@ -3,7 +3,7 @@ import { Generate } from "../../src/bin/generate";
 import os from "os";
 import fs from "fs-extra";
 
-const tmpDir = `${os.tmpdir()}/test/${
+process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
 }/generate/config`;
 
@@ -12,8 +12,8 @@ describe("bin/generate", () => {
   beforeAll(async () => await helper.factories.properties());
 
   beforeAll(() => {
-    fs.mkdirpSync(tmpDir);
-    fs.emptyDirSync(tmpDir);
+    fs.mkdirpSync(process.env.GROUPAROO_CONFIG_DIR);
+    fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
   });
 
   let messages = [];
@@ -39,7 +39,7 @@ describe("bin/generate", () => {
 
   test("the generate command can list templates", async () => {
     const command = new Generate();
-    await command.run({ params: { path: tmpDir, list: true } });
+    await command.run({ params: { list: true } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
@@ -51,7 +51,7 @@ describe("bin/generate", () => {
   test("the generate command can filter the list of templates", async () => {
     const command = new Generate();
     await command.run({
-      params: { path: tmpDir, template: "group", list: true },
+      params: { template: "group", list: true },
     });
 
     const output = messages.join(" ");
@@ -64,11 +64,11 @@ describe("bin/generate", () => {
   test("the generate command can write a new file", async () => {
     const command = new Generate();
     const toStop = await command.run({
-      params: { path: tmpDir, template: "group:calculated", id: "new-group" },
+      params: { template: "group:calculated", id: "new-group" },
     });
     expect(toStop).toBe(true);
 
-    const file = `${tmpDir}/groups/new-group.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/groups/new-group.js`;
     const output = messages.join(" ");
     expect(output).toContain("generate group:calculated");
     expect(output).toContain(`wrote ${file}`);
@@ -81,11 +81,11 @@ describe("bin/generate", () => {
   test("the generate command will fail if the file exists", async () => {
     const command = new Generate();
     await command.run({
-      params: { path: tmpDir, template: "group:calculated", id: "new-group" },
+      params: { template: "group:calculated", id: "new-group" },
     });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/groups/new-group.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/groups/new-group.js`;
     expect(output).toContain(`${file} already exists`);
     expect(output).not.toContain(`wrote ${file}`);
   });
@@ -94,7 +94,6 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "group:calculated",
         id: "new-group",
         overwrite: true,
@@ -102,7 +101,7 @@ describe("bin/generate", () => {
     });
 
     const output = messages.join(" ");
-    const file = `${tmpDir}/groups/new-group.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/groups/new-group.js`;
     expect(output).toContain(`wrote ${file}`);
   });
 
@@ -110,7 +109,6 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "group:calculated",
         id: "New Group",
         overwrite: true,
@@ -128,7 +126,6 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "group:calculated",
         id: "new-group",
         overwrite: true,
@@ -143,7 +140,6 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "team:member",
         id: "new-team-member",
       },
@@ -156,7 +152,6 @@ describe("bin/generate", () => {
     const command = new Generate();
     await command.run({
       params: {
-        path: tmpDir,
         template: "team:member",
         id: "new-team-member",
         parent: "admin_team",

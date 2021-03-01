@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { Profile, Group, Team, TeamMember, Property } from "../../src";
+import { Profile, Group, Team, TeamMember, Property, Run } from "../../src";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -208,9 +208,10 @@ describe("actions/profiles", () => {
       expect(error).toBeUndefined();
       expect(run.id).toBeTruthy();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("run:internalRun");
-      const rulesCount = await Property.count();
-      expect(foundTasks.length).toBe(rulesCount + 1);
+      const runningRuns = await Run.findAll({
+        where: { state: "running", creatorType: "teamMember" },
+      });
+      expect(runningRuns.length).toBe(1);
     });
 
     test("a writer can destroy a profile", async () => {
@@ -717,9 +718,7 @@ describe("actions/profiles", () => {
         "profile:create",
         connection
       );
-      expect(error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can list all the profiles", async () => {
@@ -740,9 +739,7 @@ describe("actions/profiles", () => {
         id,
       };
       const { error } = await specHelper.runAction("profile:edit", connection);
-      expect(error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(error.code).toBe("AUTHORIZATION_ERROR");
     });
 
     test("a reader can view a profile", async () => {
@@ -779,9 +776,7 @@ describe("actions/profiles", () => {
         connection
       );
 
-      expect(destroyResponse.error.message).toMatch(
-        /not authorized for mode "write" on topic "profile"/
-      );
+      expect(destroyResponse.error.code).toBe("AUTHORIZATION_ERROR");
     });
   });
 });

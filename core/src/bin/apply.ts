@@ -8,7 +8,7 @@ import {
   deleteLockedObjects,
 } from "../modules/configLoaders";
 
-export class Validate extends CLI {
+export class Apply extends CLI {
   constructor() {
     super();
     this.name = "apply";
@@ -22,9 +22,12 @@ export class Validate extends CLI {
       },
     };
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     GrouparooCLI.logCLI(this.name);

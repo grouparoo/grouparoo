@@ -11,12 +11,16 @@ export class Status extends CLI {
     this.name = "status";
     this.description = "Display the status of your Grouparoo cluster";
 
-    GrouparooCLI.setGrouparooRunMode(this);
     GrouparooCLI.timestampOption(this);
+    GrouparooCLI.jsonOption(this);
   }
 
-  async run() {
-    GrouparooCLI.logCLI(this.name);
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
+
+  async run({ params }) {
+    if (!params.json) GrouparooCLI.logCLI(this.name);
 
     const { value: clusterName } = await plugin.readSetting(
       "core",
@@ -50,12 +54,22 @@ export class Status extends CLI {
     const pendingStatus = await GrouparooCLI.getPendingStatus();
     const runStatus = await GrouparooCLI.getRunsStatus();
 
-    GrouparooCLI.logStatus("Cluster Status", [
+    const data = [
       { header: "Overview", status: overview },
       { header: "Groups", status: groupsStatus },
       { header: "Active Runs", status: runStatus },
       { header: "Pending Items", status: pendingStatus },
-    ]);
+    ];
+
+    if (params.json) {
+      const jsonData = {};
+      data.map((collection) => {
+        jsonData[collection.header] = collection.status;
+      });
+      console.log(JSON.stringify(jsonData));
+    } else {
+      GrouparooCLI.logStatus("Cluster Status", data);
+    }
 
     return true;
   }

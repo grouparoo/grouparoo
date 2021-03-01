@@ -15,6 +15,7 @@ import { TeamMember } from "./TeamMember";
 import { Permission, PermissionTopics } from "./Permission";
 import { AsyncReturnType } from "type-fest";
 import { LockableHelper } from "../modules/lockableHelper";
+import { APIData } from "../modules/apiData";
 
 @Table({ tableName: "teams", paranoid: false })
 export class Team extends LoggedModel<Team> {
@@ -60,8 +61,8 @@ export class Team extends LoggedModel<Team> {
       locked: this.locked,
       permissionAllRead: this.permissionAllRead,
       permissionAllWrite: this.permissionAllWrite,
-      createdAt: this.createdAt ? this.createdAt.getTime() : null,
-      updatedAt: this.updatedAt ? this.updatedAt.getTime() : null,
+      createdAt: APIData.formatDate(this.createdAt),
+      updatedAt: APIData.formatDate(this.updatedAt),
       permissions: permissionsApiData,
       membersCount,
     };

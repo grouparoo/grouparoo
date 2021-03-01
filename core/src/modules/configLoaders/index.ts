@@ -21,7 +21,6 @@ import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
-import { Property } from "../../models/Property";
 
 export function getConfigDir() {
   const configDir =
@@ -187,7 +186,7 @@ export async function processConfigObjects(
         configObject.key || configObject.name
       }\` (${configObject.id}): ${error}`;
       errors.push(errorMessage);
-      log(errorMessage, env === "test" ? "info" : "error");
+      log(errorMessage, "warning");
       continue;
     }
 

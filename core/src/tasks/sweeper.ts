@@ -3,6 +3,7 @@ import { Run } from "../models/Run";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
 import { Log } from "../models/Log";
+import { Session } from "../models/Session";
 import { CLSTask } from "../classes/tasks/clsTask";
 
 export class Sweeper extends CLSTask {
@@ -56,5 +57,9 @@ export class Sweeper extends CLSTask {
     // --- LOGS ---
     response = await Log.sweep();
     this.log("log", response.count, response.days);
+
+    // --- Sessions ---
+    response = await Session.sweep();
+    this.log("session", response.count, response.days);
   }
 }

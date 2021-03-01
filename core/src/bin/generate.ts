@@ -9,6 +9,7 @@ import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
+import { getConfigDir } from "../modules/configLoaders";
 
 export class Generate extends CLI {
   constructor() {
@@ -44,9 +45,34 @@ Commands:
       },
       parent: {
         required: false,
-        letter: "a",
+        letter: "p",
         description:
-          "The id of the object that is the direct parent of this new object.  ie: the appId if you are creating a new Source, the sourceId if you are creating a new Property, etc.",
+          "The id of the object that is the direct parent of this new object, e.g. the appId if you are creating a new Source.",
+      },
+      from: {
+        required: false,
+        letter: "f",
+        description:
+          "For batch generators, where should we read the objects from?",
+      },
+      with: {
+        required: false,
+        letter: "w",
+        description:
+          'For batch generators, what additional objects should we create? Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
+        default: "",
+      },
+      mapping: {
+        required: false,
+        letter: "m",
+        description:
+          'For batch generators, how should we map this object? The remote key precedes the Grouparoo Property name. Use = to set the pair (--mapping "id=user_id").',
+      },
+      "high-water-mark": {
+        required: false,
+        letter: "H",
+        description:
+          "For batch generators, what should we use for the high-water-mark?",
       },
       overwrite: {
         required: true,
@@ -55,22 +81,33 @@ Commands:
         flag: true,
         description: "Overwrite existing files?",
       },
-      path: {
-        required: true,
-        letter: "p",
-        default: path.join(process.env.INIT_CWD || process.cwd(), "config"),
-        description: "The location of the config directory",
-      },
     };
-    this.example = "grouparoo generate postgres:app data_warehouse";
+    this.example = `App generation:
+    grouparoo generate postgres:app data_warehouse
 
-    GrouparooCLI.setGrouparooRunMode(this);
+  Simple Source Generation (needs parent app):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse
+
+  Batch Source Generation (needs parent app to be applied first):
+    grouparoo generate postgres:table:source users_table \\
+      --parent data_warehouse \\
+      --from users \\
+      --with id,first_name,email,last_name \\
+      --mapping 'id=user_id' \\
+      --high-water-mark updated_at
+    `;
   }
+
+  preInitialize = () => {
+    GrouparooCLI.setGrouparooRunMode(this);
+  };
 
   async run({ params }) {
     const [template, id] = params._arguments || [];
     if (template) params.template = template;
     if (id) params.id = id;
+    params.path = getConfigDir();
 
     GrouparooCLI.logCLI(
       this.name
@@ -98,7 +135,7 @@ Commands:
 
   async generate(params) {
     const learnMoreText =
-      "Learn more with `grouparoo generate --help` and `grouparoo generate --list`";
+      "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
 
     if (!params.template) {
       return this.fatalError(`template is required. ${learnMoreText}`);
@@ -126,6 +163,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
+      // console.error(error);
       return this.fatalError(error.message);
     }
 
@@ -182,38 +220,66 @@ Commands:
   }
 
   logTemplateAndOptions(template: ConfigTemplate, compact = false) {
+    const inputs = template.inputs;
+
+    if (!inputs["id"]) {
+      inputs["id"] = {
+        required: true,
+        description: "The id to use for this new object.",
+      };
+    }
+
     if (compact) {
       console.log(
         "  " +
           GrouparooCLI.underlineBold(template.name) +
-          ` (${Object.keys(template.inputs).join(", ")}) - ${
-            template.description
-          }`
+          ` (${Object.keys(inputs).join(", ")}) - ${template.description}`
       );
     } else {
-      console.log(`${template.description}`);
-      console.log("");
-      console.log("Options:");
-      Object.keys(template.inputs).forEach((k) => {
+      const requiredInputs = Object.keys(template.inputs)
+        .filter((i) => template.inputs[i].required)
+        .filter((i) => i !== "id")
+        .sort();
+      const optionalInputs = Object.keys(template.inputs)
+        .filter((i) => !template.inputs[i].required)
+        .sort();
+
+      function displayInput(k: string) {
         const req =
-          template.inputs[k].required &&
-          (template.inputs[k].default === null ||
-            template.inputs[k].default === undefined);
+          inputs[k].required &&
+          (inputs[k].default === null || inputs[k].default === undefined);
+
         console.log(
-          `  * ${k}${req ? " (required)" : ""} - ${
-            template.inputs[k].description
-          } ${
-            template.inputs[k].default !== null &&
-            template.inputs[k].default !== undefined
-              ? `(default: ${JSON.stringify(template.inputs[k].default)})`
+          `  * ${k}${req ? " (required)" : ""} - ${inputs[k].description} ${
+            inputs[k].default !== null && inputs[k].default !== undefined
+              ? `(default: ${JSON.stringify(inputs[k].default)})`
               : ""
           }${
-            template.inputs[k].copyDefaultFrom
-              ? `(default copied from ${template.inputs[k].copyDefaultFrom})`
+            inputs[k].copyDefaultFrom
+              ? `(default copied from ${inputs[k].copyDefaultFrom})`
               : ""
           }`
         );
-      });
+      }
+
+      console.log(`${template.description}`);
+      console.log("");
+
+      if (template.inputs.id) {
+        console.log("Required Arguments:");
+        console.log(`  * id (required) - ${inputs.id.description}`);
+        console.log("");
+      }
+
+      console.log("Required Options:");
+      requiredInputs.length > 0
+        ? requiredInputs.forEach((k) => displayInput(k))
+        : console.log("  None");
+      console.log("");
+      console.log("Optional Options:");
+      optionalInputs.length > 0
+        ? optionalInputs.forEach((k) => displayInput(k))
+        : console.log("  None");
       console.log("");
     }
   }

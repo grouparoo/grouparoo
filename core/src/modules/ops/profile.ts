@@ -401,7 +401,7 @@ export namespace ProfileOps {
     [key: string]: Array<string | number | boolean | Date>;
   }) {
     let profile: Profile;
-    let isNew: boolean;
+    let isNew = false;
     let profileProperty: ProfileProperty;
     const uniqueProperties = await Property.findAll({
       where: { unique: true },
@@ -433,7 +433,6 @@ export namespace ProfileOps {
       });
 
       if (profile) {
-        isNew = false;
         return { profile, isNew };
       } else {
         throw new Error(
@@ -470,7 +469,6 @@ export namespace ProfileOps {
         profile = await Profile.findOne({
           where: { id: profileProperty.profileId },
         });
-        isNew = false;
       } else {
         profile = await Profile.create();
         profile = await profile.reload();

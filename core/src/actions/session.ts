@@ -1,8 +1,9 @@
 import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
 
-export class SessionCreate extends Action {
+export class SessionCreate extends CLSAction {
   constructor() {
     super();
     this.name = "session:create";
@@ -14,7 +15,7 @@ export class SessionCreate extends Action {
     this.outputExample = {};
   }
 
-  async run({
+  async runWithinTransaction({
     connection,
     params,
   }: {
@@ -29,12 +30,12 @@ export class SessionCreate extends Action {
     const match = await teamMember.checkPassword(params.password);
     if (!match) throw new Error("password does not match");
 
-    const sessionData = await api.session.create(connection, teamMember);
+    const session = await api.session.create(connection, teamMember);
 
     return {
       success: true,
       teamMember: await teamMember.apiData(),
-      csrfToken: sessionData.csrfToken,
+      csrfToken: session.id,
     };
   }
 }
@@ -55,13 +56,13 @@ export class SessionView extends AuthenticatedAction {
     connection: Connection;
     session: { teamMember: TeamMember };
   }) {
-    const sessionData = await api.session.load(connection);
-    if (sessionData) {
-      return {
-        teamMember: await teamMember.apiData(),
-        csrfToken: sessionData.csrfToken,
-      };
-    }
+    const session = await api.session.load(connection);
+    if (!session) throw new Error("session not found");
+
+    return {
+      teamMember: await teamMember.apiData(),
+      csrfToken: session.id,
+    };
   }
 }
 

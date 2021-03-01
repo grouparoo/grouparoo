@@ -131,6 +131,7 @@ describe("session", () => {
       api.actions.versions.appReadAction = [1];
       api.actions.versions.appWriteAction = [1];
       api.actions.versions.systemReadAction = [1];
+      api.actions.versions.optionallyAuthenticatedAction = [1];
 
       api.actions.actions.appReadAction = {
         1: {
@@ -177,6 +178,21 @@ describe("session", () => {
         },
       };
 
+      api.actions.actions.optionallyAuthenticatedAction = {
+        1: {
+          name: "systemReadAction",
+          description: "I am a test",
+          version: 1,
+          outputExample: {},
+          middleware: ["optionally-authenticated-action"],
+          //@ts-ignore
+          permission: { topic: "*", mode: "read" },
+          run: async (data) => {
+            data.response.success = true;
+          },
+        },
+      };
+
       api.routes.loadRoutes();
     });
 
@@ -185,8 +201,10 @@ describe("session", () => {
       delete api.actions.versions.appReadAction;
       delete api.actions.actions.appWriteAction;
       delete api.actions.versions.appWriteAction;
+      delete api.actions.actions.systemReadAction;
       delete api.actions.versions.systemReadAction;
-      delete api.actions.versions.systemReadAction;
+      delete api.actions.actions.optionallyAuthenticatedAction;
+      delete api.actions.versions.optionallyAuthenticatedAction;
     });
 
     describe("session", () => {
@@ -269,7 +287,7 @@ describe("session", () => {
           "appReadAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         await signIn();
@@ -277,7 +295,7 @@ describe("session", () => {
           "appWriteAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         await signIn();
@@ -285,7 +303,7 @@ describe("session", () => {
           "systemReadAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
       });
 
@@ -309,7 +327,7 @@ describe("session", () => {
           "appWriteAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         await signIn();
@@ -317,7 +335,7 @@ describe("session", () => {
           "systemReadAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
       });
 
@@ -334,7 +352,7 @@ describe("session", () => {
           "appReadAction",
           Object.assign({}, connection, { params: { csrfToken } })
         );
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         await signIn();
@@ -349,6 +367,31 @@ describe("session", () => {
         response = await specHelper.runAction(
           "systemReadAction",
           Object.assign({}, connection, { params: { csrfToken } })
+        );
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
+        expect(response.success).toBeFalsy();
+      });
+
+      test("optionally authenticated actions can be read by logged out users", async () => {
+        let response = await specHelper.runAction(
+          "optionallyAuthenticatedAction"
+          // no connection
+        );
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
+      });
+
+      test("optionally authenticated actions can be read by logged out users, but require proper credentials", async () => {
+        let response = await specHelper.runAction(
+          "optionallyAuthenticatedAction",
+          Object.assign({}, connection, { params: { csrfToken } })
+        );
+        expect(response.error).toBeFalsy();
+        expect(response.success).toBe(true);
+
+        response = await specHelper.runAction(
+          "optionallyAuthenticatedAction",
+          Object.assign({}, connection, { params: { csrfToken: "BAD TOKEN" } })
         );
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.success).toBeFalsy();
@@ -486,19 +529,19 @@ describe("session", () => {
         let response = await specHelper.runAction("appReadAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         response = await specHelper.runAction("appWriteAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
       });
 
@@ -517,13 +560,13 @@ describe("session", () => {
         response = await specHelper.runAction("appWriteAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
       });
 
@@ -536,7 +579,7 @@ describe("session", () => {
         let response = await specHelper.runAction("appReadAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
 
         response = await specHelper.runAction("appWriteAction", {
@@ -548,7 +591,7 @@ describe("session", () => {
         response = await specHelper.runAction("systemReadAction", {
           apiKey: apiKey.apiKey,
         });
-        expect(response.error.code).toBe("AUTHENTICATION_ERROR");
+        expect(response.error.code).toBe("AUTHORIZATION_ERROR");
         expect(response.success).toBeFalsy();
       });
     });

@@ -1,6 +1,6 @@
 import { Models } from "../../utils/apiData";
 
-export default function getProfileDisplayName(profile: Models.ProfileType) {
+export function getProfileDisplayName(profile: Models.ProfileType) {
   let displayName = "";
 
   for (const key in profile.properties) {
@@ -12,4 +12,18 @@ export default function getProfileDisplayName(profile: Models.ProfileType) {
   if (displayName === "") displayName = profile.id;
 
   return displayName;
+}
+
+export function getProfilePageTitle(profile: Models.ProfileType) {
+  let title = "";
+
+  for (const key in profile.properties) {
+    if (profile.properties[key].identifying) {
+      title = `${key} - ${profile.properties[key].values.join(", ")}`;
+    }
+  }
+
+  if (title === "") title = `Profile - ${profile.id}`;
+
+  return title;
 }

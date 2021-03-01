@@ -2,7 +2,6 @@ import { log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 
 export class UpdateSchedules extends CLSTask {
   constructor() {
@@ -64,11 +63,6 @@ export class UpdateSchedules extends CLSTask {
           creatorId: schedule.id,
           creatorType: "schedule",
           state: "running",
-        });
-
-        await CLS.enqueueTask("schedule:run", {
-          scheduleId: schedule.id,
-          runId: run.id,
         });
 
         log(

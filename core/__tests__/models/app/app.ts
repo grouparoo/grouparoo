@@ -187,13 +187,13 @@ describe("models/app", () => {
   describe("validations", () => {
     test("apps must be of a type defined by a plugin", async () => {
       const app = new App({
-        name: "test app",
+        name: "test-plugin-no-app",
         type: "oh no",
         options: {},
       });
 
       await expect(app.save()).rejects.toThrow(
-        /cannot find a pluginApp for type oh no/
+        /Cannot find a \"oh no\" plugin/
       );
     });
 

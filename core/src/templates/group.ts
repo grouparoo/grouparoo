@@ -6,6 +6,13 @@ export class CalculatedGroupTemplate extends ConfigTemplate {
     super();
     this.name = "group:calculated";
     this.description = "Config for a calculated Grouparoo Group";
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Property`,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [
       path.join(
         __dirname,
@@ -33,6 +40,13 @@ export class ManualGroupTemplate extends ConfigTemplate {
     super();
     this.name = "group:manual";
     this.description = "Config for a manual Grouparoo Group";
+    this.inputs = {
+      id: {
+        required: true,
+        description: `The id of this new Property`,
+        formatter: (p) => this.formatId(p),
+      },
+    };
     this.files = [
       path.join(
         __dirname,

@@ -9,6 +9,9 @@ import { test } from "./../lib/test";
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
 
+import { getTables } from "../lib/table-import/getTables";
+import { getColumns } from "../lib/table-import/getColumns";
+
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import {
@@ -36,7 +39,7 @@ export class Plugins extends Initializer {
         new AppTemplate("bigquery", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new TableSourceTemplate("bigquery"),
+        new TableSourceTemplate("bigquery", { getTables, getColumns }),
         new TablePropertyTemplate("bigquery"),
         new QuerySourceTemplate("bigquery"),
         new QueryPropertyTemplate("bigquery"),

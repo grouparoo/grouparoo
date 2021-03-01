@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
+import { api } from "actionhero";
 import { internalRun } from "./../../src/modules/internalRun";
 import { Run } from "../../src";
 
@@ -18,10 +18,6 @@ describe("modules/internalRun", () => {
     const runs = await Run.findAll();
     expect(runs.length).toBe(1);
     expect(runs[0].creatorId).toBe("abc123");
-
-    const found = await specHelper.findEnqueuedTasks("run:internalRun");
-    expect(found.length).toEqual(1);
-    expect(found[0].args[0].runId).toBe(runs[0].id);
   });
 
   test("adding a new internal run will stop other internal runs for the same creator type", async () => {

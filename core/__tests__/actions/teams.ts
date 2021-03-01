@@ -6,7 +6,7 @@ const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscrip
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
 
 describe("actions/teams", () => {
-  helper.grouparooTestServer({ truncate: true });
+  helper.grouparooTestServer({ truncate: true, resetSettings: true });
   let id: string;
 
   describe("team:initialize", () => {
@@ -332,9 +332,7 @@ describe("actions/teams", () => {
         name: "team wario",
       };
       const { error } = await specHelper.runAction("team:create", connection);
-      expect(error.message).toEqual(
-        'not authorized for mode "write" on topic "team"'
-      );
+      expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
 
     test("a non-administrator cannot edit a team", async () => {
@@ -344,9 +342,7 @@ describe("actions/teams", () => {
         name: "team wario",
       };
       const { error } = await specHelper.runAction("team:edit", connection);
-      expect(error.message).toEqual(
-        'not authorized for mode "write" on topic "team"'
-      );
+      expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
 
     test("a non-administrator cannot destroy a team", async () => {
@@ -355,9 +351,7 @@ describe("actions/teams", () => {
         id,
       };
       const { error } = await specHelper.runAction("team:destroy", connection);
-      expect(error.message).toEqual(
-        'not authorized for mode "write" on topic "team"'
-      );
+      expect(error.code).toEqual("AUTHORIZATION_ERROR");
     });
   });
 });
