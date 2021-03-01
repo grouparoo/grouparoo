@@ -17,12 +17,9 @@ const profilesPath = path.resolve(
 const postgresDirFullPath = path.join(profilesPath, "postgres");
 
 const homeDir = os.homedir();
-const userProfilePath = path.resolve(
-  path.join(homeDir, ".dbt", "profiles.yml")
-);
-const backupProfilePath = path.resolve(
-  path.join(homeDir, ".dbt", "profiles.backup.yml")
-);
+const dbtDir = path.join(homeDir, ".dbt");
+const userProfilePath = path.join(dbtDir, "profiles.yml");
+const backupProfilePath = path.join(dbtDir, "profiles.backup.yml");
 
 function checkPostgres(result: dbtSettingsResponse) {
   const { type, options } = result;
@@ -37,6 +34,11 @@ function checkPostgres(result: dbtSettingsResponse) {
   });
 }
 
+function ensureDbt() {
+  if (!fs.existsSync(dbtDir)) {
+    fs.mkdirSync(dbtDir);
+  }
+}
 function backupProfile() {
   // if this system already has a ~/profile.yml, back it up
   if (fs.existsSync(userProfilePath)) {
@@ -65,6 +67,7 @@ function replaceInFile(filePath, replaceValue, withValue) {
 describe("dbt/profile", () => {
   beforeAll(() => {
     previousCwd = process.cwd();
+    ensureDbt();
     backupProfile();
   });
   afterEach(() => {
