@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.2.4-alpha.0",
-    "jsforce": "1.9.3"
+    "jsforce": "1.10.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.4-alpha.0",
