@@ -38,6 +38,14 @@ export class Plugins extends Initializer {
           name: "pardot",
           options: [
             {
+              key: "businessUnitId",
+              displayName: "Pardot Business Unit ID",
+              required: true,
+              description: `To find the Pardot Business Unit ID, use Setup in Salesforce. 
+              From Setup, enter "Pardot Account Setup" in the Quick Find box. 
+              Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long.`,
+            },
+            {
               key: "username",
               displayName: "Username",
               required: true,
@@ -54,7 +62,7 @@ export class Plugins extends Initializer {
               displayName: "Security Token",
               required: false,
               description:
-                "To get a new security token, click on 'Reset My Security Token' in `personal settings`",
+                'To get a new security token, click on "Reset My Security Token" in "personal settings"',
             },
           ],
           methods: { test },
