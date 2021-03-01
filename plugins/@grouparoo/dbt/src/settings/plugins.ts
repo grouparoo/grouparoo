@@ -62,6 +62,11 @@ const bigquery: TypeOptionMethod = async (dbtConnection) => {
       if (!filePath) {
         throw new Error("no keyfile given for dbt bigquery service-account.");
       }
+      if (!fs.existsSync(filePath)) {
+        throw new Error(
+          `unknown keyfile (${filePath}) given for dbt bigquery service-account.`
+        );
+      }
       const contents = fs.readFileSync(filePath).toString();
       if (!contents) {
         throw new Error(

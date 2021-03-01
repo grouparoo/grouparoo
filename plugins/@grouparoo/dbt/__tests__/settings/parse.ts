@@ -56,6 +56,12 @@ function deleteProfile() {
   }
 }
 
+function replaceInFile(filePath, replaceValue, withValue) {
+  const contents = fs.readFileSync(filePath).toString();
+  const result = contents.replace(replaceValue, withValue);
+  fs.writeFileSync(filePath, result);
+}
+
 describe("dbt/profile", () => {
   beforeAll(() => {
     previousCwd = process.cwd();
@@ -263,6 +269,89 @@ describe("dbt/profile", () => {
           // won't find it
         })
       ).rejects.toThrow(/Unknown dbt profile directory/);
+    });
+  });
+
+  describe.only("bigquery", () => {
+    const profileDirFullPath = path.join(profilesPath, "bigquery");
+    const keyfilePath = path.join(profilesPath, "bigquery", "my-keyfile.json");
+    const profileYml = path.join(profilesPath, "bigquery", "profiles.yml");
+    const backupYml = path.join(
+      profilesPath,
+      "bigquery",
+      "profiles.backup.yml"
+    );
+
+    beforeAll(() => {
+      // backup yml
+      fs.copyFileSync(profileYml, backupYml);
+      // edit for keyfile name
+      replaceInFile(
+        profileYml,
+        "[/path/to/bigquery/keyfile.json]",
+        keyfilePath
+      );
+    });
+
+    afterAll(() => {
+      fs.renameSync(backupYml, profileYml);
+    });
+
+    it("can not handle oauth-secrets", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "oauth-secrets",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(
+        /Unsupported \(by Grouparoo\) bigquery connection method: oauth-secrets/
+      );
+    });
+
+    it("can not handle oauth", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "oauth",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(
+        /Unsupported \(by Grouparoo\) bigquery connection method: oauth/
+      );
+    });
+
+    it("parses service-account", async () => {
+      const result = await dbtProfile({
+        profileDirFullPath,
+        target: "service-account",
+        profile: "test_grouparoo_profile",
+      });
+      const { type, options } = result;
+      expect(type).toEqual("bigquery");
+      expect(options).toEqual({
+        client_email: "grouparoo@my-project-name.iam.gserviceaccount.com",
+        dataset: "the name of your dbt dataset",
+        private_key:
+          "-----BEGIN PRIVATE KEY-----\nMIIEvgIC_etc_xpPzJXvvEhqUa\n-----END PRIVATE KEY-----\n",
+        project_id: "GCP project id",
+      });
+    });
+
+    it("parses service-account-json", async () => {
+      const result = await dbtProfile({
+        profileDirFullPath,
+        target: "service-account-json",
+        profile: "test_grouparoo_profile",
+      });
+      const { type, options } = result;
+      expect(type).toEqual("bigquery");
+      expect(options).toEqual({
+        client_email: "key_email",
+        dataset: "the name of your dbt dataset",
+        private_key: "long_private_key",
+        project_id: "GCP project id",
+      });
     });
   });
 
