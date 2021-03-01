@@ -6,14 +6,15 @@ import { dbtProfile } from "../../src/settings/parse";
 import { dbtSettingsResponse } from "../../src/settings/types";
 
 let previousCwd = null;
-const defaultDirFullPath = path.resolve(
-  path.join(__dirname, "..", "projects", "default")
-);
-
 const projectsPath = path.resolve(
   path.join(path.join(__dirname, "..", "projects"))
 );
-const postgresDirFullPath = path.join(projectsPath, "postgres");
+const defaultDirFullPath = path.join(projectsPath, "default");
+
+const profilesPath = path.resolve(
+  path.join(path.join(__dirname, "..", "profiles"))
+);
+const postgresDirFullPath = path.join(profilesPath, "postgres");
 
 const homeDir = os.homedir();
 const userProfilePath = path.resolve(
@@ -151,8 +152,8 @@ describe("dbt/profile", () => {
 
   describe("when in subdir of project directory", () => {
     const subDir = path.resolve(path.join(defaultDirFullPath, "sub"));
-    const invalidNameDirFullPath = path.join(projectsPath, "invalid_name");
-    const invalidTargetDirFullPath = path.join(projectsPath, "invalid_target");
+    const invalidNameDirFullPath = path.join(profilesPath, "invalid_name");
+    const invalidTargetDirFullPath = path.join(profilesPath, "invalid_target");
 
     beforeAll(() => {
       process.chdir(subDir);
@@ -177,7 +178,7 @@ describe("dbt/profile", () => {
     it("can use relative path to find profile", async () => {
       const result = await dbtProfile({
         // finds relative in parent
-        profileDirRelativePath: "../../postgres",
+        profileDirRelativePath: "../../../profiles/postgres",
       });
       checkPostgres(result);
     });
@@ -266,7 +267,7 @@ describe("dbt/profile", () => {
   });
 
   describe("redshift", () => {
-    const profileDirFullPath = path.join(projectsPath, "redshift");
+    const profileDirFullPath = path.join(profilesPath, "redshift");
 
     it("parses password", async () => {
       const result = await dbtProfile({
