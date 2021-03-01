@@ -272,7 +272,7 @@ describe("dbt/profile", () => {
     });
   });
 
-  describe.only("bigquery", () => {
+  describe("bigquery", () => {
     const profileDirFullPath = path.join(profilesPath, "bigquery");
     const keyfilePath = path.join(profilesPath, "bigquery", "my-keyfile.json");
     const profileYml = path.join(profilesPath, "bigquery", "profiles.yml");
@@ -352,6 +352,18 @@ describe("dbt/profile", () => {
         private_key: "long_private_key",
         project_id: "GCP project id",
       });
+    });
+  });
+
+  describe("postgres", () => {
+    const profileDirFullPath = path.join(profilesPath, "postgres");
+    it("parses profile", async () => {
+      const result = await dbtProfile({
+        profileDirFullPath,
+        target: "dev",
+        profile: "test_grouparoo_profile",
+      });
+      checkPostgres(result);
     });
   });
 
