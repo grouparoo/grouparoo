@@ -29,7 +29,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       `newProfileProperties[email_address] is a required mapping`
     );
   }
-
+  const mailchimpId = generateMailchimpId(email_address);
   // consider if the the email address has changed
   if (
     !toDelete &&
@@ -39,14 +39,30 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const oldMailchimpId = generateMailchimpId(
       oldProfileProperties["email_address"]
     );
-    await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
-      email_address,
-      status: "subscribed",
-      merge_fields: { email_address },
-    });
+    try {
+      await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
+        email_address,
+        status: "subscribed",
+        merge_fields: { email_address },
+      });
+    } catch (error) {
+      if (
+        error?.errors[0]?.message?.match(
+          /is already in this list with a status of "subscribed"./i
+        )
+      ) {
+        await client.patch(`/lists/${listId}/members/${mailchimpId}`, {
+          email_address,
+          status: "subscribed",
+          merge_fields: { email_address },
+        });
+        await client.delete(`/lists/${listId}/members/${oldMailchimpId}`);
+      } else {
+        throw error;
+      }
+    }
   }
 
-  const mailchimpId = generateMailchimpId(email_address);
   return updateProfile({
     client,
     listId,

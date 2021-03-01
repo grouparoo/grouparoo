@@ -58,10 +58,9 @@ const appOptions = loadAppOptions(newNock);
 const destinationOptions = loadDestinationOptions(newNock);
 
 function generateRandomEmail() {
-  let hash = crypto
-    .createHash("md5")
-    .update(String(Math.random()))
-    .digest("hex");
+  const hash =
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15);
   return `${hash}@grouparoo.com`;
 }
 
