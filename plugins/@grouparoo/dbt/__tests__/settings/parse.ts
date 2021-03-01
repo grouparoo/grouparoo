@@ -400,4 +400,49 @@ describe("dbt/profile", () => {
       );
     });
   });
+
+  describe("snowflake", () => {
+    const profileDirFullPath = path.join(profilesPath, "snowflake");
+    it("parses password", async () => {
+      const result = await dbtProfile({
+        profileDirFullPath,
+        target: "password",
+        profile: "test_grouparoo_profile",
+      });
+      const { type, options } = result;
+      expect(type).toEqual("snowflake");
+      expect(options).toEqual({
+        account: "account id",
+        database: "database name",
+        password: "password",
+        schema: "dbt schema",
+        username: "username",
+        warehouse: "warehouse name",
+      });
+    });
+
+    it("can not handle key pair", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "key_pair",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(
+        /Grouparoo only supports password authentication for dbt snowflake/
+      );
+    });
+
+    it("can not handle key sso", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "sso",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(
+        /Grouparoo only supports password authentication for dbt snowflake/
+      );
+    });
+  });
 });
