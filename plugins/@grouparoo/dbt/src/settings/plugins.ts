@@ -32,9 +32,11 @@ export const dbtConnectionToGrouparooOptions: dbtOptionMethod = async (
     case "sqlserver":
     case "presto":
     case "spark":
+    case "exasol":
     case "oracle":
     case "azuresynapse":
     case "dremio":
+    case "clickhouse":
       // https://docs.getdbt.com/reference/warehouse-profiles/mssql-profile
       // https://docs.getdbt.com/reference/warehouse-profiles/presto-profile
       // https://docs.getdbt.com/reference/warehouse-profiles/spark-profile
@@ -42,6 +44,7 @@ export const dbtConnectionToGrouparooOptions: dbtOptionMethod = async (
       // https://docs.getdbt.com/reference/warehouse-profiles/oracle-profile
       // https://docs.getdbt.com/reference/warehouse-profiles/azuresynapse-profile
       // https://docs.getdbt.com/reference/warehouse-profiles/dremio-profile
+      // https://docs.getdbt.com/reference/warehouse-profiles/clickhouse-profile
       throw new Error(
         `Unsupported (by Grouparoo) dbt connection type: ${dbtType}`
       );

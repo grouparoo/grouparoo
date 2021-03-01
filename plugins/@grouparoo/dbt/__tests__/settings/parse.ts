@@ -445,4 +445,43 @@ describe("dbt/profile", () => {
       );
     });
   });
+
+  describe("unknown", () => {
+    const profileDirFullPath = path.join(profilesPath, "unknown");
+    it("throws an error", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "unknown",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(`Unknown (to Grouparoo) dbt connection type: unknown`);
+    });
+  });
+
+  const unsupported = [
+    "sqlserver",
+    "presto",
+    "spark",
+    "exasol",
+    "oracle",
+    "dremio",
+    "clickhouse",
+  ];
+  for (const dbtType of unsupported) {
+    describe(dbtType, () => {
+      const profileDirFullPath = path.join(profilesPath, "unsupported");
+      it("is not supported", async () => {
+        await expect(
+          dbtProfile({
+            profileDirFullPath,
+            target: dbtType,
+            profile: "test_grouparoo_profile",
+          })
+        ).rejects.toThrow(
+          `Unsupported (by Grouparoo) dbt connection type: ${dbtType}`
+        );
+      });
+    });
+  }
 });
