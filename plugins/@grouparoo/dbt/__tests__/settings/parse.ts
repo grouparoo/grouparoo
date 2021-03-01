@@ -10,15 +10,10 @@ const defaultDirFullPath = path.resolve(
   path.join(__dirname, "..", "projects", "default")
 );
 
-const postgresDirFullPath = path.resolve(
-  path.join(__dirname, "..", "projects", "postgres")
+const projectsPath = path.resolve(
+  path.join(path.join(__dirname, "..", "projects"))
 );
-const invalidNameDirFullPath = path.resolve(
-  path.join(__dirname, "..", "projects", "invalid_name")
-);
-const invalidTargetDirFullPath = path.resolve(
-  path.join(__dirname, "..", "projects", "invalid_target")
-);
+const postgresDirFullPath = path.join(projectsPath, "postgres");
 
 const homeDir = os.homedir();
 const userProfilePath = path.resolve(
@@ -156,6 +151,9 @@ describe("dbt/profile", () => {
 
   describe("when in subdir of project directory", () => {
     const subDir = path.resolve(path.join(defaultDirFullPath, "sub"));
+    const invalidNameDirFullPath = path.join(projectsPath, "invalid_name");
+    const invalidTargetDirFullPath = path.join(projectsPath, "invalid_target");
+
     beforeAll(() => {
       process.chdir(subDir);
     });
@@ -264,6 +262,40 @@ describe("dbt/profile", () => {
           // won't find it
         })
       ).rejects.toThrow(/Unknown dbt profile directory/);
+    });
+  });
+
+  describe("redshift", () => {
+    const profileDirFullPath = path.join(projectsPath, "redshift");
+
+    it("parses password", async () => {
+      const result = await dbtProfile({
+        profileDirFullPath,
+        target: "password",
+        profile: "test_grouparoo_profile",
+      });
+      const { type, options } = result;
+      expect(type).toEqual("redshift");
+      expect(options).toEqual({
+        host: "hostname.region.redshift.amazonaws.com",
+        port: 5439,
+        database: "analytics",
+        schema: "analytics",
+        user: "username",
+        password: "password1",
+      });
+    });
+
+    it("can not handle iam", async () => {
+      await expect(
+        dbtProfile({
+          profileDirFullPath,
+          target: "iam",
+          profile: "test_grouparoo_profile",
+        })
+      ).rejects.toThrow(
+        /Unsupported \(by Grouparoo\) redshift connection method: iam/
+      );
     });
   });
 });

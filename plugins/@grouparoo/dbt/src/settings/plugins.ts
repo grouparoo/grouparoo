@@ -118,6 +118,25 @@ const redshift: TypeOptionMethod = async (dbtConnection) => {
   const type: string = "redshift";
   const options: { [key: string]: any } = {};
 
+  const method = dbtConnection.method;
+  switch (method) {
+    case "password":
+      break;
+    case "iam":
+      throw new Error(
+        `Unsupported (by Grouparoo) redshift connection method: ${method}`
+      );
+    default:
+      if (method) {
+        throw new Error(
+          `Unknown (to Grouparoo) redshift connection method: ${method}`
+        );
+      }
+      // nothing is password
+      break;
+  }
+
+  // handling password
   options.host = dbtConnection.host;
   options.port = dbtConnection.port;
   options.database = dbtConnection.dbname;
