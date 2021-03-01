@@ -102,6 +102,7 @@ export const getProspectFields = async (
   const out = [];
 
   for (const field of fields) {
+    // TODO check how isRecordMultipleResponses affects the field. Ignoring for now.
     if (field.isRecordMultipleResponses) continue;
 
     const type = mapTypesToGrouparoo(field.type);

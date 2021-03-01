@@ -109,6 +109,8 @@ class PardotClient {
   }
 
   async getCustomFields(): Promise<PardotCustomField[]> {
+    // TODO: This is paginated, with a limit up to 200.
+    // &output=mobile apparently is NOT paginated, so we could try using that
     const res = await this.request.get(
       "/customField/version/4/do/query?format=json"
     );
