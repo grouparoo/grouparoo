@@ -400,6 +400,32 @@ importers:
       prettier: 2.2.1
       ts-jest: 26.5.1
       typescript: 4.1.5
+  plugins/@grouparoo/dbt:
+    dependencies:
+      js-yaml: 4.0.0
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.31
+      actionhero: 25.0.6
+      jest: 26.6.3
+      nock: 13.0.7
+      prettier: 2.2.1
+      ts-jest: 26.5.1_jest@26.6.3+typescript@4.1.5
+      typescript: 4.1.5
+    specifiers:
+      '@grouparoo/core': 0.2.4-alpha.0
+      '@grouparoo/spec-helper': 0.2.4-alpha.0
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 25.0.6
+      jest: 26.6.3
+      js-yaml: 4.0.0
+      nock: 13.0.7
+      prettier: 2.2.1
+      ts-jest: 26.5.1
+      typescript: 4.1.5
   plugins/@grouparoo/demo:
     dependencies:
       csv-parse: 4.15.3
