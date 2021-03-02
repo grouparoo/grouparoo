@@ -14,11 +14,15 @@ export type ChartLinData = { x: number; y: number }[][];
 export function GrouparooChart({
   data,
   keys,
+  minPoints,
+  missingPointSpread,
   animate,
   interpolation,
 }: {
   data: ChartLinData;
   keys: string[];
+  minPoints?: number;
+  missingPointSpread?: number;
   animate?: boolean;
   interpolation?:
     | "linear"
@@ -32,6 +36,8 @@ export function GrouparooChart({
     | "cardinalOpen";
 }) {
   if (!data || data.length < 1) return null;
+  if (!minPoints) minPoints = 2;
+  if (!missingPointSpread) missingPointSpread = 1000; // 1 second
 
   let yMax = 1.25;
 
@@ -40,8 +46,9 @@ export function GrouparooChart({
       if (point.y > yMax) yMax = point.y + 0.25;
     });
 
-    if (line.length === 1)
-      data[idx].push({ x: data[idx][0].x + 1, y: data[idx][0].y });
+    while (line.length < minPoints) {
+      line.unshift({ x: line[0].x - missingPointSpread, y: 0 });
+    }
   });
 
   return (
