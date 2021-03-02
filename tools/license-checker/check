@@ -7,14 +7,14 @@ const fs = require("fs");
 const { allPackageFiles } = require("../shared/packages");
 
 const excludePackages = [
-  // custom exclusions for newrelic
+  // custom exclusions
   "@newrelic/aws-sdk@1.1.3",
   "@newrelic/koa@3.0.0",
   "@newrelic/native-metrics@5.1.0",
   "@newrelic/native-metrics@5.2.0",
   "@newrelic/superagent@2.0.1",
   "emitter-component@1.1.1",
-  "facebook-nodejs-business-sdk@9.0.1",
+  "facebook-nodejs-business-sdk@9.0.2",
 ];
 
 const onlyAllow = [
