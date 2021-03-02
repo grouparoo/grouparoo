@@ -5,8 +5,12 @@ import { ConnectPluginAppMethod } from "@grouparoo/core";
 import { log } from "actionhero";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
-  let { account, username, password, warehouse, database, schema } = appOptions;
-  schema = schema || "PUBLIC";
+  const account = appOptions.account?.toString();
+  const username = appOptions.username?.toString();
+  const password = appOptions.password?.toString();
+  const warehouse = appOptions.warehouse?.toString();
+  const database = appOptions.database?.toString();
+  const schema = appOptions.schema?.toString() || "PUBLIC";
 
   const logger = SnowflakeLogger.getInstance();
   SnowflakeLogger.setInstance(logToActionhero(logger));

@@ -16,14 +16,17 @@ export const profiles: ProfilesPluginMethod = async ({
     const ruleOptions = await rule.getOptions();
     const ruleMapping = {};
     if (ruleOptions.column) {
-      ruleMapping[ruleOptions.column] = rule.key;
+      ruleMapping[ruleOptions.column?.toString()] = rule.key;
       combinedMapping = Object.assign(combinedMapping, ruleMapping);
     }
   }
 
   const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
   let importsCount = 0;
-  const sheet = new Spreadsheet(appOptions, sourceOptions.sheet_url);
+  const sheet = new Spreadsheet(
+    appOptions,
+    sourceOptions.sheet_url?.toString()
+  );
   const rows = await sheet.read({ limit, offset });
 
   for (const row of rows) {

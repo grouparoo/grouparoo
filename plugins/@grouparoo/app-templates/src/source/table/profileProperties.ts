@@ -30,12 +30,12 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
     propertyOptions,
     propertyFilters,
   }) => {
-    const tableName = sourceOptions[tableNameKey];
-    const columnName = propertyOptions[columnNameKey];
+    const tableName = sourceOptions[tableNameKey]?.toString();
+    const columnName = propertyOptions[columnNameKey]?.toString();
     const aggregationMethod = <AggregationMethod>(
       propertyOptions[aggregationMethodKey]
     );
-    const sortColumn = propertyOptions[sortColumnKey];
+    const sortColumn = propertyOptions[sortColumnKey]?.toString();
 
     if (!aggregationMethod || !columnName) {
       return undefined;

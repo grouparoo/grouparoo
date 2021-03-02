@@ -13,7 +13,7 @@ export class Client {
 
   constructor(appOptions: SimpleAppOptions) {
     const { accessToken, adAccountId } = appOptions;
-    this.accessToken = accessToken;
+    this.accessToken = accessToken?.toString();
     this.adAccountId = `act_${adAccountId}`;
     this.sdk = bizSdk;
   }

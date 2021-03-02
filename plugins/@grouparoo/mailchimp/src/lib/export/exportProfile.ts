@@ -21,7 +21,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   }
 
-  const { listId } = destinationOptions;
+  const listId = destinationOptions.listId?.toString();
 
   const email_address = newProfileProperties["email_address"]; // this is a required key for mailchimp
   if (!email_address) {

@@ -19,7 +19,7 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = 
     destinationOptions,
   }) => {
     const client = await connect(appOptions);
-    const { listId } = destinationOptions;
+    const listId = destinationOptions.listId?.toString();
     const mergeVars = await getMergeVars(client, listId);
     const properties = getProperties(mergeVars, mappingKey);
 

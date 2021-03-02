@@ -55,7 +55,9 @@ export default class Spreadsheet {
       return;
     }
     const client_email = this.credentials.client_email;
-    const private_key = this.credentials.private_key.replace(/\\n/g, "\n");
+    const private_key = this.credentials.private_key
+      ?.toString()
+      .replace(/\\n/g, "\n");
     await this.doc.useServiceAccountAuth({ client_email, private_key });
     this.connected = true;
   }

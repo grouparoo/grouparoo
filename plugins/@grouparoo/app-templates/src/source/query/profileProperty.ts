@@ -32,7 +32,10 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
     let query;
 
     try {
-      query = await plugin.replaceTemplateProfileVariables(ruleQuery, profile);
+      query = await plugin.replaceTemplateProfileVariables(
+        ruleQuery?.toString(),
+        profile
+      );
     } catch (error) {
       // if we don't have the right properties to build the query, bail
       return undefined;
