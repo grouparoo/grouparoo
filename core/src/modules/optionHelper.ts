@@ -21,7 +21,7 @@ function modelName(instance): string {
 
 export namespace OptionHelper {
   export interface SimpleOptions {
-    [key: string]: string;
+    [key: string]: string | number | boolean;
   }
 
   export async function getOptions(
@@ -38,7 +38,7 @@ export namespace OptionHelper {
     });
 
     options.forEach((option) => {
-      optionsObject[option.key] = option.value;
+      optionsObject[option.key] = option.typedValue();
     });
 
     if (sourceFromEnvironment) {
@@ -82,6 +82,7 @@ export namespace OptionHelper {
         ownerType: modelName(instance),
         key,
         value: options[key],
+        type: typeof options[key],
       });
     }
 
@@ -140,7 +141,7 @@ export namespace OptionHelper {
 
   export async function validateOptions(
     instance: Source | Destination | Schedule | Property | App,
-    options: { [key: string]: string },
+    options: SimpleOptions,
     allowEmpty = false
   ) {
     let requiredOptions: string[];
@@ -314,10 +315,10 @@ export namespace OptionHelper {
     );
 
     for (const k in options) {
-      if (envOptionKeys.includes(options[k]))
+      if (envOptionKeys.includes(options[k].toString()))
         options[k] = getEnvironmentVariableOption(
           modelName(instance),
-          options[k]
+          options[k].toString()
         );
     }
 

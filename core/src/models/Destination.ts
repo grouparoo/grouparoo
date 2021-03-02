@@ -313,7 +313,7 @@ export class Destination extends LoggedModel<Destination> {
       const k = keys[i];
       parameterizedOptions[k] =
         typeof options[k] === "string"
-          ? await plugin.replaceTemplateRunVariables(options[k])
+          ? await plugin.replaceTemplateRunVariables(options[k].toString())
           : options[k];
     }
 
