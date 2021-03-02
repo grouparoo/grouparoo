@@ -82,7 +82,12 @@ async function deleteUsers(suppressErrors) {
     try {
       const mailchimpId = generateMailchimpId(emails[key]);
       await apiClient.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
-        tags: [],
+        tags: [
+          { name: listOne.toLowerCase(), status: "inactive" },
+          { name: listTwo.toLowerCase(), status: "inactive" },
+          { name: listThree.toLowerCase(), status: "inactive" },
+          { name: listFour.toLowerCase(), status: "inactive" },
+        ],
       });
       await apiClient.delete(`/lists/${listId}/members/${mailchimpId}`);
     } catch (err) {
@@ -291,6 +296,7 @@ describe("mailchimp/exportProfile", () => {
     });
 
     user = await getUser(emails["email"]);
+    expect(user["tags"].length).toEqual(2);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: listOne.toLowerCase() }),
@@ -313,6 +319,7 @@ describe("mailchimp/exportProfile", () => {
     });
 
     user = await getUser(emails["email"]);
+    expect(user["tags"].length).toEqual(1);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: listOne.toLowerCase() }),
@@ -358,6 +365,7 @@ describe("mailchimp/exportProfile", () => {
       toDelete: false,
     });
     user = await getUser(emails["email"]);
+    expect(user["tags"].length).toEqual(3);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
         expect.not.objectContaining({ name: listFour.toLowerCase() }),
@@ -373,13 +381,14 @@ describe("mailchimp/exportProfile", () => {
       newProfileProperties: {
         email_address: emails["alternativeEmail"],
       },
-      oldGroups: [],
+      oldGroups: [listOne, listTwo, listThree],
       newGroups: [listOne],
       toDelete: false,
     });
 
     user = await getUser(emails["alternativeEmail"]);
     expect(user).not.toBe(null);
+    expect(user["tags"].length).toEqual(1);
     expect(user["email_address"]).toBe(emails["alternativeEmail"]);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
@@ -400,8 +409,8 @@ describe("mailchimp/exportProfile", () => {
         FNAME: alternativeName,
         PHONE: newPhoneNumber,
       },
-      oldGroups: [],
-      newGroups: [],
+      oldGroups: [listOne],
+      newGroups: [listOne, listTwo, listThree],
       toDelete: false,
     });
 
@@ -410,9 +419,54 @@ describe("mailchimp/exportProfile", () => {
     expect(user["email_address"]).toBe(emails["otherEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
     expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
+    expect(user["tags"].length).toEqual(3);
+    expect(user["tags"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+        expect.objectContaining({ name: listTwo.toLowerCase() }),
+        expect.objectContaining({ name: listThree.toLowerCase() }),
+      ])
+    );
 
     const oldUser = await getUser(emails["alternativeEmail"]);
     expect(oldUser).toBe(null);
+  });
+
+  test("can delete and restore a user", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email_address: emails["otherEmail"],
+      },
+      newProfileProperties: {
+        email_address: emails["otherEmail"],
+      },
+      oldGroups: [listOne, listTwo],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    user = await getUser(emails["otherEmail"]);
+    expect(user).toBe(null);
+
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email_address: emails["otherEmail"],
+        FNAME: first_name,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    user = await getUser(emails["otherEmail"]);
+    expect(user["tags"].length).toEqual(1);
+    expect(user["tags"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: listThree.toLowerCase() }),
+      ])
+    );
+    expect(user).not.toBe(null);
   });
 
   test("can delete a user", async () => {

@@ -49,7 +49,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     } catch (error) {
       // Another user with the new email address (email_address) already exists,
       // so we need to delete the old one and let the updateProfile reuse the existing one.
-      await deleteMember(client, listId, oldMailchimpId);
+      await deleteMember(
+        client,
+        listId,
+        oldMailchimpId,
+        profileToExport.oldGroups,
+        profileToExport.newGroups
+      );
     }
   }
 

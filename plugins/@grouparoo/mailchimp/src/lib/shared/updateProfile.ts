@@ -39,7 +39,7 @@ export const updateProfile: UpdateProfileMethod = async ({
     if (noDelete) {
       return { success: true };
     }
-    await deleteMember(client, listId, mailchimpId);
+    await deleteMember(client, listId, mailchimpId, oldGroups, newGroups);
     return { success: true };
   }
   let exists = false;
@@ -143,10 +143,20 @@ export const updateProfile: UpdateProfileMethod = async ({
   return { success: true };
 };
 
-export async function deleteMember(client, listId, mailchimpId) {
+export async function deleteMember(
+  client,
+  listId,
+  mailchimpId,
+  oldGroups,
+  newGroups
+) {
   try {
+    let tagsToRemove = Array.from(new Set(oldGroups.concat(newGroups)));
     await client.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
-      tags: [],
+      tags: tagsToRemove.map((g) => ({
+        name: String(g).toLocaleLowerCase(),
+        status: "inactive",
+      })),
     });
     await client.delete(`/lists/${listId}/members/${mailchimpId}`);
   } catch (error) {
