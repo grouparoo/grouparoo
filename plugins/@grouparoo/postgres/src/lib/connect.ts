@@ -22,6 +22,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const sslOptions = ["ssl_cert", "ssl_key", "ssl_ca"];
   sslOptions.forEach((opt) => {
     if (formattedOptions[opt] !== null && formattedOptions[opt] !== undefined) {
+      if (!formattedOptions["ssl"]) formattedOptions["ssl"] = {};
       formattedOptions["ssl"][opt.replace("ssl_", "")] = formattedOptions[opt];
       delete formattedOptions[opt];
     }
