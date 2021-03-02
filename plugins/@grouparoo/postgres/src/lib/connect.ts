@@ -12,18 +12,16 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
       formattedOptions["ssl"].toString().toLowerCase() === "true";
   }
 
+  // convert SSL options to an object
+  if (formattedOptions["ssl"]) {
+    // for Grouparoo's use-case, we always want to trust self-signed SSL certs
+    formattedOptions["ssl"] = { rejectUnauthorized: false };
+  }
+
   // handle SSL options
   const sslOptions = ["ssl_cert", "ssl_key", "ssl_ca"];
   sslOptions.forEach((opt) => {
     if (formattedOptions[opt] !== null && formattedOptions[opt] !== undefined) {
-      if (
-        !formattedOptions["ssl"] ||
-        typeof formattedOptions["ssl"] === "boolean" ||
-        typeof formattedOptions["ssl"] === "string"
-      ) {
-        formattedOptions["ssl"] = { rejectUnauthorized: false };
-      }
-
       formattedOptions["ssl"][opt.replace("ssl_", "")] = formattedOptions[opt];
       delete formattedOptions[opt];
     }
