@@ -100,7 +100,9 @@ describe("bigquery cli tests", () => {
         )
         .replace(
           `private_key: "-----BEGIN PRIVATE KEY-----\\n..."`,
-          `private_key: "${appOptions.private_key.replace(/\n/g, "\\n")}"`
+          `private_key: "${appOptions.private_key
+            ?.toString()
+            .replace(/\n/g, "\\n")}"`
         )
     );
   });
