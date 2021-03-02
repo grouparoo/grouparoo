@@ -30,7 +30,7 @@ pnpm run -r prepare
 OLD_VERSION=`cat lerna.json | jq -r '.version'`
 BRANCH=`git rev-parse --abbrev-ref HEAD`
 echo "on $BRANCH branch"
-if [[ $BRANCH == 'master' ]];
+if [[ $BRANCH == 'main' ]];
 then
   npm run version-alpha
   PRERELEASE='true'
@@ -78,10 +78,10 @@ then
   echo "Publishing stable pacakges to NPM"
   ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --yes
 
-  # and update master with this new version
-  git checkout master
+  # and update main with this new version
+  git checkout main
   git merge stable
-  git push origin master
+  git push origin main
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
@@ -96,8 +96,8 @@ echo "---"
 echo "Updating pnpm lockfile by re-installing"
 echo "---"
 
-git checkout master
+git checkout main
 pnpm install --prefer-frozen-lockfile --ignore-scripts
 git add pnpm-lock.yaml
 git commit -m "Update pnpm lockfile [ci skip]"
-git push origin master
+git push origin main
