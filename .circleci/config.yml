@@ -2152,7 +2152,7 @@ workflows:
           requires:
             - complete
   #
-  # Run the tests each week + publish pre-release from master branch
+  # Run the tests each week + publish pre-release from main branch
   test-grouparoo-nightly:
     triggers:
       - schedule:
@@ -2160,7 +2160,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - build:
           filters:
@@ -2449,6 +2449,6 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
           requires:
             - complete
