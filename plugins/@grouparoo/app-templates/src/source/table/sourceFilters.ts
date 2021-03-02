@@ -19,7 +19,7 @@ export const getSourceFilters: GetSourceFiltersMethod = ({ getColumns }) => {
     appId,
     sourceOptions,
   }) => {
-    const tableName = sourceOptions[tableNameKey];
+    const tableName = sourceOptions[tableNameKey]?.toString();
     const map: ColumnDefinitionMap = await getColumns({
       connection,
       appOptions,

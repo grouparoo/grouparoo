@@ -98,7 +98,7 @@ async function getProfileOptions(
   const objects = await getObjectNames(conn, specialObjects, true);
   out.profileObject.options = objects;
 
-  const name = destinationOptions.profileObject;
+  const name = destinationOptions.profileObject?.toString();
   if (name && objects.includes(name)) {
     // look up its fields
     const supportedTypes = getSupportedSalesforceTypes();
@@ -144,7 +144,7 @@ async function getGroupOptions(
   const objects = await getObjectNames(conn, specialObjects, false);
   out.groupObject.options = objects;
 
-  const name = destinationOptions.groupObject;
+  const name = destinationOptions.groupObject?.toString();
   if (name && objects.includes(name)) {
     // look up its fields
     const supportedTypes = getSupportedSalesforceTypes(["string"]);
@@ -203,7 +203,7 @@ async function getMembershipOptions(
   const objects = await getObjectNames(conn, specialObjects, false);
   out.membershipObject.options = objects;
 
-  const name = destinationOptions.membershipObject;
+  const name = destinationOptions.membershipObject?.toString();
   if (name && objects.includes(name)) {
     // look up its fields
     const fields = await getObjectMatchNames(
@@ -243,10 +243,8 @@ async function getReferenceOptions(
     profileReferenceObject: { type: "pending", options: [] },
     profileReferenceMatchField: { type: "pending", options: [] },
   };
-  const { profileObject } = destinationOptions;
-  if (!profileObject) {
-    return out;
-  }
+  const profileObject = destinationOptions.profileObject?.toString();
+  if (!profileObject) return out;
 
   // for Account, other?
   const specialFields = ["AccountNumber", "Name"];
@@ -258,7 +256,7 @@ async function getReferenceOptions(
   out.profileReferenceField.type = "typeahead";
   out.profileReferenceField.options = Object.keys(nameMap);
 
-  const fieldName = destinationOptions.profileReferenceField;
+  const fieldName = destinationOptions.profileReferenceField?.toString();
   if (fieldName && nameMap[fieldName]) {
     const field = nameMap[fieldName];
     const relationshipObjects = field.referenceTo;
@@ -266,7 +264,7 @@ async function getReferenceOptions(
     out.profileReferenceObject.type = "typeahead";
     out.profileReferenceObject.options = relationshipObjects;
 
-    const refName = destinationOptions.profileReferenceObject;
+    const refName = destinationOptions.profileReferenceObject?.toString();
     if (refName && relationshipObjects.includes(refName)) {
       const supportedTypes = getSupportedSalesforceTypes();
       const refFields = await getObjectMatchNames(

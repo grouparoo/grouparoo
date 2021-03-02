@@ -37,7 +37,9 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
       highWaterMark,
     });
     sourceOffset = parseInt(sourceOffset.toString()); // we use integers
-    const highWaterMarkAndSortColumnASC = scheduleOptions[columnNameKey];
+    const highWaterMarkAndSortColumnASC = scheduleOptions[
+      columnNameKey
+    ]?.toString();
     const secondarySortColumnASC = Object.keys(sourceMapping)[0];
 
     let importsCount = 0;
@@ -113,7 +115,7 @@ export const getChangeVariables: GetChangeVariablesMethod = async ({
   highWaterMark,
 }) => {
   const runOptions = await source.parameterizedOptions(run);
-  const tableName = runOptions[tableNameKey];
+  const tableName = runOptions[tableNameKey]?.toString();
 
   const hasHighWaterMark = Object.keys(highWaterMark).length === 1;
   let highWaterMarkCondition: MatchCondition = null;

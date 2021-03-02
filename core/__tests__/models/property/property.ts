@@ -527,10 +527,7 @@ describe("models/property", () => {
                   profile
                 );
 
-                if (
-                  propertyOptions.column &&
-                  propertyOptions.column.match(/throw/)
-                ) {
+                if (propertyOptions.column?.toString().match(/throw/)) {
                   throw new Error(`throw`);
                 }
                 queryCounter++;

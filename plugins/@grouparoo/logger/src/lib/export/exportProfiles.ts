@@ -7,7 +7,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
   appOptions,
   exports,
 }) => {
-  const filePath = getFilePath(appOptions.filename);
+  const filePath = getFilePath(appOptions.filename?.toString());
   let lines = [];
 
   exports.map((_export) => {

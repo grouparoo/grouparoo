@@ -3,7 +3,7 @@ import fs from "fs";
 import { getFilePath } from "./utils/getFilePath";
 
 export const test: TestPluginMethod = async ({ appOptions }) => {
-  const filePath = getFilePath(appOptions.filename);
+  const filePath = getFilePath(appOptions.filename?.toString());
 
   const now = new Date();
   try {

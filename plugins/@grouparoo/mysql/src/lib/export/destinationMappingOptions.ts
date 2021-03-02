@@ -36,7 +36,9 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
       },
     },
     properties: {
-      required: [{ key: destinationOptions.primaryKey, type: "any" }],
+      required: [
+        { key: destinationOptions.primaryKey?.toString(), type: "any" },
+      ],
       known: columns,
       allowOptionalFromProperties: false,
     },

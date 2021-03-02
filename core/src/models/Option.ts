@@ -1,6 +1,7 @@
 import {
   Table,
   Column,
+  DataType,
   AllowNull,
   ForeignKey,
   BelongsTo,
@@ -12,6 +13,8 @@ import { App } from "./App";
 import { Source } from "./Source";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
+
+export const OptionTypes = ["boolean", "string", "number"] as const;
 
 @Table({ tableName: "options", paranoid: false })
 export class Option extends LoggedModel<Option> {
@@ -36,6 +39,10 @@ export class Option extends LoggedModel<Option> {
   @Column
   value: string;
 
+  @AllowNull(false)
+  @Column(DataType.ENUM(...OptionTypes))
+  type: typeof OptionTypes[number];
+
   @BelongsTo(() => App, "ownerId")
   app: App;
 
@@ -51,10 +58,20 @@ export class Option extends LoggedModel<Option> {
       ownerId: this.ownerId,
       ownerType: this.ownerType,
       key: this.key,
-      value: this.value,
+      value: this.typedValue(),
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
+  }
+
+  typedValue() {
+    if (this.type === "string") return this.value.toString();
+    else if (this.type === "number") return parseFloat(this.value);
+    else if (this.type === "boolean") {
+      const stringValue = this.value.toString().toLowerCase().trim();
+      return stringValue === "true" || stringValue === "1";
+    }
+    throw new Error(`cannot format option type ${this.type}`);
   }
 
   // --- Class Methods --- //
@@ -77,6 +94,19 @@ export class Option extends LoggedModel<Option> {
     if (existing) {
       throw new Error(
         `There is already a Option for ${instance.ownerId} and ${instance.key}`
+      );
+    }
+  }
+
+  @BeforeSave
+  static async validateType(instance: Option) {
+    if (!OptionTypes.includes(instance.type)) {
+      throw new Error(
+        `${
+          instance.type
+        } is not a valid type for an Option (only ${OptionTypes.join(
+          ", "
+        )} allowed)`
       );
     }
   }

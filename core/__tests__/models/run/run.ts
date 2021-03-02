@@ -569,7 +569,7 @@ describe("models/run", () => {
             methods: {
               profileProperty: async ({ propertyOptions }) => {
                 if (propertyOptions.column) {
-                  throw new Error(propertyOptions.column);
+                  throw new Error(propertyOptions.column.toString());
                 } else {
                   return ["ok"];
                 }

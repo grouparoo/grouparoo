@@ -259,7 +259,9 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   if (!propertyOptions["column"]) return;
   if (!propertyOptions["aggregationMethod"]) return;
 
-  const dataKey = propertyOptions["column"].replace(/^\[data\]-/, "");
+  const dataKey = propertyOptions["column"]
+    .toString()
+    .replace(/^\[data\]-/, "");
   const aggregationMethod = propertyOptions["aggregationMethod"];
 
   if (aggregationMethod === "all values") {
@@ -322,7 +324,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
       limit: 1,
     });
   } else {
-    if (!propertyOptions["column"].match(/^\[data\]-/)) {
+    if (!propertyOptions["column"].toString().match(/^\[data\]-/)) {
       throw new Error(
         "aggregation method not available outside of event data properties"
       );
@@ -379,7 +381,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
   if (!events) {
     return null;
   } else {
-    if (propertyOptions["column"].match(/^\[data\]-/)) {
+    if (propertyOptions["column"].toString().match(/^\[data\]-/)) {
       const eventData = await Promise.all(events.map((e) => e.getData()));
       return eventData
         .map((eventData) => eventData[dataKey])
@@ -394,7 +396,7 @@ const eventProfileProperty: ProfilePropertyPluginMethod = async ({
         })
         .flat();
     } else {
-      return events.map((event) => event[propertyOptions["column"]]);
+      return events.map((event) => event[propertyOptions["column"].toString()]);
     }
   }
 };
