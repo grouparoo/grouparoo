@@ -39,10 +39,8 @@ export const updateProfile: UpdateProfileMethod = async ({
     if (noDelete) {
       return { success: true };
     }
-    const response = await client.delete(
-      `/lists/${listId}/members/${mailchimpId}`
-    );
-    return { success: response.statusCode === 200 };
+    await deleteMember(client, listId, mailchimpId);
+    return { success: true };
   }
   let exists = false;
   let existingTagNames = [];
@@ -144,3 +142,13 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   return { success: true };
 };
+
+export async function deleteMember(client, listId, mailchimpId) {
+  try {
+    await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+  } catch (error) {
+    if (error?.status !== 405) {
+      throw error;
+    }
+  }
+}
