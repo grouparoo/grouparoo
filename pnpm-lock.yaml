@@ -184,14 +184,14 @@ importers:
       '@types/node': 14.14.27
       '@types/validator': 13.1.3
       actionhero: 25.0.6
-      ah-next-plugin: 0.5.0_actionhero@25.0.6
+      ah-next-plugin: 0.5.1_actionhero@25.0.6
       ah-sequelize-plugin: 3.0.1_96190f3d4c64c35bb4d86bd12f189f29
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.2
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       faker: 5.4.0
       fs-extra: 9.1.0
@@ -227,10 +227,10 @@ importers:
       csv-parse: 4.15.3
       jest: 26.6.3
       jest-fetch-mock: 3.0.3
-      nock: 13.0.7
+      nock: 13.0.9
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       type-fest: 0.21.2
-      typedoc: 0.20.27_typescript@4.2.2
+      typedoc: 0.20.28_typescript@4.2.2
       typescript: 4.2.2
     specifiers:
       '@grouparoo/client-web': 0.2.4-alpha.1
@@ -241,7 +241,7 @@ importers:
       '@types/node': '*'
       '@types/validator': '*'
       actionhero: 25.0.6
-      ah-next-plugin: 0.5.0
+      ah-next-plugin: 0.5.1
       ah-sequelize-plugin: 3.0.1
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
@@ -249,7 +249,7 @@ importers:
       compare-versions: 3.6.0
       csv-parse: 4.15.3
       csv-stringify: 5.6.2
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       faker: 5.4.0
       fs-extra: 9.1.0
@@ -264,7 +264,7 @@ importers:
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.1.0
-      nock: 13.0.7
+      nock: 13.0.9
       node-resque: 8.2.3
       nodemon: 2.0.7
       pacote: 11.2.7
@@ -278,7 +278,7 @@ importers:
       ts-jest: 26.5.2
       ts-node: 9.1.1
       type-fest: 0.21.2
-      typedoc: 0.20.27
+      typedoc: 0.20.28
       typescript: 4.2.2
       umzug: 2.3.0
       uuid: 8.3.2
@@ -293,7 +293,7 @@ importers:
       '@types/node': 14.14.27
       actionhero: 25.0.6
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -304,7 +304,7 @@ importers:
       '@types/node': '*'
       actionhero: 25.0.6
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -321,7 +321,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -336,7 +336,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -380,7 +380,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -396,7 +396,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -410,7 +410,7 @@ importers:
       '@types/node': 14.14.31
       actionhero: 25.0.6
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -422,7 +422,7 @@ importers:
       actionhero: 25.0.6
       jest: 26.6.3
       js-yaml: 4.0.0
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -476,7 +476,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -494,7 +494,7 @@ importers:
       iso-3166-1-alpha-2: 1.0.0
       jest: 26.6.3
       js-sha256: 0.9.0
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -522,7 +522,7 @@ importers:
       typescript: 4.2.2
   plugins/@grouparoo/files-s3:
     dependencies:
-      aws-sdk: 2.843.0
+      aws-sdk: 2.855.0
       fs-extra: 9.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -538,7 +538,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.6
-      aws-sdk: 2.843.0
+      aws-sdk: 2.855.0
       fs-extra: 9.1.0
       jest: 26.6.3
       prettier: 2.2.1
@@ -556,7 +556,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -570,7 +570,7 @@ importers:
       fs-extra: 9.1.0
       google-spreadsheet: 3.1.15
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -588,7 +588,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -604,7 +604,7 @@ importers:
       fs-extra: 9.1.0
       hubspot-api: 2.15.3
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -621,7 +621,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -636,7 +636,7 @@ importers:
       fs-extra: 9.1.0
       intercom-client: 2.11.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -653,7 +653,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -667,7 +667,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       node-iterable-api: 1.0.2
       prettier: 2.2.1
       ts-jest: 26.5.2
@@ -704,7 +704,7 @@ importers:
       actionhero: 25.0.6
       dotenv: 8.2.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -717,7 +717,7 @@ importers:
       dotenv: 8.2.0
       jest: 26.6.3
       mailchimp-api-v3: 1.14.0
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -734,7 +734,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -748,7 +748,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       node-marketo-rest: grouparoo/node-marketo#restler_upgrade
       prettier: 2.2.1
       ts-jest: 26.5.2
@@ -785,7 +785,7 @@ importers:
       typescript: 4.2.2
   plugins/@grouparoo/newrelic:
     dependencies:
-      newrelic: 7.1.1
+      newrelic: 7.1.2
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -803,7 +803,7 @@ importers:
       '@types/node': '*'
       actionhero: 25.0.6
       jest: 26.6.3
-      newrelic: 7.1.1
+      newrelic: 7.1.2
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -884,7 +884,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -898,7 +898,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       sailthru-client: 3.0.5
       ts-jest: 26.5.2
@@ -916,7 +916,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -931,7 +931,7 @@ importers:
       fs-extra: 9.1.0
       jest: 26.6.3
       jsforce: 1.10.1
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -948,7 +948,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -963,7 +963,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2
       typescript: 4.2.2
@@ -981,7 +981,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -995,7 +995,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       snowflake-promise: 4.2.0
       snowflake-sdk: 1.5.3
@@ -1005,7 +1005,7 @@ importers:
     dependencies:
       axios: 0.21.1
       faker: 5.4.0
-      nock: 13.0.7
+      nock: 13.0.9
       sequelize: 6.5.0
       uuid: 8.3.2
     devDependencies:
@@ -1027,7 +1027,7 @@ importers:
       axios: 0.21.1
       faker: 5.4.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       sequelize: 6.5.0
       ts-jest: 26.5.2
@@ -1046,7 +1046,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       prettier: 2.2.1
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       typescript: 4.2.2
@@ -1060,7 +1060,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       jest: 26.6.3
-      nock: 13.0.7
+      nock: 13.0.9
       node-zendesk: 2.0.5
       prettier: 2.2.1
       ts-jest: 26.5.2
@@ -1072,7 +1072,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1081,9 +1081,9 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.1
-      react-bootstrap: 1.5.0_react-dom@17.0.1+react@17.0.1
+      react-bootstrap: 1.5.1_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.17.0+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.18.0+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.4_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.1+react@17.0.1
@@ -1091,7 +1091,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.1
       swagger-ui-dist: 3.44.0
-      victory: 35.4.9
+      victory: 35.4.10
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1120,7 +1120,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1134,7 +1134,7 @@ importers:
       prettier: 2.2.1
       prop-types: 15.7.2
       react: 17.0.1
-      react-bootstrap: 1.5.0
+      react-bootstrap: 1.5.1
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
       react-dom: 17.0.1
@@ -1146,7 +1146,7 @@ importers:
       swagger-ui-dist: 3.44.0
       ts-jest: 26.5.2
       typescript: 4.2.2
-      victory: 35.4.9
+      victory: 35.4.10
   ui/ui-components:
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
@@ -1160,7 +1160,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.4.1_ed988ebff08079c40ff9e87e2acc78b3
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1175,9 +1175,9 @@ importers:
       prettier: 2.2.1
       prop-types: 15.7.2
       react: 17.0.1
-      react-bootstrap: 1.5.0_react-dom@17.0.1+react@17.0.1
+      react-bootstrap: 1.5.1_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.17.0+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.18.0+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.4_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.1+react@17.0.1
@@ -1187,7 +1187,7 @@ importers:
       ts-jest: 26.5.2_jest@26.6.3+typescript@4.2.2
       type-fest: 0.21.2
       typescript: 4.2.2
-      victory: 35.4.9
+      victory: 35.4.10
     specifiers:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.2
@@ -1200,7 +1200,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1215,7 +1215,7 @@ importers:
       prettier: 2.2.1
       prop-types: 15.7.2
       react: 17.0.1
-      react-bootstrap: 1.5.0
+      react-bootstrap: 1.5.1
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
       react-dom: 17.0.1
@@ -1227,7 +1227,7 @@ importers:
       ts-jest: 26.5.2
       type-fest: 0.21.2
       typescript: 4.2.2
-      victory: 35.4.9
+      victory: 35.4.10
   ui/ui-enterprise:
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.34
@@ -1235,7 +1235,7 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_fdbbf59a1e8653ce678e6d59b8f3bef7
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1244,9 +1244,9 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.1
-      react-bootstrap: 1.5.0_react-dom@17.0.1+react@17.0.1
+      react-bootstrap: 1.5.1_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.17.0+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.18.0+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.4_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.1+react@17.0.1
@@ -1254,7 +1254,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.1
       swagger-ui-dist: 3.44.0
-      victory: 35.4.9
+      victory: 35.4.10
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1283,7 +1283,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.4.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       dotenv: 8.2.0
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1297,7 +1297,7 @@ importers:
       prettier: 2.2.1
       prop-types: 15.7.2
       react: 17.0.1
-      react-bootstrap: 1.5.0
+      react-bootstrap: 1.5.1
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.3
       react-dom: 17.0.1
@@ -1309,7 +1309,7 @@ importers:
       swagger-ui-dist: 3.44.0
       ts-jest: 26.5.2
       typescript: 4.2.2
-      victory: 35.4.9
+      victory: 35.4.10
 lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.12.11:
@@ -1833,7 +1833,7 @@ packages:
       integrity: sha512-d4VSA86eL/AFTe5xtyZX+ePUjE8dIFu2T8zmdeNBSa5/kNgXPCx/o/wbFNHAGLJdGnk1vddRuMESD9HbOC8irw==
   /@grpc/grpc-js/1.2.6:
     dependencies:
-      '@types/node': 14.14.27
+      '@types/node': 14.14.31
       google-auth-library: 6.1.6
       semver: 6.3.0
     dev: false
@@ -2794,9 +2794,9 @@ packages:
       node: '>= 10.18.0'
     resolution:
       integrity: sha512-XRG5BloiArpXRakcnPHmEHJp+4AtnhRtpDIHSghmXD5EichI1uD73J7FgPp30mm2pDRq3FdqB0NbwSEsJ9xFQg==
-  /@newrelic/aws-sdk/3.1.0_newrelic@7.1.1:
+  /@newrelic/aws-sdk/3.1.0_newrelic@7.1.2:
     dependencies:
-      newrelic: 7.1.1
+      newrelic: 7.1.2
     dev: false
     engines:
       node: '>=10.0.0'
@@ -2804,10 +2804,10 @@ packages:
       newrelic: '>=6.11.0'
     resolution:
       integrity: sha512-SBFqCz1Hhn2HQvlFCEm2VwfHCGpemeokJ+NH7XphlfQ211OVVANQf49DOQCCS0uhnLHGbKMLmir8Layx57y48A==
-  /@newrelic/koa/5.0.0_newrelic@7.1.1:
+  /@newrelic/koa/5.0.0_newrelic@7.1.2:
     dependencies:
       methods: 1.1.2
-      newrelic: 7.1.1
+      newrelic: 7.1.2
     dev: false
     engines:
       node: '>=10.0.0'
@@ -2827,10 +2827,10 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-EUdlsv25dEMT+8SOV02Xfk2E3UTo2fH33lVmnv/CSllH6+ljJDAfG0Ib5zY92Qmaj+oiThbfRpSYOlUfH+Uuiw==
-  /@newrelic/superagent/4.0.0_newrelic@7.1.1:
+  /@newrelic/superagent/4.0.0_newrelic@7.1.2:
     dependencies:
       methods: 1.1.2
-      newrelic: 7.1.1
+      newrelic: 7.1.2
     dev: false
     engines:
       node: '>=10.0'
@@ -3129,7 +3129,7 @@ packages:
       integrity: sha512-INJYZQJP7g+IoDUh/475NlGiTeMfwTXUEr3tmRneckHIxNolGOW9CTq83S8cxq0CgJwwcMzMJFchxvlwe7Rk8Q==
   /@restart/hooks/0.3.26_react@17.0.1:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       lodash-es: 4.17.20
       react: 17.0.1
     peerDependencies:
@@ -3692,7 +3692,7 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-4I7Td01quW/RpocfNayFdFVk1qSuoh0E7JrbRJ16nH01HhKFQ88INq9Sd+nd72zqRySlr9BmDA8xlEJ6vJMrYA==
-  /ah-next-plugin/0.5.0_actionhero@25.0.6:
+  /ah-next-plugin/0.5.1_actionhero@25.0.6:
     dependencies:
       actionhero: 25.0.6
     dev: false
@@ -3704,7 +3704,7 @@ packages:
       react: ^16.6.0 || ^17
       react-dom: ^16.6.0 || ^17
     resolution:
-      integrity: sha512-Xkyag+yQpnpr/QRoRX3S3FhvrW0oxLCKQ9fz+NGA+BO2HdZVZJANnXw6MVefWZRIkphDZSyqKVVo6uc8TOwJKg==
+      integrity: sha512-GxVj6i7M37fpp3KKBoGKwHIGCLRkbmeF/4Eru9oKyRF4UXDdY/KrNszllQjnNlCg/0kiv0M2BbBdfv7y15Rfvw==
   /ah-sequelize-plugin/3.0.1_96190f3d4c64c35bb4d86bd12f189f29:
     dependencies:
       actionhero: 25.0.6
@@ -4089,7 +4089,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
-  /aws-sdk/2.843.0:
+  /aws-sdk/2.855.0:
     dependencies:
       buffer: 4.9.2
       events: 1.1.1
@@ -4104,7 +4104,7 @@ packages:
     engines:
       node: '>= 0.8.0'
     resolution:
-      integrity: sha512-wTHKHDzblaNjWsdCuKTnfAr2zSLgN+Nc2yGpqPxnr7emEQG4V3B0gYEfV9rvv9dVq5Jw8Y1q6VNWS6k8oclnSw==
+      integrity: sha512-u1lO75V82E4REeu0Pt3RE1Kg2CdtUoMgMnyR02cUxdWnoTBpdSlwvz2X2U0VEGW2oYzeJJYp0N0H1sgSRnv8vg==
   /aws-sign2/0.7.0:
     resolution:
       integrity: sha1-tG6JCTSpWR8tL2+G1+ap8bP+dqg=
@@ -5597,11 +5597,11 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-X5eWTSXO/BJmpdIKCRuKUgSCgAN0OwliVK3yPKbwIWU1Tdw5BRajxlzMidvh+gwko9AfQ9zIj52pzF91Q3YAvQ==
-  /date-fns/2.17.0:
+  /date-fns/2.18.0:
     engines:
       node: '>=0.11'
     resolution:
-      integrity: sha512-ZEhqxUtEZeGgg9eHNSOAJ8O9xqSgiJdrL0lzSSfMF54x6KXWJiOH/xntSJ9YomJPrYH/p08t6gWjGWq1SDJlSA==
+      integrity: sha512-NYyAg4wRmGVU4miKq5ivRACOODdZRY3q5WLmOJSq8djyzftYphU7dTHLcEtLqEvfqMKQ0jVv91P4BAwIjsXIcw==
   /dateformat/3.0.3:
     dev: true
     resolution:
@@ -7380,6 +7380,20 @@ packages:
       uglify-js: 3.12.7
     resolution:
       integrity: sha512-1f2BACcBfiwAfStCKZNrUCgqNZkGsAT7UM3kkYtXuLo0KnaVfjKOyf7PRzB6++aK9STyT1Pd2ZCPe3EGOXleXA==
+  /handlebars/4.7.7:
+    dependencies:
+      minimist: 1.2.5
+      neo-async: 2.6.2
+      source-map: 0.6.1
+      wordwrap: 1.0.0
+    dev: true
+    engines:
+      node: '>=0.4.7'
+    hasBin: true
+    optionalDependencies:
+      uglify-js: 3.12.8
+    resolution:
+      integrity: sha512-aAcXm5OAfE/8IXkcZvCepKU3VzW1/39Fb5ZuqMtgI/hT8X2YgoMvBY5dLhq/cpOvw7Lk1nK/UF71aLG/ZnVYRA==
   /har-schema/2.0.0:
     engines:
       node: '>=4'
@@ -10299,13 +10313,13 @@ packages:
       node: '>= 0.4.0'
     resolution:
       integrity: sha1-ICl+idhvb2QA8lDZ9Pa0wZRfzTU=
-  /newrelic/7.1.1:
+  /newrelic/7.1.2:
     dependencies:
       '@grpc/grpc-js': 1.2.6
       '@grpc/proto-loader': 0.5.6
-      '@newrelic/aws-sdk': 3.1.0_newrelic@7.1.1
-      '@newrelic/koa': 5.0.0_newrelic@7.1.1
-      '@newrelic/superagent': 4.0.0_newrelic@7.1.1
+      '@newrelic/aws-sdk': 3.1.0_newrelic@7.1.2
+      '@newrelic/koa': 5.0.0_newrelic@7.1.2
+      '@newrelic/superagent': 4.0.0_newrelic@7.1.2
       '@tyriar/fibonacci-heap': 2.0.9
       async: 3.2.0
       concat-stream: 2.0.0
@@ -10321,7 +10335,7 @@ packages:
     optionalDependencies:
       '@newrelic/native-metrics': 6.0.0
     resolution:
-      integrity: sha512-aESSdT4mOXsdLbUp/Mcn+LkEx5qkgRvI1Y7k7netnis6qjn2i1dAkS780Wjy+IsK8Wr/bqnJCbSAVZH1iVrryg==
+      integrity: sha512-kYfDtEi+4rOrGKmd+WKw6Lx+HQ8zuuOeoPaRbeZMNmDCCNQlfzSMayuvqAox3GUiKNk7aLZvIg+d720010KGEg==
   /next-tick/1.0.0:
     resolution:
       integrity: sha1-yobR/ogoFpsBICCOPchCS524NCw=
@@ -10391,7 +10405,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
-  /nock/13.0.7:
+  /nock/13.0.9:
     dependencies:
       debug: 4.3.1
       json-stringify-safe: 5.0.1
@@ -10400,7 +10414,7 @@ packages:
     engines:
       node: '>= 10.13'
     resolution:
-      integrity: sha512-WBz73VYIjdbO6BwmXODRQLtn7B5tldA9pNpWJe5QTtTEscQlY5KXU4srnGzBOK2fWakkXj69gfTnXGzmrsaRWw==
+      integrity: sha512-SoGx/J0SsZPOdBFrBC9PP6NwaEgOBQIRPbsOsO9q+OwOPWc5eT6wALSxn3ZNE4Fv2ImIUXM4Hv/07rjq/uWDew==
   /node-abi/2.19.3:
     dependencies:
       semver: 5.7.1
@@ -12161,7 +12175,7 @@ packages:
       react-dom: '>=16.8.0'
     resolution:
       integrity: sha512-CfoaSjGV3MZS9yrkLfYkvimzRYru1Ko7qKKzacbsBeZ/sHCxFvUhxnCXmTy/K2vZCkOmAQpU/sbgQVOkMRNlSQ==
-  /react-bootstrap/1.5.0_react-dom@17.0.1+react@17.0.1:
+  /react-bootstrap/1.5.1_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.13
       '@restart/context': 2.1.4_react@17.0.1
@@ -12179,7 +12193,7 @@ packages:
       prop-types-extra: 1.1.1_react@17.0.1
       react: 17.0.1
       react-dom: 17.0.1_react@17.0.1
-      react-overlays: 4.1.1_react-dom@17.0.1+react@17.0.1
+      react-overlays: 5.0.0_react-dom@17.0.1+react@17.0.1
       react-transition-group: 4.4.1_react-dom@17.0.1+react@17.0.1
       uncontrollable: 7.2.1_react@17.0.1
       warning: 4.0.3
@@ -12187,11 +12201,11 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     resolution:
-      integrity: sha512-t1o4kP3coj2HIaBepJxGAc7HZ1fWGria/s0Yr9JUmNkCilyrnXtK209qn28vuZ4muhnA0uR0GMMXAMrLsLyiIw==
-  /react-date-range/1.1.3_date-fns@2.17.0+react@17.0.1:
+      integrity: sha512-jbJNGx9n4JvKgxlvT8DLKSeF3VcqnPJXS9LFdzoZusiZCCGoYecZ9qSCBH5n2A+kjmuura9JkvxI9l7HD+bIdQ==
+  /react-date-range/1.1.3_date-fns@2.18.0+react@17.0.1:
     dependencies:
       classnames: 2.2.6
-      date-fns: 2.17.0
+      date-fns: 2.18.0
       prop-types: 15.7.2
       react: 17.0.1
       react-list: 0.8.16_react@17.0.1
@@ -12286,6 +12300,23 @@ packages:
       react-dom: '>=16.3.0'
     resolution:
       integrity: sha512-WtJifh081e6M24KnvTQoNjQEpz7HoLxqt8TwZM7LOYIkYJ8i/Ly1Xi7RVte87ZVnmqQ4PFaFiNHZhSINPSpdBQ==
+  /react-overlays/5.0.0_react-dom@17.0.1+react@17.0.1:
+    dependencies:
+      '@babel/runtime': 7.12.13
+      '@popperjs/core': 2.6.0
+      '@restart/hooks': 0.3.26_react@17.0.1
+      '@types/warning': 3.0.0
+      dom-helpers: 5.2.0
+      prop-types: 15.7.2
+      react: 17.0.1
+      react-dom: 17.0.1_react@17.0.1
+      uncontrollable: 7.2.1_react@17.0.1
+      warning: 4.0.3
+    peerDependencies:
+      react: '>=16.3.0'
+      react-dom: '>=16.3.0'
+    resolution:
+      integrity: sha512-TKbqfAv23TFtCJ2lzISdx76p97G/DP8Rp4TOFdqM9n8GTruVYgE3jX7Zgb8+w7YJ18slTVcDTQ1/tFzdCqjVhA==
   /react-popper/1.3.7_react@17.0.1:
     dependencies:
       '@babel/runtime': 7.12.13
@@ -14623,12 +14654,12 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-0XAuGEqID+gon1+fhi4LycOEFM+5Mvm2PjwaiVZNAzU7pn3G2DEpsoXnFOPlLDnHY6ZW0BY0nO7ur9fHOFkBLQ==
-  /typedoc/0.20.27_typescript@4.2.2:
+  /typedoc/0.20.28_typescript@4.2.2:
     dependencies:
       colors: 1.4.0
       fs-extra: 9.1.0
-      handlebars: 4.7.6
-      lodash: 4.17.20
+      handlebars: 4.7.7
+      lodash: 4.17.21
       lunr: 2.3.9
       marked: 2.0.0
       minimatch: 3.0.4
@@ -14644,7 +14675,7 @@ packages:
     peerDependencies:
       typescript: 3.9.x || 4.0.x || 4.1.x
     resolution:
-      integrity: sha512-Y61T2wEpBo6x0t0zeMNH6CH0n2Jt8E1IHObcK4fGT9nK9Zq6+Rurf0A9WqVbhRmkGpu1wBsGl+4kSJdIN+AOtg==
+      integrity: sha512-8j0T8u9FuyDkoe+M/3cyoaGJSVgXCY9KwVoo7TLUnmQuzXwqH+wkScY530ZEdK6G39UZ2LFTYPIrL5eykWjx6A==
   /typescript/4.2.2:
     dev: true
     engines:
@@ -15009,252 +15040,252 @@ packages:
       vfile-message: 2.0.4
     resolution:
       integrity: sha512-O6AE4OskCG5S1emQ/4gl8zK586RqA3srz3nfK/Viy0UPToBc5Trp9BVFb1u0CjsKrAWwnpr4ifM/KBXPWwJbCA==
-  /victory-area/35.4.8:
+  /victory-area/35.4.10:
     dependencies:
       d3-shape: 1.3.7
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-eNr6ZFonAhCHoCetA9g5fJxFn+g+5YpgBmlbxwzE7kgKg+jH7+ViD/R2aNcY6aoljiRyE6DbSVAxDiksPp0q1A==
-  /victory-axis/35.4.8:
+      integrity: sha512-SsJ/Xi232g4mNtYn7lH6SfC5A61dj0IHeQ3iN6ntKV5vI7PNkncfnoUOhxkCgLiyWeIlzFakohE0H+GahDTUtg==
+  /victory-axis/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-+DcevVoIL6tjbTHwGZ2DzZiRl+Pwwowuf99mL10ECRzY+Iuc+s+x4o3gpw/HWJ/dGOyD+kPKPcwilmaQLnEOhQ==
-  /victory-bar/35.4.8:
+      integrity: sha512-QU27KLmMjxhZJ2bNGVPTJO+VC8tr5O80WbFVpNzpkaVKZwZmIzGNYWQ6j3ltiUtNJfAcngfJwkrfjFpgP6BcSA==
+  /victory-bar/35.4.10:
     dependencies:
       d3-shape: 1.3.7
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-9EUxHoX2R7t/iOZEWDtpypX13V2+Pngo2V3I9uW7lHtg+SCKTjGjHP1sJSbwLP3WxHl7dHg3Jg+ok04cych6XQ==
-  /victory-box-plot/35.4.8:
+      integrity: sha512-07B7c9hgNlXg3000Nu8+e97jQbo4pyxSTfe9TJST0VoKKuD6MpCrlYUwim6CDwURL5cR9cMjNOjmlpwZpoz8XA==
+  /victory-box-plot/35.4.10:
     dependencies:
       d3-array: 1.2.4
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-IMFfCuQHbDBTnAbn4rR+b0rcxngXrDi4r+m/yqXDV9MoIcIRlxoRkVE4yCv+8i6YGHdod2IduCdQc0EOQ9fEdQ==
-  /victory-brush-container/35.4.8:
+      integrity: sha512-cx/HOI5ELmN5PwOR8l8A06/c+/hW9XWJRswD4hj600RBmh6oPfqWgU3JsgP4Dm89qL3IBddrlaKEeIdU1IRnXQ==
+  /victory-brush-container/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-/nTpCijvLfCr86M5P3sr8umLsRJM7GaYODqagRChcPIS5O4oEzRZsgEVhOYmWZZiS56PIjMoLAzMBvgsiwBsDg==
-  /victory-brush-line/35.4.8:
+      integrity: sha512-egEeYYRXMNYZiX/MqATc+Uywp8bKzirTpkHFBKdywG/7USzKVAtcfdwL+y2ppNj9OXKFK0+WqIcr3U2FXDJeTA==
+  /victory-brush-line/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-BqPaSqJBQXjuEDaU4Rs2dhTXxpwcj4g5kWT/xkXuLc/Sy+U45xE+15V+E7JYLkV+dWq/LKtTTezURbqNHJ5HoA==
-  /victory-candlestick/35.4.8:
+      integrity: sha512-0kaJHBQDflla30lVt/7BguQpXvQlZ29SmdqZsEbT7lP+9ZDGu1mJ2YTQ6xJSXV64dlEPrc+xR8RY/CBOp7KRgA==
+  /victory-candlestick/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-mAXnVyi5lBHFWT3ZTLd3osnL0eFubUYXVJG5x2uPhpq++QRzHqlkYPnDVcqFHUw7MZYQgSJAmjqZ4y7fJmYUzA==
-  /victory-chart/35.4.9:
+      integrity: sha512-Tgtv1OvxC/AoR4HjS4aVlwzmW9LMdJFqouNXVOxkmmEhDTnx5gZuB/0p7wj1Rg8xQmmbCMJjs3T978jOFOpmsg==
+  /victory-chart/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-axis: 35.4.8
-      victory-core: 35.4.8
-      victory-polar-axis: 35.4.8
-      victory-shared-events: 35.4.9
+      victory-axis: 35.4.10
+      victory-core: 35.4.10
+      victory-polar-axis: 35.4.10
+      victory-shared-events: 35.4.10
     resolution:
-      integrity: sha512-OM8LFjBdzc2iujPlNj7WuwygMdCFjKLGWPN9dxzkpPhGaqQnH+k1rQaEz/DQC42x83QRlU93VwVcRTl9h3MzeA==
-  /victory-core/35.4.8:
+      integrity: sha512-XYbmrAFP7AFyzGxJYEVUzZANbPX8dbzUweOYAJP9u4HMwG9fKN7+3cF+7DN52fTPQL23u/YyPKRUVvNB0bA1/w==
+  /victory-core/35.4.10:
     dependencies:
       d3-ease: 1.0.7
       d3-interpolate: 1.4.0
       d3-scale: 1.0.7
       d3-shape: 1.3.7
       d3-timer: 1.0.10
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
     resolution:
-      integrity: sha512-4yhNeeyttEe24mAG4DUPP3RvditQU+364WTnUS05ZHPrACyDWYTOfN5+L0GzmvkJ3kbteQkfX3UJgpHwwqVmug==
-  /victory-create-container/35.4.8:
+      integrity: sha512-OlAnFsl0WHIPMqSIKzVZKNEieHgN9HjSiYbfVWxJxX3FkzH8pP7m5HPSkYZW8v1tm31p392ib9GhE2GmJee2Gg==
+  /victory-create-container/35.4.10:
     dependencies:
-      lodash: 4.17.20
-      victory-brush-container: 35.4.8
-      victory-core: 35.4.8
-      victory-cursor-container: 35.4.8
-      victory-selection-container: 35.4.8
-      victory-voronoi-container: 35.4.8
-      victory-zoom-container: 35.4.8
+      lodash: 4.17.21
+      victory-brush-container: 35.4.10
+      victory-core: 35.4.10
+      victory-cursor-container: 35.4.10
+      victory-selection-container: 35.4.10
+      victory-voronoi-container: 35.4.10
+      victory-zoom-container: 35.4.10
     resolution:
-      integrity: sha512-1qYRi+npvvWurDjdrC2IthxvTWeKcP1nw8bw2OpL+oG21k/mQBrPGT2GtAmUBGp3e8LDr6BwrCx32FGd01PWYw==
-  /victory-cursor-container/35.4.8:
+      integrity: sha512-9EVZLLvtE193mrZ1yRgGUnC/9UCYVO372XC5d6Wzy2PcRKhtXvi6WFnD/793PwsmlEaY70WWzg5tCgcTOZUrfw==
+  /victory-cursor-container/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-KLQug3j4dY8nkcL5CrPqO/pz48hH9chLS86eFiN56gUzLCHx81lEujc01YrsFxQat1cOyC3LghyM+pnexLMWEQ==
-  /victory-errorbar/35.4.8:
+      integrity: sha512-s6j71Tr6lpCmE0ygY3XaehoSVfsrbXLTcgBn5hP3A4DLAClwzLXcu4pRI8xFsqhrqYGuHw1rd8x32xQ1H1vDDA==
+  /victory-errorbar/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-Zi69HZhW0ae/2VF+kk6Vy1+nULWgoHKlRiUtzfX+m8Udgn7PampC6S4XToXih8gNX4XLCLZXAQc6tNoUw4UkzQ==
-  /victory-group/35.4.9:
+      integrity: sha512-bQOhVAGs1qQOWtmiUatlcXn9XHKf6azA/0/J1XgDkd25RDU51Acn4BOlUGY99iRheIZzUOom12DZsUhAnjkVaw==
+  /victory-group/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
-      victory-shared-events: 35.4.9
+      victory-core: 35.4.10
+      victory-shared-events: 35.4.10
     resolution:
-      integrity: sha512-JhJYD/ykPVKFq8ZATTpj8zA1Y8f6pXVoD9o/qBcRMggyfjPglV4rGdg6NnFCTV5bK/YMV5jYiSvZpdJlBtQpPQ==
-  /victory-histogram/35.4.8:
+      integrity: sha512-paulqjBEi0cNqaxYWNP2dAZERHcxPD217eLLtq1AseZv9pdmJUmc6h/gOtiliJG4MMbQn/0j+vE/tL5GyBjfng==
+  /victory-histogram/35.4.10:
     dependencies:
       d3-array: 2.11.0
       d3-scale: 1.0.7
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-bar: 35.4.8
-      victory-core: 35.4.8
+      victory-bar: 35.4.10
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-7FEEbs1LpiJ5bhXbpdoW3ZxbQhjfK2hPJuxSoOvH2OWDoxrb5IbgWJio96arANFjAMyXqk15JMoYtbO7arTiNg==
-  /victory-legend/35.4.8:
+      integrity: sha512-PG00aHmdSEiujlnLrJrpgTAhThsVG3BKlWv/n71DqGhv8s0A8kSeQr1oeIXyoFQAFajUrX/qBB6eriswDwoeqQ==
+  /victory-legend/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-QI8zZLm8JipzzlAfJjpJm1MHl6FVcXWJOqU2XMl18RCkwDesukIiBO4dU8UAvNRkqxLRmkJzywFXSp3LFEah0Q==
-  /victory-line/35.4.8:
-    dependencies:
-      d3-shape: 1.3.7
-      lodash: 4.17.20
-      prop-types: 15.7.2
-      victory-core: 35.4.8
-    resolution:
-      integrity: sha512-RJ/Wqon7PS07NRZnlku2C8+cJ48ruunizvKtl7HVv15e1hybo/dCg3dD2IizrO6vF/ja8Iv/RZ2YBDe/nWywrg==
-  /victory-pie/35.4.8:
+      integrity: sha512-DT4FMR3Vdb4uNLL9RSUOFvpuB96noAwZrIa9n6+zCd54niJ/Zn69rMhlfNupvG7AWzXEkpUKCq/Z6QGxhl+oSA==
+  /victory-line/35.4.10:
     dependencies:
       d3-shape: 1.3.7
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-1+FnHdlqYqQzuiA/Psa77dsXcK1sKbXEUjNgnwfEZSUY2HX5v3fQ0sk4AiZhnVVsz6Rp+Wl4We/cca1PHp7i/w==
-  /victory-polar-axis/35.4.8:
+      integrity: sha512-+DcXQIL+g04ZIH2Y/S//EvN1mH658+HOe/7TdaaiEywikweGblp7g6gToeFlLiPn368eaLUcN950VEWBcXH/xA==
+  /victory-pie/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      d3-shape: 1.3.7
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-rhNGYUj7A70ZoHyta0ma3WD12Kv162Mf0AmFLvfxC6W+4eh2uwgGE8j+CJBW+/HbzLhFoeDY+aTe0FqJPLiO4A==
-  /victory-scatter/35.4.8:
+      integrity: sha512-63x2Z0gqn0mC8PYPNA80j68+5tJeEFzdCHc+toZiOEOjAQeieXokUfv98QRo4g48K7mfnQbAHFc+HQALiLKtTw==
+  /victory-polar-axis/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-UWyYgUhvdMFBkzBrgvN5WFCFX1E7tG6EjLNvAhsMoGK2eVH69QzC7Aiun+hLeXUXcssg2Gi1+f/w4rrxpdpZzw==
-  /victory-selection-container/35.4.8:
+      integrity: sha512-PkWQr0BPWrVmE4K8bSHYkr8BHO+19CijSHuyhPuyv6S0qtjT4+8br0nyDxZYBKXdiNYYBtj+4QywmFnwuKnycA==
+  /victory-scatter/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-2I2pEoUwjEltm0hJO+EwTlcrVhfvchph3OlcGp3N/Kw9q5veS/gfvcQMwur0FjS2GNwwCSjW/Gbv8zv31B/xFg==
-  /victory-shared-events/35.4.9:
+      integrity: sha512-Qf7Lg5kIpB/cH2vaHwIdlYRp2mlBwnPm3P+6wlUKg0oflrXc43u+Gjt3pD07EswCwOzii/STnTREak3F8mjjhg==
+  /victory-selection-container/35.4.10:
+    dependencies:
+      lodash: 4.17.21
+      prop-types: 15.7.2
+      victory-core: 35.4.10
+    resolution:
+      integrity: sha512-cnbA3zHav82w6FpZ5z5yIYL9KSfTN5Fx4Gae0IklMPwDbJKtS1V/1VycrHlpzb2L4QyenDQkchFenvAZzMtcNQ==
+  /victory-shared-events/35.4.10:
     dependencies:
       json-stringify-safe: 5.0.1
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-AW6iYsZn+2kmRNb+RKzAze6z8/u5uQakBpkKsVl/AI43uzlWNEQELIfJOcFfTbM2Qo1vkwJCSz0S9mrbt2meAw==
-  /victory-stack/35.4.9:
+      integrity: sha512-cXX+dDEpsocO1nVS8djmexiS0QFkPTCVARX3CIedMXb85kdpVy4Mv4CM707V950xzkoPJBlAL58Y1RRFZWM1WA==
+  /victory-stack/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
-      victory-shared-events: 35.4.9
+      victory-core: 35.4.10
+      victory-shared-events: 35.4.10
     resolution:
-      integrity: sha512-fePjKUM5zfp3+5lJPtow/6HAglwcVb1JBDNIsrpChn78G3NvbpTZUlMlNdbSmE1+xDLFEWBGJ9oUI/gjjWynGA==
-  /victory-tooltip/35.4.8:
+      integrity: sha512-kvq3X0AzkMq2JtY1uBFVtfD4SYke8iSJtPuQCpWLHb79BxfoNCYa6DOziw2LW12cqKcC68j1w/0gSLsX4ZtgfQ==
+  /victory-tooltip/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-CZLsLgfxUA6PdaIxUgIk4DJfoo5DRM70OLTZFekctQkvwt2S6Fc7DSv47ZvFw7nL6SEVaNjwsDmTZnabUJb+4Q==
-  /victory-voronoi-container/35.4.8:
+      integrity: sha512-hXAtyBbhCgoikSe5CVplpDGqPm0SAHn0XRf4Qvdax9wXZLGDNYbmJrakPS/pi1bh0F0X8r3ruVmw3c9TyNCROw==
+  /victory-voronoi-container/35.4.10:
     dependencies:
       delaunay-find: 0.0.5
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.8
-      victory-tooltip: 35.4.8
+      victory-core: 35.4.10
+      victory-tooltip: 35.4.10
     resolution:
-      integrity: sha512-+rQRr2SwdixwxvUSF4NUsPj7yWpkeQcQZWcPz8NNNpaCBxN1HNVQ41W7DmAZ98Spta2gkrk6888Q31zQeiGDXw==
-  /victory-voronoi/35.4.8:
+      integrity: sha512-WbY0qZtgP3PAdGC7i7k0URbrSLvOMhfAxwocEgXaaj/s97ATqrUnxH5b1Euut6uFmwa4XBIFv6kLPUcKzsO8LQ==
+  /victory-voronoi/35.4.10:
     dependencies:
       d3-voronoi: 1.1.4
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-2k7+LzqP9Q11be4YAagWPOR39EHBahrHk5w3AqMIwHqOahDQ3Du0atpTHDoT50dXMzJVU/aebI6MFkPSvCqqow==
-  /victory-zoom-container/35.4.8:
+      integrity: sha512-elc0zty1a8Dgym/4GALc2DmvNsH1E6AsDm+NYMok9FX5CgSzBxs35fAloQQE8rnrclYykyDfqDIRCZdWJHYkfw==
+  /victory-zoom-container/35.4.10:
     dependencies:
-      lodash: 4.17.20
+      lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.8
+      victory-core: 35.4.10
     resolution:
-      integrity: sha512-jLHm0/wttiRIzCEdxK3SL/emNUkfc9Rt64I2Yp+9OuP+YJP+5/MkuavjjnYaVowBD3sbn6ByGBMkJ8e+Q/U7dA==
-  /victory/35.4.9:
+      integrity: sha512-TUXoWp55xgH2GgQ/j3UcSrx1ZeIrTUh8tnX7BOjvlif6pMH9uEw+LH3vRv4TGzq2azb5UtQvmNMv+bMHLyQGYw==
+  /victory/35.4.10:
     dependencies:
-      victory-area: 35.4.8
-      victory-axis: 35.4.8
-      victory-bar: 35.4.8
-      victory-box-plot: 35.4.8
-      victory-brush-container: 35.4.8
-      victory-brush-line: 35.4.8
-      victory-candlestick: 35.4.8
-      victory-chart: 35.4.9
-      victory-core: 35.4.8
-      victory-create-container: 35.4.8
-      victory-cursor-container: 35.4.8
-      victory-errorbar: 35.4.8
-      victory-group: 35.4.9
-      victory-histogram: 35.4.8
-      victory-legend: 35.4.8
-      victory-line: 35.4.8
-      victory-pie: 35.4.8
-      victory-polar-axis: 35.4.8
-      victory-scatter: 35.4.8
-      victory-selection-container: 35.4.8
-      victory-shared-events: 35.4.9
-      victory-stack: 35.4.9
-      victory-tooltip: 35.4.8
-      victory-voronoi: 35.4.8
-      victory-voronoi-container: 35.4.8
-      victory-zoom-container: 35.4.8
+      victory-area: 35.4.10
+      victory-axis: 35.4.10
+      victory-bar: 35.4.10
+      victory-box-plot: 35.4.10
+      victory-brush-container: 35.4.10
+      victory-brush-line: 35.4.10
+      victory-candlestick: 35.4.10
+      victory-chart: 35.4.10
+      victory-core: 35.4.10
+      victory-create-container: 35.4.10
+      victory-cursor-container: 35.4.10
+      victory-errorbar: 35.4.10
+      victory-group: 35.4.10
+      victory-histogram: 35.4.10
+      victory-legend: 35.4.10
+      victory-line: 35.4.10
+      victory-pie: 35.4.10
+      victory-polar-axis: 35.4.10
+      victory-scatter: 35.4.10
+      victory-selection-container: 35.4.10
+      victory-shared-events: 35.4.10
+      victory-stack: 35.4.10
+      victory-tooltip: 35.4.10
+      victory-voronoi: 35.4.10
+      victory-voronoi-container: 35.4.10
+      victory-zoom-container: 35.4.10
     resolution:
-      integrity: sha512-9sUksuYWP5/C2gGRMDVouBDjyOifhz4xVY0NGF5bSIQBUCF4cNXVU2Bl7O5kN/oA5g5NKd05TGQNip5kjUx5cQ==
+      integrity: sha512-yF+EyxFtVhMlNRKBZntfz0gAgTK7tVa7qv8KjuTnDR27/W8QFbrE+V07bBbC/yMtu0Yixib0V7rn10zcxV3zmA==
   /vm-browserify/1.1.2:
     resolution:
       integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
