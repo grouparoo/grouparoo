@@ -471,6 +471,7 @@ export function PendingImports({ execApi }) {
             data={pendingImportSamples}
             keys={pendingImportKeys}
             interpolation="linear"
+            minPoints={maxSampleLength}
           />
         </div>
         Most Recent Import:{" "}
@@ -569,6 +570,7 @@ export function PendingExports({ execApi }) {
             data={pendingExportSamples}
             keys={pendingExportKeys}
             interpolation="linear"
+            minPoints={maxSampleLength}
           />
         </div>
         Most Recent Export:{" "}
