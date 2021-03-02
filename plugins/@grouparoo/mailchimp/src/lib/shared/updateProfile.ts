@@ -145,6 +145,9 @@ export const updateProfile: UpdateProfileMethod = async ({
 
 export async function deleteMember(client, listId, mailchimpId) {
   try {
+    await client.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
+      tags: [],
+    });
     await client.delete(`/lists/${listId}/members/${mailchimpId}`);
   } catch (error) {
     if (error?.status !== 405) {
