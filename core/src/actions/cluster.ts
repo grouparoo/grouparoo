@@ -2,10 +2,8 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { cache, api, task, config } from "actionhero";
 
 import { App } from "../models/App";
-// import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
-// import { File } from "../models/File";
 import { Export } from "../models/Export";
 import { Event } from "../models/Event";
 import { EventData } from "../models/EventData";
@@ -16,46 +14,35 @@ import { Import } from "../models/Import";
 import { Log } from "../models/Log";
 import { Mapping } from "../models/Mapping";
 import { Option } from "../models/Option";
-// import { Permission } from "../models/Permission";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Property } from "../models/Property";
 import { PropertyFilter } from "../models/PropertyFilter";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
-// import { Setting } from "../models/Setting";
 import { SetupStep } from "../models/SetupStep";
 import { Source } from "../models/Source";
-// import { Team } from "../models/Team";
-// import { TeamMember } from "../models/TeamMember";
 
 const models = [
-  // ApiKey,
   App,
   Destination,
   DestinationGroupMembership,
   Event,
   EventData,
   Export,
-  // File,
   Group,
   GroupMember,
   GroupRule,
   Import,
-  // Log,
   Mapping,
   Option,
-  // Permission,
   Profile,
   ProfileProperty,
   Property,
   PropertyFilter,
   Run,
   Schedule,
-  // Setting,
   Source,
-  // Team,
-  // TeamMember,
 ];
 
 export class ClusterReset extends AuthenticatedAction {
@@ -71,6 +58,7 @@ export class ClusterReset extends AuthenticatedAction {
   async runWithinTransaction({ session: { teamMember } }) {
     const counts: { [model: string]: number } = {};
 
+    // truncate data tables
     for (const i in models) {
       //@ts-ignore
       const model: typeof App = models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
@@ -88,16 +76,10 @@ export class ClusterReset extends AuthenticatedAction {
       });
     }
 
+    // reset the SetupSteps
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
-    await cache.clear();
-
-    const redisStatKeys = await api.resque.queue.connection.redis.keys(
-      "*resque:stat:*"
-    );
-    await Promise.all(
-      redisStatKeys.map((k) => api.resque.queue.connection.redis.del(k))
-    );
+    await clearRedis();
 
     await Log.create({
       topic: "cluster",
@@ -106,12 +88,6 @@ export class ClusterReset extends AuthenticatedAction {
       ownerId: teamMember.id,
       data: { counts },
     });
-
-    // wait for any currently-running workers
-    await new Promise((resolve) =>
-      setTimeout(resolve, config.tasks.timeout * 2)
-    );
-    await clearFailedTasks();
 
     return { success: true, counts };
   }
@@ -128,9 +104,32 @@ export class ClusterClearCache extends AuthenticatedAction {
   }
 
   async runWithinTransaction() {
-    await cache.clear();
+    await clearRedis();
     return { success: true };
   }
+}
+
+async function clearRedis() {
+  await cache.clear(); // clear redis cache
+
+  // resque
+  await deleteKeys("*resque:queue:*"); // clear resque queues
+  await deleteKeys("*resque:delayed:*"); // clear resque delayed queues
+  await deleteKeys("*resque:timestamps:*"); // clear resque timestamps
+  await deleteKeys("*resque:*lock*:*"); // clear resque locks
+  await deleteKeys("*resque:stat:*"); // clear resque stats
+
+  // wait for any currently-running workers
+  await new Promise((resolve) => setTimeout(resolve, config.tasks.timeout * 2));
+  await clearFailedTasks();
+
+  // re-start recurring tasks
+  await task.enqueueAllRecurrentTasks();
+}
+
+async function deleteKeys(pattern: string) {
+  const keys = await api.resque.queue.connection.redis.keys(pattern);
+  return Promise.all(keys.map((k) => api.resque.queue.connection.redis.del(k)));
 }
 
 async function clearFailedTasks() {

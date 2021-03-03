@@ -43,7 +43,7 @@ export function GrouparooChart({
 
   data.forEach((line, idx) => {
     line.forEach((point) => {
-      if (point.y > yMax) yMax = point.y + 0.25;
+      if (point.y > yMax) yMax = point.y + point.y / 10; // add 10% more to show the rounded curve top
     });
 
     while (line.length < minPoints) {
