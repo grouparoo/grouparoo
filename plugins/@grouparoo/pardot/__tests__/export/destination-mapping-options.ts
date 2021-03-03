@@ -55,13 +55,13 @@ describe("pardot/destinationMappingOptions", () => {
     const radioButton = fields.find(
       (f) => f.key === "grouparoo_custom_radio_button"
     );
-    expect(radioButton.type).toBe("any");
+    expect(radioButton.type).toBe("string");
 
     const dropDown = fields.find((f) => f.key === "grouparoo_custom_dropdown");
-    expect(dropDown.type).toBe("any");
+    expect(dropDown.type).toBe("string");
 
     const hidden = fields.find((f) => f.key === "grouparoo_custom_hidden");
-    expect(hidden.type).toBe("any");
+    expect(hidden.type).toBe("string");
 
     const crmUser = fields.find((f) => f.key === "grouparoo_custom_user");
     expect(crmUser.type).toBe("string");
@@ -92,10 +92,6 @@ describe("pardot/destinationMappingOptions", () => {
     expect(email.type).toBe("email");
 
     // Built-in default fields
-    const campaignId = known.find((f) => f.key === "campaign_id");
-    expect(campaignId.type).toBe("integer");
-    expect(campaignId.important).toBeFalsy();
-
     const salutation = known.find((f) => f.key === "salutation");
     expect(salutation.type).toBe("string");
     expect(salutation.important).toBeFalsy();
@@ -115,12 +111,6 @@ describe("pardot/destinationMappingOptions", () => {
     const company = known.find((f) => f.key === "company");
     expect(company.type).toBe("string");
     expect(company.important).toBeFalsy();
-
-    const prospectAccountId = known.find(
-      (f) => f.key === "prospect_account_id"
-    );
-    expect(prospectAccountId.type).toBe("integer");
-    expect(prospectAccountId.important).toBeFalsy();
 
     const website = known.find((f) => f.key === "website");
     expect(website.type).toBe("string");

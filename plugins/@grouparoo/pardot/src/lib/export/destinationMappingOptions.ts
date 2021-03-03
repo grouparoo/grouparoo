@@ -13,13 +13,11 @@ const requiredProspectFields: DestinationMappingOptionsResponseProperty[] = [
 ];
 
 const defaultProspectFields: DestinationMappingOptionsResponseProperty[] = [
-  { key: "campaign_id", type: "integer" }, // TODO check for validation
   { key: "salutation", type: "string" },
   { key: "first_name", type: "string", important: true },
   { key: "last_name", type: "string", important: true },
   { key: "password", type: "string" },
   { key: "company", type: "string" },
-  { key: "prospect_account_id", type: "integer" }, // TODO: check for validation
   { key: "website", type: "string" },
   { key: "job_title", type: "string" },
   { key: "department", type: "string" },
@@ -77,9 +75,9 @@ const mapTypesToGrouparoo = (
     Number: "number",
     Date: "date",
     Textarea: "string",
-    Dropdown: "any",
-    Hidden: "any",
-    "Radio Button": "any",
+    Dropdown: "string",
+    Hidden: "string",
+    "Radio Button": "string",
     "CRM User": "string",
 
     // TODO:
