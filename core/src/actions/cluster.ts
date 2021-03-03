@@ -23,7 +23,7 @@ import {
   Schedule,
   SetupStep,
   Source,
-} from "../..";
+} from "..";
 
 const models = [
   App,
