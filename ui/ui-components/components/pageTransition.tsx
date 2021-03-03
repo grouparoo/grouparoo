@@ -8,20 +8,25 @@ export default function PageTransition() {
   let timer: NodeJS.Timeout;
 
   useEffect(() => {
+    stop();
     router.events.on("routeChangeStart", start);
     router.events.on("routeChangeComplete", stop);
     router.events.on("routeChangeError", stop);
 
-    () => {
-      stop();
+    return () => {
       router.events.off("routeChangeStart", start);
       router.events.off("routeChangeComplete", stop);
       router.events.off("routeChangeError", stop);
     };
   }, []);
 
-  function start() {
-    timer = setTimeout(NProgress.start, delay);
+  function start(_nextPage: string) {
+    const simpleNextPath = _nextPage.split("?")[0];
+    const currentPath = window.location.pathname;
+    console.log({ currentPath, simpleNextPath });
+    if (currentPath !== simpleNextPath) {
+      timer = setTimeout(NProgress.start, delay);
+    }
   }
 
   function stop() {
