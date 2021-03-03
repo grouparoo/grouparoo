@@ -1,4 +1,3 @@
-import { helper } from "@grouparoo/spec-helper";
 import path from "path";
 import fs from "fs";
 import os from "os";
@@ -194,10 +193,9 @@ describe("dbt/profile", () => {
 
     it("can use env variable to find profile", async () => {
       process.env.DBT_PROFILES_DIR = postgresDirFullPath;
-      const result = await dbtProfile({
-        // finds relative in parent
-        // uses env variable for profile
-      });
+      // finds relative in parent
+      // uses env variable for profile
+      const result = await dbtProfile();
       checkPostgres(result);
     });
 
@@ -206,10 +204,10 @@ describe("dbt/profile", () => {
         path.join(postgresDirFullPath, "profiles.yml"),
         userProfilePath
       );
-      const result = await dbtProfile({
-        // finds relative in parent
-        // looks in default place for profile
-      });
+
+      // finds relative in parent
+      // looks in default place for profile
+      const result = await dbtProfile({});
       checkPostgres(result);
     });
 
