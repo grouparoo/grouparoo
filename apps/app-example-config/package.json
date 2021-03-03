@@ -1,0 +1,33 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/app-example-config",
+  "description": "The Grouparoo Staging Application",
+  "version": "0.2.4-alpha.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=12.0.0 <16.0.0"
+  },
+  "dependencies": {
+    "@grouparoo/core": "0.2.4-alpha.1",
+    "@grouparoo/mailchimp": "0.2.4-alpha.1",
+    "@grouparoo/postgres": "0.2.4-alpha.1",
+    "@grouparoo/ui-community": "0.2.4-alpha.1"
+  },
+  "devDependencies": {
+    "@grouparoo/spec-helper": "0.2.4-alpha.1",
+    "jest": "26.6.3"
+  },
+  "scripts": {
+    "start": "cd node_modules/@grouparoo/core && ./bin/start",
+    "dev": "cd node_modules/@grouparoo/core && ./bin/dev"
+  },
+  "grouparoo": {
+    "grouparoo_monorepo_app": "app-example-config",
+    "plugins": [
+      "@grouparoo/mailchimp",
+      "@grouparoo/postgres",
+      "@grouparoo/ui-community"
+    ]
+  }
+}
