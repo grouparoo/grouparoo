@@ -23,6 +23,8 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
     username: parsed.SALESFORCE_USERNAME,
     password: parsed.SALESFORCE_PASSWORD,
     securityToken: parsed.SALESFORCE_SECURITY_TOKEN,
+    salesforceDomain: parsed.SALESFORCE_DOMAIN,
+    pardotDomain: parsed.PARDOT_DOMAIN,
   };
 }
 
