@@ -23,7 +23,6 @@ export default function PageTransition() {
   function start(_nextPage: string) {
     const simpleNextPath = _nextPage.split("?")[0];
     const currentPath = window.location.pathname;
-    console.log({ currentPath, simpleNextPath });
     if (currentPath !== simpleNextPath) {
       timer = setTimeout(NProgress.start, delay);
     }
