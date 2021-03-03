@@ -19,6 +19,11 @@ import {
 import { ExportProfilesPluginMethod } from "@grouparoo/core";
 import PardotClient from "../client";
 import { connect } from "../connect";
+import { PardotCacheData, getListId } from "./listMethods";
+
+interface PardotData {
+  cacheData: PardotCacheData;
+}
 
 // return an object that you can connect with
 const getClient: BatchMethodGetClient = async ({ config }) => {
@@ -63,40 +68,53 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
 const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   client,
   users,
+  config,
 }) => {
-  await updateProspects(client, users);
+  const { cacheData } = config.data;
+  await updateProspects(client, users, cacheData);
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
 const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = async ({
   client,
   users,
+  config,
 }) => {
-  await updateProspects(client, users);
+  const { cacheData } = config.data;
+  await updateProspects(client, users, cacheData);
   // TODO set destination ids
 };
 
-async function updateProspects(client: PardotClient, prospects: BatchExport[]) {
+async function updateProspects(
+  client: PardotClient,
+  users: BatchExport[],
+  cacheData: PardotCacheData
+) {
   const input: any[] = [];
-  for (const exportedProfile of prospects) {
-    input.push(buildPayload(exportedProfile));
+  for (const exportedProfile of users) {
+    const payload = await buildPayload(client, exportedProfile, cacheData);
+    input.push(payload);
   }
 
   const errors = await client.batchUpsertProspects(input);
   for (let errorIdx in errors) {
     const resultIdx = parseInt(errorIdx);
-    const prospect = prospects[resultIdx];
+    const user = users[resultIdx];
 
     // TODO why do we throw and catch? (got this from marketo)
     try {
       throw new Error(errors[errorIdx]);
     } catch (err) {
-      prospect.error = err;
+      user.error = err;
     }
   }
 }
 
-function buildPayload(exportedProfile: BatchExport): any {
+async function buildPayload(
+  client: PardotClient,
+  exportedProfile: BatchExport,
+  cacheData: PardotCacheData
+) {
   const {
     destinationId,
     oldProfileProperties,
@@ -121,6 +139,7 @@ function buildPayload(exportedProfile: BatchExport): any {
   const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = new Set([...oldKeys, ...newKeys]);
+
   for (const key of allKeys) {
     if (["id", "email"].includes(key)) {
       continue; // set above
@@ -131,21 +150,20 @@ function buildPayload(exportedProfile: BatchExport): any {
 
   // Lists can be set as properties in the payload
   // list_123=1 will include the user in list ID 123, and list_123=0 will remove them
-  // need to first get the corresponding list ids and keep them cached
 
-  /* TODO
   for (const group of newGroups) {
-    const groupAttribute = getGroupAttribute(group);
-    payload[groupAttribute] = true;
+    const listId = await getListId(client, cacheData, group, true);
+    payload[`list_${listId}`] = 1;
   }
 
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
-      const groupAttribute = getGroupAttribute(group);
-      payload[groupAttribute] = null;
+      const listId = await getListId(client, cacheData, group, false);
+      if (listId) {
+        payload[`list_${listId}`] = 0;
+      }
     }
   }
-  */
 
   return payload;
 }
@@ -209,9 +227,12 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appOptions, exports }) {
+export async function exportBatch({ appId, appOptions, exports }) {
   const batchSize = 50;
   const findSize = 200;
+
+  const cacheData = { appId, appOptions };
+  const data: PardotData = { cacheData };
 
   return exportProfilesInBatch(
     exports,
@@ -221,6 +242,7 @@ export async function exportBatch({ appOptions, exports }) {
       groupMode: BatchGroupMode.TotalMembers,
       syncMode: BatchSyncMode.Sync,
       appOptions,
+      data,
       foreignKey: "email",
     },
     {
@@ -240,11 +262,11 @@ export async function exportBatch({ appOptions, exports }) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
-  destinationOptions,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
+    appId,
     appOptions,
     exports: batchExports,
   });

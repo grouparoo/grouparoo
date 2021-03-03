@@ -123,14 +123,35 @@ class PardotClient {
     });
 
     const { result } = res.data;
+
     if (result.total_results === 1) {
       return result.list;
-    } else if (result.total_results > 1) {
-      // Name is unique, this should not occur
-      throw new Error("Unexpectedly received more than one list by name");
+    } else if (result.total_results >= 1) {
+      return result.list[0];
     }
 
     return null;
+  }
+
+  async createList(listName: string): Promise<Record<string, any>> {
+    const res = await this.request.post(
+      "/list/version/4/do/create",
+      {},
+      {
+        params: {
+          format: "json",
+          name: listName,
+        },
+      }
+    );
+
+    const response = res.data;
+
+    if (response.err) {
+      throw new Error(response.err);
+    }
+
+    return response.list;
   }
 }
 
