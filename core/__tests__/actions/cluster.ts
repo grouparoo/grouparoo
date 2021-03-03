@@ -48,6 +48,31 @@ describe("actions/cluster", () => {
 
         await expect(cache.load("testKey")).rejects.toThrow(/not found/);
       });
+
+      test("resque stats will be reset to 0", async () => {
+        const redisStatKeys = await api.resque.queue.connection.redis.keys(
+          "*resque:stat:*"
+        );
+        const counts = await Promise.all(
+          redisStatKeys.map((k) => api.resque.queue.connection.redis.get(k))
+        );
+        counts.map((v) => expect(v).toEqual(0));
+      });
+
+      test("there will be no resque errors", async () => {
+        const { total, failed, error } = await specHelper.runAction(
+          "resque:resqueFailed",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(total).toBe(0);
+        expect(failed).toEqual([]);
+      });
+
+      test("periodic tasks will be re-enqueued", async () => {
+        const found = await specHelper.findEnqueuedTasks("profiles:checkReady");
+        expect(found.length).toBe(1);
+      });
     });
 
     describe("cluster:destroy", () => {
@@ -118,6 +143,11 @@ describe("actions/cluster", () => {
         expect(error).toBeUndefined();
         expect(total).toBe(0);
         expect(failed).toEqual([]);
+      });
+
+      test("periodic tasks will be re-enqueued", async () => {
+        const found = await specHelper.findEnqueuedTasks("profiles:checkReady");
+        expect(found.length).toBe(1);
       });
 
       test("teams still remain and the user is still logged in", async () => {
