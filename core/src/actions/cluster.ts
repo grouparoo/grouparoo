@@ -1,29 +1,27 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { cache, api, task, config } from "actionhero";
 
-import {
-  App,
-  Destination,
-  DestinationGroupMembership,
-  Export,
-  Event,
-  EventData,
-  Group,
-  GroupMember,
-  GroupRule,
-  Import,
-  Log,
-  Mapping,
-  Option,
-  Profile,
-  ProfileProperty,
-  Property,
-  PropertyFilter,
-  Run,
-  Schedule,
-  SetupStep,
-  Source,
-} from "..";
+import { App } from "../models/App";
+import { Destination } from "../models/Destination";
+import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
+import { Export } from "../models/Export";
+import { Event } from "../models/Event";
+import { EventData } from "../models/EventData";
+import { Group } from "../models/Group";
+import { GroupMember } from "../models/GroupMember";
+import { GroupRule } from "../models/GroupRule";
+import { Import } from "../models/Import";
+import { Log } from "../models/Log";
+import { Mapping } from "../models/Mapping";
+import { Option } from "../models/Option";
+import { Profile } from "../models/Profile";
+import { ProfileProperty } from "../models/ProfileProperty";
+import { Property } from "../models/Property";
+import { PropertyFilter } from "../models/PropertyFilter";
+import { Run } from "../models/Run";
+import { Schedule } from "../models/Schedule";
+import { SetupStep } from "../models/SetupStep";
+import { Source } from "../models/Source";
 
 const models = [
   App,
