@@ -82,7 +82,6 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
 }) => {
   const { cacheData } = config.data;
   await updateProspects(client, users, cacheData);
-  // TODO set destination ids
 };
 
 async function updateProspects(
@@ -94,19 +93,19 @@ async function updateProspects(
   for (const exportedProfile of users) {
     const payload = await buildPayload(client, exportedProfile, cacheData);
     input.push(payload);
+
+    // We're not using destinationIds for created prospects, but grouparoo requires it to be set
+    // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
+    if (!exportedProfile.destinationId) {
+      exportedProfile.destinationId = exportedProfile.foreignKeyValue;
+    }
   }
 
   const errors = await client.batchUpsertProspects(input);
   for (let errorIdx in errors) {
     const resultIdx = parseInt(errorIdx);
     const user = users[resultIdx];
-
-    // TODO why do we throw and catch? (got this from marketo)
-    try {
-      throw new Error(errors[errorIdx]);
-    } catch (err) {
-      user.error = err;
-    }
+    user.error = new Error(errors[errorIdx]);
   }
 }
 
