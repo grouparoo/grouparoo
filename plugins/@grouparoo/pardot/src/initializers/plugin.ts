@@ -3,8 +3,9 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
+import { parallelism } from "./../lib/parallelism";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportProfiles } from "../lib/export/exportProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -65,7 +66,7 @@ export class Plugins extends Initializer {
                 'To get a new security token, click on "Reset My Security Token" in "personal settings"',
             },
           ],
-          methods: { test },
+          methods: { test, parallelism },
         },
       ],
       connections: [
@@ -77,7 +78,7 @@ export class Plugins extends Initializer {
           app: "pardot",
           options: [],
           methods: {
-            exportProfile,
+            exportProfiles,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,
