@@ -58,6 +58,7 @@ export class ClusterReset extends AuthenticatedAction {
   async runWithinTransaction({ session: { teamMember } }) {
     const counts: { [model: string]: number } = {};
 
+    // truncate data tables
     for (const i in models) {
       //@ts-ignore
       const model: typeof App = models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
@@ -75,9 +76,10 @@ export class ClusterReset extends AuthenticatedAction {
       });
     }
 
+    // reset the SetupSteps
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
-    await api.resque.queue.connection.redis.flushdb();
+    await clearRedis();
 
     await Log.create({
       topic: "cluster",
@@ -86,12 +88,6 @@ export class ClusterReset extends AuthenticatedAction {
       ownerId: teamMember.id,
       data: { counts },
     });
-
-    // wait for any currently-running workers
-    await new Promise((resolve) =>
-      setTimeout(resolve, config.tasks.timeout * 2)
-    );
-    await clearFailedTasks();
 
     return { success: true, counts };
   }
@@ -108,9 +104,32 @@ export class ClusterClearCache extends AuthenticatedAction {
   }
 
   async runWithinTransaction() {
-    await cache.clear();
+    await clearRedis();
     return { success: true };
   }
+}
+
+async function clearRedis() {
+  await cache.clear(); // clear redis cache
+
+  // resque
+  await deleteKeys("*resque:queue:*"); // clear resque queues
+  await deleteKeys("*resque:delayed:*"); // clear resque delayed queues
+  await deleteKeys("*resque:timestamps:*"); // clear resque timestamps
+  await deleteKeys("*resque:*lock*:*"); // clear resque locks
+  await deleteKeys("*resque:stat:*"); // clear resque stats
+
+  // wait for any currently-running workers
+  await new Promise((resolve) => setTimeout(resolve, config.tasks.timeout * 2));
+  await clearFailedTasks();
+
+  // re-start recurring tasks
+  await task.enqueueAllRecurrentTasks();
+}
+
+async function deleteKeys(pattern: string) {
+  const keys = await api.resque.queue.connection.redis.keys(pattern);
+  return Promise.all(keys.map((k) => api.resque.queue.connection.redis.del(k)));
 }
 
 async function clearFailedTasks() {
