@@ -14,6 +14,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     toDelete,
     newProfileProperties,
     oldProfileProperties,
+    oldGroups,
+    newGroups,
   } = profileToExport;
 
   // if we received no mapped data... just exit
@@ -49,7 +51,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     } catch (error) {
       // Another user with the new email address (email_address) already exists,
       // so we need to delete the old one and let the updateProfile reuse the existing one.
-      await deleteMember(client, listId, oldMailchimpId);
+      await deleteMember(client, listId, oldMailchimpId, oldGroups, newGroups);
     }
   }
 
