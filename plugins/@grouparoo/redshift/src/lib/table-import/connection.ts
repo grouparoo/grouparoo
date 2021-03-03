@@ -4,6 +4,7 @@ import { getColumns } from "@grouparoo/postgres/dist/lib/table-import/getColumns
 import { getTables } from "@grouparoo/postgres/dist/lib/table-import/getTables";
 import { getChangedRows } from "@grouparoo/postgres/dist/lib/table-import/getChangedRows";
 import { getPropertyValue } from "@grouparoo/postgres/dist/lib/table-import/getPropertyValue";
+import { getPropertyValues } from "@grouparoo/postgres/dist/lib/table-import/getPropertyValues";
 import { getChangedRowCount } from "@grouparoo/postgres/dist/lib/table-import/getChangedRowCount";
 
 export function getConnection() {
@@ -17,6 +18,7 @@ export function getConnection() {
     getTables,
     getChangedRows,
     getPropertyValue,
+    getPropertyValues,
     getChangedRowCount,
   });
 }
