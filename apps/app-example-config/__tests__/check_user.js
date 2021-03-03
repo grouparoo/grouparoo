@@ -15,13 +15,6 @@ describe("snapshot", () => {
       user_id: 534,
     });
 
-    console.log(
-      Object.entries(snapshot.properties).map(([key, { values }]) => [
-        key,
-        values,
-      ])
-    );
-
     expect(snapshot.properties.email.values[0]).toBe("tmurrhardtet@demo.com");
   });
 });
