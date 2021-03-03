@@ -4,6 +4,7 @@ import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
+import { appOptions } from "./../lib/appOptions";
 
 import { exportProfiles } from "../lib/export/exportProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -65,8 +66,18 @@ export class Plugins extends Initializer {
               description:
                 'To get a new security token, click on "Reset My Security Token" in "personal settings"',
             },
+            {
+              key: "salesforceDomain",
+              displayName: "Salesforce Domain",
+              required: false,
+            },
+            {
+              key: "pardotDomain",
+              displayName: "Pardot Domain",
+              required: false,
+            },
           ],
-          methods: { test, parallelism },
+          methods: { test, parallelism, appOptions },
         },
       ],
       connections: [
