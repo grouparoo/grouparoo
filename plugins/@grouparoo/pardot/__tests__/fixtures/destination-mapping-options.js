@@ -2,20 +2,20 @@ const nock = require("nock");
 
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .post(
-    "/services/Soap/u/51.0",
-    '<?xml version="1.0" encoding="utf-8" ?>\n        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"\n            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n            xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">\n          <env:Body>\n            <login xmlns="urn:partner.soap.sforce.com">\n              <username>demo@grouparoo.com</username>\n              <password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password>\n            </login>\n          </env:Body>\n        </env:Envelope>\n        '
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
   )
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/51.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/51.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQAUlON7pgFl3Xl7buOTNEsKCqlONJn0sf0Kyig5An5xVW0ATtiFm6uFKQzFuskQMVG.DFnqcYbU9dt51V73GY51QCZUq</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQHmH.agLwMB0Wwq2gHvRGWjzQzzDSpG5WYsnbYS7wfCp2.eEanqRVS7vD995aRelnFd0ikTr0h4V6kHMArfpz1lpRew4</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:54 GMT",
+      "Wed, 03 Mar 2021 13:58:23 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=rLGxBnttEeuhZPND0y8JIA; domain=.salesforce.com; path=/; expires=Wed, 02-Mar-2022 15:40:54 GMT; Max-Age=31536000",
+      "BrowserId=hKaeFHwoEeuH9xmMu1urhQ; domain=.salesforce.com; path=/; expires=Thu, 03-Mar-2022 13:58:23 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -152,7 +152,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
             is_use_values: true,
             is_analytics_synced: false,
             created_at: "2021-03-02 07:02:30",
-            updated_at: "2021-03-02 07:02:30",
+            updated_at: "2021-03-02 12:27:51",
           },
           {
             id: 7220,
@@ -172,9 +172,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:55 GMT",
+      "Wed, 03 Mar 2021 13:58:23 GMT",
       "Set-Cookie",
-      "pardot=3no8isdmn7atnv29h5i36td7ig; path=/",
+      "pardot=b08cajfe1bd19508d9n0o6m26v; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -182,7 +182,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -196,25 +196,25 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .post(
-    "/services/Soap/u/51.0",
-    '<?xml version="1.0" encoding="utf-8" ?>\n        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"\n            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n            xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">\n          <env:Body>\n            <login xmlns="urn:partner.soap.sforce.com">\n              <username>demo@grouparoo.com</username>\n              <password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password>\n            </login>\n          </env:Body>\n        </env:Envelope>\n        '
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
   )
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/51.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/51.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQAUlON7pgFl3Xl7buOTNEsKCqlONJn0sf0Kyig5An5xVW0ATtiFm6uFKQzFuskQMVG.DFnqcYbU9dt51V73GY51QCZUq</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQHmH.agLwMB0Wwq2gHvRGWjzQzzDSpG5WYsnbYS7wfCp2.eEanqRVS7vD995aRelnFd0ikTr0h4V6kHMArfpz1lpRew4</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:55 GMT",
+      "Wed, 03 Mar 2021 13:58:24 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=rZZrd3ttEeuDFCXEu8Wmng; domain=.salesforce.com; path=/; expires=Wed, 02-Mar-2022 15:40:55 GMT; Max-Age=31536000",
+      "BrowserId=hXWHAXwoEeu7bVsBRu9fWg; domain=.salesforce.com; path=/; expires=Thu, 03-Mar-2022 13:58:24 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -351,7 +351,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
             is_use_values: true,
             is_analytics_synced: false,
             created_at: "2021-03-02 07:02:30",
-            updated_at: "2021-03-02 07:02:30",
+            updated_at: "2021-03-02 12:27:51",
           },
           {
             id: 7220,
@@ -371,9 +371,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:56 GMT",
+      "Wed, 03 Mar 2021 13:58:24 GMT",
       "Set-Cookie",
-      "pardot=sl98rqhavlrr66ahg48qfrkate; path=/",
+      "pardot=nnrv935uvvkhf1lhjtei15vqgd; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -395,25 +395,25 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .post(
-    "/services/Soap/u/51.0",
-    '<?xml version="1.0" encoding="utf-8" ?>\n        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"\n            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n            xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">\n          <env:Body>\n            <login xmlns="urn:partner.soap.sforce.com">\n              <username>demo@grouparoo.com</username>\n              <password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password>\n            </login>\n          </env:Body>\n        </env:Envelope>\n        '
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
   )
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/51.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/51.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQAUlON7pgFl3Xl7buOTNEsKCqlONJn0sf0Kyig5An5xVW0ATtiFm6uFKQzFuskQMVG.DFnqcYbU9dt51V73GY51QCZUq</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQHmH.agLwMB0Wwq2gHvRGWjzQzzDSpG5WYsnbYS7wfCp2.eEanqRVS7vD995aRelnFd0ikTr0h4V6kHMArfpz1lpRew4</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:56 GMT",
+      "Wed, 03 Mar 2021 13:58:25 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=rf-NO3ttEeuZBCUxFZoamg; domain=.salesforce.com; path=/; expires=Wed, 02-Mar-2022 15:40:56 GMT; Max-Age=31536000",
+      "BrowserId=hdWn3nwoEeumU-Ns157wLw; domain=.salesforce.com; path=/; expires=Thu, 03-Mar-2022 13:58:25 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -550,7 +550,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
             is_use_values: true,
             is_analytics_synced: false,
             created_at: "2021-03-02 07:02:30",
-            updated_at: "2021-03-02 07:02:30",
+            updated_at: "2021-03-02 12:27:51",
           },
           {
             id: 7220,
@@ -570,9 +570,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Tue, 02 Mar 2021 15:40:56 GMT",
+      "Wed, 03 Mar 2021 13:58:25 GMT",
       "Set-Cookie",
-      "pardot=km8a11s48bcon31vvbve499100; path=/",
+      "pardot=sr6190u5obtnkri4kfdn09fkn2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -580,7 +580,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -594,6 +594,6 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );

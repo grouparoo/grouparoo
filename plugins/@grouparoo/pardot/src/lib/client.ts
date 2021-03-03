@@ -1,15 +1,10 @@
 import axios, { AxiosInstance } from "axios";
-import { escapeXML } from "./utils";
+import jsforce from "jsforce";
 
 interface PardotClientOptions {
   businessUnitId: string;
   loginUrl?: string;
   pardotUrl?: string;
-}
-
-interface SalesforceUserInfo {
-  organizationName: string;
-  userFullName: string;
 }
 
 interface PardotCustomField {
@@ -21,91 +16,34 @@ interface PardotCustomField {
 }
 
 class PardotClient {
-  private loginUrl: string;
   private pardotUrl: string;
   private businessUnitId: string;
 
-  userInfo?: SalesforceUserInfo;
+  conn: jsforce.Connection;
   request?: AxiosInstance;
 
   constructor(options?: PardotClientOptions) {
-    this.loginUrl = options?.loginUrl || "https://login.salesforce.com";
     this.pardotUrl = options?.pardotUrl || "https://pi.pardot.com";
     this.businessUnitId = options.businessUnitId;
+
+    this.conn = new jsforce.Connection({
+      loginUrl: options?.loginUrl || "https://login.salesforce.com",
+    });
   }
 
-  // Salesforce SOAP Login
   async login(username: string, password: string, securityToken?: string) {
     const fullPassword =
       (password || "").toString() + (securityToken || "").toString();
 
-    try {
-      const res = await axios.post(
-        `${this.loginUrl}/services/Soap/u/51.0`,
-        `<?xml version="1.0" encoding="utf-8" ?>
-        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
-          <env:Body>
-            <login xmlns="urn:partner.soap.sforce.com">
-              <username>${escapeXML(username)}</username>
-              <password>${escapeXML(fullPassword)}</password>
-            </login>
-          </env:Body>
-        </env:Envelope>
-        `,
-        {
-          headers: {
-            "Content-Type": "text/xml",
-            Accept: "text/xml",
-            SOAPAction: "login",
-          },
-        }
-      );
+    await this.conn.login(username, fullPassword);
 
-      const tokenMatch = res.data.match(/<sessionId>([^<]+)<\/sessionId>/);
-      const accessToken = tokenMatch && tokenMatch[1];
-
-      const orgNameMatch = res.data.match(
-        /<organizationName>([^<]+)<\/organizationName>/
-      );
-      const organizationName = orgNameMatch && orgNameMatch[1];
-
-      const userNameMatch = res.data.match(
-        /<userFullName>([^<]+)<\/userFullName>/
-      );
-      const userFullName = userNameMatch && userNameMatch[1];
-
-      this.userInfo = {
-        organizationName,
-        userFullName,
-      };
-
-      this.request = axios.create({
-        baseURL: `${this.pardotUrl}/api`,
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          "Pardot-Business-Unit-Id": this.businessUnitId,
-        },
-      });
-    } catch (err) {
-      if (err?.response?.status >= 400) {
-        const faultMatch = err.response.data?.match(
-          /<faultstring>([^<]+)<\/faultstring>/
-        );
-        const faultString = faultMatch && faultMatch[1];
-        throw new Error(faultString || err.response.data);
-      }
-
-      throw err;
-    }
-  }
-
-  async getProspects() {
-    const res = await this.request.get(
-      "/prospect/version/4/do/query?format=json"
-    );
-    return res.data.result;
+    this.request = axios.create({
+      baseURL: `${this.pardotUrl}/api`,
+      headers: {
+        Authorization: `Bearer ${this.conn.accessToken}`,
+        "Pardot-Business-Unit-Id": this.businessUnitId,
+      },
+    });
   }
 
   async getCustomFields(): Promise<PardotCustomField[]> {
@@ -132,6 +70,67 @@ class PardotClient {
     }
 
     return result.customField.map(mapResult);
+  }
+
+  async queryProspects(
+    options?: Record<string, any>
+  ): Promise<Record<string, any>[]> {
+    const res = await this.request.get("/prospect/version/4/do/query", {
+      params: {
+        format: "json",
+        ...options,
+      },
+    });
+
+    const { result } = res.data;
+    if (result.total_results === 0) {
+      return [];
+    } else if (result.total_results === 1) {
+      return [result.prospect];
+    }
+
+    return result.prospect;
+  }
+
+  async batchUpsertProspects(prospects: Record<string, any>[]) {
+    const res = await this.request.post(
+      "/prospect/version/4/do/batchUpsert",
+      {},
+      {
+        params: {
+          format: "json",
+          prospects: JSON.stringify({
+            prospects,
+          }),
+        },
+      }
+    );
+
+    const errors: Record<string, string> = res.data.errors;
+    return errors;
+  }
+
+  async deleteProspectById(prospectId: number) {
+    await this.request.post(`/prospect/version/4/do/delete/id/${prospectId}`);
+  }
+
+  async getListByName(listName: string) {
+    const res = await this.request.get("/list/version/4/do/query", {
+      params: {
+        format: "json",
+        name: listName,
+      },
+    });
+
+    const { result } = res.data;
+    if (result.total_results === 1) {
+      return result.list;
+    } else if (result.total_results > 1) {
+      // Name is unique, this should not occur
+      throw new Error("Unexpectedly received more than one list by name");
+    }
+
+    return null;
   }
 }
 
