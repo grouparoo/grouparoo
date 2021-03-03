@@ -66,6 +66,7 @@ jobs:
       - save_cache:
           <<: *other-modules-cache-options
           paths:
+            - apps/app-example-config/node_modules
             - apps/staging-community/node_modules
             - apps/staging-enterprise/node_modules
             - cli/node_modules
