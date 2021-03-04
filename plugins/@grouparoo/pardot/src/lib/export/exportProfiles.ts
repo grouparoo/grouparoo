@@ -10,8 +10,6 @@ import {
   BatchMethodUpdateByDestinationIds,
   BatchMethodCreateByForeignKeyAndSetDestinationIds,
   BatchMethodAddToGroups,
-  GroupNameListMap,
-  DestinationIdMap,
   BatchMethodNormalizeForeignKeyValue,
   BatchMethodNormalizeGroupName,
   BatchMethodRemoveFromGroups,
@@ -71,7 +69,7 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
   config,
 }) => {
   const { cacheData } = config.data;
-  await updateProspects(client, users, cacheData);
+  await updateProspectsHelper(client, users, cacheData);
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
@@ -81,8 +79,38 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
   config,
 }) => {
   const { cacheData } = config.data;
-  await updateProspects(client, users, cacheData);
+  await updateProspectsHelper(client, users, cacheData);
 };
+
+async function updateProspectsHelper(
+  client: PardotClient,
+  users: BatchExport[],
+  cacheData: PardotCacheData
+) {
+  if (users.length === 0) return; // Nothing to do
+
+  // Sometimes we may get "414 - URI Too Long" from Pardot.
+  // In extremely long URIs, 414 won't be returned and "400 - Bad Request" will be returned instead.
+  // In these cases, we recursively split into two batches...
+  try {
+    await updateProspects(client, users, cacheData);
+  } catch (error) {
+    if (error.response?.status === 414 || error.response?.status === 400) {
+      if (users.length === 1) {
+        users[0].error = new Error(
+          `${error.response.status} - ${error.response.statusText}`
+        );
+        return;
+      }
+
+      const half = Math.ceil(users.length / 2);
+      await updateProspectsHelper(client, users.splice(0, half), cacheData);
+      await updateProspectsHelper(client, users.splice(-half), cacheData);
+    } else {
+      throw error;
+    }
+  }
+}
 
 async function updateProspects(
   client: PardotClient,
