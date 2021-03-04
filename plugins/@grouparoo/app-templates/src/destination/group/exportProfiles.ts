@@ -256,7 +256,7 @@ async function batchGroups(
     }
     const users = groupMap[name] || [];
     for (const user of users) {
-      if (currentCount > config.batchSize) {
+      if (currentCount >= config.batchSize) {
         batches.push({
           groupMap: currentGroupMap,
           foreignKeyMap: currentForeignKeyMap,
