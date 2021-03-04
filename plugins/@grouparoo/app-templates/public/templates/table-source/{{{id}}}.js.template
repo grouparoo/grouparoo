@@ -12,8 +12,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}-table-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       options: {
-        table: {{#from}}{{{from}}}
-{{/from}}{{^from}}"..."{{/from}}, // Name of the table in your DB - e.g. `table: "users"`
+        table: {{#from}}{{{from}}}{{/from}}{{^from}}"..."{{/from}}, // Name of the table in your DB - e.g. `table: "users"`
       },
 
       /**
@@ -31,8 +30,7 @@ exports.default = async function buildConfig() {
        * CLI.
        */
       mapping: {
-        {{#__mappingKey}}{{{__mappingKey}}}: {{{__mappingValue}}}
-{{/__mappingKey}}{{^__mappingKey}}"...": "user_id"{{/__mappingKey}},
+        {{#__mappingKey}}{{{__mappingKey}}}: {{{__mappingValue}}}{{/__mappingKey}}{{^__mappingKey}}"...": "user_id"{{/__mappingKey}},
       },
 
       /**
@@ -50,7 +48,7 @@ exports.default = async function buildConfig() {
         }
       },
       {{/__bootstrappedId}}
-{{^__bootstrappedId}}
+      {{^__bootstrappedId}}
       // bootstrappedProperty: {
       //   id: "user_id",
       //   name: "User Id",
@@ -81,6 +79,6 @@ exports.default = async function buildConfig() {
     {{^highWaterMark}}//{{/highWaterMark}}   options: {
     {{^highWaterMark}}//{{/highWaterMark}}     column: {{#highWaterMark}}{{{highWaterMark}}}{{/highWaterMark}}{{^highWaterMark}}"..."{{/highWaterMark}}, // the column to check for new records in table which this Schedule's Source is using (e.g. column: 'updated_at')
     {{^highWaterMark}}//{{/highWaterMark}}   },
-    {{^highWaterMark}}//{{/highWaterMark}}},
+    {{^highWaterMark}}//{{/highWaterMark}} },
   ];
 };
