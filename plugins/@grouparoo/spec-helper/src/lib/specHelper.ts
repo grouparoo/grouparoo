@@ -186,6 +186,9 @@ export namespace helper {
     beforeAll(async () => {
       const { Process } = await import("actionhero");
       actionhero = new Process();
+
+      await actionhero.initialize();
+      if (options.truncate) await helper.truncate();
       await actionhero.start();
 
       try {
@@ -196,7 +199,6 @@ export namespace helper {
         require("@grouparoo/core/src").plugin.mountModels();
       } catch (error) {}
 
-      if (options.truncate) await helper.truncate();
       if (options.resetSettings) await helper.resetSettings();
       if (options.enableTestPlugin) helper.enableTestPlugin();
       if (options.disableTestPluginImport) helper.disableTestPluginImport();
@@ -453,8 +455,26 @@ export namespace helper {
     opts: { saveExports?: boolean } = { saveExports: false }
   ) {
     const arrayedArgs = {};
+    let foundDirectlyMapped = false;
+    const directlyMappedProperties = await Property.findAll({
+      where: { directlyMapped: true },
+    });
+
+    const directlyMappedPropertyKeys = directlyMappedProperties.map(
+      (p) => p.key
+    );
+
     for (const k in args) {
+      if (directlyMappedPropertyKeys.includes(k)) foundDirectlyMapped = true;
       arrayedArgs[k] = [args[k]];
+    }
+
+    if (!foundDirectlyMapped) {
+      throw new Error(
+        `The arguments provided must contain key/value pairs for one of the following: ${directlyMappedPropertyKeys.join(
+          ", "
+        )}`
+      );
     }
 
     const { profile } = await Profile.findOrCreateByUniqueProfileProperties(

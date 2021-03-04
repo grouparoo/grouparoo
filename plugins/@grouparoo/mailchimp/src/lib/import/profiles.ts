@@ -17,7 +17,7 @@ export const profiles: ProfilesPluginMethod = async ({
     const ruleOptions = await rule.getOptions();
     const ruleMapping = {};
     if (ruleOptions.field) {
-      ruleMapping[ruleOptions.field] = rule.key;
+      ruleMapping[ruleOptions.field?.toString()] = rule.key;
       combinedMapping = Object.assign(combinedMapping, ruleMapping);
     }
   }

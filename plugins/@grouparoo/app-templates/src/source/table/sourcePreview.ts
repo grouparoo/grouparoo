@@ -23,7 +23,7 @@ export const getSourcePreview: GetSourcePreviewMethod = ({
     appId,
     sourceOptions,
   }) => {
-    const tableName = sourceOptions[tableNameKey];
+    const tableName = sourceOptions[tableNameKey]?.toString();
     return getExampleRows({
       connection,
       appOptions,

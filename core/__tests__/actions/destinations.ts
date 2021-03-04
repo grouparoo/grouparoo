@@ -387,6 +387,29 @@ describe("actions/destinations", () => {
         expect(_profile.groupNames).toEqual(["another-group-tag"]);
       });
 
+      test("an administrator can get a preview of a profile to be exported to a destination, with an un-set optional property", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          profileId: profile.id,
+          mapping: {
+            "primary-id": "userId",
+            "something-new-null": null,
+            "something-new-undefined": undefined,
+            "something-new-string": "",
+          },
+        };
+        const { error, profile: _profile } = await specHelper.runAction(
+          "destination:profilePreview",
+          connection
+        );
+        expect(error).toBeUndefined();
+        expect(_profile.properties["primary-id"].values).toEqual([1]);
+        expect(_profile.properties["something-new-null"]).toBeFalsy();
+        expect(_profile.properties["something-new-undefined"]).toBeFalsy();
+        expect(_profile.properties["something-new-string"]).toBeFalsy();
+      });
+
       test("destination:profilePreview will not fail if a new profile property has just been created or there are missing properties", async () => {
         const source = await Source.findOne({ where: { state: "ready" } });
         const colorProperty = await Property.create({

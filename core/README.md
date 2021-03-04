@@ -4,7 +4,7 @@
 
 Focus on building your core product, not integrating with 3rd-party tools. Learn more at [www.grouparoo.com](https://www.grouparoo.com)
 
-![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/master/documents/images/grouparoo-diagram.png)
+![Grouparoo Data Bowtie](https://raw.githubusercontent.com/grouparoo/grouparoo/main/documents/images/grouparoo-diagram.png)
 
 <p align="center">
   <a aria-label="NPM version" href="https://www.npmjs.com/package/@grouparoo/core">
@@ -13,7 +13,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   <a aria-label="Node version" href="https://www.npmjs.com/package/@grouparoo/core">
     <img alt="" src="https://img.shields.io/node/v/@grouparoo/core.svg?style=for-the-badge&labelColor=242436">
   </a>
-  <a aria-label="License" href="https://github.com/grouparoo/grouparoo/blob/master/LICENSE.txt">
+  <a aria-label="License" href="https://github.com/grouparoo/grouparoo/blob/main/LICENSE.txt">
     <img alt="" src="https://img.shields.io/npm/l/@grouparoo/core.svg?style=for-the-badge&labelColor=242436">
   </a>
 </p>

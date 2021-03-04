@@ -39,10 +39,8 @@ export const updateProfile: UpdateProfileMethod = async ({
     if (noDelete) {
       return { success: true };
     }
-    const response = await client.delete(
-      `/lists/${listId}/members/${mailchimpId}`
-    );
-    return { success: response.statusCode === 200 };
+    await deleteMember(client, listId, mailchimpId, oldGroups, newGroups);
+    return { success: true };
   }
   let exists = false;
   let existingTagNames = [];
@@ -78,7 +76,7 @@ export const updateProfile: UpdateProfileMethod = async ({
     }
 
     // mailchimp changes the case of tags...
-    existingTagNames = getResponse.tags.map((t) => t.name.toLocaleLowerCase());
+    existingTagNames = getResponse.tags.map((t) => normalizeGroupName(t.name));
   } catch (error) {
     // TODO: just letting this go for now.
     // is there a specific error if the user doesn't exist?
@@ -110,8 +108,8 @@ export const updateProfile: UpdateProfileMethod = async ({
     const tagPayload = [];
 
     // add new tags
-    const lowerCaseNewGroups = newGroups.map((g) => g.toLocaleLowerCase());
-    const lowerCaseOldGroups = oldGroups.map((g) => g.toLocaleLowerCase());
+    const lowerCaseNewGroups = newGroups.map((g) => normalizeGroupName(g));
+    const lowerCaseOldGroups = oldGroups.map((g) => normalizeGroupName(g));
 
     for (const i in lowerCaseNewGroups) {
       const tag = lowerCaseNewGroups[i];
@@ -144,3 +142,30 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   return { success: true };
 };
+
+function normalizeGroupName(group: any) {
+  return String(group).toLocaleLowerCase();
+}
+
+export async function deleteMember(
+  client,
+  listId,
+  mailchimpId,
+  oldGroups,
+  newGroups
+) {
+  try {
+    let tagsToRemove = Array.from(new Set(oldGroups.concat(newGroups)));
+    await client.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
+      tags: tagsToRemove.map((g) => ({
+        name: normalizeGroupName(g),
+        status: "inactive",
+      })),
+    });
+    await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+  } catch (error) {
+    if (error?.status !== 405) {
+      throw error;
+    }
+  }
+}

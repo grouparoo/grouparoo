@@ -248,7 +248,9 @@ export default function Page(props) {
                                 <Form.Control
                                   as="select"
                                   required={opt.required}
-                                  defaultValue={app.options[opt.key] || ""}
+                                  defaultValue={
+                                    app.options[opt.key]?.toString() || ""
+                                  }
                                   disabled={loading}
                                   onChange={(e) => {
                                     updateOption(e.target.id, e.target.value);
@@ -289,7 +291,9 @@ export default function Page(props) {
                                   required={opt.required}
                                   type="text"
                                   disabled={loading}
-                                  defaultValue={app.options[opt.key]}
+                                  defaultValue={app.options[
+                                    opt.key
+                                  ]?.toString()}
                                   placeholder={opt.placeholder}
                                   onChange={(e) => {
                                     updateOption(e.target.id, e.target.value);

@@ -28,10 +28,11 @@ export default function ClearCache(props) {
       <Card.Body>
         <Card.Title>Clear Cache</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          Empty the Redis Cache for your Grouparoo Cluster.
+          Empty the Redis and Resque Cache for your Grouparoo Cluster.
           <br />
           <br />
           <small>
+            This will clear the redis cache and rest all resque stats and locks.
             This action should cause no data loss, but may result in slower
             responses for a short time.
           </small>

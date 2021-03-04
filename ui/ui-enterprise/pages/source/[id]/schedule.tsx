@@ -251,7 +251,9 @@ export default function Page(props) {
                         <Form.Control
                           as="select"
                           required={opt.required}
-                          defaultValue={schedule.options[opt.key] || ""}
+                          defaultValue={
+                            schedule.options[opt.key]?.toString() || ""
+                          }
                           disabled={schedule.state !== "draft"}
                           onChange={(e) => {
                             updateOption(opt.key, e.target.value);
@@ -283,7 +285,7 @@ export default function Page(props) {
                           required
                           type="text"
                           disabled={schedule.state !== "draft"}
-                          value={schedule.options[opt.key]}
+                          value={schedule.options[opt.key]?.toString()}
                           onChange={(e) =>
                             updateOption(opt.key, e.target.value)
                           }
@@ -301,7 +303,7 @@ export default function Page(props) {
                           required
                           as="textarea"
                           rows={5}
-                          value={schedule.options[opt.key]}
+                          value={schedule.options[opt.key]?.toString()}
                           disabled={schedule.state !== "draft"}
                           onChange={(e) =>
                             updateOption(opt.key, e.target["value"])

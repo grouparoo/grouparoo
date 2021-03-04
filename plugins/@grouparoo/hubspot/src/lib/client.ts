@@ -8,7 +8,7 @@ class HubspotClient {
 
   constructor(appOptions: SimpleAppOptions) {
     this.client = new Client(appOptions);
-    this.hapikey = appOptions["hapikey"];
+    this.hapikey = appOptions.hapikey?.toString();
   }
 
   async getLists(): Promise<any> {

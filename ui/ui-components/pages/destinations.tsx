@@ -5,7 +5,8 @@ import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
+import Link from "next/link";
+import EnterpriseLink from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
@@ -94,7 +95,7 @@ export default function Page(props) {
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
-                  <Link
+                  <EnterpriseLink
                     href="/destination/[id]/edit"
                     as={`/destination/${destination.id}/edit`}
                   >
@@ -108,29 +109,29 @@ export default function Page(props) {
                           }`}
                       </strong>
                     </a>
-                  </Link>
+                  </EnterpriseLink>
                 </td>
                 <td>
                   {destination.destinationGroup?.id ? (
-                    <Link
+                    <EnterpriseLink
                       href="/group/[id]/edit"
                       as={`/group/${destination.destinationGroup.id}/edit`}
                     >
                       <a>{destination.destinationGroup.name}</a>
-                    </Link>
+                    </EnterpriseLink>
                   ) : (
                     "None"
                   )}
                 </td>
                 <td>
-                  <Link
+                  <EnterpriseLink
                     href="/app/[id]/edit"
                     as={`/app/${destination.app.id}/edit`}
                   >
                     <a>
                       <strong>{destination.app.name}</strong>
                     </a>
-                  </Link>
+                  </EnterpriseLink>
                 </td>
                 <td>
                   <StateBadge state={destination.state} />
@@ -138,7 +139,14 @@ export default function Page(props) {
                 <td>
                   <Badge variant={pendingExports > 0 ? "warning" : "info"}>
                     {pendingExports}
-                  </Badge>
+                  </Badge>{" "}
+                  of{" "}
+                  <Link
+                    href="/destination/[id]/exports"
+                    as={`/destination/${destination.id}/exports`}
+                  >
+                    <a>{destination.exportTotals.all}</a>
+                  </Link>
                 </td>
                 <td>
                   <Moment fromNow>{destination.createdAt}</Moment>

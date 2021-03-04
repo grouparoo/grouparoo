@@ -86,8 +86,10 @@ export namespace DestinationOps {
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
     const destinationMappingOptions = await destination.destinationMappingOptions();
-    mappingKeys.forEach((k) => {
+    for (const k of mappingKeys) {
       const collection = profileProperties[mapping[k]];
+      if (!collection) continue; // we may have an optional property that hasn't yet been set
+
       mappedProfileProperties[k] = collection;
 
       let destinationType: DestinationMappingOptionsResponseTypes = "any";
@@ -110,7 +112,7 @@ export namespace DestinationOps {
         formatOutgoingProfileProperties(value, collection.type, destinationType)
       );
       mappedProfileProperties[k].type = destinationType;
-    });
+    }
 
     const groups = await profile.$get("groups");
     const mappedGroupNames = groups

@@ -40,7 +40,7 @@ export class EventAssociateProfile extends Task {
 
     try {
       await CLS.wrap(async () =>
-        event.associate(appOptions.identifyingPropertyId)
+        event.associate(appOptions.identifyingPropertyId.toString())
       );
     } catch (error) {
       log(`re-enqueuing association of event ${eventId}`);

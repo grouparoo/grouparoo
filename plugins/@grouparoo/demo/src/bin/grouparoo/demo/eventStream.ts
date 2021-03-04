@@ -39,7 +39,7 @@ export class Console extends CLI {
     const appOptions = await eventApp.getOptions();
     const id = appOptions.identifyingPropertyId;
     if (!id) throw new Error("no identifyingPropertyId on the events app");
-    return id;
+    return id.toString();
   }
 
   makeSession(i) {

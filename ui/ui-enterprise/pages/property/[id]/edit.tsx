@@ -361,7 +361,7 @@ export default function Page(props) {
                           required
                           disabled={loading}
                           type="text"
-                          value={property.options[opt.key]}
+                          value={property.options[opt.key]?.toString()}
                           onChange={(e) =>
                             updateOption(opt.key, e.target.value)
                           }
@@ -385,7 +385,7 @@ export default function Page(props) {
                           as="textarea"
                           disabled={loading}
                           rows={5}
-                          value={property.options[opt.key]}
+                          value={property.options[opt.key]?.toString()}
                           onChange={(e) =>
                             updateOption(opt.key, e.target["value"])
                           }
