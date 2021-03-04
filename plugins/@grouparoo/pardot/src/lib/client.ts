@@ -73,6 +73,34 @@ class PardotClient {
     return result.customField.map(mapResult);
   }
 
+  async getProspectByEmail(email: string) {
+    try {
+      const res = await this.request.get(
+        `/prospect/version/4/do/read/email/${email}`,
+        {
+          params: {
+            format: "json",
+          },
+        }
+      );
+
+      if (Array.isArray(res.data.prospect)) {
+        return res.data.prospect[0];
+      }
+
+      return res.data.prospect;
+    } catch (error) {
+      if (
+        error.response?.status === 400 &&
+        error.response?.data["@attributes"]?.err_code === 4
+      ) {
+        return null;
+      }
+
+      throw error;
+    }
+  }
+
   async queryProspects(
     options?: Record<string, any>
   ): Promise<Record<string, any>[]> {

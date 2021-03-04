@@ -35,18 +35,12 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   foreignKeys,
   getByForeignKey,
 }) => {
-  // search for these email addresses
-  const filterValues = foreignKeys;
-  const filterType = "email";
-
-  const results = await client.queryProspects({ [filterType]: filterValues });
-  for (const result of results) {
-    const found = getByForeignKey(result.email);
-    if (found) {
-      found.destinationId = result.id;
-      found.result = result;
-    } else {
-      // Result found but didn't have email. not sure what that means
+  for (const email of foreignKeys) {
+    const prospect = await client.getProspectByEmail(email);
+    if (prospect) {
+      const user = getByForeignKey(email);
+      user.destinationId = prospect.id;
+      user.result = prospect;
     }
   }
 };
