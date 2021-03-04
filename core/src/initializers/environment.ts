@@ -16,9 +16,12 @@ export class Environment extends Initializer {
     }
 
     if (config.sequelize.dialect === "sqlite") {
-      log(`using SQLite database: ${config.sequelize.storage}`);
+      log(`Using SQLite database: ${config.sequelize.storage}`);
 
-      if (config.tasks.maxTaskProcessors > 1) {
+      if (
+        config.tasks.maxTaskProcessors > 1 ||
+        parseInt(process.env.WORKERS || "0") > 1
+      ) {
         log(
           "Only one task worker can be used with a SQLite database",
           "warning"
