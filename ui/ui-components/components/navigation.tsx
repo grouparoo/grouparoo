@@ -13,6 +13,7 @@ import { Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
 import { SessionHandler } from "../utils/sessionHandler";
+import { truncate } from "../utils/truncate";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };
 
@@ -191,7 +192,7 @@ export default function Navigation(props) {
             <br />
             <Link href="/settings/[tab]" as="/settings/core">
               <a>
-                <Badge variant="secondary">{clusterName}</Badge>
+                <Badge variant="secondary">{truncate(clusterName, 30)}</Badge>
               </a>
             </Link>
           </div>

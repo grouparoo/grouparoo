@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import mockAxios from "jest-mock-axios";
 import Page from "../../pages/about";
-import commonProps from "../utils/commonProps";
+import commonProps from "../__utils__/commonProps";
 
 describe("pages/about", () => {
   let wrapper;
