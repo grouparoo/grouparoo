@@ -79,7 +79,16 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
   config,
 }) => {
   const { cacheData } = config.data;
+
   await updateProspectsHelper(client, users, cacheData);
+
+  for (let user of users) {
+    // We're not using destinationIds for created prospects, but grouparoo requires it to be set
+    // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
+    if (!user.destinationId) {
+      user.destinationId = user.foreignKeyValue;
+    }
+  }
 };
 
 async function updateProspectsHelper(
@@ -104,8 +113,8 @@ async function updateProspectsHelper(
       }
 
       const half = Math.ceil(users.length / 2);
-      await updateProspectsHelper(client, users.splice(0, half), cacheData);
-      await updateProspectsHelper(client, users.splice(-half), cacheData);
+      await updateProspectsHelper(client, users.slice(0, half), cacheData);
+      await updateProspectsHelper(client, users.slice(half), cacheData);
     } else {
       throw error;
     }
@@ -121,12 +130,6 @@ async function updateProspects(
   for (const exportedProfile of users) {
     const payload = await buildPayload(client, exportedProfile, cacheData);
     input.push(payload);
-
-    // We're not using destinationIds for created prospects, but grouparoo requires it to be set
-    // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
-    if (!exportedProfile.destinationId) {
-      exportedProfile.destinationId = exportedProfile.foreignKeyValue;
-    }
   }
 
   const errors = await client.batchUpsertProspects(input);
