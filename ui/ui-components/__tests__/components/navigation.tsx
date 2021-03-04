@@ -10,7 +10,7 @@ describe("navigation", () => {
   let wrapper;
 
   beforeEach(() => {
-    useRouter.mockImplementationOnce(() => ({
+    useRouter.mockImplementation(() => ({
       pathname: "/",
       asPath: "/",
     }));
