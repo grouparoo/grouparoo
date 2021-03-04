@@ -1,6 +1,146 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`modules/codeConfig with code config a profile snapshot can be tested 1`] = `
+exports[`modules/codeConfig with code config a profile snapshot can be tested with a bootstrapped property 1`] = `
+Object {
+  "exports": Array [
+    Object {
+      "completedAt": null,
+      "createdAt": null,
+      "destination": null,
+      "destinationName": "Test Destination",
+      "errorLevel": undefined,
+      "errorMessage": undefined,
+      "force": true,
+      "hasChanges": true,
+      "id": null,
+      "mostRecent": false,
+      "newGroups": Array [
+        "Literally Everyone",
+      ],
+      "newProfileProperties": Object {
+        "primary-id": 100,
+        "secondary-id": "example@example.com",
+      },
+      "oldGroups": Array [],
+      "oldProfileProperties": Object {},
+      "profileId": Any<String>,
+      "startedAt": Any<Number>,
+      "toDelete": false,
+    },
+  ],
+  "groups": Array [
+    Object {
+      "calculatedAt": null,
+      "createdAt": Any<Number>,
+      "id": Any<String>,
+      "locked": "config:code",
+      "matchType": "all",
+      "name": "People with Email Addresses",
+      "nextCalculatedAt": Any<Number>,
+      "profilesCount": 1,
+      "rules": Array [
+        Object {
+          "key": "userId",
+          "match": "null",
+          "operation": Object {
+            "description": "is not equal to",
+            "op": "ne",
+          },
+          "relativeMatchDirection": null,
+          "relativeMatchNumber": null,
+          "relativeMatchUnit": null,
+          "topLevel": false,
+          "type": "integer",
+        },
+        Object {
+          "key": "email",
+          "match": "%@%",
+          "operation": Object {
+            "description": "is like (case sensitive)",
+            "op": "like",
+          },
+          "relativeMatchDirection": null,
+          "relativeMatchNumber": null,
+          "relativeMatchUnit": null,
+          "topLevel": false,
+          "type": "email",
+        },
+      ],
+      "state": "updating",
+      "type": "calculated",
+      "updatedAt": Any<Number>,
+    },
+  ],
+  "properties": Object {
+    "email": Object {
+      "confirmedAt": Any<Date>,
+      "createdAt": Any<Date>,
+      "id": Any<String>,
+      "identifying": false,
+      "isArray": false,
+      "state": "ready",
+      "stateChangedAt": Any<Date>,
+      "type": "email",
+      "unique": true,
+      "updatedAt": Any<Date>,
+      "valueChangedAt": Any<Date>,
+      "values": Array [
+        "example@example.com",
+      ],
+    },
+    "first name": Object {
+      "confirmedAt": Any<Date>,
+      "createdAt": Any<Date>,
+      "id": Any<String>,
+      "identifying": false,
+      "isArray": false,
+      "state": "ready",
+      "stateChangedAt": Any<Date>,
+      "type": "string",
+      "unique": false,
+      "updatedAt": Any<Date>,
+      "valueChangedAt": Any<Date>,
+      "values": Array [
+        Object {},
+      ],
+    },
+    "last name": Object {
+      "confirmedAt": Any<Date>,
+      "createdAt": Any<Date>,
+      "id": Any<String>,
+      "identifying": false,
+      "isArray": false,
+      "state": "ready",
+      "stateChangedAt": Any<Date>,
+      "type": "string",
+      "unique": false,
+      "updatedAt": Any<Date>,
+      "valueChangedAt": Any<Date>,
+      "values": Array [
+        Object {},
+      ],
+    },
+    "userId": Object {
+      "confirmedAt": Any<Date>,
+      "createdAt": Any<Date>,
+      "id": Any<String>,
+      "identifying": true,
+      "isArray": false,
+      "state": "ready",
+      "stateChangedAt": Any<Date>,
+      "type": "integer",
+      "unique": true,
+      "updatedAt": Any<Date>,
+      "valueChangedAt": Any<Date>,
+      "values": Array [
+        100,
+      ],
+    },
+  },
+}
+`;
+
+exports[`modules/codeConfig with code config a profile snapshot can be tested with multiple unique properties 1`] = `
 Object {
   "exports": Array [
     Object {

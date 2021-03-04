@@ -40,15 +40,43 @@ describe("modules/codeConfig", () => {
       };
     });
 
-    test("a profile snapshot can be tested", async () => {
+    test("getProfile will throw an error when not using a bootstrapped property", async () => {
+      await expect(
+        helper.getProfile({
+          email: "example@example.com",
+        })
+      ).rejects.toThrow(
+        /The arguments provided must contain key\/value pairs for one of the following: userId/
+      );
+    });
+
+    test("a profile snapshot can be tested with a bootstrapped property", async () => {
       const { profile, snapshot } = await helper.getProfile({
-        email: "test-person@example.com",
+        userId: 100,
       });
 
       // You can do snapshot testing
       expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
 
       // Or you can test the properties of the snapshot directly
+      expect(snapshot.properties.email.values).toEqual(["example@example.com"]);
+      expect(snapshot.properties.userId.values).toEqual([100]);
+      expect(snapshot.groups.length).toBe(1);
+      expect(snapshot.groups[0].name).toBe("People with Email Addresses");
+      expect(profile.state).toBe("ready");
+    });
+
+    test("a profile snapshot can be tested with multiple unique properties", async () => {
+      const { profile, snapshot } = await helper.getProfile({
+        email: "example@example.com",
+        userId: 100,
+      });
+
+      // You can do snapshot testing
+      expect(snapshot).toMatchSnapshot(relaxedSnapshot(snapshot));
+
+      // Or you can test the properties of the snapshot directly
+      expect(snapshot.properties.email.values).toEqual(["example@example.com"]);
       expect(snapshot.properties.userId.values).toEqual([100]);
       expect(snapshot.groups.length).toBe(1);
       expect(snapshot.groups[0].name).toBe("People with Email Addresses");
