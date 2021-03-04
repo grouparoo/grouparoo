@@ -112,8 +112,19 @@ export const DEFAULT = {
         min: 0,
         acquire: 30000,
         idle: 10000,
+        evict: 1000,
       },
       dialectOptions: { ssl },
+      transactionType: dialect === "sqlite" ? "EXCLUSIVE" : "DEFERRED",
+      retry: {
+        match: [
+          Sequelize.ConnectionError,
+          Sequelize.DatabaseError,
+          Sequelize.ConnectionTimedOutError,
+          /SQLITE_BUSY/,
+        ],
+        max: 3,
+      },
     };
   },
 };
