@@ -120,8 +120,8 @@ export const DEFAULT = {
         match: [
           Sequelize.ConnectionError,
           Sequelize.DatabaseError,
+          Sequelize.TimeoutError,
           Sequelize.ConnectionTimedOutError,
-          /SQLITE_BUSY/,
         ],
         max: 3,
       },
