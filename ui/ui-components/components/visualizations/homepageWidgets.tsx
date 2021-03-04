@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import Link from "../enterpriseLink";
+import Link from "next/link";
+import EnterpriseLink from "../enterpriseLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
 import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
@@ -119,19 +120,19 @@ export function GroupsByNewestMember({ execApi }) {
                 <tr key={`group-${group.id}`}>
                   <td>
                     {group.type === "calculated" ? (
-                      <Link
+                      <EnterpriseLink
                         href="/group/[id]/rules"
                         as={`/group/${group.id}/rules`}
                       >
                         <a>{group.name}</a>
-                      </Link>
+                      </EnterpriseLink>
                     ) : (
-                      <Link
+                      <EnterpriseLink
                         href="/group/[id]/edit"
                         as={`/group/${group.id}/edit`}
                       >
                         <a>{group.name}</a>
-                      </Link>
+                      </EnterpriseLink>
                     )}
                   </td>
                   <td>{group.profilesCount}</td>
@@ -328,12 +329,12 @@ export function ScheduleRuns({ execApi }) {
               return (
                 <tr key={`source-${source.id}`}>
                   <td>
-                    <Link
+                    <EnterpriseLink
                       href="/source/[id]/schedule"
                       as={`/source/${source.id}/schedule`}
                     >
                       <a>{source.name}</a>
-                    </Link>
+                    </EnterpriseLink>
                   </td>
                   <td>
                     {run?.updatedAt &&
