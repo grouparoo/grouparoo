@@ -44,7 +44,7 @@
     "nock": "13.0.10",
     "prettier": "2.2.1",
     "ts-jest": "26.5.3",
-    "typescript": "4.2.2"
+    "typescript": "4.2.3"
   },
   "gitHead": "fde75653f20bf5c26b7457ea37682d9ca55f0786"
 }
