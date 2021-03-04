@@ -41,7 +41,12 @@ export function GrouparooChart({
 
   let yMax = 1.25;
 
-  data.forEach((line, idx) => {
+  data.forEach((line) => {
+    // ensure the x-axis points are sorted
+    line = line.sort((a, b) => {
+      return a.x - b.x;
+    });
+
     line.forEach((point) => {
       if (point.y > yMax) yMax = point.y + point.y / 10; // add 10% more to show the rounded curve top
     });
