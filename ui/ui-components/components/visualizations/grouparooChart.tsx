@@ -42,16 +42,13 @@ export function GrouparooChart({
   let yMax = 1.25;
 
   data.forEach((line) => {
-    // ensure the x-axis points are sorted
-    line = line.sort((a, b) => {
-      return a.x - b.x;
-    });
+    line = line.sort((a, b) => a.x - b.x); // ensure the x-axis points are sorted
 
     line.forEach((point) => {
       if (point.y > yMax) yMax = point.y + point.y / 10; // add 10% more to show the rounded curve top
     });
 
-    while (line.length < minPoints) {
+    while (line[0] && line.length < minPoints) {
       line.unshift({ x: line[0].x - missingPointSpread, y: 0 });
     }
   });
