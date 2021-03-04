@@ -194,7 +194,7 @@ async function buildPayload(
 
 function formatVar(value) {
   if (!value) {
-    return null;
+    return false; // false clears the value
   }
   if (value instanceof Date) {
     return value.toISOString();
