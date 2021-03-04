@@ -52,7 +52,7 @@
     "react-moment": "1.1.1",
     "stacktrace-js": "2.0.2",
     "styled-jsx": "3.4.4",
-    "swagger-ui-dist": "3.44.0",
+    "swagger-ui-dist": "3.44.1",
     "victory": "35.4.11"
   },
   "devDependencies": {
