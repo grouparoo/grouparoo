@@ -89,27 +89,37 @@ export default function Page(props) {
               destination.exportTotals.created +
               destination.exportTotals.started;
 
+            const formattedDestinationName =
+              destination.name ||
+              `${destination.state} created on ${
+                new Date(destination.createdAt).toLocaleString().split(",")[0]
+              }`;
+
             return (
               <tr key={`destination-${destination.id}`}>
                 <td>
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
-                  <EnterpriseLink
-                    href="/destination/[id]/edit"
-                    as={`/destination/${destination.id}/edit`}
-                  >
-                    <a>
-                      <strong>
-                        {destination.name ||
-                          `${destination.state} created on ${
-                            new Date(destination.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
-                    </a>
-                  </EnterpriseLink>
+                  {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                    <EnterpriseLink
+                      href="/destination/[id]/edit"
+                      as={`/destination/${destination.id}/edit`}
+                    >
+                      <a>
+                        <strong>{formattedDestinationName}</strong>
+                      </a>
+                    </EnterpriseLink>
+                  ) : (
+                    <Link
+                      href="/destination/[id]/exports"
+                      as={`/destination/${destination.id}/exports`}
+                    >
+                      <a>
+                        <strong>{formattedDestinationName}</strong>
+                      </a>
+                    </Link>
+                  )}
                 </td>
                 <td>
                   {destination.destinationGroup?.id ? (
@@ -139,14 +149,7 @@ export default function Page(props) {
                 <td>
                   <Badge variant={pendingExports > 0 ? "warning" : "info"}>
                     {pendingExports}
-                  </Badge>{" "}
-                  of{" "}
-                  <Link
-                    href="/destination/[id]/exports"
-                    as={`/destination/${destination.id}/exports`}
-                  >
-                    <a>{destination.exportTotals.all}</a>
-                  </Link>
+                  </Badge>
                 </td>
                 <td>
                   <Moment fromNow>{destination.createdAt}</Moment>
