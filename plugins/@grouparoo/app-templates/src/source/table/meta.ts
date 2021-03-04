@@ -1,3 +1,4 @@
+import { ConnectionOption } from "@grouparoo/core";
 import {
   tableNameKey,
   GetSampleRowsMethod,
@@ -28,6 +29,7 @@ import {
   SourceRunPercentCompleteMethod,
   getSourceRunPercentComplete,
   GetChangedRowCountMethod,
+  SourceOptionsExtra,
 } from "./options";
 
 export interface BuildConnectionMethod {
@@ -44,6 +46,8 @@ export interface BuildConnectionMethod {
     getPropertyValue: GetPropertyValueMethod;
     getPropertyValues?: GetPropertyValuesMethod;
     getChangedRowCount: GetChangedRowCountMethod;
+
+    sourceOptions?: SourceOptionsExtra;
   }): PluginConnection;
 }
 
@@ -59,6 +63,7 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValue,
   getPropertyValues,
   getChangedRowCount,
+  sourceOptions: extraSourceOptions,
 }) => {
   const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions({
     getSampleRows,
@@ -70,6 +75,7 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const sourceOptions: SourceOptionsMethod = getSourceOptions({
     getTables,
+    additionalOptions,
   });
   const sourcePreview: SourcePreviewMethod = getSourcePreview({
     getSampleRows,
@@ -98,19 +104,19 @@ export const buildConnection: BuildConnectionMethod = ({
     }
   );
 
+  const options = (extraSourceOptions?.options || []).concat({
+    key: tableNameKey,
+    displayName: "Table",
+    required: true,
+    description: tableOptionDescription || "The table to scan",
+  });
+
   return {
     name,
     direction: "import",
     description,
     app,
-    options: [
-      {
-        key: tableNameKey,
-        displayName: "Table",
-        required: true,
-        description: tableOptionDescription || "The table to scan",
-      },
-    ],
+    options,
     propertyOptions,
     scheduleOptions,
     methods: {

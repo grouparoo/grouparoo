@@ -20,5 +20,15 @@ export function getConnection() {
     getPropertyValue,
     getPropertyValues,
     getChangedRowCount,
+    sourceOptions: {
+      options: [
+        {
+          key: "columnList",
+          displayName: "Fields",
+          required: true,
+          description: "Comma separated list of fields",
+        },
+      ],
+    },
   });
 }

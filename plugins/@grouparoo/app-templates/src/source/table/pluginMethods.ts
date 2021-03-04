@@ -1,4 +1,8 @@
-import { PropertyTypes, SimpleAppOptions } from "@grouparoo/core";
+import {
+  ConnectionOption,
+  PropertyTypes,
+  SimpleAppOptions,
+} from "@grouparoo/core";
 export { SimpleAppOptions };
 
 import { DataResponse, DataResponseRow } from "../shared/types";
@@ -101,6 +105,10 @@ export interface GetPropertyValuesMethod {
     isArray: boolean;
     primaryKeys: Array<number | string>;
   }): Promise<{ [primaryKey: string]: DataResponse[] }>;
+}
+export interface SourceOptionsExtra {
+  options: ConnectionOption[];
+  // TODO later: canpass method here.
 }
 export interface TableDefinition {
   name: string;
