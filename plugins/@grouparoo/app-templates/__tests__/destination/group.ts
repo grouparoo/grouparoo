@@ -75,7 +75,7 @@ describe("app-templates/destination/group", () => {
     expect(addToGroups).toBeCalledTimes(2);
   });
 
-  test("can limit batch size when adding to groups", async () => {
+  test("can limit batch size when removing from groups", async () => {
     const batchSize = 50;
 
     const profilesToExport = await generateExportedProfiles(
