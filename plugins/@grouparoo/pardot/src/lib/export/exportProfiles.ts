@@ -178,39 +178,15 @@ function formatVar(value) {
   }
 }
 
-// make sure these user are in these groups (keys of map are group names)
-const addToGroups: BatchMethodAddToGroups = async ({
-  client,
-  groupMap,
-  destIdMap,
-  config,
-}) => {
-  // TODO We're going to do this by setting properties in the upsert payload
+const addToGroups: BatchMethodAddToGroups = async () => {
+  // We're adding to groups by setting properties in the upsert payload
   // No need to add to groups separately
 };
 
-const removeFromGroups: BatchMethodRemoveFromGroups = async ({
-  client,
-  groupMap,
-  destIdMap,
-  config,
-}) => {
-  // TODO We're going to do this by setting properties in the upsert payload
+const removeFromGroups: BatchMethodRemoveFromGroups = async () => {
+  // We're removing from groups by setting properties in the upsert payload
   // No need to remove from groups separately
 };
-
-enum ListAction {
-  Add = "ADD",
-  Remove = "REMOVE",
-}
-async function updateList(
-  client,
-  action: ListAction,
-  groupMap: GroupNameListMap,
-  destIdMap: DestinationIdMap
-) {
-  // TODO
-}
 
 // mess with the keys (lowercase emails, for example)
 const normalizeForeignKeyValue: BatchMethodNormalizeForeignKeyValue = ({
