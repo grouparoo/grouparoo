@@ -57,6 +57,9 @@ export default function Navigation(props) {
   const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
   const logoLink = teamMember?.id ? "/dashboard" : "/";
 
+  const clusterNameDisplay =
+    clusterName.length >= 30 ? `${clusterName.slice(0, 30)}...` : clusterName;
+
   useEffect(() => {
     sessionHandler.subscribe("navigation", (_teamMember) =>
       setTeamMember(_teamMember)
@@ -191,7 +194,7 @@ export default function Navigation(props) {
             <br />
             <Link href="/settings/[tab]" as="/settings/core">
               <a>
-                <Badge variant="secondary">{clusterName}</Badge>
+                <Badge variant="secondary">{clusterNameDisplay}</Badge>
               </a>
             </Link>
           </div>
