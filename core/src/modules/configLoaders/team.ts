@@ -1,3 +1,4 @@
+import { env } from "actionhero";
 import {
   ConfigurationObject,
   logModel,
@@ -6,6 +7,7 @@ import {
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
+import { Setting } from "../../models/Setting";
 import { Team, Permission } from "../..";
 import { Op } from "sequelize";
 
@@ -59,6 +61,23 @@ export async function loadTeam(
     { locked: getCodeConfigLockKey() },
     { where: { ownerId: team.id } }
   );
+
+  // Set the cluster name from the team name and current environment if it
+  // hasn't already been changed.
+  const clusterNameSetting = await Setting.findOne({
+    where: { pluginName: "core", key: "cluster-name" },
+  });
+  if (
+    team.name &&
+    clusterNameSetting &&
+    clusterNameSetting.value === clusterNameSetting.defaultValue
+  ) {
+    const nodeEnv = env || "development";
+    const clusterName = `${team.name} - ${
+      nodeEnv.charAt(0).toUpperCase() + nodeEnv.slice(1)
+    }`; // the cluster name would be `Grouparoo - Development`
+    await clusterNameSetting.update({ value: clusterName });
+  }
 
   logModel(team, validate ? "validated" : isNew ? "created" : "updated");
 
