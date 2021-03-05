@@ -77,7 +77,7 @@ const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSe
   await updateProspectsHelper(client, users, cacheData);
 
   for (let user of users) {
-    // We're not using destinationIds for created prospects, but grouparoo requires it to be set
+    // We're not using destinationIds for created prospects, but app-templates/batch requires it to be set
     // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
     if (!user.destinationId) {
       user.destinationId = user.foreignKeyValue;
