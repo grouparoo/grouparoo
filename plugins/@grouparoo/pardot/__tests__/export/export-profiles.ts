@@ -8,10 +8,11 @@ import PardotClient from "../../src/lib/client";
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profiles");
-// or these to make it true
-const newNock = true;
+const newNock = false;
+require("./../fixtures/export-profiles");
+// // or these to make it true
+// const newNock = true;
+
 helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
