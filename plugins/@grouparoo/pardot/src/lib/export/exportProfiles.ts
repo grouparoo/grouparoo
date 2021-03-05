@@ -36,11 +36,16 @@ const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = async ({
   getByForeignKey,
 }) => {
   for (const email of foreignKeys) {
-    const prospect = await client.getProspectByEmail(email);
-    if (prospect) {
-      const user = getByForeignKey(email);
-      user.destinationId = prospect.id;
-      user.result = prospect;
+    const user = getByForeignKey(email);
+
+    try {
+      const prospect = await client.getProspectByEmail(email);
+      if (prospect) {
+        user.destinationId = prospect.id;
+        user.result = prospect;
+      }
+    } catch (error) {
+      user.error = error;
     }
   }
 };
