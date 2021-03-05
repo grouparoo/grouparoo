@@ -105,8 +105,7 @@ async function deleteLists(suppressErrors: boolean) {
   }
 }
 
-async function deleteUsers(suppressErrors: boolean) {
-  const emails = [email1, email2, email3, newEmail1];
+async function deleteUsers(emails, suppressErrors: boolean) {
   for (const email of emails) {
     const id = await findId(email);
     if (!id) continue;
@@ -120,8 +119,41 @@ async function deleteUsers(suppressErrors: boolean) {
   }
 }
 
+function generateLongProfiles(count: number): Record<string, any>[] {
+  const profiles = [];
+  for (let i = 0; i < count; i++) {
+    profiles.push({
+      email: `user${i}@demo.com`,
+      first_name: `User ${i}`,
+      last_name: "LastName",
+      grouparoo_custom_text: `
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+          `,
+    });
+  }
+
+  return profiles;
+}
+
+function makeExports(profiles: Record<string, any>[]) {
+  return profiles.map((profile, i) => ({
+    profileId: `pro${i}`,
+    oldProfileProperties: {},
+    newProfileProperties: profile,
+    oldGroups: [],
+    newGroups: [],
+    toDelete: false,
+    profile: null,
+  }));
+}
+
 async function cleanUp(suppressErrors: boolean) {
-  await deleteUsers(suppressErrors);
+  const emails = [email1, email2, email3, newEmail1];
+
+  await deleteUsers(emails, suppressErrors);
   await deleteLists(suppressErrors);
 }
 
@@ -364,7 +396,7 @@ describe("pardot/exportProfiles", () => {
     expect(members.sort()).toEqual([]);
   });
 
-  test("it can change the email address", async () => {
+  test("can change the email address", async () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
@@ -716,5 +748,55 @@ describe("pardot/exportProfiles", () => {
     expect(user.email).toEqual(email3);
     expect(user.first_name).toEqual("Liz"); // created
     expect(user.grouparoo_custom_text).toEqual("some text");
+  });
+
+  test("can handle updates with too long URI", async () => {
+    // generate profiles
+    const profiles = generateLongProfiles(20);
+
+    // make sure this is a long URI
+    expect(async () => {
+      await client.batchUpsertProspects(profiles);
+    }).rejects.toThrow(/414/);
+
+    // run batch export
+    const exports = makeExports(profiles);
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports,
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    // cleanup
+    const emails = profiles.map((p) => p.email);
+    await deleteUsers(emails, false);
+  });
+
+  test("can handle updates with even longer URI", async () => {
+    // generate profiles
+    const profiles = generateLongProfiles(40);
+
+    // make sure this is a way too long URI (400 err)
+    expect(async () => {
+      await client.batchUpsertProspects(profiles);
+    }).rejects.toThrow(/400/);
+
+    // run batch export
+    const exports = makeExports(profiles);
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports,
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    // cleanup
+    const emails = profiles.map((p) => p.email);
+    await deleteUsers(emails, false);
   });
 });
