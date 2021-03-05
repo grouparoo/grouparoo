@@ -123,7 +123,7 @@ export const DEFAULT = {
           Sequelize.TimeoutError,
           Sequelize.ConnectionTimedOutError,
         ],
-        max: 3,
+        max: 10,
       },
     };
   },
