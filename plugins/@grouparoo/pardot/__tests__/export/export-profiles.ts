@@ -590,7 +590,7 @@ describe("pardot/exportProfiles", () => {
     expect(user.grouparoo_custom_radio_button).toBeUndefined();
   });
 
-  test("can handle email error", async () => {
+  test("can handle invalid email error", async () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
@@ -617,6 +617,61 @@ describe("pardot/exportProfiles", () => {
     const error = errors[0];
     expect(error.profileId).toEqual(id2);
     expect(error.message).toContain("email");
+
+    user = await client.getProspectById(userId2);
+    expect(user.email).toEqual(email2);
+    expect(user.first_name).toEqual("Maria");
+    expect(user.grouparoo_custom_textarea).toBeUndefined();
+    expect(user.grouparoo_custom_text).toBeUndefined();
+    expect(user.grouparoo_custom_number).toBeUndefined();
+    expect(user.grouparoo_custom_hidden).toBeUndefined();
+    expect(user.grouparoo_custom_date).toBeUndefined();
+    expect(user.grouparoo_custom_dropdown).toBeUndefined();
+    expect(user.grouparoo_custom_radio_button).toBeUndefined();
+  });
+
+  test("can handle required field error (email)", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports: [
+        {
+          profileId: id2,
+          oldProfileProperties: { email: email2, first_name: "Maria" },
+          newProfileProperties: {
+            first_name: "Maria",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+        {
+          profileId: "newId",
+          oldProfileProperties: {},
+          newProfileProperties: {
+            first_name: "Ron",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(false);
+    expect(errors).not.toBeNull();
+    expect(errors.length).toEqual(2);
+
+    const error = errors[0];
+    expect(error.profileId).toEqual(id2);
+    expect(error.message).toContain("required");
+
+    const error2 = errors[1];
+    expect(error2.profileId).toEqual("newId");
+    expect(error2.message).toContain("required");
 
     user = await client.getProspectById(userId2);
     expect(user.email).toEqual(email2);
