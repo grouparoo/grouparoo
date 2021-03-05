@@ -43,13 +43,13 @@ export const updater = {
       nockEnv.SALESFORCE_PASSWORD
     );
 
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.SALESFORCE_SECURITY_TOKEN, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.SALESFORCE_SECURITY_TOKEN,
       nockEnv.SALESFORCE_SECURITY_TOKEN
     );
 
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.PARDOT_BUSINESS_UNIT_ID, "gi"),
+    nockCall = nockCall.replaceAll(
+      realEnv.PARDOT_BUSINESS_UNIT_ID,
       nockEnv.PARDOT_BUSINESS_UNIT_ID
     );
 
