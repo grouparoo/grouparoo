@@ -6,8 +6,12 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        siteId: "abc123", // Customer.io Site ID
-        apiKey: "abc123 // Customer.io Track API Key
+        businessUnitId: "...", // Pardot business unit ID
+        username: "...", // Salesforce login email
+        password: "...", // Salesforce login password
+        securityToken: "...", // To get a new security token, click on "Reset My Security Token" in "Personal Settings"
+        salesforceDomain: "https://login.salesforce.com", // Salesforce login domain (https://test.salesforce.com for sandbox)
+        pardotDomain: "https://pi.pardot.com", // Pardot API domain (https://pi.demo.pardot.com for demo) 
       }
     },
   ];

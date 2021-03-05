@@ -5,23 +5,21 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       class: "destination",
       type: "{{{__pluginName}}}-export",
-      appId: "customerioApp", // The id of the App this Source uses
-      groupId: "high_value_customers", // The id of the group whose members you want to export
+      appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "pardot_app"`
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
 
       options: {},
 
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
       mapping: {
-        customer_id: "id",
         email: "email",
-        created_at: "createDate",
+        first_name: "firstName",
+        last_name: "lastName",
       },
 
       // You can export group memberships.
-      // These will be sent to Customer.io as attributes
-      // Keys are the name to display in the destination, prepended by "In ". Values are the IDs of the Groups in Grouparoo.
-      // Example: "High Value Customers" would set the "In High Value Customers" attribute to "true" in Customer.io
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
       destinationGroupMemberships: {
         "High Value Customers": "highValueCustomers",
       },
