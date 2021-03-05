@@ -126,12 +126,8 @@ function generateLongProfiles(count: number): Record<string, any>[] {
       email: `user${i}@demo.com`,
       first_name: `User ${i}`,
       last_name: "LastName",
-      grouparoo_custom_text: `
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-          `,
+      grouparoo_custom_textarea:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
     });
   }
 
@@ -770,6 +766,17 @@ describe("pardot/exportProfiles", () => {
     expect(success).toBe(true);
     expect(errors).toBeNull();
 
+    // verify all were created properly
+    for (const profile of profiles) {
+      const user = await client.getProspectByEmail(profile.email);
+      expect(user.email).toEqual(profile.email);
+      expect(user.first_name).toEqual(profile.first_name);
+      expect(user.last_name).toEqual(profile.last_name);
+      expect(user.grouparoo_custom_textarea).toEqual(
+        profile.grouparoo_custom_textarea
+      );
+    }
+
     // cleanup
     const emails = profiles.map((p) => p.email);
     await deleteUsers(emails, false);
@@ -794,6 +801,17 @@ describe("pardot/exportProfiles", () => {
 
     expect(success).toBe(true);
     expect(errors).toBeNull();
+
+    // verify all were created properly
+    for (const profile of profiles) {
+      const user = await client.getProspectByEmail(profile.email);
+      expect(user.email).toEqual(profile.email);
+      expect(user.first_name).toEqual(profile.first_name);
+      expect(user.last_name).toEqual(profile.last_name);
+      expect(user.grouparoo_custom_textarea).toEqual(
+        profile.grouparoo_custom_textarea
+      );
+    }
 
     // cleanup
     const emails = profiles.map((p) => p.email);
