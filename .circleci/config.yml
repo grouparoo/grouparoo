@@ -543,7 +543,7 @@ jobs:
           <<: *core-cache-options
       - run:
           name: test
-          command: cd core/ && WORKERS=1 ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
+          command: cd core/ && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
   test-ui-components:
