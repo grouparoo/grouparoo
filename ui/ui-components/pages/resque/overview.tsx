@@ -115,7 +115,11 @@ export default function ResqueOverview(props) {
       <Row>
         <Col md={12}>
           <Card style={{ height: 450 }}>
-            <GrouparooChart data={samples} keys={Object.keys(queues)} />
+            <GrouparooChart
+              data={samples}
+              keys={Object.keys(queues)}
+              minPoints={maxSampleLength}
+            />
           </Card>
         </Col>
       </Row>

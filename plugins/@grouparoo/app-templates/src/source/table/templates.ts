@@ -81,6 +81,12 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     params["__pluginName"] = this.name.split(":")[0];
     params["schedule_id"] = this.extendId("schedule");
 
+    if (typeof params.highWaterMark === "boolean") {
+      throw new Error(
+        "You must pass a column name with the --high-water-mark option."
+      );
+    }
+
     let columnsMap: ConfigTemplateColumn[] = await loadTablesAndColumns(
       this,
       params

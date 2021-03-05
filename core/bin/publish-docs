@@ -23,7 +23,7 @@ else
 fi
 cd ..
 
-## build master's docs
+## build main's docs
 rm -rf docs
 mkdir docs
 npm run docs

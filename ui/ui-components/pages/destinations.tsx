@@ -5,7 +5,8 @@ import { useApi } from "../hooks/useApi";
 import { useOffset, updateURLParams } from "../hooks/URLParams";
 import { useState } from "react";
 import { useSecondaryEffect } from "../hooks/useSecondaryEffect";
-import Link from "../components/enterpriseLink";
+import Link from "next/link";
+import EnterpriseLink from "../components/enterpriseLink";
 import Pagination from "../components/pagination";
 import LoadingTable from "../components/loadingTable";
 import Moment from "react-moment";
@@ -88,49 +89,59 @@ export default function Page(props) {
               destination.exportTotals.created +
               destination.exportTotals.started;
 
+            const formattedDestinationName =
+              destination.name ||
+              `${destination.state} created on ${
+                new Date(destination.createdAt).toLocaleString().split(",")[0]
+              }`;
+
             return (
               <tr key={`destination-${destination.id}`}>
                 <td>
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
-                  <Link
-                    href="/destination/[id]/edit"
-                    as={`/destination/${destination.id}/edit`}
-                  >
-                    <a>
-                      <strong>
-                        {destination.name ||
-                          `${destination.state} created on ${
-                            new Date(destination.createdAt)
-                              .toLocaleString()
-                              .split(",")[0]
-                          }`}
-                      </strong>
-                    </a>
-                  </Link>
+                  {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                    <EnterpriseLink
+                      href="/destination/[id]/edit"
+                      as={`/destination/${destination.id}/edit`}
+                    >
+                      <a>
+                        <strong>{formattedDestinationName}</strong>
+                      </a>
+                    </EnterpriseLink>
+                  ) : (
+                    <Link
+                      href="/destination/[id]/exports"
+                      as={`/destination/${destination.id}/exports`}
+                    >
+                      <a>
+                        <strong>{formattedDestinationName}</strong>
+                      </a>
+                    </Link>
+                  )}
                 </td>
                 <td>
                   {destination.destinationGroup?.id ? (
-                    <Link
+                    <EnterpriseLink
                       href="/group/[id]/edit"
                       as={`/group/${destination.destinationGroup.id}/edit`}
                     >
                       <a>{destination.destinationGroup.name}</a>
-                    </Link>
+                    </EnterpriseLink>
                   ) : (
                     "None"
                   )}
                 </td>
                 <td>
-                  <Link
+                  <EnterpriseLink
                     href="/app/[id]/edit"
                     as={`/app/${destination.app.id}/edit`}
                   >
                     <a>
                       <strong>{destination.app.name}</strong>
                     </a>
-                  </Link>
+                  </EnterpriseLink>
                 </td>
                 <td>
                   <StateBadge state={destination.state} />

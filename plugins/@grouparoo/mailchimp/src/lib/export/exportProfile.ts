@@ -1,7 +1,7 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
-import { updateProfile } from "../shared/updateProfile";
+import { deleteMember, updateProfile } from "../shared/updateProfile";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -14,6 +14,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     toDelete,
     newProfileProperties,
     oldProfileProperties,
+    oldGroups,
+    newGroups,
   } = profileToExport;
 
   // if we received no mapped data... just exit
@@ -21,7 +23,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   }
 
-  const { listId } = destinationOptions;
+  const listId = destinationOptions.listId?.toString();
 
   const email_address = newProfileProperties["email_address"]; // this is a required key for mailchimp
   if (!email_address) {
@@ -29,7 +31,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       `newProfileProperties[email_address] is a required mapping`
     );
   }
-
+  const mailchimpId = generateMailchimpId(email_address);
   // consider if the the email address has changed
   if (
     !toDelete &&
@@ -39,14 +41,20 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const oldMailchimpId = generateMailchimpId(
       oldProfileProperties["email_address"]
     );
-    await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
-      email_address,
-      status: "subscribed",
-      merge_fields: { email_address },
-    });
+    try {
+      // this will update the email of existing member only if the new email (email_address) do not exists yet.
+      await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
+        email_address,
+        status: "subscribed",
+        merge_fields: { email_address },
+      });
+    } catch (error) {
+      // Another user with the new email address (email_address) already exists,
+      // so we need to delete the old one and let the updateProfile reuse the existing one.
+      await deleteMember(client, listId, oldMailchimpId, oldGroups, newGroups);
+    }
   }
 
-  const mailchimpId = generateMailchimpId(email_address);
   return updateProfile({
     client,
     listId,

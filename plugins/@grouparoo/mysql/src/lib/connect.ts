@@ -10,7 +10,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   const config = {
     host,
-    port: port ? parseInt(port) : null,
+    port: port ? parseInt(port?.toString()) : null,
     database,
     user,
     password,

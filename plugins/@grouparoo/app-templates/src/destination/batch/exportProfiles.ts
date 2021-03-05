@@ -184,7 +184,7 @@ async function batchGroups(
     }
     const users = groupMap[name] || [];
     for (const user of users) {
-      if (currentCount > config.batchSize) {
+      if (currentCount >= config.batchSize) {
         batches.push({
           groupMap: currentGroupMap,
           destIdMap: currentDeskIdMap,
@@ -254,7 +254,7 @@ async function createByForeignKey(
       throw new Error(`cannot create without foreignKeyValue`);
     }
 
-    if (currentCount > config.batchSize) {
+    if (currentCount >= config.batchSize) {
       batches.push({ fkMap: currentFkMap });
       currentFkMap = {};
       currentCount = 0;
@@ -317,7 +317,7 @@ async function updateByIds(
       );
     }
 
-    if (currentCount > config.batchSize) {
+    if (currentCount >= config.batchSize) {
       batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
       currentCount = 0;
       currentFkMap = {};
@@ -390,7 +390,7 @@ async function deleteExports(
       continue;
     }
 
-    if (currentCount > config.batchSize) {
+    if (currentCount >= config.batchSize) {
       batches.push({ fkMap: currentFkMap, destIdMap: currentDeskIdMap });
       currentFkMap = {};
       currentDeskIdMap = {};

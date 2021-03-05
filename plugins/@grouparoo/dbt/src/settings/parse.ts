@@ -15,10 +15,10 @@ export interface dbtProfileRequest {
 }
 
 export interface dbtProfileMethod {
-  (argument: dbtProfileRequest): Promise<dbtSettingsResponse>;
+  (argument?: dbtProfileRequest): Promise<dbtSettingsResponse>;
 }
 
-export const dbtProfile: dbtProfileMethod = async (args) => {
+export const dbtProfile: dbtProfileMethod = async (args = {}) => {
   const { profile } = await parseProject(args);
   const profileDirPath = await getProfilePath(args);
   const { type, connection } = await parseProfile(

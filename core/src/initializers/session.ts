@@ -44,8 +44,6 @@ export class SessionInitializer extends Initializer {
   }
 
   async initialize() {
-    const redis = api.redis.clients.client;
-
     api.session = {
       prefix: "session",
       ttl: 1000 * 60 * 60 * 24 * 30, // 30 days; in milliseconds
@@ -55,9 +53,6 @@ export class SessionInitializer extends Initializer {
           where: { fingerprint: connection.fingerprint },
         });
         if (!session) return null;
-        await session.update({
-          expiresAt: new Date().getTime() + api.session.ttl,
-        });
         return session;
       },
 

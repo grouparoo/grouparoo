@@ -272,7 +272,9 @@ export default function Page(props) {
                               as="select"
                               required={opt.required}
                               disabled={loading || loadingOptions}
-                              defaultValue={source.options[opt.key] || ""}
+                              defaultValue={
+                                source.options[opt.key]?.toString() || ""
+                              }
                               onChange={(e) =>
                                 updateOption(
                                   e.target.id.replace("_opt~", ""),
@@ -325,7 +327,7 @@ export default function Page(props) {
                               required={opt.required}
                               type="text"
                               disabled={loading || loadingOptions}
-                              defaultValue={source.options[opt.key]}
+                              defaultValue={source.options[opt.key]?.toString()}
                               placeholder={opt.placeholder}
                               onChange={(e) =>
                                 updateOption(

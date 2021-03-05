@@ -206,7 +206,7 @@ export class Property extends LoggedModel<Property> {
       options[
         i
       ] = await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
-        options[i]
+        options[i].toString()
       );
     }
 
@@ -220,7 +220,7 @@ export class Property extends LoggedModel<Property> {
       options[
         i
       ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
-        options[i]
+        options[i].toString()
       );
     }
 

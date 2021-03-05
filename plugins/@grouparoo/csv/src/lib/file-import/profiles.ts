@@ -23,12 +23,13 @@ export const profiles: ProfilesPluginMethod = async ({
     const propertyOptions = await property.getOptions();
     const propertyMapping = {};
     if (propertyOptions.column) {
-      propertyMapping[propertyOptions.column] = property.key;
+      propertyMapping[propertyOptions.column?.toString()] = property.key;
       combinedMapping = Object.assign(combinedMapping, propertyMapping);
     }
   }
 
-  const localPath = await plugin.getLocalFilePath(sourceOptions.fileId);
+  const fileId = sourceOptions.fileId?.toString();
+  const localPath = await plugin.getLocalFilePath(fileId);
   const stream = fs.createReadStream(localPath);
   const parser = stream.pipe(csvParser());
 

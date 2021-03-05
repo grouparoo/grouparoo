@@ -44,17 +44,19 @@ export const destinationOptions: DestinationOptionsMethod = async ({
 
   if (destinationOptions.table) {
     response.primaryKey.type = "typeahead";
-    response.primaryKey.options = await getColumns(destinationOptions.table);
+    response.primaryKey.options = await getColumns(
+      destinationOptions.table?.toString()
+    );
   }
 
   if (destinationOptions.groupsTable) {
     response.groupForeignKey.type = "typeahead";
     response.groupColumnName.type = "typeahead";
     response.groupForeignKey.options = await getColumns(
-      destinationOptions.groupsTable
+      destinationOptions.groupsTable?.toString()
     );
     response.groupColumnName.options = await getColumns(
-      destinationOptions.groupsTable
+      destinationOptions.groupsTable?.toString()
     );
   }
 
