@@ -5,12 +5,12 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
   const client = await connect(appOptions);
 
   try {
-    const prospects = await client.queryProspects({ output: "mobile" });
+    const prospects = await client.queryProspects();
     const { display_name } = await client.conn.identity();
 
     return {
       success: true,
-      message: `Logged in as ${display_name}. ${prospects.length} prospects found.`,
+      message: `Logged in as ${display_name}. ${prospects.length} (or more) prospects found.`,
     };
   } catch (err) {
     if (err.response?.status >= 400) {
