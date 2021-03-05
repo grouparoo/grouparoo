@@ -155,10 +155,6 @@ async function buildPayload(
     payload.id = destinationId;
   }
 
-  if (!payload.email) {
-    throw new Error(`newProfileProperties[email] is a required mapping`);
-  }
-
   // set profile properties, including old ones
   const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
