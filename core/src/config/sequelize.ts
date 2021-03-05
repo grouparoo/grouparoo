@@ -123,7 +123,9 @@ export const DEFAULT = {
           Sequelize.TimeoutError,
           Sequelize.ConnectionTimedOutError,
         ],
-        max: 10,
+        backoffBase: 1000,
+        backoffExponent: 2,
+        max: 5,
       },
     };
   },
