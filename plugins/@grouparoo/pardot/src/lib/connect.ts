@@ -3,15 +3,15 @@ import PardotClient from "./client";
 
 export async function connect(appOptions: SimpleAppOptions) {
   const client = new PardotClient({
-    businessUnitId: appOptions.businessUnitId,
-    loginUrl: appOptions.salesforceDomain,
-    pardotUrl: appOptions.pardotDomain,
+    businessUnitId: appOptions.businessUnitId?.toString(),
+    loginUrl: appOptions.salesforceDomain?.toString(),
+    pardotUrl: appOptions.pardotDomain?.toString(),
   });
 
   await client.login(
-    appOptions.username,
-    appOptions.password,
-    appOptions.securityToken
+    appOptions.username?.toString(),
+    appOptions.password?.toString(),
+    appOptions.securityToken?.toString()
   );
 
   return client;
