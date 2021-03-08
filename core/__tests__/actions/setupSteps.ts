@@ -64,9 +64,6 @@ describe("actions/setupSteps", () => {
       expect(setupSteps[0].helpLink).toBe(
         "https://www.grouparoo.com/docs/config/settings"
       );
-      expect(setupSteps[0].showCtaOnCommunity).toBe(true);
-      // showCtaOnCommunity is false when not defined.
-      expect(setupSteps[1].showCtaOnCommunity).toBe(false);
       expect(setupSteps[0].outcome).toBe(null);
       expect(setupSteps[0].skipped).toBe(false);
       expect(setupSteps[0].complete).toBe(false);

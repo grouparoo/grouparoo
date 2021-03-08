@@ -71,8 +71,7 @@ export default function SetupStepCard({
                       Learn More
                     </Button>
                     &nbsp;&nbsp;
-                    {process.env.GROUPAROO_UI_EDITION === "enterprise" ||
-                    step.showCtaOnCommunity ? (
+                    {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
                       <Button size="sm" href={step.href}>
                         {step.cta}
                       </Button>

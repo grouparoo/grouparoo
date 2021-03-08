@@ -22,7 +22,6 @@ export namespace SetupStepOps {
     href: string;
     cta: string;
     helpLink: string;
-    showCtaOnCommunity?: boolean;
     check?: () => Promise<boolean>;
     outcome?: () => Promise<string>;
   };
@@ -35,7 +34,6 @@ export namespace SetupStepOps {
       description: "Give your Grouparoo cluster a name.",
       href: "/settings/core",
       cta: "Change your Grouparoo Cluster Name",
-      showCtaOnCommunity: true,
       helpLink: `${configURL}/settings`,
       check: async () => {
         const setting = await plugin.readSetting("core", "cluster-name");
