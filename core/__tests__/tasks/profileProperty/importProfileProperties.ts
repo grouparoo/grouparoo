@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, task, specHelper, utils } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import {
   GrouparooPlugin,
