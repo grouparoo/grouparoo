@@ -164,7 +164,7 @@ function buildPayload(exportedProfile: BatchExport): any {
 }
 
 function formatVar(value) {
-  if (!value) {
+  if (value === undefined) {
     return null;
   }
   if (value instanceof Date) {

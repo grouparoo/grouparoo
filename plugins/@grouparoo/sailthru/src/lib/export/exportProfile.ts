@@ -90,7 +90,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 };
 
 function formatVar(value) {
-  if (!value) {
+  if (value === undefined) {
     return null;
   }
   // TODO: how to format date, etc
