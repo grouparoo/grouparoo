@@ -22,6 +22,7 @@ export default function ResqueOverview(props) {
   const [failedCount, setFailedCount] = useState(0);
   const [stats, setStats] = useState({});
 
+  let loading = false;
   let timer: NodeJS.Timeout;
 
   useEffect(() => {
@@ -36,6 +37,9 @@ export default function ResqueOverview(props) {
   }, []);
 
   async function load() {
+    if (loading) return;
+    loading = true;
+
     let _queues = {};
     let _workers = {};
     let _stats = {};
@@ -100,6 +104,7 @@ export default function ResqueOverview(props) {
     setQueues(_queues);
     setLeader(_leader);
     setFailedCount(failedResponse?.failedCount);
+    loading = false;
   }
 
   return (

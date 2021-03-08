@@ -23,7 +23,7 @@ export class Environment extends Initializer {
         parseInt(process.env.WORKERS || "0") > 1
       ) {
         log(
-          "Only one task worker can be used with a SQLite database",
+          "Only one task worker should be used with a SQLite database",
           "warning"
         );
       }

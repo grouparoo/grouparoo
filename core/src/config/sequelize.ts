@@ -100,6 +100,8 @@ export const DEFAULT = {
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations")],
       storage, // only used for sqlite
+      dialectOptions: { ssl },
+      transactionType: dialect === "sqlite" ? "EXCLUSIVE" : "DEFERRED",
       pool: {
         max:
           dialect === "sqlite"
@@ -109,11 +111,22 @@ export const DEFAULT = {
                 parseInt(process.env.WORKERS || "0") + 1,
                 1
               ),
-        min: 0,
+        min: 1,
         acquire: 30000,
         idle: 10000,
+        evict: 1000,
       },
-      dialectOptions: { ssl },
+      retry: {
+        match: [
+          Sequelize.ConnectionError,
+          Sequelize.DatabaseError,
+          Sequelize.TimeoutError,
+          Sequelize.ConnectionTimedOutError,
+        ],
+        backoffBase: dialect === "sqlite" ? 1000 : 100,
+        backoffExponent: dialect === "sqlite" ? 1.5 : 1.1,
+        max: 3,
+      },
     };
   },
 };
