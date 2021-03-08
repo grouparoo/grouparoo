@@ -2,10 +2,13 @@ import { SimpleAppOptions } from "@grouparoo/core";
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs-extra";
+import FormData from "form-data";
 
 const dirPath = path.resolve(path.join(__dirname, ".."));
 const nockPath = path.join(dirPath, ".env.example");
 const realPath = path.join(dirPath, ".env");
+
+const FORM_BOUNDARY_STATIC = "NOCKBOUNDARY";
 
 function readEnv(filePath) {
   return dotenv.parse(fs.readFileSync(filePath));
@@ -16,6 +19,8 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
     envFile = realPath;
   } else {
     envFile = nockPath;
+    const getBoundary = jest.fn(() => FORM_BOUNDARY_STATIC);
+    FormData.prototype.getBoundary = getBoundary;
   }
   const parsed = readEnv(envFile);
   return {
@@ -52,6 +57,8 @@ export const updater = {
       realEnv.PARDOT_BUSINESS_UNIT_ID,
       nockEnv.PARDOT_BUSINESS_UNIT_ID
     );
+
+    nockCall = nockCall.replace(/(-{26})(\d{24})/g, FORM_BOUNDARY_STATIC);
 
     return nockCall;
   },
