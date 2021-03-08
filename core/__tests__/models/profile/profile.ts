@@ -565,54 +565,6 @@ describe("models/profile", () => {
         ]);
       });
 
-      test("adding a profile property touches the profile", async () => {
-        await profile.removeProperty("email");
-
-        await profile.reload();
-        const oldUpdatedAt = profile.updatedAt.getTime();
-        await helper.sleep(1);
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
-        await profile.reload();
-        const newUpdatedAt = profile.updatedAt.getTime();
-        expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
-      });
-
-      test("editing a profile property touches the profile", async () => {
-        await profile.reload();
-        const oldUpdatedAt = profile.updatedAt.getTime();
-        await helper.sleep(1);
-        await profile.addOrUpdateProperty({
-          email: ["luigiAgain@example.com"],
-        });
-        await profile.reload();
-        const newUpdatedAt = profile.updatedAt.getTime();
-        expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
-      });
-
-      test("editing a profile property with a no-op will not touch the profile", async () => {
-        await profile.reload();
-        const oldUpdatedAt = profile.updatedAt.getTime();
-        await helper.sleep(1);
-        await profile.addOrUpdateProperty({
-          email: ["luigiAgain@example.com"],
-        });
-        await profile.reload();
-        const newUpdatedAt = profile.updatedAt.getTime();
-        expect(newUpdatedAt).toBe(oldUpdatedAt);
-      });
-
-      test("removing a profile property touches the profile", async () => {
-        await profile.reload();
-        const oldUpdatedAt = profile.updatedAt.getTime();
-        await helper.sleep(1);
-        await profile.removeProperty("email");
-        await profile.reload();
-        const newUpdatedAt = profile.updatedAt.getTime();
-        expect(newUpdatedAt).toBeGreaterThan(oldUpdatedAt);
-
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
-      });
-
       test("orphan profile properties will be removed", async () => {
         await profile.reload();
 
