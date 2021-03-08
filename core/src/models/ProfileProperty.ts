@@ -182,7 +182,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   static async ensureOneProfilePropertyPerProfileProeprtyRule(
     instance: ProfileProperty
   ) {
-    const existing = await ProfileProperty.scope(null).findOne({
+    const count = await ProfileProperty.scope(null).count({
       where: {
         id: { [Op.ne]: instance.id },
         profileId: instance.profileId,
@@ -190,33 +190,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
         position: instance.position,
       },
     });
-    if (existing) {
+    if (count > 0) {
       throw new Error(
         `There is already a ProfileProperty for ${instance.profileId} and ${instance.propertyId} at position ${instance.position}`
       );
-    }
-  }
-
-  @AfterSave
-  static async updateProfileAfterSave(instance: ProfileProperty) {
-    const changed = instance.changed();
-    if (!changed) return;
-
-    const profile = await instance.$get("profile");
-    if (profile && changed.indexOf("rawValue") >= 0) {
-      profile.updatedAt = new Date();
-      profile.changed("updatedAt", true);
-      await profile.save();
-    }
-  }
-
-  @AfterDestroy
-  static async updateProfileAfterDestroy(instance: ProfileProperty) {
-    const profile = await instance.$get("profile");
-    if (profile) {
-      profile.updatedAt = new Date();
-      profile.changed("updatedAt", true);
-      await profile.save();
     }
   }
 }

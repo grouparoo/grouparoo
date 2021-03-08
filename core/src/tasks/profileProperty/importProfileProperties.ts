@@ -26,13 +26,16 @@ export class ImportProfileProperties extends RetryableTask {
       where: { id: { [Op.in]: params.profileIds } },
       include: [ProfileProperty],
     });
+    if (profiles.length === 0) return;
+
     const property = await Property.findOne({
       where: { id: params.propertyId },
     });
+
     if (!property) return;
     const source = await property.$get("source");
 
-    const profilesWithDependenciesMet: Profile[] = [];
+    const profilesToImport: Profile[] = [];
     const dependencies = await PropertyOps.dependencies(property);
 
     for (const i in profiles) {
@@ -40,25 +43,27 @@ export class ImportProfileProperties extends RetryableTask {
       let ok = true;
       const properties = await profile.properties();
 
+      if (properties[property.key].state === "ready") ok = false;
+
       dependencies.forEach((dep) => {
         if (properties[dep.key].state !== "ready") ok = false;
       });
 
-      if (ok) profilesWithDependenciesMet.push(profile);
+      if (ok) profilesToImport.push(profile);
     }
 
-    if (profilesWithDependenciesMet.length === 0) return;
+    if (profilesToImport.length === 0) return;
 
     let propertyValuesBatch: ProfilePropertiesPluginMethodResponse = {};
     try {
       propertyValuesBatch = await source.importProfileProperties(
-        profilesWithDependenciesMet,
+        profilesToImport,
         property
       );
     } catch (error) {
       // if something goes wrong with the batch import, fall-back to per-profile/property imports
       await Promise.all(
-        profilesWithDependenciesMet.map((profile) => {
+        profilesToImport.map((profile) => {
           CLS.enqueueTask("profileProperty:importProfileProperty", {
             profileId: profile.id,
             propertyId: property.id,
@@ -69,12 +74,10 @@ export class ImportProfileProperties extends RetryableTask {
     }
 
     for (const profileId in propertyValuesBatch) {
-      const profile = profilesWithDependenciesMet.find(
-        (p) => p.id === profileId
-      );
+      const profile = profilesToImport.find((p) => p.id === profileId);
       const hash = {};
       hash[property.id] = propertyValuesBatch[profileId];
-      await profile.addOrUpdateProperties(hash);
+      await profile.addOrUpdateProperties(hash, false); // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
     }
 
     // update the properties that got no data back
@@ -84,7 +87,7 @@ export class ImportProfileProperties extends RetryableTask {
         where: {
           propertyId: property.id,
           profileId: {
-            [Op.in]: profilesWithDependenciesMet.map((p) => p.id),
+            [Op.in]: profilesToImport.map((p) => p.id),
           },
           state: "pending",
         },

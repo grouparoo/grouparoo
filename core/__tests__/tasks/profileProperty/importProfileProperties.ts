@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { Op } from "sequelize";
 import {
   GrouparooPlugin,
   PluginConnection,
@@ -12,6 +13,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
+  let userIdCounter = 1;
   describe("profileProperty:importProfileProperties", () => {
     let testPluginConnection: PluginConnection;
 
@@ -32,7 +34,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         for (const i in profiles) {
           const profile = profiles[i];
           const data = {
-            userId: new Date().getTime(),
+            userId: userIdCounter++,
             isVIP: true,
             email: `${profile.id}@example.com`,
             firstName: "Mario",
@@ -69,20 +71,20 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         userId: [1],
         email: ["old@example.com"],
       });
-      const property = await ProfileProperty.findOne({
+      const profileProperty = await ProfileProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await property.update({ state: "pending" });
+      await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: property.propertyId,
+        propertyId: profileProperty.propertyId,
       });
 
       // new value and state
-      await property.reload();
-      expect(property.state).toBe("ready");
-      expect(property.rawValue).toBe(`${profile.id}@example.com`);
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(`${profile.id}@example.com`);
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
@@ -95,10 +97,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         userId: [null],
         email: ["old@example.com"],
       });
-      const property = await ProfileProperty.findOne({
+      const profileProperty = await ProfileProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await property.update({ state: "pending" });
+      await profileProperty.update({ state: "pending" });
 
       const userIdProfileProperty = await ProfileProperty.findOne({
         where: {
@@ -110,13 +112,54 @@ describe("tasks/profileProperty:importProfileProperties", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
-        propertyId: property.propertyId,
+        propertyId: profileProperty.propertyId,
       });
 
       // no change
-      await property.reload();
-      expect(property.state).toBe("pending");
-      expect(property.rawValue).toBe(`old@example.com`);
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("pending");
+      expect(profileProperty.rawValue).toBe(`old@example.com`);
+    });
+
+    test("can be run for the same profile more than once without deadlock", async () => {
+      const profileA = await helper.factories.profile();
+      const profileB = await helper.factories.profile();
+      const profileC = await helper.factories.profile();
+
+      await ProfileProperty.update(
+        { state: "pending" },
+        {
+          where: {
+            profileId: { [Op.in]: [profileA.id, profileB.id, profileC.id] },
+          },
+        }
+      );
+
+      const properties = await Property.findAll();
+
+      // run once to set userId
+      await Promise.all(
+        properties.map((property) =>
+          specHelper.runTask("profileProperty:importProfileProperties", {
+            profileIds: [profileA.id, profileB.id, profileC.id],
+            propertyId: property.id,
+          })
+        )
+      );
+
+      // run again for other properties
+      await Promise.all(
+        properties.map((property) =>
+          specHelper.runTask("profileProperty:importProfileProperties", {
+            profileIds: [profileA.id, profileB.id, profileC.id],
+            propertyId: property.id,
+          })
+        )
+      );
+
+      const profileProperties = await profileA.properties();
+      expect(profileProperties.firstName.values).toEqual(["Mario"]);
+      expect(profileProperties.lastName.values).toEqual(["Mario"]);
     });
   });
 });

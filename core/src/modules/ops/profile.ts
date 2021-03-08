@@ -234,7 +234,7 @@ export namespace ProfileOps {
     }
 
     try {
-      await profile.save();
+      if (profile.isNewRecord) await profile.save();
 
       const keys = Object.keys(properties);
       for (const i in keys) {
