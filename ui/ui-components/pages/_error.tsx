@@ -28,7 +28,7 @@ export default function ErrorPage({ err, statusCode }) {
 
       <Alert variant="danger">
         <Alert.Heading>
-          {err.message} {statusCode ? `, status code: ${statusCode}` : null}
+          {err?.message} {statusCode ? `, status code: ${statusCode}` : null}
         </Alert.Heading>
 
         <strong>Error Details:</strong>
