@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import jsforce from "jsforce";
+import FormData from "form-data";
 
 interface PardotClientOptions {
   businessUnitId: string;
@@ -150,15 +151,16 @@ class PardotClient {
   }
 
   async batchUpsertProspects(prospects: Record<string, any>[]) {
+    const form = new FormData();
+    form.append("prospects", JSON.stringify({ prospects }));
+
     const res = await this.request.post(
       "/prospect/version/4/do/batchUpsert",
-      {},
+      form,
       {
+        headers: form.getHeaders(),
         params: {
           format: "json",
-          prospects: JSON.stringify({
-            prospects,
-          }),
         },
       }
     );

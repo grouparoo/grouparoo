@@ -819,6 +819,7 @@ importers:
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
       axios: 0.21.1
+      form-data: 4.0.0
       jsforce: 1.10.1
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -842,6 +843,7 @@ importers:
       actionhero: 25.0.7
       axios: 0.21.1
       dotenv: 8.2.0
+      form-data: ^4.0.0
       fs-extra: 9.1.0
       jest: 26.6.3
       jsforce: 1.10.1
@@ -6952,6 +6954,16 @@ packages:
       node: '>= 0.12'
     resolution:
       integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==
+  /form-data/4.0.0:
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.29
+    dev: false
+    engines:
+      node: '>= 6'
+    resolution:
+      integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==
   /formidable/1.2.2:
     resolution:
       integrity: sha512-V8gLm+41I/8kguQ4/o1D3RIHRmhYFG4pnNyonvua+40rqcEmT4+V71yaZ3B457xbbgCsCfjSPi65u/W6vK1U5Q==

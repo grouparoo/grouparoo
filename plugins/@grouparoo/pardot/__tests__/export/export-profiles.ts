@@ -801,50 +801,9 @@ describe("pardot/exportProfiles", () => {
     expect(user.grouparoo_custom_text).toEqual("some text");
   });
 
-  test("can handle updates with too long URI", async () => {
+  test("can handle batches with lots of prospects", async () => {
     // generate profiles
-    const profiles = generateLongProfiles(20);
-
-    // make sure this is a long URI
-    expect(async () => {
-      await client.batchUpsertProspects(profiles);
-    }).rejects.toThrow(/414/);
-
-    // run batch export
-    const exports = makeExports(profiles);
-    const { success, errors } = await exportBatch({
-      appId,
-      appOptions,
-      exports,
-    });
-
-    expect(success).toBe(true);
-    expect(errors).toBeNull();
-
-    // verify all were created properly
-    for (const profile of profiles) {
-      const user = await client.getProspectByEmail(profile.email);
-      expect(user.email).toEqual(profile.email);
-      expect(user.first_name).toEqual(profile.first_name);
-      expect(user.last_name).toEqual(profile.last_name);
-      expect(user.grouparoo_custom_textarea).toEqual(
-        profile.grouparoo_custom_textarea
-      );
-    }
-
-    // cleanup
-    const emails = profiles.map((p) => p.email);
-    await deleteUsers(emails, false);
-  });
-
-  test("can handle updates with even longer URI", async () => {
-    // generate profiles
-    const profiles = generateLongProfiles(40);
-
-    // make sure this is a way too long URI (400 err)
-    expect(async () => {
-      await client.batchUpsertProspects(profiles);
-    }).rejects.toThrow(/400/);
+    const profiles = generateLongProfiles(50);
 
     // run batch export
     const exports = makeExports(profiles);
