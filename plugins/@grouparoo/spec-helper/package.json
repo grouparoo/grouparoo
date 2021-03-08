@@ -31,7 +31,7 @@
   "dependencies": {
     "axios": "0.21.1",
     "faker": "5.4.0",
-    "nock": "13.0.10",
+    "nock": "13.0.11",
     "sequelize": "6.5.0",
     "uuid": "8.3.2"
   },
