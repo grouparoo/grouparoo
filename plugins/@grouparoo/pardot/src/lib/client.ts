@@ -23,12 +23,12 @@ class PardotClient {
   conn: jsforce.Connection;
   request?: AxiosInstance;
 
-  constructor(options?: PardotClientOptions) {
-    this.pardotUrl = options?.pardotUrl || "https://pi.pardot.com";
+  constructor(options: PardotClientOptions) {
+    this.pardotUrl = options.pardotUrl || "https://pi.pardot.com";
     this.businessUnitId = options.businessUnitId;
 
     this.conn = new jsforce.Connection({
-      loginUrl: options?.loginUrl || "https://login.salesforce.com",
+      loginUrl: options.loginUrl || "https://login.salesforce.com",
     });
   }
 
