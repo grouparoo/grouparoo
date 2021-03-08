@@ -10,7 +10,9 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
 
     return {
       success: true,
-      message: `Logged in as ${display_name}. ${prospects.length} (or more) prospects found.`,
+      message: `Logged in as ${display_name}. ${prospects.length} ${
+        prospects.length >= 200 ? "(or more) " : ""
+      }prospects found.`,
     };
   } catch (err) {
     if (err.response?.status >= 400) {
