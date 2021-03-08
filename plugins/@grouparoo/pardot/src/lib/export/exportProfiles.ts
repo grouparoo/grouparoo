@@ -57,7 +57,11 @@ const deleteByDestinationIds: BatchMethodDeleteByDestinationIds = async ({
 }) => {
   for (const user of users) {
     // No batch delete available, do one by one
-    await client.deleteProspectById(parseInt(user.destinationId));
+    try {
+      await client.deleteProspectById(parseInt(user.destinationId));
+    } catch (error) {
+      user.error = error;
+    }
   }
 };
 
