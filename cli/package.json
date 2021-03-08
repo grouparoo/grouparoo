@@ -36,7 +36,7 @@
     "fs-extra": "9.1.0",
     "glob": "7.1.6",
     "isomorphic-fetch": "3.0.0",
-    "npm-check-updates": "11.1.10",
+    "npm-check-updates": "11.2.0",
     "ora": "5.3.0",
     "semver": "7.3.4"
   },
