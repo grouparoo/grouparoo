@@ -168,14 +168,15 @@ async function buildPayload(
 }
 
 function formatVar(value) {
-  if (!value) {
+  if (value === null || value === undefined) {
     return ""; // empty string clears the value
   }
+
   if (value instanceof Date) {
     return value.toISOString();
-  } else {
-    return value;
   }
+
+  return value;
 }
 
 const addToGroups: BatchMethodAddToGroups = async () => {
