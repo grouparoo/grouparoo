@@ -4,7 +4,7 @@ import faker from "faker";
 const data = async (props = {}) => {
   const defaultProps = {
     name: `team ${faker.name.jobDescriptor()} - ${Math.random()}`,
-    locked: false,
+    locked: null,
 
     createdAt: new Date(),
     updatedAt: new Date(),
