@@ -2,7 +2,7 @@ import { GrouparooCLI } from "../modules/cli";
 import { CLI } from "actionhero";
 import { Reset } from "../modules/reset";
 
-export class Destroy extends CLI {
+export class ResetCLI extends CLI {
   constructor() {
     super();
     this.name = "reset <mode>";
@@ -28,21 +28,24 @@ export class Destroy extends CLI {
     if (mode) params.mode = mode;
 
     GrouparooCLI.logCLI(
-      this.name.replace(" <mode>", mode ? " " + mode : ""),
+      this.name.replace(" <mode>", params.mode ? " " + params.mode : ""),
       false
     );
 
     if (!params.confirm) {
-      GrouparooCLI.logger.fatal(`You need to --confirm this command`);
+      return GrouparooCLI.logger.fatal(`You need to --confirm this command`);
     }
 
-    if (mode === "cluster") {
-      await Reset.cluster(process.env.GROUPAROO_RUN_MODE);
-    } else if (mode === "data") {
-      await Reset.data(process.env.GROUPAROO_RUN_MODE);
+    const callerId = `cli:reset`;
+    if (params.mode === "cluster") {
+      await Reset.cluster(callerId);
+    } else if (params.mode === "data") {
+      await Reset.data(callerId);
       await Reset.resetHighWatermarks();
-    } else if (mode === "cache") {
-      await Reset.cache(process.env.GROUPAROO_RUN_MODE);
+    } else if (params.mode === "cache") {
+      await Reset.cache(callerId);
+    } else {
+      return GrouparooCLI.logger.fatal("mode not found");
     }
 
     GrouparooCLI.logger.log(`✅ Success!`);

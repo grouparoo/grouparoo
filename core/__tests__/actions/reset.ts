@@ -70,7 +70,6 @@ describe("actions/cluster", () => {
         expect(await Export.count()).toBe(0);
 
         // kept config models
-
         expect(await App.count()).toBeGreaterThan(0);
         expect(await Property.count()).toBeGreaterThan(0);
       });
