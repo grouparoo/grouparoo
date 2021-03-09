@@ -35,7 +35,7 @@ export class Apply extends CLI {
     const configDir = getConfigDir();
     const configObjects = await loadConfigObjects(configDir);
 
-    console.log(`Applying ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(`Applying ${configObjects.length} objects...`);
 
     await CLS.wrap(async () => {
       const { errors, seenIds } = await processConfigObjects(
@@ -47,7 +47,8 @@ export class Apply extends CLI {
 
       await deleteLockedObjects(seenIds);
 
-      console.log(
+      GrouparooCLI.logger.log("");
+      GrouparooCLI.logger.log(
         `✅ Config applied - ${configObjects.length} config objects up-to-date!`
       );
     }, true);

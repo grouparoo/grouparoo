@@ -66,9 +66,9 @@ export class Status extends CLI {
       data.map((collection) => {
         jsonData[collection.header] = collection.status;
       });
-      console.log(JSON.stringify(jsonData));
+      GrouparooCLI.logger.log(JSON.stringify(jsonData));
     } else {
-      GrouparooCLI.logStatus("Cluster Status", data);
+      GrouparooCLI.logger.status("Cluster Status", data);
     }
 
     return true;

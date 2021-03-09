@@ -33,8 +33,7 @@ export class Destroy extends CLI {
     );
 
     if (!params.confirm) {
-      console.error(`You need to --confirm this command`, "warning");
-      process.exit(1);
+      GrouparooCLI.logger.fatal(`You need to --confirm this command`);
     }
 
     if (mode === "cluster") {
@@ -46,7 +45,7 @@ export class Destroy extends CLI {
       await Reset.cache(process.env.GROUPAROO_RUN_MODE);
     }
 
-    console.log(`✅ Success!`);
+    GrouparooCLI.logger.log(`✅ Success!`);
     return true;
   }
 }

@@ -38,12 +38,12 @@ export class Validate extends CLI {
     try {
       configObjects = await loadConfigObjects(configDir);
     } catch (error) {
-      return GrouparooCLI.fatalError(
+      return GrouparooCLI.logger.fatal(
         `Error loading config from ${configDir}: \r\n\r\n${error.stack}`
       );
     }
 
-    console.log(`Validating ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(`Validating ${configObjects.length} objects...`);
 
     try {
       await api.sequelize.transaction(async () => {
@@ -53,13 +53,15 @@ export class Validate extends CLI {
           true
         );
         if (errors.length > 0) {
-          GrouparooCLI.fatalError(
+          GrouparooCLI.logger.log("");
+          GrouparooCLI.logger.fatal(
             `Validation failed - ${errors.length} validation error${
               errors.length !== 1 ? "s" : ""
             }`
           );
         } else {
-          console.log(
+          GrouparooCLI.logger.log("");
+          GrouparooCLI.logger.log(
             `✅ Validation succeeded - ${configObjects.length} config objects OK!`
           );
         }
