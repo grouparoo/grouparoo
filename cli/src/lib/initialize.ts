@@ -1,5 +1,6 @@
 import fs from "fs-extra";
 import path from "path";
+import ora from "ora";
 import { Templates } from "../utils/templates";
 import { buildLogger } from "../utils/logger";
 import { ensurePath } from "../utils/ensurePath";
@@ -10,6 +11,17 @@ export default async function Initialize(
   opts: { force: boolean }
 ) {
   const logger = buildLogger("Generating new Grouparoo Project");
+
+  function safelyCreateFile(name: string, workDir: string, replacements = {}) {
+    const destination = path.join(workDir, name);
+    if (!fs.existsSync(destination) || opts.force) {
+      fs.copyFileSync(Templates.getTemplatePath(name), destination);
+      Templates.replacePlaceholders(destination, replacements);
+      logger.succeed(`Created ${destination}`);
+    } else {
+      logger.warn(`${destination} already exists, not modifying`);
+    }
+  }
 
   if (!workDir) {
     logger.fail("path is required");
@@ -24,6 +36,19 @@ export default async function Initialize(
     logger.succeed(`Created ${workDir}`);
   }
 
+  const localPackageJSONContents = JSON.parse(
+    fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
+  );
+  safelyCreateFile("package.json", workDir, {
+    version: localPackageJSONContents.version,
+  });
+
+  safelyCreateFile(".env", workDir, {
+    SQLITE_DB_PATH: `sqlite://grouparoo_development.sqlite`,
+  });
+
+  safelyCreateFile(".gitignore", workDir);
+
   /**
    * Copy Code Config README templates into the work directory. This also
    * results in a skeleton structure representing the directories in which Code
@@ -31,61 +56,30 @@ export default async function Initialize(
    */
   const templates = Templates.getConfigTemplates();
   templates.map(({ absoluteFilePath, relativeFilePath }) => {
-    // Create directory for file if it doesn't exist.
-    const destDir = path.join(workDir, path.dirname(relativeFilePath));
+    const destDir = path.join(workDir, path.dirname(relativeFilePath)); // Create directory for file if it doesn't exist.
     if (!fs.existsSync(destDir)) fs.mkdirpSync(destDir);
-    // Copy the file into the working project's config directory.
-    const destFilePath = path.join(workDir, relativeFilePath);
+    const destFilePath = path.join(workDir, relativeFilePath); // Copy the file into the working project's config directory.
     if (!fs.existsSync(destFilePath)) {
       fs.copyFileSync(absoluteFilePath, destFilePath);
     }
   });
   logger.succeed("Created directories for config objects.");
 
-  const packageJson = path.join(workDir, "package.json");
-  if (!fs.existsSync(packageJson) || opts.force) {
-    const localPackageJSONContents = JSON.parse(
-      fs
-        .readFileSync(path.join(__dirname, "..", "..", "package.json"))
-        .toString()
-    );
-    const replacements = { version: localPackageJSONContents.version };
-    fs.copyFileSync(Templates.getTemplatePath("package.json"), packageJson);
-    Templates.replacePlaceholders(packageJson, replacements);
-    logger.succeed("Created package.json");
-  } else {
-    logger.warn("package.json already exists, not modifying");
-  }
-
-  const envFile = path.join(workDir, ".env");
-  if (!fs.existsSync(envFile) || opts.force) {
-    const replacements = {
-      SQLITE_DB_PATH: `sqlite://grouparoo_development.sqlite`,
-    };
-    fs.copyFileSync(Templates.getTemplatePath(".env"), envFile);
-    Templates.replacePlaceholders(envFile, replacements);
-    logger.succeed("Created .env");
-    logger.warn(
-      "Please check the options in .env to ensure that they pertain to your environment"
-    );
-  } else {
-    logger.warn(".env already exists, not modifying");
-  }
-
   await NPM.install(logger, workDir);
 
   logger.succeed("Grouparoo project created!");
 
   console.info(
-    "    - Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
+    " * Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands"
   );
   console.info(
-    "    - Now that your Grouparoo project is ready, run `grouparoo --help` to see new available commands"
+    " * You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
   );
   console.info(
-    "    - You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
+    " * Ensure that Postgres and Redis are running if you have enabled them in .env or your environment"
   );
   console.info(
-    "    - Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
+    " * Visit www.grouparoo.com/docs to learn about configuring your Grouparoo application."
   );
+  console.info("");
 }
