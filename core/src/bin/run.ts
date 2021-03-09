@@ -2,6 +2,7 @@ import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, log, api, config } from "actionhero";
 import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
+import { Reset } from "../modules/reset";
 
 const CHECK_TIMEOUT = 1000 * 10;
 
@@ -58,8 +59,8 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
-    if (params.destroy) await GrouparooCLI.destroyProfiles();
-    if (params.resetHighWatermarks) await GrouparooCLI.resetHighWatermarks();
+    if (params.destroy) await Reset.data(process.env.GROUPAROO_RUN_MODE);
+    if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
       params.export.toString().toLowerCase() !== "true"
     );

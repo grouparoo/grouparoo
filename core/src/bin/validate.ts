@@ -5,7 +5,6 @@ import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
-  logFatalError,
 } from "../modules/configLoaders";
 
 export class Validate extends CLI {
@@ -39,12 +38,12 @@ export class Validate extends CLI {
     try {
       configObjects = await loadConfigObjects(configDir);
     } catch (error) {
-      logFatalError(
-        `error loading config from ${configDir}: \r\n\r\n${error.stack}`
+      return GrouparooCLI.fatalError(
+        `Error loading config from ${configDir}: \r\n\r\n${error.stack}`
       );
     }
 
-    log(`validating ${configObjects.length} objects...`);
+    log(`Validating ${configObjects.length} objects...`);
 
     try {
       await api.sequelize.transaction(async () => {
@@ -54,8 +53,8 @@ export class Validate extends CLI {
           true
         );
         if (errors.length > 0) {
-          logFatalError(
-            `❌ Validation failed - ${errors.length} validation error${
+          return GrouparooCLI.fatalError(
+            `Validation failed - ${errors.length} validation error${
               errors.length !== 1 ? "s" : ""
             }`
           );

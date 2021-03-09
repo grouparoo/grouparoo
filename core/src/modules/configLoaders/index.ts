@@ -231,8 +231,3 @@ export async function deleteLockedObjects(seenIds) {
 
   return deletedIds;
 }
-
-export function logFatalError(message) {
-  log(message, "error");
-  if (env !== "test") process.exit(1);
-}

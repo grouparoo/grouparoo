@@ -37,11 +37,11 @@ export class SyncCLI extends CLI {
     if (profileProperty) params.profileProperty = profileProperty;
 
     if (!params.profileProperty) {
-      return this.fatalError("No Profile Property provided");
+      return GrouparooCLI.fatalError("No Profile Property provided");
     }
 
     if (typeof params.property === "boolean") {
-      return this.fatalError("Provide the property's name");
+      return GrouparooCLI.fatalError("Provide the property's name");
     }
 
     if (!params.json) {
@@ -66,7 +66,7 @@ export class SyncCLI extends CLI {
 
     const wheres = [];
     if (profileProperties.length > 1) {
-      return this.fatalError(
+      return GrouparooCLI.fatalError(
         `More than one Profile found with Profile Property "${params.profileProperty}".  Please provide [property]`
       );
     } else if (profileProperties.length === 1) {
@@ -78,7 +78,7 @@ export class SyncCLI extends CLI {
     const profile = await Profile.findOne({ where: { [Op.or]: wheres } });
 
     if (!profile) {
-      return this.fatalError(
+      return GrouparooCLI.fatalError(
         params.property
           ? `Cannot find Profile where Profile Property "${params.property}"="${params.profileProperty}"`
           : `Cannot find Profile with id or unique Profile Property "${params.profileProperty}"`
@@ -131,12 +131,6 @@ export class SyncCLI extends CLI {
       );
     }
 
-    return true;
-  }
-
-  fatalError(message: string) {
-    console.error("❌ " + message);
-    if (process.env.NODE_ENV !== "test") process.exit(1);
     return true;
   }
 }

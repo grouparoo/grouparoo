@@ -127,7 +127,9 @@ Commands:
   }
 
   async describe(params) {
-    if (!params.template) return this.fatalError(`no template provided`);
+    if (!params.template) {
+      return GrouparooCLI.fatalError(`no template provided`);
+    }
 
     const template = await this.getTemplate(params.template);
     this.logTemplateAndOptions(template);
@@ -138,10 +140,10 @@ Commands:
       "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
 
     if (!params.template) {
-      return this.fatalError(`template is required. ${learnMoreText}`);
+      return GrouparooCLI.fatalError(`template is required. ${learnMoreText}`);
     }
     if (!params.id) {
-      return this.fatalError(`id is required. ${learnMoreText}`);
+      return GrouparooCLI.fatalError(`id is required. ${learnMoreText}`);
     }
 
     const template = await this.getTemplate(params.template);
@@ -150,7 +152,7 @@ Commands:
     try {
       preparedParams = template.prepareParams({ ...params });
     } catch (error) {
-      return this.fatalError(error);
+      return GrouparooCLI.fatalError(error);
     }
 
     if (preparedParams.id.toString().replace(/['"]+/g, "") !== params.id) {
@@ -164,7 +166,7 @@ Commands:
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
       // console.error(error);
-      return this.fatalError(error.message);
+      return GrouparooCLI.fatalError(error.message);
     }
 
     Object.keys(fileData).forEach((filename) => {
@@ -176,7 +178,7 @@ Commands:
         );
         console.log(`✅ wrote ${filename}`);
       } else {
-        this.fatalError(`${filename} already exists`);
+        return GrouparooCLI.fatalError(`${filename} already exists`);
       }
     });
   }
@@ -214,7 +216,7 @@ Commands:
     const templates = api.plugins.templates();
     const template = templates.find((t) => t.name === templateName);
     if (!template) {
-      this.fatalError(`template for "${templateName}" not found`);
+      GrouparooCLI.fatalError(`template for "${templateName}" not found`);
     }
     return template;
   }
@@ -282,10 +284,5 @@ Commands:
         : console.log("  None");
       console.log("");
     }
-  }
-
-  fatalError(message: string) {
-    console.error("❌ " + message);
-    if (process.env.NODE_ENV !== "test") process.exit(1);
   }
 }

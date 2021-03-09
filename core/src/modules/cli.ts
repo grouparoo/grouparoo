@@ -1,17 +1,7 @@
-import { CLI, api, log } from "actionhero";
+import { CLI, api } from "actionhero";
 import Colors from "colors/safe";
 import { Op } from "sequelize";
-import {
-  Run,
-  Profile,
-  ProfileProperty,
-  GroupMember,
-  Import,
-  Export,
-  Log,
-  Schedule,
-  Event,
-} from "..";
+import { Run, Profile, Import, Export } from "..";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -62,39 +52,6 @@ export namespace GrouparooCLI {
     console.log("");
     console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`)));
     console.log("");
-  }
-
-  export async function destroyProfiles() {
-    log("Destroying all Profiles and related data...", "warning");
-    await Profile.truncate();
-    await ProfileProperty.truncate();
-    await GroupMember.truncate();
-    await Import.truncate();
-    await Export.truncate();
-    await Run.truncate();
-    await Log.truncate();
-    await Event.update(
-      { profileId: null, userId: null, profileAssociatedAt: null },
-      { where: { profileId: { [Op.ne]: null } } }
-    );
-  }
-
-  export async function resetHighWatermarks() {
-    const schedules = await Schedule.findAll();
-    for (const i in schedules) {
-      const runs = await Run.findAll({
-        where: {
-          creatorId: schedules[i].id,
-          highWaterMark: { [Op.ne]: null },
-        },
-      });
-
-      for (const j in runs) {
-        const run = runs[j];
-        if (run.state === "running") await run.stop();
-        await run.update({ highWaterMark: {} });
-      }
-    }
   }
 
   export function disableWebServer() {
@@ -191,5 +148,11 @@ export namespace GrouparooCLI {
 
   export function deCamel(s: string) {
     return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+  }
+
+  export function fatalError(message: string) {
+    console.error("❌ " + message);
+    if (process.env.NODE_ENV !== "test") process.exit(1);
+    return true;
   }
 }
