@@ -133,7 +133,7 @@ export namespace Reset {
     return Log.create({
       topic,
       verb: "reset",
-      message: "Grouparoo Cluster Reset",
+      message: `Reset ${topic} by ${callerId}`,
       ownerId: callerId,
       data,
     });
