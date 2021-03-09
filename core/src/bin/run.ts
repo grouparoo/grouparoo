@@ -13,11 +13,11 @@ export class RunCLI extends CLI {
     this.description =
       "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
     this.inputs = {
-      destroy: {
+      reset: {
         default: false,
         description:
-          "[DANGER] Empty the cluster of all Profile data before starting the run?",
-        letter: "d",
+          "[DANGER] Empty the cluster of all Profile data before starting the run? Equivalent to `grouparoo reset data`",
+        letter: "r",
         flag: true,
       },
       "reset-high-watermarks": {
@@ -59,7 +59,7 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
-    if (params.destroy) await Reset.data(process.env.GROUPAROO_RUN_MODE);
+    if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
       params.export.toString().toLowerCase() !== "true"
