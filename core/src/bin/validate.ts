@@ -1,11 +1,10 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, api, log } from "actionhero";
+import { CLI, api } from "actionhero";
 import { ConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
   loadConfigObjects,
   processConfigObjects,
-  logFatalError,
 } from "../modules/configLoaders";
 
 export class Validate extends CLI {
@@ -39,12 +38,12 @@ export class Validate extends CLI {
     try {
       configObjects = await loadConfigObjects(configDir);
     } catch (error) {
-      logFatalError(
-        `error loading config from ${configDir}: \r\n\r\n${error.stack}`
+      return GrouparooCLI.logger.fatal(
+        `Error loading config from ${configDir}: \r\n\r\n${error.stack}`
       );
     }
 
-    log(`validating ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(`Validating ${configObjects.length} objects...`);
 
     try {
       await api.sequelize.transaction(async () => {
@@ -54,13 +53,15 @@ export class Validate extends CLI {
           true
         );
         if (errors.length > 0) {
-          logFatalError(
-            `❌ Validation failed - ${errors.length} validation error${
+          GrouparooCLI.logger.log("");
+          GrouparooCLI.logger.fatal(
+            `Validation failed - ${errors.length} validation error${
               errors.length !== 1 ? "s" : ""
             }`
           );
         } else {
-          log(
+          GrouparooCLI.logger.log("");
+          GrouparooCLI.logger.log(
             `✅ Validation succeeded - ${configObjects.length} config objects OK!`
           );
         }

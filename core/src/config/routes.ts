@@ -144,8 +144,9 @@ export const DEFAULT = {
         { path: "/v:apiVersion/schedule/:id", action: "schedule:destroy" },
         { path: "/v:apiVersion/destination/:id", action: "destination:destroy" },
         { path: "/v:apiVersion/file/:id", action: "file:destroy" },
-        { path: "/v:apiVersion/cluster/cache", action: "cluster:clearCache" },
-        { path: "/v:apiVersion/cluster", action: "cluster:destroy" }
+        { path: "/v:apiVersion/reset/cluster", action: "reset:cluster" },
+        { path: "/v:apiVersion/reset/data", action: "reset:data" },
+        { path: "/v:apiVersion/reset/cache", action: "reset:cache" }
       ]
     };
   },

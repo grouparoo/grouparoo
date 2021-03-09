@@ -127,7 +127,9 @@ Commands:
   }
 
   async describe(params) {
-    if (!params.template) return this.fatalError(`no template provided`);
+    if (!params.template) {
+      return GrouparooCLI.logger.fatal(`no template provided`);
+    }
 
     const template = await this.getTemplate(params.template);
     this.logTemplateAndOptions(template);
@@ -138,10 +140,12 @@ Commands:
       "Learn more with `grouparoo generate --help`, `grouparoo generate --list`, and `grouparoo generate [template] --describe`";
 
     if (!params.template) {
-      return this.fatalError(`template is required. ${learnMoreText}`);
+      return GrouparooCLI.logger.fatal(
+        `template is required. ${learnMoreText}`
+      );
     }
     if (!params.id) {
-      return this.fatalError(`id is required. ${learnMoreText}`);
+      return GrouparooCLI.logger.fatal(`id is required. ${learnMoreText}`);
     }
 
     const template = await this.getTemplate(params.template);
@@ -150,11 +154,11 @@ Commands:
     try {
       preparedParams = template.prepareParams({ ...params });
     } catch (error) {
-      return this.fatalError(error);
+      return GrouparooCLI.logger.fatal(error);
     }
 
     if (preparedParams.id.toString().replace(/['"]+/g, "") !== params.id) {
-      console.log(
+      GrouparooCLI.logger.log(
         `${Colors.yellow("notice")}: ID was changed to ${preparedParams.id}`
       );
     }
@@ -163,8 +167,7 @@ Commands:
     try {
       fileData = await template.run({ params: preparedParams });
     } catch (error) {
-      // console.error(error);
-      return this.fatalError(error.message);
+      return GrouparooCLI.logger.fatal(error.message);
     }
 
     Object.keys(fileData).forEach((filename) => {
@@ -174,20 +177,20 @@ Commands:
           filename,
           prettier.format(fileData[filename], { parser: "babel" })
         );
-        console.log(`✅ wrote ${filename}`);
+        GrouparooCLI.logger.log(`✅ wrote ${filename}`);
       } else {
-        this.fatalError(`${filename} already exists`);
+        return GrouparooCLI.logger.fatal(`${filename} already exists`);
       }
     });
   }
 
   async list(params) {
-    console.log(
+    GrouparooCLI.logger.log(
       `Available Templates:${
         params.template ? ` matching "${params.template}"` : ""
       }`
     );
-    console.log("");
+    GrouparooCLI.logger.log("");
 
     const templates = api.plugins.templates();
     for (const i in templates) {
@@ -200,12 +203,12 @@ Commands:
     }
 
     if (!params.template) {
-      console.log("");
-      console.log(
+      GrouparooCLI.logger.log("");
+      GrouparooCLI.logger.log(
         "You can filter this list by providing a (partial) template to match template names against. (e.g. `grouparoo generate postgres --list`)"
       );
     }
-    console.log(
+    GrouparooCLI.logger.log(
       "\nYou can add plugins to this project to connect to new Sources and Destinations and add additional commands with the `grouparoo install` command."
     );
   }
@@ -214,7 +217,7 @@ Commands:
     const templates = api.plugins.templates();
     const template = templates.find((t) => t.name === templateName);
     if (!template) {
-      this.fatalError(`template for "${templateName}" not found`);
+      GrouparooCLI.logger.fatal(`template for "${templateName}" not found`);
     }
     return template;
   }
@@ -230,9 +233,9 @@ Commands:
     }
 
     if (compact) {
-      console.log(
+      GrouparooCLI.logger.log(
         "  " +
-          GrouparooCLI.underlineBold(template.name) +
+          GrouparooCLI.logger.underlineBold(template.name) +
           ` (${Object.keys(inputs).join(", ")}) - ${template.description}`
       );
     } else {
@@ -249,7 +252,7 @@ Commands:
           inputs[k].required &&
           (inputs[k].default === null || inputs[k].default === undefined);
 
-        console.log(
+        GrouparooCLI.logger.log(
           `  * ${k}${req ? " (required)" : ""} - ${inputs[k].description} ${
             inputs[k].default !== null && inputs[k].default !== undefined
               ? `(default: ${JSON.stringify(inputs[k].default)})`
@@ -262,30 +265,25 @@ Commands:
         );
       }
 
-      console.log(`${template.description}`);
-      console.log("");
+      GrouparooCLI.logger.log(`${template.description}`);
+      GrouparooCLI.logger.log("");
 
       if (template.inputs.id) {
-        console.log("Required Arguments:");
-        console.log(`  * id (required) - ${inputs.id.description}`);
-        console.log("");
+        GrouparooCLI.logger.log("Required Arguments:");
+        GrouparooCLI.logger.log(`  * id (required) - ${inputs.id.description}`);
+        GrouparooCLI.logger.log("");
       }
 
-      console.log("Required Options:");
+      GrouparooCLI.logger.log("Required Options:");
       requiredInputs.length > 0
         ? requiredInputs.forEach((k) => displayInput(k))
-        : console.log("  None");
-      console.log("");
-      console.log("Optional Options:");
+        : GrouparooCLI.logger.log("  None");
+      GrouparooCLI.logger.log("");
+      GrouparooCLI.logger.log("Optional Options:");
       optionalInputs.length > 0
         ? optionalInputs.forEach((k) => displayInput(k))
-        : console.log("  None");
-      console.log("");
+        : GrouparooCLI.logger.log("  None");
+      GrouparooCLI.logger.log("");
     }
-  }
-
-  fatalError(message: string) {
-    console.error("❌ " + message);
-    if (process.env.NODE_ENV !== "test") process.exit(1);
   }
 }

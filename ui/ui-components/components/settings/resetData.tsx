@@ -4,37 +4,36 @@ import { Card } from "react-bootstrap";
 import LoadingButton from "../loadingButton";
 import { Actions } from "../../utils/apiData";
 
-export default function ClearCache(props) {
+export default function ResetData(props) {
   const { errorHandler, successHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
 
-  async function resetCluster() {
+  async function reset() {
     if (!window.confirm("Are you sure?")) return;
 
     setLoading(true);
-    const response: Actions.ClusterClearCache = await execApi(
-      "delete",
-      `/cluster/cache`
-    );
+    const response: Actions.ResetData = await execApi("delete", `/reset/data`);
     if (response?.success) {
-      successHandler.set({ message: `Cache Cleared!` });
+      successHandler.set({ message: `Data Reset!` });
     }
     setLoading(false);
   }
 
   return (
-    <Card border="warning">
+    <Card border="danger">
       <Card.Body>
-        <Card.Title>Clear Cache</Card.Title>
+        <Card.Title>Reset Data</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          Empty the Redis and Resque Cache for your Grouparoo Cluster.
+          Remove all imported data from Grouparoo.
           <br />
           <br />
           <small>
-            This will clear the redis cache and rest all resque stats and locks.
-            This action should cause no data loss, but may result in slower
-            responses for a short time.
+            Imported Data includes Profiles, GroupMembers, Imports, and Exports.
+            This will not remove configuration data, like Apps, Groups, Sources,
+            and Properties. This action will not remove data from your
+            Destinations. This will also clear the redis cache and rest all
+            resque stats and locks.
           </small>
         </Card.Subtitle>
 
@@ -42,12 +41,12 @@ export default function ClearCache(props) {
 
         <Card.Text>
           <LoadingButton
-            onClick={resetCluster}
+            onClick={reset}
             size="sm"
-            variant="outline-warning"
+            variant="outline-danger"
             disabled={loading}
           >
-            Clear Cache
+            Reset Data
           </LoadingButton>
         </Card.Text>
       </Card.Body>
