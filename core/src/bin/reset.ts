@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, log } from "actionhero";
+import { CLI } from "actionhero";
 import { Reset } from "../modules/reset";
 
 export class Destroy extends CLI {
@@ -33,7 +33,7 @@ export class Destroy extends CLI {
     );
 
     if (!params.confirm) {
-      log(`You need to --confirm this command`, "warning");
+      console.error(`You need to --confirm this command`, "warning");
       process.exit(1);
     }
 
@@ -46,7 +46,7 @@ export class Destroy extends CLI {
       await Reset.cache(process.env.GROUPAROO_RUN_MODE);
     }
 
-    log(`✅ Success!`);
+    console.log(`✅ Success!`);
     return true;
   }
 }

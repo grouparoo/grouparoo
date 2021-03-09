@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, api, log } from "actionhero";
+import { CLI, api } from "actionhero";
 import { ConfigurationObject } from "../classes/codeConfig";
 import {
   getConfigDir,
@@ -43,7 +43,7 @@ export class Validate extends CLI {
       );
     }
 
-    log(`Validating ${configObjects.length} objects...`);
+    console.log(`Validating ${configObjects.length} objects...`);
 
     try {
       await api.sequelize.transaction(async () => {
@@ -59,7 +59,7 @@ export class Validate extends CLI {
             }`
           );
         } else {
-          log(
+          console.log(
             `✅ Validation succeeded - ${configObjects.length} config objects OK!`
           );
         }

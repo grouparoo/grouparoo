@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, log } from "actionhero";
+import { CLI } from "actionhero";
 import { CLS } from "../modules/cls";
 import {
   getConfigDir,
@@ -35,7 +35,7 @@ export class Apply extends CLI {
     const configDir = getConfigDir();
     const configObjects = await loadConfigObjects(configDir);
 
-    log(`applying ${configObjects.length} objects...`);
+    console.log(`Applying ${configObjects.length} objects...`);
 
     await CLS.wrap(async () => {
       const { errors, seenIds } = await processConfigObjects(
@@ -47,7 +47,7 @@ export class Apply extends CLI {
 
       await deleteLockedObjects(seenIds);
 
-      log(
+      console.log(
         `✅ Config applied - ${configObjects.length} config objects up-to-date!`
       );
     }, true);

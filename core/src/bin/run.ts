@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, log, api, config } from "actionhero";
+import { CLI, Task, api, config } from "actionhero";
 import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
 import { Reset } from "../modules/reset";
@@ -114,7 +114,7 @@ export class RunCLI extends CLI {
     for (const name in tasks) {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
-      log(`Running task: ${task.name}, ${JSON.stringify(args)}`);
+      console.log(`Running task: ${task.name}, ${JSON.stringify(args)}`);
       await task.run(args, {});
     }
   }
@@ -164,9 +164,9 @@ export class RunCLI extends CLI {
   }
 
   async stopServer() {
-    api.log("All Tasks Complete!", "notice");
+    console.log("All Tasks Complete!", "notice");
     await api.process.stop();
-    log(`All Grouparoo tasks complete - exiting with code 0`, "notice");
+    console.log(`All Grouparoo tasks complete - exiting with code 0`, "notice");
     process.exit(0);
   }
 }
