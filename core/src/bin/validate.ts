@@ -53,7 +53,7 @@ export class Validate extends CLI {
           true
         );
         if (errors.length > 0) {
-          return GrouparooCLI.fatalError(
+          GrouparooCLI.fatalError(
             `Validation failed - ${errors.length} validation error${
               errors.length !== 1 ? "s" : ""
             }`

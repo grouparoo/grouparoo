@@ -1,4 +1,4 @@
-import { CLI, api } from "actionhero";
+import { CLI, api, log } from "actionhero";
 import Colors from "colors/safe";
 import { Op } from "sequelize";
 import { Run, Profile, Import, Export } from "..";
@@ -151,7 +151,7 @@ export namespace GrouparooCLI {
   }
 
   export function fatalError(message: string) {
-    console.error("❌ " + message);
+    log("❌ " + message, "fatal");
     if (process.env.NODE_ENV !== "test") process.exit(1);
     return true;
   }
