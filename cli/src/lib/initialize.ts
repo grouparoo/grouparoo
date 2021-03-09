@@ -1,6 +1,5 @@
 import fs from "fs-extra";
 import path from "path";
-import ora from "ora";
 import { Templates } from "../utils/templates";
 import { buildLogger } from "../utils/logger";
 import { ensurePath } from "../utils/ensurePath";
