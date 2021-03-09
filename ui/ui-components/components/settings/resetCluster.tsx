@@ -9,14 +9,17 @@ export default function ResetCluster(props) {
   const [loading, setLoading] = useState(false);
   const { execApi } = useApi(props, errorHandler);
 
-  async function resetCluster() {
+  async function reset() {
     if (!window.confirm("Are you sure?")) return;
     if (window.prompt("Type 'destroy' to proceed") !== "destroy") {
       return errorHandler.set({ error: "not proceeding" });
     }
 
     setLoading(true);
-    const response: Actions.ClusterReset = await execApi("delete", `/cluster`);
+    const response: Actions.ResetCluster = await execApi(
+      "delete",
+      `/reset/cluster`
+    );
     if (response?.success) {
       successHandler.set({ message: `Cluster Reset!` });
     }
@@ -43,7 +46,7 @@ export default function ResetCluster(props) {
 
         <Card.Text>
           <LoadingButton
-            onClick={resetCluster}
+            onClick={reset}
             disabled={loading}
             size="sm"
             variant="outline-danger"

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { Tabs, Tab } from "react-bootstrap";
+import { Tabs, Tab, Row, Col } from "react-bootstrap";
 import { capitalize } from "../../components/tabs";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
@@ -9,7 +9,8 @@ import SettingCard from "../../components/settings/settingCard";
 import ImportAndUpdateAllProfiles from "../../components/settings/importAndUpdate";
 import IdentifyingProperty from "../../components/settings/identifyingProperty";
 import ResetCluster from "../../components/settings/resetCluster";
-import ClearCache from "../../components/settings/clearCache";
+import ResetData from "../../components/settings/resetData";
+import ResetCache from "../../components/settings/resetCache";
 
 export default function Page(props) {
   const { errorHandler, successHandler, tab } = props;
@@ -130,17 +131,27 @@ function ActionsTab({ errorHandler, successHandler }) {
         errorHandler={errorHandler}
         successHandler={successHandler}
       />
-
       <br />
 
-      <ClearCache errorHandler={errorHandler} successHandler={successHandler} />
-
+      <ResetCache errorHandler={errorHandler} successHandler={successHandler} />
       <br />
 
-      <ResetCluster
-        errorHandler={errorHandler}
-        successHandler={successHandler}
-      />
+      <Row>
+        <Col md={6}>
+          <ResetData
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+          />
+          <br />
+        </Col>
+        <Col md={6}>
+          <ResetCluster
+            errorHandler={errorHandler}
+            successHandler={successHandler}
+          />
+          <br />
+        </Col>
+      </Row>
     </>
   );
 }
