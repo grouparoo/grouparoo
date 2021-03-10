@@ -1,5 +1,15 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
+import OneSignal from "onesignal-node";
 import { connect } from "../connect";
+
+class InfoError extends Error {
+  errorLevel: string;
+
+  constructor(message) {
+    super(message);
+    this.errorLevel = "info";
+  }
+}
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -11,11 +21,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     toDelete,
   },
 }) => {
-  if (Object.keys(oldProfileProperties).length === 0) {
-    // TODO CREATE
-    return { success: false };
-  }
-
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
@@ -23,25 +28,24 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const client = await connect(appOptions);
 
   const extUserId = newProfileProperties["external_user_id"];
-
   if (!extUserId) {
     throw new Error(
       `newProfileProperties[external_user_id] is a required mapping`
     );
   }
 
-  if (toDelete) {
-    // TODO Delete requires a device ID, but we have an external user id that can map to multiple devices
-    // do we delete all devices?
-    return { success: false };
-  }
-
   const payload: any = { tags: {} };
 
-  // set profile properties, including old ones
-  const newKeys = Object.keys(newProfileProperties);
+  // set profile properties, including old ones.
+  let newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = new Set([...newKeys, ...oldKeys]);
+
+  if (toDelete) {
+    // When deleting, we just clear the old tags. No real deletion occurs.
+    newKeys = [];
+    newGroups = [];
+  }
 
   for (const key of allKeys) {
     if (key === "external_user_id") {
@@ -67,8 +71,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
   }
 
-  await client.editTagsWithExternalUserIdDevice(extUserId, payload);
-  return { success: true };
+  try {
+    await client.editTagsWithExternalUserIdDevice(extUserId, payload);
+    return { success: true };
+  } catch (error) {
+    if (error instanceof OneSignal.HTTPError && error.statusCode === 404) {
+      throw new InfoError("OneSignal destination does not create new devices.");
+    }
+    throw error;
+  }
 };
 
 function formatVar(value) {
