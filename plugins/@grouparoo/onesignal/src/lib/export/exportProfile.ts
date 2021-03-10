@@ -11,33 +11,32 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     toDelete,
   },
 }) => {
-  // TODO
+  if (Object.keys(oldProfileProperties).length === 0) {
+    // TODO CREATE
+    return { success: false };
+  }
 
-  /*
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
 
   const client = await connect(appOptions);
 
-  const customerId = newProfileProperties["customer_id"];
-  const oldCustomerId = oldProfileProperties["customer_id"];
+  const extUserId = newProfileProperties["external_user_id"];
 
-  if (!customerId) {
-    throw new Error(`newProfileProperties[customer_id] is a required mapping`);
-  }
-
-  if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
-    // Must delete old customer if ID has changed
-    await client.destroy(oldCustomerId);
+  if (!extUserId) {
+    throw new Error(
+      `newProfileProperties[external_user_id] is a required mapping`
+    );
   }
 
   if (toDelete) {
-    await client.destroy(customerId);
-    return { success: true };
+    // TODO Delete requires a device ID, but we have an external user id that can map to multiple devices
+    // do we delete all devices?
+    return { success: false };
   }
 
-  const payload: any = {};
+  const payload: any = { tags: {} };
 
   // set profile properties, including old ones
   const newKeys = Object.keys(newProfileProperties);
@@ -45,32 +44,31 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   for (const key of allKeys) {
-    if (key === "customer_id") {
-      // not doing this one
+    if (key === "external_user_id") {
+      // not doing this one, it's not a tag
       continue;
     }
 
     const value = newProfileProperties[key];
-    payload[key] = formatVar(value);
+    payload.tags[key] = formatVar(value);
   }
 
-  // Groups are managed as customer attributes
-  // If user is in group "High Value", the attribute "In High Value" will be set to true
+  // Groups are managed as tags
+  // If user is in group "High Value", the attribute "in_high_value" will be set to 1
   for (const group of newGroups) {
     const groupAttribute = getGroupAttribute(group);
-    payload[groupAttribute] = true;
+    payload.tags[groupAttribute] = 1;
   }
 
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
       const groupAttribute = getGroupAttribute(group);
-      payload[groupAttribute] = null;
+      payload.tags[groupAttribute] = null;
     }
   }
 
-  await client.identify(customerId, payload);
-*/
-  return { success: false };
+  await client.editTagsWithExternalUserIdDevice(extUserId, payload);
+  return { success: true };
 };
 
 function formatVar(value) {
@@ -87,5 +85,6 @@ function formatVar(value) {
 }
 
 function getGroupAttribute(groupName: string) {
-  return `In ${groupName}`;
+  const normalizedName = groupName.toLowerCase().replace(/ /g, "_");
+  return `in_${normalizedName}`;
 }
