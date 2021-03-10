@@ -77,7 +77,7 @@ class PardotClient {
   async getProspectByEmail(email: string) {
     try {
       const res = await this.request.get(
-        `/prospect/version/4/do/read/email/${email}`,
+        `/prospect/version/4/do/read/email/${encodeURIComponent(email)}`,
         {
           params: {
             format: "json",
