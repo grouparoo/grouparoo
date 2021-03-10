@@ -19,9 +19,8 @@ export function loadAppOptions(newNock: boolean = false): SimpleAppOptions {
   }
   const parsed = readEnv(envFile);
   return {
-    apiKey: parsed.CUSTOMERIO_API_KEY,
-    siteId: parsed.CUSTOMERIO_SITE_ID,
-    appApiKey: parsed.CUSTOMERIO_APP_API_KEY,
+    apiKey: parsed.ONESIGNAL_API_KEY,
+    appId: parsed.ONESIGNAL_APP_ID,
   };
 }
 
@@ -30,19 +29,14 @@ export const updater = {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);
 
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.CUSTOMERIO_API_KEY, "gi"),
-      nockEnv.CUSTOMERIO_API_KEY
+    nockCall = nockCall.replaceAll(
+      realEnv.ONESIGNAL_API_KEY,
+      nockEnv.ONESIGNAL_API_KEY
     );
 
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.CUSTOMERIO_SITE_ID, "gi"),
-      nockEnv.CUSTOMERIO_SITE_ID
-    );
-
-    nockCall = nockCall.replace(
-      new RegExp(realEnv.CUSTOMERIO_APP_API_KEY, "gi"),
-      nockEnv.CUSTOMERIO_APP_API_KEY
+    nockCall = nockCall.replaceAll(
+      realEnv.ONESIGNAL_APP_ID,
+      nockEnv.ONESIGNAL_APP_ID
     );
 
     return nockCall;
