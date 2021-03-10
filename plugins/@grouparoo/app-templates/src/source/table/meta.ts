@@ -38,7 +38,7 @@ export interface BuildConnectionMethod {
     description: string;
     app: string;
     tableOptionDescription?: string;
-
+    sourceOptions?: SourceOptionsExtra;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
     getTables: GetTablesMethod;
@@ -46,8 +46,6 @@ export interface BuildConnectionMethod {
     getPropertyValue: GetPropertyValueMethod;
     getPropertyValues?: GetPropertyValuesMethod;
     getChangedRowCount: GetChangedRowCountMethod;
-
-    sourceOptions?: SourceOptionsExtra;
   }): PluginConnection;
 }
 
@@ -56,6 +54,7 @@ export const buildConnection: BuildConnectionMethod = ({
   description,
   app,
   tableOptionDescription = null,
+  sourceOptions: additionalOptions,
   getSampleRows,
   getColumns,
   getTables,
@@ -63,7 +62,6 @@ export const buildConnection: BuildConnectionMethod = ({
   getPropertyValue,
   getPropertyValues,
   getChangedRowCount,
-  sourceOptions: extraSourceOptions,
 }) => {
   const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions({
     getSampleRows,
@@ -75,7 +73,7 @@ export const buildConnection: BuildConnectionMethod = ({
   });
   const sourceOptions: SourceOptionsMethod = getSourceOptions({
     getTables,
-    additionalOptions,
+    sourceOptions: additionalOptions,
   });
   const sourcePreview: SourcePreviewMethod = getSourcePreview({
     getSampleRows,
@@ -104,7 +102,7 @@ export const buildConnection: BuildConnectionMethod = ({
     }
   );
 
-  const options = (extraSourceOptions?.options || []).concat({
+  const options = (additionalOptions?.options || []).concat({
     key: tableNameKey,
     displayName: "Table",
     required: true,

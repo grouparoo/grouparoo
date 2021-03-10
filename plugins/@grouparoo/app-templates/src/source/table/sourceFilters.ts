@@ -23,6 +23,7 @@ export const getSourceFilters: GetSourceFiltersMethod = ({ getColumns }) => {
     const map: ColumnDefinitionMap = await getColumns({
       connection,
       appOptions,
+      sourceOptions,
       appId,
       tableName,
     });

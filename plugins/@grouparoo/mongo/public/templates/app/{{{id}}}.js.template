@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        uri: "mongodb://localhost:27017/mydb", // The MongoDB Connection String.
+        database: "mydb", // The MongoDB database name (normally, the Connection String have the database name too).
+      }
+    },
+  ];
+};

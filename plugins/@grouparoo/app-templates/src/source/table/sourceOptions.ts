@@ -36,14 +36,12 @@ export const getSourceOptions: GetSourceOptionsMethod = ({
     for (const tableName in map) {
       response[tableNameKey].options.push(tableName);
     }
-
     // TODO later: const getMore = extraSourceOptions?.method
-
     const extra = extraSourceOptions?.options || [];
     for (const option of extra) {
       response[option.key] = {
         // for now all strings, not lists.
-        // we'd need a method to do that or pass in the options
+        // we'd need a method to do that or pass in the options.
         type: "string",
       };
     }

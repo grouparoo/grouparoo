@@ -9,10 +9,21 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "postgres",
-    name: "postgres-table-import",
-    description: "Import or update Profiles from a Postgres database table.",
+    app: "mongodb",
+    name: "mongodb-collection-import",
+    description:
+      "Import or update Profiles from a Mongo DB database collection.",
     tableOptionDescription: "The table to scan",
+    sourceOptions: {
+      options: [
+        {
+          key: "fields",
+          displayName: "Fields",
+          required: true,
+          description: "Comma separated list of fields",
+        },
+      ],
+    },
     getSampleRows,
     getColumns,
     getTables,

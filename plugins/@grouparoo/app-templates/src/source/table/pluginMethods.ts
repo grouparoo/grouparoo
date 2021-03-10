@@ -2,6 +2,7 @@ import {
   ConnectionOption,
   PropertyTypes,
   SimpleAppOptions,
+  SimpleSourceOptions,
 } from "@grouparoo/core";
 export { SimpleAppOptions };
 
@@ -33,6 +34,7 @@ export enum FilterOperation {
   Contain = "contains",
   NotContain = "does not contain",
   In = "in",
+  Exists = "exists",
 }
 
 export interface MatchCondition {
@@ -64,6 +66,7 @@ export interface GetColumnDefinitionsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
   }): Promise<ColumnDefinitionMap>;
@@ -73,6 +76,7 @@ export interface GetSampleRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
   }): Promise<DataResponseRow[]>;
@@ -81,6 +85,7 @@ export interface GetPropertyValueMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     columnName: string;
@@ -94,6 +99,7 @@ export interface GetPropertyValuesMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     columnName: string;
@@ -108,7 +114,7 @@ export interface GetPropertyValuesMethod {
 }
 export interface SourceOptionsExtra {
   options: ConnectionOption[];
-  // TODO later: canpass method here.
+  // TODO later: can pass method here.
 }
 export interface TableDefinition {
   name: string;
@@ -128,6 +134,7 @@ export interface GetChangedRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
@@ -143,6 +150,7 @@ export interface GetChangedRowCountMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
