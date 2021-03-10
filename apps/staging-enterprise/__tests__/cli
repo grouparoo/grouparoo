@@ -3,6 +3,7 @@
 set -e
 
 cd "`dirname "$0"`/.."
+source ./../../tools/shared/max_bg_procs
 
 CLI="../../cli/dist/grouparoo.js"
 
@@ -53,7 +54,8 @@ TEST_GENERATOR(){
 
 GENERATE_TEMPLATES=`$CLI generate --list | grep "(id" | awk '{print $1}' | perl -pe 's/\e\[[0-9;]*m(?:\e\[K)?//g'` # the perl part is to remove the underline and bold escape chars
 for i in $GENERATE_TEMPLATES; do
-    TEST_GENERATOR $i & # The "&" backgrounds the function
+  MAX_BG_PROCS 5
+  TEST_GENERATOR $i & # The "&" backgrounds the function
 done
 
 wait
