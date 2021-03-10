@@ -42,17 +42,15 @@ export async function loadConfigDirectory(
 
   const configObjects = await loadConfigObjects(configDir);
 
-  if (configObjects.length > 0) {
-    const response = await processConfigObjects(
-      configObjects,
-      externallyValidate
-    );
-    seenIds = response.seenIds;
-    errors = response.errors;
+  const response = await processConfigObjects(
+    configObjects,
+    externallyValidate
+  );
+  seenIds = response.seenIds;
+  errors = response.errors;
 
-    if (errors.length === 0) {
-      deletedIds = await deleteLockedObjects(seenIds);
-    }
+  if (errors.length === 0) {
+    deletedIds = await deleteLockedObjects(seenIds);
   }
 
   return { seenIds, errors, deletedIds };
