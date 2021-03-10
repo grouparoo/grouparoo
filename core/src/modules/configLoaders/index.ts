@@ -42,7 +42,7 @@ export async function loadConfigDirectory(
 
   const configObjects = await loadConfigObjects(configDir);
 
-  if (configObjects !== null) {
+  if (configObjects.length > 0) {
     const response = await processConfigObjects(
       configObjects,
       externallyValidate
@@ -68,9 +68,6 @@ export async function loadConfigObjects(
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
   configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
-  if (configFiles.length === 0) {
-    return null;
-  }
   return configObjects;
 }
 
