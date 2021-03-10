@@ -1,5 +1,3 @@
-import { validateQuery } from "../validateQuery";
-
 export const getChangedRows = async ({
   scheduleOptions,
   limit,
@@ -9,11 +7,7 @@ export const getChangedRows = async ({
   if (!scheduleOptions?.query) {
     throw new Error("query required");
   }
-
-  validateQuery(scheduleOptions.query, false);
-
-  const queryWithLimitAndOffset = `${scheduleOptions.query} LIMIT ${limit} OFFSET ${offset}`;
-  const rows = await connection.execute(queryWithLimitAndOffset);
-
+  // const queryWithLimitAndOffset = `${scheduleOptions.query} LIMIT ${limit} OFFSET ${offset}`;
+  const rows = null;
   return rows;
 };
