@@ -5,7 +5,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       class: "destination",
       type: "{{{__pluginName}}}-objects-export",
-      appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "salesforce_app"`
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "salesforce_app"`
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
 
       // Note that depending on your Salesforce configuration, not all options are required
