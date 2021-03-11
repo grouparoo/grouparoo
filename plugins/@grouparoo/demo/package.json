@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/demo",
   "description": "The Grouparoo Demo Setup Plugin",
-  "version": "0.2.6-alpha.2",
+  "version": "0.2.6-alpha.3",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -36,8 +36,8 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.2.6-alpha.2",
-    "@grouparoo/spec-helper": "0.2.6-alpha.2",
+    "@grouparoo/core": "0.2.6-alpha.3",
+    "@grouparoo/spec-helper": "0.2.6-alpha.3",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "25.0.7",
