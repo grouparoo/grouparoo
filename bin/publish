@@ -35,6 +35,7 @@ else
 fi
 
 # Push new version & tags to git with lerna
+BRANCH=`git rev-parse --abbrev-ref HEAD`
 OLD_VERSION=`cat lerna.json | jq -r '.version'`
 echo "on $BRANCH branch"
 if [[ $BRANCH == 'main' ]]; then
