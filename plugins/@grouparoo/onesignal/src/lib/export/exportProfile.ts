@@ -54,20 +54,21 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
 
     const value = newProfileProperties[key];
-    payload.tags[key] = formatVar(value);
+    const normalizedKey = normalizeTagKey(key);
+    payload.tags[normalizedKey] = formatVar(value);
   }
 
   // Groups are managed as tags
   // If user is in group "High Value", the attribute "in_high_value" will be set to 1
   for (const group of newGroups) {
-    const groupAttribute = getGroupAttribute(group);
-    payload.tags[groupAttribute] = 1;
+    const groupTag = getGroupTag(group);
+    payload.tags[groupTag] = 1;
   }
 
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
-      const groupAttribute = getGroupAttribute(group);
-      payload.tags[groupAttribute] = null;
+      const groupTag = getGroupTag(group);
+      payload.tags[groupTag] = null;
     }
   }
 
@@ -95,7 +96,12 @@ function formatVar(value) {
   return value;
 }
 
-function getGroupAttribute(groupName: string) {
-  const normalizedName = groupName.toLowerCase().replace(/ /g, "_");
+function normalizeTagKey(key: string) {
+  // Only alphanumeric chars and underscores
+  return key.toLowerCase().replace(/[^a-z0-9_]/g, "_");
+}
+
+function getGroupTag(groupName: string) {
+  const normalizedName = normalizeTagKey(groupName);
   return `in_${normalizedName}`;
 }
