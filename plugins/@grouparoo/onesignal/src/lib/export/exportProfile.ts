@@ -37,13 +37,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const payload: any = { tags: {} };
 
   // set profile properties, including old ones.
-  let newKeys = Object.keys(newProfileProperties);
+  const newKeys = Object.keys(newProfileProperties);
   const oldKeys = Object.keys(oldProfileProperties);
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   if (toDelete) {
     // When deleting, we just clear the old tags. No real deletion occurs.
-    newKeys = [];
+    newProfileProperties = {};
     newGroups = [];
   }
 

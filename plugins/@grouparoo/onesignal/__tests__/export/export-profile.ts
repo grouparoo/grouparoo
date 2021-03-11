@@ -209,7 +209,7 @@ describe("OneSignal/exportProfile", () => {
     expect(player.tags[`in_${groupTwo}`]).toBeTruthy();
   });
 
-  test("can remove group attribute", async () => {
+  test("can remove group tag", async () => {
     await runExport({
       oldProfileProperties: {
         external_user_id: extUserId1,
@@ -267,6 +267,7 @@ describe("OneSignal/exportProfile", () => {
         external_user_id: extUserId1,
         first_name: "John",
         [weirdTag]: "test",
+        some_new_tag: "but he's being deleted!",
       },
       oldGroups: [groupOne, weirdGroup],
       newGroups: [groupOne, weirdGroup],
@@ -277,7 +278,9 @@ describe("OneSignal/exportProfile", () => {
 
     const { body: player } = await client.viewDevice(playerId1);
     expect(player.external_user_id).toBe(extUserId1);
-    expect(player.tags[weirdTagNormalized]).toBeUndefined;
+    expect(player.tags.first_name).toBeUndefined();
+    expect(player.tags.some_new_tag).toBeUndefined();
+    expect(player.tags[weirdTagNormalized]).toBeUndefined();
     expect(player.tags[`in_${weirdGroupNormalized}`]).toBeUndefined();
     expect(player.tags[`in_${groupOne}`]).toBeUndefined();
   });
