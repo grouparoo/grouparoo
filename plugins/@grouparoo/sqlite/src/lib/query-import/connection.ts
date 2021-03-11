@@ -4,9 +4,9 @@ import { getChangedRows } from "./getChangedRows";
 
 export function getConnection() {
   return buildConnection({
-    app: "postgres",
-    name: "postgres-query-import",
-    description: "Import or update Profiles via a custom Postgres query.",
+    app: "sqlite",
+    name: "sqlite-query-import",
+    description: "Import or update Profiles via a custom SQLite query.",
     executeQuery,
     getChangedRows,
   });

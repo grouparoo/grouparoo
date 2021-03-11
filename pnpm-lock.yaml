@@ -100,6 +100,7 @@ importers:
       '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
       '@grouparoo/sentry': link:../../plugins/@grouparoo/sentry
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
+      '@grouparoo/sqlite': link:../../plugins/@grouparoo/sqlite
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
     devDependencies:
@@ -131,6 +132,7 @@ importers:
       '@grouparoo/sentry': 0.2.8
       '@grouparoo/snowflake': 0.2.8
       '@grouparoo/spec-helper': 0.2.8
+      '@grouparoo/sqlite': 0.2.8
       '@grouparoo/ui-enterprise': 0.2.8
       '@grouparoo/zendesk': 0.2.8
       jest: 26.6.3
@@ -1141,6 +1143,46 @@ importers:
       ts-jest: 26.5.3
       typescript: 4.2.3
       uuid: 8.3.2
+  plugins/@grouparoo/sqlite:
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      '@types/sqlite3': 3.1.7
+      pg: 8.5.1
+      pg-format: 1.0.4
+      pg-hstore: 2.3.3
+      postgres-date: 2.0.0
+      sqlite3: 5.0.2
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.31
+      '@types/pg': 7.14.11
+      actionhero: 25.0.7
+      csv-parse: 4.15.3
+      jest: 26.6.3
+      prettier: 2.2.1
+      ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
+      typescript: 4.2.3
+    specifiers:
+      '@grouparoo/app-templates': 0.2.8
+      '@grouparoo/core': 0.2.8
+      '@grouparoo/spec-helper': 0.2.8
+      '@types/jest': '*'
+      '@types/node': '*'
+      '@types/pg': '*'
+      '@types/sqlite3': ^3.1.7
+      actionhero: 25.0.7
+      csv-parse: 4.15.3
+      jest: 26.6.3
+      pg: 8.5.1
+      pg-format: 1.0.4
+      pg-hstore: 2.3.3
+      postgres-date: 2.0.0
+      prettier: 2.2.1
+      sqlite3: ^5.0.2
+      ts-jest: 26.5.3
+      typescript: 4.2.3
   plugins/@grouparoo/zendesk:
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
@@ -3615,6 +3657,14 @@ packages:
     dev: true
     resolution:
       integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
+  /@types/pg/7.14.11:
+    dependencies:
+      '@types/node': 14.14.31
+      pg-protocol: 1.4.0
+      pg-types: 2.2.0
+    dev: true
+    resolution:
+      integrity: sha512-EnZkZ1OMw9DvNfQkn2MTJrwKmhJYDEs5ujWrPfvseWNoI95N8B4HzU/Ltrq5ZfYxDX/Zg8mTzwr6UAyTjjFvXA==
   /@types/pg/7.14.9:
     dependencies:
       '@types/node': 14.14.27
@@ -3646,6 +3696,12 @@ packages:
       csstype: 3.0.6
     resolution:
       integrity: sha512-w8t9f53B2ei4jeOqf/gxtc2Sswnc3LBK5s0DyJcg5xd10tMHXts2N31cKjWfH9IC/JvEPa/YF1U4YeP1t4R6HQ==
+  /@types/sqlite3/3.1.7:
+    dependencies:
+      '@types/node': 14.14.31
+    dev: false
+    resolution:
+      integrity: sha512-8FHV/8Uzd7IwdHm5mvmF2Aif4aC/gjrt4axWD9SmfaxITnOjtOhCbOSTuqv/VbH1uq0QrwlaTj9aTz3gmR6u4w==
   /@types/stack-utils/2.0.0:
     dev: true
     resolution:
@@ -3905,6 +3961,35 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-v+DieK/HJkJOpFBETDJioequtc3PfxsWMaxIdIwujtF7FEV/MAyDQLlm6/zPvr7Mix07mLh6ccVwIsloceodlg==
+  /actionhero/25.0.7:
+    dependencies:
+      '@types/ioredis': 4.22.0
+      browser_fingerprint: 2.0.2
+      commander: 7.2.0
+      dot-prop: 6.0.1
+      etag: 1.8.1
+      formidable: 1.2.2
+      glob: 7.1.6
+      i18n: 0.13.2
+      ioredis: 4.24.3
+      ioredis-mock: 5.3.0_ioredis@4.24.3
+      is-running: 2.1.0
+      mime: 2.5.2
+      node-resque: 8.2.4
+      optimist: 0.6.1
+      primus: 8.0.1
+      qs: 6.9.6
+      uglify-js: 3.13.0
+      uuid: 8.3.2
+      winston: 3.3.3
+      ws: 7.4.4
+    dev: true
+    engines:
+      node: '>=8.0.0'
+    hasBin: true
+    requiresBuild: true
+    resolution:
+      integrity: sha512-6IXifvhD5x6EnzTF3ZRpwJYDC449ZrEccuAZbvQM/GnAkFyEBk3an5Qd6wuO6A2lDvT87tRsIVqFs4YL1oggbQ==
   /actionhero/25.0.8:
     dependencies:
       '@types/ioredis': 4.22.0
@@ -9530,7 +9615,7 @@ packages:
       whatwg-encoding: 1.0.5
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.4.0
-      ws: 7.4.4
+      ws: 7.4.3
       xml-name-validator: 3.0.0
     dev: true
     engines:
@@ -12110,7 +12195,6 @@ packages:
     resolution:
       integrity: sha512-ORJoFxAlmmros8igi608iVEbQNNZlp89diFVx6yV5v+ehmpMY9sK6QgpmgoXbmkNaBAx8cOOZh9g80kJv1ooyA==
   /pg-protocol/1.4.0:
-    dev: false
     resolution:
       integrity: sha512-El+aXWcwG/8wuFICMQjM5ZSAm6OWiJicFdNYo+VY3QP+8vI4SvLIWVe51PppTzMhikUJR+PsyIFKqfdXPz/yxA==
   /pg-types/2.2.0:
@@ -14936,7 +15020,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3_ts-node@9.1.1
+      jest: 26.6.3
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21

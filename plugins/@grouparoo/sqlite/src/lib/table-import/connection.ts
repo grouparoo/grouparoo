@@ -9,9 +9,9 @@ import { getChangedRowCount } from "./getChangedRowCount";
 
 export function getConnection() {
   return buildConnection({
-    app: "postgres",
-    name: "postgres-table-import",
-    description: "Import or update Profiles from a Postgres database table.",
+    app: "sqlite",
+    name: "sqlite-table-import",
+    description: "Import or update Profiles from a Sqlite database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,
