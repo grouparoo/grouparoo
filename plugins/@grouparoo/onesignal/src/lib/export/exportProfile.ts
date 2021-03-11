@@ -59,10 +59,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   // Groups are managed as tags
-  // If user is in group "High Value", the attribute "in_high_value" will be set to 1
+  // If user is in group "High Value", the attribute "in_high_value" will be set to "true"
   for (const group of newGroups) {
     const groupTag = getGroupTag(group);
-    payload.tags[groupTag] = 1;
+    payload.tags[groupTag] = true;
   }
 
   for (const group of oldGroups) {
