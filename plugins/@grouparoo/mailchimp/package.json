@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/mailchimp",
   "description": "The Grouparoo mailchimp Plugin",
-  "version": "0.2.6-alpha.0",
+  "version": "0.2.6-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -31,8 +31,8 @@
     "mailchimp-api-v3": "1.14.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.2.6-alpha.0",
-    "@grouparoo/spec-helper": "0.2.6-alpha.0",
+    "@grouparoo/core": "0.2.6-alpha.1",
+    "@grouparoo/spec-helper": "0.2.6-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
     "actionhero": "25.0.7",
