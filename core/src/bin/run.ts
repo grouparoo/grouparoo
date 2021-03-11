@@ -1,7 +1,8 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, log, api, config } from "actionhero";
+import { CLI, Task, api, config } from "actionhero";
 import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
+import { Reset } from "../modules/reset";
 
 const CHECK_TIMEOUT = 1000 * 10;
 
@@ -12,11 +13,11 @@ export class RunCLI extends CLI {
     this.description =
       "Run all Schedules, Runs, Imports and Exports pending in this cluster.  Use GROUPAROO_LOG_LEVEL env to set log level.";
     this.inputs = {
-      destroy: {
+      reset: {
         default: false,
         description:
-          "[DANGER] Empty the cluster of all Profile data before starting the run?",
-        letter: "d",
+          "[DANGER] Empty the cluster of all Profile data before starting the run? Equivalent to `grouparoo reset data`",
+        letter: "r",
         flag: true,
       },
       "reset-high-watermarks": {
@@ -58,8 +59,8 @@ export class RunCLI extends CLI {
     this.checkWorkers();
 
     if (!params.web) GrouparooCLI.disableWebServer();
-    if (params.destroy) await GrouparooCLI.destroyProfiles();
-    if (params.resetHighWatermarks) await GrouparooCLI.resetHighWatermarks();
+    if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
+    if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
       params.export.toString().toLowerCase() !== "true"
     );
@@ -68,7 +69,7 @@ export class RunCLI extends CLI {
 
     const pendingStatus = await GrouparooCLI.getPendingStatus();
     const runStatus = await GrouparooCLI.getRunsStatus();
-    GrouparooCLI.logStatus("Initial Status", [
+    GrouparooCLI.logger.status("Initial Status", [
       { header: "Pending Items", status: pendingStatus },
       { header: "Active Runs", status: runStatus },
     ]);
@@ -113,7 +114,9 @@ export class RunCLI extends CLI {
     for (const name in tasks) {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
-      log(`Running task: ${task.name}, ${JSON.stringify(args)}`);
+      GrouparooCLI.logger.log(
+        `Running task: ${task.name}, ${JSON.stringify(args)}`
+      );
       await task.run(args, {});
     }
   }
@@ -148,7 +151,7 @@ export class RunCLI extends CLI {
   async checkForComplete() {
     const pendingStatus = await GrouparooCLI.getPendingStatus();
     const runStatus = await GrouparooCLI.getRunsStatus();
-    GrouparooCLI.logStatus("Status", [
+    GrouparooCLI.logger.status("Status", [
       { header: "Pending Items", status: pendingStatus },
       { header: "Active Runs", status: runStatus },
     ]);
@@ -163,9 +166,11 @@ export class RunCLI extends CLI {
   }
 
   async stopServer() {
-    api.log("All Tasks Complete!", "notice");
+    GrouparooCLI.logger.log("All Tasks Complete!");
     await api.process.stop();
-    log(`All Grouparoo tasks complete - exiting with code 0`, "notice");
+    GrouparooCLI.logger.log(
+      `All Grouparoo tasks complete - exiting with code 0`
+    );
     process.exit(0);
   }
 }

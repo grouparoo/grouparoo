@@ -32,6 +32,10 @@ const email3 = "grouparoo3@demo.com";
 const id3 = "pro3";
 let userId3 = null;
 
+const email4 = "grouparoo+test@demo.com";
+const id4 = "pro4";
+let userId4 = null;
+
 const list1 = "(test) High Value";
 let listId1 = null;
 
@@ -147,7 +151,7 @@ function makeExports(profiles: Record<string, any>[]) {
 }
 
 async function cleanUp(suppressErrors: boolean) {
-  const emails = [email1, email2, email3, newEmail1];
+  const emails = [email1, email2, email3, email4, newEmail1];
 
   await deleteUsers(emails, suppressErrors);
   await deleteLists(suppressErrors);
@@ -799,6 +803,104 @@ describe("pardot/exportProfiles", () => {
     expect(user.email).toEqual(email3);
     expect(user.first_name).toEqual("Liz"); // created
     expect(user.grouparoo_custom_text).toEqual("some text");
+  });
+
+  test("can add a user with special characters in email", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports: [
+        {
+          profileId: id4,
+          oldProfileProperties: {},
+          newProfileProperties: {
+            email: email4,
+            first_name: "Special",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    let user;
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    userId4 = await findId(email4);
+    expect(userId4).toBeTruthy();
+
+    user = await client.getProspectById(userId4);
+    expect(user.email).toEqual(email4);
+    expect(user.first_name).toEqual("Special");
+  });
+
+  test("can update a user with special characters in email", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports: [
+        {
+          profileId: id4,
+          oldProfileProperties: {
+            email: email4,
+            first_name: "Special",
+            last_name: "User",
+          },
+          newProfileProperties: {
+            email: email4,
+            first_name: "Special",
+            last_name: "User",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    const user = await client.getProspectById(userId4);
+    expect(user.email).toEqual(email4);
+    expect(user.first_name).toEqual("Special");
+    expect(user.last_name).toEqual("User");
+  });
+
+  test("can delete a user with special characters in email", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      exports: [
+        {
+          profileId: id4,
+          oldProfileProperties: {
+            email: email4,
+            first_name: "Special",
+            last_name: "User",
+          },
+          newProfileProperties: {
+            email: email4,
+            first_name: "Special",
+            last_name: "User",
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(success).toBe(true);
+    expect(errors).toBeNull();
+
+    expect(await findId(email4)).toBeNull();
+    expect(await isProspectDeleted(userId4)).toBe(true);
   });
 
   test("can handle batches with lots of prospects", async () => {

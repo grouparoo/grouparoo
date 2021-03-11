@@ -56,6 +56,13 @@ else
     exit 1
 fi
 
+if [ -f "$WORKDIR/.gitignore" ]; then
+    echo "✅ .gitignore exists."
+else
+    echo "🚫 .gitignore does not exist."
+    exit 1
+fi
+
 if [ -d "$WORKDIR/node_modules" ]; then
     echo "✅ node_modules exists."
 else

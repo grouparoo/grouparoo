@@ -1,0 +1,19 @@
+# Node
+
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Data
+
+*.sqlite
+log
+
+# OS
+
+.DS_Store
+
+# Editor
+
+.vscode
+.idea

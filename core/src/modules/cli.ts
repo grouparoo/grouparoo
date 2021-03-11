@@ -1,17 +1,7 @@
-import { CLI, api, log } from "actionhero";
+import { CLI, api } from "actionhero";
 import Colors from "colors/safe";
 import { Op } from "sequelize";
-import {
-  Run,
-  Profile,
-  ProfileProperty,
-  GroupMember,
-  Import,
-  Export,
-  Log,
-  Schedule,
-  Event,
-} from "..";
+import { Run, Profile, Import, Export } from "..";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -59,42 +49,11 @@ export namespace GrouparooCLI {
   export function logCLI(name: string, announcePlugins = true) {
     if (announcePlugins) api.plugins.announcePlugins();
 
-    console.log("");
-    console.log(Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`)));
-    console.log("");
-  }
-
-  export async function destroyProfiles() {
-    log("Destroying all Profiles and related data...", "warning");
-    await Profile.truncate();
-    await ProfileProperty.truncate();
-    await GroupMember.truncate();
-    await Import.truncate();
-    await Export.truncate();
-    await Run.truncate();
-    await Log.truncate();
-    await Event.update(
-      { profileId: null, userId: null, profileAssociatedAt: null },
-      { where: { profileId: { [Op.ne]: null } } }
+    GrouparooCLI.logger.log("");
+    GrouparooCLI.logger.log(
+      Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`))
     );
-  }
-
-  export async function resetHighWatermarks() {
-    const schedules = await Schedule.findAll();
-    for (const i in schedules) {
-      const runs = await Run.findAll({
-        where: {
-          creatorId: schedules[i].id,
-          highWaterMark: { [Op.ne]: null },
-        },
-      });
-
-      for (const j in runs) {
-        const run = runs[j];
-        if (run.state === "running") await run.stop();
-        await run.update({ highWaterMark: {} });
-      }
-    }
+    GrouparooCLI.logger.log("");
   }
 
   export function disableWebServer() {
@@ -148,48 +107,70 @@ export namespace GrouparooCLI {
 
   /** Logging */
 
-  export function logStatus(
-    title: string,
-    statusArray: LogStatusArray,
-    secondaryTitle = `@ ${new Date().toISOString()}`
-  ) {
-    const formattedTitle = `┌-- ${title} ${secondaryTitle} ---`;
+  /**
+   * We do not want to use the actionhero logger for CLI commands, as we do not want this info in the log files.
+   * We also want more fine-grained control of log display for the terminal.
+   */
+  export namespace logger {
+    export function log(message) {
+      console.log(message);
+    }
 
-    console.log("");
-    console.log(blueBold(formattedTitle));
+    export function error(message) {
+      console.error(message);
+    }
 
-    statusArray.forEach(({ header, status }, idx) => {
-      if (idx > 0) console.log(blueBold(`|`));
+    export function blueBold(s: string) {
+      return Colors.blue(Colors.bold(s));
+    }
 
-      console.log(blueBold(`|`) + " " + underlineBold(header));
-      for (const key in status) {
-        const [v1, v2] = status[key];
-        console.log(
-          `${blueBold("|")} * ${deCamel(key)}${
-            (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
-            (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
-          }`
-        );
-      }
-    });
+    export function blue(s: string) {
+      return Colors.blue(s);
+    }
 
-    console.log(blueBold("└" + "-".repeat(formattedTitle.length - 1)));
-    console.log("");
-  }
+    export function underlineBold(s: string) {
+      return Colors.underline(Colors.bold(s));
+    }
 
-  export function blueBold(s: string) {
-    return Colors.blue(Colors.bold(s));
-  }
+    export function deCamel(s: string) {
+      return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+    }
 
-  export function blue(s: string) {
-    return Colors.blue(s);
-  }
+    export function fatal(message: string) {
+      logger.error("❌ " + message);
+      if (process.env.NODE_ENV !== "test") process.exit(1);
+      return true;
+    }
 
-  export function underlineBold(s: string) {
-    return Colors.underline(Colors.bold(s));
-  }
+    export function status(
+      title: string,
+      statusArray: LogStatusArray,
+      secondaryTitle = `@ ${new Date().toISOString()}`
+    ) {
+      const formattedTitle = `┌-- ${title} ${secondaryTitle} ---`;
 
-  export function deCamel(s: string) {
-    return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+      GrouparooCLI.logger.log("");
+      GrouparooCLI.logger.log(blueBold(formattedTitle));
+
+      statusArray.forEach(({ header, status }, idx) => {
+        if (idx > 0) logger.log(blueBold(`|`));
+
+        GrouparooCLI.logger.log(blueBold(`|`) + " " + underlineBold(header));
+        for (const key in status) {
+          const [v1, v2] = status[key];
+          GrouparooCLI.logger.log(
+            `${blueBold("|")} * ${deCamel(key)}${
+              (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
+              (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
+            }`
+          );
+        }
+      });
+
+      GrouparooCLI.logger.log(
+        blueBold("└" + "-".repeat(formattedTitle.length - 1))
+      );
+      GrouparooCLI.logger.log("");
+    }
   }
 }

@@ -4,7 +4,7 @@ set -e
 
 cd "`dirname "$0"`/.."
 
-printf "*** starting server ***\r\n"
+printf "*** Starting Server ***\r\n"
 npm run start &
 
 sleep 10

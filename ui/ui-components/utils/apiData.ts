@@ -87,9 +87,10 @@ import {
   AppsList,
 } from "@grouparoo/core/src/actions/apps";
 import {
-  ClusterClearCache,
-  ClusterReset,
-} from "@grouparoo/core/src/actions/cluster";
+  ResetCluster,
+  ResetData,
+  ResetCache,
+} from "@grouparoo/core/src/actions/reset";
 import {
   DestinationsList,
   DestinationConnectionApps,
@@ -300,11 +301,14 @@ export namespace Actions {
     typeof AccountEdit.prototype.runWithinTransaction
   >;
 
-  export type ClusterClearCache = AsyncReturnType<
-    typeof ClusterClearCache.prototype.runWithinTransaction
+  export type ResetCluster = AsyncReturnType<
+    typeof ResetCluster.prototype.runWithinTransaction
   >;
-  export type ClusterReset = AsyncReturnType<
-    typeof ClusterReset.prototype.runWithinTransaction
+  export type ResetData = AsyncReturnType<
+    typeof ResetData.prototype.runWithinTransaction
+  >;
+  export type ResetCache = AsyncReturnType<
+    typeof ResetCache.prototype.runWithinTransaction
   >;
 
   export type DestinationsList = AsyncReturnType<

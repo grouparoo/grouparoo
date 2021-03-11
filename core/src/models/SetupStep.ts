@@ -41,6 +41,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
     const href = this.getHref(ssd);
     const cta = this.getCta(ssd);
     const helpLink = this.getHelpLink(ssd);
+    const showCtaOnCommunity = this.getShowCtaOnCommunity(ssd);
     const outcome = await this.getOutcome(ssd);
 
     return {
@@ -52,6 +53,7 @@ export class SetupStep extends LoggedModel<SetupStep> {
       href,
       cta,
       helpLink,
+      showCtaOnCommunity,
       outcome,
       skipped: this.skipped,
       complete: this.complete,
@@ -83,6 +85,11 @@ export class SetupStep extends LoggedModel<SetupStep> {
   getHelpLink(ssd?: SetupStepOps.setupStepDescription) {
     if (!ssd) ssd = this.getSetupStepDescription();
     return ssd.helpLink;
+  }
+
+  getShowCtaOnCommunity(ssd?: SetupStepOps.setupStepDescription) {
+    if (!ssd) ssd = this.getSetupStepDescription();
+    return ssd.showCtaOnCommunity || false;
   }
 
   async performCheck(ssd?: SetupStepOps.setupStepDescription) {

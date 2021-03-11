@@ -7,6 +7,8 @@ process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
 }/generate/config`;
 
+fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
+
 describe("bin/generate", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());

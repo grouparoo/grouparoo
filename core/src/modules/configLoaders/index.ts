@@ -42,17 +42,15 @@ export async function loadConfigDirectory(
 
   const configObjects = await loadConfigObjects(configDir);
 
-  if (configObjects !== null) {
-    const response = await processConfigObjects(
-      configObjects,
-      externallyValidate
-    );
-    seenIds = response.seenIds;
-    errors = response.errors;
+  const response = await processConfigObjects(
+    configObjects,
+    externallyValidate
+  );
+  seenIds = response.seenIds;
+  errors = response.errors;
 
-    if (errors.length === 0) {
-      deletedIds = await deleteLockedObjects(seenIds);
-    }
+  if (errors.length === 0) {
+    deletedIds = await deleteLockedObjects(seenIds);
   }
 
   return { seenIds, errors, deletedIds };
@@ -68,9 +66,6 @@ export async function loadConfigObjects(
     configObjects = configObjects.concat(await loadConfigFile(configFiles[i]));
   }
   configObjects = configObjects.filter((o) => Object.keys(o).length > 0); // skip empty files
-  if (configFiles.length === 0) {
-    return null;
-  }
   return configObjects;
 }
 
@@ -230,9 +225,4 @@ export async function deleteLockedObjects(seenIds) {
   deletedIds["app"] = await deleteApps(seenIds.app);
 
   return deletedIds;
-}
-
-export function logFatalError(message) {
-  log(message, "error");
-  if (env !== "test") process.exit(1);
 }
