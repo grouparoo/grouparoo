@@ -1,13 +1,17 @@
 # @Grouparoo/OneSignal
 
+## Tag normalization
+
+All tags are normalized to conform to OneSignal's best practices. More specifically, only lowercase letters, numbers and underscores are allowed. Any special characters and spaces will be converted to an underscore (`_`). This means that the tag `My cool-tag!` will be transformed to `my_cool_tag_`.
+
 ## Groups
 
 Groups are sent to OneSignal as tags on players.
-`In ` will be prepended to the configured group name to represent group membership.
+`in_` will be prepended to the configured group name to represent group membership. Note that tag normalization still applies here.
 
-**Example:** If the player is in the group `High Value Customers`, the tag `In High Value Customers` will be set to `1` on OneSignal.
+**Example:** If the player is in the group `High Value Customers`, the tag `in_high_value_customers` will be set to `1` on OneSignal.
 
-For customers that are not in the group, the attribute will not be set.
+For users that are not in the group, the tag will not be set.
 
 ## Attribution
 

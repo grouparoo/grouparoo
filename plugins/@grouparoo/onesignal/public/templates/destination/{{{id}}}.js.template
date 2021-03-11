@@ -12,6 +12,7 @@ exports.default = async function buildConfig() {
 
       // Mappings are how you choose which properties to export to this destination.
       // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      // Note that tags will be normalized to conform to OneSignal best practices (only lowercase letters, numbers and underscores)
       mapping: {
         email: "email",
         first_name: "firstName",
@@ -19,8 +20,8 @@ exports.default = async function buildConfig() {
       },
 
       // You can export group memberships, which will be sent to OneSignal as tags.
-      // Keys are the name to display in the destination, prepended by "In ". Values are the IDs of the Groups in Grouparoo.
-      // Example: "High Value Customers" would set the "In High Value Customers" attribute to "1" on OneSignal
+      // Keys are the name to display in the destination, prepended by "in_". Values are the IDs of the Groups in Grouparoo.
+      // Example: "High Value Customers" would set the "in_high_value_customers" tag to "1" on OneSignal
       destinationGroupMemberships: {
         "High Value Customers": "highValueCustomers",
       },

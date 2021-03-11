@@ -98,7 +98,10 @@ function formatVar(value) {
 
 function normalizeTagKey(key: string) {
   // Only alphanumeric chars and underscores
-  return key.toLowerCase().replace(/[^a-z0-9_]/g, "_");
+  return key
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9_]/g, "_");
 }
 
 function getGroupTag(groupName: string) {
