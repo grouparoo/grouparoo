@@ -35,7 +35,7 @@ export class Plugins extends Initializer {
       ],
       apps: [
         {
-          name: "OneSignal",
+          name: "onesignal",
           options: [
             {
               key: "appId",
