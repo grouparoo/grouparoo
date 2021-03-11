@@ -58,5 +58,15 @@ for i in $GENERATE_TEMPLATES; do
   TEST_GENERATOR $i & # The "&" backgrounds the function
 done
 
-wait
-printf "*** Done! ***\r\n"
+FAIL=0
+for PID in `jobs -p`; do
+  wait $PID || let "FAIL+=1"
+done
+
+if [ "$FAIL" == "0" ]; then
+  printf "*** Done! ***\r\n"
+else
+  printf "*** Test Failed ***\r\n"
+  exit 1
+fi
+
