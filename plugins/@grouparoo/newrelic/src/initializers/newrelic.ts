@@ -7,7 +7,7 @@ if (process.env.NEW_RELIC_LICENSE_KEY) {
   newrelic = require("newrelic");
 }
 
-export class Google extends Initializer {
+export class NewRelic extends Initializer {
   constructor() {
     super();
     this.name = packageJSON.name;

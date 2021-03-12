@@ -1,0 +1,55 @@
+{
+  "author": "Grouparoo Inc <hello@grouparoo.com>",
+  "name": "@grouparoo/sentry",
+  "description": "Performance and error tracking with Sentry",
+  "version": "0.2.7-alpha.0",
+  "license": "MPL-2.0",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=12.0.0 <16.0.0"
+  },
+  "homepage": "https://www.grouparoo.com",
+  "bugs": {
+    "url": "https://github.com/grouparoo/grouparoo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grouparoo/grouparoo.git",
+    "directory": "plugins/@grouparoo/sentry"
+  },
+  "scripts": {
+    "prepare": "rm -rf dist && tsc --declaration",
+    "test": "echo 'TODO'",
+    "pretest": "npm run lint && npm run prepare",
+    "lint": "prettier --check src ",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@sentry/node": "6.2.2",
+    "@sentry/tracing": "6.2.2"
+  },
+  "devDependencies": {
+    "@grouparoo/core": "0.2.7-alpha.0",
+    "@grouparoo/spec-helper": "0.2.7-alpha.0",
+    "@types/jest": "*",
+    "@types/node": "*",
+    "actionhero": "25.0.7",
+    "jest": "26.6.3",
+    "prettier": "2.2.1",
+    "ts-jest": "26.5.3",
+    "typescript": "4.2.3"
+  },
+  "grouparoo": {
+    "env": {
+      "api": [
+        "SENTRY_DSN",
+        "SENTRY_TRACE_SAMPLE_RATE"
+      ]
+    },
+    "serverInjection": []
+  },
+  "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
+}

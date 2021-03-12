@@ -6,26 +6,7 @@ Reports errors in the UI and background tasks.
 
 ## Setup
 
-Install the `@grouparoo/newrelic` plugin into your `package.json` file manually of via `grouparoo install`. Note that a references goes in both `dependencies` and `grouparoo/plugins`.
-
-```
-{
-  ...
-  "dependencies": {
-    ...
-    "@grouparoo/newrelic": "current.version.number",
-    ...
-  },
-  ...
-  "grouparoo": {
-    "plugins": [
-      ...
-      "@grouparoo/newrelic",
-      ...
-    ]
-  }
-}
-```
+`grouparoo install @grouparoo/newrelic`
 
 Then set the environment variables.
 
