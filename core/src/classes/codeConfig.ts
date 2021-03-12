@@ -168,18 +168,7 @@ export function extractNonNullParts(
 export function sortConfigurationObjects(
   configObjects: ConfigurationObject[]
 ): ConfigurationObject[] {
-  const configObjectsWithIds: orderedConfigObject[] = [];
-
-  for (const i in configObjects) {
-    const configObject = configObjects[i];
-    const { providedIds, prerequisiteIds } = getParentIds(configObject);
-    configObjectsWithIds.push({
-      configObject,
-      providedIds,
-      prerequisiteIds,
-    });
-  }
-
+  const configObjectsWithIds = getConfigObjectsWithIds(configObjects);
   const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
     configObjectsWithIds
   );
@@ -200,6 +189,22 @@ export function validateConfigObjects(
     errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
   }
   return { configObjects, errors };
+}
+
+export function getConfigObjectsWithIds(configObjects: ConfigurationObject[]) {
+  const configObjectsWithIds: orderedConfigObject[] = [];
+
+  for (const i in configObjects) {
+    const configObject = configObjects[i];
+    const { providedIds, prerequisiteIds } = getParentIds(configObject);
+    configObjectsWithIds.push({
+      configObject,
+      providedIds,
+      prerequisiteIds,
+    });
+  }
+
+  return configObjectsWithIds;
 }
 
 export function getParentIds(configObject: ConfigurationObject) {
@@ -253,24 +258,25 @@ export function getParentIds(configObject: ConfigurationObject) {
 
   if (configObject["mapping"]) {
     const mappingValues = Object.values(configObject["mapping"]);
-    mappingValues.forEach((v) => {
-      prerequisiteIds.push(v);
-    });
+    mappingValues.forEach((v) => prerequisiteIds.push(v));
   }
 
   if (configObject["destinationGroupMemberships"]) {
     const groupIds: string[] = Object.values(
       configObject["destinationGroupMemberships"]
     );
-    groupIds.forEach((v) => {
-      prerequisiteIds.push(v);
-    });
+    groupIds.forEach((v) => prerequisiteIds.push(v));
   }
 
-  return { prerequisiteIds, providedIds };
+  return {
+    prerequisiteIds: prerequisiteIds.filter(uniqueArrayValues),
+    providedIds: providedIds.filter(uniqueArrayValues),
+  };
 }
 
-function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
+export function sortConfigObjectsWithIds(
+  configObjectsWithIds: orderedConfigObject[]
+) {
   const sortedConfigObjectsWithIds: orderedConfigObject[] = [];
 
   configObjectsWithIds.forEach((c) => {
@@ -310,4 +316,8 @@ function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
   });
 
   return sortedConfigObjectsWithIds;
+}
+
+function uniqueArrayValues(value, index, self) {
+  return self.indexOf(value) === index;
 }
