@@ -26,25 +26,31 @@ fi
 # Rebuild all packages
 pnpm run -r prepare
 
+# Stop if there are un-commited changes
+if [[ -n $(git status -s) ]]; then
+  echo "There are uncommited changes on this branch.  Exiting"
+  exit 1
+else
+  echo "branch is clean"
+fi
+
 # Push new version & tags to git with lerna
-OLD_VERSION=`cat lerna.json | jq -r '.version'`
 BRANCH=`git rev-parse --abbrev-ref HEAD`
+OLD_VERSION=`cat lerna.json | jq -r '.version'`
 echo "on $BRANCH branch"
-if [[ $BRANCH == 'main' ]];
-then
+if [[ $BRANCH == 'main' ]]; then
   npm run version-alpha
   PRERELEASE='true'
 fi
 
-if [[ $BRANCH == 'stable' ]];
-then
+if [[ $BRANCH == 'stable' ]]; then
   npm run version-stable
   PRERELEASE='false'
 fi
 
 # only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
 git describe --exact-match
-if [[ ! $? -eq 0 ]];then
+if [[ ! $? -eq 0 ]]; then
   echo "Nothing to publish, exiting.."
   exit 0;
 fi
@@ -60,8 +66,7 @@ curl -H "Authorization: token $GITHUB_AUTH" --data "{
     \"prerelease\": $PRERELEASE
 }" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
-if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
-then
+if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
   echo "Publishing alpha pacakges to NPM"
   ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag next --yes
 
@@ -73,8 +78,7 @@ else
   echo "Did not publish alpha packages"
 fi
 
-if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]];
-then
+if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
   echo "Publishing stable pacakges to NPM"
   ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --yes
 

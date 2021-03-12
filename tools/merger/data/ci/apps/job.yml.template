@@ -36,7 +36,10 @@
           command: createdb grouparoo_development --host localhost --user postgres
 {{{custom_steps}}}
       - run:
-          name: test-{{section}}
+          name: test-{{section}}-cli
+          command: cd {{{relative_path}}}/{{section}} && ./__tests__/cli
+      - run:
+          name: test-{{section}}-app
           command: cd {{{relative_path}}}/{{section}} && ./__tests__/integration
           environment:
             PORT: 3000

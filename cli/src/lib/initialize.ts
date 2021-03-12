@@ -11,14 +11,20 @@ export default async function Initialize(
 ) {
   const logger = buildLogger("Generating new Grouparoo Project");
 
-  function safelyCreateFile(name: string, workDir: string, replacements = {}) {
-    const destination = path.join(workDir, name);
-    if (!fs.existsSync(destination) || opts.force) {
-      fs.copyFileSync(Templates.getTemplatePath(name), destination);
-      Templates.replacePlaceholders(destination, replacements);
-      logger.succeed(`Created ${destination}`);
+  function safelyCreateFile(
+    source: string,
+    destination: string,
+    replacements = {}
+  ) {
+    const fullSourcePath = Templates.getTemplatePath(source);
+    const fullDestinationPath = path.join(workDir, destination);
+
+    if (!fs.existsSync(fullDestinationPath) || opts.force) {
+      fs.copyFileSync(fullSourcePath, fullDestinationPath);
+      Templates.replacePlaceholders(fullDestinationPath, replacements);
+      logger.succeed(`Created ${fullDestinationPath}`);
     } else {
-      logger.warn(`${destination} already exists, not modifying`);
+      logger.warn(`${fullDestinationPath} already exists, not modifying`);
     }
   }
 
@@ -38,15 +44,15 @@ export default async function Initialize(
   const localPackageJSONContents = JSON.parse(
     fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
   );
-  safelyCreateFile("package.json", workDir, {
+  safelyCreateFile("package.json", "package.json", {
     version: localPackageJSONContents.version,
   });
 
-  safelyCreateFile(".env", workDir, {
+  safelyCreateFile(".env", ".env", {
     SQLITE_DB_PATH: `sqlite://grouparoo_development.sqlite`,
   });
 
-  safelyCreateFile(".gitignore", workDir);
+  safelyCreateFile("gitignore", ".gitignore"); // we need to call the source file something other than `.gitignore` so it's not ignored by NPM
 
   /**
    * Copy Code Config README templates into the work directory. This also

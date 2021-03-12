@@ -718,7 +718,10 @@ jobs:
           name: create test databases
           command: createdb grouparoo_development --host localhost --user postgres
       - run:
-          name: test-staging-community
+          name: test-staging-community-cli
+          command: cd apps/staging-community && ./__tests__/cli
+      - run:
+          name: test-staging-community-app
           command: cd apps/staging-community && ./__tests__/integration
           environment:
             PORT: 3000
@@ -761,7 +764,10 @@ jobs:
           name: create test databases
           command: createdb grouparoo_development --host localhost --user postgres
       - run:
-          name: test-staging-enterprise
+          name: test-staging-enterprise-cli
+          command: cd apps/staging-enterprise && ./__tests__/cli
+      - run:
+          name: test-staging-enterprise-app
           command: cd apps/staging-enterprise && ./__tests__/integration
           environment:
             PORT: 3000
