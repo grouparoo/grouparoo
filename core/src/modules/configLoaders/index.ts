@@ -104,8 +104,6 @@ export async function processConfigObjects(
   };
   const errors: string[] = [];
 
-  configObjects = sortConfigurationObjects(configObjects);
-
   const { errors: validationErrors } = validateConfigObjects(configObjects);
   validationErrors.map((err) =>
     log(`[ config ] ${err}`, env === "test" ? "info" : "error")
@@ -113,6 +111,8 @@ export async function processConfigObjects(
   errors.push(...validationErrors);
 
   if (errors.length > 0) return { seenIds, errors };
+
+  configObjects = sortConfigurationObjects(configObjects);
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
