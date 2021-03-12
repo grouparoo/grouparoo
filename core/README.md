@@ -29,6 +29,7 @@ Focus on building your core product, not integrating with 3rd-party tools. Learn
   - Grouparoo is can be configured without needing to write any code. Learn how to connect to your Sources and Destinations to begin syncing your data.
   - → View the [Configuration Guides](https://www.grouparoo.com/docs/config).
   - → View the [Runtime Guides](https://www.grouparoo.com/docs/running).
+  - → View the [Deployment Examples](https://www.grouparoo.com/docs/deployment).
 - 👨‍👩‍👧‍👧 **Want to collaborate with the Community to enhance Grouparoo?**
   - Join other Grouparoo Community members to share best practices and tackle problems.
   - → Join the [Community](https://www.grouparoo.com/docs/community).
