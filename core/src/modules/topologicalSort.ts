@@ -26,9 +26,9 @@ export type Graph = { [key: string]: string[] };
  * var vertices = topologicalSort(graph); // ['v3', 'v4', 'v1', 'v5', 'v2']
  */
 export function topologicalSort(graph: Graph) {
-  var result: string[] = [];
-  var visited = [];
-  var temp = [];
+  const result: string[] = [];
+  const visited = [];
+  const temp = [];
   for (var node in graph) {
     if (!visited[node] && !temp[node]) {
       topologicalSortHelper(node, visited, temp, graph, result);
@@ -46,9 +46,10 @@ function topologicalSortHelper(
   result: string[]
 ) {
   temp[node] = true;
-  var neighbors = graph[node];
-  for (var i = 0; i < neighbors.length; i += 1) {
-    var n = neighbors[i];
+  const neighbors = graph[node];
+  if (!neighbors) throw new Error(`Cannot find ${node}`);
+  for (let i = 0; i < neighbors.length; i += 1) {
+    const n = neighbors[i];
     if (temp[n]) throw new Error("The graph is not a DAG");
     if (!visited[n]) topologicalSortHelper(n, visited, temp, graph, result);
   }

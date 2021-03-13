@@ -112,7 +112,13 @@ export async function processConfigObjects(
 
   if (errors.length > 0) return { seenIds, errors };
 
-  configObjects = sortConfigurationObjects(configObjects);
+  let sortError: Error;
+  try {
+    configObjects = sortConfigurationObjects(configObjects);
+  } catch (error) {
+    // the config loaders below will produce better error messages
+    sortError = error;
+  }
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
@@ -191,6 +197,8 @@ export async function processConfigObjects(
       seenIds[className].push(...newIds);
     }
   }
+
+  if (sortError && errors.length === 0) errors.push(sortError.message);
 
   return { seenIds, errors };
 }
