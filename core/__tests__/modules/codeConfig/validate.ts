@@ -75,10 +75,15 @@ describe("modules/codeConfig", () => {
           expect(errors).toEqual([]);
           expect(seenIds).toEqual({
             apikey: ["website_key"],
-            app: ["data_warehouse", "events"],
+            app: expect.arrayContaining(["data_warehouse", "events"]),
             destination: ["test_destination"],
             group: ["email_group"],
-            property: ["user_id", "last_name", "first_name", "email"],
+            property: expect.arrayContaining([
+              "user_id",
+              "last_name",
+              "first_name",
+              "email",
+            ]),
             schedule: ["users_table_schedule"],
             source: ["users_table"],
             team: ["admin_team"],

@@ -36,10 +36,15 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: ["website_key"],
-        app: ["data_warehouse", "events"],
+        app: expect.arrayContaining(["data_warehouse", "events"]),
         destination: ["test_destination"],
         group: ["email_group"],
-        property: ["user_id", "last_name", "first_name", "email"],
+        property: expect.arrayContaining([
+          "user_id",
+          "email",
+          "last_name",
+          "first_name",
+        ]),
         schedule: ["users_table_schedule"],
         source: ["users_table"],
         team: ["admin_team"],
@@ -235,10 +240,15 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: ["website_key"],
-        app: ["data_warehouse", "events"],
+        app: expect.arrayContaining(["data_warehouse", "events"]),
         destination: [],
         group: ["email_group"],
-        property: ["user_id", "last_name", "first_name", "email"],
+        property: expect.arrayContaining([
+          "user_id",
+          "last_name",
+          "first_name",
+          "email",
+        ]),
         schedule: ["users_table_schedule"],
         source: ["users_table"],
         team: ["admin_team"],
@@ -390,7 +400,7 @@ describe("modules/codeConfig", () => {
         app: ["events"],
         destination: [],
         group: ["email_group"],
-        property: ["last_name", "first_name"],
+        property: expect.arrayContaining(["last_name", "first_name"]),
         schedule: ["users_table_schedule"],
         source: [],
         team: ["admin_team"],
@@ -475,13 +485,31 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("duplicate IDs", () => {
+    test("config with duplicate IDs will not be applied", async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-id"
+        )
+      );
+
+      expect(errors[0]).toEqual("Duplicate ID values found: data_warehouse_a");
+    });
+  });
+
   describe("errors", () => {
     describe("plugin not installed", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("errors will be thrown if the configuration is invalid", async () => {
+      test("missing plugin", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(
             __dirname,
@@ -501,7 +529,7 @@ describe("modules/codeConfig", () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("errors will be thrown if the configuration is invalid", async () => {
+      test("missing option", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(
             __dirname,
@@ -523,7 +551,7 @@ describe("modules/codeConfig", () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("errors will be thrown if the configuration is invalid", async () => {
+      test("broken source", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(
             __dirname,
@@ -543,7 +571,7 @@ describe("modules/codeConfig", () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("errors will be thrown if the configuration is invalid", async () => {
+      test("broken property", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(
             __dirname,
@@ -563,7 +591,7 @@ describe("modules/codeConfig", () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("errors will be thrown if the configuration is invalid", async () => {
+      test("broken group", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(
             __dirname,
@@ -578,7 +606,7 @@ describe("modules/codeConfig", () => {
       });
     });
 
-    describe("team member", () => {
+    describe("broken team member", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
