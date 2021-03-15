@@ -1,12 +1,20 @@
 import { TestPluginMethod } from "@grouparoo/core";
 
 export const test: TestPluginMethod = async ({ connection }) => {
-  const response = await connection.run(
-    `SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`
-  );
+  const genericError = {
+    success: false,
+    message: "Could not connect to database.",
+  };
 
-  const success = response ? true : false;
-  const message = "Connection to SQLite database successful.";
+  // Return if we don't have a connection object.
+  if (!connection) return genericError;
 
-  return { success, message };
+  const query = `SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`;
+  const res = await connection.asyncQuery(query);
+
+  // Return if we didn't get the shape we were expecting.
+  if (!res || !res[0]) return genericError;
+
+  const numTables = parseInt(res[0]["count(*)"]) || 0;
+  return { success: true, message: `Connected! Found ${numTables} tables.` };
 };

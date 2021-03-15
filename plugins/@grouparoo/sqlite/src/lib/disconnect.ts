@@ -1,5 +1,5 @@
 import { DisconnectPluginAppMethod } from "@grouparoo/core";
 
 export const disconnect: DisconnectPluginAppMethod = async ({ connection }) => {
-  await connection.close();
+  return await connection.asyncDisconnect();
 };

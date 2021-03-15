@@ -1,12 +1,18 @@
 import { ConnectPluginAppMethod } from "@grouparoo/core";
-import sqlite3 from "sqlite3";
 import fs from "fs";
-import path from "path";
+import { SQLite } from "./sqlite";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const formattedOptions: any = Object.assign({}, appOptions);
 
-  if (!fs.existsSync(formattedOptions.file)) return null;
+  const dbPath = formattedOptions.file;
 
-  return new sqlite3.Database(formattedOptions.file);
+  // Don't allow connections unless the file already exists. This avoids
+  // in-memory storage and creating the file during instantiation.
+  if (!fs.existsSync(dbPath) || fs.lstatSync(dbPath).isDirectory()) return null;
+
+  const connection = new SQLite({ database: dbPath });
+  await connection.asyncConnect();
+
+  return connection;
 };
