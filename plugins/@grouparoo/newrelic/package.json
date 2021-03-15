@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "newrelic": "7.1.2"
+    "newrelic": "7.1.3"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.7-alpha.0",
