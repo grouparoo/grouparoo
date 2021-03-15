@@ -11,6 +11,7 @@ export class SentryInitializer extends Initializer {
   async initialize() {
     if (!process.env.SENTRY_DSN) return;
     if (!process.env.SENTRY_TRACE_SAMPLE_RATE) return;
+    if (env === "test") return; // never enable sentry when NODE_ENV=test
 
     const Sentry = await import("@sentry/node");
     const Tracing = await import("@sentry/tracing");
