@@ -19,6 +19,16 @@ export class SentryInitializer extends Initializer {
       name: packageJSON.name,
     });
 
+    function beforeSend(event, hint) {
+      const error = hint.originalException;
+
+      // skip reporting some types of errors
+      if (error?.code === "AUTHENTICATION_ERROR") return null;
+      if (error?.code === "AUTHORIZATION_ERROR") return null;
+
+      return event;
+    }
+
     Sentry.init({
       dsn: process.env.SENTRY_DSN,
       environment: env,
@@ -28,6 +38,7 @@ export class SentryInitializer extends Initializer {
         new Sentry.Integrations.Http(),
         new Tracing.Integrations.Postgres(),
       ],
+      beforeSend: beforeSend,
     });
 
     // load the Sentry action middleware into actionhero
