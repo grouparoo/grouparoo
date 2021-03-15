@@ -31,7 +31,6 @@ importers:
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
-      '@grouparoo/newrelic': link:../../plugins/@grouparoo/newrelic
       '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
@@ -39,6 +38,7 @@ importers:
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
       '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
+      '@grouparoo/sentry': link:../../plugins/@grouparoo/sentry
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-community': link:../../ui/ui-community
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
@@ -61,7 +61,6 @@ importers:
       '@grouparoo/mailchimp': 0.2.7-alpha.0
       '@grouparoo/marketo': 0.2.7-alpha.0
       '@grouparoo/mysql': 0.2.7-alpha.0
-      '@grouparoo/newrelic': 0.2.7-alpha.0
       '@grouparoo/onesignal': 0.2.7-alpha.0
       '@grouparoo/pardot': 0.2.7-alpha.0
       '@grouparoo/postgres': 0.2.7-alpha.0
@@ -69,6 +68,7 @@ importers:
       '@grouparoo/sailthru': 0.2.7-alpha.0
       '@grouparoo/salesforce': 0.2.7-alpha.0
       '@grouparoo/sendgrid': 0.2.7-alpha.0
+      '@grouparoo/sentry': 0.2.7-alpha.0
       '@grouparoo/snowflake': 0.2.7-alpha.0
       '@grouparoo/spec-helper': 0.2.7-alpha.0
       '@grouparoo/ui-community': 0.2.7-alpha.0
@@ -91,7 +91,6 @@ importers:
       '@grouparoo/mailchimp': link:../../plugins/@grouparoo/mailchimp
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
-      '@grouparoo/newrelic': link:../../plugins/@grouparoo/newrelic
       '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
@@ -99,6 +98,7 @@ importers:
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
       '@grouparoo/salesforce': link:../../plugins/@grouparoo/salesforce
       '@grouparoo/sendgrid': link:../../plugins/@grouparoo/sendgrid
+      '@grouparoo/sentry': link:../../plugins/@grouparoo/sentry
       '@grouparoo/snowflake': link:../../plugins/@grouparoo/snowflake
       '@grouparoo/ui-enterprise': link:../../ui/ui-enterprise
       '@grouparoo/zendesk': link:../../plugins/@grouparoo/zendesk
@@ -121,7 +121,6 @@ importers:
       '@grouparoo/mailchimp': 0.2.7-alpha.0
       '@grouparoo/marketo': 0.2.7-alpha.0
       '@grouparoo/mysql': 0.2.7-alpha.0
-      '@grouparoo/newrelic': 0.2.7-alpha.0
       '@grouparoo/onesignal': 0.2.7-alpha.0
       '@grouparoo/pardot': 0.2.7-alpha.0
       '@grouparoo/postgres': 0.2.7-alpha.0
@@ -129,6 +128,7 @@ importers:
       '@grouparoo/sailthru': 0.2.7-alpha.0
       '@grouparoo/salesforce': 0.2.7-alpha.0
       '@grouparoo/sendgrid': 0.2.7-alpha.0
+      '@grouparoo/sentry': 0.2.7-alpha.0
       '@grouparoo/snowflake': 0.2.7-alpha.0
       '@grouparoo/spec-helper': 0.2.7-alpha.0
       '@grouparoo/ui-enterprise': 0.2.7-alpha.0
@@ -1044,6 +1044,32 @@ importers:
       fs-extra: 9.1.0
       jest: 26.6.3
       nock: 13.0.11
+      prettier: 2.2.1
+      ts-jest: 26.5.3
+      typescript: 4.2.3
+  plugins/@grouparoo/sentry:
+    dependencies:
+      '@sentry/node': 6.2.2
+      '@sentry/tracing': 6.2.2
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.31
+      actionhero: 25.0.7
+      jest: 26.6.3
+      prettier: 2.2.1
+      ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
+      typescript: 4.2.3
+    specifiers:
+      '@grouparoo/core': 0.2.7-alpha.0
+      '@grouparoo/spec-helper': 0.2.7-alpha.0
+      '@sentry/node': 6.2.2
+      '@sentry/tracing': 6.2.2
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 25.0.7
+      jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.5.3
       typescript: 4.2.3
@@ -3289,6 +3315,81 @@ packages:
       node: '>= 6.0.0'
     resolution:
       integrity: sha512-b/IyBwT4zrOfXA0ISvWZsnhYz+5uAO20n68J8n/6qe5P1E2p0L7kWNTN5LYu0S7snJPUlbEa6FpfrSKzEcP9JA==
+  /@sentry/core/6.2.2:
+    dependencies:
+      '@sentry/hub': 6.2.2
+      '@sentry/minimal': 6.2.2
+      '@sentry/types': 6.2.2
+      '@sentry/utils': 6.2.2
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-qqWbvvXtymfXh7N5eEvk97MCnMURuyFIgqWdVD4MQM6yIfDCy36CyGfuQ3ViHTLZGdIfEOhLL9/f4kzf1RzqBA==
+  /@sentry/hub/6.2.2:
+    dependencies:
+      '@sentry/types': 6.2.2
+      '@sentry/utils': 6.2.2
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-VR6uQGRYt6RP633FHShlSLj0LUKGVrlTeSlwCoooWM5FR9lmi6akAaweuxpG78/kZvXrAWpjX6/nuYwHKGwzGA==
+  /@sentry/minimal/6.2.2:
+    dependencies:
+      '@sentry/hub': 6.2.2
+      '@sentry/types': 6.2.2
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-l0IgoGQgg1lTd4qDU8bQn25sbZBg8PwIHfuTLbGMlRr1flDXHOM1UXajWK/UKbAPelnU7M2JBSVzgl7PwjprzA==
+  /@sentry/node/6.2.2:
+    dependencies:
+      '@sentry/core': 6.2.2
+      '@sentry/hub': 6.2.2
+      '@sentry/tracing': 6.2.2
+      '@sentry/types': 6.2.2
+      '@sentry/utils': 6.2.2
+      cookie: 0.4.1
+      https-proxy-agent: 5.0.0
+      lru_map: 0.3.3
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-HmQJx3C2C8cj3oC9piFuXJ7NzM+jW15u4RKcRXxJUgHNbZPR/RsScOOi5TbNZAO4k3A8fSJQD8aPj+dbPx/j/Q==
+  /@sentry/tracing/6.2.2:
+    dependencies:
+      '@sentry/hub': 6.2.2
+      '@sentry/minimal': 6.2.2
+      '@sentry/types': 6.2.2
+      '@sentry/utils': 6.2.2
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-mAkPoqtofNfka/u9rOVVDQPaEoTmr0AQh654g9ZqsaqsOJLKjB4FDLVNubWs90fjeKqHiYkI3ZHPak2TzHBPkw==
+  /@sentry/types/6.2.2:
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-Y/1sRtw3a5JU4YdNBig8lLSVJ1UdYtuge+QP1CVLcLSAbq07Ok1bvF+Z+BlNcnHqle2Fl8aKuryG5Yu86enOyQ==
+  /@sentry/utils/6.2.2:
+    dependencies:
+      '@sentry/types': 6.2.2
+      tslib: 1.14.1
+    dev: false
+    engines:
+      node: '>=6'
+    resolution:
+      integrity: sha512-qaee6X6VDNZ8HeO83/veaKw0KuhDE7j1R+Yryme3PywFzsoTzutDrEQjb7gvcHAhBaAYX8IHUBHgxcFI9BxI+w==
   /@sindresorhus/is/0.14.0:
     engines:
       node: '>=6'
@@ -3759,8 +3860,8 @@ packages:
       formidable: 1.2.2
       glob: 7.1.6
       i18n: 0.13.2
-      ioredis: 4.23.0
-      ioredis-mock: 5.2.4_ioredis@4.23.0
+      ioredis: 4.24.2
+      ioredis-mock: 5.2.5_ioredis@4.24.2
       is-running: 2.1.0
       mime: 2.5.2
       node-resque: 8.2.4
@@ -5397,6 +5498,12 @@ packages:
       safe-buffer: 5.1.2
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /cookie/0.4.1:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
   /copy-concurrently/1.0.5:
     dependencies:
       aproba: 1.2.0
@@ -8043,23 +8150,6 @@ packages:
       loose-envify: 1.4.0
     resolution:
       integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
-  /ioredis-mock/5.2.4_ioredis@4.23.0:
-    dependencies:
-      array-from: 2.1.1
-      es6-map: 0.1.5
-      es6-set: 0.1.5
-      fengari: 0.1.4
-      fengari-interop: 0.1.2_fengari@0.1.4
-      ioredis: 4.23.0
-      lodash: 4.17.21
-      minimatch: 3.0.4
-      standard-as-callback: 2.0.1
-    engines:
-      node: '>=10'
-    peerDependencies:
-      ioredis: 4.x
-    resolution:
-      integrity: sha512-Ek4pC+hl0rjKilaxYpm4E9qZRILevFzb5vFsjf3njR1a1EDM1DXHnxjQiMgeugcObxFLouksfadysuCXJJ8bZQ==
   /ioredis-mock/5.2.5_ioredis@4.24.2:
     dependencies:
       array-from: 2.1.1
@@ -8071,7 +8161,6 @@ packages:
       lodash: 4.17.21
       minimatch: 3.0.4
       standard-as-callback: 2.0.1
-    dev: false
     engines:
       node: '>=10'
     peerDependencies:
@@ -8106,7 +8195,6 @@ packages:
       redis-errors: 1.2.0
       redis-parser: 3.0.0
       standard-as-callback: 2.1.0
-    dev: false
     engines:
       node: '>=6'
     resolution:
@@ -9366,7 +9454,7 @@ packages:
       whatwg-encoding: 1.0.5
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.4.0
-      ws: 7.4.3
+      ws: 7.4.4
       xml-name-validator: 3.0.0
     dev: true
     engines:
@@ -9896,6 +9984,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
+  /lru_map/0.3.3:
+    dev: false
+    resolution:
+      integrity: sha1-tcg1G5Rky9dQM1p5ZQoOwOVhGN0=
   /lunr/2.3.9:
     dev: true
     resolution:
@@ -14006,7 +14098,6 @@ packages:
     resolution:
       integrity: sha512-NQOxSeB8gOI5WjSaxjBgog2QFw55FV8TkS6Y07BiB3VJ8xNTvUYm0wl0s8ObgQ5NhdpnNfigMIKjgPESzgr4tg==
   /standard-as-callback/2.1.0:
-    dev: false
     resolution:
       integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==
   /static-extend/0.1.2:
@@ -14688,7 +14779,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@9.1.1
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
@@ -14752,7 +14843,6 @@ packages:
     resolution:
       integrity: sha512-csd+vJOb/gkzvcCHgTGSChYpy5f1/XKNsmvBGO4JXS+z1v2HobugDz4s1IeFXM3wZB44uczs+eazB5Q/ccdhQw==
   /tslib/1.14.1:
-    dev: true
     resolution:
       integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
   /tslib/2.1.0:

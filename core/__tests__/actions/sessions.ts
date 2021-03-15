@@ -57,6 +57,7 @@ describe("session", () => {
       );
 
       expect(error.message).toMatch(/team member not found/);
+      expect(error.code).toMatch("AUTHENTICATION_ERROR");
       expect(success).toBeUndefined();
       expect(teamMember).toBeUndefined();
     });
@@ -71,6 +72,7 @@ describe("session", () => {
       );
 
       expect(error.message).toMatch(/password does not match/);
+      expect(error.code).toMatch("AUTHENTICATION_ERROR");
       expect(success).toBeUndefined();
       expect(teamMember).toBeUndefined();
     });
