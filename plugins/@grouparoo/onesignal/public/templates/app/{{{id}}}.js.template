@@ -1,0 +1,14 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        appId: "abc123", // OneSignal App ID
+        apiKey: "abc123" // OneSignal REST API Key
+      }
+    },
+  ];
+};

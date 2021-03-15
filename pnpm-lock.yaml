@@ -32,6 +32,7 @@ importers:
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
       '@grouparoo/newrelic': link:../../plugins/@grouparoo/newrelic
+      '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
@@ -61,6 +62,7 @@ importers:
       '@grouparoo/marketo': 0.2.7-alpha.0
       '@grouparoo/mysql': 0.2.7-alpha.0
       '@grouparoo/newrelic': 0.2.7-alpha.0
+      '@grouparoo/onesignal': 0.2.7-alpha.0
       '@grouparoo/pardot': 0.2.7-alpha.0
       '@grouparoo/postgres': 0.2.7-alpha.0
       '@grouparoo/redshift': 0.2.7-alpha.0
@@ -90,6 +92,7 @@ importers:
       '@grouparoo/marketo': link:../../plugins/@grouparoo/marketo
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
       '@grouparoo/newrelic': link:../../plugins/@grouparoo/newrelic
+      '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
@@ -119,6 +122,7 @@ importers:
       '@grouparoo/marketo': 0.2.7-alpha.0
       '@grouparoo/mysql': 0.2.7-alpha.0
       '@grouparoo/newrelic': 0.2.7-alpha.0
+      '@grouparoo/onesignal': 0.2.7-alpha.0
       '@grouparoo/pardot': 0.2.7-alpha.0
       '@grouparoo/postgres': 0.2.7-alpha.0
       '@grouparoo/redshift': 0.2.7-alpha.0
@@ -812,6 +816,38 @@ importers:
       actionhero: 25.0.7
       jest: 26.6.3
       newrelic: 7.1.2
+      prettier: 2.2.1
+      ts-jest: 26.5.3
+      typescript: 4.2.3
+  plugins/@grouparoo/onesignal:
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      onesignal-node: 3.2.1
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.31
+      actionhero: 25.0.7
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
+      nock: 13.0.11
+      prettier: 2.2.1
+      ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
+      typescript: 4.2.3
+    specifiers:
+      '@grouparoo/app-templates': 0.2.7-alpha.0
+      '@grouparoo/core': 0.2.7-alpha.0
+      '@grouparoo/spec-helper': 0.2.7-alpha.0
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 25.0.7
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
+      nock: 13.0.11
+      onesignal-node: 3.2.1
       prettier: 2.2.1
       ts-jest: 26.5.3
       typescript: 4.2.3
@@ -3678,7 +3714,7 @@ packages:
       uglify-js: 3.13.0
       uuid: 8.3.2
       winston: 3.3.3
-      ws: 7.4.3
+      ws: 7.4.4
     engines:
       node: '>=8.0.0'
     hasBin: true
@@ -10991,6 +11027,15 @@ packages:
       fn.name: 1.1.0
     resolution:
       integrity: sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==
+  /onesignal-node/3.2.1:
+    dependencies:
+      request: 2.88.2
+      request-promise: 4.2.6_request@2.88.2
+    dev: false
+    engines:
+      node: '>=8.13.0'
+    resolution:
+      integrity: sha512-TnJJmJlmsGP6zQhrlQ7tScyCZDUgQ8CgZqq0fv04kcg7W8yM5qtKOhDENuUGhI0lSIeO233lwMP1TNAeLTPe1w==
   /onetime/5.1.2:
     dependencies:
       mimic-fn: 2.1.0
@@ -12656,7 +12701,6 @@ packages:
     dependencies:
       lodash: 4.17.21
       request: 2.88.2
-    dev: true
     engines:
       node: '>=0.10.0'
     peerDependencies:
@@ -12691,6 +12735,21 @@ packages:
       request: ^2.34
     resolution:
       integrity: sha1-JgIeT29W/Uwwn2vx69jJepWsH7U=
+  /request-promise/4.2.6_request@2.88.2:
+    dependencies:
+      bluebird: 3.7.2
+      request: 2.88.2
+      request-promise-core: 1.1.4_request@2.88.2
+      stealthy-require: 1.1.1
+      tough-cookie: 2.5.0
+    deprecated: request-promise has been deprecated because it extends the now deprecated request package, see https://github.com/request/request/issues/3142
+    dev: false
+    engines:
+      node: '>=0.10.0'
+    peerDependencies:
+      request: ^2.34
+    resolution:
+      integrity: sha512-HCHI3DJJUakkOr8fNoCc73E5nU5bqITjOYFMDrKHYOXWXrgD/SBaC7LjwuPymUprRyuF06UK7hd/lMHkmUXglQ==
   /request/2.88.2:
     dependencies:
       aws-sign2: 0.7.0
@@ -15555,6 +15614,7 @@ packages:
     resolution:
       integrity: sha512-v2UQ+50TNf2rNHJ8NyWttfm/EJUBWMJcx6ZTYZr6Qp52uuegWw/lBkCtCbnYZEmPRNL61m+u67dAmGxo+HTULA==
   /ws/7.4.3:
+    dev: true
     engines:
       node: '>=8.3.0'
     peerDependencies:
@@ -15568,7 +15628,6 @@ packages:
     resolution:
       integrity: sha512-hr6vCR76GsossIRsr8OLR9acVVm1jyfEWvhbNjtgPOrfvAlKzvyeg/P6r8RuDjRyrcQoPQT7K0DGEPc7Ae6jzA==
   /ws/7.4.4:
-    dev: false
     engines:
       node: '>=8.3.0'
     peerDependencies:
