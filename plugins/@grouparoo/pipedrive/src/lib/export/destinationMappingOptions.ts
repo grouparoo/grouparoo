@@ -45,29 +45,36 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
 };
 
 const mapTypesToGrouparoo = (
-  pipedriveType: string
+  pipedriveType: string,
+  fieldName: string
 ): DestinationMappingOptionsResponseTypes => {
   // https://pipedrive.readme.io/docs/core-api-concepts-custom-fields#section-types-of-custom-fields
+
+  const overrides: Record<string, DestinationMappingOptionsResponseTypes> = {
+    Email: "email",
+  };
+
+  if (overrides[fieldName]) return overrides[fieldName];
 
   const map: Record<string, DestinationMappingOptionsResponseTypes> = {
     varchar: "string",
     varchar_auto: "string",
     text: "string",
-    double: "float",
-    monetary: "float",
-    enum: "integer", // TODO verify this
-    user: "integer", // TODO verify this
-    org: "integer", // TODO verify this
-    people: "integer", // TODO verify this
+    double: "number",
+    monetary: "number",
+    enum: "integer",
+    user: "integer",
+    org: "integer",
+    people: "integer",
     phone: "phoneNumber",
     date: "date",
-    address: "string", // TODO test this
+    address: "string",
+    daterange: "date",
+    time: "string",
+    timerange: "string",
 
     // TODO
-    set: null,
-    time: null,
-    timerange: null,
-    daterange: null,
+    set: null, // multiple options
   };
 
   const grouparooType = map[pipedriveType];
@@ -116,17 +123,18 @@ export const fetchKnownPersonFields = async (
   const out: KnownPersonField[] = [];
 
   for (const field of fields) {
-    // Some fields are system fields.
-    // There's no explicit flag for this, but we check for the ones whose field definition can't be modefied.
+    // Some fields are system fields that don't make sense to manually update (counts, computed fields, auto timestamps...)
+    // There's no explicit flag for this, but we check for the ones whose field definition can't be modified.
+    // Some of those fields should be available though, so we whitelist them.
     if (!field.edit_flag && !allowedFields.includes(field.key)) continue;
 
-    const type = mapTypesToGrouparoo(field.field_type);
+    const type = mapTypesToGrouparoo(field.field_type, field.name);
     if (type) {
       out.push({
         key: field.name,
         pipedriveKey: field.key,
         required: required.includes(field.key),
-        important: field.important_field,
+        important: field.important_field, // they have a built-in (paid) feature to mark fields as important
         type,
       });
     }
