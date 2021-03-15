@@ -84,7 +84,7 @@ export class SentryInitializer extends Initializer {
       },
     });
 
-    // load the newrelic error reporter into actionhero
+    // load the error reporter into actionhero
     api.exceptionHandlers.reporters.push((error: Error) => {
       Sentry.captureException(error);
     });
