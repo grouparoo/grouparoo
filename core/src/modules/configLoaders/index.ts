@@ -89,7 +89,8 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
-  validate = false
+  validate = false,
+  extraSortingConfigObjects?: Array<ConfigurationObject>
 ): Promise<{ seenIds: IdsByClass; errors: string[] }> {
   const seenIds: IdsByClass = {
     app: [],
@@ -114,7 +115,19 @@ export async function processConfigObjects(
 
   let sortError: Error;
   try {
-    configObjects = sortConfigurationObjects(configObjects);
+    // The objects we are validating are a subset of a larger collection (ie: synctable)
+    // We cannot sort the collection without the other objects in the superset
+    if (extraSortingConfigObjects) {
+      const extraSortingConfigObjectIds = extraSortingConfigObjects.map(
+        (o) => o.id
+      );
+      configObjects = sortConfigurationObjects(
+        [].concat(extraSortingConfigObjects, configObjects)
+      ).filter((o) => !extraSortingConfigObjectIds.includes(o.id));
+    } else {
+      // A normal collection of config objects
+      configObjects = sortConfigurationObjects(configObjects);
+    }
   } catch (error) {
     // the config loaders below will produce better error messages
     sortError = error;
@@ -174,7 +187,8 @@ export async function processConfigObjects(
           const expanded = await processConfigObjects(
             many,
             externallyValidate,
-            validate
+            validate,
+            configObjects.filter((o) => o.id !== configObject.id)
           );
           ids = expanded.seenIds;
           errors.push(...expanded.errors);
