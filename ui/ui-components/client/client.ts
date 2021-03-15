@@ -75,7 +75,9 @@ export class Client {
   checkForLoggedIn({ code }, req?, res?) {
     if (code === "AUTHENTICATION_ERROR") {
       if (isBrowser()) {
-        window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
+        if (window.location.pathname !== "/session/sign-in") {
+          window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
+        }
       } else {
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];

@@ -22,13 +22,23 @@ export class SessionCreate extends CLSAction {
     connection: Connection;
     params: { [key: string]: string };
   }) {
+    const errorCode = "AUTHENTICATION_ERROR";
+    let error: Error;
     const teamMember = await TeamMember.findOne({
       where: { email: params.email.toLocaleLowerCase() },
     });
-    if (!teamMember) throw new Error("team member not found");
+    if (!teamMember) {
+      error = Error("team member not found");
+      error["code"] = errorCode;
+      throw error;
+    }
 
     const match = await teamMember.checkPassword(params.password);
-    if (!match) throw new Error("password does not match");
+    if (!match) {
+      error = Error("password does not match");
+      error["code"] = errorCode;
+      throw error;
+    }
 
     const session = await api.session.create(connection, teamMember);
 
