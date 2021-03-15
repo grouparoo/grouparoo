@@ -134,7 +134,7 @@ export const fetchKnownPersonFields = async (
         key: field.name,
         pipedriveKey: field.key,
         required: required.includes(field.key),
-        important: field.important_field, // they have a built-in (paid) feature to mark fields as important
+        important: field.important_flag, // they have a built-in (paid) feature to mark fields as important
         type,
       });
     }
