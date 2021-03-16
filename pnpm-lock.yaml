@@ -1182,7 +1182,7 @@ importers:
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8_fac7690eb6f358c693928a6aedd6d6de
+      next: 10.0.9_fac7690eb6f358c693928a6aedd6d6de
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -1233,7 +1233,7 @@ importers:
       jest-environment-webdriver: 0.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8
+      next: 10.0.9
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -1274,7 +1274,7 @@ importers:
       jest-mock-axios: 4.3.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8_fac7690eb6f358c693928a6aedd6d6de
+      next: 10.0.9_fac7690eb6f358c693928a6aedd6d6de
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -1314,7 +1314,7 @@ importers:
       jest-mock-axios: 4.3.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8
+      next: 10.0.9
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -1345,7 +1345,7 @@ importers:
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8_fac7690eb6f358c693928a6aedd6d6de
+      next: 10.0.9_fac7690eb6f358c693928a6aedd6d6de
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -1396,7 +1396,7 @@ importers:
       jest-environment-webdriver: 0.2.0
       md5: 2.3.0
       moment: 2.29.1
-      next: 10.0.8
+      next: 10.0.9
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
@@ -3000,13 +3000,13 @@ packages:
       newrelic: '>=6.11.0'
     resolution:
       integrity: sha512-n4iNrsV0908yHNZPNof7rm/mffclHaIxprCCWk15b4IRJik2VrtuIrK3mboUgNdv5pX4P7EZytY/D6kJgFkDGw==
-  /@next/env/10.0.8:
+  /@next/env/10.0.9:
     resolution:
-      integrity: sha512-vWdxAHD6gJn52tN5bxj1VoRgu5lNtRPc/HyYf7V014k2GZ9eKhqoFQGSSMNGHB7WgdUxLVw75+o9Ek9ClOOAjw==
-  /@next/polyfill-module/10.0.8:
+      integrity: sha512-MERX3DY5u0Ed29eAsXeFBCZlFAGBtmjf7+Nht0hfgB25MPKKkIbC/0MRPcX/PQcAgLHsAHO6ay1u9xKzR4Vzjw==
+  /@next/polyfill-module/10.0.9:
     resolution:
-      integrity: sha512-JCUGB4/SKQ4LXniv7LKGrpW+W2DGH/CLkrgXgSo/Ze+EJdMDLxC/VFhiuW+TgAaAWLE4gryoswlZBNyHtkPGQA==
-  /@next/react-dev-overlay/10.0.8_react-dom@17.0.1+react@17.0.1:
+      integrity: sha512-kPOP6ku/e8zdrK8hwxOrjUrPLcdDEj12huLHVz+DZU+20q6VlhMOtR8aKHW1460L4LoLE/DAa7YyIuxtArhDRg==
+  /@next/react-dev-overlay/10.0.9_react-dom@17.0.1+react@17.0.1:
     dependencies:
       '@babel/code-frame': 7.12.11
       anser: 1.4.9
@@ -3025,8 +3025,8 @@ packages:
       react: ^16.9.0 || ^17
       react-dom: ^16.9.0 || ^17
     resolution:
-      integrity: sha512-ygVsvkzYTYIuME+dUUSjCxbNjrJ+Up9Y+CrWEmSSk6HuxajUvrB9vN6RT+PeAzEOQ5er1sWxmVHVdPknQPVWyQ==
-  /@next/react-refresh-utils/10.0.8_react-refresh@0.8.3:
+      integrity: sha512-JsSh2Y004MEuPYqBD9eTl4PVZIjSzSy2GcD7MrW/gQcExYNpeMIJAbh8/OcyO1t+OnQeIHF5s/xTMsDHBGNcew==
+  /@next/react-refresh-utils/10.0.9_react-refresh@0.8.3:
     dependencies:
       react-refresh: 0.8.3
     peerDependencies:
@@ -3036,7 +3036,7 @@ packages:
       webpack:
         optional: true
     resolution:
-      integrity: sha512-ZMO77Xs2ioGV/nZB4GRDHgsNT2jhOp+cZIh6c7wf0xw9o/1KoTWN8nxWzwU/laAtkoSS+E6YdhuR4Mw3Ar3CSg==
+      integrity: sha512-LSoKnM+fI9MHHew+mBg1w2e4/gjwPQsI+mDTzmfwdBwje+j9U2Int6XOZftMqBPXSlL04vjC9SRBkp0+3h8cNA==
   /@nodelib/fs.scandir/2.1.4:
     dependencies:
       '@nodelib/fs.stat': 2.0.4
@@ -10688,14 +10688,14 @@ packages:
   /next-tick/1.0.0:
     resolution:
       integrity: sha1-yobR/ogoFpsBICCOPchCS524NCw=
-  /next/10.0.8_fac7690eb6f358c693928a6aedd6d6de:
+  /next/10.0.9_fac7690eb6f358c693928a6aedd6d6de:
     dependencies:
       '@babel/runtime': 7.12.5
       '@hapi/accept': 5.0.1
-      '@next/env': 10.0.8
-      '@next/polyfill-module': 10.0.8
-      '@next/react-dev-overlay': 10.0.8_react-dom@17.0.1+react@17.0.1
-      '@next/react-refresh-utils': 10.0.8_react-refresh@0.8.3
+      '@next/env': 10.0.9
+      '@next/polyfill-module': 10.0.9
+      '@next/react-dev-overlay': 10.0.9_react-dom@17.0.1+react@17.0.1
+      '@next/react-refresh-utils': 10.0.9_react-refresh@0.8.3
       '@opentelemetry/api': 0.14.0
       ast-types: 0.13.2
       browserslist: 4.16.1
@@ -10748,7 +10748,7 @@ packages:
       sass:
         optional: true
     resolution:
-      integrity: sha512-iDY65ce4Prn/9EnQpJGFMb5QJvtGWzZPk6KQqT7vDNu4D+jkivkk9NaAs/k1hR73pXdJHmhHer1s0YxLSghAKQ==
+      integrity: sha512-HyoVjYydcM6LaFAUOHSxVQCcKOsIimVO/IKXCuWUu1rr6DDgXbWNg/8ckH084qD46MOYlLzjViiZ3KCmNQL4Cw==
   /nice-try/1.0.5:
     dev: true
     resolution:
@@ -14779,7 +14779,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3_ts-node@9.1.1
+      jest: 26.6.3
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
