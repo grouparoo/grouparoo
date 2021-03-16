@@ -93,6 +93,19 @@ type KnownPersonField = {
   important: boolean;
 };
 
+export const getKnownPersonFieldMap = async (
+  client: any,
+  cacheData: PipedriveCacheData,
+  update: boolean = false
+): Promise<{ [fieldName: string]: string }> => {
+  const known = await getKnownPersonFields(client, cacheData, update);
+  const out = {};
+  for (const field of known) {
+    out[field.key] = field.pipedriveKey;
+  }
+  return out;
+};
+
 const getKnownPersonFields = async (
   client: any,
   cacheData: PipedriveCacheData,
