@@ -138,7 +138,7 @@ export const fetchKnownPersonFields = async (
   for (const field of fields) {
     // Some fields are system fields that don't make sense to manually update (counts, computed fields, auto timestamps...)
     // There's no explicit flag for this, but we check for the ones whose field definition can't be modified.
-    // Some of those fields should be available though, so we whitelist them.
+    // Some of those fields should be available though, so we let them through.
     if (!field.edit_flag && !allowedFields.includes(field.key)) continue;
 
     const type = mapTypesToGrouparoo(field.field_type, field.name);
