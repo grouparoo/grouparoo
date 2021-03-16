@@ -7,8 +7,3 @@ npm install
 
 # Update the CircleCI config file with any new packages
 ./ci_generate
-
-# Update the pnpm lockfile with any changes to dependencies
-cd ../..
-npm install -g pnpm
-pnpm install --prefer-frozen-lockfile --ignore-scripts

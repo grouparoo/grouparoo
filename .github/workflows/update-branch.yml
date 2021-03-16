@@ -13,6 +13,10 @@ jobs:
       - name: Update merged files
         run: |
           cd tools/merger && ./github_action
+      - run: npm install -g pnpm
+      - name: Update PNPM lockfile
+        run: |
+          cd tools/merger && ./lockfile
       - uses: stefanzweifel/git-auto-commit-action@v4.1.2
         with:
           commit_message: Updating things automatically
