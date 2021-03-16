@@ -5,6 +5,8 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+      image: node
     if: ${{ github.repository == 'grouparoo/grouparoo' }}
     steps:
       - uses: actions/checkout@master
