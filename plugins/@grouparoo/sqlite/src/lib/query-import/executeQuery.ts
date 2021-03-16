@@ -7,8 +7,6 @@ export const executeQuery: ExecuteQueryMethod = async ({
   connection,
   query,
 }) => {
-  const out: DataResponseRow[] = [];
-  const { rows } = await connection.query(query);
-  rows.forEach((row) => out.push(row));
+  const out: DataResponseRow[] = await connection.asyncQuery(query);
   return out;
 };

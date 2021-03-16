@@ -14,13 +14,9 @@ export const getChangedRows = async ({
 
   validateQuery(scheduleOptions.query, false);
 
-  const queryWithLimitAndOffset = format(
-    `${scheduleOptions.query} LIMIT %L OFFSET %L`,
-    limit,
-    offset
-  );
+  const queryWithLimitAndOffset = `${scheduleOptions.query} LIMIT ${limit} OFFSET ${offset}`;
 
-  const { rows } = await connection.query(queryWithLimitAndOffset);
+  const rows = await connection.asyncQuery(queryWithLimitAndOffset);
 
   return rows;
 };
