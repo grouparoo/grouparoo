@@ -4,4 +4,9 @@ set -e
 cd "$(dirname "$0")"
 
 npm install
+
+# Update the CircleCI config file with any new packages
 ./ci_generate
+
+# Update the pnpm lockfile with any changes to dependencies
+pnpm install --prefer-frozen-lockfile --ignore-scripts
