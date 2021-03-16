@@ -5,4 +5,4 @@ cd "$(dirname "$0")"
 cd ../..
 
 # Update the pnpm lockfile with any changes to dependencies
-pnpm install --prefer-frozen-lockfile --ignore-scripts
+npx pnpm install --prefer-frozen-lockfile --ignore-scripts
