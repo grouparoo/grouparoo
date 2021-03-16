@@ -1,6 +1,5 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
-import format from "pg-format";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
@@ -33,49 +32,46 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     );
   }
 
+  // TODO:
+  //
+  // - [ ] Something isn't working here. To recreate, run the update SQL in
+  //   TablePlus and then re-run the users source. Track down the issue.
+  // - [ ] Pair with Evan to fix specs.
+  // - [ ] Refactor this file.
+  // - [ ] Remove console logs.
+
   try {
     // --- Profiles --- //
     if (toDelete) {
       // delete
-      await connection.query(
-        validateQuery(
-          format(
-            `DELETE FROM %I WHERE %I = %L`,
-            table,
-            primaryKey,
-            newProfileProperties[primaryKey]
-          )
-        )
-      );
+      const query = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+      validateQuery(query);
+
+      console.log("--- [DEST] exportProfile ---", query);
+
+      await connection.asyncQuery(query);
     } else if (newProfileProperties[primaryKey]) {
-      const existingRecords = await connection.query(
-        validateQuery(
-          format(
-            `SELECT * FROM %I WHERE %I = %L`,
-            table,
-            primaryKey,
-            newProfileProperties[primaryKey]
-          )
-        )
-      );
+      const query = `SELECT * FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+      validateQuery(query);
+
+      console.log("--- [DEST] exportProfile ---", query);
+
+      const existingRecords = await connection.asyncQuery(query);
 
       if (existingRecords.rows.length === 1) {
         // update
-        let updateStatement = `UPDATE %I SET`;
-        const updateVariables = [table];
-        const length = Object.keys(newProfileProperties).length - 1;
-        let idx = 0;
-        for (const key in newProfileProperties) {
-          updateStatement += ` %I = %L${idx < length ? "," : ""} `;
-          updateVariables.push(key);
-          updateVariables.push(newProfileProperties[key]);
-          idx++;
-        }
-        updateStatement += ` WHERE %I = %L`;
-        updateVariables.push(primaryKey);
-        updateVariables.push(newProfileProperties[primaryKey]);
-        updateStatement = format(updateStatement, ...updateVariables);
-        await connection.query(validateQuery(updateStatement));
+        let updateStatement = `UPDATE ${table} SET`;
+        const maxIdx = Object.keys(newProfileProperties).length - 1;
+        newProfileProperties.map((key, idx) => {
+          updateStatement += ` ${key} = ${newProfileProperties[key]}`;
+          if (idx < maxIdx) updateStatement += `,`;
+        });
+        updateStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+        validateQuery(updateStatement);
+
+        console.log("--- [DEST] exportProfile ---", updateStatement);
+
+        await connection.asyncQuery(updateStatement);
 
         // erase old columns
         const columnsToErase = Object.keys(existingRecords.rows[0]).filter(
@@ -87,74 +83,59 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         );
 
         if (columnsToErase.length > 0) {
-          let eraseStatement = `UPDATE %I SET`;
-          const eraseVariables = [table];
-          const length = columnsToErase.length - 1;
-          let idx = 0;
-          columnsToErase.forEach((col) => {
-            eraseStatement += ` %I = %L${idx < length ? "," : ""} `;
-            eraseVariables.push(col);
-            eraseVariables.push(null);
-            idx++;
+          let eraseStatement = `UPDATE ${table} SET`;
+          const maxIdx = columnsToErase.length - 1;
+          columnsToErase.map((col, idx) => {
+            eraseStatement += ` ${col} = NULL`;
+            if (idx < maxIdx) eraseStatement += `,`;
           });
-          eraseStatement += ` WHERE %I = %L`;
-          eraseVariables.push(primaryKey);
-          eraseVariables.push(newProfileProperties[primaryKey]);
-          eraseStatement = format(eraseStatement, ...eraseVariables);
-          await connection.query(validateQuery(eraseStatement));
+          eraseStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+          validateQuery(eraseStatement);
+
+          console.log("--- [DEST] exportProfile ---", eraseStatement);
+
+          await connection.asyncQuery(eraseStatement);
         }
       } else {
         // delete
-        await connection.query(
-          validateQuery(
-            format(
-              `DELETE FROM %I WHERE %I = %L`,
-              table,
-              primaryKey,
-              newProfileProperties[primaryKey]
-            )
-          )
-        );
+        const deleteQuery = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+        validateQuery(deleteQuery);
+
+        console.log("--- [DEST] exportProfile ---", deleteQuery);
+
+        await connection.asyncQuery(deleteQuery);
 
         // insert
-        await connection.query(
-          validateQuery(
-            format(
-              `INSERT INTO %I (%I) VALUES (%L)`,
-              table,
-              Object.keys(newProfileProperties),
-              Object.values(newProfileProperties)
-            )
-          )
-        );
+        const query = `INSERT INTO ${table} (${Object.keys(
+          newProfileProperties
+        )}) VALUES (${Object.values(newProfileProperties)})`;
+        validateQuery(query);
+
+        console.log("--- [DEST] exportProfile ---", query);
+
+        await connection.asyncQuery(query);
       }
     } else {
       // just insert
-      await connection.query(
-        validateQuery(
-          format(
-            `INSERT INTO %I (%I) VALUES (%L)`,
-            table,
-            Object.keys(newProfileProperties),
-            Object.values(newProfileProperties)
-          )
-        )
-      );
+      const query = `INSERT INTO ${table} (${Object.keys(
+        newProfileProperties
+      )}) VALUES (${Object.values(newProfileProperties)})`;
+      validateQuery(query);
+
+      console.log("--- [DEST] exportProfile ---", query);
+
+      await connection.asyncQuery(query);
     }
 
     // --- Groups --- //
 
     // delete existing groups
-    await connection.query(
-      validateQuery(
-        format(
-          `DELETE FROM %I WHERE %I = %L`,
-          groupsTable,
-          groupForeignKey,
-          newProfileProperties[primaryKey]
-        )
-      )
-    );
+    const deleteGroupsQuery = `DELETE FROM ${groupsTable} WHERE ${groupForeignKey} = ${newProfileProperties[primaryKey]}`;
+    validateQuery(deleteGroupsQuery);
+
+    console.log("--- [DEST] exportProfile ---", deleteGroupsQuery);
+
+    await connection.asyncQuery(deleteGroupsQuery);
 
     // add groups
     if (!toDelete) {
@@ -163,24 +144,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
-        // There may be 2 tasks writing to the user at the same time, so we need to be safer with our writes...
-        // Some flavors of postgres cannot handle the ON CONFLICT directive (cough *redshift*).
-        // ... Ideally: `INSERT INTO %I (%I) VALUES (%L) ON CONFLICT DO NOTHING`
+        const groupInsertQuery = `INSERT INTO ${groupsTable} (${Object.keys(
+          data
+        )}) VALUES (${Object.values(data)}) ON CONFLICT IGNORE`;
+        validateQuery(groupInsertQuery);
 
-        const groupInsertQuery = format(
-          `INSERT INTO %I (%I) SELECT %L WHERE NOT EXISTS (SELECT %L FROM %I WHERE %I = %L AND %I = %L)`,
-          groupsTable,
-          Object.keys(data),
-          Object.values(data),
-          Object.keys(data)[0],
-          groupsTable,
-          groupForeignKey,
-          data[groupForeignKey],
-          groupColumnName,
-          data[groupColumnName]
-        );
+        console.log("--- [DEST] exportProfile ---", groupInsertQuery);
 
-        await connection.query(validateQuery(groupInsertQuery));
+        await connection.asyncQuery(groupInsertQuery);
       }
     }
   } catch (e) {

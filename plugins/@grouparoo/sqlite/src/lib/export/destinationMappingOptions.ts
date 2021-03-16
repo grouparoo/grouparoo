@@ -2,21 +2,16 @@ import {
   DestinationMappingOptionsMethod,
   DestinationMappingOptionsResponseTypes,
 } from "@grouparoo/core";
-import format from "pg-format";
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
   connection,
-  appOptions,
   destinationOptions,
 }) => {
-  const { rows } = await connection.query(
-    format(
-      `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
-      appOptions.database,
-      appOptions.schema || "public",
-      destinationOptions.table
-    )
-  );
+  const query = `SELECT name from pragma_table_info('${destinationOptions.table}')`;
+
+  console.log("--- [DEST] destinationMappingOptions ---", query);
+
+  const rows = await connection.asyncQuery(query);
 
   const columns: Array<{
     key: string;
@@ -24,8 +19,8 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     important: boolean;
   }> = [];
   for (const i in rows) {
-    if (rows[i].column_name !== destinationOptions.primaryKey) {
-      columns.push({ key: rows[i].column_name, type: "any", important: true });
+    if (rows[i].name !== destinationOptions.primaryKey) {
+      columns.push({ key: rows[i].name, type: "any", important: true });
     }
   }
 
@@ -36,7 +31,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Exported Properties",
       },
       group: {
-        singular: "Exported Groups",
+        singular: "Exported Group",
         plural: "Exported Groups",
       },
     },

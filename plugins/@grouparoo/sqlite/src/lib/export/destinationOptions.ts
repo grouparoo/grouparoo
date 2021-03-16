@@ -6,20 +6,15 @@ import {
 
 export const destinationOptions: DestinationOptionsMethod = async ({
   connection,
-  appOptions,
   destinationOptions,
 }) => {
   async function getColumns(tableName: string) {
-    const { rows: colRows } = await connection.query(
-      format(
-        `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_catalog = %L AND table_schema = %L AND table_name = %L`,
-        appOptions.database,
-        appOptions.schema || "public",
-        tableName
-      )
-    );
+    const query = `SELECT name from pragma_table_info('${tableName}')`;
 
-    return colRows.map((row) => row.column_name).sort();
+    console.log("--- [DEST] destinationOptions > getColumns ---", query);
+
+    const colRows = await connection.asyncQuery(query);
+    return colRows.map((row) => row.name).sort();
   }
 
   const response: DestinationOptionsMethodResponse = {
@@ -30,22 +25,12 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     groupColumnName: { type: "pending", options: [] },
   };
 
-  const tables = [];
+  const query = `SELECT name FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`;
 
-  const { rows } = await connection.query(
-    format(
-      `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_catalog = %L AND table_schema = %L`,
-      appOptions.database,
-      appOptions.schema || "public"
-    )
-  );
+  console.log("--- [DEST] destinationOptions ---", query);
 
-  for (const i in rows) {
-    const tableName: string = rows[i].table_name;
-    tables.push(tableName);
-  }
-
-  tables.sort();
+  const rows = await connection.asyncQuery(query);
+  const tables = rows.map((row) => row.name).sort();
 
   response.table.options = tables;
   response.groupsTable.options = tables;
