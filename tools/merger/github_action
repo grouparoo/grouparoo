@@ -9,4 +9,6 @@ npm install
 ./ci_generate
 
 # Update the pnpm lockfile with any changes to dependencies
+cd ../..
+npm install -g pnpm
 pnpm install --prefer-frozen-lockfile --ignore-scripts
