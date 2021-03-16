@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -e
+cd "$(dirname "$0")"
+cd ../..
+
+# Update the pnpm lockfile with any changes to dependencies
+npx pnpm install --prefer-frozen-lockfile --ignore-scripts
