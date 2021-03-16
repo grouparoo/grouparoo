@@ -6,7 +6,6 @@ import {
   AggregationMethod,
   FilterOperation,
 } from "@grouparoo/app-templates/dist/source/table";
-import format from "pg-format";
 
 export const getPropertyValues: GetPropertyValuesMethod = async ({
   connection,
@@ -39,7 +38,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
       break;
     case AggregationMethod.Count:
-      aggSelect = `COUNT(${aggSelect})::integer`;
+      aggSelect = `COUNT(CAST(${aggSelect} as INT))`;
       break;
     case AggregationMethod.Sum:
       aggSelect = `COALESCE(SUM(${aggSelect}), 0)`;
@@ -66,32 +65,27 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params: Array<any> = [tableName];
-  let query = `SELECT ${aggSelect} as __result, "${tablePrimaryKeyCol}" as __pk FROM %I WHERE`;
+  let query = `SELECT ${aggSelect} as __result, "${tablePrimaryKeyCol}" as __pk FROM ${tableName} WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
-    const filterClause = makeWhereClause(condition, params);
+    const filterClause = makeWhereClause(condition);
     if (addAnd) query += ` AND`;
     query += ` ${filterClause}`;
     addAnd = true;
   }
 
-  const inClause = makeWhereClause(
-    {
-      columnName: tablePrimaryKeyCol,
-      filterOperation: FilterOperation.In,
-      values: primaryKeys,
-    },
-    params
-  );
+  const inClause = makeWhereClause({
+    columnName: tablePrimaryKeyCol,
+    filterOperation: FilterOperation.In,
+    values: primaryKeys,
+  });
   if (addAnd) query += ` AND`;
   query += ` ${inClause}`;
   addAnd = true;
 
   if (groupByColumns.length > 0) {
-    query += ` GROUP BY %I`;
-    params.push(groupByColumns);
+    query += ` GROUP BY ${groupByColumns}`;
   }
   if (orderBy.length > 0) {
     query += ` ORDER BY ${orderBy}`;
@@ -99,12 +93,14 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   validateQuery(query);
 
+  console.log(">>>>> ", "getPropertyValues: ", query);
+
   try {
-    const {
-      rows,
-    }: {
-      rows: Array<{ __pk: string; __result: any }>;
-    } = await connection.query(format(query, ...params));
+    const rows: Array<{
+      __pk: string;
+      __result: any;
+    }> = await connection.asyncQuery(query);
+
     rows.forEach((row) => {
       if (!responses[row.__pk]) responses[row.__pk] = [];
       if (isArray || (responses[row.__pk].length === 0 && !isArray)) {

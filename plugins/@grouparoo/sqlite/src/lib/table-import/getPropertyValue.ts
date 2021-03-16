@@ -28,7 +28,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       aggSelect = `COALESCE(AVG(${aggSelect}), 0)`;
       break;
     case AggregationMethod.Count:
-      aggSelect = `COUNT(${aggSelect})::integer`;
+      aggSelect = `COUNT(CAST(${aggSelect} as INT))`;
       break;
     case AggregationMethod.Sum:
       aggSelect = `COALESCE(SUM(${aggSelect}), 0)`;
@@ -55,12 +55,11 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  const params = [tableName];
-  let query = `SELECT ${aggSelect} as __result FROM %I WHERE`;
+  let query = `SELECT ${aggSelect} as __result FROM ${tableName} WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
-    const filterClause = makeWhereClause(condition, params);
+    const filterClause = makeWhereClause(condition);
     if (addAnd) {
       query += ` AND`;
     }
@@ -73,16 +72,12 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
 
   validateQuery(query);
 
+  console.log(">>>>> ", "getPropertyValue: ", query);
+
   let response: DataResponse[];
   try {
-    const { rows } = await connection.query(format(query, ...params));
-    if (rows && rows.length > 0) {
-      if (!isArray) {
-        response = [rows[0].__result];
-      } else {
-        response = rows.map((row) => row.__result);
-      }
-    }
+    const rows = await connection.asyncQuery(query);
+    response = rows.map((row) => row.__result);
   } catch (error) {
     throw new Error(
       `Error with Postgres SQL Statement: Query - \`${query}\`, Error - ${error}`

@@ -5,7 +5,6 @@ import {
   DataResponseRow,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
-import format from "pg-format";
 
 export const getChangedRows: GetChangedRowsMethod = async ({
   connection,
@@ -16,38 +15,27 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   highWaterMarkAndSortColumnASC,
   secondarySortColumnASC,
   highWaterMarkKey,
+}: {
+  highWaterMarkCondition: MatchCondition;
+  [key: string]: any;
 }) => {
-  const params = [];
-  let query = `SELECT *, %I::text AS %I FROM %I`;
-  params.push(highWaterMarkAndSortColumnASC);
-  params.push(highWaterMarkKey);
-  params.push(tableName);
+  // Begin with SELECT statement.
+  let query = `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM ${tableName}`;
 
-  query += await makeHighwaterWhereClause(highWaterMarkCondition, params);
+  // Add WHERE clause, if there is a condition for the HWM.
+  if (highWaterMarkCondition) {
+    query += ` WHERE ${makeWhereClause(highWaterMarkCondition)}`;
+  }
 
-  query += ` ORDER BY %I ASC, %I ASC LIMIT %L OFFSET %L`;
-  params.push(highWaterMarkAndSortColumnASC);
-  params.push(secondarySortColumnASC);
-  params.push(limit);
-  params.push(sourceOffset);
+  // Add ORDER, LIMIT, and OFFSET clauses.
+  query += ` ORDER BY ${highWaterMarkAndSortColumnASC} ASC, ${secondarySortColumnASC} ASC LIMIT ${limit} OFFSET ${sourceOffset}`;
 
+  // Ensure we don't have any extraneous characters, multiple queries, etc.
   validateQuery(query);
 
-  const out: DataResponseRow[] = [];
-  const { rows } = await connection.query(format(query, ...params));
-  rows.forEach((row) => out.push(row));
+  console.log(">>>>> ", "getChangedRows: ", query);
+
+  // Run the query and return the result.
+  const out: DataResponseRow[] = await connection.asyncQuery(query);
   return out;
 };
-
-export async function makeHighwaterWhereClause(
-  highWaterMarkCondition: MatchCondition,
-  params
-): Promise<string> {
-  let query = "";
-
-  if (highWaterMarkCondition) {
-    query += " WHERE";
-    query += makeWhereClause(highWaterMarkCondition, params);
-  }
-  return query;
-}

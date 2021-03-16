@@ -11,7 +11,7 @@ export function getConnection() {
   return buildConnection({
     app: "sqlite",
     name: "sqlite-table-import",
-    description: "Import or update Profiles from a Sqlite database table.",
+    description: "Import or update Profiles from a SQLite database table.",
     tableOptionDescription: "The table to scan",
     getSampleRows,
     getColumns,

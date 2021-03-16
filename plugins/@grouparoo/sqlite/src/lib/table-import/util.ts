@@ -3,10 +3,7 @@ import {
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
 
-export function makeWhereClause(
-  matchCondition: MatchCondition,
-  params: Array<any>
-) {
+export function makeWhereClause(matchCondition: MatchCondition) {
   const { columnName, filterOperation, value, values } = matchCondition;
   let op;
   let match = values || value;
@@ -49,12 +46,9 @@ export function makeWhereClause(
   }
 
   const key = transform
-    ? `${transform}("${columnName}"::text)`
+    ? `${transform}(CAST("${columnName}" as TEXT))`
     : `"${columnName}"`;
+  match = Array.isArray(match) ? `(${match})` : `"${match}"`;
 
-  // put the values in the array
-  params.push(match);
-  return ` ${key} ${op} ${Array.isArray(match) ? "(" : ""}%L${
-    Array.isArray(match) ? ")" : ""
-  }`;
+  return ` ${key} ${op} ${match}`;
 }
