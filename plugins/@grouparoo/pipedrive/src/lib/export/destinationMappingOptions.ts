@@ -32,7 +32,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
         plural: "Pipedrive Fields",
       },
       group: {
-        singular: "Pipedrive Filter", // TODO not sure yet
+        singular: "Pipedrive Filter",
         plural: "Pipedrive Filters",
       },
     },

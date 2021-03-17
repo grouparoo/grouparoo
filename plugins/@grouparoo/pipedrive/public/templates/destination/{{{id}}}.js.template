@@ -19,6 +19,8 @@ exports.default = async function buildConfig() {
 
       // You can export group memberships.
       // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      // Filters will be automatically created on Pipedrive for these groups.
+      // A custom field will also be created to keep track of group membership.
       destinationGroupMemberships: {
         "High Value Customers": "highValueCustomers",
       },
