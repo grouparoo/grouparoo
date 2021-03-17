@@ -90,7 +90,7 @@ async function authenticateTeamMember(
     (data.params.csrfToken && data.params.csrfToken !== session.id) ||
     (!data.params.csrfToken &&
       data.connection.rawConnection?.req?.headers[
-        "x-grouparoo-server_token"
+        "x-grouparoo-server-token"
       ] !== config.general.serverToken)
   ) {
     await api.session.destroy(data.connection);

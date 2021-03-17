@@ -113,7 +113,7 @@ export class Client {
     };
 
     if (req?.headers?.cookie) {
-      headers["X-GROUPAROO-SERVER_TOKEN"] = this.serverToken;
+      headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
       headers["cookie"] = req?.headers?.cookie;
       useCache = false; // do not ever responses on the server
     }
