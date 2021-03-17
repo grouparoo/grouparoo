@@ -5,7 +5,6 @@ import {
   DataResponse,
   AggregationMethod,
 } from "@grouparoo/app-templates/dist/source/table";
-import format from "pg-format";
 
 export const getPropertyValue: GetPropertyValueMethod = async ({
   connection,

@@ -1,4 +1,3 @@
-import format from "pg-format";
 import {
   DestinationOptionsMethod,
   DestinationOptionsMethodResponse,

@@ -1,5 +1,3 @@
-import format from "pg-format";
-
 import { validateQuery } from "../validateQuery";
 
 export const getChangedRows = async ({
