@@ -2,6 +2,7 @@ import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
+import { AuthenticationError } from "../modules/middleware/authentication";
 
 export class SessionCreate extends CLSAction {
   constructor() {
@@ -22,23 +23,13 @@ export class SessionCreate extends CLSAction {
     connection: Connection;
     params: { [key: string]: string };
   }) {
-    const errorCode = "AUTHENTICATION_ERROR";
-    let error: Error;
     const teamMember = await TeamMember.findOne({
       where: { email: params.email.toLocaleLowerCase() },
     });
-    if (!teamMember) {
-      error = Error("team member not found");
-      error["code"] = errorCode;
-      throw error;
-    }
+    if (!teamMember) throw new AuthenticationError("team member not found");
 
     const match = await teamMember.checkPassword(params.password);
-    if (!match) {
-      error = Error("password does not match");
-      error["code"] = errorCode;
-      throw error;
-    }
+    if (!match) throw new AuthenticationError("password does not match");
 
     const session = await api.session.create(connection, teamMember);
 

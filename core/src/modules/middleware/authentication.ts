@@ -1,10 +1,12 @@
 import { api, config, action, Connection, chatRoom } from "actionhero";
-import { Team, TeamMember, ApiKey } from "../../index";
+import { ApiKey } from "../../models/ApiKey";
+import { Team } from "../../models/Team";
+import { TeamMember } from "../../models/TeamMember";
 
 export class AuthenticationError extends Error {
   code: string;
 
-  constructor(message, code = "AUTHENTICATION_ERROR") {
+  constructor(message: string, code = "AUTHENTICATION_ERROR") {
     super(message);
     this.code = code;
   }
