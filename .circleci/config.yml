@@ -57,6 +57,7 @@ jobs:
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/onesignal/node_modules
             - plugins/@grouparoo/pardot/node_modules
+            - plugins/@grouparoo/pipedrive/node_modules
             - plugins/@grouparoo/postgres/node_modules
             - plugins/@grouparoo/redshift/node_modules
             - plugins/@grouparoo/sailthru/node_modules
@@ -104,6 +105,7 @@ jobs:
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/onesignal/dist
             - plugins/@grouparoo/pardot/dist
+            - plugins/@grouparoo/pipedrive/dist
             - plugins/@grouparoo/postgres/dist
             - plugins/@grouparoo/redshift/dist
             - plugins/@grouparoo/sailthru/dist
@@ -1546,6 +1548,44 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/pardot && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-pipedrive:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *plugin-modules-cache-options
+      - restore_cache:
+          <<: *other-modules-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/pipedrive && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-postgres:
     docker:
       - image: circleci/node:14
@@ -2180,6 +2220,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-pipedrive:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-postgres:
           filters:
             <<: *ignored-branches
@@ -2277,6 +2322,7 @@ workflows:
             - test-plugin-newrelic
             - test-plugin-onesignal
             - test-plugin-pardot
+            - test-plugin-pipedrive
             - test-plugin-postgres
             - test-plugin-redshift
             - test-plugin-sailthru
@@ -2499,6 +2545,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-pipedrive:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-postgres:
           filters:
             <<: *ignored-branches
@@ -2596,6 +2647,7 @@ workflows:
             - test-plugin-newrelic
             - test-plugin-onesignal
             - test-plugin-pardot
+            - test-plugin-pipedrive
             - test-plugin-postgres
             - test-plugin-redshift
             - test-plugin-sailthru
