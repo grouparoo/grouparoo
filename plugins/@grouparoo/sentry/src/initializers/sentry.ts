@@ -1,5 +1,7 @@
 import { Initializer, api, env, action, task } from "actionhero";
 import { plugin } from "@grouparoo/core";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 const packageJSON = require("./../../package.json");
 
 export class SentryInitializer extends Initializer {
@@ -12,9 +14,6 @@ export class SentryInitializer extends Initializer {
     if (!process.env.SENTRY_DSN) return;
     if (!process.env.SENTRY_TRACE_SAMPLE_RATE) return;
     if (env === "test") return; // never enable sentry when NODE_ENV=test
-
-    const Sentry = await import("@sentry/node");
-    const Tracing = await import("@sentry/tracing");
 
     plugin.registerPlugin({
       name: packageJSON.name,
@@ -91,7 +90,8 @@ export class SentryInitializer extends Initializer {
   }
 
   async stop() {
-    const Sentry = await import("@sentry/node");
-    await Sentry.close(2000);
+    try {
+      await Sentry.close(2000);
+    } catch (e) {}
   }
 }
