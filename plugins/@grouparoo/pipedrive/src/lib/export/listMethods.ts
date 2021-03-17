@@ -9,7 +9,7 @@ export async function getGroupFieldKey(
   cacheData: PipedriveCacheData,
   groupName: string
 ): Promise<string> {
-  groupName = (groupName || "").toString().trim();
+  groupName = groupName.trim();
 
   const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes

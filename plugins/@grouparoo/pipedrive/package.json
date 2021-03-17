@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.2.7-alpha.0",
+    "axios": "0.21.1",
     "pipedrive": "10.4.3"
   },
   "devDependencies": {

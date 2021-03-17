@@ -5,7 +5,6 @@ import {
   getKnownPersonFieldMap,
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
-import { findPersonId } from "../utils";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
@@ -26,7 +25,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
   const oldEmail = oldProfileProperties["Email"];
-  const foundId = await findPersonId(client, oldEmail);
+  const foundId = await client.EnhancedPersonsController.findPersonIdByEmail(
+    oldEmail
+  );
 
   if (toDelete) {
     if (!foundId) {
@@ -48,8 +49,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (foundId) {
     // Update existing Person
-    payload.id = foundId;
-    await client.PersonsController.updateAPerson(payload);
+    await client.EnhancedPersonsController.updateAPerson(foundId, payload);
   } else {
     // Create new Person
     await client.PersonsController.addAPerson({ body: payload });
@@ -108,7 +108,7 @@ async function makePayload(
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
       const groupKey = await getGroupFieldKey(client, cacheData, group);
-      payload[groupKey] = ""; // TODO actually clear
+      payload[groupKey] = null;
     }
   }
 
@@ -116,8 +116,8 @@ async function makePayload(
 }
 
 function formatVar(value) {
-  if (value === undefined || value === null) {
-    return ""; // TODO actually clear
+  if (value === undefined) {
+    return null;
   }
 
   if (value instanceof Date) {

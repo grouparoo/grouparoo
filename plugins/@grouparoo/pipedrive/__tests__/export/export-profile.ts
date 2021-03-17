@@ -6,7 +6,6 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 
 import { exportProfile } from "../../src/lib/export/exportProfile";
-import { findPersonId } from "../../src/lib/utils";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { getKnownPersonFieldMap } from "../../src/lib/export/destinationMappingOptions";
@@ -52,7 +51,9 @@ async function cleanUp() {
   // Clear created people
   const ids = [];
   for (let email of [email1, email2, email3, nonexistentEmail]) {
-    const id = await findPersonId(client, email);
+    const id = await client.EnhancedPersonsController.findPersonIdByEmail(
+      email
+    );
     if (id) {
       ids.push(id);
     }
@@ -140,7 +141,9 @@ describe("pipedrive/exportProfile", () => {
       toDelete: false,
     });
 
-    const newPersonId = await findPersonId(client, email1);
+    const newPersonId = await client.EnhancedPersonsController.findPersonIdByEmail(
+      email1
+    );
     expect(newPersonId).toBeTruthy();
 
     personId = newPersonId;
@@ -255,7 +258,7 @@ describe("pipedrive/exportProfile", () => {
       "Cupertino, California, United States"
     );
   });
-  /* TODO
+
   test("can clear Person fields", async () => {
     await runExport({
       oldProfileProperties: {
@@ -300,7 +303,7 @@ describe("pipedrive/exportProfile", () => {
     expect(data[fieldMap.time_range_field]).toBe(null);
     expect(data[fieldMap.date_field]).toBe(null);
     expect(data[fieldMap.date_range_field]).toBe(null);
-  });*/
+  });
 
   test("can add groups as fields", async () => {
     await runExport({
@@ -400,7 +403,9 @@ describe("pipedrive/exportProfile", () => {
       toDelete: false,
     });
 
-    const newPersonId = await findPersonId(client, email3);
+    const newPersonId = await client.EnhancedPersonsController.findPersonIdByEmail(
+      email3
+    );
     expect(newPersonId).toBeTruthy();
 
     const { data } = await client.PersonsController.getDetailsOfAPerson(
