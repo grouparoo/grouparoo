@@ -5,6 +5,7 @@ import {
   getKnownPersonFieldMap,
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
+import { findPersonId } from "../utils";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
@@ -107,39 +108,16 @@ async function makePayload(
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
       const groupKey = await getGroupFieldKey(client, cacheData, group);
-      payload[groupKey] = null;
+      payload[groupKey] = ""; // TODO actually clear
     }
   }
 
   return payload;
 }
 
-async function findPersonId(
-  client: any,
-  email: string
-): Promise<number | null> {
-  if (!email) return null;
-
-  const {
-    data,
-  } = await client.SearchResultsController.getPerformASearchUsingASpecificFieldValue(
-    {
-      term: email,
-      itemType: "person",
-      fieldType: "personField",
-      exactMatch: true,
-      fieldKey: "email",
-      returnItemIds: true,
-    }
-  );
-
-  if (data.length == 0) return null;
-  return data[0].id;
-}
-
 function formatVar(value) {
-  if (value === undefined) {
-    return null;
+  if (value === undefined || value === null) {
+    return ""; // TODO actually clear
   }
 
   if (value instanceof Date) {
