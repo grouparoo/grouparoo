@@ -3,6 +3,8 @@ import { spawnPromise } from "./spawnPromise";
 import Chalk from "chalk";
 
 export namespace NPM {
+  const NPM = /^win/.test(process.platform) ? "npm.cmd" : "npm";
+
   export async function install(
     logger: any,
     workDir: string,
@@ -12,7 +14,7 @@ export namespace NPM {
   ) {
     const args = ["install"];
 
-    const npmCheck = await spawnPromise("npm", ["--version"]);
+    const npmCheck = await spawnPromise(NPM, ["--version"]);
     const npmVersion = npmCheck.stdout.trim();
     const majorNPMVersion = parseInt(npmVersion.split(".")[0]);
     if (majorNPMVersion === 7) args.push("--legacy-peer-deps");
@@ -23,7 +25,7 @@ export namespace NPM {
     logger.start("Installing...");
 
     const { exitCode, stdout, stderr } = await spawnPromise(
-      "npm",
+      NPM,
       args,
       workDir,
       { npm_config_loglevel },
@@ -51,7 +53,7 @@ export namespace NPM {
     logger.start("Uninstalling...");
 
     const { exitCode, stdout, stderr } = await spawnPromise(
-      "npm",
+      NPM,
       args,
       workDir,
       { npm_config_loglevel },
