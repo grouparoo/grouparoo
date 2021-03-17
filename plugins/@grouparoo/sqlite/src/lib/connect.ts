@@ -1,11 +1,15 @@
 import { ConnectPluginAppMethod } from "@grouparoo/core";
 import fs from "fs";
+import path from "path";
 import { SQLite } from "./sqlite";
+import { getParentPath } from "@grouparoo/core/dist/utils/pluginDetails";
 
 export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   const formattedOptions: any = Object.assign({}, appOptions);
 
-  const dbPath = formattedOptions.file;
+  let dbPath = formattedOptions.file;
+
+  if (!path.isAbsolute(dbPath)) dbPath = path.join(getParentPath(), dbPath);
 
   // Don't allow connections unless the file already exists. This avoids
   // in-memory storage and creating the file during instantiation.
