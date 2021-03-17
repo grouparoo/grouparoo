@@ -4,7 +4,7 @@ import { Team, TeamMember, ApiKey } from "../../index";
 export class AuthenticationError extends Error {
   code: string;
 
-  constructor(message, code = "AUTHENTICATION_ERROR") {
+  constructor(message: string, code = "AUTHENTICATION_ERROR") {
     super(message);
     this.code = code;
   }
