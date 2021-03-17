@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.2.7-alpha.0",
+  "version": "0.2.8-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -35,7 +35,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/client-web": "0.2.7-alpha.0",
+    "@grouparoo/client-web": "0.2.8-alpha.0",
     "@types/fs-extra": "*",
     "@types/node": "*",
     "@types/validator": "*",
@@ -52,11 +52,11 @@
     "faker": "5.4.0",
     "fs-extra": "9.1.0",
     "glob": "7.1.6",
-    "ioredis": "4.23.0",
-    "ioredis-mock": "5.2.4",
+    "ioredis": "4.24.2",
+    "ioredis-mock": "5.2.5",
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
-    "libphonenumber-js": "1.9.12",
+    "libphonenumber-js": "1.9.13",
     "mime": "2.5.2",
     "moment": "2.29.1",
     "mustache": "4.1.0",
@@ -67,7 +67,7 @@
     "pg-hstore": "2.3.3",
     "prettier": "2.2.1",
     "reflect-metadata": "0.1.13",
-    "sequelize": "6.5.0",
+    "sequelize": "6.5.1",
     "sequelize-typescript": "2.1.0",
     "sqlite3": "5.0.2",
     "ts-node": "9.1.1",
@@ -78,7 +78,7 @@
     "ws": "7.4.4"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.2.7-alpha.0",
+    "@grouparoo/spec-helper": "0.2.8-alpha.0",
     "@types/faker": "*",
     "@types/jest": "*",
     "csv-parse": "4.15.3",
@@ -87,7 +87,7 @@
     "nock": "13.0.11",
     "ts-jest": "26.5.3",
     "type-fest": "0.21.2",
-    "typedoc": "0.20.30",
+    "typedoc": "0.20.32",
     "typescript": "4.2.3"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"

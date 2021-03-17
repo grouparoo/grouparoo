@@ -89,7 +89,8 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
-  validate = false
+  validate = false,
+  extraSortingConfigObjects?: Array<ConfigurationObject>
 ): Promise<{ seenIds: IdsByClass; errors: string[] }> {
   const seenIds: IdsByClass = {
     app: [],
@@ -104,8 +105,6 @@ export async function processConfigObjects(
   };
   const errors: string[] = [];
 
-  configObjects = sortConfigurationObjects(configObjects);
-
   const { errors: validationErrors } = validateConfigObjects(configObjects);
   validationErrors.map((err) =>
     log(`[ config ] ${err}`, env === "test" ? "info" : "error")
@@ -113,6 +112,26 @@ export async function processConfigObjects(
   errors.push(...validationErrors);
 
   if (errors.length > 0) return { seenIds, errors };
+
+  let sortError: Error;
+  try {
+    // The objects we are validating are a subset of a larger collection (ie: synctable)
+    // We cannot sort the collection without the other objects in the superset
+    if (extraSortingConfigObjects) {
+      const extraSortingConfigObjectIds = extraSortingConfigObjects.map(
+        (o) => o.id
+      );
+      configObjects = sortConfigurationObjects(
+        [].concat(extraSortingConfigObjects, configObjects)
+      ).filter((o) => !extraSortingConfigObjectIds.includes(o.id));
+    } else {
+      // A normal collection of config objects
+      configObjects = sortConfigurationObjects(configObjects);
+    }
+  } catch (error) {
+    // the config loaders below will produce better error messages
+    sortError = error;
+  }
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
@@ -168,7 +187,8 @@ export async function processConfigObjects(
           const expanded = await processConfigObjects(
             many,
             externallyValidate,
-            validate
+            validate,
+            configObjects.filter((o) => o.id !== configObject.id)
           );
           ids = expanded.seenIds;
           errors.push(...expanded.errors);
@@ -191,6 +211,8 @@ export async function processConfigObjects(
       seenIds[className].push(...newIds);
     }
   }
+
+  if (sortError && errors.length === 0) errors.push(sortError.message);
 
   return { seenIds, errors };
 }

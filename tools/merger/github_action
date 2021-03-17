@@ -4,4 +4,6 @@ set -e
 cd "$(dirname "$0")"
 
 npm install
+
+# Update the CircleCI config file with any new packages
 ./ci_generate

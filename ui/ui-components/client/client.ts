@@ -75,7 +75,9 @@ export class Client {
   checkForLoggedIn({ code }, req?, res?) {
     if (code === "AUTHENTICATION_ERROR") {
       if (isBrowser()) {
-        window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
+        if (window.location.pathname !== "/session/sign-in") {
+          window.location.href = `/session/sign-in?nextPage=${window.location.pathname}`;
+        }
       } else {
         if (req && res) {
           const requestPath = req.url.match("^[^?]*")[0];
@@ -111,7 +113,7 @@ export class Client {
     };
 
     if (req?.headers?.cookie) {
-      headers["X-GROUPAROO-SERVER_TOKEN"] = this.serverToken;
+      headers["X-GROUPAROO-SERVER-TOKEN"] = this.serverToken;
       headers["cookie"] = req?.headers?.cookie;
       useCache = false; // do not ever responses on the server
     }

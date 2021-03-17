@@ -1,10 +1,12 @@
 import { api, config, action, Connection, chatRoom } from "actionhero";
-import { Team, TeamMember, ApiKey } from "../../index";
+import { ApiKey } from "../../models/ApiKey";
+import { Team } from "../../models/Team";
+import { TeamMember } from "../../models/TeamMember";
 
 export class AuthenticationError extends Error {
   code: string;
 
-  constructor(message, code = "AUTHENTICATION_ERROR") {
+  constructor(message: string, code = "AUTHENTICATION_ERROR") {
     super(message);
     this.code = code;
   }
@@ -88,7 +90,7 @@ async function authenticateTeamMember(
     (data.params.csrfToken && data.params.csrfToken !== session.id) ||
     (!data.params.csrfToken &&
       data.connection.rawConnection?.req?.headers[
-        "x-grouparoo-server_token"
+        "x-grouparoo-server-token"
       ] !== config.general.serverToken)
   ) {
     await api.session.destroy(data.connection);

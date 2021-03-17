@@ -57,6 +57,7 @@ describe("session", () => {
       );
 
       expect(error.message).toMatch(/team member not found/);
+      expect(error.code).toMatch("AUTHENTICATION_ERROR");
       expect(success).toBeUndefined();
       expect(teamMember).toBeUndefined();
     });
@@ -71,6 +72,7 @@ describe("session", () => {
       );
 
       expect(error.message).toMatch(/password does not match/);
+      expect(error.code).toMatch("AUTHENTICATION_ERROR");
       expect(success).toBeUndefined();
       expect(teamMember).toBeUndefined();
     });
@@ -468,28 +470,28 @@ describe("session", () => {
         expect(response.teamMember).toBeFalsy();
       });
 
-      test("actions cannot be authenticated with the x-grouparoo-server_token header and without the cookie", async () => {
+      test("actions cannot be authenticated with the x-grouparoo-server-token header and without the cookie", async () => {
         await buildSessionAndCookie();
         const response = await fetch(`${url}/api/v1/account`, {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "X-GROUPAROO-SERVER_TOKEN": config.general.serverToken,
+            "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken,
           },
         }).then((r) => r.json());
         expect(response.error.code).toBe("AUTHENTICATION_ERROR");
         expect(response.teamMember).toBeFalsy();
       });
 
-      test("actions can be authenticated with the x-grouparoo-server_token header and the cookie", async () => {
+      test("actions can be authenticated with the x-grouparoo-server-token header and the cookie", async () => {
         const response = await fetch(`${url}/api/v1/account`, {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
             Cookie: cookie,
-            "X-GROUPAROO-SERVER_TOKEN": config.general.serverToken,
+            "X-GROUPAROO-SERVER-TOKEN": config.general.serverToken,
           },
         }).then((r) => r.json());
         expect(response.teamMember.id).toBeTruthy();

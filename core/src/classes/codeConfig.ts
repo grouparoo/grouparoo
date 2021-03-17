@@ -2,6 +2,7 @@ import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
 import extractDuplicates from "../modules/validators/extractDuplicates";
+import { topologicalSort, Graph } from "../modules/topologicalSort";
 
 export interface IdsByClass {
   app?: string[];
@@ -54,7 +55,7 @@ export interface ConfigurationObject {
   highWaterColumn?: string;
 }
 
-interface orderedConfigObject {
+interface ConfigObjectWithReferenceIDs {
   configObject: ConfigurationObject;
   providedIds: string[];
   prerequisiteIds: string[];
@@ -168,18 +169,7 @@ export function extractNonNullParts(
 export function sortConfigurationObjects(
   configObjects: ConfigurationObject[]
 ): ConfigurationObject[] {
-  const configObjectsWithIds: orderedConfigObject[] = [];
-
-  for (const i in configObjects) {
-    const configObject = configObjects[i];
-    const { providedIds, prerequisiteIds } = getParentIds(configObject);
-    configObjectsWithIds.push({
-      configObject,
-      providedIds,
-      prerequisiteIds,
-    });
-  }
-
+  const configObjectsWithIds = getConfigObjectsWithIds(configObjects);
   const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
     configObjectsWithIds
   );
@@ -200,6 +190,22 @@ export function validateConfigObjects(
     errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
   }
   return { configObjects, errors };
+}
+
+export function getConfigObjectsWithIds(configObjects: ConfigurationObject[]) {
+  const configObjectsWithIds: ConfigObjectWithReferenceIDs[] = [];
+
+  for (const i in configObjects) {
+    const configObject = configObjects[i];
+    const { providedIds, prerequisiteIds } = getParentIds(configObject);
+    configObjectsWithIds.push({
+      configObject,
+      providedIds,
+      prerequisiteIds,
+    });
+  }
+
+  return configObjectsWithIds;
 }
 
 export function getParentIds(configObject: ConfigurationObject) {
@@ -223,16 +229,13 @@ export function getParentIds(configObject: ConfigurationObject) {
   }
 
   const objectContainers = ["options", "source", "destination"];
+  const validContainerKeys = ["identifyingPropertyId", "propertyId"];
   objectContainers.map((_container) => {
     if (configObject[_container]) {
       const containerKeys = Object.keys(configObject[_container]);
       for (const i in containerKeys) {
-        if (containerKeys[i].match(/.+Id$/)) {
+        if (validContainerKeys.includes(containerKeys[i])) {
           prerequisiteIds.push(configObject[_container][containerKeys[i]]);
-        } else if (containerKeys[i].match(/.+Id$/)) {
-          prerequisiteIds.push(
-            configObject[_container][containerKeys[i]].replace(/^.{3}_/, "")
-          );
         }
       }
     }
@@ -253,61 +256,51 @@ export function getParentIds(configObject: ConfigurationObject) {
 
   if (configObject["mapping"]) {
     const mappingValues = Object.values(configObject["mapping"]);
-    mappingValues.forEach((v) => {
-      prerequisiteIds.push(v);
-    });
+    mappingValues.forEach((v) => prerequisiteIds.push(v));
   }
 
   if (configObject["destinationGroupMemberships"]) {
     const groupIds: string[] = Object.values(
       configObject["destinationGroupMemberships"]
     );
-    groupIds.forEach((v) => {
-      prerequisiteIds.push(v);
-    });
+    groupIds.forEach((v) => prerequisiteIds.push(v));
   }
 
-  return { prerequisiteIds, providedIds };
+  return {
+    prerequisiteIds: prerequisiteIds.filter(uniqueArrayValues),
+    providedIds: providedIds.filter(uniqueArrayValues),
+  };
 }
 
-function sortConfigObjectsWithIds(configObjectsWithIds: orderedConfigObject[]) {
-  const sortedConfigObjectsWithIds: orderedConfigObject[] = [];
+export function sortConfigObjectsWithIds(
+  configObjectsWithIds: ConfigObjectWithReferenceIDs[]
+) {
+  const sortedConfigObjectsWithIds: ConfigObjectWithReferenceIDs[] = [];
+  const dependencyGraph: Graph = {};
 
-  configObjectsWithIds.forEach((c) => {
-    if (sortedConfigObjectsWithIds.length === 0) {
-      sortedConfigObjectsWithIds.push(c);
-    } else if (c.prerequisiteIds.length === 0) {
-      sortedConfigObjectsWithIds.unshift(c);
-    } else {
-      let indexOfLastDependency: number;
-      let indexOfFirstDependent: number;
-
-      sortedConfigObjectsWithIds.forEach((listedConfigObject, idx) => {
-        c.prerequisiteIds.forEach((id) => {
-          if (listedConfigObject.providedIds.includes(id)) {
-            indexOfLastDependency = idx;
-          }
-        });
-
-        c.providedIds.map((id) => {
-          if (
-            !indexOfFirstDependent &&
-            listedConfigObject.prerequisiteIds.includes(id)
-          ) {
-            indexOfFirstDependent = idx;
-          }
-        });
-      });
-
-      if (indexOfLastDependency) {
-        sortedConfigObjectsWithIds.splice(indexOfLastDependency + 1, 0, c);
-      } else if (indexOfFirstDependent) {
-        sortedConfigObjectsWithIds.splice(indexOfFirstDependent, 0, c);
-      } else {
-        sortedConfigObjectsWithIds.push(c);
-      }
-    }
+  configObjectsWithIds.forEach((o) => {
+    o.providedIds.forEach((providedId) => {
+      dependencyGraph[providedId] = o.prerequisiteIds.filter(
+        (preReq) => preReq !== providedId
+      );
+    });
   });
 
-  return sortedConfigObjectsWithIds;
+  const sortedKeys = topologicalSort(dependencyGraph);
+
+  sortedKeys.forEach((id) => {
+    sortedConfigObjectsWithIds.push(
+      configObjectsWithIds.find(
+        (o) =>
+          o.configObject.id === id ||
+          o.configObject?.bootstrappedProperty?.id === id
+      )
+    );
+  });
+
+  return sortedConfigObjectsWithIds.filter(uniqueArrayValues);
+}
+
+function uniqueArrayValues(value, index, self) {
+  return self.indexOf(value) === index;
 }

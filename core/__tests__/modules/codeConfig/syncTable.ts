@@ -69,17 +69,17 @@ describe("modules/codeConfig/syncTable", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: [],
-        app: ["mailchimpapp", "data_warehouse"],
+        app: expect.arrayContaining(["mailchimpapp", "data_warehouse"]),
         destination: ["magic_table_destination"],
         group: ["magic_table_group"],
-        property: [
+        property: expect.arrayContaining([
           "magic_table_property_user_id", // bootstrapped
           "magic_table_property_fname",
           "magic_table_property_decimal_col",
           "magic_table_property_timestamp_col",
           "email_custom",
           "magic_table_membership",
-        ],
+        ]),
         schedule: ["magic_table_schedule"],
         source: ["magic_table_source"],
         team: [],

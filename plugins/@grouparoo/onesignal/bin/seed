@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+const dotenv = require("dotenv");
+const path = require("path");
+const fs = require("fs-extra");
+const { Client } = require("onesignal-node");
+
+const envFile = path.resolve(path.join(__dirname, "../__tests__/.env"));
+const options = readEnv(envFile);
+
+function readEnv(filePath) {
+  return dotenv.parse(fs.readFileSync(filePath));
+}
+
+async function addDevice(externalUserId) {
+  const client = new Client(
+    options.ONESIGNAL_APP_ID,
+    options.ONESIGNAL_API_KEY
+  );
+
+  console.log(`Adding device with external_user_id ${externalUserId}`);
+
+  await client.addDevice({
+    device_type: 11,
+    identifier: `user${externalUserId}@demo.com`,
+    external_user_id: externalUserId,
+  });
+}
+
+const [, , externalUserId] = process.argv;
+addDevice(externalUserId).then(
+  () => {
+    console.log("Success!");
+    process.exit(0);
+  },
+  (error) => {
+    console.error(`ERROR! ${error}`);
+    process.exit(1);
+  }
+);
