@@ -1,19 +1,15 @@
 import { connect } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
+import os from "os";
 import parse from "csv-parse/lib/sync";
 import { config } from "actionhero";
 
-export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
-export const purchasesTableName = `purchases_${
-  process.env.JEST_WORKER_ID || 1
-}`;
-export const profilesDestinationTableName = `output_users_${
-  process.env.JEST_WORKER_ID || 1
-}`;
-export const groupsDestinationTableName = `output_groups_${
-  process.env.JEST_WORKER_ID || 1
-}`;
+const workerId = process.env.JEST_WORKER_ID || 1;
+export const usersTableName = `users_${workerId}`;
+export const purchasesTableName = `purchases_${workerId}`;
+export const profilesDestinationTableName = `output_users_${workerId}`;
+export const groupsDestinationTableName = `output_groups_${workerId}`;
 
 const allTables = {
   [usersTableName]: `
@@ -62,12 +58,9 @@ CREATE TABLE ${groupsDestinationTableName}(
 };
 
 export const appOptions = {
-  user: config.sequelize.username || require("os").userInfo().username,
-  password: config.sequelize.password || "password",
-  host: config.sequelize.host,
-  port: config.sequelize.port,
-  database: config.sequelize.database,
+  file: path.join(os.tmpdir(), `${config.sequelize.database}.sqlite`),
 };
+
 const appId = "app_31bb06e8-0a4e-49c3-ad42-545f2e8662e1";
 
 let client;
@@ -75,11 +68,15 @@ export async function getClient() {
   if (client) {
     return client;
   }
+
+  if (!fs.existsSync(appOptions.file)) fs.openSync(appOptions.file, "w");
+
   client = await connect({
     appOptions,
     app: null,
     appId,
   });
+
   return client;
 }
 
@@ -91,14 +88,14 @@ export async function endClient() {
 }
 async function dropTables() {
   for (const tableName in allTables) {
-    await client.query(`drop table if exists ${tableName}`);
+    await client.asyncQuery(`DROP TABLE IF EXISTS ${tableName}`);
   }
 }
+
 async function createTables() {
   await dropTables();
-  for (const tableName in allTables) {
-    const createSql = allTables[tableName];
-    await client.query(createSql);
+  for (const query of Object.values(allTables)) {
+    await client.asyncQuery(query);
   }
 }
 
@@ -110,7 +107,8 @@ async function fillTable(tableName, fileName) {
     const q = `INSERT INTO ${tableName} (${Object.keys(row).join(
       ", "
     )}) VALUES ('${Object.values(row).join("', '")}')`;
-    await client.query(q);
+
+    await client.asyncQuery(q);
   }
 }
 
@@ -131,6 +129,7 @@ export function getConfig() {
     groupsDestinationTableName,
   };
 }
+
 export async function beforeData(): Promise<{
   client: any;
 }> {

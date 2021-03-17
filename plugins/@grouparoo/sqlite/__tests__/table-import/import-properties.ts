@@ -1,10 +1,10 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { Profile, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -61,7 +61,7 @@ async function getPropertyArrays(
   });
 }
 
-describe("postgres/table/profileProperties", () => {
+describe("sqlite/table/profileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 

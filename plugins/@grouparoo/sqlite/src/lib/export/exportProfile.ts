@@ -32,16 +32,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     );
   }
 
-  // TODO:
-  //
-  // - [ ] Something isn't working here. To recreate, run the update SQL in
-  //   TablePlus and then re-run the users source. Track down the issue.
-  // - [ ] Get tests passing.
-  // - [ ] Refactor this file.
-  // - [ ] Remove console logs.
-  // - [ ] Remove pg packages.
-  // - [ ] Support relative paths.
-
   try {
     // --- Profiles --- //
     if (toDelete) {
