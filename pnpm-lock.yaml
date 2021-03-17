@@ -46,33 +46,33 @@ importers:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       jest: 26.6.3
     specifiers:
-      '@grouparoo/bigquery': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/csv': 0.2.7
-      '@grouparoo/customerio': 0.2.7
-      '@grouparoo/demo': 0.2.7
-      '@grouparoo/facebook': 0.2.7
-      '@grouparoo/files-s3': 0.2.7
-      '@grouparoo/google-sheets': 0.2.7
-      '@grouparoo/hubspot': 0.2.7
-      '@grouparoo/intercom': 0.2.7
-      '@grouparoo/iterable': 0.2.7
-      '@grouparoo/logger': 0.2.7
-      '@grouparoo/mailchimp': 0.2.7
-      '@grouparoo/marketo': 0.2.7
-      '@grouparoo/mysql': 0.2.7
-      '@grouparoo/onesignal': 0.2.7
-      '@grouparoo/pardot': 0.2.7
-      '@grouparoo/postgres': 0.2.7
-      '@grouparoo/redshift': 0.2.7
-      '@grouparoo/sailthru': 0.2.7
-      '@grouparoo/salesforce': 0.2.7
-      '@grouparoo/sendgrid': 0.2.7
-      '@grouparoo/sentry': 0.2.7
-      '@grouparoo/snowflake': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
-      '@grouparoo/ui-community': 0.2.7
-      '@grouparoo/zendesk': 0.2.7
+      '@grouparoo/bigquery': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/csv': 0.2.8-alpha.0
+      '@grouparoo/customerio': 0.2.8-alpha.0
+      '@grouparoo/demo': 0.2.8-alpha.0
+      '@grouparoo/facebook': 0.2.8-alpha.0
+      '@grouparoo/files-s3': 0.2.8-alpha.0
+      '@grouparoo/google-sheets': 0.2.8-alpha.0
+      '@grouparoo/hubspot': 0.2.8-alpha.0
+      '@grouparoo/intercom': 0.2.8-alpha.0
+      '@grouparoo/iterable': 0.2.8-alpha.0
+      '@grouparoo/logger': 0.2.8-alpha.0
+      '@grouparoo/mailchimp': 0.2.8-alpha.0
+      '@grouparoo/marketo': 0.2.8-alpha.0
+      '@grouparoo/mysql': 0.2.8-alpha.0
+      '@grouparoo/onesignal': 0.2.8-alpha.0
+      '@grouparoo/pardot': 0.2.8-alpha.0
+      '@grouparoo/postgres': 0.2.8-alpha.0
+      '@grouparoo/redshift': 0.2.8-alpha.0
+      '@grouparoo/sailthru': 0.2.8-alpha.0
+      '@grouparoo/salesforce': 0.2.8-alpha.0
+      '@grouparoo/sendgrid': 0.2.8-alpha.0
+      '@grouparoo/sentry': 0.2.8-alpha.0
+      '@grouparoo/snowflake': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
+      '@grouparoo/ui-community': 0.2.8-alpha.0
+      '@grouparoo/zendesk': 0.2.8-alpha.0
       jest: 26.6.3
   apps/staging-enterprise:
     dependencies:
@@ -106,33 +106,33 @@ importers:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       jest: 26.6.3
     specifiers:
-      '@grouparoo/bigquery': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/csv': 0.2.7
-      '@grouparoo/customerio': 0.2.7
-      '@grouparoo/demo': 0.2.7
-      '@grouparoo/facebook': 0.2.7
-      '@grouparoo/files-s3': 0.2.7
-      '@grouparoo/google-sheets': 0.2.7
-      '@grouparoo/hubspot': 0.2.7
-      '@grouparoo/intercom': 0.2.7
-      '@grouparoo/iterable': 0.2.7
-      '@grouparoo/logger': 0.2.7
-      '@grouparoo/mailchimp': 0.2.7
-      '@grouparoo/marketo': 0.2.7
-      '@grouparoo/mysql': 0.2.7
-      '@grouparoo/onesignal': 0.2.7
-      '@grouparoo/pardot': 0.2.7
-      '@grouparoo/postgres': 0.2.7
-      '@grouparoo/redshift': 0.2.7
-      '@grouparoo/sailthru': 0.2.7
-      '@grouparoo/salesforce': 0.2.7
-      '@grouparoo/sendgrid': 0.2.7
-      '@grouparoo/sentry': 0.2.7
-      '@grouparoo/snowflake': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
-      '@grouparoo/ui-enterprise': 0.2.7
-      '@grouparoo/zendesk': 0.2.7
+      '@grouparoo/bigquery': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/csv': 0.2.8-alpha.0
+      '@grouparoo/customerio': 0.2.8-alpha.0
+      '@grouparoo/demo': 0.2.8-alpha.0
+      '@grouparoo/facebook': 0.2.8-alpha.0
+      '@grouparoo/files-s3': 0.2.8-alpha.0
+      '@grouparoo/google-sheets': 0.2.8-alpha.0
+      '@grouparoo/hubspot': 0.2.8-alpha.0
+      '@grouparoo/intercom': 0.2.8-alpha.0
+      '@grouparoo/iterable': 0.2.8-alpha.0
+      '@grouparoo/logger': 0.2.8-alpha.0
+      '@grouparoo/mailchimp': 0.2.8-alpha.0
+      '@grouparoo/marketo': 0.2.8-alpha.0
+      '@grouparoo/mysql': 0.2.8-alpha.0
+      '@grouparoo/onesignal': 0.2.8-alpha.0
+      '@grouparoo/pardot': 0.2.8-alpha.0
+      '@grouparoo/postgres': 0.2.8-alpha.0
+      '@grouparoo/redshift': 0.2.8-alpha.0
+      '@grouparoo/sailthru': 0.2.8-alpha.0
+      '@grouparoo/salesforce': 0.2.8-alpha.0
+      '@grouparoo/sendgrid': 0.2.8-alpha.0
+      '@grouparoo/sentry': 0.2.8-alpha.0
+      '@grouparoo/snowflake': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
+      '@grouparoo/ui-enterprise': 0.2.8-alpha.0
+      '@grouparoo/zendesk': 0.2.8-alpha.0
       jest: 26.6.3
   cli:
     dependencies:
@@ -241,8 +241,8 @@ importers:
       typedoc: 0.20.32_typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/client-web': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/client-web': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/faker': '*'
       '@types/fs-extra': '*'
       '@types/jest': '*'
@@ -308,8 +308,8 @@ importers:
       typescript: 4.2.3
       uuid: 8.3.2
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       '@types/uuid': '*'
@@ -339,9 +339,9 @@ importers:
       typescript: 4.2.3
     specifiers:
       '@google-cloud/bigquery': 5.5.0
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -367,8 +367,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -397,9 +397,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -427,8 +427,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -457,8 +457,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -493,9 +493,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -523,7 +523,7 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -546,7 +546,7 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -573,8 +573,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -605,9 +605,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -638,9 +638,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -670,9 +670,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -696,8 +696,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -721,8 +721,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -751,9 +751,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -782,9 +782,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/mysql': '*'
       '@types/node': '*'
@@ -809,8 +809,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -837,9 +837,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -871,9 +871,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -907,9 +907,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -939,10 +939,10 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/postgres': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/postgres': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       '@types/pg': '*'
@@ -969,9 +969,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -1001,9 +1001,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -1033,9 +1033,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@sendgrid/client': 7.4.2
       '@types/jest': '*'
       '@types/node': '*'
@@ -1062,8 +1062,8 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@sentry/node': 6.2.2
       '@sentry/tracing': 6.2.2
       '@types/jest': '*'
@@ -1092,9 +1092,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -1125,7 +1125,7 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/core': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
       '@types/faker': '*'
       '@types/jest': '*'
       '@types/node': '*'
@@ -1157,9 +1157,9 @@ importers:
       ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
       typescript: 4.2.3
     specifiers:
-      '@grouparoo/app-templates': 0.2.7
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/app-templates': 0.2.8-alpha.0
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.7
@@ -1217,9 +1217,9 @@ importers:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.2
       '@fortawesome/react-fontawesome': 0.1.14
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
-      '@grouparoo/ui-components': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
+      '@grouparoo/ui-components': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1298,8 +1298,8 @@ importers:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.2
       '@fortawesome/react-fontawesome': 0.1.14
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
@@ -1380,9 +1380,9 @@ importers:
       '@fortawesome/fontawesome-svg-core': 1.2.34
       '@fortawesome/free-solid-svg-icons': 5.15.2
       '@fortawesome/react-fontawesome': 0.1.14
-      '@grouparoo/core': 0.2.7
-      '@grouparoo/spec-helper': 0.2.7
-      '@grouparoo/ui-components': 0.2.7
+      '@grouparoo/core': 0.2.8-alpha.0
+      '@grouparoo/spec-helper': 0.2.8-alpha.0
+      '@grouparoo/ui-components': 0.2.8-alpha.0
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
