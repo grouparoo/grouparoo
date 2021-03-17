@@ -60,8 +60,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
       const existingRecords = await connection.asyncQuery(query);
 
-      console.log("### ", existingRecords);
-
       if (existingRecords.length === 1) {
         // update
         let updateStatement = `UPDATE ${table} SET`;
@@ -112,7 +110,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         // insert
         const query = `INSERT INTO ${table} (${Object.keys(
           newProfileProperties
-        )}) VALUES (${Object.values(newProfileProperties)})`;
+        )}) VALUES (${buildValueList(newProfileProperties)})`;
         validateQuery(query);
 
         console.log("--- [DEST 06] exportProfile ---", query);
@@ -123,7 +121,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // just insert
       const query = `INSERT INTO ${table} (${Object.keys(
         newProfileProperties
-      )}) VALUES (${Object.values(newProfileProperties)})`;
+      )}) VALUES (${buildValueList(newProfileProperties)})`;
       validateQuery(query);
 
       console.log("--- [DEST 07] exportProfile ---", query);
@@ -150,7 +148,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
         const groupInsertQuery = `INSERT INTO ${groupsTable} (${Object.keys(
           data
-        )}) VALUES (${Object.values(data)}) ON CONFLICT IGNORE`;
+        )}) VALUES (${buildValueList(data)}) ON CONFLICT DO NOTHING`;
         validateQuery(groupInsertQuery);
 
         console.log("--- [DEST 09] exportProfile ---", groupInsertQuery);
@@ -167,4 +165,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     return { success: true };
   }
+};
+
+const buildValueList = (data: { [key: string]: string | number }) => {
+  return Object.values(data).map((v) => (typeof v === "string" ? `'${v}'` : v));
 };
