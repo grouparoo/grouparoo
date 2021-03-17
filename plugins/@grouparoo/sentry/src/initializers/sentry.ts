@@ -1,7 +1,7 @@
 import { Initializer, api, env, action, task } from "actionhero";
 import { plugin } from "@grouparoo/core";
-import Sentry from "@sentry/node";
-import Tracing from "@sentry/tracing";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 const packageJSON = require("./../../package.json");
 
 export class SentryInitializer extends Initializer {
