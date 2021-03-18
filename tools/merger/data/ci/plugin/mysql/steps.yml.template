@@ -1,6 +1,8 @@
-      - run:
+- run:
           name: install mysql client
           command: sudo apt install -y mysql-client
       - run:
           name: create mysql databases
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
+          environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: true
