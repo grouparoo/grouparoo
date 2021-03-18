@@ -1,8 +1,8 @@
-import { makeFindQuery, castValue, MongoAggregationMethod } from "./util";
+import { castValue, makeFindQuery, MongoAggregationMethod } from "./util";
 import {
-  GetPropertyValueMethod,
-  DataResponse,
   AggregationMethod,
+  DataResponse,
+  GetPropertyValueMethod,
 } from "@grouparoo/app-templates/dist/source/table";
 
 export const getPropertyValue: GetPropertyValueMethod = async ({
@@ -26,6 +26,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       query["$and"].push(makeFindQuery(condition));
     }
   }
+
   if (Object.keys(query).length > 0) {
     aggPipeline.push({
       $match: query,
@@ -106,6 +107,10 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
         } else {
           response = rows.map((row) => castValue(row[columnName]));
         }
+      }
+    } else {
+      if (aggregationMethod === AggregationMethod.Count) {
+        response = [0];
       }
     }
   } catch (error) {

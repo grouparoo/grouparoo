@@ -15,6 +15,7 @@ import {
 } from "@grouparoo/app-templates/dist/source/table";
 import { getTables } from "../lib/table-import/getTables";
 import { getColumns } from "../lib/table-import/getColumns";
+
 import {
   QueryPropertyTemplate,
   QuerySourceTemplate,
@@ -34,17 +35,17 @@ export class Plugins extends Initializer {
       name: packageJSON.name,
       icon: "/public/@grouparoo/mongo/mongo.png",
       templates: [
-        new AppTemplate("mongodb", [
+        new AppTemplate("mongo", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new TableSourceTemplate("mongodb", { getTables, getColumns }),
-        new TablePropertyTemplate("mongodb"),
-        new QuerySourceTemplate("mongodb"),
-        new QueryPropertyTemplate("mongodb"),
+        new TableSourceTemplate("mongo", { getTables, getColumns }),
+        new TablePropertyTemplate("mongo"),
+        new QueryPropertyTemplate("mongo"),
+        new QuerySourceTemplate("mongo"),
       ],
       apps: [
         {
-          name: "mongodb",
+          name: "mongo",
           options: [
             {
               key: "uri",

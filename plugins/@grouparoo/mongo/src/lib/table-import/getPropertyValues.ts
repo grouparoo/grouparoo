@@ -1,4 +1,8 @@
-import { makeFindQuery, MongoAggregationMethod } from "./util";
+import {
+  getMostTrendingType,
+  makeFindQuery,
+  MongoAggregationMethod,
+} from "./util";
 import {
   GetPropertyValuesMethod,
   DataResponse,
@@ -19,11 +23,25 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   primaryKeys,
 }) => {
   let groupByColumns = [tablePrimaryKeyCol];
-  let isUsingResultField = true;
   let aggSelect;
   let aggPipeline = [];
+  let isUsingResultField = true;
+  let customAggValue;
+  let responses: { [key: string]: DataResponse[] } = {};
+
+  if (primaryKeys.length === 0) return responses;
 
   let query = {};
+
+  let fieldType: string = await getMostTrendingType(
+    connection,
+    tableName,
+    tablePrimaryKeyCol
+  );
+
+  if (fieldType === "int") {
+    primaryKeys = primaryKeys.map((k) => parseInt(String(k)));
+  }
 
   matchConditions.push({
     columnName: tablePrimaryKeyCol,
@@ -47,6 +65,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   switch (aggregationMethod) {
     case AggregationMethod.Exact:
       isUsingResultField = false;
+
       groupByColumns.push(columnName);
       if (sortColumn) {
         aggPipeline.push({ $sort: { [sortColumn]: 1 } });
@@ -57,9 +76,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       aggSelect = MongoAggregationMethod.Average;
       break;
     case AggregationMethod.Count:
-      aggPipeline.push({
-        $count: "__result",
-      });
+      aggSelect = MongoAggregationMethod.Sum;
+      customAggValue = 1;
       break;
     case AggregationMethod.Sum:
       aggSelect = MongoAggregationMethod.Sum;
@@ -92,28 +110,25 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  let group = null;
-  if (groupByColumns.length > 0) {
-    group = groupByColumns.map((c) => ({ [c]: `$${c}` }));
-  }
-
   if (aggSelect) {
+    if (groupByColumns.length > 0) {
+      for (const group of groupByColumns) {
+        aggPipeline.push({
+          $group: {
+            _id: `$${group}`,
+            __result: { [aggSelect]: customAggValue || `$${columnName}` },
+            __pk: { $first: `$${tablePrimaryKeyCol}` },
+          },
+        });
+      }
+    }
+  } else {
     aggPipeline.push({
-      $group: {
-        _id: group,
-        ["__result"]: { [aggSelect]: `$${columnName}` },
+      $addFields: {
+        __pk: `$${tablePrimaryKeyCol}`,
       },
     });
   }
-
-  // aggPipeline.push({
-  //   $project: {
-  //     ["__pk"]: `$${tablePrimaryKeyCol}`,
-  //   },
-  // });
-
-  let responses: { [key: string]: DataResponse[] } = {};
-  if (primaryKeys.length === 0) return responses;
 
   try {
     const rows = await connection.db
@@ -121,14 +136,18 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       .aggregate(aggPipeline)
       .toArray();
 
-    console.log(rows);
-
-    rows.forEach((row) => {
-      if (!responses[row.__pk]) responses[row.__pk] = [];
-      if (isArray || (responses[row.__pk].length === 0 && !isArray)) {
-        responses[row.__pk].push(row.__result);
-      }
-    });
+    if (rows && rows.length > 0) {
+      rows.forEach((row) => {
+        if (!responses[row.__pk]) responses[row.__pk] = [];
+        if (isArray || (responses[row.__pk].length === 0 && !isArray)) {
+          if (isUsingResultField) {
+            responses[row.__pk].push(row.__result);
+          } else {
+            responses[row.__pk].push(row[columnName]);
+          }
+        }
+      });
+    }
   } catch (error) {
     throw new Error(`Error with MongoDB query Statement. Error - ${error}`);
   }

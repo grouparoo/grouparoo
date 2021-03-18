@@ -85,6 +85,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   connection,
   appOptions,
   appId,
+  sourceOptions,
   tableName,
   getSampleRows,
   getColumns,
@@ -92,6 +93,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   const rows = await getExampleRows({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     tableName,
     getSampleRows,

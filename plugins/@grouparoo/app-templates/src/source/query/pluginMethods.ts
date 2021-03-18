@@ -1,4 +1,4 @@
-import { SimpleAppOptions } from "@grouparoo/core";
+import { SimpleAppOptions, SimpleSourceOptions } from "@grouparoo/core";
 export { SimpleAppOptions };
 
 import { DataResponse, DataResponseRow } from "../shared/types";
@@ -10,6 +10,7 @@ export interface ExecuteQueryMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     query: string;
   }): Promise<DataResponseRow[]>;

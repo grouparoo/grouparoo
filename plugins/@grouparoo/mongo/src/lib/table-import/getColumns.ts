@@ -5,6 +5,8 @@ import {
   ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 
+import { getMostTrendingType } from "./util";
+
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
   tableName,
@@ -42,28 +44,11 @@ const getTypeInfo = async function (
   let compare = false;
   let contains = false;
 
-  fieldName = fieldName.replace(`${tableName}.`, "");
-
-  const types = await connection.db
-    .collection(tableName)
-    .aggregate([
-      { $sample: { size: 10 } },
-      {
-        $match: {
-          $and: [
-            { [fieldName]: { $exists: true } },
-            { [fieldName]: { $ne: null } },
-          ],
-        },
-      },
-      {
-        $project: {
-          [fieldName]: { $type: `$${fieldName}` },
-        },
-      },
-    ])
-    .toArray();
-  let fieldType: string = getMostTrendingType(fieldName, types);
+  let fieldType: string = await getMostTrendingType(
+    connection,
+    tableName,
+    fieldName
+  );
 
   switch (fieldType.toLowerCase()) {
     // https://docs.mongodb.com/manual/reference/operator/aggregation/type/
@@ -121,19 +106,8 @@ const getTypeInfo = async function (
     ops.push(FilterOperation.LessThanOrEqual);
   }
   if (contains) {
-    // ops.push(MongoFilterOperation.Contain);
-    // ops.push(MongoFilterOperation.NotContain);
+    ops.push(FilterOperation.Contain);
+    ops.push(FilterOperation.NotContain);
   }
   return { type, filterOperations: ops };
-};
-
-const getMostTrendingType = function (fieldName: string, types: any): string {
-  const trendingTypes = {};
-  for (const entry of types) {
-    const currentCount = trendingTypes[entry[fieldName]];
-    trendingTypes[entry[fieldName]] = currentCount ? currentCount + 1 : 1;
-  }
-  return Object.keys(trendingTypes).reduce((a, b) =>
-    trendingTypes[a] > trendingTypes[b] ? a : b
-  );
 };

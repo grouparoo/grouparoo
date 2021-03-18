@@ -29,7 +29,7 @@ const collectionsOptions = {
         required: ["id"],
         properties: {
           id: {
-            bsonType: "string",
+            bsonType: "int",
           },
           first_name: {
             bsonType: "string",
@@ -62,7 +62,7 @@ const collectionsOptions = {
             bsonType: "date",
           },
           stamp: {
-            bsonType: "timestamp",
+            bsonType: "date",
           },
         },
       },
@@ -75,6 +75,9 @@ const collectionsOptions = {
         bsonType: "object",
         required: ["profile_id"],
         properties: {
+          id: {
+            bsonType: "int",
+          },
           profile_id: {
             bsonType: "int",
           },
@@ -88,7 +91,7 @@ const collectionsOptions = {
             bsonType: "date",
           },
           stamp: {
-            bsonType: "timestamp",
+            bsonType: "date",
           },
         },
       },
@@ -122,6 +125,8 @@ export function getConfig() {
     appOptions,
     sourceOptions,
     appId,
+    usersTableName: usersCollectionName,
+    purchasesTableName: purchasesCollectionName,
   };
 }
 
@@ -156,7 +161,6 @@ async function fillTable(collectionName, fileName) {
 }
 
 export async function populate() {
-  await getClient();
   await createTables();
   await fillTable(usersCollectionName, "profiles.csv");
   await fillTable(purchasesCollectionName, "purchases.csv");
@@ -168,11 +172,13 @@ function parseCsvToObject(csv, collectionName) {
   const headers = lines[0].split(",");
   for (let i = 1; i < lines.length; i++) {
     const obj = {};
-    const currentLine = lines[i].split(",");
-    for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = castValue(collectionName, headers[j], currentLine[j]);
+    if (String(lines[i]).trim() !== "") {
+      const currentLine = lines[i].split(",");
+      for (let j = 0; j < headers.length; j++) {
+        obj[headers[j]] = castValue(collectionName, headers[j], currentLine[j]);
+      }
+      result.push(obj);
     }
-    result.push(obj);
   }
   return result; //JSON
 }
@@ -195,7 +201,7 @@ export function castValue(collectionName, field, value): DataResponse {
     case "string":
       return value;
     case "bool":
-      return Boolean(value);
+      return value === "true";
     case "int":
       return parseInt(value);
     case "double":
@@ -207,4 +213,17 @@ export function castValue(collectionName, field, value): DataResponse {
     default:
       return null;
   }
+}
+
+export async function beforeData(): Promise<{
+  client: any;
+}> {
+  await getClient();
+  await populate();
+  return { client };
+}
+
+export async function afterData() {
+  await dropTables();
+  await endClient();
 }

@@ -20,8 +20,6 @@ export const getSampleRows: GetSampleRowsMethod = async ({
       .aggregate([{ $project: filterFields }, { $sample: { size: 10 } }])
       .toArray();
 
-    console.log(appOptions.fields);
-
     rows.forEach((row) => out.push(castRow(row)));
   }
   return out;

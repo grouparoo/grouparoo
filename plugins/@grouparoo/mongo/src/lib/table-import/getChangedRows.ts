@@ -17,6 +17,9 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   let query = {};
   let aggPipeline = [];
   if (highWaterMarkCondition) {
+    highWaterMarkCondition.value = new Date(
+      String(highWaterMarkCondition.value)
+    );
     query = makeFindQuery(highWaterMarkCondition);
   }
   if (Object.keys(query).length > 0) {
@@ -31,7 +34,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
     },
   });
   aggPipeline.push({
-    $project: {
+    $addFields: {
       [highWaterMarkKey]: `$${highWaterMarkAndSortColumnASC}`,
     },
   });
