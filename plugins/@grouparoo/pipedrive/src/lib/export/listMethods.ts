@@ -75,6 +75,7 @@ async function ensureFieldAndFilter(
   return data.key;
 }
 
+export const GROUP_FIELD_PREFIX = "In Group:";
 function makeGroupFieldName(groupName: string) {
-  return `In Group: ${groupName}`;
+  return `${GROUP_FIELD_PREFIX} ${groupName}`;
 }

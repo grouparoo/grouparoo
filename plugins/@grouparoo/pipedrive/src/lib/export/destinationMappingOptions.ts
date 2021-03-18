@@ -6,6 +6,7 @@ import {
 } from "@grouparoo/core";
 
 import { connect } from "./../connect";
+import { GROUP_FIELD_PREFIX } from "./listMethods";
 
 export interface PipedriveCacheData {
   appId: string;
@@ -22,8 +23,13 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
     { appId, appOptions },
     true
   );
-  const knownNotRequired = allKnown.filter((field) => !field.required);
+
   const required = allKnown.filter((field) => field.required);
+
+  // Filter out required fields and those that we create to manage group membership
+  const knownNotRequired = allKnown.filter(
+    (field) => !field.required && !field.groupMembershipField
+  );
 
   return {
     labels: {
@@ -91,6 +97,7 @@ type KnownPersonField = {
   type: DestinationMappingOptionsResponseTypes;
   required: boolean;
   important: boolean;
+  groupMembershipField: boolean;
 };
 
 export const getKnownPersonFieldMap = async (
@@ -129,6 +136,10 @@ export const fetchKnownPersonFields = async (
   const required = ["name", "email"];
   const allowedFields = [...required, "phone", "label"];
 
+  // Allow setting "End of" for date/time ranges and "Currency" for monetary fields
+  // The keys for these are like cd77a9b30948242ef1ef57acbe28c0aa054b8fde_until
+  const subfieldsRegex = /(_until|_currency)$/;
+
   const {
     data: fields,
   } = await client.PersonFieldsController.getAllPersonFields();
@@ -141,6 +152,9 @@ export const fetchKnownPersonFields = async (
     // Some of those fields should be available though, so we let them through.
     if (!field.edit_flag && !allowedFields.includes(field.key)) continue;
 
+    // Most subfields can not be edited, but some can be
+    if (field.is_subfield && !field.key.match(subfieldsRegex)) continue;
+
     const type = mapTypesToGrouparoo(field.field_type, field.name);
     if (type) {
       out.push({
@@ -148,6 +162,7 @@ export const fetchKnownPersonFields = async (
         pipedriveKey: field.key,
         required: required.includes(field.key),
         important: field.important_flag, // they have a built-in (paid) feature to mark fields as important
+        groupMembershipField: field.name.startsWith(GROUP_FIELD_PREFIX), // used to hide our fields from destinationMappingOptions
         type,
       });
     }
