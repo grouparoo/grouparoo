@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 import { beforeData, afterData, getConfig } from "../utils/data";
@@ -58,7 +58,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("postgres/query/profiles", () => {
+describe("sqlite/query/profiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -72,13 +72,13 @@ describe("postgres/query/profiles", () => {
     // setup the world
     const app = await helper.factories.app({
       name: "App",
-      type: "postgres",
+      type: "sqlite",
       options: appOptions,
     });
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-query-import",
+      type: "sqlite-query-import",
     });
     await source.update({ state: "ready" });
 

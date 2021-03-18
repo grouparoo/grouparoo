@@ -8,7 +8,7 @@ describe("getChangedRows", () => {
     offset: 0,
     scheduleOptions: {},
     connection: {
-      query: (query) => {
+      asyncQuery: (query) => {
         loggedQuery = query;
         return [];
       },

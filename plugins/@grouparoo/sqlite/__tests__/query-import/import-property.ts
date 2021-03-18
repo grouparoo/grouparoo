@@ -1,11 +1,11 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const profileProperty = getConnection().methods.profileProperty;
@@ -38,7 +38,7 @@ async function getPropertyValue(query: string) {
   });
 }
 
-describe("postgres/query/profileProperty", () => {
+describe("sqlite/query/profileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -72,7 +72,7 @@ describe("postgres/query/profileProperty", () => {
   test("can run a integer query to get a boolean", async () => {
     const sql = `SELECT ios_app FROM ${usersTableName} WHERE id = {{ userId }}`;
     const value = await getPropertyValue(sql);
-    expect(value).toEqual([true]);
+    expect(value).toEqual(["true"]);
   });
 
   test("can run a string query to get a string", async () => {
@@ -90,7 +90,7 @@ describe("postgres/query/profileProperty", () => {
   test("can run a string query to get a boolean", async () => {
     const sql = `SELECT ios_app FROM ${usersTableName} WHERE email = '{{ email }}'`;
     const value = await getPropertyValue(sql);
-    expect(value).toEqual([true]);
+    expect(value).toEqual(["true"]);
   });
 
   test("returns undefined when data is not avilable", async () => {
