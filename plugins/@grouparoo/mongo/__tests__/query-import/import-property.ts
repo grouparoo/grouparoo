@@ -31,14 +31,16 @@ async function getPropertyValue(query: string) {
     sourceId: null,
     app: null,
     appId: null,
-    sourceOptions: null,
+    sourceOptions: {
+      table: usersTableName,
+    },
     sourceMapping: null,
     propertyId: null,
     propertyFilters: null,
   });
 }
 
-describe("postgres/query/profileProperty", () => {
+describe("mongo/query/profileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -58,44 +60,144 @@ describe("postgres/query/profileProperty", () => {
   afterAll(async () => await afterData());
 
   test("can run a integer query to get a string", async () => {
-    const sql = `SELECT first_name FROM ${usersTableName} WHERE id = {{ userId }}`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          id: "{{userId}}",
+        },
+      },
+      {
+        $project: {
+          first_name: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query).replace(
+      /"{{userId}}"/,
+      "{{userId}}"
+    );
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual(["Erie"]);
   });
 
   test("can run a integer query to get a float", async () => {
-    const sql = `SELECT ltv FROM ${usersTableName} WHERE id = {{ userId }}`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          id: "{{userId}}",
+        },
+      },
+      {
+        $project: {
+          ltv: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query).replace(
+      /"{{userId}}"/,
+      "{{userId}}"
+    );
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual([259.12]);
   });
 
   test("can run a integer query to get a boolean", async () => {
-    const sql = `SELECT ios_app FROM ${usersTableName} WHERE id = {{ userId }}`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          id: "{{userId}}",
+        },
+      },
+      {
+        $project: {
+          ios_app: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query).replace(
+      /"{{userId}}"/,
+      "{{userId}}"
+    );
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual([true]);
   });
 
   test("can run a string query to get a string", async () => {
-    const sql = `SELECT first_name FROM ${usersTableName} WHERE email = '{{ email }}'`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          email: "{{email}}",
+        },
+      },
+      {
+        $project: {
+          first_name: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query);
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual(["Erie"]);
   });
 
   test("can run a string query to get a float", async () => {
-    const sql = `SELECT ltv FROM ${usersTableName} WHERE email = '{{ email }}'`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          email: "{{email}}",
+        },
+      },
+      {
+        $project: {
+          ltv: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query);
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual([259.12]);
   });
 
   test("can run a string query to get a boolean", async () => {
-    const sql = `SELECT ios_app FROM ${usersTableName} WHERE email = '{{ email }}'`;
-    const value = await getPropertyValue(sql);
+    const query = [
+      {
+        $match: {
+          email: "{{email}}",
+        },
+      },
+      {
+        $project: {
+          ios_app: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query);
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual([true]);
   });
 
-  test("returns undefined when data is not avilable", async () => {
-    const sql = `SELECT ios_app FROM ${usersTableName} WHERE email = '{{ badName }}'`;
-    const value = await getPropertyValue(sql);
+  test("returns undefined when data is not available", async () => {
+    const query = [
+      {
+        $match: {
+          email: "{{badName}}",
+        },
+      },
+      {
+        $project: {
+          ios_app: 1,
+          _id: 0,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query);
+    const value = await getPropertyValue(queryString);
     expect(value).toEqual(undefined);
   });
 });

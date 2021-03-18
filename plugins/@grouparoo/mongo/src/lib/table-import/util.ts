@@ -68,7 +68,7 @@ export function makeFindQuery(matchCondition: MatchCondition) {
 
   const findQuery = {};
   if (Array.isArray(match)) {
-    if (FilterOperation.In) {
+    if (filterOperation === FilterOperation.In) {
       findQuery[columnName] = { [op]: match };
     } else {
       findQuery["$or"] = match.map((val) => ({
