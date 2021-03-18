@@ -1431,6 +1431,8 @@ jobs:
       - run:
           name: create mysql databases
           command: mysql -e "create database grouparoo_test" -u root -h 127.0.0.1
+          environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: true
       - run:
           name: test
           command: cd plugins/@grouparoo/mysql && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
