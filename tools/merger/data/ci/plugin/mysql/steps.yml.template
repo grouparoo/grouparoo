@@ -1,4 +1,4 @@
-- run:
+      - run:
           name: install mysql client
           command: sudo apt install -y mysql-client
       - run:
