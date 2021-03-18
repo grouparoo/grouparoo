@@ -6,8 +6,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiKey: "abc123", // Sailthru API Key
-        apiSecret: "abc123", // Sailthru API Key Secret
+        apiKey: "...", // Sailthru API Key
+        apiSecret: "...", // Sailthru API Key Secret
       }
     },
   ];

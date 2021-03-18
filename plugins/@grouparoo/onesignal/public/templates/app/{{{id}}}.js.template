@@ -6,8 +6,8 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        appId: "abc123", // OneSignal App ID
-        apiKey: "abc123" // OneSignal REST API Key
+        appId: "...", // OneSignal App ID
+        apiKey: "..." // OneSignal REST API Key
       }
     },
   ];
