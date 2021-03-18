@@ -69,6 +69,7 @@ jobs:
             - plugins/@grouparoo/newrelic/node_modules
             - plugins/@grouparoo/pardot/node_modules
             - plugins/@grouparoo/postgres/node_modules
+            - plugins/@grouparoo/mongo/node_modules
             - plugins/@grouparoo/sailthru/node_modules
             - plugins/@grouparoo/sendgrid/node_modules
             - plugins/@grouparoo/snowflake/node_modules
@@ -107,6 +108,7 @@ jobs:
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/marketo/dist
+            - plugins/@grouparoo/mongo/dist
             - plugins/@grouparoo/mysql/dist
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/onesignal/dist
