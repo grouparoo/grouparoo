@@ -38,6 +38,7 @@ export interface BuildConnectionMethod {
     description: string;
     app: string;
     tableOptionDescription?: string;
+    tableOptionDisplayName?: string;
     sourceOptions?: SourceOptionsExtra;
     getSampleRows: GetSampleRowsMethod;
     getColumns: GetColumnDefinitionsMethod;
@@ -54,6 +55,7 @@ export const buildConnection: BuildConnectionMethod = ({
   description,
   app,
   tableOptionDescription = null,
+  tableOptionDisplayName = null,
   sourceOptions: additionalOptions,
   getSampleRows,
   getColumns,
@@ -104,7 +106,7 @@ export const buildConnection: BuildConnectionMethod = ({
 
   const options = (additionalOptions?.options || []).concat({
     key: tableNameKey,
-    displayName: "Table",
+    displayName: tableOptionDisplayName || "Table",
     required: true,
     description: tableOptionDescription || "The table to scan",
   });

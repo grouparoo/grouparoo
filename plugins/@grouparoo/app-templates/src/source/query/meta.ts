@@ -22,6 +22,7 @@ export interface BuildConnectionMethod {
     description: string;
     app: string;
     tableOptionDescription?: string;
+    tableOptionDisplayName?: string;
     options?: ConnectionOption[];
     executeQuery: ExecuteQueryMethod;
     validateQuery?: ValidateQueryMethod;

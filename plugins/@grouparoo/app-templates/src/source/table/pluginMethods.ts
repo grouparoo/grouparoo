@@ -34,7 +34,6 @@ export enum FilterOperation {
   Contain = "contains",
   NotContain = "does not contain",
   In = "in",
-  Exists = "exists",
 }
 
 export interface MatchCondition {
