@@ -6,7 +6,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiKey: "abc123", // Iterable api key
+        apiKey: "...", // Iterable api key
       }
     },
   ];
