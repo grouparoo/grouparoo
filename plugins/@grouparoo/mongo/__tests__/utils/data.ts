@@ -115,7 +115,7 @@ export async function getClient() {
 
 export async function endClient() {
   if (client) {
-    await client.end();
+    await client.client.close();
     client = null;
   }
 }

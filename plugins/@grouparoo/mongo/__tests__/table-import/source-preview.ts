@@ -10,7 +10,7 @@ const sourcePreview = getConnection().methods.sourcePreview;
 const { appOptions, purchasesTableName } = getConfig();
 const sourceOptions = {
   table: purchasesTableName,
-  fields: "id,amount,date,id,profile_id,purchase, stamp",
+  fields: "id,amount,date,id,profile_id,purchase, stamp", // Add a whitespace to test the strip.
 };
 let client;
 
@@ -32,9 +32,7 @@ describe("mongo/table/sourcePreview", () => {
     ({ client } = await beforeData());
   });
 
-  afterAll(async () => {
-    await afterData();
-  });
+  afterAll(async () => await afterData());
 
   test("gets list of columns that can handle highwatermark", async () => {
     const preview = await getPreview();
