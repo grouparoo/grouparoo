@@ -119,38 +119,38 @@ describe("sqlite/table/profileProperties", () => {
         expect(values[profile.id]).toEqual([259.12]);
         expect(values[otherProfile.id]).toEqual([94.36]);
       });
-      test("to get a boolean", async () => {
+      test("to get a boolean as a string", async () => {
         const column = "ios_app";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id]).toEqual([true]);
-        expect(values[otherProfile.id]).toEqual([false]);
+        expect(values[profile.id]).toEqual(["true"]);
+        expect(values[otherProfile.id]).toEqual(["false"]);
       });
-      test("to get a date", async () => {
+      test("to get a date as a string", async () => {
         const column = "date";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id]).toEqual(["2020-02-01"]);
-        expect(values[otherProfile.id]).toEqual(["2020-02-02"]);
+        expect(values[profile.id]).toEqual(["2020/02/01"]);
+        expect(values[otherProfile.id]).toEqual(["2020/02/02"]);
       });
-      test("to get a timestamp", async () => {
+      test("to get a timestamp as a string", async () => {
         const column = "stamp";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect((<Date[]>values[profile.id])[0].toISOString()).toEqual(
-          "2020-02-01T12:13:14.000Z"
+        expect((<string[]>values[profile.id])[0]).toEqual(
+          "2020/02/01 12:13:14"
         );
-        expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
-          "2020-02-02T12:13:14.000Z"
+        expect((<string[]>values[otherProfile.id])[0]).toEqual(
+          "2020/02/02 12:13:14"
         );
       });
     });
@@ -177,38 +177,38 @@ describe("sqlite/table/profileProperties", () => {
         expect(values[profile.id]).toEqual([259.12]);
         expect(values[otherProfile.id]).toEqual([94.36]);
       });
-      test("to get a boolean", async () => {
+      test("to get a boolean as a string", async () => {
         const column = "ios_app";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id]).toEqual([true]);
-        expect(values[otherProfile.id]).toEqual([false]);
+        expect(values[profile.id]).toEqual(["true"]);
+        expect(values[otherProfile.id]).toEqual(["false"]);
       });
-      test("to get a date", async () => {
+      test("to get a date as a string", async () => {
         const column = "date";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect(values[profile.id]).toEqual(["2020-02-01"]);
-        expect(values[otherProfile.id]).toEqual(["2020-02-02"]);
+        expect(values[profile.id]).toEqual(["2020/02/01"]);
+        expect(values[otherProfile.id]).toEqual(["2020/02/02"]);
       });
-      test("to get a timestamp", async () => {
+      test("to get a timestamp as a string", async () => {
         const column = "stamp";
         const values = await getPropertyValues({
           column,
           sourceMapping,
           aggregationMethod,
         });
-        expect((<Date[]>values[profile.id])[0].toISOString()).toEqual(
-          "2020-02-01T12:13:14.000Z"
+        expect((<string[]>values[profile.id])[0]).toEqual(
+          "2020/02/01 12:13:14"
         );
-        expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
-          "2020-02-02T12:13:14.000Z"
+        expect((<string[]>values[otherProfile.id])[0]).toEqual(
+          "2020/02/02 12:13:14"
         );
       });
     });
@@ -285,8 +285,8 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod: "min",
           });
-          expect(values[profile.id]).toEqual(["2020-02-01"]);
-          expect(values[profile.id]).toEqual(["2020-02-01"]);
+          expect(values[profile.id]).toEqual(["2020/02/01"]);
+          expect(values[profile.id]).toEqual(["2020/02/01"]);
         });
         test("max", async () => {
           const values = await getPropertyValues({
@@ -294,8 +294,8 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod: "max",
           });
-          expect(values[profile.id]).toEqual(["2020-02-20"]);
-          expect(values[otherProfile.id]).toEqual(["2020-02-19"]);
+          expect(values[profile.id]).toEqual(["2020/02/20"]);
+          expect(values[otherProfile.id]).toEqual(["2020/02/19"]);
         });
       });
     });
@@ -361,7 +361,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(values[otherProfile.id]).toBeUndefined();
@@ -373,7 +373,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(otherProfile[profile.id]).toBeUndefined();
@@ -437,7 +437,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([5]);
         expect(values[otherProfile.id]).toEqual([5]);
@@ -449,7 +449,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([5]);
         expect(values[otherProfile.id]).toEqual([5]);
@@ -513,7 +513,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15" }]
+          [{ op, key: "stamp", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(values[otherProfile.id]).toBeUndefined();
@@ -525,7 +525,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(values[otherProfile.id]).toBeUndefined();
@@ -589,7 +589,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([5]);
         expect(values[otherProfile.id]).toEqual([5]);
@@ -601,7 +601,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([5]);
         expect(values[otherProfile.id]).toEqual([5]);
@@ -665,7 +665,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(values[otherProfile.id]).toBeUndefined();
@@ -677,7 +677,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([1]);
         expect(values[otherProfile.id]).toBeUndefined();
@@ -742,7 +742,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([2]);
         expect(values[otherProfile.id]).toEqual([2]);
@@ -754,7 +754,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([2]);
         expect(values[otherProfile.id]).toEqual([2]);
@@ -819,7 +819,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(values[profile.id]).toEqual([3]);
         expect(values[otherProfile.id]).toEqual([3]);
@@ -831,7 +831,7 @@ describe("sqlite/table/profileProperties", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(values[profile.id]).toEqual([3]);
         expect(values[otherProfile.id]).toEqual([3]);

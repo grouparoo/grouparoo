@@ -1,5 +1,4 @@
 import "@grouparoo/spec-helper";
-import path from "path";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -29,7 +28,7 @@ async function getColumns() {
   return response;
 }
 
-describe("bigquery/table/scheduleOptions", () => {
+describe("sqlite/table/scheduleOptions", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
@@ -40,13 +39,16 @@ describe("bigquery/table/scheduleOptions", () => {
   test("gets list of columns that can handle highwatermark", async () => {
     const columns = await getColumns();
     const columnNames = columns.map((r) => r.key).sort();
+    // In SQLite, data is essentially either text or a number, so they could all
+    // technically be HWM columns.
     expect(columnNames).toEqual([
       "amount",
       "date",
       "id",
       "profile_id",
+      "purchase",
       "stamp",
-    ]); // leaves out
-    expect(columns.length).toBe(5);
+    ]);
+    expect(columns.length).toBe(6);
   });
 });

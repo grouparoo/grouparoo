@@ -2,6 +2,7 @@ import {
   FilterOperation,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
+import { buildValueList } from "../export/exportProfile";
 
 export function makeWhereClause(matchCondition: MatchCondition) {
   const { columnName, filterOperation, value, values } = matchCondition;
@@ -48,7 +49,7 @@ export function makeWhereClause(matchCondition: MatchCondition) {
   const key = transform
     ? `${transform}(CAST("${columnName}" as TEXT))`
     : `"${columnName}"`;
-  match = Array.isArray(match) ? `(${match})` : `"${match}"`;
+  match = Array.isArray(match) ? `(${buildValueList(match)})` : `"${match}"`;
 
   return ` ${key} ${op} ${match}`;
 }

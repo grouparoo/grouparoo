@@ -8,9 +8,6 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod = async 
   destinationOptions,
 }) => {
   const query = `SELECT name from pragma_table_info('${destinationOptions.table}')`;
-
-  console.log("--- [DEST] destinationMappingOptions ---", query);
-
   const rows = await connection.asyncQuery(query);
 
   const columns: Array<{

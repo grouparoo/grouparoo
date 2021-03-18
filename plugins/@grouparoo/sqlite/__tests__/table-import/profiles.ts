@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 import { helper } from "@grouparoo/spec-helper";
 
@@ -59,7 +59,7 @@ async function runIt({ highWaterMark, sourceOffset, limit }) {
   };
 }
 
-describe("postgres/table/profiles", () => {
+describe("sqlite/table/profiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -73,13 +73,13 @@ describe("postgres/table/profiles", () => {
     // setup the world
     const app = await helper.factories.app({
       name: "App",
-      type: "postgres",
+      type: "sqlite",
       options: appOptions,
     });
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "postgres-table-import",
+      type: "sqlite-table-import",
     });
     sourceMapping = { id: "userId" };
     await source.setOptions({ table: usersTableName });
@@ -107,7 +107,7 @@ describe("postgres/table/profiles", () => {
 
   test("imports all profiles when there is a highWaterMark", async () => {
     let limit = 100;
-    let highWaterMark = { stamp: "2020-02-07T12:13:14.000Z" };
+    let highWaterMark = { stamp: "2020/02/07 12:13:14" };
     let sourceOffset = 0;
     const { imports, importsCount } = await runIt({
       limit,
@@ -122,7 +122,7 @@ describe("postgres/table/profiles", () => {
   test("handles getting no results", async () => {
     let limit = 100;
     let sourceOffset = 0;
-    let highWaterMark = { stamp: "2020-02-11T12:13:14.000Z" }; // past the last one
+    let highWaterMark = { stamp: "2020/02/11 12:13:14" }; // past the last one
     const { imports, importsCount } = await runIt({
       limit,
       highWaterMark,
@@ -147,7 +147,7 @@ describe("postgres/table/profiles", () => {
       });
       expect(page1.importsCount).toBe(4);
       expect(page1.sourceOffset).toBe(0);
-      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-04"); // the times changes based on the TZ of the test server, but the date seems to be OK...
+      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020/02/04"); // the times changes based on the TZ of the test server, but the date seems to be OK...
       importedIds = page1.imports.map((r) => r.id);
       expect(importedIds).toEqual([1, 2, 3, 4]);
 
@@ -159,7 +159,7 @@ describe("postgres/table/profiles", () => {
       });
       expect(page2.importsCount).toBe(4);
       expect(page2.sourceOffset).toBe(0);
-      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-07");
+      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020/02/07");
       importedIds = page2.imports.map((r) => r.id);
       expect(importedIds).toEqual([4, 5, 6, 7]);
 
@@ -171,7 +171,7 @@ describe("postgres/table/profiles", () => {
       });
       expect(page3.importsCount).toBe(4);
       expect(page3.sourceOffset).toBe(0);
-      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020-02-10");
+      expect(Object.values(page1.highWaterMark)[0]).toMatch("2020/02/10");
       importedIds = page3.imports.map((r) => r.id);
       expect(importedIds).toEqual([7, 8, 9, 10]);
     },

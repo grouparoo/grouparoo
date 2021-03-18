@@ -23,7 +23,7 @@ async function getPreview() {
   return response;
 }
 
-describe("postgres/table/sourcePreview", () => {
+describe("sqlite/table/sourcePreview", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });

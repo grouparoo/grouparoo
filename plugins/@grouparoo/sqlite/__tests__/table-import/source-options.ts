@@ -21,7 +21,7 @@ async function getTables() {
   return response.table.options;
 }
 
-describe("postgres/table/sourceOptions", () => {
+describe("sqlite/table/sourceOptions", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });

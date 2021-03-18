@@ -9,9 +9,6 @@ export const destinationOptions: DestinationOptionsMethod = async ({
 }) => {
   async function getColumns(tableName: string) {
     const query = `SELECT name from pragma_table_info('${tableName}')`;
-
-    console.log("--- [DEST] destinationOptions > getColumns ---", query);
-
     const colRows = await connection.asyncQuery(query);
     return colRows.map((row) => row.name).sort();
   }
@@ -25,9 +22,6 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   };
 
   const query = `SELECT name FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`;
-
-  console.log("--- [DEST] destinationOptions ---", query);
-
   const rows = await connection.asyncQuery(query);
   const tables = rows.map((row) => row.name).sort();
 

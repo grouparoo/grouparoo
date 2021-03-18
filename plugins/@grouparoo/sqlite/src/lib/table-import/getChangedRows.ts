@@ -33,8 +33,6 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   // Ensure we don't have any extraneous characters, multiple queries, etc.
   validateQuery(query);
 
-  console.log(">>>>> ", "getChangedRows: ", query);
-
   // Run the query and return the result.
   const out: DataResponseRow[] = await connection.asyncQuery(query);
   return out;

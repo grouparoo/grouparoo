@@ -93,8 +93,6 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
 
   validateQuery(query);
 
-  console.log(">>>>> ", "getPropertyValues: ", query);
-
   try {
     const rows: Array<{
       __pk: string;

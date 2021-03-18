@@ -71,8 +71,6 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
 
   validateQuery(query);
 
-  console.log(">>>>> ", "getPropertyValue: ", query);
-
   let response: DataResponse[];
   try {
     const rows = await connection.asyncQuery(query);

@@ -38,16 +38,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       // delete
       const query = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
-
-      console.log("--- [DEST 01] exportProfile ---", query);
-
       await connection.asyncQuery(query);
     } else if (newProfileProperties[primaryKey]) {
       const query = `SELECT * FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
-
-      console.log("--- [DEST 02] exportProfile ---", query);
-
       const existingRecords = await connection.asyncQuery(query);
 
       if (existingRecords.length === 1) {
@@ -60,9 +54,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         });
         updateStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
         validateQuery(updateStatement);
-
-        console.log("--- [DEST 03] exportProfile ---", updateStatement);
-
         await connection.asyncQuery(updateStatement);
 
         // erase old columns
@@ -83,18 +74,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           });
           eraseStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
           validateQuery(eraseStatement);
-
-          console.log("--- [DEST 04] exportProfile ---", eraseStatement);
-
           await connection.asyncQuery(eraseStatement);
         }
       } else {
         // delete
         const deleteQuery = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
         validateQuery(deleteQuery);
-
-        console.log("--- [DEST 05] exportProfile ---", deleteQuery);
-
         await connection.asyncQuery(deleteQuery);
 
         // insert
@@ -102,9 +87,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           newProfileProperties
         )}) VALUES (${buildValueList(newProfileProperties)})`;
         validateQuery(query);
-
-        console.log("--- [DEST 06] exportProfile ---", query);
-
         await connection.asyncQuery(query);
       }
     } else {
@@ -113,9 +95,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         newProfileProperties
       )}) VALUES (${buildValueList(newProfileProperties)})`;
       validateQuery(query);
-
-      console.log("--- [DEST 07] exportProfile ---", query);
-
       await connection.asyncQuery(query);
     }
 
@@ -124,9 +103,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // delete existing groups
     const deleteGroupsQuery = `DELETE FROM ${groupsTable} WHERE ${groupForeignKey} = ${newProfileProperties[primaryKey]}`;
     validateQuery(deleteGroupsQuery);
-
-    console.log("--- [DEST 08] exportProfile ---", deleteGroupsQuery);
-
     await connection.asyncQuery(deleteGroupsQuery);
 
     // add groups
@@ -140,9 +116,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           data
         )}) VALUES (${buildValueList(data)}) ON CONFLICT DO NOTHING`;
         validateQuery(groupInsertQuery);
-
-        console.log("--- [DEST 09] exportProfile ---", groupInsertQuery);
-
         await connection.asyncQuery(groupInsertQuery);
       }
     }
@@ -157,6 +130,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 };
 
-const buildValueList = (data: { [key: string]: string | number }) => {
-  return Object.values(data).map((v) => (typeof v === "string" ? `'${v}'` : v));
+interface ValueListItem {
+  [key: string]: any;
+}
+
+export const buildValueList = (data: any[] | ValueListItem) => {
+  const values = Array.isArray(data) ? data : Object.values(data);
+  return values.map((v) => (typeof v === "string" ? `'${v}'` : v));
 };

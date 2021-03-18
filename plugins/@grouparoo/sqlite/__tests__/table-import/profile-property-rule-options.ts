@@ -31,7 +31,7 @@ async function getOptionsForKey(keyName) {
   return response;
 }
 
-describe("postgres/table/propertyOptions", () => {
+describe("sqlite/table/propertyOptions", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
@@ -70,9 +70,9 @@ describe("postgres/table/propertyOptions", () => {
 
     column = response.find((col) => col.key === "stamp");
     value = column.examples[0];
-    expect(typeof value).toEqual("object");
-    expect(value.constructor.name).toEqual("Date");
-    expect((<Date>value).getTime()).toBeGreaterThan(0);
+    expect(typeof value).toEqual("string");
+    expect(value.constructor.name).toEqual("String");
+    expect((<string>value).length).toBeGreaterThan(0);
   });
 
   test("gets aggregationMethod", async () => {
@@ -120,8 +120,8 @@ describe("postgres/table/propertyOptions", () => {
 
     column = response.find((col) => col.key === "stamp");
     value = column.examples[0];
-    expect(typeof value).toEqual("object");
-    expect(value.constructor.name).toEqual("Date");
-    expect((<Date>value).getTime()).toBeGreaterThan(0);
+    expect(typeof value).toEqual("string");
+    expect(value.constructor.name).toEqual("String");
+    expect((<string>value).length).toBeGreaterThan(0);
   });
 });

@@ -27,7 +27,7 @@ async function getFilters() {
   return response;
 }
 
-describe("postgres/table/sourceFilters", () => {
+describe("sqlite/table/sourceFilters", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
@@ -48,67 +48,27 @@ describe("postgres/table/sourceFilters", () => {
       "profile_id",
       "purchase",
       "stamp",
-    ]); // leaves out
+    ]);
     expect(columns.length).toBe(6);
 
-    expect(columns[0]).toMatchObject({
-      key: "amount",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
-    });
-    expect(columns[1]).toMatchObject({
-      key: "date",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
-    });
-    expect(columns[2]).toMatchObject({
-      key: "id",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
-    });
-    expect(columns[3]).toMatchObject({
-      key: "profile_id",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
-    });
-    expect(columns[4]).toMatchObject({
-      key: "purchase",
-      ops: ["equals", "does not equal", "contains", "does not contain"],
-    });
-    expect(columns[5]).toMatchObject({
-      key: "stamp",
-      ops: [
-        "equals",
-        "does not equal",
-        "greater than",
-        "greater than or equal to",
-        "less than",
-        "less than or equal to",
-      ],
-    });
+    // SQLite can do the comparisons Grouparoo uses on any column.
+    const allOps = [
+      "equals",
+      "does not equal",
+      "greater than",
+      "greater than or equal to",
+      "less than",
+      "less than or equal to",
+      "contains",
+      "does not contain",
+      "in",
+    ];
+
+    expect(columns[0]).toMatchObject({ key: "amount", ops: allOps });
+    expect(columns[1]).toMatchObject({ key: "date", ops: allOps });
+    expect(columns[2]).toMatchObject({ key: "id", ops: allOps });
+    expect(columns[3]).toMatchObject({ key: "profile_id", ops: allOps });
+    expect(columns[4]).toMatchObject({ key: "purchase", ops: allOps });
+    expect(columns[5]).toMatchObject({ key: "stamp", ops: allOps });
   });
 });

@@ -1,10 +1,10 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { Profile, Property } from "@grouparoo/core";
 
 import { beforeData, afterData, getConfig } from "../utils/data";
 
@@ -15,7 +15,7 @@ const profileProperty = getConnection().methods.profileProperty;
 const { appOptions, usersTableName, purchasesTableName } = getConfig();
 let profile: Profile;
 
-let actionhero, client;
+let client;
 
 let sourceOptions;
 async function getPropertyValue(
@@ -67,7 +67,7 @@ async function getPropertyArray(
   });
 }
 
-describe("postgres/table/profileProperty", () => {
+describe("sqlite/table/profileProperty", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -121,7 +121,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(value).toEqual(true);
+        expect(value).toEqual("true");
       });
       test("to get a date", async () => {
         const column = "date";
@@ -130,7 +130,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(value).toEqual("2020-02-01");
+        expect(value).toEqual("2020/02/01");
       });
       test("to get a timestamp", async () => {
         const column = "stamp";
@@ -139,7 +139,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect((<Date>value).toISOString()).toEqual("2020-02-01T12:13:14.000Z");
+        expect(<string>value).toEqual("2020/02/01 12:13:14");
       });
     });
 
@@ -170,7 +170,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(value).toEqual(true);
+        expect(value).toEqual("true");
       });
       test("to get a date", async () => {
         const column = "date";
@@ -179,7 +179,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect(value).toEqual("2020-02-01");
+        expect(value).toEqual("2020/02/01");
       });
       test("to get a timestamp", async () => {
         const column = "stamp";
@@ -188,7 +188,7 @@ describe("postgres/table/profileProperty", () => {
           sourceMapping,
           aggregationMethod,
         });
-        expect((<Date>value).toISOString()).toEqual("2020-02-01T12:13:14.000Z");
+        expect(<string>value).toEqual("2020/02/01 12:13:14");
       });
     });
   });
@@ -258,7 +258,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod: "min",
           });
-          expect(value).toEqual("2020-02-01");
+          expect(value).toEqual("2020/02/01");
         });
         test("max", async () => {
           const value = await getPropertyValue({
@@ -266,7 +266,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod: "max",
           });
-          expect(value).toEqual("2020-02-20");
+          expect(value).toEqual("2020/02/20");
         });
       });
     });
@@ -329,7 +329,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(1);
       });
@@ -340,7 +340,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(1);
       });
@@ -399,7 +399,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(5);
       });
@@ -410,7 +410,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(5);
       });
@@ -469,7 +469,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15" }]
+          [{ op, key: "stamp", match: "2020/02/15" }]
         );
         expect(value).toEqual(1);
       });
@@ -480,7 +480,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(1);
       });
@@ -539,7 +539,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(5);
       });
@@ -550,7 +550,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(5);
       });
@@ -609,7 +609,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(1);
       });
@@ -620,7 +620,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(1);
       });
@@ -679,7 +679,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(2);
       });
@@ -690,7 +690,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(2);
       });
@@ -749,7 +749,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "date", match: "2020-02-15" }]
+          [{ op, key: "date", match: "2020/02/15" }]
         );
         expect(value).toEqual(3);
       });
@@ -760,7 +760,7 @@ describe("postgres/table/profileProperty", () => {
             sourceMapping,
             aggregationMethod,
           },
-          [{ op, key: "stamp", match: "2020-02-15 12:13:14" }]
+          [{ op, key: "stamp", match: "2020/02/15 12:13:14" }]
         );
         expect(value).toEqual(3);
       });
