@@ -2,3 +2,6 @@
         auth:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
+        environment:
+          MYSQL_USER: $DOCKERHUB_USERNAME
+          MYSQL_PASSWORD: $DOCKERHUB_PASSWORD
