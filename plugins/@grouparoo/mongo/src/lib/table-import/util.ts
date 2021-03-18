@@ -4,6 +4,7 @@ import {
   FilterOperation,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
+import { SimpleSourceOptions } from "@grouparoo/core";
 
 export enum MongoAggregationMethod {
   Exact = "$eq",
@@ -152,4 +153,14 @@ export async function getMostTrendingType(
   return Object.keys(trendingTypes).reduce((a, b) =>
     trendingTypes[a] > trendingTypes[b] ? a : b
   );
+}
+export function getFields(sourceOptions: SimpleSourceOptions): Array<string> {
+  let fields = [];
+  if (sourceOptions) {
+    fields = sourceOptions.fields
+      .toString()
+      .split(",")
+      .map((f) => f.trim());
+  }
+  return fields;
 }

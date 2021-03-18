@@ -14,6 +14,7 @@ export function getConnection() {
     description:
       "Import or update Profiles from a Mongo DB database collection.",
     tableOptionDescription: "The table to scan",
+    tableOptionDisplayName: "Collection",
     sourceOptions: {
       options: [
         {

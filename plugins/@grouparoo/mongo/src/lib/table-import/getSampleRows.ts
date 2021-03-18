@@ -2,7 +2,7 @@ import {
   GetSampleRowsMethod,
   DataResponseRow,
 } from "@grouparoo/app-templates/dist/source/table";
-import { castRow } from "./util";
+import { castRow, getFields } from "./util";
 
 export const getSampleRows: GetSampleRowsMethod = async ({
   connection,
@@ -12,9 +12,8 @@ export const getSampleRows: GetSampleRowsMethod = async ({
 }) => {
   const out: DataResponseRow[] = [];
   if (sourceOptions) {
-    const fields = sourceOptions.fields.toString().split(",");
+    const fields = getFields(sourceOptions);
     const filterFields = Object.assign({}, ...fields.map((s) => ({ [s]: 1 })));
-
     const rows = await connection.db
       .collection(tableName)
       .aggregate([{ $project: filterFields }, { $sample: { size: 10 } }])

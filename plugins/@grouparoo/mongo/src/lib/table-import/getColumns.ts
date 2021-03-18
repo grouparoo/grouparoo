@@ -5,7 +5,7 @@ import {
   ColumnType,
 } from "@grouparoo/app-templates/dist/source/table";
 
-import { getMostTrendingType } from "./util";
+import { getMostTrendingType, getFields } from "./util";
 
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
@@ -15,7 +15,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
 }) => {
   const map: ColumnDefinitionMap = {};
   if (sourceOptions) {
-    const fields = sourceOptions.fields.toString().split(",");
+    const fields = getFields(sourceOptions);
     for (const field of fields) {
       const name = String(field);
       const { type, filterOperations } = await getTypeInfo(

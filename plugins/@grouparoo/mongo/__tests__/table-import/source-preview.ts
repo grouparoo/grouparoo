@@ -10,7 +10,7 @@ const sourcePreview = getConnection().methods.sourcePreview;
 const { appOptions, purchasesTableName } = getConfig();
 const sourceOptions = {
   table: purchasesTableName,
-  fields: "id,amount,date,id,profile_id,purchase,stamp",
+  fields: "id,amount,date,id,profile_id,purchase, stamp",
 };
 let client;
 
