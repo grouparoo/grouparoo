@@ -45,7 +45,7 @@ describe("sqlite/table/scheduleOptions", () => {
     });
   });
 
-  test.skip("getChangedRowCount works", async () => {
+  test("getChangedRowCount works", async () => {
     const rowCount = await getChangedRowCount({
       connection: client,
       appOptions,
@@ -53,7 +53,7 @@ describe("sqlite/table/scheduleOptions", () => {
       tableName: usersTableName,
       highWaterMarkCondition: {
         columnName: "stamp",
-        value: new Date(0),
+        value: "2000/01/01 12:00:00",
         filterOperation: FilterOperation.GreaterThan,
       },
     });
@@ -61,7 +61,7 @@ describe("sqlite/table/scheduleOptions", () => {
     expect(rowCount).toBe(10);
   });
 
-  test.skip("gets the percentage complete of a run", async () => {
+  test("gets the percentage complete of a run", async () => {
     const run = await helper.factories.run(schedule, { state: "running" });
     const percentComplete = await run.determinePercentComplete();
     expect(percentComplete).toBe(0);

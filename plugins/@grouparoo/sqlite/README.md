@@ -11,6 +11,10 @@ TODO:
 - [✔️] Support relative paths to database
 - [ ] Decide how we're going to handle date conversions
 - [ ] Get tests passing
+- [ ] Confirm the workflow of getting a date from SQLite into Mailchimp
+- [ ] Answer: How does `getColumns()` infer date columns? Is `datetime` actually
+      an option? Is that just a TablePlus thing? If so, how/why is TablePlus working
+      with dates?
 - [ ] Refactor export-profile.ts
 - [ ] Remove console logs
 - [ ] Remove pg packages and any other references to PG
