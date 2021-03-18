@@ -1405,7 +1405,8 @@ jobs:
           username: $DOCKERHUB_USERNAME
           password: $DOCKERHUB_PASSWORD
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          MYSQL_USER: $DOCKERHUB_USERNAME
+          MYSQL_PASSWORD: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
