@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
@@ -10,7 +10,7 @@ import { beforeData, afterData, getConfig } from "../utils/data";
 
 const { appOptions, usersTableName } = getConfig();
 
-describe("integration/runs/postgres", () => {
+describe("integration/runs/sqlite", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
   beforeAll(async () => await helper.factories.properties());
@@ -44,11 +44,11 @@ describe("integration/runs/postgres", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a postgres app
+    // create a sqlite app
     session.params = {
       csrfToken,
       name: "test app",
-      type: "postgres",
+      type: "sqlite",
       options: appOptions,
       state: "ready",
     };
@@ -60,7 +60,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "pg import source",
-      type: "postgres-query-import",
+      type: "sqlite-query-import",
       appId: app.id,
       state: "ready",
     };

@@ -1,6 +1,6 @@
 import path from "path";
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
@@ -15,7 +15,7 @@ const {
   groupsDestinationTableName,
 } = getConfig();
 
-describe("integration/runs/postgres", () => {
+describe("integration/runs/sqlite", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => helper.disableTestPluginImport());
   beforeAll(async () => await helper.factories.properties());
@@ -28,8 +28,12 @@ describe("integration/runs/postgres", () => {
   let schedule;
   let destination;
   let group;
+  let client;
 
-  beforeAll(async () => await beforeData());
+  beforeAll(async () => {
+    const setupResp = await beforeData();
+    client = setupResp.client;
+  });
   afterAll(async () => await afterData());
 
   beforeAll(async () => {
@@ -52,14 +56,15 @@ describe("integration/runs/postgres", () => {
     expect(sessionResponse.error).toBeUndefined();
     csrfToken = sessionResponse.csrfToken;
 
-    // create a postgres app
+    // create a sqlite app
     session.params = {
       csrfToken,
       name: "test app",
-      type: "postgres",
+      type: "sqlite",
       options: appOptions,
       state: "ready",
     };
+
     const appResponse = await specHelper.runAction("app:create", session);
     expect(appResponse.error).toBeUndefined();
     app = appResponse.app;
@@ -68,7 +73,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "pg import source",
-      type: "postgres-table-import",
+      type: "sqlite-table-import",
       appId: app.id,
       options: { table: usersTableName },
       mapping: { id: "userId" },
@@ -82,7 +87,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "test schedule",
-      type: "postgres-import",
+      type: "sqlite-import",
       sourceId: source.id,
       recurring: false,
       options: {
@@ -103,7 +108,7 @@ describe("integration/runs/postgres", () => {
     session.params = {
       csrfToken,
       name: "test destination",
-      type: "postgres-export",
+      type: "sqlite-export",
       appId: app.id,
       options: {
         table: profilesDestinationTableName,
@@ -242,7 +247,7 @@ describe("integration/runs/postgres", () => {
     await specHelper.runAction("destination:trackGroup", session);
   });
 
-  test("we can read the postgres mapping options", async () => {
+  test("we can read the sqlite mapping options", async () => {
     session.params = {
       csrfToken,
       id: destination.id,
@@ -258,7 +263,7 @@ describe("integration/runs/postgres", () => {
           singular: "Exported Property",
           plural: "Exported Properties",
         },
-        group: { singular: "Exported Groups", plural: "Exported Groups" },
+        group: { singular: "Exported Group", plural: "Exported Groups" },
       },
       properties: {
         required: [{ key: "id", type: "any" }],
@@ -316,7 +321,7 @@ describe("integration/runs/postgres", () => {
   });
 
   test(
-    "a postgres schedule can run and create profiles",
+    "a sqlite schedule can run and create profiles",
     async () => {
       // enqueue the run
       session.params = {
@@ -414,17 +419,17 @@ describe("integration/runs/postgres", () => {
       expect(run.percentComplete).toBe(100);
 
       // check the destination
-      const userRows = await api.sequelize.query(
+      const userRows = await client.asyncQuery(
         `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
       );
-      expect(userRows[0].length).toBe(10);
-      expect(userRows[0][0].customer_email).toBe("ejervois0@example.com");
+      expect(userRows.length).toBe(10);
+      expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
-      const groupRows = await api.sequelize.query(
+      const groupRows = await client.asyncQuery(
         `SELECT * FROM ${groupsDestinationTableName}`
       );
-      expect(groupRows[0].length).toBe(10);
-      expect(groupRows[0][0].group).toBe(group.name);
+      expect(groupRows.length).toBe(10);
+      expect(groupRows[0].group).toBe(group.name);
     },
     helper.longTime
   );
@@ -442,7 +447,7 @@ describe("integration/runs/postgres", () => {
   });
 
   test(
-    "a postgres schedule can run and update profiles only finding updated records",
+    "a sqlite schedule can run and update profiles only finding updated records",
     async () => {
       // enqueue the run
       session.params = {
@@ -535,17 +540,17 @@ describe("integration/runs/postgres", () => {
       expect(run.percentComplete).toBe(100);
 
       // check the destination
-      const userRows = await api.sequelize.query(
+      const userRows = await client.asyncQuery(
         `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
       );
-      expect(userRows[0].length).toBe(10);
-      expect(userRows[0][0].customer_email).toBe("ejervois0@example.com");
+      expect(userRows.length).toBe(10);
+      expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
-      const groupRows = await api.sequelize.query(
+      const groupRows = await client.asyncQuery(
         `SELECT * FROM ${groupsDestinationTableName}`
       );
-      expect(groupRows[0].length).toBe(10);
-      expect(groupRows[0][0].group).toBe(group.name);
+      expect(groupRows.length).toBe(10);
+      expect(groupRows[0].group).toBe(group.name);
     },
     helper.longTime
   );

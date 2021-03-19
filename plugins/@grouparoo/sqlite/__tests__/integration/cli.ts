@@ -3,7 +3,7 @@ import fs from "fs-extra";
 import os from "os";
 
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/sqlite": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
@@ -21,7 +21,9 @@ process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
 }/config`;
 
-describe("postgres cli tests", () => {
+console.log(process.env.GROUPAROO_CONFIG_DIR);
+
+describe("sqlite cli tests", () => {
   beforeAll(() => {
     fs.mkdirpSync(process.env.GROUPAROO_CONFIG_DIR);
     fs.emptyDirSync(process.env.GROUPAROO_CONFIG_DIR);
@@ -53,44 +55,39 @@ describe("postgres cli tests", () => {
     spies.map((s) => s.mockRestore());
   });
 
-  test("the postgres commands appear in the generate list", async () => {
+  test("the sqlite commands appear in the generate list", async () => {
     const command = new Generate();
     await command.run({ params: { list: true } });
 
     const output = messages.join(" ");
     expect(output).toContain(`Available Templates:`);
-    expect(output).toContain(`postgres:app`);
-    expect(output).toContain(`postgres:table:source`);
-    expect(output).toContain(`postgres:table:property`);
-    expect(output).toContain(`postgres:query:source`);
-    expect(output).toContain(`postgres:query:property`);
-    expect(output).toContain(`postgres:destination`);
+    expect(output).toContain(`sqlite:app`);
+    expect(output).toContain(`sqlite:table:source`);
+    expect(output).toContain(`sqlite:table:property`);
+    expect(output).toContain(`sqlite:query:source`);
+    expect(output).toContain(`sqlite:query:property`);
+    expect(output).toContain(`sqlite:destination`);
   });
 
   test("an app can be generated", async () => {
     const command = new Generate();
     await command.run({
-      params: { template: "postgres:app", id: "postgres_app" },
+      params: { template: "sqlite:app", id: "sqlite_app" },
     });
 
-    const file = `${process.env.GROUPAROO_CONFIG_DIR}/apps/postgres_app.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/apps/sqlite_app.js`;
     const output = messages.join(" ");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
     expect(contents).toContain('class: "app"');
-    expect(contents).toContain('id: "postgres_app"');
-    expect(contents).toContain('name: "postgres_app"');
+    expect(contents).toContain('id: "sqlite_app"');
+    expect(contents).toContain('name: "sqlite_app"');
 
     //update the app to work
     fs.writeFileSync(
       file,
-      contents
-        .replace(`host: "localhost"`, `host: "${appOptions.host}"`)
-        .replace(`port: 5432`, `port: "${appOptions.port}"`)
-        .replace(`database: "..."`, `database: "${appOptions.database}"`)
-        .replace(`user: "..."`, `user: "${appOptions.user}"`)
-        .replace(`password: "..."`, `password: "${appOptions.password}"`)
+      contents.replace(`file: "..."`, `file: "${appOptions.file}"`)
     );
   });
 
@@ -98,9 +95,9 @@ describe("postgres cli tests", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "postgres:table:source",
+        template: "sqlite:table:source",
         id: usersTableName,
-        parent: "postgres_app",
+        parent: "sqlite_app",
       },
     });
 
@@ -120,7 +117,7 @@ describe("postgres cli tests", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "postgres:table:property",
+        template: "sqlite:table:property",
         id: "first_name",
         parent: usersTableName,
       },
@@ -146,9 +143,9 @@ describe("postgres cli tests", () => {
     const command = new Generate();
     await command.run({
       params: {
-        template: "postgres:table:source",
+        template: "sqlite:table:source",
         id: usersTableName,
-        parent: "postgres_app",
+        parent: "sqlite_app",
         from: usersTableName,
         with: "*",
         mapping: "id=user_id",

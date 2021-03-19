@@ -83,7 +83,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         await connection.asyncQuery(deleteQuery);
 
         // insert
-        const query = `INSERT INTO ${table} (${Object.keys(
+        const query = `INSERT INTO ${table} (${buildKeyList(
           newProfileProperties
         )}) VALUES (${buildValueList(newProfileProperties)})`;
         validateQuery(query);
@@ -91,7 +91,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
     } else {
       // just insert
-      const query = `INSERT INTO ${table} (${Object.keys(
+      const query = `INSERT INTO ${table} (${buildKeyList(
         newProfileProperties
       )}) VALUES (${buildValueList(newProfileProperties)})`;
       validateQuery(query);
@@ -112,7 +112,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
-        const groupInsertQuery = `INSERT INTO ${groupsTable} (${Object.keys(
+        const groupInsertQuery = `INSERT INTO ${groupsTable} (${buildKeyList(
           data
         )}) VALUES (${buildValueList(data)}) ON CONFLICT DO NOTHING`;
         validateQuery(groupInsertQuery);
@@ -130,11 +130,26 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 };
 
+const buildKeyList = (data: any[] | { [key: string]: any }) => {
+  const keys = Array.isArray(data) ? data : Object.keys(data);
+  return keys.map((v) => `'${v}'`);
+};
+
 interface ValueListItem {
   [key: string]: any;
 }
 
 export const buildValueList = (data: any[] | ValueListItem) => {
   const values = Array.isArray(data) ? data : Object.values(data);
-  return values.map((v) => (typeof v === "string" ? `'${v}'` : v));
+  return values.map((v) => {
+    switch (typeof v) {
+      case "string":
+        return `'${v}'`;
+      case "number":
+        return v;
+      // Protect against syntax errors if the value can't be resolved.
+      default:
+        return `''`;
+    }
+  });
 };
