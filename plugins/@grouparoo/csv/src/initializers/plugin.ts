@@ -19,7 +19,8 @@ import { uniquePropertyBootstrapOptions as remoteUniquePropertyBootstrapOptions 
 
 import {
   CSVAppTemplate,
-  CSVSourceTemplate,
+  CSVFileSourceTemplate,
+  CSVRemoteSourceTemplate,
   CSVPropertyTemplate,
 } from "../lib/templates";
 
@@ -35,7 +36,12 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/csv/csv.svg",
-      templates: [CSVAppTemplate, CSVSourceTemplate, CSVPropertyTemplate],
+      templates: [
+        CSVAppTemplate,
+        CSVFileSourceTemplate,
+        CSVRemoteSourceTemplate,
+        CSVPropertyTemplate,
+      ],
       apps: [
         {
           name: "csv",
