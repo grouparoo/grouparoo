@@ -9,7 +9,7 @@ import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
 
-describe("integration/runs/csv", () => {
+describe("integration/runs/csv/file", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
@@ -68,7 +68,7 @@ describe("integration/runs/csv", () => {
       expect(fileResponse.error).toBeUndefined();
       file = fileResponse.file;
 
-      // create a CSV app with an uploaded file
+      // create a CSV app
       session.params = {
         csrfToken,
         name: "test import app",
@@ -103,12 +103,6 @@ describe("integration/runs/csv", () => {
         type: "csv-import",
         sourceId: source.id,
         recurring: false,
-        mappings: {
-          id: "userId",
-          email: "email",
-          first_name: "firstName",
-          last_name: "lastName",
-        },
         state: "ready",
       };
       const scheduleResponse = await specHelper.runAction(
@@ -193,6 +187,7 @@ describe("integration/runs/csv", () => {
       // check the pluginOptions
       expect(pluginOptions.length).toBe(1);
       expect(pluginOptions[0].key).toBe("column");
+      expect(pluginOptions[0].displayName).toBe("CSV Column");
       expect(pluginOptions[0].required).toBe(true);
       expect(pluginOptions[0].options[0].key).toBe("id");
       expect(pluginOptions[0].options[0].examples[0]).toBe("1");
@@ -331,7 +326,8 @@ describe("integration/runs/csv", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateProfile"
         );
-        expect(foundAssociateTasks.length).toEqual(20);
+
+        expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -364,9 +360,9 @@ describe("integration/runs/csv", () => {
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(10);
+        expect(run.importsCreated).toBe(0);
         expect(run.profilesCreated).toBe(0);
-        expect(run.profilesImported).toBe(10);
+        expect(run.profilesImported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime

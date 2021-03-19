@@ -1,5 +1,5 @@
 import { PluginConnectionPropertyOption } from "@grouparoo/core";
-import { fileImportPreview } from "./sourcePreview";
+import { remoteImportPreview } from "./sourcePreview";
 
 export const propertyOptions: PluginConnectionPropertyOption[] = [
   {
@@ -8,8 +8,8 @@ export const propertyOptions: PluginConnectionPropertyOption[] = [
     required: true,
     description: "where the data comes from",
     type: "typeahead",
-    options: async ({ sourceOptions }) => {
-      const rows = await fileImportPreview(sourceOptions);
+    options: async ({ sourceOptions, sourceId }) => {
+      const rows = await remoteImportPreview(sourceId, sourceOptions);
       const columns = Object.keys(rows.length > 0 ? rows[0] : {});
       return columns.map((col) => {
         return {

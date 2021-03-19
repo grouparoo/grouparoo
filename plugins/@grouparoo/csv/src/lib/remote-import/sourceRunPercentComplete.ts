@@ -1,11 +1,12 @@
-import { plugin, SourceRunPercentCompleteMethod } from "@grouparoo/core";
+import { SourceRunPercentCompleteMethod } from "@grouparoo/core";
+import { downloadAndRefreshFile } from "./downloadAndRefreshFile";
 import { runPercentComplete } from "../shared/runPercentComplete";
 
 export const sourceRunPercentComplete: SourceRunPercentCompleteMethod = async ({
   run,
+  sourceId,
   sourceOptions,
 }) => {
-  const fileId = sourceOptions.fileId?.toString();
-  const localPath = await plugin.getLocalFilePath(fileId);
+  const localPath = await downloadAndRefreshFile(sourceId, sourceOptions);
   return runPercentComplete(run, localPath);
 };
