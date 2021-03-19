@@ -75,7 +75,7 @@ export async function parseProfiles({
 
   return {
     importsCount,
-    highWaterMark: { row: offset + importsCount },
-    sourceOffset: null,
+    highWaterMark: { row: (offset + importsCount).toString() },
+    sourceOffset: 0,
   };
 }
