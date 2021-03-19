@@ -21,8 +21,6 @@ process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
   process.env.JEST_WORKER_ID
 }/config`;
 
-console.log(process.env.GROUPAROO_CONFIG_DIR);
-
 describe("sqlite cli tests", () => {
   beforeAll(() => {
     fs.mkdirpSync(process.env.GROUPAROO_CONFIG_DIR);
