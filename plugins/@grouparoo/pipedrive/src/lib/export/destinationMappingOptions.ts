@@ -76,10 +76,10 @@ const mapTypesToGrouparoo = (
     date: "date",
     address: "string",
     daterange: "date",
-    time: "string",
-    timerange: "string",
 
     // TODO
+    time: null, // time in the format of "00:00:00"
+    timerange: null,
     set: null, // multiple options
   };
 
@@ -136,7 +136,7 @@ export const fetchKnownPersonFields = async (
   const required = ["name", "email"];
   const allowedFields = [...required, "phone", "label"];
 
-  // Allow setting "End of" for date/time ranges and "Currency" for monetary fields
+  // Allow setting "End of" for date ranges and "Currency" for monetary fields
   // The keys for these are like cd77a9b30948242ef1ef57acbe28c0aa054b8fde_until
   const subfieldsRegex = /(_until|_currency)$/;
 

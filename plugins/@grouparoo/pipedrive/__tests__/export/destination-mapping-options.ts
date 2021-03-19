@@ -77,17 +77,6 @@ describe("pipedrive/destinationMappingOptions", () => {
     const person = fields.find((f) => f.key === "person_field");
     expect(person.type).toBe("integer");
 
-    const time = fields.find((f) => f.key === "time_field");
-    expect(time.type).toBe("string");
-
-    const timeRange = fields.find((f) => f.key === "time_range_field");
-    expect(timeRange.type).toBe("string");
-
-    const timeRangeEnd = fields.find(
-      (f) => f.key === "End time of time_range_field"
-    );
-    expect(timeRangeEnd.type).toBe("string");
-
     const date = fields.find((f) => f.key === "date_field");
     expect(date.type).toBe("date");
 
@@ -108,6 +97,12 @@ describe("pipedrive/destinationMappingOptions", () => {
       (f) => f.key === "multiple_option_field"
     );
     expect(multipleOption).toBeUndefined();
+
+    const time = fields.find((f) => f.key === "time_field");
+    expect(time).toBe(undefined);
+
+    const timeRange = fields.find((f) => f.key === "time_range_field");
+    expect(timeRange).toBe(undefined);
   });
 
   test("can load all destinationMappingOptions", async () => {

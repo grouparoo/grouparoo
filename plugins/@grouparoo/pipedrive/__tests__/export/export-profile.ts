@@ -221,8 +221,6 @@ describe("pipedrive/exportProfile", () => {
         phone_field: "1234567890",
         numerical_field: 10.32,
         monetary_field: 1025.21,
-        time_field: "01:30",
-        time_range_field: "20:21",
         date_field: new Date(1598766588 * 1000),
         date_range_field: new Date(1598766588 * 1000),
         address_field: "Cupertino, California, United States",
@@ -250,8 +248,6 @@ describe("pipedrive/exportProfile", () => {
     expect(data[fieldMap.phone_field]).toBe("1234567890");
     expect(data[fieldMap.numerical_field]).toBe(10.32);
     expect(data[fieldMap.monetary_field]).toBe(1025.21);
-    expect(data[fieldMap.time_field]).toBe("01:30:00");
-    expect(data[fieldMap.time_range_field]).toBe("20:21:00");
     expect(data[fieldMap.date_field]).toBe("2020-08-30");
     expect(data[fieldMap.date_range_field]).toBe("2020-08-30");
     expect(data[fieldMap.address_field]).toBe(
@@ -271,8 +267,6 @@ describe("pipedrive/exportProfile", () => {
         phone_field: "1234567890",
         numerical_field: 10.32,
         monetary_field: 1025.21,
-        time_field: "01:30",
-        time_range_field: "20:21",
         date_field: new Date(1598766588 * 1000),
         date_range_field: new Date(1598766588 * 1000),
         address_field: "Cupertino, California, United States",
@@ -299,8 +293,6 @@ describe("pipedrive/exportProfile", () => {
     expect(data[fieldMap.phone_field]).toBe(null);
     expect(data[fieldMap.numerical_field]).toBe(null);
     expect(data[fieldMap.monetary_field]).toBe(null);
-    expect(data[fieldMap.time_field]).toBe(null);
-    expect(data[fieldMap.time_range_field]).toBe(null);
     expect(data[fieldMap.date_field]).toBe(null);
     expect(data[fieldMap.date_range_field]).toBe(null);
   });
