@@ -9,7 +9,7 @@ import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { plugin, SimpleAppOptions, Profile, Property } from "@grouparoo/core";
+import { SimpleAppOptions, Profile, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperty = getConnection().methods.profileProperty;

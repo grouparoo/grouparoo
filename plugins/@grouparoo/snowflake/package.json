@@ -29,8 +29,8 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.2.8-alpha.1",
-    "snowflake-promise": "4.2.0",
-    "snowflake-sdk": "1.5.3"
+    "snowflake-promise": "4.5.0",
+    "snowflake-sdk": "1.6.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.8-alpha.1",
