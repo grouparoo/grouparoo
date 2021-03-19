@@ -20,11 +20,18 @@ const filterOperations = [
 const typeMap: { [columnType: string]: ColumnType } = {
   bigint: "integer",
   blob: "string",
+  boolean: "boolean",
+  date: "date",
   datetime: "date",
+  email: "email",
+  float: "float",
   int: "integer",
   integer: "integer",
   num: "float",
+  phoneNumber: "phoneNumber",
+  string: "string",
   text: "string",
+  url: "url",
   varchar: "string",
 };
 
@@ -40,7 +47,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
     map[name] = {
       name,
       filterOperations,
-      type: typeMap[type],
+      type: typeMap[type.toString().toLowerCase()] || "string",
       data: { name, type, ...data },
     };
   });
