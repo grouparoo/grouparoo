@@ -6,7 +6,7 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiToken: "abc123" // Pipedrive API token
+        apiToken: "..." // Pipedrive API token
       }
     },
   ];
