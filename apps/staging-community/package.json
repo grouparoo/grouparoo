@@ -33,6 +33,7 @@
     "@grouparoo/sendgrid": "0.2.8",
     "@grouparoo/sentry": "0.2.8",
     "@grouparoo/snowflake": "0.2.8",
+    "@grouparoo/sqlite": "0.2.8",
     "@grouparoo/ui-community": "0.2.8",
     "@grouparoo/zendesk": "0.2.8"
   },
@@ -70,6 +71,7 @@
       "@grouparoo/salesforce",
       "@grouparoo/sendgrid",
       "@grouparoo/snowflake",
+      "@grouparoo/sqlite",
       "@grouparoo/ui-community",
       "@grouparoo/zendesk"
     ]
