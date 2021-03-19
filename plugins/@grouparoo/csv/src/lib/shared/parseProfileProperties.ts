@@ -24,7 +24,7 @@ export async function parseProfileProperties({
       while (row) {
         try {
           if (primaryKeys.includes(row[mappedCSVColumn])) {
-            data[primaryKeysHash[row[mappedCSVColumn]]] = row[columnName];
+            data[primaryKeysHash[row[mappedCSVColumn]]] = [row[columnName]];
           }
           await sleep(); // we need to ensure this method is async
         } catch (error) {
