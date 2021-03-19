@@ -19,4 +19,14 @@ export const propertyOptions: PluginConnectionPropertyOption[] = [
       });
     },
   },
+  {
+    key: "aggregationMethod",
+    displayName: "Aggregation Method",
+    required: true,
+    description: "how we combine the data",
+    type: "list",
+    options: async () => {
+      return [{ key: "exact", description: "use the value directly" }];
+    },
+  },
 ];

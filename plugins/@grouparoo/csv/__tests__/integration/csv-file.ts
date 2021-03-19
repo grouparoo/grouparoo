@@ -173,7 +173,7 @@ describe("integration/runs/csv/file", () => {
         key: "email",
         type: "string",
         unique: true,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
         state: "ready",
       };
 
@@ -185,7 +185,7 @@ describe("integration/runs/csv/file", () => {
       expect(property.id).toBeTruthy();
 
       // check the pluginOptions
-      expect(pluginOptions.length).toBe(1);
+      expect(pluginOptions.length).toBe(2);
       expect(pluginOptions[0].key).toBe("column");
       expect(pluginOptions[0].displayName).toBe("CSV Column");
       expect(pluginOptions[0].required).toBe(true);
@@ -196,7 +196,7 @@ describe("integration/runs/csv/file", () => {
       session.params = {
         csrfToken,
         id: property.id,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
       };
       const { error: editError } = await specHelper.runAction(
         "property:edit",
