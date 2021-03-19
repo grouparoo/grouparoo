@@ -7,6 +7,7 @@ import {
   Run,
   HighWaterMark,
 } from "@grouparoo/core";
+import { sleep } from "../shared/sleep";
 
 export async function parseProfiles({
   localPath,
@@ -58,8 +59,7 @@ export async function parseProfiles({
             await plugin.createImport(combinedMapping, run, row);
             importsCount++;
           } else {
-            // we need to ensure this method is async
-            await sleep();
+            await sleep(); // we need to ensure this method is async
           }
         } catch (error) {
           return reject(error);
@@ -78,10 +78,4 @@ export async function parseProfiles({
     highWaterMark: { row: offset + importsCount },
     sourceOffset: null,
   };
-}
-
-async function sleep() {
-  return new Promise((resolve) => {
-    setTimeout(resolve, 1);
-  });
 }
