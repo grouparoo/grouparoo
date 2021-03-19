@@ -14,7 +14,7 @@ export const groupsDestinationTableName = `output_groups_${workerId}`;
 const allTables = {
   [usersTableName]: `
 CREATE TABLE ${usersTableName} (
-  "id" SERIAL PRIMARY KEY,
+  "id" integer PRIMARY KEY,
   "first_name" text,
   "last_name" text,
   "email" text,
@@ -23,9 +23,9 @@ CREATE TABLE ${usersTableName} (
   "ios_app" boolean,
   "android_app" boolean,
   "vip" boolean,
-  "ltv" double precision,
+  "ltv" float,
   "date" date,
-  "stamp" timestamp
+  "stamp" datetime
 )
 `,
   [purchasesTableName]: `
@@ -33,9 +33,9 @@ CREATE TABLE ${purchasesTableName} (
   "id" integer PRIMARY KEY,
   "profile_id" integer,
   "purchase" text,
-  "amount" double precision,
+  "amount" float,
   "date" date,
-  "stamp" timestamp
+  "stamp" datetime
 )
 `,
   [profilesDestinationTableName]: `
@@ -49,7 +49,7 @@ CREATE TABLE ${profilesDestinationTableName} (
 `,
   [groupsDestinationTableName]: `
 CREATE TABLE ${groupsDestinationTableName}(
-  "id" SERIAL PRIMARY KEY,
+  "id" integer PRIMARY KEY,
   "userId" integer NOT NULL,
   "group" text NOT NULL,
   UNIQUE("userId", "group")
