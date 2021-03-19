@@ -77,7 +77,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
     response = rows.map((row) => row.__result);
   } catch (error) {
     throw new Error(
-      `Error with Postgres SQL Statement: Query - \`${query}\`, Error - ${error}`
+      `Error with SQLite SQL Statement: Query - \`${query}\`, Error - ${error}`
     );
   }
 

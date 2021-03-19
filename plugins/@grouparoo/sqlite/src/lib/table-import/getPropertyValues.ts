@@ -107,7 +107,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
     });
   } catch (error) {
     throw new Error(
-      `Error with Postgres SQL Statement: Query - \`${query}\`, Error - ${error}`
+      `Error with SQLite SQL Statement: Query - \`${query}\`, Error - ${error}`
     );
   }
 

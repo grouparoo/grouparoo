@@ -72,7 +72,7 @@ describe("integration/runs/sqlite", () => {
     // create the source
     session.params = {
       csrfToken,
-      name: "pg import source",
+      name: "sqlite import source",
       type: "sqlite-table-import",
       appId: app.id,
       options: { table: usersTableName },

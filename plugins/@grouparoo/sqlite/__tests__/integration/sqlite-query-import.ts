@@ -59,7 +59,7 @@ describe("integration/runs/sqlite", () => {
     // create the source
     session.params = {
       csrfToken,
-      name: "pg import source",
+      name: "sqlite import source",
       type: "sqlite-query-import",
       appId: app.id,
       state: "ready",
