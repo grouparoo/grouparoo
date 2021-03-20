@@ -35,9 +35,13 @@ describe("integration/files", () => {
     expect(contents).toContain("1,Erie,Jervois,ejervois0@example.com");
 
     // modify the file
-    contents += "MODIFIED!";
+    contents += "\r\nMODIFIED!";
+    fs.writeFileSync(localPath, contents);
+
+    // try again
     await api.files.downloadToServer(file);
-    expect(contents).toContain("MODIFIED"); // was not re-downloaded
+    const contentsAgain = fs.readFileSync(localPath).toString();
+    expect(contentsAgain).toContain("MODIFIED"); // was not re-downloaded
   });
 
   test("a file can be destroyed and remove the remote file", async () => {
