@@ -5,6 +5,8 @@ import fs from "fs-extra";
 import path from "path";
 import os from "os";
 
+const FILE_CACHE_AGE_MS = 1000 * 60 * 60; // 1 hour
+
 export class FileTransportLocal extends FileTransport {
   bucket: string;
   client: any;
@@ -31,7 +33,25 @@ export class FileTransportLocal extends FileTransport {
     const tmp = os.tmpdir();
     const storagePath = path.join(file.bucket, file.path);
     const localPath = path.join(tmp, file.path);
-    await this.client.copySync(storagePath, localPath);
+
+    const toDownload: boolean = await new Promise((resolve, reject) => {
+      fs.stat(localPath, (error, stats) => {
+        if (error) {
+          if (error.code === "ENOENT") return resolve(true);
+          else return reject(error);
+        }
+
+        const now = new Date();
+        if (now.getTime() - stats.birthtime.getTime() > FILE_CACHE_AGE_MS) {
+          return resolve(true);
+        } else {
+          return resolve(false);
+        }
+      });
+    });
+
+    if (toDownload) await this.client.copySync(storagePath, localPath);
+
     return { localPath };
   }
 
