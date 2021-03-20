@@ -5,6 +5,8 @@ import path from "path";
 import { FileTransport } from "@grouparoo/core";
 import AWS from "aws-sdk";
 
+const FILE_CACHE_AGE_MS = 1000 * 60 * 60; // 1 hour
+
 export class FileTransportS3 extends FileTransport {
   bucket: string;
   client: AWS.S3;
@@ -31,21 +33,39 @@ export class FileTransportS3 extends FileTransport {
       });
     });
 
+    const toDownload: boolean = await new Promise((resolve, reject) => {
+      fs.stat(localPath, (error, stats) => {
+        if (error) {
+          if (error.code === "ENOENT") return resolve(true);
+          else return reject(error);
+        }
+
+        const now = new Date();
+        if (now.getTime() - stats.birthtime.getTime() > FILE_CACHE_AGE_MS) {
+          return resolve(true);
+        } else {
+          return resolve(false);
+        }
+      });
+    });
+
     const params = {
       Bucket: this.bucket,
       Key: `${file.path}`,
     };
 
-    await new Promise((resolve, reject) => {
-      log("downloading from s3...", "info", params);
-      this.client.getObject(params, (error, data) => {
-        if (error) return reject(error);
-        fs.writeFile(localPath, data.Body, (error) => {
+    if (toDownload) {
+      await new Promise((resolve, reject) => {
+        log("downloading from s3...", "info", params);
+        this.client.getObject(params, (error, data) => {
           if (error) return reject(error);
-          return resolve(null);
+          fs.writeFile(localPath, data.Body, (error) => {
+            if (error) return reject(error);
+            return resolve(null);
+          });
         });
       });
-    });
+    }
 
     return { localPath };
   }
