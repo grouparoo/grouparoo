@@ -1,7 +1,7 @@
-name: update-branch
+name: update-lockfile
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -13,9 +13,9 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
-      - name: Update merged files
+      - name: Update PNPM lockfile
         run: |
-          cd tools/merger && ./github_action
+          cd tools/merger && ./lockfile
       - uses: stefanzweifel/git-auto-commit-action@v4.1.2
         with:
           commit_message: Updating things automatically
