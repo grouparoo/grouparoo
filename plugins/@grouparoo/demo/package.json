@@ -32,7 +32,7 @@
     "isomorphic-fetch": "3.0.0",
     "pg": "8.5.1",
     "prettier": "2.2.1",
-    "sequelize": "6.5.1",
+    "sequelize": "6.6.0",
     "uuid": "8.3.2"
   },
   "devDependencies": {
