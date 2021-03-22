@@ -67,7 +67,7 @@
     "pg-hstore": "2.3.3",
     "prettier": "2.2.1",
     "reflect-metadata": "0.1.13",
-    "sequelize": "6.6.0",
+    "sequelize": "6.6.1",
     "sequelize-typescript": "2.1.0",
     "sqlite3": "5.0.2",
     "ts-node": "9.1.1",
