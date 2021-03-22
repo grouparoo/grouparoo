@@ -17,11 +17,14 @@ let personId = null;
 const email1 = "grouparoo@demo.com";
 const email2 = "othergrouparoo@demo.com";
 const email3 = "notgrouparoo@demo.com";
+const email4 = "maybegrouparoo@demo.com";
 const nonexistentEmail = "fakegrouparoo@demo.com";
 const groupOne = "TEST High Value";
 const groupTwo = "TEST Spanish Speaking";
+const groupThree = "TEST Recently Added";
 const groupOneField = `In Group: ${groupOne}`;
 const groupTwoField = `In Group: ${groupTwo}`;
+const groupThreeField = `In Group: ${groupThree}`;
 let groupOneKey = null;
 let groupTwoKey = null;
 
@@ -50,7 +53,7 @@ async function findFilter(name: string) {
 async function cleanUp() {
   // Clear created people
   const ids = [];
-  for (let email of [email1, email2, email3, nonexistentEmail]) {
+  for (let email of [email1, email2, email3, email4, nonexistentEmail]) {
     const id = await client.EnhancedPersonsController.findPersonIdByEmail(
       email
     );
@@ -68,7 +71,9 @@ async function cleanUp() {
     data: fields,
   } = await client.PersonFieldsController.getAllPersonFields();
   const testGroupFieldIds = fields
-    .filter((f) => [groupOneField, groupTwoField].includes(f.name))
+    .filter((f) =>
+      [groupOneField, groupTwoField, groupThreeField].includes(f.name)
+    )
     .map((f) => f.id);
 
   if (testGroupFieldIds.length > 0) {
@@ -82,7 +87,9 @@ async function cleanUp() {
     "people"
   );
   const testFilterIds = filters
-    .filter((f) => [groupOneField, groupTwoField].includes(f.name))
+    .filter((f) =>
+      [groupOneField, groupTwoField, groupThreeField].includes(f.name)
+    )
     .map((f) => f.id);
 
   if (testFilterIds.length > 0) {
@@ -406,5 +413,29 @@ describe("pipedrive/exportProfile", () => {
     expect(data.name).toBe("Bobby");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email3);
+  });
+
+  test("can add a Person with a new group at the same time", async () => {
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: { Email: email4, Name: "Jill" },
+      oldGroups: [],
+      newGroups: [groupThree],
+      toDelete: false,
+    });
+
+    const newPersonId = await client.EnhancedPersonsController.findPersonIdByEmail(
+      email4
+    );
+    expect(newPersonId).toBeTruthy();
+
+    const { data } = await client.PersonsController.getDetailsOfAPerson(
+      newPersonId
+    );
+    expect(data.name).toBe("Jill");
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email4);
+
+    expect(fieldMap[groupOneField]).toBeTruthy();
   });
 });
