@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "mailchimp-api-v3": "1.14.0"
+    "mailchimp-api-v3": "1.15.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.8-alpha.1",
