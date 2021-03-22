@@ -33,7 +33,7 @@
     "@types/jest": "*",
     "@types/node": "*",
     "@types/uuid": "*",
-    "actionhero": "25.0.7",
+    "actionhero": "25.0.8",
     "jest": "26.6.3",
     "nock": "13.0.11",
     "prettier": "2.2.1",
