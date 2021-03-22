@@ -334,20 +334,40 @@ describe("pipedrive/exportProfile", () => {
   test("can change email", async () => {
     await runExport({
       oldProfileProperties: { Email: email1, Name: "Johnny Doe" },
-      newProfileProperties: {
-        Email: email2,
-        Name: "Johnny Doe",
-      },
-      oldGroups: [],
-      newGroups: [],
+      newProfileProperties: { Email: email2, Name: "Johnny Doe" },
+      oldGroups: [groupOne],
+      newGroups: [groupOne],
+      toDelete: false,
+    });
+
+    const data = await client.getPerson(personId);
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email2);
+  });
+
+  test("can remove person from group without creating it", async () => {
+    await runExport({
+      oldProfileProperties: { Email: email2, Name: "Johnny Doe" },
+      newProfileProperties: { Email: email2, Name: "Johnny Doe" },
+      oldGroups: [groupOne, groupThree],
+      newGroups: [groupOne],
       toDelete: false,
     });
 
     await indexUsers(newNock);
 
-    const data = await client.getPerson(personId);
-    expect(data.email).toHaveLength(1);
-    expect(data.email[0].value).toBe(email2);
+    fieldMap = await getKnownPersonFieldMap(
+      client,
+      { appId, appOptions },
+      true
+    );
+
+    // we shouldn't create the field/filter if we're just deleting
+    const groupThreeKey = fieldMap[groupThreeField];
+    expect(groupThreeKey).toBeUndefined();
+
+    const groupFilter = await findFilter(groupThreeField);
+    expect(groupFilter).toBeNull();
   });
 
   test("can delete a Person", async () => {
@@ -360,8 +380,8 @@ describe("pipedrive/exportProfile", () => {
         Email: email2,
         Name: "Johnny Doe",
       },
-      oldGroups: [],
-      newGroups: [],
+      oldGroups: [groupOne],
+      newGroups: [groupOne],
       toDelete: true,
     });
 
@@ -413,6 +433,18 @@ describe("pipedrive/exportProfile", () => {
 
     await indexUsers(newNock);
 
+    fieldMap = await getKnownPersonFieldMap(
+      client,
+      { appId, appOptions },
+      true
+    );
+
+    const groupThreeKey = fieldMap[groupThreeField];
+    expect(groupThreeKey).toBeTruthy();
+
+    const groupFilter = await findFilter(groupThreeField);
+    expect(groupFilter).toBeTruthy();
+
     personId3 = await client.findPersonIdByEmail(email4);
     expect(personId3).toBeTruthy();
 
@@ -420,8 +452,7 @@ describe("pipedrive/exportProfile", () => {
     expect(data.name).toBe("Jill");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4);
-
-    expect(fieldMap[groupOneField]).toBeTruthy();
+    expect(data[groupThreeKey]).toBeTruthy();
   });
 
   test("can delete a Person when changing email at the same time", async () => {

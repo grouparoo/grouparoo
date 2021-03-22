@@ -110,14 +110,16 @@ async function makePayload(
 
   // Set group fields
   for (const group of newGroups) {
-    const groupKey = await getGroupFieldKey(client, cacheData, group);
+    const groupKey = await getGroupFieldKey(client, cacheData, group, true);
     payload[groupKey] = "true";
   }
 
   for (const group of oldGroups) {
     if (!newGroups.includes(group)) {
       const groupKey = await getGroupFieldKey(client, cacheData, group);
-      payload[groupKey] = null;
+      if (groupKey) {
+        payload[groupKey] = null;
+      }
     }
   }
 

@@ -8,7 +8,8 @@ import {
 export async function getGroupFieldKey(
   client: PipedriveClient,
   cacheData: PipedriveCacheData,
-  groupName: string
+  groupName: string,
+  createIfNotExists?: boolean
 ): Promise<string> {
   groupName = groupName.trim();
 
@@ -17,9 +18,14 @@ export async function getGroupFieldKey(
   const cacheKey = ["getGroupFieldKey", groupName, appOptions];
 
   return objectCache(
-    { objectId: appId, cacheKey, cacheDurationMs },
+    { objectId: appId, cacheKey, cacheDurationMs, write: createIfNotExists },
     async () => {
-      return ensureFieldAndFilter(client, cacheData, groupName);
+      return ensureFieldAndFilter(
+        client,
+        cacheData,
+        groupName,
+        createIfNotExists
+      );
     }
   );
 }
@@ -28,7 +34,8 @@ export async function getGroupFieldKey(
 async function ensureFieldAndFilter(
   client: PipedriveClient,
   cacheData: PipedriveCacheData,
-  groupName: string
+  groupName: string,
+  createIfNotExists: boolean
 ): Promise<string> {
   const fieldName = makeGroupFieldName(groupName);
 
@@ -47,6 +54,8 @@ async function ensureFieldAndFilter(
   }
 
   // need to create it
+  if (!createIfNotExists) return null;
+
   const { data } = await client.createPersonField({
     name: fieldName,
     field_type: "varchar",
