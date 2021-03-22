@@ -16,9 +16,9 @@ export async function getGroupFieldKey(
   const { appId, appOptions } = cacheData;
   const cacheDurationMs = 1000 * 60 * 10; // 10 minutes
   const cacheKey = ["getGroupFieldKey", groupName, appOptions];
-
+  const write = createIfNotExists; // don't cache nulls
   return objectCache(
-    { objectId: appId, cacheKey, cacheDurationMs, write: createIfNotExists },
+    { objectId: appId, cacheKey, cacheDurationMs, write },
     async () => {
       return ensureFieldAndFilter(
         client,
