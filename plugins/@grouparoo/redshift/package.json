@@ -37,7 +37,7 @@
     "@types/jest": "*",
     "@types/node": "*",
     "@types/pg": "*",
-    "actionhero": "25.0.7",
+    "actionhero": "25.0.8",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "26.5.3",
