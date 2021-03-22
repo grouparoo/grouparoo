@@ -30,7 +30,7 @@ export { Run } from "./models/Run";
 export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
 export { Setting } from "./models/Setting";
 export { SetupStep } from "./models/SetupStep";
-export { Source, SimpleSourceOptions } from "./models/Source";
+export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 

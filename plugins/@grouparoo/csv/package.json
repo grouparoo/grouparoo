@@ -28,6 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "axios": "0.21.1",
     "csv-parser": "3.0.0",
     "fs-extra": "9.1.0"
   },
