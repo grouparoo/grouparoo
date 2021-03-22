@@ -14,7 +14,7 @@ function RealRedisConfig() {
   let port = process.env.REDIS_PORT || 6379;
   let db = process.env.REDIS_DB || process.env.JEST_WORKER_ID || "0";
   let username = process.env.REDIS_USER || null;
-  let password = process.env.REDIS_PASSWORD || null;
+  let password = process.env.REDIS_PASS || null;
 
   if (process.env.REDIS_URL) {
     const parsed = new URL(process.env.REDIS_URL);
