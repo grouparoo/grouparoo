@@ -16,6 +16,8 @@ let client: PipedriveClient;
 let fieldMap: { [fieldName: string]: string };
 
 let personId = null;
+let personId2 = null;
+let personId3 = null;
 const email1 = "grouparoo@demo.com";
 const email2 = "othergrouparoo@demo.com";
 const email3 = "notgrouparoo@demo.com";
@@ -378,13 +380,26 @@ describe("pipedrive/exportProfile", () => {
 
     await indexUsers(newNock);
 
-    const newPersonId = await client.findPersonIdByEmail(email3);
-    expect(newPersonId).toBeTruthy();
+    personId2 = await client.findPersonIdByEmail(email3);
+    expect(personId2).toBeTruthy();
 
-    const data = await client.getPerson(newPersonId);
+    const data = await client.getPerson(personId2);
     expect(data.name).toBe("Bobby");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email3);
+  });
+
+  test("can delete a Person when syncing for the first time", async () => {
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: { Email: email3, Name: "Bobby" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    const data = await client.getPerson(personId2);
+    expect(data.active_flag).toBe(false);
   });
 
   test("can add a Person with a new group at the same time", async () => {
@@ -398,14 +413,29 @@ describe("pipedrive/exportProfile", () => {
 
     await indexUsers(newNock);
 
-    const newPersonId = await client.findPersonIdByEmail(email4);
-    expect(newPersonId).toBeTruthy();
+    personId3 = await client.findPersonIdByEmail(email4);
+    expect(personId3).toBeTruthy();
 
-    const data = await client.getPerson(newPersonId);
+    const data = await client.getPerson(personId3);
     expect(data.name).toBe("Jill");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4);
 
     expect(fieldMap[groupOneField]).toBeTruthy();
+  });
+
+  test("can delete a Person when changing email at the same time", async () => {
+    await runExport({
+      oldProfileProperties: { Email: email4, Name: "Jill" },
+      newProfileProperties: { Email: nonexistentEmail, Name: "Jill" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    const data = await client.getPerson(personId3);
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email4); // does not get updated
+    expect(data.active_flag).toBe(false);
   });
 });

@@ -25,12 +25,22 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const client = await connect(appOptions);
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
+  const newEmail = newProfileProperties["Email"];
   const oldEmail = oldProfileProperties["Email"];
-  const foundId = await client.findPersonIdByEmail(oldEmail);
 
+  const newFoundId = await client.findPersonIdByEmail(newEmail);
+
+  let oldFoundId = null;
+  if (oldEmail && oldEmail !== newEmail) {
+    oldFoundId = await client.findPersonIdByEmail(oldEmail);
+  }
+
+  const foundId = oldFoundId || newFoundId;
   if (toDelete) {
     if (!foundId) {
-      throw new Error(`Person with email ${oldEmail} was not found to delete.`);
+      throw new Error(
+        `Person with email ${oldEmail || newEmail} was not found to delete.`
+      );
     }
 
     await client.deletePerson(foundId);
