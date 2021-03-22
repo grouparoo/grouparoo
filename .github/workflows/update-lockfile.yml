@@ -1,0 +1,30 @@
+name: update-lockfile
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'grouparoo/grouparoo' }}
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Update PNPM lockfile
+        run: |
+          cd tools/merger && ./lockfile
+          
+# Disabled for now:
+# remote: error: GH006: Protected branch update failed for refs/heads/main.        
+# remote: error: Required status check "ci/circleci: complete" is expected. 
+          
+#       - uses: stefanzweifel/git-auto-commit-action@v4.1.2
+#         with:
+#           commit_message: Updating things automatically
+#           commit_user_name: Grouparoo Bot
+#           commit_user_email: hello@grouparoo.com
+#           commit_author: Grouparoo Bot <hello@grouparoo.com>
+#           branch: ${{ github.head_ref }}

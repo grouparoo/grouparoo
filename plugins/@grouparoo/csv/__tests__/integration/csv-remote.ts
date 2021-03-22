@@ -9,7 +9,7 @@ import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
 import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
 
-describe("integration/runs/csv", () => {
+describe("integration/runs/csv/remote", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await api.resque.queue.connection.redis.flushdb());
 
@@ -35,18 +35,6 @@ describe("integration/runs/csv", () => {
     let app;
     let schedule;
 
-    beforeAll(async () => {
-      const file = "/tmp/profiles-10.csv";
-      if (await fs.pathExists(file)) {
-        fs.unlinkSync(file);
-      }
-      await fs.copy(
-        path.join(process.cwd(), "__tests__", "data", "profiles-10.csv"),
-        "/tmp/profiles-10.csv"
-      );
-      await fs.emptyDir(`/tmp/grouparoo-test-${process.env.JEST_WORKER_ID}`);
-    });
-
     test("an administrator can create the related import app and schedule", async () => {
       // sign in
       session = await specHelper.buildConnection();
@@ -58,17 +46,7 @@ describe("integration/runs/csv", () => {
       expect(sessionResponse.error).toBeUndefined();
       csrfToken = sessionResponse.csrfToken;
 
-      // upload a CSV file
-      session.params = {
-        csrfToken,
-        type: "csv",
-        _file: { name: "profiles-10.csv", path: "/tmp/profiles-10.csv" },
-      };
-      const fileResponse = await specHelper.runAction("file:create", session);
-      expect(fileResponse.error).toBeUndefined();
-      file = fileResponse.file;
-
-      // create a CSV app with an uploaded file
+      // create a CSV app
       session.params = {
         csrfToken,
         name: "test import app",
@@ -82,10 +60,14 @@ describe("integration/runs/csv", () => {
       // create the source
       session.params = {
         csrfToken,
-        type: "csv-file-import",
+        type: "csv-remote-import",
         name: "csv source",
         appId: app.id,
-        options: { fileId: file.id },
+        options: {
+          url:
+            "https://raw.githubusercontent.com/grouparoo/grouparoo/main/core/__tests__/data/profiles-10.csv",
+          fileAgeHours: 1,
+        },
         mapping: { id: "userId" },
         state: "ready",
       };
@@ -103,12 +85,6 @@ describe("integration/runs/csv", () => {
         type: "csv-import",
         sourceId: source.id,
         recurring: false,
-        mappings: {
-          id: "userId",
-          email: "email",
-          first_name: "firstName",
-          last_name: "lastName",
-        },
         state: "ready",
       };
       const scheduleResponse = await specHelper.runAction(
@@ -179,7 +155,7 @@ describe("integration/runs/csv", () => {
         key: "email",
         type: "string",
         unique: true,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
         state: "ready",
       };
 
@@ -191,8 +167,9 @@ describe("integration/runs/csv", () => {
       expect(property.id).toBeTruthy();
 
       // check the pluginOptions
-      expect(pluginOptions.length).toBe(1);
+      expect(pluginOptions.length).toBe(2);
       expect(pluginOptions[0].key).toBe("column");
+      expect(pluginOptions[0].displayName).toBe("CSV Column");
       expect(pluginOptions[0].required).toBe(true);
       expect(pluginOptions[0].options[0].key).toBe("id");
       expect(pluginOptions[0].options[0].examples[0]).toBe("1");
@@ -201,7 +178,7 @@ describe("integration/runs/csv", () => {
       session.params = {
         csrfToken,
         id: property.id,
-        options: { column: "email" },
+        options: { column: "email", aggregationMethod: "exact" },
       };
       const { error: editError } = await specHelper.runAction(
         "property:edit",
@@ -331,7 +308,7 @@ describe("integration/runs/csv", () => {
         const foundAssociateTasks = await specHelper.findEnqueuedTasks(
           "import:associateProfile"
         );
-        expect(foundAssociateTasks.length).toEqual(20);
+        expect(foundAssociateTasks.length).toEqual(10);
 
         await Promise.all(
           foundAssociateTasks.map((t) =>
@@ -364,9 +341,9 @@ describe("integration/runs/csv", () => {
 
         await run.updateTotals();
         expect(run.state).toBe("complete");
-        expect(run.importsCreated).toBe(10);
+        expect(run.importsCreated).toBe(0);
         expect(run.profilesCreated).toBe(0);
-        expect(run.profilesImported).toBe(10);
+        expect(run.profilesImported).toBe(0);
         expect(run.percentComplete).toBe(100);
       },
       helper.longTime

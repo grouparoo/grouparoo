@@ -1,6 +1,9 @@
 name: update-branch
 
-on: pull_request
+on:
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -13,9 +16,6 @@ jobs:
       - name: Update merged files
         run: |
           cd tools/merger && ./github_action
-      - name: Update PNPM lockfile
-        run: |
-          cd tools/merger && ./lockfile
       - uses: stefanzweifel/git-auto-commit-action@v4.1.2
         with:
           commit_message: Updating things automatically

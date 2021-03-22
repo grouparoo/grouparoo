@@ -3,7 +3,7 @@ import { helper } from "@grouparoo/spec-helper";
 import "../utils/mock";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
-import { plugin, Profile, SimpleAppOptions, Property } from "@grouparoo/core";
+import { Profile, SimpleAppOptions, Property } from "@grouparoo/core";
 
 import { getConnection } from "../../src/lib/query-import/connection";
 const profileProperty = getConnection().methods.profileProperty;

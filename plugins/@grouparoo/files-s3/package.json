@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/files-s3",
   "description": "The Grouparoo file transport for s3 file storage",
-  "version": "0.2.8-alpha.0",
+  "version": "0.2.8-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -28,14 +28,14 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "aws-sdk": "2.863.0",
+    "aws-sdk": "2.868.0",
     "fs-extra": "9.1.0"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.2.8-alpha.0",
+    "@grouparoo/core": "0.2.8-alpha.1",
     "@types/jest": "*",
     "@types/node": "*",
-    "actionhero": "25.0.7",
+    "actionhero": "25.0.8",
     "jest": "26.6.3",
     "prettier": "2.2.1",
     "ts-jest": "26.5.3",
