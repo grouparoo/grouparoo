@@ -13,10 +13,12 @@ function RealRedisConfig() {
   let host = process.env.REDIS_HOST || "127.0.0.1";
   let port = process.env.REDIS_PORT || 6379;
   let db = process.env.REDIS_DB || process.env.JEST_WORKER_ID || "0";
+  let username = process.env.REDIS_USER || null;
   let password = process.env.REDIS_PASSWORD || null;
 
   if (process.env.REDIS_URL) {
     const parsed = new URL(process.env.REDIS_URL);
+    if (parsed.username) username = parsed.username;
     if (parsed.password) password = parsed.password;
     if (parsed.hostname) host = parsed.hostname;
     if (parsed.port) port = parsed.port;
@@ -27,6 +29,7 @@ function RealRedisConfig() {
   const commonArgs = {
     port,
     host,
+    username,
     password,
     db: parseInt(db),
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
