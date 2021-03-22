@@ -5,7 +5,8 @@ import {
   objectCache,
 } from "@grouparoo/core";
 
-import { connect } from "./../connect";
+import { connect } from "../connect";
+import { PipedriveClient } from "../client";
 import { GROUP_FIELD_PREFIX } from "./listMethods";
 
 export interface PipedriveCacheData {
@@ -101,7 +102,7 @@ type KnownPersonField = {
 };
 
 export const getKnownPersonFieldMap = async (
-  client: any,
+  client: PipedriveClient,
   cacheData: PipedriveCacheData,
   update: boolean = false
 ): Promise<{ [fieldName: string]: string }> => {
@@ -114,7 +115,7 @@ export const getKnownPersonFieldMap = async (
 };
 
 const getKnownPersonFields = async (
-  client: any,
+  client: PipedriveClient,
   cacheData: PipedriveCacheData,
   update: boolean = false
 ): Promise<KnownPersonField[]> => {
@@ -131,7 +132,7 @@ const getKnownPersonFields = async (
 };
 
 export const fetchKnownPersonFields = async (
-  client: any
+  client: PipedriveClient
 ): Promise<KnownPersonField[]> => {
   const required = ["name", "email"];
   const allowedFields = [...required, "phone", "label"];
@@ -140,9 +141,7 @@ export const fetchKnownPersonFields = async (
   // The keys for these are like cd77a9b30948242ef1ef57acbe28c0aa054b8fde_until
   const subfieldsRegex = /(_until|_currency)$/;
 
-  const {
-    data: fields,
-  } = await client.PersonFieldsController.getAllPersonFields();
+  const fields = await client.getAllPersonFields();
 
   const out: KnownPersonField[] = [];
 

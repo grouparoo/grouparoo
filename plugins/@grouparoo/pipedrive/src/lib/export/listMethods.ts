@@ -1,11 +1,12 @@
 import { objectCache } from "@grouparoo/core";
+import { PipedriveClient } from "../client";
 import {
   getKnownPersonFieldMap,
   PipedriveCacheData,
 } from "./destinationMappingOptions";
 
 export async function getGroupFieldKey(
-  client: any,
+  client: PipedriveClient,
   cacheData: PipedriveCacheData,
   groupName: string
 ): Promise<string> {
@@ -25,7 +26,7 @@ export async function getGroupFieldKey(
 
 // gets called if the group field key is not cached
 async function ensureFieldAndFilter(
-  client: any,
+  client: PipedriveClient,
   cacheData: PipedriveCacheData,
   groupName: string
 ): Promise<string> {
@@ -46,12 +47,13 @@ async function ensureFieldAndFilter(
   }
 
   // need to create it
-  const { data } = await client.PersonFieldsController.addANewPersonField({
-    body: { name: fieldName, field_type: "varchar" },
+  const { data } = await client.createPersonField({
+    name: fieldName,
+    field_type: "varchar",
   });
 
   // automatically create the filter too
-  await client.FiltersController.addANewFilter({
+  await client.createFilter({
     name: fieldName,
     type: "people",
     conditions: {

@@ -3,6 +3,8 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
   "@grouparoo/pipedrive": { path: path.join(__dirname, "..", "..") },
 });
 import "@grouparoo/spec-helper";
+import { helper } from "@grouparoo/spec-helper";
+
 import {
   destinationMappingOptions,
   fetchKnownPersonFields,

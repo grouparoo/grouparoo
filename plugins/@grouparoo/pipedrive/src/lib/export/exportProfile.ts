@@ -1,4 +1,5 @@
 import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
   PipedriveCacheData,
@@ -25,16 +26,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const cacheData: PipedriveCacheData = { appId, appOptions };
 
   const oldEmail = oldProfileProperties["Email"];
-  const foundId = await client.EnhancedPersonsController.findPersonIdByEmail(
-    oldEmail
-  );
+  const foundId = await client.findPersonIdByEmail(oldEmail);
 
   if (toDelete) {
     if (!foundId) {
       throw new Error(`Person with email ${oldEmail} was not found to delete.`);
     }
 
-    await client.PersonsController.deleteAPerson(foundId);
+    await client.deletePerson(foundId);
     return { success: true };
   }
 
@@ -49,17 +48,17 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (foundId) {
     // Update existing Person
-    await client.EnhancedPersonsController.updateAPerson(foundId, payload);
+    await client.updatePerson(foundId, payload);
   } else {
     // Create new Person
-    await client.PersonsController.addAPerson({ body: payload });
+    await client.createPerson(payload);
   }
 
   return { success: true };
 };
 
 async function makePayload(
-  client: any,
+  client: PipedriveClient,
   cacheData: PipedriveCacheData,
   oldProfileProperties: {
     [key: string]: any;
