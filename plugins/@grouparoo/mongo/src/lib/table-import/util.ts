@@ -89,9 +89,7 @@ export function makeFindQuery(matchCondition: MatchCondition) {
 
 export function castRow(row): DataResponseRow {
   const out = {};
-  Object.keys(row).forEach((colName) => {
-    out[colName] = castValue(row[colName]);
-  });
+  getNestedResults(row, out);
   return out;
 }
 
@@ -111,6 +109,27 @@ export function castValue(value): DataResponse {
 
   // otherwise, regular value
   return value;
+}
+
+function getNestedResults(entries, responseRow, columnName = "") {
+  for (const [key, value] of Object.entries(entries)) {
+    if (
+      value !== null &&
+      typeof value === "object" &&
+      Object.keys(value).length > 0
+    ) {
+      getNestedResults(
+        value,
+        responseRow,
+        columnName === "" ? key : `${columnName}.${key}`
+      );
+    } else {
+      responseRow[columnName === "" ? key : `${columnName}.${key}`] = castValue(
+        value
+      );
+    }
+  }
+  return responseRow;
 }
 
 export async function getFieldSampleTypes(
@@ -147,13 +166,15 @@ export async function getMostTrendingType(
   const types = await getFieldSampleTypes(connection, tableName, fieldName);
   const trendingTypes = {};
   for (const entry of types) {
-    const currentCount = trendingTypes[entry[fieldName]];
-    trendingTypes[entry[fieldName]] = currentCount ? currentCount + 1 : 1;
+    const nestedType = getNestedValue(entry, fieldName);
+    const currentCount = trendingTypes[nestedType];
+    trendingTypes[nestedType] = currentCount ? currentCount + 1 : 1;
   }
   return Object.keys(trendingTypes).reduce((a, b) =>
     trendingTypes[a] > trendingTypes[b] ? a : b
   );
 }
+
 export function getFields(sourceOptions: SimpleSourceOptions): Array<string> {
   let fields = [];
   if (sourceOptions) {
@@ -163,4 +184,12 @@ export function getFields(sourceOptions: SimpleSourceOptions): Array<string> {
       .map((f) => f.trim());
   }
   return fields;
+}
+
+function getNestedValue(entity, fieldName) {
+  const steps = fieldName.split(".");
+  for (const step of steps) {
+    entity = entity[step];
+  }
+  return entity;
 }

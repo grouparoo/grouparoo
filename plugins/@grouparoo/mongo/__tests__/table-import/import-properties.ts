@@ -14,7 +14,12 @@ import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
 
 // these used and set by test
-const { appOptions, usersTableName, purchasesTableName } = getConfig();
+const {
+  appOptions,
+  usersTableName,
+  purchasesTableName,
+  locationsTableName,
+} = getConfig();
 let profile: Profile;
 let otherProfile: Profile;
 
@@ -772,6 +777,355 @@ describe("postgres/table/profileProperties", () => {
             aggregationMethod,
           },
           [{ op, key: "amount", match: 1.54 }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+    });
+  });
+
+  describe("filters (nested)", () => {
+    const sourceMapping = { id: "userId" };
+    const column = "properties.mag";
+    const aggregationMethod = "count";
+    beforeAll(() => {
+      sourceOptions = {
+        table: locationsTableName,
+        fields:
+          "id,type,properties.sig,properties.mag,properties.time,properties.updated,properties.gap,properties.type",
+      };
+    });
+    describe("equals", () => {
+      const op = "equals";
+      test("integer", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.gap", match: 85 }]
+        );
+        expect(values[profile.id]).toEqual([1]);
+        expect(values[otherProfile.id]).toBeUndefined();
+      });
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "earthquake" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "Earthquake" }]
+        );
+        expect(values[profile.id]).toBeUndefined();
+        expect(otherProfile[profile.id]).toBeUndefined();
+      });
+      test("date", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [
+            {
+              op,
+              key: "properties.updated",
+              match: new Date("2021-03-22T21:04:07.183"),
+            },
+          ]
+        );
+        expect(values[profile.id]).toEqual([1]);
+        expect(values[otherProfile.id]).toBeUndefined();
+      });
+      test("float", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.mag", match: 2.79 }]
+        );
+        expect(values[profile.id]).toEqual([1]);
+        expect(values[otherProfile.id]).toEqual([1]);
+      });
+    });
+
+    describe("does not equal", () => {
+      const op = "does not equal";
+      test("integer", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: 1 }]
+        );
+        expect(values[profile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "apple" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "Apple" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("date", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [
+            {
+              op,
+              key: "properties.updated",
+              match: new Date("2021-03-22T21:04:07.183"),
+            },
+          ]
+        );
+        expect(values[profile.id]).toEqual([1]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("float", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.mag", match: 2.79 }]
+        );
+        expect(values[profile.id]).toEqual([1]);
+        expect(values[otherProfile.id]).toEqual([1]);
+      });
+    });
+
+    describe("contains", () => {
+      const op = "contains";
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "earth" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "Earth" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+    });
+
+    describe("does not contain", () => {
+      const op = "does not contain";
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "Oran" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "oran" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+    });
+
+    describe("greater than", () => {
+      const op = "greater than";
+      test("integer", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: 1 }]
+        );
+        expect(values[profile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "earthquake" }]
+        );
+        expect(values[profile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toBeUndefined();
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "purchase", match: "apple" }]
+        );
+        expect(
+          values[profile.id] ? values[profile.id].length : [].length
+        ).toBeGreaterThanOrEqual(0); // unpredictable ascii math
+      });
+      test("date", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [
+            {
+              op,
+              key: "properties.updated",
+              match: new Date("2020-03-22T21:04:07"),
+            },
+          ]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("float", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.mag", match: 1.54 }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+    });
+
+    describe("less than", () => {
+      const op = "less than";
+      test("integer", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "id", match: 15 }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "z" }]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("string is case sensitive", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.type", match: "Z" }]
+        );
+        expect(values[profile.id]).toBeUndefined();
+        expect(values[otherProfile.id]).toBeUndefined();
+      });
+      test("date", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [
+            {
+              op,
+              key: "properties.updated",
+              match: new Date("2021-03-23T21:04:07"),
+            },
+          ]
+        );
+        expect(values[profile.id]).toEqual([2]);
+        expect(values[otherProfile.id]).toEqual([2]);
+      });
+      test("float", async () => {
+        const values = await getPropertyValues(
+          {
+            column,
+            sourceMapping,
+            aggregationMethod,
+          },
+          [{ op, key: "properties.mag", match: 100.54 }]
         );
         expect(values[profile.id]).toEqual([2]);
         expect(values[otherProfile.id]).toEqual([2]);

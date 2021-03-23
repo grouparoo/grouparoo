@@ -2,24 +2,52 @@ import { connect } from "../../src/lib/connect";
 import path from "path";
 import fs from "fs";
 import { DataResponse } from "@grouparoo/app-templates/dist/source/shared/types";
+import dotenv from "dotenv";
+import { SimpleAppOptions } from "@grouparoo/core";
 
-export const bdName = `test_db_${process.env.JEST_WORKER_ID || 1}`;
 export const usersCollectionName = `users_${process.env.JEST_WORKER_ID || 1}`;
 export const purchasesCollectionName = `purchases_${
   process.env.JEST_WORKER_ID || 1
 }`;
+export const locationsCollectionName = `locations_${
+  process.env.JEST_WORKER_ID || 1
+}`;
 
 const appId = "app_7818903039-mongodbj90-90-3k";
-export const appOptions = {
-  uri: `mongodb://localhost:27017/${bdName}`,
-  database: bdName,
-};
+
+const dirPath = path.resolve(path.join(__dirname, ".."));
+const defaultPath = path.join(dirPath, ".env.example");
+const realPath = path.join(dirPath, ".env");
+
+function readEnv(filePath) {
+  return dotenv.parse(fs.readFileSync(filePath));
+}
+export function loadAppOptions(): SimpleAppOptions {
+  let envFile;
+  if (fs.existsSync(realPath)) {
+    envFile = realPath;
+  } else {
+    envFile = defaultPath;
+  }
+  const parsed = readEnv(envFile);
+  return {
+    uri: parsed.MONGO_URI,
+    database: parsed.MONGO_DATABASE_NAME,
+  };
+}
+
+export const appOptions = loadAppOptions();
 
 export const sourceOptions = {
   fields: "name,createdAt",
 };
 
-const allCollections = [usersCollectionName, purchasesCollectionName];
+const allCollections = [
+  usersCollectionName,
+  purchasesCollectionName,
+  locationsCollectionName,
+];
+
 const collectionsOptions = {
   [usersCollectionName]: {
     validationLevel: "off",
@@ -97,6 +125,29 @@ const collectionsOptions = {
       },
     },
   },
+  [locationsCollectionName]: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["profile_id"],
+        properties: {
+          id: {
+            bsonType: "string",
+          },
+          type: {
+            bsonType: "string",
+          },
+          properties: {
+            bsonType: "object",
+          },
+          geometry: {
+            bsonType: "object",
+          },
+        },
+      },
+    },
+  },
 };
 
 let client;
@@ -127,6 +178,7 @@ export function getConfig() {
     appId,
     usersTableName: usersCollectionName,
     purchasesTableName: purchasesCollectionName,
+    locationsTableName: locationsCollectionName,
   };
 }
 
@@ -160,10 +212,25 @@ async function fillTable(collectionName, fileName) {
   }
 }
 
+async function fillTableJson(collectionName, fileName) {
+  const filePath = path.resolve(path.join(__dirname, "..", "data", fileName));
+  const file = fs.readFileSync(filePath, { encoding: "utf8", flag: "r" });
+  const locations = JSON.parse(file);
+  for (const doc of locations) {
+    try {
+      doc.properties.updated = new Date(doc.properties.updated);
+      await client.db.collection(collectionName).insertOne(doc);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+}
+
 export async function populate() {
   await createTables();
   await fillTable(usersCollectionName, "profiles.csv");
   await fillTable(purchasesCollectionName, "purchases.csv");
+  await fillTableJson(locationsCollectionName, "locations.json");
 }
 
 function parseCsvToObject(csv, collectionName) {

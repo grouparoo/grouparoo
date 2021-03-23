@@ -7,14 +7,10 @@ import { getConnection } from "../../src/lib/table-import/connection";
 const sourcePreview = getConnection().methods.sourcePreview;
 
 // these used and set by test
-const { appOptions, purchasesTableName } = getConfig();
-const sourceOptions = {
-  table: purchasesTableName,
-  fields: "id,amount,date,id,profile_id,purchase, stamp", // Add a whitespace to test the strip.
-};
+const { appOptions, purchasesTableName, locationsTableName } = getConfig();
 let client;
 
-async function getPreview() {
+async function getPreview(sourceOptions) {
   const response = await sourcePreview({
     connection: client,
     appOptions,
@@ -35,11 +31,14 @@ describe("mongo/table/sourcePreview", () => {
   afterAll(async () => await afterData());
 
   test("gets list of columns that can handle highwatermark", async () => {
-    const preview = await getPreview();
+    const sourceOptions = {
+      table: purchasesTableName,
+      fields: "id,amount,date,id,profile_id,purchase, stamp", // Add a whitespace to test the strip.
+    };
+    const preview = await getPreview(sourceOptions);
     const row = preview[0];
     const columnNames = Object.keys(row).sort();
     expect(columnNames).toEqual([
-      "_id",
       "amount",
       "date",
       "id",
@@ -60,5 +59,29 @@ describe("mongo/table/sourcePreview", () => {
     value = row["date"];
     expect(typeof value).toEqual("string");
     expect(new Date(value).getTime()).toBeGreaterThan(0);
+  });
+
+  test("gets list of columns from location collection", async () => {
+    const locationSourceOptions = {
+      table: locationsTableName,
+      fields: "id,type,properties, geometry", // Add a whitespace to test the strip.
+    };
+
+    const preview = await getPreview(locationSourceOptions);
+    const row = preview[0];
+    expect(preview.length).toEqual(10);
+
+    let value;
+    value = row["id"];
+    expect(typeof value).toEqual("number");
+
+    value = row["type"];
+    expect(typeof value).toEqual("string");
+
+    value = row["properties.mag"];
+    expect(typeof value).toEqual("number");
+
+    value = row["geometry.type"];
+    expect(typeof value).toEqual("string");
   });
 });

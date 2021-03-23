@@ -46,7 +46,6 @@ describe("mongo/table/propertyOptions", () => {
     const response = await getOptionsForKey("column");
     const columnNames = response.map((r) => r.key).sort();
     expect(columnNames).toEqual([
-      "_id",
       "amount",
       "date",
       "id",
@@ -54,7 +53,7 @@ describe("mongo/table/propertyOptions", () => {
       "purchase",
       "stamp",
     ]);
-    expect(response.length).toBe(7);
+    expect(response.length).toBe(6);
 
     let column, value;
     column = response.find((col) => col.key === "id");
@@ -97,7 +96,6 @@ describe("mongo/table/propertyOptions", () => {
     const response = await getOptionsForKey("sortColumn");
     const columnNames = response.map((r) => r.key).sort();
     expect(columnNames).toEqual([
-      "_id",
       "amount",
       "date",
       "id",
