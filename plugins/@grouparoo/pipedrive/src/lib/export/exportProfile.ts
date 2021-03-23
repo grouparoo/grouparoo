@@ -37,13 +37,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const foundId = oldFoundId || newFoundId;
   if (toDelete) {
-    if (!foundId) {
-      throw new Error(
-        `Person with email ${oldEmail || newEmail} was not found to delete.`
-      );
+    if (foundId) {
+      await client.deletePerson(foundId);
     }
 
-    await client.deletePerson(foundId);
     return { success: true };
   }
 

@@ -469,4 +469,19 @@ describe("pipedrive/exportProfile", () => {
     expect(data.email[0].value).toBe(email4); // does not get updated
     expect(data.active_flag).toBe(false);
   });
+
+  test("can delete a nonexistent Person", async () => {
+    await runExport({
+      oldProfileProperties: { Email: nonexistentEmail, Name: "Nobody" },
+      newProfileProperties: { Email: nonexistentEmail, Name: "Nobody" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexUsers(newNock);
+
+    const personId = await client.findPersonIdByEmail(nonexistentEmail);
+    expect(personId).toBeNull();
+  });
 });
