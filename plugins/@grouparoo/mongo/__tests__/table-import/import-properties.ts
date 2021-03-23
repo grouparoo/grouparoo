@@ -70,7 +70,7 @@ async function getPropertyArrays(
   });
 }
 
-describe("postgres/table/profileProperties", () => {
+describe("mongo/table/profileProperties", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
@@ -844,7 +844,7 @@ describe("postgres/table/profileProperties", () => {
             {
               op,
               key: "properties.updated",
-              match: new Date("2021-03-22T21:04:07.183"),
+              match: new Date("2021-03-23T00:04:07.183Z"),
             },
           ]
         );
@@ -914,7 +914,7 @@ describe("postgres/table/profileProperties", () => {
             {
               op,
               key: "properties.updated",
-              match: new Date("2021-03-22T21:04:07.183"),
+              match: new Date("2021-03-23T00:04:07.183Z"),
             },
           ]
         );
