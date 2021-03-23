@@ -12,12 +12,12 @@ export class PipedriveClient {
     });
   }
 
-  async getCurrentUser() {
+  async getCurrentUser(): Promise<Record<string, any>> {
     const { data } = await this.request.get("/users/me");
     return data.data;
   }
 
-  async findPersonIdByEmail(email: string): Promise<number | null> {
+  async findPersonIdByEmail(email: string): Promise<number> {
     if (!email) return null;
 
     const { data } = await this.request.get("/persons/search", {
@@ -32,12 +32,14 @@ export class PipedriveClient {
     return data.data.items[0].item.id;
   }
 
-  async getPerson(id: number) {
+  async getPerson(id: number): Promise<Record<string, any>> {
     const { data } = await this.request.get(`/persons/${id}`);
     return data.data;
   }
 
-  async createPerson(payload: any) {
+  async createPerson(
+    payload: Record<string, any>
+  ): Promise<Record<string, any>> {
     const { data } = await this.request.post(`/persons`, payload, {
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +49,10 @@ export class PipedriveClient {
     return data;
   }
 
-  async updatePerson(id: number, payload: any) {
+  async updatePerson(
+    id: number,
+    payload: Record<string, any>
+  ): Promise<Record<string, any>> {
     const { data } = await this.request.put(`/persons/${id}`, payload, {
       headers: {
         "Content-Type": "application/json",
@@ -57,17 +62,19 @@ export class PipedriveClient {
     return data;
   }
 
-  async deletePerson(id: number) {
+  async deletePerson(id: number): Promise<Record<string, any>> {
     const { data } = await this.request.delete(`/persons/${id}`);
     return data;
   }
 
-  async getAllPersonFields(): Promise<any[]> {
+  async getAllPersonFields(): Promise<Record<string, any>[]> {
     const { data } = await this.request.get("/personFields");
     return data.data;
   }
 
-  async createPersonField(payload: any) {
+  async createPersonField(
+    payload: Record<string, any>
+  ): Promise<Record<string, any>> {
     const { data } = await this.request.post(`/personFields`, payload, {
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +84,7 @@ export class PipedriveClient {
     return data;
   }
 
-  async bulkDeletePersonFields(ids: number[]) {
+  async bulkDeletePersonFields(ids: number[]): Promise<Record<string, any>> {
     const { data } = await this.request.delete(`/personFields`, {
       params: { ids: ids.join(",") },
     });
@@ -85,14 +92,14 @@ export class PipedriveClient {
     return data;
   }
 
-  async getAllPersonFilters(): Promise<any[]> {
+  async getAllPersonFilters(): Promise<Record<string, any>[]> {
     const { data } = await this.request.get("/filters", {
       params: { type: "people" },
     });
     return data.data;
   }
 
-  async createFilter(payload: any) {
+  async createFilter(payload: Record<string, any>) {
     const { data } = await this.request.post(`/filters`, payload, {
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +109,7 @@ export class PipedriveClient {
     return data;
   }
 
-  async bulkDeleteFilters(ids: number[]) {
+  async bulkDeleteFilters(ids: number[]): Promise<Record<string, any>> {
     const { data } = await this.request.delete(`/filters`, {
       params: { ids: ids.join(",") },
     });
