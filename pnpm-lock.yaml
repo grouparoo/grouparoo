@@ -193,7 +193,7 @@ importers:
       '@types/validator': 13.1.3
       actionhero: 25.0.8
       ah-next-plugin: 0.5.1_actionhero@25.0.8
-      ah-sequelize-plugin: 3.0.1_dd1541ff71a43d261ff248fd05c1935c
+      ah-sequelize-plugin: 3.0.1_c05e9086cc214dc4917d47d312abe2a2
       bcryptjs: 2.4.3
       cls-hooked: 4.2.2
       colors: 1.4.0
@@ -219,8 +219,8 @@ importers:
       pg-hstore: 2.3.3
       prettier: 2.2.1
       reflect-metadata: 0.1.13
-      sequelize: 6.6.0_2de4b17fccf4949c1d4891cd0897c67a
-      sequelize-typescript: 2.1.0_b3c212949cd506411ffb7a14ed728224
+      sequelize: 6.6.1_2de4b17fccf4949c1d4891cd0897c67a
+      sequelize-typescript: 2.1.0_42faca1e5bfedb08e731f4ec2f60ddbf
       sqlite3: 5.0.2
       ts-node: 9.1.1_typescript@4.2.3
       umzug: 2.3.0
@@ -280,7 +280,7 @@ importers:
       pg-hstore: 2.3.3
       prettier: 2.2.1
       reflect-metadata: 0.1.13
-      sequelize: 6.6.0
+      sequelize: 6.6.1
       sequelize-typescript: 2.1.0
       sqlite3: 5.0.2
       ts-jest: 26.5.3
@@ -447,7 +447,7 @@ importers:
       isomorphic-fetch: 3.0.0
       pg: 8.5.1
       prettier: 2.2.1
-      sequelize: 6.6.0_pg@8.5.1
+      sequelize: 6.6.1_pg@8.5.1
       uuid: 8.3.2
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -470,7 +470,7 @@ importers:
       jest: 26.6.3
       pg: 8.5.1
       prettier: 2.2.1
-      sequelize: 6.6.0
+      sequelize: 6.6.1
       ts-jest: 26.5.3
       typescript: 4.2.3
       uuid: 8.3.2
@@ -1114,7 +1114,7 @@ importers:
       axios: 0.21.1
       faker: 5.4.0
       nock: 13.0.11
-      sequelize: 6.6.0
+      sequelize: 6.6.1
       uuid: 8.3.2
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1137,7 +1137,7 @@ importers:
       jest: 26.6.3
       nock: 13.0.11
       prettier: 2.2.1
-      sequelize: 6.6.0
+      sequelize: 6.6.1
       ts-jest: 26.5.3
       typescript: 4.2.3
       uuid: 8.3.2
@@ -3950,11 +3950,11 @@ packages:
       react-dom: ^16.6.0 || ^17
     resolution:
       integrity: sha512-GxVj6i7M37fpp3KKBoGKwHIGCLRkbmeF/4Eru9oKyRF4UXDdY/KrNszllQjnNlCg/0kiv0M2BbBdfv7y15Rfvw==
-  /ah-sequelize-plugin/3.0.1_dd1541ff71a43d261ff248fd05c1935c:
+  /ah-sequelize-plugin/3.0.1_c05e9086cc214dc4917d47d312abe2a2:
     dependencies:
       actionhero: 25.0.8
-      sequelize: 6.6.0_2de4b17fccf4949c1d4891cd0897c67a
-      sequelize-typescript: 2.1.0_b3c212949cd506411ffb7a14ed728224
+      sequelize: 6.6.1_2de4b17fccf4949c1d4891cd0897c67a
+      sequelize-typescript: 2.1.0_42faca1e5bfedb08e731f4ec2f60ddbf
       umzug: 3.0.0-beta.5
     dev: false
     engines:
@@ -13383,13 +13383,13 @@ packages:
       node: '>= 10.0.0'
     resolution:
       integrity: sha512-4YwEw3ZgK/tY/so+GfnSgXkdwIJJ1I32uZJztIEgZeAO6HMgj64OzySbWLgxj+tXhZCJnzRfkY9gINw8Ft8ZMg==
-  /sequelize-typescript/2.1.0_b3c212949cd506411ffb7a14ed728224:
+  /sequelize-typescript/2.1.0_42faca1e5bfedb08e731f4ec2f60ddbf:
     dependencies:
       '@types/node': 14.14.27
       '@types/validator': 13.1.3
       glob: 7.1.6
       reflect-metadata: 0.1.13
-      sequelize: 6.6.0_2de4b17fccf4949c1d4891cd0897c67a
+      sequelize: 6.6.1_2de4b17fccf4949c1d4891cd0897c67a
     dev: false
     engines:
       node: '>=10.0.0'
@@ -13400,7 +13400,7 @@ packages:
       sequelize: '>=6.2.0'
     resolution:
       integrity: sha512-wwPxydBQ/wIZ92pFxDQEAhW8uRHqwFZGm6JkPmpsCjrODWrH8TANZiOCjwGouygFMgBwCNK91RNwLe5TYoy5pg==
-  /sequelize/6.6.0:
+  /sequelize/6.6.1:
     dependencies:
       debug: 4.3.1
       dottie: 2.0.2
@@ -13439,8 +13439,8 @@ packages:
       tedious:
         optional: true
     resolution:
-      integrity: sha512-3BIkOutn9emK7BuS9sszG4VlQx4sauo/rK33k5SgDTjGjbZNrqcCXPsXc3AoOOuvKlJD8wtzMaZULUxw+fAOww==
-  /sequelize/6.6.0_2de4b17fccf4949c1d4891cd0897c67a:
+      integrity: sha512-dhu25X8L084YyQ9E7iTvleb+g7t9THeI13PV1tKERNCax1W0+sObtSQw0fphMiAr/BeAP2kELyY33s4Bh5tA4Q==
+  /sequelize/6.6.1_2de4b17fccf4949c1d4891cd0897c67a:
     dependencies:
       debug: 4.3.1
       dottie: 2.0.2
@@ -13482,8 +13482,8 @@ packages:
       tedious:
         optional: true
     resolution:
-      integrity: sha512-3BIkOutn9emK7BuS9sszG4VlQx4sauo/rK33k5SgDTjGjbZNrqcCXPsXc3AoOOuvKlJD8wtzMaZULUxw+fAOww==
-  /sequelize/6.6.0_pg@8.5.1:
+      integrity: sha512-dhu25X8L084YyQ9E7iTvleb+g7t9THeI13PV1tKERNCax1W0+sObtSQw0fphMiAr/BeAP2kELyY33s4Bh5tA4Q==
+  /sequelize/6.6.1_pg@8.5.1:
     dependencies:
       debug: 4.3.1
       dottie: 2.0.2
@@ -13523,7 +13523,7 @@ packages:
       tedious:
         optional: true
     resolution:
-      integrity: sha512-3BIkOutn9emK7BuS9sszG4VlQx4sauo/rK33k5SgDTjGjbZNrqcCXPsXc3AoOOuvKlJD8wtzMaZULUxw+fAOww==
+      integrity: sha512-dhu25X8L084YyQ9E7iTvleb+g7t9THeI13PV1tKERNCax1W0+sObtSQw0fphMiAr/BeAP2kELyY33s4Bh5tA4Q==
   /sequin/0.1.1:
     dev: false
     engines:
