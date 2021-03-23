@@ -29,7 +29,7 @@ function RealRedisConfig() {
   const commonArgs = {
     port,
     host,
-    username,
+    username: username?.length > 1 ? username : undefined, // For older redis servers, we cannot supply a username.  This is normally triggered by a 1 or 0 char username in REDIS_URL
     password,
     db: parseInt(db),
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
