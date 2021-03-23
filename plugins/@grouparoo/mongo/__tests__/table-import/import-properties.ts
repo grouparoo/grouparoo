@@ -1,7 +1,7 @@
 import path from "path";
 
 process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
-  "@grouparoo/postgres": { path: path.join(__dirname, "..", "..") },
+  "@grouparoo/mongo": { path: path.join(__dirname, "..", "..") },
 });
 
 import { helper } from "@grouparoo/spec-helper";
