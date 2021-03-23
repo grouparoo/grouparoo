@@ -35,10 +35,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     oldFoundId = await client.findPersonIdByEmail(oldEmail);
   }
 
-  const foundId = oldFoundId || newFoundId;
   if (toDelete) {
-    if (foundId) {
-      await client.deletePerson(foundId);
+    const idToDelete = oldFoundId || newFoundId;
+    if (idToDelete) {
+      await client.deletePerson(idToDelete);
     }
 
     return { success: true };
@@ -53,6 +53,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     newGroups
   );
 
+  const foundId = newFoundId || oldFoundId;
   if (foundId) {
     // Update existing Person
     await client.updatePerson(foundId, payload);
