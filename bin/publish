@@ -84,6 +84,7 @@ if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
 
   # and update main with this new version
   git checkout main
+  git pull
   git merge stable
   git push origin main
 
