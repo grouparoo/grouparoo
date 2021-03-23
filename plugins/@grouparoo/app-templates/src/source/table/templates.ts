@@ -239,6 +239,12 @@ async function loadTablesAndColumns(
           });
         }
       }
+
+      if (params.with.replace(/['"]+/g, "") && map.length === 0) {
+        throw new Error(
+          'Could not find any listed columns in source. If using * make sure you used quotes ("*")?'
+        );
+      }
     }
   } finally {
     await app.disconnect();
