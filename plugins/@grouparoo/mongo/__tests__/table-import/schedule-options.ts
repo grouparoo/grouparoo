@@ -33,7 +33,7 @@ describe("mongo/table/scheduleOptions", () => {
   });
 
   afterAll(async () => {
-    // await afterData();
+    await afterData();
   });
   test("gets list of columns that can handle highwatermark", async () => {
     const sourceOptions = {
