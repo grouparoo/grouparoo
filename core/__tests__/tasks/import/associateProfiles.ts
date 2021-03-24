@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
+import { Import } from "../../../src";
 
 describe("tasks/import:associateProfiles", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -7,6 +8,7 @@ describe("tasks/import:associateProfiles", () => {
 
   beforeEach(async () => {
     await api.resque.queue.connection.redis.flushdb();
+    await Import.truncate();
   });
 
   test("can be enqueued", async () => {
@@ -19,7 +21,6 @@ describe("tasks/import:associateProfiles", () => {
 
   test("it will enqueue new tasks to associate not-yet associated imports", async () => {
     const _import = await helper.factories.import();
-
     // delete the associate task that was created along with the import
     await api.resque.queue.connection.redis.flushdb();
 
@@ -46,5 +47,20 @@ describe("tasks/import:associateProfiles", () => {
 
     await run.reload();
     expect(run.state).toBe("running");
+  });
+
+  test("imports that have an error will not be tried again", async () => {
+    const _import = await helper.factories.import();
+    // delete the associate task that was created along with the import
+    await api.resque.queue.connection.redis.flushdb();
+
+    await _import.update({ errorMessage: "I broke" });
+
+    await specHelper.runTask("import:associateProfiles", {});
+
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "import:associateProfile"
+    );
+    expect(foundTasks.length).toBe(0);
   });
 });
