@@ -52,10 +52,13 @@ export class StatusTask extends Task {
     await CLS.wrap(async () => {
       pendingStatus = await GrouparooCLI.getPendingStatus();
       runStatus = await GrouparooCLI.getRunsStatus();
-      GrouparooCLI.logger.status(title, [
-        { header: "Pending Items", status: pendingStatus },
-        { header: "Active Runs", status: runStatus },
-      ]);
+
+      if (process.env.NODE_ENV !== "test") {
+        GrouparooCLI.logger.status(title, [
+          { header: "Pending Items", status: pendingStatus },
+          { header: "Active Runs", status: runStatus },
+        ]);
+      }
     });
 
     return { pendingStatus, runStatus };

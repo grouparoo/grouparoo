@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { RunCLI } from "../../src/bin/run";
-import { Run } from "../../src";
 
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -42,45 +41,6 @@ describe("bin/run", () => {
 
     test("paused tasks can be run", async () => {
       await instance.runPausedTasks({}); // does not throw
-    });
-
-    test("will be complete with no pending items", async () => {
-      await Run.truncate(); // there will be pending runs from `factories.properties()`
-
-      const complete = await instance.checkForComplete();
-      expect(complete).toBe(true);
-    });
-
-    test("will not be complete with a pending profile", async () => {
-      const profile = await helper.factories.profile();
-      await profile.update({ state: "pending" });
-      expect(await instance.checkForComplete()).toBe(false);
-      await profile.destroy();
-    });
-
-    test("will not be complete with a pending import", async () => {
-      const profile = await helper.factories.profile();
-      await profile.update({ state: "ready" });
-      await helper.factories.import(null, { profileId: profile.id });
-
-      expect(await instance.checkForComplete()).toBe(false);
-      await profile.destroy();
-    });
-
-    test("will not be complete with a pending export", async () => {
-      const profile = await helper.factories.profile();
-      await profile.update({ state: "ready" });
-      await helper.factories.export(profile);
-
-      expect(await instance.checkForComplete()).toBe(false);
-      await profile.destroy();
-    });
-
-    test("will not be complete with a pending export", async () => {
-      const run = await helper.factories.run(null, { state: "running" });
-
-      expect(await instance.checkForComplete()).toBe(false);
-      await run.destroy();
     });
   });
 });

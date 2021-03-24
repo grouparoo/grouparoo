@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run, Log, Import, Export, plugin } from "../../src";
+import { Run, Log, Import, Export, plugin } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/sweeper", () => {

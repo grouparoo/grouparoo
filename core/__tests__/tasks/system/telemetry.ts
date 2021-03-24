@@ -2,7 +2,7 @@ import fetch, { enableFetchMocks } from "jest-fetch-mock";
 enableFetchMocks();
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Log } from "../../src";
+import { plugin, Log } from "../../../src";
 import { api, specHelper, config } from "actionhero";
 
 describe("tasks/telemetry", () => {
