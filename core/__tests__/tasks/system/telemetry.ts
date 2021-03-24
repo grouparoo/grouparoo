@@ -137,7 +137,7 @@ describe("tasks/telemetry", () => {
         expect(payload.metrics[0].aggregation).toBe("exact");
         expect(payload.metrics[0].value).toMatch("Error: OH NO");
         expect(payload.metrics[0].value).toMatch(
-          "core/__tests__/tasks/telemetry.ts"
+          "core/__tests__/tasks/system/telemetry.ts"
         );
       });
     });
