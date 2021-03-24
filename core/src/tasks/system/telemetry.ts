@@ -1,9 +1,9 @@
 import { api, config } from "actionhero";
 import "isomorphic-fetch";
-import { plugin } from "../modules/plugin";
+import { plugin } from "../../modules/plugin";
 import path from "path";
 import os from "os";
-import { CLSTask } from "../classes/tasks/clsTask";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Telemetry extends CLSTask {
   constructor() {
@@ -11,7 +11,7 @@ export class Telemetry extends CLSTask {
     this.name = "telemetry";
     this.description = "send telemetry information about this cluster";
     this.frequency = 1000 * 60 * 60 * 24; // every 24 hours
-    this.queue = "default";
+    this.queue = "system";
   }
 
   async runWithinTransaction() {
