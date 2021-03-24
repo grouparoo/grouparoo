@@ -42,7 +42,7 @@ export class EventAssociateProfile extends Task {
         if (!app) return;
         const appOptions = await app.getOptions();
 
-        event.associate(appOptions.identifyingPropertyId.toString());
+        await event.associate(appOptions.identifyingPropertyId.toString());
       });
     } catch (error) {
       log(`re-enqueuing association of event ${eventId}`);
