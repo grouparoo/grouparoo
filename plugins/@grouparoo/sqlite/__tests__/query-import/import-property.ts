@@ -75,6 +75,12 @@ describe("sqlite/query/profileProperty", () => {
     expect(value).toEqual(["true"]);
   });
 
+  test("can run a integer query to get a date", async () => {
+    const sql = `SELECT stamp FROM ${usersTableName} WHERE id = {{ userId }}`;
+    const value = await getPropertyValue(sql);
+    expect(value).toEqual(["2020/02/01 12:13:14"]);
+  });
+
   test("can run a string query to get a string", async () => {
     const sql = `SELECT first_name FROM ${usersTableName} WHERE email = '{{ email }}'`;
     const value = await getPropertyValue(sql);
@@ -91,6 +97,12 @@ describe("sqlite/query/profileProperty", () => {
     const sql = `SELECT ios_app FROM ${usersTableName} WHERE email = '{{ email }}'`;
     const value = await getPropertyValue(sql);
     expect(value).toEqual(["true"]);
+  });
+
+  test("can run a string query to get a date", async () => {
+    const sql = `SELECT stamp FROM ${usersTableName} WHERE email = '{{ email }}'`;
+    const value = await getPropertyValue(sql);
+    expect(value).toEqual(["2020/02/01 12:13:14"]);
   });
 
   test("returns undefined when data is not avilable", async () => {
