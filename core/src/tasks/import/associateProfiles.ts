@@ -22,7 +22,7 @@ export class ImportAssociateProfiles extends CLSTask {
     );
 
     const imports = await Import.findAll({
-      where: { profileId: null },
+      where: { profileId: null, errorMessage: null },
       limit,
       order: [["createdAt", "asc"]],
     });
