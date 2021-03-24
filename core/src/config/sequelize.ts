@@ -1,6 +1,6 @@
 import { URL } from "url";
 import { join, isAbsolute } from "path";
-import { getParentPath, getCoreRootPath } from "../utils/pluginDetails";
+import { getParentPath } from "../utils/pluginDetails";
 
 // import {CLS} from '../modules/cls'
 import cls from "cls-hooked";
