@@ -337,7 +337,7 @@ export namespace OptionHelper {
       options = plugin.pluginConnection?.options;
     }
 
-    const defaultOptions: Record<string, string | number | boolean> = {};
+    const defaultOptions: SimpleOptions = {};
     for (const opt of options) {
       if (opt.defaultValue !== undefined) {
         defaultOptions[opt.key] = opt.defaultValue;
