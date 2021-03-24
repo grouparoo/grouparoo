@@ -30,6 +30,7 @@ export interface AppOption {
   required: boolean;
   description?: string;
   placeholder?: string;
+  defaultValue?: string | number | boolean;
 }
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
