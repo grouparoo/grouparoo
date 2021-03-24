@@ -52,18 +52,15 @@ export class Plugins extends Initializer {
               displayName: "Connection String URI",
               required: true,
               description:
-                "The MongoDB Connection String. Normally, this is connection string is provided by the Mongo DB service. " +
-                "In case you're using the standalone Mongo DB, this connection string will looks line this: mongodb://localhost:27017.",
-              placeholder:
-                "e.g. mongodb+srv://user:password@cluster0.123.mongodb.net/mydb?retryWrites=true&w=majority",
+                "The MongoDB Connection String. Normally, this is connection string is provided by the Mongo DB service.",
+              placeholder: "mongodb://localhost:27017",
             },
             {
               key: "database",
               displayName: "Database name",
               required: true,
-              description:
-                "The MongoDB database name (normally, the Connection String have the database name too)",
-              placeholder: "e.g. mydb",
+              description: "The MongoDB database name.",
+              placeholder: "mydb",
             },
           ],
           methods: { test, connect, disconnect },
