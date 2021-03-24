@@ -14,12 +14,6 @@ import {
   OptionallyAuthenticatedActionMiddleware,
 } from "../modules/middleware/authentication";
 
-interface SessionData {
-  id: string;
-  csrfToken: string;
-  createdAt: number;
-}
-
 declare module "actionhero" {
   export interface Api {
     session: {

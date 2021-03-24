@@ -1,6 +1,6 @@
-import { api, Initializer } from "actionhero";
+import { api } from "actionhero";
 import { getConfigDir, loadConfigDirectory } from "../modules/configLoaders";
-import { CLS } from "../modules/cls";
+import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
 declare module "actionhero" {
   export interface Api {
@@ -10,7 +10,7 @@ declare module "actionhero" {
   }
 }
 
-export class CodeConfig extends Initializer {
+export class CodeConfig extends CLSInitializer {
   constructor() {
     super();
     this.name = "codeConfig";
@@ -18,20 +18,20 @@ export class CodeConfig extends Initializer {
     this.startPriority = 1;
   }
 
-  async initialize() {
+  async initializeWithinTransaction() {
     api.codeConfig = {
       allowLockedModelChanges: true,
     };
   }
 
-  async start() {
+  async startWithinTransaction() {
     const configDir = getConfigDir();
-    await CLS.wrap(async () => {
-      const { errors } = await loadConfigDirectory(configDir);
-      if (errors.length > 0) throw new Error("code config error");
-    });
+    const { errors } = await loadConfigDirectory(configDir);
+    if (errors.length > 0) throw new Error("code config error");
 
     // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     api.codeConfig.allowLockedModelChanges = false;
   }
+
+  async stopWithinTransaction() {}
 }

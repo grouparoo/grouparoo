@@ -1,7 +1,6 @@
-import { Initializer } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { settingTypes } from "../models/Setting";
-import { CLS } from "../modules/cls";
+import { CLSInitializer } from "../classes/initializers/clsInitializer";
 import * as UUID from "uuid";
 
 interface SettingsListItem {
@@ -12,7 +11,7 @@ interface SettingsListItem {
   type: typeof settingTypes[number];
   variant?: string;
 }
-export class Plugins extends Initializer {
+export class Plugins extends CLSInitializer {
   constructor() {
     super();
     this.name = "settings";
@@ -43,7 +42,7 @@ export class Plugins extends Initializer {
     }
   }
 
-  async initialize() {
+  async initializeWithinTransaction() {
     const coreSettings: SettingsListItem[] = [
       {
         key: "cluster-name",
@@ -178,12 +177,13 @@ export class Plugins extends Initializer {
       ...telemetrySettings,
     ].map(({ key }) => key);
 
-    await CLS.wrap(async () => {
-      await plugin.cleanSettings(settingKeys);
+    await plugin.cleanSettings(settingKeys);
 
-      await this.registerSettingsArray(coreSettings, "core");
-      await this.registerSettingsArray(interfaceSettings, "interface");
-      await this.registerSettingsArray(telemetrySettings, "telemetry");
-    });
+    await this.registerSettingsArray(coreSettings, "core");
+    await this.registerSettingsArray(interfaceSettings, "interface");
+    await this.registerSettingsArray(telemetrySettings, "telemetry");
   }
+
+  async startWithinTransaction() {}
+  async stopWithinTransaction() {}
 }

@@ -1,9 +1,9 @@
-import { Initializer, log } from "actionhero";
+import { log } from "actionhero";
 import { Team } from "../models/Team";
 import { waitForLock } from "../modules/locks";
-import { CLS } from "../modules/cls";
+import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
-export class TeamPermissions extends Initializer {
+export class TeamPermissions extends CLSInitializer {
   constructor() {
     super();
     this.name = "teamPermissions";
@@ -30,12 +30,13 @@ export class TeamPermissions extends Initializer {
     }
   }
 
-  async initialize() {
-    await CLS.wrap(async () => {
-      const teams = await Team.findAll();
-      for (const i in teams) {
-        await this.updateTeamPermissions(teams[i]);
-      }
-    });
+  async initializeWithinTransaction() {
+    const teams = await Team.findAll();
+    for (const i in teams) {
+      await this.updateTeamPermissions(teams[i]);
+    }
   }
+
+  async startWithinTransaction() {}
+  async stopWithinTransaction() {}
 }
