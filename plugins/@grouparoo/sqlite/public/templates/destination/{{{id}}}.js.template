@@ -1,0 +1,34 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "{{{__pluginName}}}-export",
+      appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
+      groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+
+      options: {
+        table: 'users_export', // The table to write profiles to
+        primaryKey: 'id', // The primaryKey of table
+        groupsTable: 'groups_export', // The table to write groups to
+        groupForeignKey: 'user_id', // The foreign key that the groups table uses to reference table
+        groupColumnName: 'group_name', // The column name for where to store the group names
+      },
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "email",
+        firstname: "firstName",
+        lastname: "lastName",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      destinationGroupMemberships: {
+        "High Value Customers!": "highValueCustomers",
+      },
+    },
+  ];
+};

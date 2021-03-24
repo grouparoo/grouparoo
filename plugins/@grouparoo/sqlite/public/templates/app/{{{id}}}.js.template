@@ -1,0 +1,13 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      class: "app",
+      id: {{{id}}},
+      name: {{{id}}},
+      type: "{{{__pluginName}}}",
+      options: {
+        file: "...", // Path to your SQLite database. It can be an absolute path (e.g. `/path/tpo/mydb.sqlite`) or relative to the root of this project (e.g. `mydb.sqlite`).
+      }
+    },
+  ];
+};
