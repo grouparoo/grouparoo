@@ -10,7 +10,7 @@ export class EventsAssociateProfiles extends CLSTask {
     this.name = "event:associateProfiles";
     this.description =
       "ensure that events are associated to profiles, even if they were created outside of the Grouparoo API";
-    this.frequency = 30 * 1000;
+    this.frequency = 60 * 1000;
     this.queue = "events";
     this.inputs = {};
   }

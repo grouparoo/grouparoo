@@ -24,13 +24,19 @@ export class EnqueueExports extends RetryableTask {
       (await plugin.readSetting("core", "exports-profile-batch-size")).value
     );
 
+    const delayMs =
+      parseInt(
+        (await plugin.readSetting("core", "exports-retry-delay-seconds")).value
+      ) * 1000;
+
     let totalEnqueued = 0;
     const destinations = await Destination.scope(null).findAll();
 
     for (const i in destinations) {
       const enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
         destinations[i],
-        limit
+        limit,
+        delayMs
       );
       totalEnqueued += enqueuedExportsCount;
       if (enqueuedExportsCount > 0) {
