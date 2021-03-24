@@ -69,11 +69,13 @@ export class Plugins extends Initializer {
             {
               key: "salesforceDomain",
               displayName: "Salesforce Domain",
+              defaultValue: "https://login.salesforce.com",
               required: false,
             },
             {
               key: "pardotDomain",
               displayName: "Pardot Domain",
+              defaultValue: "https://pi.pardot.com",
               required: false,
             },
           ],
