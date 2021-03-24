@@ -4,7 +4,6 @@ import { plugin } from "../modules/plugin";
 import { App } from "../models/App";
 import { getPluginManifest } from "../utils/pluginDetails";
 import { ConfigTemplate } from "../classes/configTemplate";
-
 import {
   CalculatedGroupTemplate,
   ManualGroupTemplate,
@@ -18,6 +17,7 @@ import {
   ManualSourceTemplate,
   ManualPropertyTemplate,
 } from "../templates/manual";
+import { CLS } from "../modules/cls";
 
 declare module "actionhero" {
   export interface Api {
@@ -125,10 +125,12 @@ export class Plugins extends Initializer {
   }
 
   async stop() {
-    for (const id in api.plugins.persistentConnections) {
-      const app = await App.findById(id);
-      await app.disconnect();
-    }
+    await CLS.wrap(async () => {
+      for (const id in api.plugins.persistentConnections) {
+        const app = await App.findById(id);
+        await app.disconnect();
+      }
+    });
   }
 
   validatePlugin(plugin: GrouparooPlugin) {
