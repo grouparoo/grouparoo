@@ -226,7 +226,7 @@ export function RunningRuns({ execApi }) {
                       variant="info"
                       style={{ minWidth: 300 }}
                       animated={run.percentComplete > 0 ? true : false}
-                      now={run.percentComplete}
+                      now={run.percentComplete < 5 ? 5 : run.percentComplete} // Always display enough of the progress bar to see the label
                       label={`${run.percentComplete}%`}
                     />
                   </td>
