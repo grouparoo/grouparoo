@@ -59,7 +59,7 @@ export class Import extends Model {
   // data: string;
   get data(): ImportData {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("data"));
+    return JSON.parse(this.getDataValue("data") || "{}");
   }
   set data(value: ImportData) {
     //@ts-ignore
@@ -70,7 +70,7 @@ export class Import extends Model {
   // rawData: string;
   get rawData(): ImportData {
     //@ts-ignore
-    return JSON.parse(this.getDataValue("rawData"));
+    return JSON.parse(this.getDataValue("rawData") || "{}");
   }
   set rawData(value: ImportData) {
     //@ts-ignore
@@ -83,9 +83,6 @@ export class Import extends Model {
 
   @BelongsTo(() => Profile)
   profile: Profile;
-
-  @Column
-  profileAssociatedAt: Date;
 
   @AllowNull(false)
   @Default(false)
@@ -114,9 +111,6 @@ export class Import extends Model {
     this.setDataValue("newProfileProperties", JSON.stringify(value));
   }
 
-  @Column
-  profileUpdatedAt: Date;
-
   @Column(DataType.TEXT)
   // oldGroupIds: string;
   get oldGroupIds(): string[] {
@@ -138,6 +132,15 @@ export class Import extends Model {
     //@ts-ignore
     this.setDataValue("newGroupIds", JSON.stringify(value));
   }
+
+  @Column
+  startedAt: Date;
+
+  @Column
+  profileAssociatedAt: Date;
+
+  @Column
+  profileUpdatedAt: Date;
 
   @Column
   groupsUpdatedAt: Date;
@@ -174,6 +177,7 @@ export class Import extends Model {
 
       // lifecycle timestamps
       createdAt: APIData.formatDate(this.createdAt),
+      startedAt: APIData.formatDate(this.startedAt),
       profileAssociatedAt: APIData.formatDate(this.profileAssociatedAt),
       profileUpdatedAt: APIData.formatDate(this.profileUpdatedAt),
       groupsUpdatedAt: APIData.formatDate(this.groupsUpdatedAt),

@@ -16,6 +16,8 @@ describe("tasks/export:enqueue", () => {
     let run: Run, profile: Profile, destination: Destination;
     let pendingExportA: Export,
       pendingExportB: Export,
+      recentStartedExport: Export,
+      stuckStartedExport: Export,
       completeExport: Export,
       errorExport: Export,
       infoExport: Export;
@@ -43,6 +45,26 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+      });
+
+      recentStartedExport = await Export.create({
+        profileId: profile.id,
+        destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        startedAt: new Date(),
+      });
+
+      stuckStartedExport = await Export.create({
+        profileId: profile.id,
+        destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        startedAt: new Date(0),
       });
 
       completeExport = await Export.create({
@@ -99,9 +121,13 @@ describe("tasks/export:enqueue", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].exportIds.length).toBe(2);
+      expect(foundTasks[0].args[0].exportIds.length).toBe(3);
       expect(foundTasks[0].args[0].exportIds).toContain(pendingExportA.id);
       expect(foundTasks[0].args[0].exportIds).toContain(pendingExportB.id);
+      expect(foundTasks[0].args[0].exportIds).toContain(stuckStartedExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(
+        recentStartedExport.id
+      );
       expect(foundTasks[0].args[0].exportIds).not.toContain(completeExport.id);
       expect(foundTasks[0].args[0].exportIds).not.toContain(errorExport.id);
       expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
@@ -120,7 +146,7 @@ describe("tasks/export:enqueue", () => {
       await specHelper.runTask("export:enqueue", {}); // no one
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.length).toBe(4); // 1 + 3
     });
   });
 });

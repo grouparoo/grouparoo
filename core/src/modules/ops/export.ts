@@ -90,7 +90,8 @@ export namespace ExportOps {
 
   export async function processPendingExportsForDestination(
     destination: Destination,
-    limit = 100
+    limit = 100,
+    delayMs = 1000 * 60 * 5
   ) {
     const app = await destination.$get("app");
     const { pluginConnection } = await destination.getPlugin();
@@ -99,7 +100,9 @@ export namespace ExportOps {
 
     _exports = await Export.findAll({
       where: {
-        startedAt: null,
+        startedAt: {
+          [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
+        },
         destinationId: destination.id,
       },
       order: [["createdAt", "asc"]],

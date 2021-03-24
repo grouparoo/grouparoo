@@ -33,6 +33,46 @@ describe("tasks/import:associateProfiles", () => {
     expect(foundTasks[0].args[0].importId).toBe(_import.id);
   });
 
+  test("it will not include imports that have already been associated to a profile", async () => {
+    const _import = await helper.factories.import();
+    await api.resque.queue.connection.redis.flushdb();
+    await _import.update({ profileId: "abc", profileAssociatedAt: new Date() });
+
+    await specHelper.runTask("import:associateProfiles", {});
+
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "import:associateProfile"
+    );
+    expect(foundTasks.length).toBe(0);
+  });
+
+  test("it will not include imports that do not have a profile, but have been started recently", async () => {
+    const _import = await helper.factories.import();
+    await api.resque.queue.connection.redis.flushdb();
+    await _import.update({ startedAt: new Date() });
+
+    await specHelper.runTask("import:associateProfiles", {});
+
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "import:associateProfile"
+    );
+    expect(foundTasks.length).toBe(0);
+  });
+
+  test("it will include imports that do not have a profile, but have been started far in the past (stuck)", async () => {
+    const _import = await helper.factories.import();
+    await api.resque.queue.connection.redis.flushdb();
+    await _import.update({ startedAt: 0 });
+
+    await specHelper.runTask("import:associateProfiles", {});
+
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "import:associateProfile"
+    );
+    expect(foundTasks.length).toBe(1);
+    expect(foundTasks[0].args[0].importId).toBe(_import.id);
+  });
+
   test("previously complete runs will be moved back to running if an import they created is found", async () => {
     const schedule = await helper.factories.schedule();
     const run = await helper.factories.run(schedule);

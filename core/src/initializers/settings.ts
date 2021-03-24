@@ -85,6 +85,14 @@ export class Plugins extends Initializer {
         type: "number",
       },
       {
+        key: "imports-retry-delay-seconds",
+        title: "Imports Retry Delay Seconds",
+        defaultValue: 60 * 5, // 5 minutes
+        description:
+          "How long before Grouparoo considers a started but not-yet-complete Import to have stalled and try again?",
+        type: "number",
+      },
+      {
         key: "runs-previous-can-include-errors",
         title: "Runs: Previous Runs with Errors Considered",
         defaultValue: "false",
@@ -99,6 +107,14 @@ export class Plugins extends Initializer {
         defaultValue: 100,
         description:
           "How many Profiles should a Run try to send at once to Destinations which support batch exporting?",
+        type: "number",
+      },
+      {
+        key: "exports-retry-delay-seconds",
+        title: "Exports Retry Delay Seconds",
+        defaultValue: 60 * 5, // 5 minutes
+        description:
+          "How long before Grouparoo considers a started but not-yet-complete Export to have stalled and try again?",
         type: "number",
       },
       {
