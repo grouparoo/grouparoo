@@ -15,7 +15,9 @@ export class SQLite extends Database {
       this.connection = new Database(this.database, (err: Error) => {
         if (err) {
           return reject(
-            new Error(`Error connecting to SQLite database: ${this.database}`)
+            new Error(
+              `Error connecting to SQLite database: ${this.database}\n${err}`
+            )
           );
         }
         return resolve(
@@ -29,7 +31,7 @@ export class SQLite extends Database {
     return new Promise((resolve, reject) => {
       this.connection.all(query, (err: Error, res: any[]) => {
         if (err) {
-          return reject(new Error(`Error running query: ${err}`));
+          return reject(new Error(`Error running query: ${err.message}`));
         }
         return resolve(res);
       });

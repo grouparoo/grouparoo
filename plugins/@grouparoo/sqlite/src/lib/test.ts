@@ -9,7 +9,7 @@ export const test: TestPluginMethod = async ({ connection }) => {
   // Return if we don't have a connection object.
   if (!connection) return genericError;
 
-  const query = `SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`;
+  const query = `SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%';`;
   const res = await connection.asyncQuery(query);
 
   // Return if we didn't get the shape we were expecting.

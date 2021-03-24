@@ -13,7 +13,12 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
 
   // Don't allow connections unless the file already exists. This avoids
   // in-memory storage and creating the file during instantiation.
-  if (!fs.existsSync(dbPath) || fs.lstatSync(dbPath).isDirectory()) return null;
+  if (dbPath === ":memory:") {
+    throw new Error(`The SQLite plugin does not support in-memory database.`);
+  }
+  if (!fs.existsSync(dbPath) || fs.lstatSync(dbPath).isDirectory()) {
+    throw new Error(`Could not find SQLite database: ${dbPath}`);
+  }
 
   const connection = new SQLite({ database: dbPath });
   await connection.asyncConnect();

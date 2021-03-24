@@ -21,7 +21,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
     groupColumnName: { type: "pending", options: [] },
   };
 
-  const query = `SELECT name FROM sqlite_master WHERE type = 'table' AND name != 'android_metadata' AND name != 'sqlite_sequence';`;
+  const query = `SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%';`;
   const rows = await connection.asyncQuery(query);
   const tables = rows.map((row) => row.name).sort();
 
