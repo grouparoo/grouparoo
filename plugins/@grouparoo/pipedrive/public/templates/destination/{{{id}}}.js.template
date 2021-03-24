@@ -1,0 +1,29 @@
+exports.default = async function buildConfig() {
+  return [
+    {
+      id: {{{id}}},
+      name: {{{id}}},
+      class: "destination",
+      type: "{{{__pluginName}}}-export",
+      appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "pipedrive_app"`
+      groupId: "...", // The id of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+
+      options: {},
+
+      // Mappings are how you choose which properties to export to this destination.
+      // Keys are the name to display in the destination, values are the IDs of the Properties in Grouparoo.
+      mapping: {
+        email: "email",
+        name: "name",
+      },
+
+      // You can export group memberships.
+      // Keys are the name to display in the destination, values are the IDs of the Groups in Grouparoo.
+      // Filters will be automatically created on Pipedrive for these groups.
+      // A custom field will also be created to keep track of group membership.
+      destinationGroupMemberships: {
+        "High Value Customers": "highValueCustomers",
+      },
+    },
+  ];
+};

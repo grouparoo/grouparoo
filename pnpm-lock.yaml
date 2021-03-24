@@ -33,6 +33,7 @@ importers:
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
       '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
+      '@grouparoo/pipedrive': link:../../plugins/@grouparoo/pipedrive
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
@@ -64,6 +65,7 @@ importers:
       '@grouparoo/mysql': 0.2.8
       '@grouparoo/onesignal': 0.2.8
       '@grouparoo/pardot': 0.2.8
+      '@grouparoo/pipedrive': 0.2.8
       '@grouparoo/postgres': 0.2.8
       '@grouparoo/redshift': 0.2.8
       '@grouparoo/sailthru': 0.2.8
@@ -95,6 +97,7 @@ importers:
       '@grouparoo/mysql': link:../../plugins/@grouparoo/mysql
       '@grouparoo/onesignal': link:../../plugins/@grouparoo/onesignal
       '@grouparoo/pardot': link:../../plugins/@grouparoo/pardot
+      '@grouparoo/pipedrive': link:../../plugins/@grouparoo/pipedrive
       '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
       '@grouparoo/redshift': link:../../plugins/@grouparoo/redshift
       '@grouparoo/sailthru': link:../../plugins/@grouparoo/sailthru
@@ -126,6 +129,7 @@ importers:
       '@grouparoo/mysql': 0.2.8
       '@grouparoo/onesignal': 0.2.8
       '@grouparoo/pardot': 0.2.8
+      '@grouparoo/pipedrive': 0.2.8
       '@grouparoo/postgres': 0.2.8
       '@grouparoo/redshift': 0.2.8
       '@grouparoo/sailthru': 0.2.8
@@ -889,6 +893,38 @@ importers:
       fs-extra: 9.1.0
       jest: 26.6.3
       jsforce: 1.10.1
+      nock: 13.0.11
+      prettier: 2.2.1
+      ts-jest: 26.5.3
+      typescript: 4.2.3
+  plugins/@grouparoo/pipedrive:
+    dependencies:
+      '@grouparoo/app-templates': link:../app-templates
+      axios: 0.21.1
+    devDependencies:
+      '@grouparoo/core': link:../../../core
+      '@grouparoo/spec-helper': link:../spec-helper
+      '@types/jest': 26.0.20
+      '@types/node': 14.14.31
+      actionhero: 25.0.8
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
+      nock: 13.0.11
+      prettier: 2.2.1
+      ts-jest: 26.5.3_jest@26.6.3+typescript@4.2.3
+      typescript: 4.2.3
+    specifiers:
+      '@grouparoo/app-templates': 0.2.8
+      '@grouparoo/core': 0.2.8
+      '@grouparoo/spec-helper': 0.2.8
+      '@types/jest': '*'
+      '@types/node': '*'
+      actionhero: 25.0.8
+      axios: 0.21.1
+      dotenv: 8.2.0
+      fs-extra: 9.1.0
+      jest: 26.6.3
       nock: 13.0.11
       prettier: 2.2.1
       ts-jest: 26.5.3
