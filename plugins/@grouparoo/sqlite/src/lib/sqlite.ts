@@ -31,7 +31,7 @@ export class SQLite extends Database {
     return new Promise((resolve, reject) => {
       this.connection.all(query, (err: Error, res: any[]) => {
         if (err) {
-          return reject(new Error(`Error running query: ${err.message}`));
+          return reject(new Error(`${err.message}\nQuery: ${query}`));
         }
         return resolve(res);
       });

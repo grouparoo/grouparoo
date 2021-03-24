@@ -132,7 +132,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
 const buildKeyList = (data: any[] | { [key: string]: any }) => {
   const keys = Array.isArray(data) ? data : Object.keys(data);
-  return keys.map((v) => `'${v}'`);
+  return keys.map((v) => `"${v}"`);
 };
 
 interface ValueListItem {
@@ -144,7 +144,7 @@ export const buildValueList = (data: any[] | ValueListItem) => {
   return values.map((v) => {
     switch (typeof v) {
       case "string":
-        return `'${v}'`;
+        return `"${v}"`;
       case "number":
         return v;
       // Protect against syntax errors if the value can't be resolved.
