@@ -37,19 +37,17 @@ export class ResetCLI extends CLI {
       return GrouparooCLI.logger.fatal(`You need to --confirm this command`);
     }
 
-    await CLS.wrap(async () => {
-      const callerId = `cli:reset`;
-      if (params.mode === "cluster") {
-        await Reset.cluster(callerId);
-      } else if (params.mode === "data") {
-        await Reset.data(callerId);
-        await Reset.resetHighWatermarks();
-      } else if (params.mode === "cache") {
-        await Reset.cache(callerId);
-      } else {
-        return GrouparooCLI.logger.fatal("mode not found");
-      }
-    });
+    const callerId = `cli:reset`;
+    if (params.mode === "cluster") {
+      await CLS.wrap(async () => Reset.cluster(callerId));
+    } else if (params.mode === "data") {
+      await CLS.wrap(async () => Reset.data(callerId));
+      await CLS.wrap(async () => Reset.resetHighWatermarks());
+    } else if (params.mode === "cache") {
+      await CLS.wrap(async () => Reset.cache(callerId));
+    } else {
+      return GrouparooCLI.logger.fatal("mode not found");
+    }
 
     GrouparooCLI.logger.log(`✅ Success!`);
     return true;
