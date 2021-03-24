@@ -8,7 +8,9 @@
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options
+          <<: *plugin-modules-cache-options-even
+      - restore_cache:
+          <<: *plugin-modules-cache-options-odd
       - restore_cache:
           <<: *other-modules-cache-options
       - restore_cache:

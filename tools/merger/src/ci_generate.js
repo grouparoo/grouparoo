@@ -221,10 +221,27 @@ class Generator {
     return relativePaths.map((p) => `${prefix}${p}`).sort();
   }
 
-  plugin_node_module_list() {
+  plugin_node_module_list(mode) {
     return this.full_node_module_list()
       .filter((path) => path.includes("plugins/@grouparoo"))
+      .filter((item, idx) => {
+        if (mode === "even") {
+          return idx % 2 === 0;
+        } else if (mode === "odd") {
+          return idx % 2 !== 0;
+        } else {
+          return true;
+        }
+      })
       .join("\n");
+  }
+
+  plugin_node_module_list_even() {
+    return this.plugin_node_module_list("even");
+  }
+
+  plugin_node_module_list_odd() {
+    return this.plugin_node_module_list("odd");
   }
 
   other_node_module_list() {
@@ -309,7 +326,8 @@ class Generator {
     view[".Revision"] = "{{ .Revision }}";
 
     const methods = [
-      "plugin_node_module_list",
+      "plugin_node_module_list_even",
+      "plugin_node_module_list_odd",
       "other_node_module_list",
       "dist_list",
       "jobs",

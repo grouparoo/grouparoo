@@ -11,8 +11,10 @@ references:
       ignore:
         - gh-pages
 
-  plugin-modules-cache-options: &plugin-modules-cache-options
-    key: plugin-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  plugin-modules-cache-options-even: &plugin-modules-cache-options-even
+    key: plugin-module-package-cache-even-{{ .Branch }}-{{ .Revision }}
+  plugin-modules-cache-options-odd: &plugin-modules-cache-options-odd
+    key: plugin-module-package-cache-odd-{{ .Branch }}-{{ .Revision }}
   other-modules-cache-options: &other-modules-cache-options
     key: other-module-package-cache-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
@@ -37,9 +39,13 @@ jobs:
           name: pnpm-install
           command: pnpm install --prefer-frozen-lockfile
       - save_cache:
-          <<: *plugin-modules-cache-options
+          <<: *plugin-modules-cache-options-even
           paths:
-{{{plugin_node_module_list}}}
+{{{plugin_node_module_list_even}}}
+      - save_cache:
+          <<: *plugin-modules-cache-options-odd
+          paths:
+{{{plugin_node_module_list_odd}}}
       - save_cache:
           <<: *other-modules-cache-options
           paths:
