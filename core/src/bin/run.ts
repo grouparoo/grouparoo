@@ -67,13 +67,7 @@ export class RunCLI extends CLI {
 
     await import("../grouparoo"); // run the server
 
-    const pendingStatus = await GrouparooCLI.getPendingStatus();
-    const runStatus = await GrouparooCLI.getRunsStatus();
-    GrouparooCLI.logger.status("Initial Status", [
-      { header: "Pending Items", status: pendingStatus },
-      { header: "Active Runs", status: runStatus },
-    ]);
-
+    await this.statusReport("Initial Status");
     await this.waitForReady();
     await this.runPausedTasks(params);
 
@@ -149,13 +143,7 @@ export class RunCLI extends CLI {
   }
 
   async checkForComplete() {
-    const pendingStatus = await GrouparooCLI.getPendingStatus();
-    const runStatus = await GrouparooCLI.getRunsStatus();
-    GrouparooCLI.logger.status("Status", [
-      { header: "Pending Items", status: pendingStatus },
-      { header: "Active Runs", status: runStatus },
-    ]);
-
+    const { pendingStatus } = await this.statusReport();
     let pendingItems = 0;
     for (const key in pendingStatus) {
       pendingItems += pendingStatus[key][0] as number;
@@ -172,5 +160,21 @@ export class RunCLI extends CLI {
       `All Grouparoo tasks complete - exiting with code 0`
     );
     process.exit(0);
+  }
+
+  async statusReport(title = "Status") {
+    let pendingStatus: GrouparooCLI.LogStatus;
+    let runStatus: GrouparooCLI.LogStatus;
+
+    await CLS.wrap(async () => {
+      pendingStatus = await GrouparooCLI.getPendingStatus();
+      runStatus = await GrouparooCLI.getRunsStatus();
+      GrouparooCLI.logger.status(title, [
+        { header: "Pending Items", status: pendingStatus },
+        { header: "Active Runs", status: runStatus },
+      ]);
+    });
+
+    return { pendingStatus, runStatus };
   }
 }

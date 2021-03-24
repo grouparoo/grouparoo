@@ -1,6 +1,7 @@
 import { Initializer } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { settingTypes } from "../models/Setting";
+import { CLS } from "../modules/cls";
 import * as UUID from "uuid";
 
 interface SettingsListItem {
@@ -177,10 +178,12 @@ export class Plugins extends Initializer {
       ...telemetrySettings,
     ].map(({ key }) => key);
 
-    await plugin.cleanSettings(settingKeys);
+    await CLS.wrap(async () => {
+      await plugin.cleanSettings(settingKeys);
 
-    await this.registerSettingsArray(coreSettings, "core");
-    await this.registerSettingsArray(interfaceSettings, "interface");
-    await this.registerSettingsArray(telemetrySettings, "telemetry");
+      await this.registerSettingsArray(coreSettings, "core");
+      await this.registerSettingsArray(interfaceSettings, "interface");
+      await this.registerSettingsArray(telemetrySettings, "telemetry");
+    });
   }
 }

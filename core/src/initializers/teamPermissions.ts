@@ -1,6 +1,7 @@
 import { Initializer, log } from "actionhero";
 import { Team } from "../models/Team";
 import { waitForLock } from "../modules/locks";
+import { CLS } from "../modules/cls";
 
 export class TeamPermissions extends Initializer {
   constructor() {
@@ -30,9 +31,11 @@ export class TeamPermissions extends Initializer {
   }
 
   async initialize() {
-    const teams = await Team.findAll();
-    for (const i in teams) {
-      await this.updateTeamPermissions(teams[i]);
-    }
+    await CLS.wrap(async () => {
+      const teams = await Team.findAll();
+      for (const i in teams) {
+        await this.updateTeamPermissions(teams[i]);
+      }
+    });
   }
 }
