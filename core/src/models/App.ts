@@ -84,8 +84,8 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions(sourceFromEnvironment = true) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment);
+  async getOptions(sourceFromEnvironment = true, hidePasswords = false) {
+    return OptionHelper.getOptions(this, sourceFromEnvironment, hidePasswords);
   }
 
   async setOptions(options: SimpleAppOptions) {
@@ -160,7 +160,7 @@ export class App extends LoggedModel<App> {
   }
 
   async apiData() {
-    const options = await this.getOptions(false);
+    const options = await this.getOptions(false, true);
     const icon = await this._getIcon();
     const provides = this.provides();
 

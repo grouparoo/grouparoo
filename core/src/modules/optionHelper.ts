@@ -26,7 +26,8 @@ export namespace OptionHelper {
 
   export async function getOptions(
     instance: Source | Destination | Schedule | Property | App,
-    sourceFromEnvironment = true
+    sourceFromEnvironment = true,
+    hidePasswords = false
   ) {
     if (sourceFromEnvironment === null || sourceFromEnvironment === undefined) {
       sourceFromEnvironment = true;
@@ -37,8 +38,24 @@ export namespace OptionHelper {
       where: { ownerId: instance.id },
     });
 
+    const optionsToHide: string[] = [];
+    if (instance instanceof App) {
+      const appOptions = await instance.appOptions();
+      const appOptionKeys = Object.keys(appOptions);
+
+      appOptionKeys.forEach((appOptionKey) => {
+        if (appOptions[appOptionKey].type == "password" && hidePasswords) {
+          optionsToHide.push(appOptionKey);
+        }
+      });
+    }
+
     options.forEach((option) => {
-      optionsObject[option.key] = option.typedValue();
+      if (optionsToHide.includes(option.key)) {
+        optionsObject[option.key] = "******";
+      } else {
+        optionsObject[option.key] = option.typedValue();
+      }
     });
 
     if (sourceFromEnvironment) {
