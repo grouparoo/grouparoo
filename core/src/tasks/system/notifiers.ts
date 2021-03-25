@@ -1,5 +1,5 @@
 import { api } from "actionhero";
-import { CLSTask } from "../classes/tasks/clsTask";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Notifier extends CLSTask {
   constructor() {
@@ -7,7 +7,7 @@ export class Notifier extends CLSTask {
     this.name = "notifier";
     this.description = "run all notifiers";
     this.frequency = 1000 * 60 * 60 * 6; // every 6 hours
-    this.queue = "default";
+    this.queue = "system";
   }
 
   async runWithinTransaction() {

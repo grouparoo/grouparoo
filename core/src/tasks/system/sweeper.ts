@@ -1,10 +1,10 @@
 import { log } from "actionhero";
-import { Run } from "../models/Run";
-import { Import } from "../models/Import";
-import { Export } from "../models/Export";
-import { Log } from "../models/Log";
-import { Session } from "../models/Session";
-import { CLSTask } from "../classes/tasks/clsTask";
+import { Run } from "../../models/Run";
+import { Import } from "../../models/Import";
+import { Export } from "../../models/Export";
+import { Log } from "../../models/Log";
+import { Session } from "../../models/Session";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class Sweeper extends CLSTask {
   constructor() {
@@ -12,7 +12,7 @@ export class Sweeper extends CLSTask {
     this.name = "sweeper";
     this.description = "clear old database entries";
     this.frequency = 1000 * 60 * 30; // every half hour
-    this.queue = "default";
+    this.queue = "system";
   }
 
   log(model: string, count: number, days: number) {

@@ -32,16 +32,18 @@ export class EventAssociateProfile extends Task {
 
   async run(params: { eventId: string; count: number }) {
     const { eventId } = params;
-    const event = await Event.findById(eventId);
-
-    const app = await App.findOne({ where: { type: "events" } });
-    if (!app) return;
-    const appOptions = await app.getOptions();
+    let event: Event;
 
     try {
-      await CLS.wrap(async () =>
-        event.associate(appOptions.identifyingPropertyId.toString())
-      );
+      await CLS.wrap(async () => {
+        event = await Event.findById(eventId);
+
+        const app = await App.findOne({ where: { type: "events" } });
+        if (!app) return;
+        const appOptions = await app.getOptions();
+
+        await event.associate(appOptions.identifyingPropertyId.toString());
+      });
     } catch (error) {
       log(`re-enqueuing association of event ${eventId}`);
       throw new Error(`Error associating event ${event.id}: ${error.message}`);

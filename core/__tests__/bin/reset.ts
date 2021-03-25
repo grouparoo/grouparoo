@@ -50,6 +50,15 @@ describe("bin/reset", () => {
     expect(output).not.toContain("Success!");
   });
 
+  test("requires valid mode argument", async () => {
+    const command = new ResetCLI();
+    await command.run({ params: { confirm: true, mode: "foo" } });
+    const output = messages.join(" ");
+
+    expect(output).toContain("mode not found");
+    expect(output).not.toContain("Success!");
+  });
+
   test("requires mode argument", async () => {
     const command = new ResetCLI();
     await command.run({ params: { confirm: true } });

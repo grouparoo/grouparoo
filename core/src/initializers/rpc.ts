@@ -1,4 +1,4 @@
-import { Initializer, api, log, redis } from "actionhero";
+import { Initializer, api } from "actionhero";
 import { App } from "../models/App";
 
 export class GrouparooRPC extends Initializer {

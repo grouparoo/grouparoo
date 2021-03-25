@@ -1,6 +1,7 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI } from "actionhero";
 import { Reset } from "../modules/reset";
+import { CLS } from "../modules/cls";
 
 export class ResetCLI extends CLI {
   constructor() {
@@ -38,12 +39,12 @@ export class ResetCLI extends CLI {
 
     const callerId = `cli:reset`;
     if (params.mode === "cluster") {
-      await Reset.cluster(callerId);
+      await CLS.wrap(async () => await Reset.cluster(callerId));
     } else if (params.mode === "data") {
-      await Reset.data(callerId);
-      await Reset.resetHighWatermarks();
+      await CLS.wrap(async () => await Reset.data(callerId));
+      await CLS.wrap(async () => await Reset.resetHighWatermarks());
     } else if (params.mode === "cache") {
-      await Reset.cache(callerId);
+      await CLS.wrap(async () => await Reset.cache(callerId));
     } else {
       return GrouparooCLI.logger.fatal("mode not found");
     }

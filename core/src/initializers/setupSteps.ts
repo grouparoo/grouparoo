@@ -1,16 +1,18 @@
-import { Initializer } from "actionhero";
 import { Op } from "sequelize";
 import { SetupStep } from "../models/SetupStep";
 import { SetupStepOps } from "../modules/ops/setupSteps";
+import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
-export class OnboardingSteps extends Initializer {
+export class OnboardingSteps extends CLSInitializer {
   constructor() {
     super();
-    this.name = "onboardingSteps";
+    this.name = "setupSteps";
   }
 
-  async start() {
-    // insert or update the onboarding steps we want
+  async initializeWithinTransaction() {}
+
+  async startWithinTransaction() {
+    // insert or update the setup steps we want
     for (const i in SetupStepOps.setupStepDescriptions) {
       const ssd = SetupStepOps.setupStepDescriptions[i];
       const onboardingStep = await SetupStep.findOne({
@@ -38,4 +40,6 @@ export class OnboardingSteps extends Initializer {
       },
     });
   }
+
+  async stopWithinTransaction() {}
 }

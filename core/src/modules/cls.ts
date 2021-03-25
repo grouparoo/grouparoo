@@ -1,5 +1,6 @@
 import { api, task } from "actionhero";
 import cls from "cls-hooked";
+import { Transaction } from "sequelize";
 
 /**
  * This module is so you can delay the execution of side-effects within a transaction.
@@ -35,8 +36,8 @@ export namespace CLS {
       let runResponse: any;
       let afterCommitJobs: Array<Function> = [];
 
-      await api.sequelize.transaction(async () => {
-        runResponse = await f();
+      await api.sequelize.transaction(async (t: Transaction) => {
+        runResponse = await f(t);
         afterCommitJobs = getNamespace().get("afterCommitJobs");
       });
 
