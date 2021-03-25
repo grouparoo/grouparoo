@@ -32,7 +32,7 @@ export namespace OptionHelper {
       sourceFromEnvironment = true;
     }
 
-    let optionsObject: SimpleOptions = await getDefaultOptionValues(instance);
+    let optionsObject = await getDefaultOptionValues(instance);
     const options = await Option.findAll({
       where: { ownerId: instance.id },
     });
@@ -327,7 +327,7 @@ export namespace OptionHelper {
 
   async function getDefaultOptionValues(
     instance: Source | Destination | Schedule | Property | App
-  ): Promise<SimpleOptions> {
+  ) {
     const plugin = await getPlugin(instance);
 
     let options: AppOption[] = [];
