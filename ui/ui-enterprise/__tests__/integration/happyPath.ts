@@ -87,6 +87,29 @@ describe("integration", () => {
   );
 
   test(
+    "I was taken to the settings page after creating the first team",
+    async () => {
+      await helper.sleep(1 * 1000);
+      const url = await browser.getCurrentUrl();
+      expect(url).toMatch(/\/setup/);
+      await browser.get(url);
+    },
+    helper.mediumTime
+  );
+
+  test(
+    "I can sign out",
+    async () => {
+      await browser.get(`/session/sign-out`);
+      await helper.sleep(1 * 1000);
+      const url = await browser.getCurrentUrl();
+      expect(url).toMatch(/\//);
+      await browser.get(url);
+    },
+    helper.mediumTime
+  );
+
+  test(
     "it can sign in",
     async () => {
       await helper.sleep(1 * 1000);
