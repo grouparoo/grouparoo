@@ -6,6 +6,19 @@ import LoadingButton from "../loadingButton";
 import { useForm } from "react-hook-form";
 import { Actions } from "../../utils/apiData";
 
+export const createSession = async (data, sessionHandler, execApi) => {
+  const response: Actions.SessionCreate = await execApi(
+    "post",
+    `/session`,
+    data
+  );
+  if (response?.teamMember) {
+    window.localStorage.setItem("session:csrfToken", response.csrfToken);
+    sessionHandler.set(response.teamMember);
+    return response?.teamMember;
+  }
+};
+
 export default function SignInForm(props) {
   const { errorHandler, successHandler, sessionHandler, useApi } = props;
   const { execApi } = useApi(props, errorHandler);
@@ -16,14 +29,9 @@ export default function SignInForm(props) {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    const response: Actions.SessionCreate = await execApi(
-      "post",
-      `/session`,
-      data
-    );
-    if (response?.teamMember) {
-      window.localStorage.setItem("session:csrfToken", response.csrfToken);
-      sessionHandler.set(response.teamMember);
+    const teamMember = await createSession(data, sessionHandler, execApi);
+    setLoading(false);
+    if (teamMember) {
       successHandler.set({ message: "Welcome Back!" });
       if (nextPage) {
         router.push(nextPage.toString());
@@ -36,8 +44,6 @@ export default function SignInForm(props) {
           router.push("/setup");
         }
       }
-    } else {
-      setLoading(false);
     }
   };
 

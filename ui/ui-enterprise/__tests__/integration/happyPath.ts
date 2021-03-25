@@ -87,13 +87,33 @@ describe("integration", () => {
   );
 
   test(
-    "it can sign in",
+    "I was taken to the settings page after creating the first team",
     async () => {
       await helper.sleep(1 * 1000);
-
       const url = await browser.getCurrentUrl();
-      expect(url).toMatch(/\/session\/sign-in/);
-      await browser.get(url); // we should have been transitioned to the sign in page already, but we need to tell selenium to reload its context
+      expect(url).toMatch(/\/setup/);
+      await browser.get(url);
+    },
+    helper.mediumTime
+  );
+
+  test(
+    "I can sign out",
+    async () => {
+      await browser.get(`${env.url}/session/sign-out`);
+      await helper.sleep(1 * 1000);
+      const url = await browser.getCurrentUrl();
+      expect(url).toMatch(/\//);
+      await browser.get(url);
+    },
+    helper.mediumTime
+  );
+
+  test(
+    "it can sign in",
+    async () => {
+      await browser.get(`${env.url}/session/sign-in`);
+      await helper.sleep(1 * 1000);
 
       await browser.findElement(by.name("email")).sendKeys(email);
       await browser.findElement(by.name("password")).sendKeys(password);
