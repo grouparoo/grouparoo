@@ -113,7 +113,6 @@ export async function processConfigObjects(
 
   if (errors.length > 0) return { seenIds, errors };
 
-  let sortError: Error;
   try {
     // The objects we are validating are a subset of a larger collection (ie: synctable)
     // We cannot sort the collection without the other objects in the superset
@@ -129,8 +128,24 @@ export async function processConfigObjects(
       configObjects = sortConfigurationObjects(configObjects);
     }
   } catch (error) {
-    // the config loaders below will produce better error messages
-    sortError = error;
+    errors.push(error);
+    // If the sorting issue was that we couldn't find an object, the assumption
+    // is that the developer is targeting an object of some ID that does not
+    // exist.
+    if (error.message.includes("Cannot find ")) {
+      const invalidId = error.message.slice(12);
+      log(`Could not find object with ID ${invalidId}`, "error");
+      log(
+        "Could not process config objects. Please correct issue and try again.",
+        "error"
+      );
+      return { seenIds: {}, errors };
+    }
+    // Otherwise, always at least log the error so the developer gets feedback,
+    // even if it's not helpful.
+    else {
+      log(error, "error");
+    }
   }
 
   for (const i in configObjects) {
@@ -211,8 +226,6 @@ export async function processConfigObjects(
       seenIds[className].push(...newIds);
     }
   }
-
-  if (sortError && errors.length === 0) errors.push(sortError.message);
 
   return { seenIds, errors };
 }
