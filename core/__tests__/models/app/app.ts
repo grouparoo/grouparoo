@@ -285,14 +285,7 @@ describe("models/app", () => {
         apps: [
           {
             name: "test-template-app",
-            options: [
-              { key: "test_key", required: true },
-              {
-                key: "test_default_key",
-                defaultValue: "default value",
-                required: false,
-              },
-            ],
+            options: [{ key: "test_key", required: true }],
             methods: {
               test: async () => {
                 testCounter++;
@@ -313,15 +306,8 @@ describe("models/app", () => {
             description: "a test app connection",
             app: "test-template-app",
             direction: "import" as "import",
-            options: [
-              {
-                key: "test_default_key",
-                defaultValue: "default value",
-                required: false,
-              },
-            ],
+            options: [],
             methods: {
-              exportProfile: async () => ({ success: true }),
               profiles: async () => {
                 return {
                   importsCount: 0,
@@ -362,53 +348,6 @@ describe("models/app", () => {
       expect(error).toBeUndefined();
       expect(success).toBe(true);
       expect(testCounter).toBe(1);
-    });
-
-    describe("default option values", () => {
-      test("it returns default values for app options that are not set", async () => {
-        const options = await app.getOptions();
-        expect(options.test_default_key).toEqual("default value");
-      });
-
-      test("it returns saved values for app options that are not set", async () => {
-        await app.setOptions({
-          test_default_key: "Some custom value",
-          test_key: true,
-        });
-
-        const options = await app.getOptions();
-        expect(options.test_default_key).toEqual("Some custom value");
-      });
-
-      describe("in app connection", () => {
-        let connection: Destination;
-        beforeAll(async () => {
-          await app.update({ state: "ready" });
-          connection = await Destination.create({
-            name: "incoming destination - default option values",
-            type: "import-from-test-template-app",
-            appId: app.id,
-          });
-        });
-
-        afterAll(async () => {
-          await connection.destroy();
-        });
-
-        test("it returns default values for connection options that are not set", async () => {
-          const options = await connection.getOptions();
-          expect(options.test_default_key).toEqual("default value");
-        });
-
-        test("it returns saved values for connection options that are not set", async () => {
-          await connection.setOptions({
-            test_default_key: "Some custom value",
-          });
-
-          const options = await connection.getOptions();
-          expect(options.test_default_key).toEqual("Some custom value");
-        });
-      });
     });
 
     test("apps can return their parallelism", async () => {

@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Option, App } from "../../src";
+import { Option, App, Destination, plugin } from "../../src";
 import { OptionHelper } from "../../src/modules/optionHelper";
 
 describe("models/option", () => {
@@ -144,6 +144,110 @@ describe("models/option", () => {
         await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
         const options = await app.getOptions();
         expect(options.fileId).toBe("abc123");
+      });
+    });
+
+    describe("default option values", () => {
+      let appWithOptions: App;
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-plugin",
+          icon: "/path/to/icon.svg",
+          apps: [
+            {
+              name: "test-template-app",
+              options: [
+                {
+                  key: "test_default_key",
+                  defaultValue: "default value",
+                  required: false,
+                },
+              ],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "export-from-test-template-app",
+              description: "a test app connection",
+              app: "test-template-app",
+              direction: "export",
+              options: [
+                {
+                  key: "test_default_key",
+                  defaultValue: "default value",
+                  required: false,
+                },
+              ],
+              methods: {
+                exportProfile: async () => ({ success: true }),
+              },
+            },
+          ],
+        });
+
+        appWithOptions = await App.create({
+          name: "test app",
+          type: "test-template-app",
+          options: {},
+        });
+
+        await appWithOptions.update({ state: "ready" });
+      });
+
+      afterAll(async () => {
+        await appWithOptions.destroy();
+      });
+
+      test("it returns default values for app options that are not set", async () => {
+        await appWithOptions.setOptions({});
+
+        const options = await appWithOptions.getOptions();
+        expect(options.test_default_key).toEqual("default value");
+      });
+
+      test("it returns saved values for app options that are set", async () => {
+        await appWithOptions.setOptions({
+          test_default_key: "Some custom value",
+        });
+
+        const options = await appWithOptions.getOptions();
+        expect(options.test_default_key).toEqual("Some custom value");
+      });
+
+      describe("connection options", () => {
+        let connection: Destination;
+        beforeAll(async () => {
+          connection = await Destination.create({
+            name: "destination - default option values",
+            type: "export-from-test-template-app",
+            appId: appWithOptions.id,
+          });
+        });
+
+        afterAll(async () => {
+          await connection.destroy();
+        });
+
+        test("it returns default values for connection options that are not set", async () => {
+          await connection.setOptions({});
+
+          const options = await connection.getOptions();
+          expect(options.test_default_key).toEqual("default value");
+        });
+
+        test("it returns saved values for connection options that are set", async () => {
+          await connection.setOptions({
+            test_default_key: "Some custom value",
+          });
+
+          const options = await connection.getOptions();
+          expect(options.test_default_key).toEqual("Some custom value");
+        });
       });
     });
   });
