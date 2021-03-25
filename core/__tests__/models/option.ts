@@ -114,7 +114,7 @@ describe("models/option", () => {
       app = await helper.factories.app();
     });
 
-    test("number option types are maintained", async () => {
+    test("string option types are maintained", async () => {
       const opts = { fileId: "abc" };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
@@ -126,10 +126,24 @@ describe("models/option", () => {
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
     });
 
-    test("number option types are maintained", async () => {
+    test("boolean option types are maintained", async () => {
       const opts = { fileId: true };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I will see passwords by default for Apps", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I can choose to obfuscate passwords", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      const options = await OptionHelper.getOptions(app, undefined, true);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual("******");
     });
 
     describe("options from environment variables", () => {

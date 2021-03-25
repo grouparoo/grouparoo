@@ -64,6 +64,7 @@ describe("actions/apps", () => {
       const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
       expect(pluginTestAppType.options).toEqual([
         { key: "fileId", required: true },
+        { key: "password", required: false },
       ]);
       expect(pluginTestAppType.plugin).toEqual({
         name: "@grouparoo/test-plugin",
@@ -118,6 +119,7 @@ describe("actions/apps", () => {
       expect(error).toBeUndefined();
       expect(options).toEqual({
         fileId: { options: ["a", "b"], type: "list" },
+        password: { type: "password" },
       });
     });
 
@@ -171,13 +173,15 @@ describe("actions/apps", () => {
         csrfToken,
         id,
         name: "new app name",
-        options: { fileId: "zzz" },
+        options: { fileId: "zzz", password: "SECRET" },
       };
       const { error, app } = await specHelper.runAction("app:edit", connection);
+
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
+      expect(app.options.password).toBe("******");
     });
 
     test("an administrator can view an app", async () => {
@@ -190,6 +194,7 @@ describe("actions/apps", () => {
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
+      expect(app.options.password).toBe("******");
     });
 
     test("an administrator can destroy an app", async () => {

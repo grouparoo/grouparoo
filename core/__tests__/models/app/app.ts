@@ -285,14 +285,20 @@ describe("models/app", () => {
         apps: [
           {
             name: "test-template-app",
-            options: [{ key: "test_key", required: true }],
+            options: [
+              { key: "test_key", required: true },
+              { key: "password", required: false },
+            ],
             methods: {
               test: async () => {
                 testCounter++;
                 return { success: true };
               },
               appOptions: async () => {
-                return { fileId: { type: "list", options: ["a", "b"] } };
+                return {
+                  test_key: { type: "list", options: ["a", "b"] },
+                  password: { type: "password" },
+                };
               },
               parallelism: async () => {
                 return parallelism;
@@ -336,10 +342,21 @@ describe("models/app", () => {
       expect(apiData.icon).toBe("/path/to/icon.svg");
     });
 
+    test("apiData returns '*****' for any appOption of type 'password'", async () => {
+      await app.setOptions({ password: "SECRET", test_key: "something" });
+
+      const apiData = await app.apiData();
+      expect(apiData.options).toEqual({
+        test_key: "something",
+        password: "******",
+      });
+    });
+
     test("it can return the appOptions from the plugin", async () => {
       const options = await app.appOptions();
       expect(options).toEqual({
-        fileId: { type: "list", options: ["a", "b"] },
+        test_key: { type: "list", options: ["a", "b"] },
+        password: { type: "password" },
       });
     });
 
