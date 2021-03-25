@@ -331,10 +331,13 @@ export namespace OptionHelper {
     const plugin = await getPlugin(instance);
 
     let options: AppOption[] = [];
-    if (instance instanceof App) {
-      options = plugin.pluginApp?.options;
-    } else if (instance instanceof Source || instance instanceof Destination) {
-      options = plugin.pluginConnection?.options;
+    if (instance instanceof App && plugin.pluginApp) {
+      options = plugin.pluginApp.options;
+    } else if (
+      (instance instanceof Source || instance instanceof Destination) &&
+      plugin.pluginConnection
+    ) {
+      options = plugin.pluginConnection.options;
     }
 
     const defaultOptions: SimpleOptions = {};
