@@ -1,7 +1,7 @@
 {
-  "author": "Grouparoo Inc <hello@grouparoo.com>",
-  "name": "@grouparoo/app-example",
-  "description": "An example Grouparoo Deployment",
+  "author": "Your Name <email@example.com>",
+  "name": "~~NAME~~",
+  "description": "A Grouparoo Deployment",
   "version": "0.0.1",
   "license": "MPL-2.0",
   "private": true,
