@@ -2,6 +2,8 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
+import { appOptions } from "../lib/appOptions";
+
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { profiles } from "../lib/sheet-import/profiles";
 import { propertyOptions } from "../lib/sheet-import/propertyOptions";
@@ -50,7 +52,7 @@ export class Plugins extends Initializer {
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          methods: { test },
+          methods: { test, appOptions },
         },
       ],
       connections: [

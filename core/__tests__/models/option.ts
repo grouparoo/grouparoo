@@ -1,6 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Option, App, Destination, plugin } from "../../src";
-import { OptionHelper } from "../../src/modules/optionHelper";
+import {
+  OptionHelper,
+  ObfuscatedPasswordString,
+} from "../../src/modules/optionHelper";
 
 describe("models/option", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -114,7 +117,7 @@ describe("models/option", () => {
       app = await helper.factories.app();
     });
 
-    test("number option types are maintained", async () => {
+    test("string option types are maintained", async () => {
       const opts = { fileId: "abc" };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
@@ -126,10 +129,36 @@ describe("models/option", () => {
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
     });
 
-    test("number option types are maintained", async () => {
+    test("boolean option types are maintained", async () => {
       const opts = { fileId: true };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I will see passwords by default for Apps", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I can choose to obfuscate passwords", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      const options = await OptionHelper.getOptions(app, undefined, true);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual(ObfuscatedPasswordString);
+    });
+
+    test("If I try to set options with the ObfuscatedPasswordString, the previous value will be used", async () => {
+      const originalOpts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, originalOpts);
+
+      const opts = { fileId: "abc123", password: ObfuscatedPasswordString };
+      await OptionHelper.setOptions(app, opts);
+
+      const options = await OptionHelper.getOptions(app);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual("SECRET");
     });
 
     describe("options from environment variables", () => {

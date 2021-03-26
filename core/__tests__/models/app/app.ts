@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { plugin, App, Option, Log } from "../../../src";
 import { api, redis, utils } from "actionhero";
+import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
 
 describe("models/app", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -285,14 +286,20 @@ describe("models/app", () => {
         apps: [
           {
             name: "test-template-app",
-            options: [{ key: "test_key", required: true }],
+            options: [
+              { key: "test_key", required: true },
+              { key: "password", required: false },
+            ],
             methods: {
               test: async () => {
                 testCounter++;
                 return { success: true };
               },
               appOptions: async () => {
-                return { fileId: { type: "list", options: ["a", "b"] } };
+                return {
+                  test_key: { type: "list", options: ["a", "b"] },
+                  password: { type: "password" },
+                };
               },
               parallelism: async () => {
                 return parallelism;
@@ -336,14 +343,58 @@ describe("models/app", () => {
       expect(apiData.icon).toBe("/path/to/icon.svg");
     });
 
-    test("it can return the appOptions from the plugin", async () => {
-      const options = await app.appOptions();
-      expect(options).toEqual({
-        fileId: { type: "list", options: ["a", "b"] },
+    test("apiData returns ObfuscatedPasswordString for any appOption of type 'password'", async () => {
+      await app.setOptions({ password: "SECRET", test_key: "something" });
+
+      const apiData = await app.apiData();
+      expect(apiData.options).toEqual({
+        test_key: "something",
+        password: ObfuscatedPasswordString,
       });
     });
 
+    test("it can return the appOptions from the plugin", async () => {
+      const options = await app.appOptions();
+      expect(options).toEqual({
+        test_key: { type: "list", options: ["a", "b"] },
+        password: { type: "password" },
+      });
+    });
+
+    test("it will replace obfuscated app options for the plugin's test method", async () => {
+      await app.setOptions({ password: "SECRET", test_key: "something" });
+
+      const plugin = api.plugins.plugins.find(
+        (plugin) => plugin.name === "test-plugin"
+      );
+
+      const spy = jest.spyOn(plugin.apps[0].methods, "test");
+
+      await app.test({
+        test_key: "something",
+        password: ObfuscatedPasswordString,
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            test_key: "something",
+            password: "SECRET",
+          },
+        })
+      );
+
+      expect(spy).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            password: ObfuscatedPasswordString,
+          },
+        })
+      );
+    });
+
     test("it can run a plugin's test method", async () => {
+      testCounter = 0;
       const { error, success } = await app.test();
       expect(error).toBeUndefined();
       expect(success).toBe(true);

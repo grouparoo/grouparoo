@@ -5,6 +5,8 @@ import path from "path";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
+import { appOptions } from "../lib/appOptions";
+
 import { exportProfile } from "../lib/export/exportProfile";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 
@@ -122,7 +124,7 @@ export class Plugins extends Initializer {
               description: "The ssl certificate authority (CA).",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appOptions },
         },
       ],
       connections: [

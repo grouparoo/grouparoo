@@ -13,6 +13,8 @@ import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 
+export const ObfuscatedPasswordString = "__ObfuscatedPassword";
+
 function modelName(instance): string {
   let name = instance.constructor.name;
   name = name[0].toLowerCase() + name.substr(1);
@@ -26,19 +28,29 @@ export namespace OptionHelper {
 
   export async function getOptions(
     instance: Source | Destination | Schedule | Property | App,
-    sourceFromEnvironment = true
+    sourceFromEnvironment = true,
+    obfuscatePasswords = false
   ) {
     if (sourceFromEnvironment === null || sourceFromEnvironment === undefined) {
       sourceFromEnvironment = true;
     }
 
-    let optionsObject = await getDefaultOptionValues(instance);
     const options = await Option.findAll({
       where: { ownerId: instance.id },
     });
 
+    const optionsToObfuscate = await getOptionsToObfuscate(
+      instance,
+      obfuscatePasswords
+    );
+
+    let optionsObject = await getDefaultOptionValues(instance);
     options.forEach((option) => {
-      optionsObject[option.key] = option.typedValue();
+      if (optionsToObfuscate.includes(option.key)) {
+        optionsObject[option.key] = ObfuscatedPasswordString;
+      } else {
+        optionsObject[option.key] = option.typedValue();
+      }
     });
 
     if (sourceFromEnvironment) {
@@ -52,17 +64,24 @@ export namespace OptionHelper {
     instance: Source | Destination | Schedule | Property | App,
     options: SimpleOptions
   ) {
-    await validateOptions(instance, options, null);
+    let sanitizedOptions = Object.assign({}, options);
+
+    sanitizedOptions = await replaceObfuscatedPasswords(
+      instance,
+      sanitizedOptions
+    );
+
+    await validateOptions(instance, sanitizedOptions, null);
     const oldOptions = await getOptions(instance, false);
     let hasChanges = false;
 
     for (const i in oldOptions) {
-      if (oldOptions[i] !== options[i]) {
+      if (oldOptions[i] !== sanitizedOptions[i]) {
         hasChanges = true;
       }
     }
-    for (const i in options) {
-      if (oldOptions[i] !== options[i]) {
+    for (const i in sanitizedOptions) {
+      if (oldOptions[i] !== sanitizedOptions[i]) {
         hasChanges = true;
       }
     }
@@ -74,15 +93,15 @@ export namespace OptionHelper {
       where: { ownerId: instance.id },
     });
 
-    const keys = Object.keys(options);
+    const keys = Object.keys(sanitizedOptions);
     for (const i in keys) {
       const key = keys[i];
       await Option.create({
         ownerId: instance.id,
         ownerType: modelName(instance),
         key,
-        value: options[key],
-        type: typeof options[key],
+        value: sanitizedOptions[key],
+        type: typeof sanitizedOptions[key],
       });
     }
 
@@ -348,5 +367,47 @@ export namespace OptionHelper {
     }
 
     return defaultOptions;
+  }
+
+  export async function getOptionsToObfuscate(
+    instance: Source | Destination | Schedule | Property | App,
+    obfuscatePasswords = false
+  ) {
+    const optionsToObfuscate: string[] = [];
+
+    // TODO: only for Apps for now
+    if (instance instanceof App) {
+      const appOptions = await instance.appOptions();
+      const appOptionKeys = Object.keys(appOptions);
+
+      appOptionKeys.forEach((appOptionKey) => {
+        if (appOptions[appOptionKey].type == "password" && obfuscatePasswords) {
+          optionsToObfuscate.push(appOptionKey);
+        }
+      });
+    }
+
+    return optionsToObfuscate;
+  }
+
+  export async function replaceObfuscatedPasswords(
+    instance: Source | Destination | Schedule | Property | App,
+    options?: SimpleOptions
+  ) {
+    let sanitizedOptions: SimpleOptions = Object.assign({}, options);
+    const optionsFromDatabase = await instance.getOptions(true, false);
+
+    if (Object.keys(sanitizedOptions).length === 0) {
+      sanitizedOptions = optionsFromDatabase;
+    }
+
+    let optionsKeys = Object.keys(sanitizedOptions);
+    optionsKeys.forEach((option) => {
+      if (sanitizedOptions[option] === ObfuscatedPasswordString) {
+        sanitizedOptions[option] = optionsFromDatabase[option];
+      }
+    });
+
+    return sanitizedOptions;
   }
 }

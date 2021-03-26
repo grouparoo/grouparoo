@@ -234,13 +234,20 @@ export namespace helper {
               key: "fileId",
               required: true,
             },
+            {
+              key: "password",
+              required: false,
+            },
           ],
           methods: {
             test: async () => {
               return { success: true, message: "OK" };
             },
             appOptions: async () => {
-              return { fileId: { type: "list", options: ["a", "b"] } };
+              return {
+                fileId: { type: "list", options: ["a", "b"] },
+                password: { type: "password" },
+              };
             },
           },
         },

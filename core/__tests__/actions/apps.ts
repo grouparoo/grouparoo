@@ -1,5 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import { App } from "../../src";
+import { ObfuscatedPasswordString } from "../../src/modules/optionHelper";
 
 describe("actions/apps", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -64,6 +66,7 @@ describe("actions/apps", () => {
       const pluginTestAppType = types.find((t) => t.name === "test-plugin-app");
       expect(pluginTestAppType.options).toEqual([
         { key: "fileId", required: true },
+        { key: "password", required: false },
       ]);
       expect(pluginTestAppType.plugin).toEqual({
         name: "@grouparoo/test-plugin",
@@ -118,6 +121,7 @@ describe("actions/apps", () => {
       expect(error).toBeUndefined();
       expect(options).toEqual({
         fileId: { options: ["a", "b"], type: "list" },
+        password: { type: "password" },
       });
     });
 
@@ -171,13 +175,33 @@ describe("actions/apps", () => {
         csrfToken,
         id,
         name: "new app name",
-        options: { fileId: "zzz" },
+        options: { fileId: "zzz", password: "SECRET" },
       };
       const { error, app } = await specHelper.runAction("app:edit", connection);
+
       expect(error).toBeUndefined();
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
+      expect(app.options.password).toBe(ObfuscatedPasswordString);
+    });
+
+    test("an administrator cannot save an obfuscated password", async () => {
+      connection.params = {
+        csrfToken,
+        id,
+        options: { fileId: "zzz", password: ObfuscatedPasswordString },
+      };
+      const { error, app } = await specHelper.runAction("app:edit", connection);
+
+      expect(error).toBeUndefined();
+      expect(app.id).toBeTruthy();
+      expect(app.options.password).toBe(ObfuscatedPasswordString);
+
+      // but, it's not really saved to the DB:
+      const appDB = await App.findById(id);
+      const options = await appDB.getOptions();
+      expect(options.password).toBe("SECRET");
     });
 
     test("an administrator can view an app", async () => {
@@ -190,6 +214,7 @@ describe("actions/apps", () => {
       expect(app.id).toBeTruthy();
       expect(app.name).toBe("new app name");
       expect(app.options.fileId).toBe("zzz");
+      expect(app.options.password).toBe(ObfuscatedPasswordString);
     });
 
     test("an administrator can destroy an app", async () => {

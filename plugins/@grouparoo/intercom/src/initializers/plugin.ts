@@ -3,6 +3,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
+import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export-contacts/exportProfile";
 import { destinationOptions } from "../lib/export-contacts/destinationOptions";
@@ -45,7 +46,7 @@ export class Plugins extends Initializer {
                 "Access token from your private app in the developer hub",
             },
           ],
-          methods: { test },
+          methods: { test, appOptions },
         },
       ],
       connections: [
