@@ -97,8 +97,14 @@ export namespace AppOps {
       throw new Error(`cannot find a pluginApp type of ${app.type}`);
     }
 
-    if (!options) options = await app.getOptions(true);
-    options = OptionHelper.sourceEnvironmentVariableOptions(app, options);
+    let sanitizedOptions = await OptionHelper.replaceObfuscatedPasswords(
+      app,
+      options
+    );
+    sanitizedOptions = OptionHelper.sourceEnvironmentVariableOptions(
+      app,
+      sanitizedOptions
+    );
 
     let connection;
     try {
@@ -106,14 +112,14 @@ export namespace AppOps {
         connection = await pluginApp.methods.connect({
           app,
           appId: app.id,
-          appOptions: options,
+          appOptions: sanitizedOptions,
         });
       }
 
       const result = await pluginApp.methods.test({
         app,
         appId: app.id,
-        appOptions: options,
+        appOptions: sanitizedOptions,
         connection,
       });
       message = result.message;
@@ -131,7 +137,7 @@ export namespace AppOps {
           connection,
           app,
           appId: app.id,
-          appOptions: options,
+          appOptions: sanitizedOptions,
         });
       }
     }

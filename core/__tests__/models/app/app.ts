@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { plugin, App, Option, Log } from "../../../src";
 import { api, redis, utils } from "actionhero";
+import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
 
 describe("models/app", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -342,13 +343,13 @@ describe("models/app", () => {
       expect(apiData.icon).toBe("/path/to/icon.svg");
     });
 
-    test("apiData returns '*****' for any appOption of type 'password'", async () => {
+    test("apiData returns ObfuscatedPasswordString for any appOption of type 'password'", async () => {
       await app.setOptions({ password: "SECRET", test_key: "something" });
 
       const apiData = await app.apiData();
       expect(apiData.options).toEqual({
         test_key: "something",
-        password: "******",
+        password: ObfuscatedPasswordString,
       });
     });
 
@@ -360,7 +361,40 @@ describe("models/app", () => {
       });
     });
 
+    test("it will replace obfuscated app options for the plugin's test method", async () => {
+      await app.setOptions({ password: "SECRET", test_key: "something" });
+
+      const plugin = api.plugins.plugins.find(
+        (plugin) => plugin.name === "test-plugin"
+      );
+
+      const spy = jest.spyOn(plugin.apps[0].methods, "test");
+
+      await app.test({
+        test_key: "something",
+        password: ObfuscatedPasswordString,
+      });
+
+      expect(spy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            test_key: "something",
+            password: "SECRET",
+          },
+        })
+      );
+
+      expect(spy).not.toHaveBeenCalledWith(
+        expect.objectContaining({
+          appOptions: {
+            password: ObfuscatedPasswordString,
+          },
+        })
+      );
+    });
+
     test("it can run a plugin's test method", async () => {
+      testCounter = 0;
       const { error, success } = await app.test();
       expect(error).toBeUndefined();
       expect(success).toBe(true);

@@ -1,6 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Option, App, Destination, plugin } from "../../src";
-import { OptionHelper } from "../../src/modules/optionHelper";
+import {
+  OptionHelper,
+  ObfuscatedPasswordString,
+} from "../../src/modules/optionHelper";
 
 describe("models/option", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -143,7 +146,19 @@ describe("models/option", () => {
       await OptionHelper.setOptions(app, opts);
       const options = await OptionHelper.getOptions(app, undefined, true);
       expect(options["fileId"]).toEqual(opts.fileId);
-      expect(options["password"]).toEqual("******");
+      expect(options["password"]).toEqual(ObfuscatedPasswordString);
+    });
+
+    test("If I try to set options with the ObfuscatedPasswordString, the previous value will be used", async () => {
+      const originalOpts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, originalOpts);
+
+      const opts = { fileId: "abc123", password: ObfuscatedPasswordString };
+      await OptionHelper.setOptions(app, opts);
+
+      const options = await OptionHelper.getOptions(app);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual("SECRET");
     });
 
     describe("options from environment variables", () => {

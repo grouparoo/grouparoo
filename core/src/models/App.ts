@@ -84,8 +84,12 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions(sourceFromEnvironment = true, hidePasswords = false) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment, hidePasswords);
+  async getOptions(sourceFromEnvironment = true, obfuscatePasswords = false) {
+    return OptionHelper.getOptions(
+      this,
+      sourceFromEnvironment,
+      obfuscatePasswords
+    );
   }
 
   async setOptions(options: SimpleAppOptions) {
