@@ -5,6 +5,8 @@ import { plugin } from "@grouparoo/core";
 import { test } from "@grouparoo/postgres/dist/lib/test";
 import { connect } from "@grouparoo/postgres/dist/lib/connect";
 import { disconnect } from "@grouparoo/postgres/dist/lib/disconnect";
+import { appOptions } from "@grouparoo/postgres/dist/lib/appOptions";
+
 import { exportProfile } from "@grouparoo/postgres/dist/lib/export/exportProfile";
 import { exportArrayProperties } from "@grouparoo/postgres/dist/lib/export/exportArrayProperties";
 
@@ -96,7 +98,7 @@ export class Plugins extends Initializer {
               description: "The Redshift user's password.",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appOptions },
         },
       ],
       connections: [
