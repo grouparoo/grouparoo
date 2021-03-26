@@ -382,9 +382,11 @@ export namespace OptionHelper {
     options?: SimpleOptions
   ) {
     let sanitizedOptions: SimpleOptions = Object.assign({}, options);
-    const optionsFromDatabase = await app.getOptions(true);
+    const optionsFromDatabase = await app.getOptions(true, false);
 
-    if (!sanitizedOptions) sanitizedOptions = optionsFromDatabase;
+    if (Object.keys(sanitizedOptions).length === 0) {
+      sanitizedOptions = optionsFromDatabase;
+    }
 
     let optionsKeys = Object.keys(sanitizedOptions);
     optionsKeys.forEach((option) => {
