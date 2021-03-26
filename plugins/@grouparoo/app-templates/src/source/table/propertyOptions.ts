@@ -48,6 +48,7 @@ export const getPropertyOptions: GetPropertyOptionsMethod = ({
         return getColumnExamples({
           connection,
           appOptions,
+          sourceOptions,
           appId,
           tableName,
           getSampleRows,
@@ -81,6 +82,7 @@ export const getPropertyOptions: GetPropertyOptionsMethod = ({
         return getColumnExamples({
           connection,
           appOptions,
+          sourceOptions,
           appId,
           tableName,
           getSampleRows,

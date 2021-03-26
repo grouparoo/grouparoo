@@ -3,6 +3,7 @@ import {
   SimpleAppOptions,
   SimpleScheduleOptions,
   ProfilesPluginMethod,
+  SimpleSourceOptions,
 } from "@grouparoo/core";
 import { DataResponseRow } from "../shared/types";
 
@@ -14,6 +15,7 @@ export interface GetChangedRowsMethod {
     appId: string;
     limit: number;
     offset: number;
+    sourceOptions?: SimpleSourceOptions;
   }): Promise<DataResponseRow[]>;
 }
 
@@ -26,6 +28,7 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     appId,
     appOptions,
     properties,
+    sourceOptions,
   }) => {
     let offset = highWaterMark.offset
       ? parseInt(highWaterMark.offset.toString())
@@ -39,6 +42,7 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
     const rows = await getChangedRows({
       appId,
       appOptions,
+      sourceOptions,
       scheduleOptions,
       limit,
       offset,

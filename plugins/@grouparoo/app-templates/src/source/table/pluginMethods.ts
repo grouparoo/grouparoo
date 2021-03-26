@@ -1,4 +1,9 @@
-import { PropertyTypes, SimpleAppOptions } from "@grouparoo/core";
+import {
+  ConnectionOption,
+  PropertyTypes,
+  SimpleAppOptions,
+  SimpleSourceOptions,
+} from "@grouparoo/core";
 export { SimpleAppOptions };
 
 import { DataResponse, DataResponseRow } from "../shared/types";
@@ -60,6 +65,7 @@ export interface GetColumnDefinitionsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
   }): Promise<ColumnDefinitionMap>;
@@ -69,6 +75,7 @@ export interface GetSampleRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
   }): Promise<DataResponseRow[]>;
@@ -77,6 +84,7 @@ export interface GetPropertyValueMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     columnName: string;
@@ -90,6 +98,7 @@ export interface GetPropertyValuesMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     columnName: string;
@@ -101,6 +110,10 @@ export interface GetPropertyValuesMethod {
     isArray: boolean;
     primaryKeys: Array<number | string>;
   }): Promise<{ [primaryKey: string]: DataResponse[] }>;
+}
+export interface SourceOptionsExtra {
+  options: ConnectionOption[];
+  // TODO later: can pass method here.
 }
 export interface TableDefinition {
   name: string;
@@ -120,6 +133,7 @@ export interface GetChangedRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
@@ -135,6 +149,7 @@ export interface GetChangedRowCountMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     highWaterMarkCondition: MatchCondition;
