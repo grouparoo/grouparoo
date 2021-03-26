@@ -28,7 +28,7 @@ export default async function Update(pkg: string) {
     process.exit(1);
   }
 
-  if (pkg?.match("@grouparoo/ui-")) {
+  if (pkg && pkg?.match("@grouparoo/ui-")) {
     const existingUIPackage = plugins.find((p) => p.match(/@grouparoo\/ui.*/));
     if (existingUIPackage) {
       logger.fail(
@@ -38,7 +38,7 @@ export default async function Update(pkg: string) {
     }
   }
 
-  if (!(await isGrouparooPlugin(pkg))) {
+  if (pkg && !(await isGrouparooPlugin(pkg))) {
     logger.fail(`Package \`${pkg}\` is not a Grouparoo plugin.`);
     process.exit(1);
   }
