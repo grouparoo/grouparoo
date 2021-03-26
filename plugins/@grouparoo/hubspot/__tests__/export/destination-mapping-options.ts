@@ -41,6 +41,7 @@ describe("hubspot/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getUserFields(client, appOptions);
+
     const phone = fields.find((f) => f.key === "phone");
     const mobilePhone = fields.find((f) => f.key === "mobilephone");
     const firstName = fields.find((f) => f.key === "firstname");
@@ -50,6 +51,10 @@ describe("hubspot/destinationMappingOptions", () => {
     const message = fields.find((f) => f.key === "message");
     const companyId = fields.find((f) => f.key === "associatedcompanyid");
     const persona = fields.find((f) => f.key === "hs_persona");
+    const textField = fields.find((f) => f.key === "text_field");
+    const numberField = fields.find((f) => f.key === "number_field");
+    const dateField = fields.find((f) => f.key === "date_field");
+
     expect(phone.type).toBe("phoneNumber");
     expect(phone.important).toBe(false);
     expect(mobilePhone.type).toBe("phoneNumber");
@@ -68,6 +73,12 @@ describe("hubspot/destinationMappingOptions", () => {
     expect(companyId.important).toBe(false);
     expect(persona.type).toBe("string");
     expect(persona.important).toBe(false);
+    expect(textField.type).toBe("string");
+    expect(textField.important).toBe(false);
+    expect(numberField.type).toBe("float");
+    expect(numberField.important).toBe(false);
+    expect(dateField.type).toBe("date");
+    expect(dateField.important).toBe(false);
   });
 
   test("can load all destinationMappingOptions", async () => {
