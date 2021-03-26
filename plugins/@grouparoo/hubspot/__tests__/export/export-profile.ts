@@ -44,7 +44,6 @@ const invalidDate = "asd000";
 
 const textField = "text_field";
 const numberField = 30.39;
-const midnightDateField = new Date("2021-02-11T00:00:00Z");
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
@@ -199,7 +198,7 @@ describe("hubspot/exportProfile", () => {
         lifetime_value__custom_: ltv,
         closedate: dateField,
         text_field: textField,
-        date_field: midnightDateField, //must be midnight: 00:00
+        date_field: dateField, //must be midnight: 00:00
         number_field: numberField,
       },
       oldGroups: [],
@@ -220,7 +219,7 @@ describe("hubspot/exportProfile", () => {
     );
     expect(user["properties"]["text_field"]["value"]).toBe(textField);
     expect(user["properties"]["date_field"]["value"]).toBe(
-      midnightDateField.getTime().toString()
+      dateField.getTime().toString()
     );
     expect(user["properties"]["number_field"]["value"]).toBe(
       numberField.toString()
@@ -253,7 +252,7 @@ describe("hubspot/exportProfile", () => {
         lastname: alternativeLastName,
         mobilephone: phoneNumber,
         text_field: textField,
-        date_field: midnightDateField,
+        date_field: dateField,
         number_field: numberField,
       },
       newProfileProperties: {
