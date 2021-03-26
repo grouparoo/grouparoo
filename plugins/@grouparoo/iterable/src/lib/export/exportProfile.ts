@@ -36,11 +36,17 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     throw new Error(`newProfileProperties[email] is a required mapping`);
   }
 
+  const { user: newUser } = await client.users.get({ email });
+  let oldUser = null;
+  if (currentEmail && currentEmail !== email) {
+    const oldUserRes = await client.users.get({ email: currentEmail });
+    oldUser = oldUserRes.user;
+  }
+
   if (toDelete) {
-    if (currentEmail && currentEmail !== email) {
-      await client.users.delete({ email: currentEmail });
-    } else {
-      await client.users.delete({ email });
+    const userToDelete = newUser || oldUser;
+    if (userToDelete) {
+      await client.users.delete({ email: userToDelete.email });
     }
     return { success: true };
   } else {
@@ -67,7 +73,9 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       { dataFields: formattedDataFields }
     );
 
-    if (currentEmail && currentEmail !== email) {
+    // We need to change the email on the old user
+    // if someone with the new email already exists, leave the old one alone
+    if (oldUser && !newUser) {
       const emailPayload = { currentEmail, newEmail: email };
       if (newProfileProperties.userId) {
         emailPayload["currentUserId"] = newProfileProperties.userId;

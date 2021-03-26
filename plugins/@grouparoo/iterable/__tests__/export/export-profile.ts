@@ -529,6 +529,65 @@ describe("iterable/exportProfile", () => {
     expect(brandNewUser.dataFields.name).toBe(brandNewName);
   });
 
+  test("can update the new user on email change if both emails exist", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: brandNewEmail,
+        userId: brandNewUserId,
+        name: brandNewName,
+      },
+      newProfileProperties: {
+        email: newEmail,
+        userId: newUserId,
+        name: otherName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    await indexContacts(newNock);
+
+    // Leave the old one untouched
+    let user = await getUser(brandNewEmail);
+    expect(user.dataFields.name).toBe(brandNewName);
+    expect(user.userId).toBe(brandNewUserId);
+
+    // update the new one
+    user = await getUser(newEmail);
+    expect(user.dataFields.name).toBe(otherName);
+    expect(user.userId).toBe(newUserId);
+  });
+
+  test("can delete the new user on email change if both emails exist", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: brandNewEmail,
+        userId: brandNewUserId,
+        name: brandNewName,
+      },
+      newProfileProperties: {
+        email: newEmail,
+        userId: newUserId,
+        name: otherName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexContacts(newNock);
+
+    // Leave the old one untouched
+    let user = await getUser(brandNewEmail);
+    expect(user.dataFields.name).toBe(brandNewName);
+    expect(user.userId).toBe(brandNewUserId);
+
+    // Update the new one
+    user = await getUser(newEmail);
+    expect(user).toBe(null);
+  });
+
   test("can add a user passing a invalid email", async () => {
     await expect(
       runExport({
