@@ -96,6 +96,7 @@ export namespace IntegrationSpecHelper {
       JEST_WORKER_ID: jestId,
       SERVER_TOKEN: serverToken,
       GROUPAROO_CONFIG_DIR: disableCodeConfig ? "/not/a/real/dir" : undefined,
+      GROUPAROO_ENV_CONFIG_FILE: "/path/to/nothing",
     });
 
     const subProcess = spawn("node", ["dist/grouparoo.js"], {
