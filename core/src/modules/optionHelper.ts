@@ -35,25 +35,18 @@ export namespace OptionHelper {
       sourceFromEnvironment = true;
     }
 
-    let optionsObject = await getDefaultOptionValues(instance);
     const options = await Option.findAll({
       where: { ownerId: instance.id },
     });
 
-    const optionsToHide: string[] = [];
-    if (instance instanceof App) {
-      const appOptions = await instance.appOptions();
-      const appOptionKeys = Object.keys(appOptions);
+    const optionsToObfuscate = await getOptionsToObfuscate(
+      instance,
+      obfuscatePasswords
+    );
 
-      appOptionKeys.forEach((appOptionKey) => {
-        if (appOptions[appOptionKey].type == "password" && obfuscatePasswords) {
-          optionsToHide.push(appOptionKey);
-        }
-      });
-    }
-
+    let optionsObject = await getDefaultOptionValues(instance);
     options.forEach((option) => {
-      if (optionsToHide.includes(option.key)) {
+      if (optionsToObfuscate.includes(option.key)) {
         optionsObject[option.key] = ObfuscatedPasswordString;
       } else {
         optionsObject[option.key] = option.typedValue();
@@ -72,12 +65,11 @@ export namespace OptionHelper {
     options: SimpleOptions
   ) {
     let sanitizedOptions = Object.assign({}, options);
-    if (instance instanceof App) {
-      sanitizedOptions = await replaceObfuscatedPasswords(
-        instance,
-        sanitizedOptions
-      );
-    }
+
+    sanitizedOptions = await replaceObfuscatedPasswords(
+      instance,
+      sanitizedOptions
+    );
 
     await validateOptions(instance, sanitizedOptions, null);
     const oldOptions = await getOptions(instance, false);
@@ -377,12 +369,33 @@ export namespace OptionHelper {
     return defaultOptions;
   }
 
+  export async function getOptionsToObfuscate(
+    instance: Source | Destination | Schedule | Property | App,
+    obfuscatePasswords = false
+  ) {
+    const optionsToObfuscate: string[] = [];
+
+    // TODO: only for Apps for now
+    if (instance instanceof App) {
+      const appOptions = await instance.appOptions();
+      const appOptionKeys = Object.keys(appOptions);
+
+      appOptionKeys.forEach((appOptionKey) => {
+        if (appOptions[appOptionKey].type == "password" && obfuscatePasswords) {
+          optionsToObfuscate.push(appOptionKey);
+        }
+      });
+    }
+
+    return optionsToObfuscate;
+  }
+
   export async function replaceObfuscatedPasswords(
-    app: App,
+    instance: Source | Destination | Schedule | Property | App,
     options?: SimpleOptions
   ) {
     let sanitizedOptions: SimpleOptions = Object.assign({}, options);
-    const optionsFromDatabase = await app.getOptions(true, false);
+    const optionsFromDatabase = await instance.getOptions(true, false);
 
     if (Object.keys(sanitizedOptions).length === 0) {
       sanitizedOptions = optionsFromDatabase;
