@@ -5,10 +5,16 @@ import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 
 export namespace ImportOps {
+  const defaultImportProcessingDelay = 1000 * 60 * 5;
+
   export async function processPendingImportsForAssociation(
     limit = 100,
-    delayMs = 1000 * 60 * 5
+    delayMs = defaultImportProcessingDelay
   ) {
+    if (!delayMs || delayMs < defaultImportProcessingDelay) {
+      delayMs = defaultImportProcessingDelay;
+    }
+
     const imports = await Import.findAll({
       where: {
         profileId: null,
@@ -24,7 +30,7 @@ export namespace ImportOps {
     await Import.update(
       { startedAt: new Date() },
       {
-        where: { id: { [Op.in]: imports.map((i) => i.id) }, startedAt: null },
+        where: { id: { [Op.in]: imports.map((i) => i.id) } },
       }
     );
 

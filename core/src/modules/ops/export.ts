@@ -9,6 +9,8 @@ import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
 
 export namespace ExportOps {
+  const defaultExportProcessingDelay = 1000 * 60 * 5;
+
   /** Count up the exports in each state, optionally filtered for a profile or destination */
   export async function totals(
     where: { profileId?: string; destinationId?: string } = {}
@@ -91,8 +93,12 @@ export namespace ExportOps {
   export async function processPendingExportsForDestination(
     destination: Destination,
     limit = 100,
-    delayMs = 1000 * 60 * 5
+    delayMs = defaultExportProcessingDelay
   ) {
+    if (!delayMs || delayMs < defaultExportProcessingDelay) {
+      delayMs = defaultExportProcessingDelay;
+    }
+
     const app = await destination.$get("app");
     const { pluginConnection } = await destination.getPlugin();
 
@@ -112,10 +118,7 @@ export namespace ExportOps {
     const updateResponse = await Export.update(
       { startedAt: new Date() },
       {
-        where: {
-          id: { [Op.in]: _exports.map((e) => e.id) },
-          startedAt: null,
-        },
+        where: { id: { [Op.in]: _exports.map((e) => e.id) } },
       }
     );
 
