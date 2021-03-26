@@ -87,7 +87,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "imports-retry-delay-seconds",
         title: "Imports Retry Delay Seconds",
-        defaultValue: 60 * 5, // 5 minutes
+        defaultValue: 60 * 60 * 6, // 6 hours
         description:
           "How long before Grouparoo considers a started but not-yet-complete Import to have stalled and try again?",
         type: "number",
@@ -112,7 +112,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "exports-retry-delay-seconds",
         title: "Exports Retry Delay Seconds",
-        defaultValue: 60 * 5, // 5 minutes
+        defaultValue: 60 * 60 * 6, // 6 hours
         description:
           "How long before Grouparoo considers a started but not-yet-complete Export to have stalled and try again?",
         type: "number",
