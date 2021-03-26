@@ -21,8 +21,7 @@ describe("tasks/import:associateProfiles", () => {
 
   test("it will enqueue new tasks to associate not-yet associated imports", async () => {
     const _import = await helper.factories.import();
-    // delete the associate task that was created along with the import
-    await api.resque.queue.connection.redis.flushdb();
+    await api.resque.queue.connection.redis.flushdb(); // delete the associate task that was created along with the import
 
     await specHelper.runTask("import:associateProfiles", {});
 
@@ -73,6 +72,23 @@ describe("tasks/import:associateProfiles", () => {
     expect(foundTasks[0].args[0].importId).toBe(_import.id);
   });
 
+  test("it will not find an import with a startedAt that was previously enqueued", async () => {
+    await helper.factories.import(); // import with nul startedAt
+
+    const _import = await helper.factories.import(); // import with old startedAt
+    await _import.update({ startedAt: 0 });
+
+    await specHelper.runTask("import:associateProfiles", {}); // first enqueue, sets startedAt
+    await api.resque.queue.connection.redis.flushdb();
+
+    await specHelper.runTask("import:associateProfiles", {}); // second enqueue, should find no imports
+
+    const foundTasks = await specHelper.findEnqueuedTasks(
+      "import:associateProfile"
+    );
+    expect(foundTasks.length).toBe(0);
+  });
+
   test("previously complete runs will be moved back to running if an import they created is found", async () => {
     const schedule = await helper.factories.schedule();
     const run = await helper.factories.run(schedule);
@@ -91,7 +107,6 @@ describe("tasks/import:associateProfiles", () => {
 
   test("imports that have an error will not be tried again", async () => {
     const _import = await helper.factories.import();
-    // delete the associate task that was created along with the import
     await api.resque.queue.connection.redis.flushdb();
 
     await _import.update({ errorMessage: "I broke" });

@@ -133,6 +133,15 @@ describe("tasks/export:enqueue", () => {
       expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
     });
 
+    test("checking again will find no results as the exports should have a startedAt", async () => {
+      await specHelper.runTask("export:enqueue", {}); // call first time
+      await api.resque.queue.connection.redis.flushdb();
+      await specHelper.runTask("export:enqueue", {}); // call second time
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
+    });
+
     test("batch size is variable", async () => {
       await plugin.updateSetting("core", "exports-profile-batch-size", 1);
       await specHelper.runTask("export:enqueue", {}); // first batch
@@ -146,7 +155,7 @@ describe("tasks/export:enqueue", () => {
       await specHelper.runTask("export:enqueue", {}); // no one
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(4); // 1 + 3
+      expect(foundTasks.length).toBe(3); // 1 + 2
     });
   });
 });
