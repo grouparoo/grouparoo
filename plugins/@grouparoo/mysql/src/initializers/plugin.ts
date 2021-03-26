@@ -69,7 +69,7 @@ export class Plugins extends Initializer {
               displayName: "Port",
               required: false,
               description: "The MySQL port.",
-              placeholder: "3306",
+              defaultValue: 3306,
             },
             {
               key: "database",

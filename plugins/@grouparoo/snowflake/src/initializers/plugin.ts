@@ -87,6 +87,7 @@ export class Plugins extends Initializer {
               displayName: "Schema",
               required: false,
               description: "The Snowflake schema (default: PUBLIC)",
+              defaultValue: "PUBLIC",
             },
           ],
           methods: { test, connect, disconnect },

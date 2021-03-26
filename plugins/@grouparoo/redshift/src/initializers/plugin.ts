@@ -68,6 +68,7 @@ export class Plugins extends Initializer {
               displayName: "Port",
               required: false,
               description: "The Redshift port.",
+              defaultValue: 5439,
             },
             {
               key: "database",
@@ -80,6 +81,7 @@ export class Plugins extends Initializer {
               displayName: "Schema",
               required: false,
               description: "The Redshift schema (default: public).",
+              defaultValue: "public",
             },
             {
               key: "user",

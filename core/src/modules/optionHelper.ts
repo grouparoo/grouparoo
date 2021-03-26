@@ -9,7 +9,7 @@ import { Source } from "./../models/Source";
 import { Destination } from "./../models/Destination";
 import { Schedule } from "./../models/Schedule";
 import { Property } from "../models/Property";
-import { App } from "./../models/App";
+import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
 
@@ -32,7 +32,7 @@ export namespace OptionHelper {
       sourceFromEnvironment = true;
     }
 
-    let optionsObject: SimpleOptions = {};
+    let optionsObject = await getDefaultOptionValues(instance);
     const options = await Option.findAll({
       where: { ownerId: instance.id },
     });
@@ -323,5 +323,30 @@ export namespace OptionHelper {
     }
 
     return options;
+  }
+
+  async function getDefaultOptionValues(
+    instance: Source | Destination | Schedule | Property | App
+  ) {
+    const plugin = await getPlugin(instance);
+
+    let options: AppOption[] = [];
+    if (instance instanceof App && plugin.pluginApp) {
+      options = plugin.pluginApp.options;
+    } else if (
+      (instance instanceof Source || instance instanceof Destination) &&
+      plugin.pluginConnection
+    ) {
+      options = plugin.pluginConnection.options;
+    }
+
+    const defaultOptions: SimpleOptions = {};
+    for (const opt of options) {
+      if (opt.defaultValue !== undefined) {
+        defaultOptions[opt.key] = opt.defaultValue;
+      }
+    }
+
+    return defaultOptions;
   }
 }

@@ -69,7 +69,7 @@ export class Plugins extends Initializer {
               displayName: "Port",
               required: false,
               description: "The Postgres port.",
-              placeholder: "5432",
+              defaultValue: 5432,
             },
             {
               key: "database",
@@ -82,7 +82,7 @@ export class Plugins extends Initializer {
               displayName: "Schema",
               required: false,
               description: "The Postgres schema (default: public).",
-              placeholder: "public",
+              defaultValue: "public",
             },
             {
               key: "user",
