@@ -1,6 +1,7 @@
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath } from "../utils/pluginDetails";
+import { log } from "actionhero";
 
 // import {CLS} from '../modules/cls'
 import cls from "cls-hooked";
@@ -88,9 +89,16 @@ export const DEFAULT = {
       }
     }
 
+    /** Query Logging */
+    function logging(message) {
+      if (typeof message !== "string") return;
+      log(message, "debug");
+    }
+
     return {
+      _toExpand: false,
+      logging,
       autoMigrate: true,
-      logging: false,
       dialect: dialect,
       port: parseInt(port),
       database: database,
