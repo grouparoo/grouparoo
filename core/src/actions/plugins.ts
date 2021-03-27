@@ -7,6 +7,7 @@ export class PluginsList extends CLSAction {
     this.name = "plugins:list";
     this.description =
       "I will return information about the active plugins on this server";
+    this.permission = { topic: "system", mode: "read" };
     this.outputExample = {};
   }
 

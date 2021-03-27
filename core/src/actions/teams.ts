@@ -11,6 +11,7 @@ export class TeamInitialize extends CLSAction {
     super();
     this.name = "team:initialize";
     this.description = "create the first team with the first team member";
+    this.permission = { topic: "team", mode: "write" };
     this.outputExample = {};
     this.inputs = {
       firstName: { required: true },
