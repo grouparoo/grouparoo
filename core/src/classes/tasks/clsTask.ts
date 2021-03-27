@@ -9,7 +9,9 @@ export abstract class CLSTask extends Task {
 
   async run(inputs: TaskInputs, worker: any) {
     if (typeof this.runWithinTransaction === "function") {
-      return CLS.wrap(async () => this.runWithinTransaction(inputs, worker));
+      return CLS.wrap(async () => this.runWithinTransaction(inputs, worker), {
+        write: true,
+      });
     } else {
       throw new Error(
         "No run or runWithinTransaction method for this task: " + this.name

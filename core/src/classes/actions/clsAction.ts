@@ -24,7 +24,7 @@ export abstract class CLSAction extends Action {
 
   async run(params: ActionData) {
     if (typeof this.runWithinTransaction === "function") {
-      const options = { write: this.isWriteTransaction() };
+      const options = { write: this.isWriteTransaction(), priority: true };
       return CLS.wrap(
         async () => await this.runWithinTransaction(params),
         options

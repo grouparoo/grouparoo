@@ -1,6 +1,7 @@
 import { api, task } from "actionhero";
 import cls from "cls-hooked";
 import { Transaction } from "sequelize";
+import { waitForLock } from "./locks";
 
 /**
  * This module is so you can delay the execution of side-effects within a transaction.
@@ -34,33 +35,98 @@ export namespace CLS {
   export interface CLSWrapMethod {
     (
       f: Function,
-      options?: { catchError?: boolean; write?: boolean }
+      options?: {
+        catchError?: boolean;
+        lock?: boolean;
+        write?: boolean;
+        priority?: boolean;
+      }
     ): Promise<any>;
   }
-  export const wrap: CLSWrapMethod = async (f, { catchError, write } = {}) => {
+  export const wrap: CLSWrapMethod = async (f, options = {}) => {
+    const { catchError, write, priority } = options;
+    let { lock } = options;
+    const dialect = api.sequelize.options.dialect;
+    if (!lock && dialect === "sqlite" && write) {
+      lock = true;
+    }
+    let releaseLock = null;
     try {
-      let runResponse: any;
-      let afterCommitJobs: Array<Function> = [];
-
-      const options: any = {};
-      const dialect = api.sequelize.options.dialect;
-      if (dialect === "sqlite" && write) {
-        options.type = "IMMEDIATE";
+      if (lock) {
+        releaseLock = await getLock(priority);
       }
-      console.log("api.sequelize.transaction", { options });
-      await api.sequelize.transaction(options, async (t: Transaction) => {
-        runResponse = await f(t);
-        afterCommitJobs = getNamespace().get("afterCommitJobs");
-      });
-
-      for (const i in afterCommitJobs) await afterCommitJobs[i]();
-
+      const runResponse = await wrapInternal(f, options);
       return runResponse;
     } catch (error) {
       if (catchError) return error;
       throw error;
+    } finally {
+      if (releaseLock) {
+        await releaseLock();
+      }
     }
   };
+
+  const wrapInternal: CLSWrapMethod = async (f, options = {}) => {
+    const { write } = options;
+    let runResponse: any;
+    let afterCommitJobs: Array<Function> = [];
+
+    const transOptions: any = {};
+    const dialect = api.sequelize.options.dialect;
+    if (dialect === "sqlite" && write) {
+      transOptions.type = "IMMEDIATE";
+    }
+    await api.sequelize.transaction(transOptions, async (t: Transaction) => {
+      runResponse = await f(t);
+      afterCommitJobs = getNamespace().get("afterCommitJobs");
+    });
+
+    for (const i in afterCommitJobs) {
+      await afterCommitJobs[i]();
+    }
+
+    return runResponse;
+  };
+
+  async function getLock(priority) {
+    // check more often in the ui to get the lock
+    const longEnough = 30 * 1000; // 30 seconds
+    const sleepTime = priority ? 1 : 100; // check more often if it's a priority
+    const ttl = longEnough + 1;
+    const maxAttempts = 300; // hard-coded in the locks.ts code
+    // might have to check more times, so start the count negative to get to 30 seconds
+    const attempts = 0 - longEnough / sleepTime + maxAttempts;
+    const requestId = undefined; // it will assign it a uuid
+    console.log("waiting for lock....", { priority, sleepTime, attempts });
+    const now = Date.now();
+    // key, requiredId, ttl, attempts, sleepTime
+    if (!priority) {
+      // the background thread often acquired the lock because of stop/start timing,
+      // so slow it down to give the priority one a chance
+      await sleep(1);
+    }
+    const lockObject = await waitForLock(
+      "cls",
+      requestId,
+      ttl,
+      attempts,
+      sleepTime
+    );
+    const delta = Date.now() - now;
+    console.log(".... waited: ", delta, delta > 3 ? "LONGWAIT" : "", {
+      priority,
+      sleepTime,
+      attempts,
+    });
+    return lockObject.releaseLock;
+  }
+
+  async function sleep(sleepTime: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, sleepTime);
+    });
+  }
 
   export function active() {
     const transaction = get("transaction");
