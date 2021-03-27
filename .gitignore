@@ -11,7 +11,7 @@ newrelic_agent.log
 *.retry
 coverage
 *.sqlite
-*.sqlite-journal
+*.sqlite-*
 apps/*/config/*
 apps/*/*.log
 

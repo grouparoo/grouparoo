@@ -101,7 +101,7 @@ export const DEFAULT = {
       migrations: [join(__dirname, "..", "migrations")],
       storage, // only used for sqlite
       dialectOptions: { ssl },
-      transactionType: dialect === "sqlite" ? "EXCLUSIVE" : "DEFERRED",
+      transactionType: "DEFERRED",
       pool: {
         max:
           dialect === "sqlite"
