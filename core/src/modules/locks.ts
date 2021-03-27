@@ -35,11 +35,9 @@ export async function waitForLock(
   const checkValue = await client.get(lockKey);
 
   if (!set || checkValue !== requestId) {
-    console.log("sleeping", { set, checkValue, requestId, sleepTime });
     await sleep(sleepTime);
     return waitForLock(key, requestId, ttl, attempts, sleepTime);
   }
-  console.log("acquired", { set, checkValue, requestId, sleepTime });
 
   await client.expire(lockKey, Math.ceil(ttl / 1000));
 

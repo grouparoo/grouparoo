@@ -98,14 +98,13 @@ export namespace CLS {
     // might have to check more times, so start the count negative to get to 30 seconds
     const attempts = 0 - longEnough / sleepTime + maxAttempts;
     const requestId = undefined; // it will assign it a uuid
-    console.log("waiting for lock....", { priority, sleepTime, attempts });
-    const now = Date.now();
-    // key, requiredId, ttl, attempts, sleepTime
+
     if (!priority) {
       // the background thread often acquired the lock because of stop/start timing,
       // so slow it down to give the priority one a chance
       await sleep(1);
     }
+
     const lockObject = await waitForLock(
       "cls",
       requestId,
@@ -113,12 +112,7 @@ export namespace CLS {
       attempts,
       sleepTime
     );
-    const delta = Date.now() - now;
-    console.log(".... waited: ", delta, delta > 3 ? "LONGWAIT" : "", {
-      priority,
-      sleepTime,
-      attempts,
-    });
+
     return lockObject.releaseLock;
   }
 
