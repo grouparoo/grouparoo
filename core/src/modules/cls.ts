@@ -31,12 +31,24 @@ export namespace CLS {
    * Wrap an Async function f in such a way that all enqueued afterCommit / enqueueTasks during invocation will be run afterwords
    * Returns the return value of function f
    */
-  export async function wrap(f: Function, catchError = false) {
+  export interface CLSWrapMethod {
+    (
+      f: Function,
+      options?: { catchError?: boolean; write?: boolean }
+    ): Promise<any>;
+  }
+  export const wrap: CLSWrapMethod = async (f, { catchError, write } = {}) => {
     try {
       let runResponse: any;
       let afterCommitJobs: Array<Function> = [];
 
-      await api.sequelize.transaction(async (t: Transaction) => {
+      const options: any = {};
+      const dialect = api.sequelize.options.dialect;
+      if (dialect === "sqlite" && write) {
+        options.type = "IMMEDIATE";
+      }
+      console.log("api.sequelize.transaction", { options });
+      await api.sequelize.transaction(options, async (t: Transaction) => {
         runResponse = await f(t);
         afterCommitJobs = getNamespace().get("afterCommitJobs");
       });
@@ -48,7 +60,7 @@ export namespace CLS {
       if (catchError) return error;
       throw error;
     }
-  }
+  };
 
   export function active() {
     const transaction = get("transaction");

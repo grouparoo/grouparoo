@@ -35,7 +35,7 @@ describe("modules/cls", () => {
         throw new Error("oh no");
       };
 
-      const error = await CLS.wrap(runner, true); // Does not throw error
+      const error = await CLS.wrap(runner, { catchError: true }); // Does not throw error
       expect(error.message).toMatch(/oh no/);
     });
   });
