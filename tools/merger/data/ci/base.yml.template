@@ -11,16 +11,7 @@ references:
       ignore:
         - gh-pages
 
-  plugin-modules-cache-options-even: &plugin-modules-cache-options-even
-    key: plugin-module-package-cache-even-{{ .Branch }}-{{ .Revision }}
-  plugin-modules-cache-options-odd: &plugin-modules-cache-options-odd
-    key: plugin-module-package-cache-odd-{{ .Branch }}-{{ .Revision }}
-  other-modules-cache-options: &other-modules-cache-options
-    key: other-module-package-cache-{{ .Branch }}-{{ .Revision }}
-  dist-cache-options: &dist-cache-options
-    key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
-  core-cache-options: &core-cache-options
-    key: core-package-cache-{{ .Branch }}-{{ .Revision }}
+{{{cache_keys}}}
 #
 # Define Jobs to run
 jobs:
@@ -38,26 +29,7 @@ jobs:
       - run:
           name: pnpm-install
           command: pnpm install --prefer-frozen-lockfile
-      - save_cache:
-          <<: *plugin-modules-cache-options-even
-          paths:
-{{{plugin_node_module_list_even}}}
-      - save_cache:
-          <<: *plugin-modules-cache-options-odd
-          paths:
-{{{plugin_node_module_list_odd}}}
-      - save_cache:
-          <<: *other-modules-cache-options
-          paths:
-{{{other_node_module_list}}}
-      - save_cache:
-          <<: *dist-cache-options
-          paths:
-{{{dist_list}}}
-      - save_cache:
-          <<: *core-cache-options
-          paths:
-{{{core_cache}}}
+{{{save_cache}}}
 {{{custom_cache}}}
 
 
@@ -107,12 +79,12 @@ workflows:
   # Run the tests each week + publish pre-release from main branch
   test-grouparoo-nightly:
     triggers:
-       - schedule:
-           cron: "0 0 * * 5"
-           filters:
-             branches:
-               only:
-                 - main
+      - schedule:
+          cron: "0 0 * * 5"
+          filters:
+            branches:
+              only:
+                - main
 
 
     jobs:

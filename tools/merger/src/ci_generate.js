@@ -10,10 +10,6 @@ module.exports.cmd = async function (vargs) {
   await instance.generate();
 };
 
-const internalPackages = allPluginPaths(glob).filter((p) =>
-  p.match(/@grouparoo-inc/)
-);
-
 function readTemplate(name, type, sub) {
   const dirPath = path.resolve(path.join(__dirname, "..", "data", "ci"));
   const fileName = `${name}.yml.template`;
@@ -36,11 +32,14 @@ function readTemplate(name, type, sub) {
   return fs.readFileSync(templatePath).toString();
 }
 
+const PLUGIN_LETTER_BUCKETS = ["f", "m", "r"];
+
 class Generator {
   constructor(vargs) {
     this.vargs = vargs;
     this.rootPath = path.resolve(path.join(__dirname, "..", "..", ".."));
     this.jobList = [];
+    this.caches = null;
   }
 
   log(level, ...toLog) {
@@ -184,7 +183,10 @@ class Generator {
   }
 
   bindJobMethod(job) {
-    job.core_job_name_list = this.core_job_name_list.bind(this);
+    const methods = ["restore_cache"];
+    for (const method of methods) {
+      job[method] = this[method].bind(this);
+    }
 
     const customs = ["docker", "steps", "test"];
     for (const section of customs) {
@@ -201,92 +203,124 @@ class Generator {
     }
   }
 
-  full_node_module_list() {
+  fullNodeModuleList() {
     const packagePaths = allPackagePaths(glob);
     const relativePaths = [];
     for (const packagePath of packagePaths) {
       const fullPath = path.join(packagePath, "node_modules");
       const relativePath = path.relative(this.rootPath, fullPath);
 
-      if (internalPackages.length > 0) {
-        if (relativePath.indexOf(`plugins/@grouparoo/`) < 0) {
-          relativePaths.push(relativePath);
-        }
-      } else {
-        relativePaths.push(relativePath);
+      relativePaths.push(relativePath);
+    }
+
+    return relativePaths.sort();
+  }
+
+  restore_cache() {
+    const cachePaths = this.getCachePaths();
+    const cacheKeys = Object.keys(cachePaths);
+
+    const header = " ".repeat(6) + "- restore_cache:";
+    const prefix = " ".repeat(10) + "<<: *";
+    return cacheKeys.map((p) => `${header}\n${prefix}${p}`).join("\n");
+  }
+
+  save_cache() {
+    const cachePaths = this.getCachePaths();
+    let out = "";
+    for (const cache of Object.keys(cachePaths)) {
+      out = out.concat(" ".repeat(6) + "- save_cache:\n");
+      out = out.concat(" ".repeat(10) + `<<: *${cache}\n`);
+      out = out.concat(" ".repeat(10) + `paths:\n`);
+      for (const path of cachePaths[cache]) {
+        out = out.concat(" ".repeat(12) + `- ${path}\n`);
       }
     }
 
-    const prefix = " ".repeat(12) + "- ";
-    return relativePaths.map((p) => `${prefix}${p}`).sort();
+    return out;
   }
 
-  plugin_node_module_list(mode) {
-    return this.full_node_module_list()
-      .filter((path) => path.includes("plugins/@grouparoo"))
-      .filter((item, idx) => {
-        if (mode === "even") {
-          return idx % 2 === 0;
-        } else if (mode === "odd") {
-          return idx % 2 !== 0;
-        } else {
-          return true;
-        }
-      })
-      .join("\n");
-  }
-
-  plugin_node_module_list_even() {
-    return this.plugin_node_module_list("even");
-  }
-
-  plugin_node_module_list_odd() {
-    return this.plugin_node_module_list("odd");
-  }
-
-  other_node_module_list() {
-    return this.full_node_module_list()
-      .filter((path) => !path.includes("plugins/@grouparoo"))
-      .join("\n");
-  }
-
-  dist_list() {
-    function filterPlugins(p) {
-      if (internalPackages.length > 0) {
-        if (p.indexOf(`plugins/@grouparoo/`) < 0) {
-          return true;
-        }
-      } else {
-        return true;
-      }
+  cache_keys() {
+    const cachePaths = this.getCachePaths();
+    let out = "";
+    for (const cache of Object.keys(cachePaths)) {
+      out = out.concat(" ".repeat(2) + `${cache}: &${cache}\n`);
+      out = out.concat(
+        " ".repeat(4) + `key: ${cache}-{{ .Branch }}-{{ .Revision }}\n`
+      );
     }
 
-    const pluginPaths = allPluginPaths(glob)
-      .map((p) => path.relative(this.rootPath, p))
-      .filter(filterPlugins);
+    return out;
+  }
+
+  addModuleCache(cachePaths) {
+    const modules = this.fullNodeModuleList();
+    for (const path of modules) {
+      let bucket = "module-other";
+      const plugin = "plugins/@grouparoo/";
+      if (path.startsWith(plugin)) {
+        const child = path.slice(plugin.length);
+        const first = child[0];
+        let index = -1;
+        for (let i = 0; i < PLUGIN_LETTER_BUCKETS.length; i++) {
+          const letter = PLUGIN_LETTER_BUCKETS[i];
+          if (first <= letter) {
+            index = i;
+            break;
+          }
+        }
+        if (index < 0) {
+          index = PLUGIN_LETTER_BUCKETS.length;
+        }
+        bucket = `plugin-${index + 1}`;
+      }
+
+      const cacheKey = `${bucket}-cache-options`;
+      cachePaths[cacheKey] = cachePaths[cacheKey] || [];
+      cachePaths[cacheKey].push(path);
+    }
+  }
+
+  addDistCache(cachePaths) {
+    const cacheKey = "dist-cache-options";
+    const pluginPaths = allPluginPaths(glob).map((p) =>
+      path.relative(this.rootPath, p)
+    );
     const pluginDistDirs = pluginPaths;
     const cliDistDir = ["cli"];
 
     const prefix = " ".repeat(12) + "- ";
     const combinedDistDirs = []
       .concat(pluginDistDirs, cliDistDir)
-      .map((p) => `${prefix}${p}/dist`)
-      .sort()
-      .join("\n");
+      .map((p) => `${p}/dist`);
 
-    return combinedDistDirs;
+    cachePaths[cacheKey] = combinedDistDirs.sort();
   }
 
-  core_cache() {
-    const prefix = " ".repeat(12) + "- ";
+  addCoreCache(cachePaths) {
+    const cacheKey = "core-cache-options";
 
-    if (internalPackages.length > 0) {
-      return [];
+    const directories = [
+      "core/dist",
+      "ui/ui-community/.next",
+      "ui/ui-enterprise/.next",
+    ];
+
+    cachePaths[cacheKey] = directories.sort();
+  }
+
+  getCachePaths() {
+    if (this.caches) {
+      return this.caches;
     }
+    // returns list of all plugins with a category
 
-    return ["core/dist", "ui/ui-community/.next", "ui/ui-enterprise/.next"]
-      .map((p) => `${prefix}${p}`)
-      .join("\n");
+    const cachePaths = {};
+    this.addModuleCache(cachePaths);
+    this.addDistCache(cachePaths);
+    this.addCoreCache(cachePaths);
+    this.caches = cachePaths;
+    return this.caches;
   }
 
   renderJob(job, name) {
@@ -300,12 +334,6 @@ class Generator {
 
   workflows() {
     return this.jobList.map((j) => this.renderJob(j, "workflow")).join("\n");
-  }
-
-  core_job_name_list() {
-    const prefix = " ".repeat(12) + "- ";
-    const coreJobList = this.jobList.filter((j) => j.type === "core");
-    return coreJobList.map((j) => `${prefix}${j.job_name}`).join("\n");
   }
 
   job_name_list() {
@@ -326,14 +354,12 @@ class Generator {
     view[".Revision"] = "{{ .Revision }}";
 
     const methods = [
-      "plugin_node_module_list_even",
-      "plugin_node_module_list_odd",
-      "other_node_module_list",
-      "dist_list",
       "jobs",
       "workflows",
       "job_name_list",
-      "core_cache",
+      "save_cache",
+      "cache_keys",
+      "restore_cache",
     ];
     for (const method of methods) {
       view[method] = this[method].bind(this);
@@ -344,15 +370,12 @@ class Generator {
       const method = `custom_${section}`;
       view[method] = function () {
         const template = readTemplate(section, "global", "base");
-        return Mustache.render(template, {});
+        return Mustache.render(template, view);
       };
     }
 
-    if (internalPackages.length === 0) {
-      view.publish = readTemplate("core", "publish");
-    } else {
-      view.publish = readTemplate("internal", "publish");
-    }
+    const template = readTemplate("core", "publish");
+    view.publish = Mustache.render(template, view);
 
     return view;
   }

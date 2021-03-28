@@ -7,16 +7,7 @@
 {{{custom_docker}}}
     steps:
       - checkout
-      - restore_cache:
-          <<: *plugin-modules-cache-options-even
-      - restore_cache:
-          <<: *plugin-modules-cache-options-odd
-      - restore_cache:
-          <<: *other-modules-cache-options
-      - restore_cache:
-          <<: *dist-cache-options
-      - restore_cache:
-          <<: *core-cache-options
+{{{restore_cache}}}
 {{{custom_steps}}}
       - run:
           name: install pnpm
