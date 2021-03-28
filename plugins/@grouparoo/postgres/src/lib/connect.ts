@@ -50,13 +50,9 @@ function formatAsText(text) {
   return text;
 }
 function formatInUtcDefault(text) {
-  if (!text) {
-    return text;
-  }
+  if (!text) return text;
   const zone = timeZoneOffset(text);
-  if (!zone) {
-    return parseDate(text + " +00");
-  }
+  if (!zone) return parseDate(text + ".000Z");
   return parseDate(text);
 }
 
