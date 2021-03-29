@@ -5,6 +5,8 @@ import path from "path";
 import { test } from "./../lib/test";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
+import { appOptions } from "../lib/appOptions";
+
 import { exportProfile } from "../lib/export/exportProfile";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
 
@@ -69,7 +71,7 @@ export class Plugins extends Initializer {
               displayName: "Port",
               required: false,
               description: "The Postgres port.",
-              placeholder: "5432",
+              defaultValue: 5432,
             },
             {
               key: "database",
@@ -82,7 +84,7 @@ export class Plugins extends Initializer {
               displayName: "Schema",
               required: false,
               description: "The Postgres schema (default: public).",
-              placeholder: "public",
+              defaultValue: "public",
             },
             {
               key: "user",
@@ -122,7 +124,7 @@ export class Plugins extends Initializer {
               description: "The ssl certificate authority (CA).",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appOptions },
         },
       ],
       connections: [

@@ -29,6 +29,7 @@ export const getScheduleOptions: GetScheduleOptionsMethod = ({
         return getSortableColumnExamples({
           connection,
           appOptions,
+          sourceOptions,
           appId,
           tableName,
           getSampleRows,

@@ -23,6 +23,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
   const profileProperty: ProfilePropertyPluginMethod = async ({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     profile,
     property,
@@ -51,6 +52,7 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       const rows = await executeQuery({
         connection,
         appOptions,
+        sourceOptions,
         appId,
         query,
       });

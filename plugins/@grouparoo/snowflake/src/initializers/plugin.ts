@@ -5,6 +5,7 @@ import { plugin } from "@grouparoo/core";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
+import { appOptions } from "../lib/appOptions";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
@@ -87,9 +88,10 @@ export class Plugins extends Initializer {
               displayName: "Schema",
               required: false,
               description: "The Snowflake schema (default: PUBLIC)",
+              defaultValue: "PUBLIC",
             },
           ],
-          methods: { test, connect, disconnect },
+          methods: { test, connect, disconnect, appOptions },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],

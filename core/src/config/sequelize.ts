@@ -1,6 +1,7 @@
 import { URL } from "url";
 import { join, isAbsolute } from "path";
 import { getParentPath } from "../utils/pluginDetails";
+import { log } from "actionhero";
 
 // import {CLS} from '../modules/cls'
 import cls from "cls-hooked";
@@ -88,9 +89,16 @@ export const DEFAULT = {
       }
     }
 
+    /** Query Logging */
+    function logging(message) {
+      if (typeof message !== "string") return;
+      log(message, "debug");
+    }
+
     return {
+      _toExpand: false,
+      logging,
       autoMigrate: true,
-      logging: false,
       dialect: dialect,
       port: parseInt(port),
       database: database,
@@ -101,7 +109,7 @@ export const DEFAULT = {
       migrations: [join(__dirname, "..", "migrations")],
       storage, // only used for sqlite
       dialectOptions: { ssl },
-      transactionType: dialect === "sqlite" ? "EXCLUSIVE" : "DEFERRED",
+      transactionType: "DEFERRED",
       pool: {
         max:
           dialect === "sqlite"
@@ -125,7 +133,7 @@ export const DEFAULT = {
         ],
         backoffBase: dialect === "sqlite" ? 1000 : 100,
         backoffExponent: dialect === "sqlite" ? 1.5 : 1.1,
-        max: 3,
+        max: 5,
       },
     };
   },

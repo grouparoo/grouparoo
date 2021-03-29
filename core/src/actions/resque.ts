@@ -13,6 +13,11 @@ abstract class ResqueActionWrite extends AuthenticatedAction {
     this.logLevel = "debug";
     this.toDocument = false;
   }
+
+  isWriteTransaction() {
+    // because it doesn't use the database
+    return false;
+  }
 }
 
 abstract class ResqueActionRead extends AuthenticatedAction {

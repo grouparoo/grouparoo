@@ -7,11 +7,13 @@ import {
   FilterOperation,
   SimpleAppOptions,
 } from "./pluginMethods";
+import { SimpleSourceOptions } from "@grouparoo/core";
 
 export interface GetExampleRowsMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     columns?: ColumnDefinitionMap;
@@ -24,6 +26,7 @@ export interface GetColumnExamplesMethod {
   (argument: {
     connection: any;
     appOptions: SimpleAppOptions;
+    sourceOptions?: SimpleSourceOptions;
     appId: string;
     tableName: string;
     getSampleRows: GetSampleRowsMethod;
@@ -40,6 +43,7 @@ export interface GetColumnExamplesMethod {
 export const getExampleRows: GetExampleRowsMethod = async ({
   connection,
   appOptions,
+  sourceOptions,
   appId,
   tableName,
   columns,
@@ -49,6 +53,7 @@ export const getExampleRows: GetExampleRowsMethod = async ({
   let rows = await getSampleRows({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     tableName,
   });
@@ -57,6 +62,7 @@ export const getExampleRows: GetExampleRowsMethod = async ({
       columns = await getColumns({
         connection,
         appOptions,
+        sourceOptions,
         appId,
         tableName,
       });
@@ -79,6 +85,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   connection,
   appOptions,
   appId,
+  sourceOptions,
   tableName,
   getSampleRows,
   getColumns,
@@ -86,6 +93,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
   const rows = await getExampleRows({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     tableName,
     getSampleRows,
@@ -103,6 +111,7 @@ export const getColumnExamples: GetColumnExamplesMethod = async ({
 export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   connection,
   appOptions,
+  sourceOptions,
   appId,
   tableName,
   getSampleRows,
@@ -111,12 +120,14 @@ export const getSortableColumnExamples: GetColumnExamplesMethod = async ({
   const columns = await getColumns({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     tableName,
   });
   const rows = await getExampleRows({
     connection,
     appOptions,
+    sourceOptions,
     appId,
     tableName,
     columns,

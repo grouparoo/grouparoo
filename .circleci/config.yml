@@ -9,16 +9,20 @@ references:
     branches:
       ignore:
         - gh-pages
-  plugin-modules-cache-options-even: &plugin-modules-cache-options-even
-    key: plugin-module-package-cache-even-{{ .Branch }}-{{ .Revision }}
-  plugin-modules-cache-options-odd: &plugin-modules-cache-options-odd
-    key: plugin-module-package-cache-odd-{{ .Branch }}-{{ .Revision }}
-  other-modules-cache-options: &other-modules-cache-options
-    key: other-module-package-cache-{{ .Branch }}-{{ .Revision }}
+  module-other-cache-options: &module-other-cache-options
+    key: module-other-cache-options-{{ .Branch }}-{{ .Revision }}
+  plugin-1-cache-options: &plugin-1-cache-options
+    key: plugin-1-cache-options-{{ .Branch }}-{{ .Revision }}
+  plugin-2-cache-options: &plugin-2-cache-options
+    key: plugin-2-cache-options-{{ .Branch }}-{{ .Revision }}
+  plugin-3-cache-options: &plugin-3-cache-options
+    key: plugin-3-cache-options-{{ .Branch }}-{{ .Revision }}
+  plugin-4-cache-options: &plugin-4-cache-options
+    key: plugin-4-cache-options-{{ .Branch }}-{{ .Revision }}
   dist-cache-options: &dist-cache-options
-    key: dist-package-cache-{{ .Branch }}-{{ .Revision }}
+    key: dist-cache-options-{{ .Branch }}-{{ .Revision }}
   core-cache-options: &core-cache-options
-    key: core-package-cache-{{ .Branch }}-{{ .Revision }}
+    key: core-cache-options-{{ .Branch }}-{{ .Revision }}
 #
 # Define Jobs to run
 jobs:
@@ -37,44 +41,7 @@ jobs:
           name: pnpm-install
           command: pnpm install --prefer-frozen-lockfile
       - save_cache:
-          <<: *plugin-modules-cache-options-even
-          paths:
-            - plugins/@grouparoo/app-templates/node_modules
-            - plugins/@grouparoo/csv/node_modules
-            - plugins/@grouparoo/dbt/node_modules
-            - plugins/@grouparoo/facebook/node_modules
-            - plugins/@grouparoo/files-s3/node_modules
-            - plugins/@grouparoo/hubspot/node_modules
-            - plugins/@grouparoo/iterable/node_modules
-            - plugins/@grouparoo/mailchimp/node_modules
-            - plugins/@grouparoo/mysql/node_modules
-            - plugins/@grouparoo/onesignal/node_modules
-            - plugins/@grouparoo/pipedrive/node_modules
-            - plugins/@grouparoo/redshift/node_modules
-            - plugins/@grouparoo/salesforce/node_modules
-            - plugins/@grouparoo/sentry/node_modules
-            - plugins/@grouparoo/spec-helper/node_modules
-            - plugins/@grouparoo/zendesk/node_modules
-      - save_cache:
-          <<: *plugin-modules-cache-options-odd
-          paths:
-            - plugins/@grouparoo/bigquery/node_modules
-            - plugins/@grouparoo/customerio/node_modules
-            - plugins/@grouparoo/demo/node_modules
-            - plugins/@grouparoo/files-local/node_modules
-            - plugins/@grouparoo/google-sheets/node_modules
-            - plugins/@grouparoo/intercom/node_modules
-            - plugins/@grouparoo/logger/node_modules
-            - plugins/@grouparoo/marketo/node_modules
-            - plugins/@grouparoo/newrelic/node_modules
-            - plugins/@grouparoo/pardot/node_modules
-            - plugins/@grouparoo/postgres/node_modules
-            - plugins/@grouparoo/sailthru/node_modules
-            - plugins/@grouparoo/sendgrid/node_modules
-            - plugins/@grouparoo/snowflake/node_modules
-            - plugins/@grouparoo/sqlite/node_modules
-      - save_cache:
-          <<: *other-modules-cache-options
+          <<: *module-other-cache-options
           paths:
             - apps/staging-community/node_modules
             - apps/staging-enterprise/node_modules
@@ -86,6 +53,50 @@ jobs:
             - ui/ui-community/node_modules
             - ui/ui-components/node_modules
             - ui/ui-enterprise/node_modules
+      - save_cache:
+          <<: *plugin-1-cache-options
+          paths:
+            - plugins/@grouparoo/app-templates/node_modules
+            - plugins/@grouparoo/bigquery/node_modules
+            - plugins/@grouparoo/csv/node_modules
+            - plugins/@grouparoo/customerio/node_modules
+            - plugins/@grouparoo/dbt/node_modules
+            - plugins/@grouparoo/demo/node_modules
+            - plugins/@grouparoo/facebook/node_modules
+            - plugins/@grouparoo/files-local/node_modules
+            - plugins/@grouparoo/files-s3/node_modules
+      - save_cache:
+          <<: *plugin-2-cache-options
+          paths:
+            - plugins/@grouparoo/google-sheets/node_modules
+            - plugins/@grouparoo/hubspot/node_modules
+            - plugins/@grouparoo/intercom/node_modules
+            - plugins/@grouparoo/iterable/node_modules
+            - plugins/@grouparoo/logger/node_modules
+            - plugins/@grouparoo/mailchimp/node_modules
+            - plugins/@grouparoo/marketo/node_modules
+            - plugins/@grouparoo/mongo/node_modules
+            - plugins/@grouparoo/mysql/node_modules
+      - save_cache:
+          <<: *plugin-3-cache-options
+          paths:
+            - plugins/@grouparoo/newrelic/node_modules
+            - plugins/@grouparoo/onesignal/node_modules
+            - plugins/@grouparoo/pardot/node_modules
+            - plugins/@grouparoo/pipedrive/node_modules
+            - plugins/@grouparoo/postgres/node_modules
+            - plugins/@grouparoo/redshift/node_modules
+      - save_cache:
+          <<: *plugin-4-cache-options
+          paths:
+            - plugins/@grouparoo/sailthru/node_modules
+            - plugins/@grouparoo/salesforce/node_modules
+            - plugins/@grouparoo/sendgrid/node_modules
+            - plugins/@grouparoo/sentry/node_modules
+            - plugins/@grouparoo/snowflake/node_modules
+            - plugins/@grouparoo/spec-helper/node_modules
+            - plugins/@grouparoo/sqlite/node_modules
+            - plugins/@grouparoo/zendesk/node_modules
       - save_cache:
           <<: *dist-cache-options
           paths:
@@ -107,6 +118,7 @@ jobs:
             - plugins/@grouparoo/logger/dist
             - plugins/@grouparoo/mailchimp/dist
             - plugins/@grouparoo/marketo/dist
+            - plugins/@grouparoo/mongo/dist
             - plugins/@grouparoo/mysql/dist
             - plugins/@grouparoo/newrelic/dist
             - plugins/@grouparoo/onesignal/dist
@@ -137,11 +149,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -161,11 +177,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -185,11 +205,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -219,11 +243,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -259,11 +287,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -299,11 +331,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -339,11 +375,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -379,11 +419,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -419,11 +463,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -459,11 +507,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -499,11 +551,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -539,11 +595,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -573,11 +633,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -610,11 +674,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -656,11 +724,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -702,11 +774,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -744,11 +820,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -792,11 +872,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -840,11 +924,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -880,11 +968,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -920,11 +1012,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -960,11 +1056,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1000,11 +1100,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1040,11 +1144,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1080,11 +1188,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1120,11 +1232,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1160,11 +1276,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1200,11 +1320,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1240,11 +1364,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1280,11 +1408,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1320,11 +1452,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1360,11 +1496,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1400,11 +1540,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1440,11 +1584,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1461,6 +1609,54 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/marketo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-mongo:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+      - image: mongo:4.2
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/mongo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-mysql:
     docker:
       - image: circleci/node:14
@@ -1486,11 +1682,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1532,11 +1732,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1572,11 +1776,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1612,11 +1820,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1652,11 +1864,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1692,11 +1908,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1732,11 +1952,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1772,11 +1996,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1812,11 +2040,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1852,11 +2084,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1892,11 +2128,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1932,11 +2172,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -1972,11 +2216,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2012,11 +2260,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2052,11 +2304,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2092,11 +2348,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2122,11 +2382,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2156,11 +2420,15 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          <<: *plugin-modules-cache-options-even
+          <<: *module-other-cache-options
       - restore_cache:
-          <<: *plugin-modules-cache-options-odd
+          <<: *plugin-1-cache-options
       - restore_cache:
-          <<: *other-modules-cache-options
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
       - restore_cache:
           <<: *dist-cache-options
       - restore_cache:
@@ -2351,6 +2619,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-mongo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-mysql:
           filters:
             <<: *ignored-branches
@@ -2474,6 +2747,7 @@ workflows:
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
+            - test-plugin-mongo
             - test-plugin-mysql
             - test-plugin-newrelic
             - test-plugin-onesignal
@@ -2682,6 +2956,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-mongo:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-mysql:
           filters:
             <<: *ignored-branches
@@ -2805,6 +3084,7 @@ workflows:
             - test-plugin-logger
             - test-plugin-mailchimp
             - test-plugin-marketo
+            - test-plugin-mongo
             - test-plugin-mysql
             - test-plugin-newrelic
             - test-plugin-onesignal

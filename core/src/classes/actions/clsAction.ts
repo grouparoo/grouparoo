@@ -6,13 +6,29 @@ export interface ActionData {
 }
 
 export abstract class CLSAction extends Action {
+  permission: {
+    topic: string;
+    mode: "read" | "write"; // "read" make it a deferred transaction
+  };
+
   constructor() {
     super();
   }
 
+  isWriteTransaction() {
+    if (this.permission?.mode === "read") {
+      return false;
+    }
+    return true;
+  }
+
   async run(params: ActionData) {
     if (typeof this.runWithinTransaction === "function") {
-      return CLS.wrap(async () => await this.runWithinTransaction(params));
+      const options = { write: this.isWriteTransaction(), priority: true };
+      return CLS.wrap(
+        async () => await this.runWithinTransaction(params),
+        options
+      );
     } else {
       throw new Error(
         "No run or runWithinTransaction method for this task: " + this.name

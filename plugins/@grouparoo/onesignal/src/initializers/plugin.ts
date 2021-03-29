@@ -3,6 +3,7 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
+import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -52,7 +53,7 @@ export class Plugins extends Initializer {
                 "OneSignal REST API Key. Found in the app's Settings > Keys & IDs.",
             },
           ],
-          methods: { test },
+          methods: { test, appOptions },
         },
       ],
       connections: [

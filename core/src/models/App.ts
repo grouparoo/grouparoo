@@ -30,6 +30,7 @@ export interface AppOption {
   required: boolean;
   description?: string;
   placeholder?: string;
+  defaultValue?: string | number | boolean;
 }
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
@@ -83,8 +84,12 @@ export class App extends LoggedModel<App> {
     return pluginApp.methods.appOptions();
   }
 
-  async getOptions(sourceFromEnvironment = true) {
-    return OptionHelper.getOptions(this, sourceFromEnvironment);
+  async getOptions(sourceFromEnvironment = true, obfuscatePasswords = false) {
+    return OptionHelper.getOptions(
+      this,
+      sourceFromEnvironment,
+      obfuscatePasswords
+    );
   }
 
   async setOptions(options: SimpleAppOptions) {
@@ -159,7 +164,7 @@ export class App extends LoggedModel<App> {
   }
 
   async apiData() {
-    const options = await this.getOptions(false);
+    const options = await this.getOptions(false, true);
     const icon = await this._getIcon();
     const provides = this.provides();
 

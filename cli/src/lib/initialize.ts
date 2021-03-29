@@ -44,8 +44,16 @@ export default async function Initialize(
   const localPackageJSONContents = JSON.parse(
     fs.readFileSync(path.join(__dirname, "..", "..", "package.json")).toString()
   );
+  const projectName =
+    path
+      .join(
+        path.isAbsolute(workDir) ? workDir : path.join(process.cwd(), workDir)
+      )
+      .split(path.sep)
+      .pop() || "grouparoo-project";
   safelyCreateFile("package.json", "package.json", {
     version: localPackageJSONContents.version,
+    name: projectName,
   });
 
   safelyCreateFile(".env", ".env", {

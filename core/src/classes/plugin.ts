@@ -490,7 +490,12 @@ export interface ExportArrayPropertiesMethod {
 
 export type ExportArrayPropertiesMethodResponse = Array<string>;
 
-export type PluginOptionTypes = "string" | "list" | "typeahead" | "pending";
+export type PluginOptionTypes =
+  | "string"
+  | "list"
+  | "typeahead"
+  | "pending"
+  | "password";
 
 /** Template Utils */
 

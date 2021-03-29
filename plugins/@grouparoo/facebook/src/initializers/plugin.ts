@@ -2,6 +2,8 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
+import { appOptions } from "../lib/appOptions";
+
 import { buildConnection as buildCustomConnection } from "../lib/export-custom/connection";
 
 const packageJSON = require("./../../package.json");
@@ -46,7 +48,7 @@ export class Plugins extends Initializer {
               description: "Needs the ads_management permission",
             },
           ],
-          methods: { test },
+          methods: { test, appOptions },
         },
       ],
       connections: [buildCustomConnection()],

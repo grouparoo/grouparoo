@@ -24,23 +24,26 @@ export class ImportAssociateProfile extends Task {
     let _import: Import;
 
     try {
-      await CLS.wrap(async () => {
-        _import = await Import.findById(importId);
-        if (_import.profileId) return;
+      await CLS.wrap(
+        async () => {
+          _import = await Import.findById(importId);
+          if (_import.profileId) return;
 
-        const { profile, isNew } = await _import.associateProfile();
+          const { profile, isNew } = await _import.associateProfile();
 
-        const oldProfileProperties = await profile.simplifiedProperties();
-        const oldGroups = await profile.$get("groups");
+          const oldProfileProperties = await profile.simplifiedProperties();
+          const oldGroups = await profile.$get("groups");
 
-        await _import.update({
-          createdProfile: isNew,
-          oldProfileProperties,
-          oldGroupIds: oldGroups.map((g) => g.id),
-        });
+          await _import.update({
+            createdProfile: isNew,
+            oldProfileProperties,
+            oldGroupIds: oldGroups.map((g) => g.id),
+          });
 
-        await profile.markPending();
-      });
+          await profile.markPending();
+        },
+        { write: true }
+      );
     } catch (error) {
       if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
       await _import.setError(error, this.name);

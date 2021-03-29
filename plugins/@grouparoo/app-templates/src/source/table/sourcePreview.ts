@@ -27,6 +27,7 @@ export const getSourcePreview: GetSourcePreviewMethod = ({
     return getExampleRows({
       connection,
       appOptions,
+      sourceOptions,
       appId,
       tableName,
       getSampleRows,

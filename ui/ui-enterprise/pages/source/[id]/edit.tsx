@@ -325,7 +325,11 @@ export default function Page(props) {
                           <>
                             <Form.Control
                               required={opt.required}
-                              type="text"
+                              type={
+                                connectionOptions[opt.key]?.type === "password"
+                                  ? "password"
+                                  : "text"
+                              }
                               disabled={loading || loadingOptions}
                               defaultValue={source.options[opt.key]?.toString()}
                               placeholder={opt.placeholder}

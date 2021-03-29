@@ -308,7 +308,11 @@ export default function Page(props) {
                           <>
                             <Form.Control
                               required={opt.required}
-                              type="text"
+                              type={
+                                connectionOptions[opt.key]?.type === "password"
+                                  ? "password"
+                                  : "text"
+                              }
                               disabled={loading || loadingOptions}
                               defaultValue={destination.options[
                                 opt.key

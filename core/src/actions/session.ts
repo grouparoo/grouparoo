@@ -13,6 +13,7 @@ export class SessionCreate extends CLSAction {
       email: { required: true },
       password: { required: true },
     };
+    this.permission = { topic: "session", mode: "write" };
     this.outputExample = {};
   }
 

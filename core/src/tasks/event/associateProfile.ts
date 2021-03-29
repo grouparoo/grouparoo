@@ -35,15 +35,18 @@ export class EventAssociateProfile extends Task {
     let event: Event;
 
     try {
-      await CLS.wrap(async () => {
-        event = await Event.findById(eventId);
+      await CLS.wrap(
+        async () => {
+          event = await Event.findById(eventId);
 
-        const app = await App.findOne({ where: { type: "events" } });
-        if (!app) return;
-        const appOptions = await app.getOptions();
+          const app = await App.findOne({ where: { type: "events" } });
+          if (!app) return;
+          const appOptions = await app.getOptions();
 
-        await event.associate(appOptions.identifyingPropertyId.toString());
-      });
+          await event.associate(appOptions.identifyingPropertyId.toString());
+        },
+        { write: true }
+      );
     } catch (error) {
       log(`re-enqueuing association of event ${eventId}`);
       throw new Error(`Error associating event ${event.id}: ${error.message}`);

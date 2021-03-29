@@ -37,21 +37,24 @@ export class Apply extends CLI {
 
     GrouparooCLI.logger.log(`Applying ${configObjects.length} objects...`);
 
-    await CLS.wrap(async () => {
-      const { errors, seenIds } = await processConfigObjects(
-        configObjects,
-        !params.local
-      );
+    await CLS.wrap(
+      async () => {
+        const { errors, seenIds } = await processConfigObjects(
+          configObjects,
+          !params.local
+        );
 
-      if (errors.length > 0) throw errors;
+        if (errors.length > 0) throw errors;
 
-      await deleteLockedObjects(seenIds);
+        await deleteLockedObjects(seenIds);
 
-      GrouparooCLI.logger.log("");
-      GrouparooCLI.logger.log(
-        `✅ Config applied - ${configObjects.length} config objects up-to-date!`
-      );
-    }, true);
+        GrouparooCLI.logger.log("");
+        GrouparooCLI.logger.log(
+          `✅ Config applied - ${configObjects.length} config objects up-to-date!`
+        );
+      },
+      { catchError: true }
+    );
 
     return true;
   }

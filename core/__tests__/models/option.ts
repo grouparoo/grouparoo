@@ -1,6 +1,9 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Option, App } from "../../src";
-import { OptionHelper } from "../../src/modules/optionHelper";
+import { Option, App, Destination, plugin } from "../../src";
+import {
+  OptionHelper,
+  ObfuscatedPasswordString,
+} from "../../src/modules/optionHelper";
 
 describe("models/option", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -114,7 +117,7 @@ describe("models/option", () => {
       app = await helper.factories.app();
     });
 
-    test("number option types are maintained", async () => {
+    test("string option types are maintained", async () => {
       const opts = { fileId: "abc" };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
@@ -126,10 +129,36 @@ describe("models/option", () => {
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
     });
 
-    test("number option types are maintained", async () => {
+    test("boolean option types are maintained", async () => {
       const opts = { fileId: true };
       await OptionHelper.setOptions(app, opts);
       expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I will see passwords by default for Apps", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      expect(await OptionHelper.getOptions(app)).toEqual(opts);
+    });
+
+    test("I can choose to obfuscate passwords", async () => {
+      const opts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, opts);
+      const options = await OptionHelper.getOptions(app, undefined, true);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual(ObfuscatedPasswordString);
+    });
+
+    test("If I try to set options with the ObfuscatedPasswordString, the previous value will be used", async () => {
+      const originalOpts = { fileId: "abc123", password: "SECRET" };
+      await OptionHelper.setOptions(app, originalOpts);
+
+      const opts = { fileId: "abc123", password: ObfuscatedPasswordString };
+      await OptionHelper.setOptions(app, opts);
+
+      const options = await OptionHelper.getOptions(app);
+      expect(options["fileId"]).toEqual(opts.fileId);
+      expect(options["password"]).toEqual("SECRET");
     });
 
     describe("options from environment variables", () => {
@@ -144,6 +173,110 @@ describe("models/option", () => {
         await OptionHelper.setOptions(app, { fileId: "TEST_OPTION" });
         const options = await app.getOptions();
         expect(options.fileId).toBe("abc123");
+      });
+    });
+
+    describe("default option values", () => {
+      let appWithOptions: App;
+      beforeAll(async () => {
+        plugin.registerPlugin({
+          name: "test-plugin",
+          icon: "/path/to/icon.svg",
+          apps: [
+            {
+              name: "test-template-app",
+              options: [
+                {
+                  key: "test_default_key",
+                  defaultValue: "default value",
+                  required: false,
+                },
+              ],
+              methods: {
+                test: async () => {
+                  return { success: true };
+                },
+              },
+            },
+          ],
+          connections: [
+            {
+              name: "export-from-test-template-app",
+              description: "a test app connection",
+              app: "test-template-app",
+              direction: "export",
+              options: [
+                {
+                  key: "test_default_key",
+                  defaultValue: "default value",
+                  required: false,
+                },
+              ],
+              methods: {
+                exportProfile: async () => ({ success: true }),
+              },
+            },
+          ],
+        });
+
+        appWithOptions = await App.create({
+          name: "test app",
+          type: "test-template-app",
+          options: {},
+        });
+
+        await appWithOptions.update({ state: "ready" });
+      });
+
+      afterAll(async () => {
+        await appWithOptions.destroy();
+      });
+
+      test("it returns default values for app options that are not set", async () => {
+        await appWithOptions.setOptions({});
+
+        const options = await appWithOptions.getOptions();
+        expect(options.test_default_key).toEqual("default value");
+      });
+
+      test("it returns saved values for app options that are set", async () => {
+        await appWithOptions.setOptions({
+          test_default_key: "Some custom value",
+        });
+
+        const options = await appWithOptions.getOptions();
+        expect(options.test_default_key).toEqual("Some custom value");
+      });
+
+      describe("connection options", () => {
+        let connection: Destination;
+        beforeAll(async () => {
+          connection = await Destination.create({
+            name: "destination - default option values",
+            type: "export-from-test-template-app",
+            appId: appWithOptions.id,
+          });
+        });
+
+        afterAll(async () => {
+          await connection.destroy();
+        });
+
+        test("it returns default values for connection options that are not set", async () => {
+          await connection.setOptions({});
+
+          const options = await connection.getOptions();
+          expect(options.test_default_key).toEqual("default value");
+        });
+
+        test("it returns saved values for connection options that are set", async () => {
+          await connection.setOptions({
+            test_default_key: "Some custom value",
+          });
+
+          const options = await connection.getOptions();
+          expect(options.test_default_key).toEqual("Some custom value");
+        });
       });
     });
   });

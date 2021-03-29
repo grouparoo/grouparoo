@@ -41,6 +41,11 @@ grouparoo --help
 echo ""
 echo "--- test: init ---"
 grouparoo init $WORKDIR
+echo ""
+echo ""
+cd $WORKDIR && cat package.json
+echo ""
+echo ""
 
 if [ -f "$WORKDIR/package.json" ]; then
     echo "✅ package.json exists."
@@ -82,7 +87,17 @@ echo ""
 echo "--- test: update ---"
 cd $WORKDIR && grouparoo update
 
-## try the install command
+## try the install command, by itself
+echo ""
+echo "--- test: install ---"
+cd $WORKDIR && grouparoo install
+echo ""
+echo ""
+cd $WORKDIR && cat package.json
+echo ""
+echo ""
+
+## try the install command with a plugin
 echo ""
 echo "--- test: install ---"
 cd $WORKDIR && grouparoo install @grouparoo/logger

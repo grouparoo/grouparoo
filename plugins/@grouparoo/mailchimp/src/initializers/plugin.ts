@@ -4,6 +4,7 @@ import { plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
+import { appOptions } from "../lib/appOptions";
 
 import emailDestination from "../lib/export/connection";
 import idDestination from "../lib/export-id/connection";
@@ -47,7 +48,7 @@ export class Plugins extends Initializer {
               description: "Mailchimp api key.",
             },
           ],
-          methods: { test, parallelism },
+          methods: { test, parallelism, appOptions },
         },
       ],
       connections: [importSource, emailDestination, idDestination],
