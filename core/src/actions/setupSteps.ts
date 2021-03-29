@@ -12,6 +12,11 @@ export class SetupStepsList extends AuthenticatedAction {
     this.outputExample = {};
   }
 
+  isWriteTransaction() {
+    // setupStep.performCheck() can do an update
+    return true;
+  }
+
   async runWithinTransaction() {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],

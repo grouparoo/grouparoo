@@ -14,6 +14,7 @@ export class PublicStatus extends CLSAction {
     super();
     this.name = "status:public";
     this.description = "A basic status endpoint";
+    this.permission = { topic: "system", mode: "read" };
     this.outputExample = {};
   }
 

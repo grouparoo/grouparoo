@@ -1,4 +1,4 @@
-import { api, task } from "actionhero";
+import { api, task, config } from "actionhero";
 import cls from "cls-hooked";
 import { Transaction } from "sequelize";
 
@@ -31,24 +31,67 @@ export namespace CLS {
    * Wrap an Async function f in such a way that all enqueued afterCommit / enqueueTasks during invocation will be run afterwords
    * Returns the return value of function f
    */
-  export async function wrap(f: Function, catchError = false) {
+  export interface CLSWrapMethod {
+    (
+      f: Function,
+      options?: {
+        catchError?: boolean;
+        write?: boolean;
+        priority?: boolean;
+      }
+    ): Promise<any>;
+  }
+  export const wrap: CLSWrapMethod = async (f, options = {}) => {
+    const { catchError } = options;
+
     try {
-      let runResponse: any;
-      let afterCommitJobs: Array<Function> = [];
-
-      await api.sequelize.transaction(async (t: Transaction) => {
-        runResponse = await f(t);
-        afterCommitJobs = getNamespace().get("afterCommitJobs");
-      });
-
-      for (const i in afterCommitJobs) await afterCommitJobs[i]();
-
+      const runResponse = await wrapInternal(f, options);
       return runResponse;
     } catch (error) {
       if (catchError) return error;
       throw error;
     }
-  }
+  };
+
+  const wrapInternal: CLSWrapMethod = async (f, options = {}) => {
+    const { write, priority } = options;
+    let runResponse: any;
+    let afterCommitJobs: Array<Function> = [];
+
+    const transOptions: any = {};
+    const dialect = api.sequelize.options.dialect;
+    if (dialect === "sqlite") {
+      if (write) {
+        // if we take out the write lock immediately, then this BEGIN IMMEDIATE TRANSACTION
+        // call will be the one that fails if someone else is writing with SQLITE_BUSY
+        transOptions.type = "IMMEDIATE";
+      }
+
+      if (priority) {
+        // this will retry based on the default in the config, but for a priority case,
+        // we can say to sleep less each time and retry much more often
+        const retry = Object.assign({}, config.sequelize.retry);
+        retry.backoffBase = 1; // retry immediately
+        retry.backoffExponent = 1; // and don't backoff
+        retry.max = 100; // it seems to take half a second or so
+        retry.timeout = 30 * 1000; // give the UI 30 seconds total before error
+        transOptions.retry = retry;
+      } else {
+        // give a gap for the UI thread to get access
+        await sleep(1);
+      }
+    }
+    await api.sequelize.transaction(transOptions, async (t: Transaction) => {
+      runResponse = await f(t);
+      afterCommitJobs = getNamespace().get("afterCommitJobs");
+    });
+
+    for (const i in afterCommitJobs) {
+      await afterCommitJobs[i]();
+    }
+
+    return runResponse;
+  };
 
   export function active() {
     const transaction = get("transaction");
@@ -91,4 +134,10 @@ export namespace CLS {
   ) {
     await afterCommit(async () => task.enqueueIn(delay, taskName, args, queue));
   }
+}
+
+async function sleep(sleepTime: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, sleepTime);
+  });
 }
