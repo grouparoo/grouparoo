@@ -113,7 +113,6 @@ export async function processConfigObjects(
 
   if (errors.length > 0) return { seenIds, errors };
 
-  let sortError: Error;
   try {
     // The objects we are validating are a subset of a larger collection (ie: synctable)
     // We cannot sort the collection without the other objects in the superset
@@ -129,8 +128,18 @@ export async function processConfigObjects(
       configObjects = sortConfigurationObjects(configObjects);
     }
   } catch (error) {
-    // the config loaders below will produce better error messages
-    sortError = error;
+    // If something we wrong while sorting, log the messages and return. We
+    // aren't going to process the config objects if we can't be confident we're
+    // doing it in the right order.
+    error.message.split("\n").map((msg) => {
+      if (msg.startsWith("unknownNodeId")) {
+        msg = `Could not find object with ID: ${msg.slice(14)}`;
+      }
+      const err = new Error(msg);
+      errors.push(err.message);
+      log(msg, "error");
+    });
+    return { seenIds: {}, errors };
   }
 
   for (const i in configObjects) {
@@ -211,8 +220,6 @@ export async function processConfigObjects(
       seenIds[className].push(...newIds);
     }
   }
-
-  if (sortError && errors.length === 0) errors.push(sortError.message);
 
   return { seenIds, errors };
 }

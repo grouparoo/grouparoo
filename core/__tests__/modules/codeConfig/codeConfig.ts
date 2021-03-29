@@ -562,7 +562,7 @@ describe("modules/codeConfig", () => {
             "error-source"
           )
         );
-        expect(errors[0]).toMatch(/cannot find Property/);
+        expect(errors[0]).toMatch(/Could not find object with ID: user_id/);
       });
     });
 
@@ -582,7 +582,9 @@ describe("modules/codeConfig", () => {
             "error-property"
           )
         );
-        expect(errors[0]).toMatch(/cannot find Source/);
+        expect(errors[0]).toMatch(
+          /Could not find object with ID: missing_source/
+        );
       });
     });
 
@@ -602,7 +604,9 @@ describe("modules/codeConfig", () => {
             "error-group"
           )
         );
-        expect(errors[0]).toMatch(/cannot find Property/);
+        expect(errors[0]).toMatch(
+          /Could not find object with ID: missing_profile_property/
+        );
       });
     });
 
