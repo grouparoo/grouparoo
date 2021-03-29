@@ -30,9 +30,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
       where: { state: "ready" },
     });
 
-    for (const i in properties) {
-      const property = properties[i];
-
+    for (const property of properties) {
       const pendingProfileProperties = await ProfilePropertyOps.processPendingProfileProperties(
         property,
         limit
