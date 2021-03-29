@@ -1,4 +1,4 @@
-import { api, task } from "actionhero";
+import { api, task, config } from "actionhero";
 import cls from "cls-hooked";
 import { Transaction } from "sequelize";
 
@@ -54,14 +54,32 @@ export namespace CLS {
   };
 
   const wrapInternal: CLSWrapMethod = async (f, options = {}) => {
-    const { write } = options;
+    const { write, priority } = options;
     let runResponse: any;
     let afterCommitJobs: Array<Function> = [];
 
     const transOptions: any = {};
     const dialect = api.sequelize.options.dialect;
-    if (dialect === "sqlite" && write) {
-      transOptions.type = "IMMEDIATE";
+    if (dialect === "sqlite") {
+      if (write) {
+        // if we take out the write lock immediately, then this BEGIN IMMEDIATE TRANSACTION
+        // call will be the one that fails if someone else is writing with SQLITE_BUSY
+        transOptions.type = "IMMEDIATE";
+      }
+
+      if (priority) {
+        // this will retry based on the default in the config, but for a priority case,
+        // we can say to sleep less each time and retry much more often
+        const retry = Object.assign({}, config.sequelize.retry);
+        retry.backoffBase = 1; // retry immediately
+        retry.backoffExponent = 1; // and don't backoff
+        retry.max = 100; // it seems to take half a second or so
+        retry.timeout = 30 * 1000; // give the UI 30 seconds total before error
+        transOptions.retry = retry;
+      } else {
+        // give a gap for the UI thread to get access
+        await sleep(1);
+      }
     }
     await api.sequelize.transaction(transOptions, async (t: Transaction) => {
       runResponse = await f(t);
@@ -116,4 +134,10 @@ export namespace CLS {
   ) {
     await afterCommit(async () => task.enqueueIn(delay, taskName, args, queue));
   }
+}
+
+async function sleep(sleepTime: number) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, sleepTime);
+  });
 }
