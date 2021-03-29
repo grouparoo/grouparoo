@@ -90,7 +90,7 @@ export namespace ProfilePropertyOps {
     }
 
     const source = await property.$get("source", { scope: null });
-    if (source.state !== "ready") return;
+    if (source.state !== "ready") return [];
 
     const { pluginConnection } = await source.getPlugin();
 

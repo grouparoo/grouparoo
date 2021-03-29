@@ -38,7 +38,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
         limit
       );
 
-      count = count + pendingProfileProperties?.length;
+      count = count + pendingProfileProperties.length;
     }
 
     // re-enqueue if there is more to do
