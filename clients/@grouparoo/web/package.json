@@ -35,7 +35,7 @@
     "ts-jest": "26.5.3",
     "ts-loader": "8.1.0",
     "typescript": "4.2.3",
-    "webpack": "5.25.1",
+    "webpack": "5.28.0",
     "webpack-cli": "4.6.0"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
