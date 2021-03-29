@@ -1,8 +1,8 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { ProfileProperty } from "../../models/ProfileProperty";
+import { CLS } from "../../modules/cls";
 import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
-import { CLS } from "../../modules/cls";
+import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
 
 export class ProfilePropertiesEnqueue extends CLSTask {
   constructor() {
@@ -32,44 +32,16 @@ export class ProfilePropertiesEnqueue extends CLSTask {
 
     for (const i in properties) {
       const property = properties[i];
-      const source = await property.$get("source", { scope: null });
-      const { pluginConnection } = await source.getPlugin();
 
-      if (source.state !== "ready") continue;
-
-      const pendingProfileProperties = await ProfileProperty.findAll({
-        where: {
-          propertyId: property.id,
-          state: "pending",
-        },
-        order: [["stateChangedAt", "ASC"]],
-        limit,
-      });
-
-      const method = pluginConnection.methods.profileProperties
-        ? "ProfileProperties"
-        : "ProfileProperty";
-
-      if (pendingProfileProperties.length > 0) {
-        if (method === "ProfileProperties") {
-          await CLS.enqueueTask(`profileProperty:import${method}`, {
-            propertyId: property.id,
-            profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
-          });
-        } else {
-          await Promise.all(
-            pendingProfileProperties.map((ppp) =>
-              CLS.enqueueTask(`profileProperty:import${method}`, {
-                propertyId: property.id,
-                profileId: ppp.profileId,
-              })
-            )
-          );
-        }
-      }
+      const pendingProfileProperties = await ProfilePropertyOps.processPendingProfileProperties(
+        property,
+        limit
+      );
 
       count = count + pendingProfileProperties.length;
     }
+
+    if (count > 0) await CLS.enqueueTask(this.name, {});
 
     return count;
   }

@@ -494,7 +494,7 @@ export namespace ProfileOps {
     });
 
     await ProfileProperty.update(
-      { state: "pending" },
+      { state: "pending", startedAt: null },
       {
         where: {
           profileId: profile.id,

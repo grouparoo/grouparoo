@@ -2,8 +2,14 @@ import { parsePhoneNumberFromString, CountryCode } from "libphonenumber-js/max";
 import { plugin } from "../../modules/plugin";
 import isEmail from "../validators/isEmail";
 import isURL from "validator/lib/isURL";
+import { ProfileProperty } from "../../models/ProfileProperty";
+import { Property } from "../../models/Property";
+import { CLS } from "../../modules/cls";
+import { Op } from "sequelize";
 
 export namespace ProfilePropertyOps {
+  const defaultProfilePropertyProcessingDelay = 1000 * 60 * 5;
+
   export async function buildRawValue(
     value: any,
     type: string
@@ -72,6 +78,64 @@ export namespace ProfilePropertyOps {
       default:
         throw new Error(`cannot coerce profileProperty type ${type}`);
     }
+  }
+
+  export async function processPendingProfileProperties(
+    property: Property,
+    limit = 100,
+    delayMs = defaultProfilePropertyProcessingDelay
+  ) {
+    if (!delayMs || delayMs < defaultProfilePropertyProcessingDelay) {
+      delayMs = defaultProfilePropertyProcessingDelay;
+    }
+
+    const source = await property.$get("source", { scope: null });
+    if (source.state !== "ready") return;
+
+    const { pluginConnection } = await source.getPlugin();
+
+    const pendingProfileProperties = await ProfileProperty.findAll({
+      where: {
+        propertyId: property.id,
+        state: "pending",
+        startedAt: {
+          [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
+        },
+      },
+      order: [["stateChangedAt", "ASC"]],
+      limit,
+    });
+
+    await ProfileProperty.update(
+      { startedAt: new Date() },
+      {
+        where: { id: { [Op.in]: pendingProfileProperties.map((i) => i.id) } },
+      }
+    );
+
+    const method = pluginConnection.methods.profileProperties
+      ? "ProfileProperties"
+      : "ProfileProperty";
+
+    if (pendingProfileProperties.length > 0) {
+      if (method === "ProfileProperties") {
+        await CLS.enqueueTask(`profileProperty:import${method}`, {
+          propertyId: property.id,
+          profileIds: pendingProfileProperties.map((ppp) => ppp.profileId),
+        });
+      } else {
+        await Promise.all(
+          pendingProfileProperties.map((ppp) =>
+            CLS.enqueueTask(`profileProperty:import${method}`, {
+              propertyId: property.id,
+              profileId: ppp.profileId,
+            })
+          )
+        );
+      }
+    }
+
+    return pendingProfileProperties;
   }
 }
 

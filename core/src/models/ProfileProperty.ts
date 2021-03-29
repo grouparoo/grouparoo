@@ -69,6 +69,10 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Column
   confirmedAt: Date;
 
+  @AllowNull(true)
+  @Column
+  startedAt: Date;
+
   @BelongsTo(() => Profile)
   profile: Profile;
 
@@ -85,6 +89,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       valueChangedAt: APIData.formatDate(this.valueChangedAt),
       stateChangedAt: APIData.formatDate(this.stateChangedAt),
       confirmedAt: APIData.formatDate(this.confirmedAt),
+      startedAt: APIData.formatDate(this.startedAt),
       position: this.position,
       key: property.key,
       value: await this.getValue(),
