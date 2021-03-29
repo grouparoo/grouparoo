@@ -27,13 +27,16 @@ export type Graph = { [key: string]: string[] };
  */
 export function topologicalSort(graph: Graph) {
   const result: string[] = [];
+  const errors: string[] = [];
   const visited = [];
   const temp = [];
   for (var node in graph) {
     if (!visited[node] && !temp[node]) {
-      topologicalSortHelper(node, visited, temp, graph, result);
+      topologicalSortHelper(node, visited, temp, graph, result, errors);
     }
   }
+
+  if (errors.length > 0) throw new Error(errors.join("\n"));
 
   return result;
 }
@@ -43,15 +46,20 @@ function topologicalSortHelper(
   visited,
   temp,
   graph: Graph,
-  result: string[]
+  result: string[],
+  errors: string[]
 ) {
   temp[node] = true;
   const neighbors = graph[node];
-  if (!neighbors) throw new Error(`Cannot find ${node}`);
+  if (!neighbors) {
+    errors.push(`unknownNodeId ${node}`);
+    return;
+  }
   for (let i = 0; i < neighbors.length; i += 1) {
     const n = neighbors[i];
-    if (temp[n]) throw new Error("The graph is not a DAG");
-    if (!visited[n]) topologicalSortHelper(n, visited, temp, graph, result);
+    if (temp[n]) errors.push("The graph is not a DAG");
+    if (!visited[n])
+      topologicalSortHelper(n, visited, temp, graph, result, errors);
   }
   temp[node] = false;
   visited[node] = true;

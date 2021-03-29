@@ -128,24 +128,18 @@ export async function processConfigObjects(
       configObjects = sortConfigurationObjects(configObjects);
     }
   } catch (error) {
-    errors.push(error);
-    // If the sorting issue was that we couldn't find an object, the assumption
-    // is that the developer is targeting an object of some ID that does not
-    // exist.
-    if (error.message.includes("Cannot find ")) {
-      const invalidId = error.message.slice(12);
-      log(`Could not find object with ID ${invalidId}`, "error");
-      log(
-        "Could not process config objects. Please correct issue and try again.",
-        "error"
-      );
-      return { seenIds: {}, errors };
-    }
-    // Otherwise, always at least log the error so the developer gets feedback,
-    // even if it's not helpful.
-    else {
-      log(error, "error");
-    }
+    // If something we wrong while sorting, log the messages and return. We
+    // aren't going to process the config objects if we can't be confident we're
+    // doing it in the right order.
+    error.message.split("\n").map((msg) => {
+      if (msg.startsWith("unknownNodeId")) {
+        msg = `Could not find object with ID: ${msg.slice(14)}`;
+      }
+      const err = new Error(msg);
+      errors.push(err.message);
+      log(msg, "error");
+    });
+    return { seenIds: {}, errors };
   }
 
   for (const i in configObjects) {
