@@ -24,6 +24,7 @@ export interface ProfilePropertyType {
     valueChangedAt: ProfileProperty["valueChangedAt"];
     confirmedAt: ProfileProperty["confirmedAt"];
     stateChangedAt: ProfileProperty["stateChangedAt"];
+    startedAt: ProfileProperty["startedAt"];
     createdAt: ProfileProperty["createdAt"];
     updatedAt: ProfileProperty["updatedAt"];
   };
@@ -67,6 +68,7 @@ export namespace ProfileOps {
           valueChangedAt: profileProperties[i].valueChangedAt,
           confirmedAt: profileProperties[i].confirmedAt,
           stateChangedAt: profileProperties[i].stateChangedAt,
+          startedAt: profileProperties[i].startedAt,
           createdAt: profileProperties[i].createdAt,
           updatedAt: profileProperties[i].updatedAt,
         };

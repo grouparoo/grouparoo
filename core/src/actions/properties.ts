@@ -349,6 +349,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
       valueChangedAt: null,
       confirmedAt: null,
       stateChangedAt: null,
+      startedAt: null,
       createdAt: null,
       updatedAt: null,
     };
