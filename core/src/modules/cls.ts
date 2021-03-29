@@ -1,7 +1,6 @@
 import { api, task } from "actionhero";
 import cls from "cls-hooked";
 import { Transaction } from "sequelize";
-import { waitForLock } from "./locks";
 
 /**
  * This module is so you can delay the execution of side-effects within a transaction.
@@ -37,33 +36,20 @@ export namespace CLS {
       f: Function,
       options?: {
         catchError?: boolean;
-        lock?: boolean;
         write?: boolean;
         priority?: boolean;
       }
     ): Promise<any>;
   }
   export const wrap: CLSWrapMethod = async (f, options = {}) => {
-    const { catchError, write, priority } = options;
-    let { lock } = options;
-    const dialect = api.sequelize.options.dialect;
-    if (!lock && dialect === "sqlite" && write) {
-      lock = true;
-    }
-    let releaseLock = null;
+    const { catchError } = options;
+
     try {
-      if (lock) {
-        releaseLock = await getLock(priority);
-      }
       const runResponse = await wrapInternal(f, options);
       return runResponse;
     } catch (error) {
       if (catchError) return error;
       throw error;
-    } finally {
-      if (releaseLock) {
-        await releaseLock();
-      }
     }
   };
 
@@ -88,39 +74,6 @@ export namespace CLS {
 
     return runResponse;
   };
-
-  async function getLock(priority) {
-    // check more often in the ui to get the lock
-    const longEnough = 30 * 1000; // 30 seconds
-    const sleepTime = priority ? 1 : 100; // check more often if it's a priority
-    const ttl = longEnough + 1;
-    const maxAttempts = 300; // hard-coded in the locks.ts code
-    // might have to check more times, so start the count negative to get to 30 seconds
-    const attempts = 0 - longEnough / sleepTime + maxAttempts;
-    const requestId = undefined; // it will assign it a uuid
-
-    if (!priority) {
-      // the background thread often acquired the lock because of stop/start timing,
-      // so slow it down to give the priority one a chance
-      await sleep(1);
-    }
-
-    const lockObject = await waitForLock(
-      "cls",
-      requestId,
-      ttl,
-      attempts,
-      sleepTime
-    );
-
-    return lockObject.releaseLock;
-  }
-
-  async function sleep(sleepTime: number) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, sleepTime);
-    });
-  }
 
   export function active() {
     const transaction = get("transaction");
