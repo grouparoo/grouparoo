@@ -340,6 +340,8 @@ describe("pipedrive/exportProfile", () => {
       toDelete: false,
     });
 
+    await indexUsers(newNock);
+
     const data = await client.getPerson(personId);
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email2);
@@ -370,25 +372,6 @@ describe("pipedrive/exportProfile", () => {
     expect(groupFilter).toBeNull();
   });
 
-  test("can delete a Person", async () => {
-    await runExport({
-      oldProfileProperties: {
-        Email: email2,
-        Name: "Johnny Doe",
-      },
-      newProfileProperties: {
-        Email: email2,
-        Name: "Johnny Doe",
-      },
-      oldGroups: [groupOne],
-      newGroups: [groupOne],
-      toDelete: true,
-    });
-
-    const data = await client.getPerson(personId);
-    expect(data.active_flag).toBe(false);
-  });
-
   test("can add a Person passing a nonexistent email on the oldProfileProperties", async () => {
     await runExport({
       oldProfileProperties: { Email: nonexistentEmail, Name: "Bobby" },
@@ -407,6 +390,49 @@ describe("pipedrive/exportProfile", () => {
     expect(data.name).toBe("Bobby");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email3);
+  });
+
+  test("can update the correct Person on email change if both emails exist", async () => {
+    await runExport({
+      oldProfileProperties: { Email: email3, Name: "Bobby" },
+      newProfileProperties: { Email: email2, Name: "Bobby Jones" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    await indexUsers(newNock);
+
+    // Leave the old one untouched
+    let data = await client.getPerson(personId2);
+    expect(data.name).toBe("Bobby");
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email3);
+
+    // Update the new one
+    data = await client.getPerson(personId);
+    expect(data.name).toBe("Bobby Jones");
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email2);
+  });
+
+  test("can delete a Person", async () => {
+    await runExport({
+      oldProfileProperties: {
+        Email: email2,
+        Name: "Bobby Jones",
+      },
+      newProfileProperties: {
+        Email: email2,
+        Name: "Bobby Jones",
+      },
+      oldGroups: [groupOne],
+      newGroups: [groupOne],
+      toDelete: true,
+    });
+
+    const data = await client.getPerson(personId);
+    expect(data.active_flag).toBe(false);
   });
 
   test("can delete a Person when syncing for the first time", async () => {
@@ -453,6 +479,43 @@ describe("pipedrive/exportProfile", () => {
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email4);
     expect(data[groupThreeKey]).toBeTruthy();
+  });
+
+  test("can delete the correct Person on email change if both emails exist", async () => {
+    // create someone
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: { Name: "John Doe", Email: email1 },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    await indexUsers(newNock);
+
+    const newPersonId = await client.findPersonIdByEmail(email1);
+    expect(newPersonId).toBeTruthy();
+
+    // delete them
+    await runExport({
+      oldProfileProperties: { Email: email4, Name: "Mike Doe" },
+      newProfileProperties: { Email: email1, Name: "Mike Doe" },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    // email1 is deleted
+    let data = await client.getPerson(newPersonId);
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email1);
+    expect(data.active_flag).toBe(false);
+
+    // email4 is untouched
+    data = await client.getPerson(personId3);
+    expect(data.name).toBe("Jill");
+    expect(data.email).toHaveLength(1);
+    expect(data.email[0].value).toBe(email4);
   });
 
   test("can delete a Person when changing email at the same time", async () => {

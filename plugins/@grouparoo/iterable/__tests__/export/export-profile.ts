@@ -12,7 +12,7 @@ const appId = "app_7815696ecbf1c96e6894b779456d330e";
 let apiClient: any;
 let user: any;
 const phoneNumber = "+5583999999999";
-const newPhoneNumber = "+5583999999998";
+const phoneNumberTwo = "+5583999999998";
 const otherPhoneNumber = "+5583999999997";
 const userId = "testuser123";
 const alternativeUserId = "testuser345";
@@ -22,18 +22,18 @@ const otherEmail = "sandro.arturo@mailinator.com";
 const name = "Caio";
 const alternativeName = "Evan";
 const otherName = "Lucas";
-const newEmail = "carlos.solimoes@mailinator.com";
-const newName = "Carlos";
-const newUserId = "testuser456";
+const emailTwo = "carlos.solimoes@mailinator.com";
+const nameTwo = "Carlos";
+const userIdTwo = "testuser456";
 const exampleDate = new Date(1597870204 * 1000);
 const listOne = "List One";
 const listTwo = "List Two";
 const listThree = "List Three";
 const listFour = "List Four";
 const customField = "testCustomField";
-const brandNewEmail = "jake.jill@mailinator.com";
-const brandNewUserId = "jake.jill";
-const brandNewName = "Jake";
+const emailThree = "jake.jill@mailinator.com";
+const userIdThree = "jake.jill";
+const nameThree = "Jake";
 const nonexistentEmail = "pilo.paz@mailinator.com";
 
 const invalidEmail = "000";
@@ -80,8 +80,8 @@ async function deleteUsers(suppressErrors) {
       email,
       alternativeEmail,
       otherEmail,
-      newEmail,
-      brandNewEmail,
+      emailTwo,
+      emailThree,
     ]) {
       await apiClient.users.delete(emailToDelete);
     }
@@ -236,7 +236,7 @@ describe("iterable/exportProfile", () => {
         email,
         userId,
         name: alternativeName,
-        phoneNumber: newPhoneNumber,
+        phoneNumber: phoneNumberTwo,
         signupDate: exampleDate,
       },
       newProfileProperties: {
@@ -391,7 +391,7 @@ describe("iterable/exportProfile", () => {
         email: alternativeEmail,
         userId,
         name: alternativeName,
-        phoneNumber: newPhoneNumber,
+        phoneNumber: phoneNumberTwo,
       },
       newProfileProperties: {
         email: otherEmail,
@@ -478,15 +478,15 @@ describe("iterable/exportProfile", () => {
   });
 
   test("can add a user and add this user to a list at the same time.", async () => {
-    let user = await getUser(newEmail);
+    let user = await getUser(emailTwo);
     expect(user).toBe(null);
 
     await runExport({
       oldProfileProperties: {},
       newProfileProperties: {
-        email: newEmail,
-        userId: newUserId,
-        name: newName,
+        email: emailTwo,
+        userId: userIdTwo,
+        name: nameTwo,
       },
       oldGroups: [],
       newGroups: [listFour],
@@ -494,10 +494,10 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
-    user = await getUser(newEmail);
+    user = await getUser(emailTwo);
     expect(user).not.toBe(null);
-    expect(user.userId).toBe(newUserId);
-    expect(user.dataFields.name).toBe(newName);
+    expect(user.userId).toBe(userIdTwo);
+    expect(user.dataFields.name).toBe(nameTwo);
 
     const listFourId = await getListId(listFour);
     expect(listFourId).not.toBe(null);
@@ -505,7 +505,7 @@ describe("iterable/exportProfile", () => {
   });
 
   test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
-    let brandNewUser = await getUser(brandNewEmail);
+    let brandNewUser = await getUser(emailThree);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await getUser(nonexistentEmail);
     expect(nonexistentUser).toBe(null);
@@ -513,9 +513,9 @@ describe("iterable/exportProfile", () => {
     await runExport({
       oldProfileProperties: { email: nonexistentEmail },
       newProfileProperties: {
-        email: brandNewEmail,
-        userId: brandNewUserId,
-        name: brandNewName,
+        email: emailThree,
+        userId: userIdThree,
+        name: nameThree,
       },
       oldGroups: [],
       newGroups: [],
@@ -523,10 +523,69 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
-    brandNewUser = await getUser(brandNewEmail);
+    brandNewUser = await getUser(emailThree);
     expect(brandNewUser).not.toBe(null);
-    expect(brandNewUser.userId).toBe(brandNewUserId);
-    expect(brandNewUser.dataFields.name).toBe(brandNewName);
+    expect(brandNewUser.userId).toBe(userIdThree);
+    expect(brandNewUser.dataFields.name).toBe(nameThree);
+  });
+
+  test("can update the new user on email change if both emails exist", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: emailTwo,
+        userId: userIdTwo,
+        name: nameTwo,
+      },
+      newProfileProperties: {
+        email: emailThree,
+        userId: userIdThree,
+        name: otherName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    await indexContacts(newNock);
+
+    // Leave the old one untouched
+    let user = await getUser(emailTwo);
+    expect(user.dataFields.name).toBe(nameTwo);
+    expect(user.userId).toBe(userIdTwo);
+
+    // update the new one
+    user = await getUser(emailThree);
+    expect(user.dataFields.name).toBe(otherName);
+    expect(user.userId).toBe(userIdThree);
+  });
+
+  test("can delete the new user on email change if both emails exist", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: emailTwo,
+        userId: userIdTwo,
+        name: nameTwo,
+      },
+      newProfileProperties: {
+        email: emailThree,
+        userId: userIdThree,
+        name: otherName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexContacts(newNock);
+
+    // Leave the old one untouched
+    let user = await getUser(emailTwo);
+    expect(user.dataFields.name).toBe(nameTwo);
+    expect(user.userId).toBe(userIdTwo);
+
+    // Update the new one
+    user = await getUser(emailThree);
+    expect(user).toBe(null);
   });
 
   test("can add a user passing a invalid email", async () => {
@@ -548,7 +607,7 @@ describe("iterable/exportProfile", () => {
       runExport({
         oldProfileProperties: {},
         newProfileProperties: {
-          email: brandNewEmail,
+          email: emailTwo,
           signupDate: invalidDate,
         },
         oldGroups: [],
