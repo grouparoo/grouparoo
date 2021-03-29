@@ -1,5 +1,6 @@
 import {
   Destination,
+  DestinationSyncModeData,
   SimpleDestinationOptions,
 } from "../../models/Destination";
 import { Profile } from "../../models/Profile";
@@ -417,6 +418,7 @@ export namespace DestinationOps {
       destination,
       destinationId,
       destinationOptions,
+      destinationSyncActions,
       exports: _exports,
     }) {
       const outErrors: ErrorWithProfileId[] = [];
@@ -434,6 +436,7 @@ export namespace DestinationOps {
             destination,
             destinationId,
             destinationOptions,
+            destinationSyncActions,
             export: _export,
           });
 
@@ -518,6 +521,9 @@ export namespace DestinationOps {
       destination
     );
 
+    const syncMode = destination.syncMode;
+    const syncActions = DestinationSyncModeData[syncMode];
+
     const options = await destination.getOptions();
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
@@ -556,6 +562,7 @@ export namespace DestinationOps {
         destination,
         destinationId: destination.id,
         destinationOptions: options,
+        destinationSyncActions: syncActions,
         exports: exportedProfiles,
       });
 

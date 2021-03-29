@@ -1,7 +1,11 @@
 import { App, AppOption, SimpleAppOptions } from "../models/App";
 import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
 import { ExportErrorLevel } from "../models/Export";
-import { Destination, SimpleDestinationOptions } from "../models/Destination";
+import {
+  Destination,
+  DestinationSyncActions,
+  SimpleDestinationOptions,
+} from "../models/Destination";
 import { Run } from "../models/Run";
 import {
   PluginConnectionPropertyOption,
@@ -200,6 +204,7 @@ export interface ExportProfilePluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
+    destinationSyncActions: DestinationSyncActions;
     export: ExportedProfile;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }
@@ -219,6 +224,7 @@ export interface ExportProfilesPluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
+    destinationSyncActions: DestinationSyncActions;
     exports: ExportedProfile[];
   }): Promise<{
     success: boolean;

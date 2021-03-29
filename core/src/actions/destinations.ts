@@ -118,6 +118,7 @@ export class DestinationCreate extends AuthenticatedAction {
       appId: { required: true },
       options: { required: false },
       mapping: { required: false, default: {} },
+      syncMode: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }
@@ -155,6 +156,7 @@ export class DestinationEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
+      syncMode: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }

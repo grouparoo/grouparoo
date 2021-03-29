@@ -43,6 +43,39 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
+const SYNC_MODES = ["Sync", "Additive", "Enrich"] as const;
+export type DestinationSyncMode = typeof SYNC_MODES[number];
+
+export interface DestinationSyncActions {
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+  description: string;
+}
+export const DestinationSyncModeData: Record<
+  DestinationSyncMode,
+  DestinationSyncActions
+> = {
+  Sync: {
+    create: true,
+    update: true,
+    delete: true,
+    description: "Sync all profiles (create, update, delete)",
+  },
+  Enrich: {
+    create: false,
+    update: true,
+    delete: false,
+    description: "Only update existing profiles (update)",
+  },
+  Additive: {
+    create: true,
+    update: true,
+    delete: false,
+    description: "Sync all profiles, but do not delete (create, update)",
+  },
+};
+
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
   {
@@ -110,6 +143,10 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
+  @Default("Sync")
+  @Column(DataType.ENUM(...SYNC_MODES))
+  syncMode: DestinationSyncMode;
+
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
@@ -130,6 +167,7 @@ export class Destination extends LoggedModel<Destination> {
       type: this.type,
       state: this.state,
       locked: this.locked,
+      syncMode: this.syncMode,
       app: app ? await app.apiData() : null,
       mapping,
       options,
