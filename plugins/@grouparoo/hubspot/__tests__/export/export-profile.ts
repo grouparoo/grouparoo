@@ -42,6 +42,9 @@ const message =
 const invalidEmail = "000";
 const invalidDate = "asd000";
 
+const textField = "text_field";
+const numberField = 30.39;
+
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
@@ -194,6 +197,9 @@ describe("hubspot/exportProfile", () => {
         message,
         lifetime_value__custom_: ltv,
         closedate: dateField,
+        text_field: textField,
+        date_field: dateField, //must be midnight: 00:00
+        number_field: numberField,
       },
       oldGroups: [],
       newGroups: [],
@@ -210,6 +216,13 @@ describe("hubspot/exportProfile", () => {
     );
     expect(user["properties"]["lifetime_value__custom_"]["value"]).toBe(
       ltv.toString()
+    );
+    expect(user["properties"]["text_field"]["value"]).toBe(textField);
+    expect(user["properties"]["date_field"]["value"]).toBe(
+      dateField.getTime().toString()
+    );
+    expect(user["properties"]["number_field"]["value"]).toBe(
+      numberField.toString()
     );
   });
 
@@ -238,6 +251,9 @@ describe("hubspot/exportProfile", () => {
         firstname: alternativeName,
         lastname: alternativeLastName,
         mobilephone: phoneNumber,
+        text_field: textField,
+        date_field: dateField,
+        number_field: numberField,
       },
       newProfileProperties: {
         email,
@@ -250,6 +266,9 @@ describe("hubspot/exportProfile", () => {
     expect(user["properties"]["email"]["value"]).toBe(email);
     expect(user["properties"]["firstname"]["value"]).toBe("");
     expect(user["properties"]["lastname"]["value"]).toBe("");
+    expect(user["properties"]["text_field"]["value"]).toBe("");
+    expect(user["properties"]["date_field"]["value"]).toBe("");
+    expect(user["properties"]["number_field"]["value"]).toBe("");
   });
 
   test("can add user to a list that doesn't exist yet", async () => {

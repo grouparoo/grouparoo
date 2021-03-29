@@ -39,7 +39,7 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
       return "phoneNumber";
   }
 
-  // TODO: "date" (no time) are strings, but there are a few known names
+  // TODO: some of the "date" fields (no time) are strings, but there are a few known names
   // date_of_birth, start_date
   // these are both for Facebook Ads
 
@@ -47,6 +47,7 @@ const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
     string: "string",
     enumeration: "string",
     datetime: "date",
+    date: "date",
     bool: "boolean",
     number: "float",
   };

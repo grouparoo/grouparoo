@@ -101,6 +101,7 @@ function formatVar(value) {
     return null;
   }
   if (value instanceof Date) {
+    value.setUTCHours(0, 0, 0, 0); //Must be midnight.
     return value.getTime();
   } else {
     return value;
