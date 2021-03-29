@@ -7,6 +7,8 @@ import {
   GrouparooPlugin,
   Source,
   App,
+  Profile,
+  ProfileProperty,
 } from "../../../src";
 
 describe("tasks/profileProperties:enqueue", () => {
@@ -58,36 +60,124 @@ describe("tasks/profileProperties:enqueue", () => {
         expect(found.length).toEqual(1);
       });
 
-      test("it will enqueue batches of profile properties in the pending state", async () => {
-        const run = await helper.factories.run();
-        const marioImport = await helper.factories.import(run, {
-          email: "mario@example.com",
-          firstName: "Mario",
-        });
-        const luigiImport = await helper.factories.import(run, {
-          email: "luigi@example.com",
-        });
+      describe("with profiles", () => {
+        let mario: Profile;
+        let luigi: Profile;
 
-        await specHelper.runTask("import:associateProfile", {
-          importId: marioImport.id,
-        });
-        await specHelper.runTask("import:associateProfile", {
-          importId: luigiImport.id,
+        beforeAll(async () => {
+          mario = await helper.factories.profile();
+          luigi = await helper.factories.profile();
+
+          await mario.addOrUpdateProperties({ email: ["mario@example.com"] });
+          await luigi.addOrUpdateProperties({ email: ["luigi@example.com"] });
+
+          await mario.import();
+          await luigi.import();
         });
 
-        await specHelper.runTask("profileProperties:enqueue", {});
+        test("it will enqueue batches of profile properties in the pending state and a null startedAt", async () => {
+          await mario.markPending();
+          await luigi.markPending();
+          const start = new Date();
 
-        const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-          "profileProperty:importProfileProperties"
-        );
-        const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
-          "profileProperty:importProfileProperty"
-        );
+          const pendingProfileProperties = await ProfileProperty.findAll({
+            where: { state: "pending" },
+          });
+          expect(pendingProfileProperties.length).toBe(
+            (propertiesCount - 1) * 2
+          );
+          for (const p of pendingProfileProperties) {
+            expect(p.startedAt).toBe(null);
+            await p.update({ startedAt: null });
+          }
 
-        expect(importProfilePropertiesTasks.length).toBe(0);
-        expect(importProfilePropertyTasks.length).toBe(
-          (propertiesCount - 1) * 2
-        );
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperties"
+          );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importProfilePropertyTasks.length).toBe(
+            (propertiesCount - 1) * 2
+          );
+
+          for (const p of pendingProfileProperties) {
+            await p.reload();
+            expect(p.startedAt.getTime()).toBeGreaterThanOrEqual(
+              start.getTime()
+            );
+          }
+        });
+
+        test("it will enqueue batches of profile properties in the pending state and an old startedAt (stuck)", async () => {
+          await mario.markPending();
+          await luigi.markPending();
+          const start = new Date();
+
+          const pendingProfileProperties = await ProfileProperty.findAll({
+            where: { state: "pending" },
+          });
+          expect(pendingProfileProperties.length).toBe(
+            (propertiesCount - 1) * 2
+          );
+          for (const p of pendingProfileProperties) {
+            expect(p.startedAt).toBe(null);
+            await p.update({ startedAt: new Date(0) });
+          }
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperties"
+          );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importProfilePropertyTasks.length).toBe(
+            (propertiesCount - 1) * 2
+          );
+
+          for (const p of pendingProfileProperties) {
+            await p.reload();
+            expect(p.startedAt.getTime()).toBeGreaterThanOrEqual(
+              start.getTime()
+            );
+          }
+        });
+
+        test("it will not enqueue batches of profile properties in the pending state and a recent startedAt", async () => {
+          await mario.markPending();
+          await luigi.markPending();
+
+          const pendingProfileProperties = await ProfileProperty.findAll({
+            where: { state: "pending" },
+          });
+          expect(pendingProfileProperties.length).toBe(
+            (propertiesCount - 1) * 2
+          );
+          for (const p of pendingProfileProperties) {
+            expect(p.startedAt).toBe(null);
+            await p.update({ startedAt: new Date() });
+          }
+
+          await specHelper.runTask("profileProperties:enqueue", {});
+
+          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperties"
+          );
+          const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
+            "profileProperty:importProfileProperty"
+          );
+
+          expect(importProfilePropertiesTasks.length).toBe(0);
+          expect(importProfilePropertyTasks.length).toBe(0);
+        });
       });
 
       describe("with profileProperties method", () => {

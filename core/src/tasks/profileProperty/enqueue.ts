@@ -38,9 +38,10 @@ export class ProfilePropertiesEnqueue extends CLSTask {
         limit
       );
 
-      count = count + pendingProfileProperties.length;
+      count = count + pendingProfileProperties?.length;
     }
 
+    // re-enqueue if there is more to do
     if (count > 0) await CLS.enqueueTask(this.name, {});
 
     return count;
