@@ -32,6 +32,7 @@ const brandNewName = "Jake";
 const invalidPhone = "000";
 const invalidNumber = "AAAAA";
 const invalidEmail = "AAAAA";
+const otherInvalidEmail = "foo@example.com";
 
 // comment this to generate new emails.
 // const newEmails = true;
@@ -569,5 +570,22 @@ describe("mailchimp/exportProfile", () => {
         toDelete: false,
       })
     ).rejects.toThrow();
+  });
+
+  test("can add a user passing another invalid email", async () => {
+    try {
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email_address: otherInvalidEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error.errorLevel).toBe("info");
+    }
   });
 });
