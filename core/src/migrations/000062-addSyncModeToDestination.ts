@@ -1,6 +1,6 @@
 export default {
   up: async function (migration, DataTypes) {
-    await migration.transaction(async () => {
+    await migration.sequelize.transaction(async () => {
       await migration.addColumn("destinations", "syncMode", {
         type: DataTypes.STRING(191),
         allowNull: false,
