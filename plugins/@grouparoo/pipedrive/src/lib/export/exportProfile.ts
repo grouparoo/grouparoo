@@ -48,13 +48,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const foundId = newFoundId || oldFoundId;
   if (toDelete) {
     if (!destinationSyncActions.delete) {
-      throw new InfoError("Destination sync mode does not delete profiles.");
-    }
-    if (foundId) {
-      await client.deletePerson(foundId);
-    }
+      // only clear groups if syncMode does not allow deletion
+      newGroups = [];
+    } else {
+      if (foundId) {
+        await client.deletePerson(foundId);
+      }
 
-    return { success: true };
+      return { success: true };
+    }
   }
 
   const payload = await makePayload(
@@ -68,8 +70,18 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (foundId) {
     // Update existing Person
+    if (!destinationSyncActions.update) {
+      if (toDelete) {
+        throw new InfoError("Destination sync mode does not delete profiles.");
+      }
+
+      throw new InfoError(
+        "Destination sync mode does not update existing profiles."
+      );
+    }
+
     await client.updatePerson(foundId, payload);
-  } else {
+  } else if (!toDelete) {
     if (!destinationSyncActions.create) {
       throw new InfoError(
         "Destination sync mode does not create new profiles."
@@ -77,6 +89,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
     // Create new Person
     await client.createPerson(payload);
+  }
+
+  if (toDelete && !destinationSyncActions.delete) {
+    throw new InfoError(
+      "Destination sync mode does not delete profiles. Only group membership has been cleared."
+    );
   }
 
   return { success: true };

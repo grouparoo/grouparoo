@@ -89,7 +89,7 @@ async function cleanUp() {
 }
 
 async function runExport({
-  syncMode = "Sync",
+  destinationSyncActions = DestinationSyncModeData["Sync"],
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -104,7 +104,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
-    destinationSyncActions: DestinationSyncModeData[syncMode],
+    destinationSyncActions,
     export: {
       profile: null,
       profileId: null,
@@ -179,7 +179,7 @@ describe("pipedrive/exportProfile", () => {
   test("can not create a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncMode: "Enrich",
+        destinationSyncActions: DestinationSyncModeData["Enrich"],
         oldProfileProperties: {},
         newProfileProperties: { Name: "Jimmy Doe", Email: email2 },
         oldGroups: [],
@@ -210,6 +210,37 @@ describe("pipedrive/exportProfile", () => {
     expect(data.phone).toHaveLength(1);
     expect(data.phone[0].value).toBe("1234567890");
     expect(data[fieldMap.text_field]).toBe("Some text");
+  });
+
+  test("can not update a Person if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        destinationSyncActions: {
+          update: false,
+          create: true,
+          delete: true,
+          description: "No updates",
+        },
+        oldProfileProperties: {
+          Name: "John Doe",
+          Email: email1,
+          Phone: "1234567890",
+          text_field: "Some text",
+        },
+        newProfileProperties: {
+          Name: "John Doe",
+          Email: email1,
+          Phone: "1234567890",
+          text_field: "Some other text",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    const data = await client.getPerson(personId);
+    expect(data[fieldMap.text_field]).toBe("Some text"); // no change
   });
 
   test("can change Person fields and add new ones", async () => {
@@ -435,7 +466,12 @@ describe("pipedrive/exportProfile", () => {
   test("can not delete a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncMode: "Enrich",
+        destinationSyncActions: {
+          create: true,
+          delete: false,
+          update: false,
+          description: "Only create",
+        },
         oldProfileProperties: {
           Email: email2,
           Name: "Bobby Jones",
@@ -449,6 +485,39 @@ describe("pipedrive/exportProfile", () => {
         toDelete: true,
       })
     ).rejects.toThrow(/sync mode does not delete/);
+
+    // no effect
+    const data = await client.getPerson(personId);
+    expect(data[groupOneKey]).toBeTruthy();
+    expect(data.name).toBe("Bobby Jones");
+  });
+
+  test("can clear groups if deleting and sync mode does not allow deletes but allows updates", async () => {
+    await expect(
+      runExport({
+        destinationSyncActions: DestinationSyncModeData["Additive"],
+        oldProfileProperties: {
+          Email: email2,
+          Name: "Bobby Jones",
+        },
+        newProfileProperties: {
+          Email: email2,
+          Name: "Bobby Jones",
+        },
+        oldGroups: [groupOne],
+        newGroups: [groupOne],
+        toDelete: true,
+      })
+    ).rejects.toThrow(
+      /sync mode does not delete profiles. Only group membership has been cleared/
+    );
+
+    // groups should be cleared
+    const data = await client.getPerson(personId);
+    expect(data[groupOneKey]).toBeFalsy();
+
+    // properties should not be cleared
+    expect(data.name).toBe("Bobby Jones");
   });
 
   test("can delete a Person", async () => {
@@ -461,8 +530,8 @@ describe("pipedrive/exportProfile", () => {
         Email: email2,
         Name: "Bobby Jones",
       },
-      oldGroups: [groupOne],
-      newGroups: [groupOne],
+      oldGroups: [],
+      newGroups: [],
       toDelete: true,
     });
 
