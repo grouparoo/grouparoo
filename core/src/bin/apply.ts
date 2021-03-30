@@ -7,6 +7,7 @@ import {
   processConfigObjects,
   deleteLockedObjects,
 } from "../modules/configLoaders";
+import pluralize from "pluralize";
 
 export class Apply extends CLI {
   constructor() {
@@ -35,7 +36,12 @@ export class Apply extends CLI {
     const configDir = getConfigDir();
     const configObjects = await loadConfigObjects(configDir);
 
-    GrouparooCLI.logger.log(`Applying ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(
+      `Applying ${configObjects.length} ${pluralize(
+        "object",
+        configObjects.length
+      )}...`
+    );
 
     await CLS.wrap(
       async () => {
@@ -50,7 +56,10 @@ export class Apply extends CLI {
 
         GrouparooCLI.logger.log("");
         GrouparooCLI.logger.log(
-          `✅ Config applied - ${configObjects.length} config objects up-to-date!`
+          `✅ Config applied - ${configObjects.length} config ${pluralize(
+            "object",
+            configObjects.length
+          )} up-to-date!`
         );
       },
       { catchError: true }
