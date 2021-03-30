@@ -261,7 +261,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/jest': '*'
       '@types/node': '*'
-      '@types/pluralize': ^0.0.29
+      '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 25.0.8
       ah-next-plugin: 0.5.1
