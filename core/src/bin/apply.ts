@@ -36,7 +36,12 @@ export class Apply extends CLI {
     const configDir = getConfigDir();
     const configObjects = await loadConfigObjects(configDir);
 
-    GrouparooCLI.logger.log(`Applying ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(
+      `Applying ${configObjects.length} ${pluralize(
+        "object",
+        configObjects.length
+      )}...`
+    );
 
     await CLS.wrap(
       async () => {

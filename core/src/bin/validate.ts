@@ -44,7 +44,12 @@ export class Validate extends CLI {
       );
     }
 
-    GrouparooCLI.logger.log(`Validating ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(
+      `Validating ${configObjects.length} ${pluralize(
+        "object",
+        configObjects.length
+      )}...`
+    );
 
     try {
       await api.sequelize.transaction(async () => {
