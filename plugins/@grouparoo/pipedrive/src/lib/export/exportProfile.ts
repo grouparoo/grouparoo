@@ -7,9 +7,19 @@ import {
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
 
+class InfoError extends Error {
+  errorLevel: string;
+
+  constructor(message) {
+    super(message);
+    this.errorLevel = "info";
+  }
+}
+
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  destinationSyncActions,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -37,6 +47,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const foundId = newFoundId || oldFoundId;
   if (toDelete) {
+    if (!destinationSyncActions.delete) {
+      throw new InfoError("Destination sync mode does not delete profiles.");
+    }
     if (foundId) {
       await client.deletePerson(foundId);
     }
@@ -57,6 +70,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // Update existing Person
     await client.updatePerson(foundId, payload);
   } else {
+    if (!destinationSyncActions.create) {
+      throw new InfoError(
+        "Destination sync mode does not create new profiles."
+      );
+    }
     // Create new Person
     await client.createPerson(payload);
   }

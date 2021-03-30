@@ -206,7 +206,7 @@ export interface ExportProfilePluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    destinationSyncActions: DestinationSyncActions;
+    destinationSyncActions?: DestinationSyncActions;
     export: ExportedProfile;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }

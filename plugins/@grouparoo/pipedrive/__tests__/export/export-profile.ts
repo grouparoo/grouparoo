@@ -11,6 +11,7 @@ import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexUsers } from "../utils/shared";
 import { getKnownPersonFieldMap } from "../../src/lib/export/destinationMappingOptions";
 import { PipedriveClient } from "../../src/lib/client";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 let client: PipedriveClient;
 let fieldMap: { [fieldName: string]: string };
@@ -88,6 +89,7 @@ async function cleanUp() {
 }
 
 async function runExport({
+  syncMode = "Sync",
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -102,6 +104,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    destinationSyncActions: DestinationSyncModeData[syncMode],
     export: {
       profile: null,
       profileId: null,
@@ -171,6 +174,19 @@ describe("pipedrive/exportProfile", () => {
         toDelete: false,
       })
     ).rejects.toThrow(/Name/);
+  });
+
+  test("can not create a Person if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncMode: "Enrich",
+        oldProfileProperties: {},
+        newProfileProperties: { Name: "Jimmy Doe", Email: email2 },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not create/);
   });
 
   test("can set Person fields", async () => {
@@ -414,6 +430,25 @@ describe("pipedrive/exportProfile", () => {
     expect(data.name).toBe("Bobby Jones");
     expect(data.email).toHaveLength(1);
     expect(data.email[0].value).toBe(email2);
+  });
+
+  test("can not delete a Person if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncMode: "Enrich",
+        oldProfileProperties: {
+          Email: email2,
+          Name: "Bobby Jones",
+        },
+        newProfileProperties: {
+          Email: email2,
+          Name: "Bobby Jones",
+        },
+        oldGroups: [groupOne],
+        newGroups: [groupOne],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
   });
 
   test("can delete a Person", async () => {
