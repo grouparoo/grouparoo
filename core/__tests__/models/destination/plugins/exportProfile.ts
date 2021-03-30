@@ -22,6 +22,7 @@ describe("models/destination", () => {
       appOptions: null,
       destination: null,
       destinationOptions: null,
+      destinationSyncActions: null,
       profile: null,
       oldProfileProperties: null,
       newProfileProperties: null,
@@ -62,6 +63,7 @@ describe("models/destination", () => {
             app: "test-template-app",
             direction: "export",
             options: [],
+            syncModes: ["Sync", "Enrich", "Additive"],
             methods: {
               destinationMappingOptions: async () => {
                 return {
@@ -88,6 +90,7 @@ describe("models/destination", () => {
                 appOptions,
                 destination,
                 destinationOptions,
+                destinationSyncActions,
                 export: {
                   profile,
                   oldProfileProperties,
@@ -102,6 +105,7 @@ describe("models/destination", () => {
                   appOptions,
                   destination,
                   destinationOptions,
+                  destinationSyncActions,
                   profile,
                   oldProfileProperties,
                   newProfileProperties,
@@ -133,6 +137,7 @@ describe("models/destination", () => {
         appOptions: null,
         destination: null,
         destinationOptions: null,
+        destinationSyncActions: null,
         profile: null,
         oldProfileProperties: null,
         newProfileProperties: null,
@@ -545,6 +550,71 @@ describe("models/destination", () => {
       expect(exportArgs.profile).not.toBeNull(); // plugin#exportProfile was called
 
       await profile.destroy();
+    });
+
+    describe("sync modes", () => {
+      let profile = null;
+      let _export = null;
+
+      beforeEach(async () => {
+        profile = await helper.factories.profile();
+        await profile.addOrUpdateProperties({
+          email: ["newEmail@example.com"],
+        });
+        const group = await helper.factories.group();
+        await group.addProfile(profile);
+        await destination.trackGroup(group);
+
+        await destination.setMapping({
+          customer_email: "email",
+        });
+
+        const destinationGroupMemberships = {};
+        destinationGroupMemberships[group.id] = group.name;
+        await destination.setDestinationGroupMemberships(
+          destinationGroupMemberships
+        );
+
+        await destination.exportProfile(profile);
+        _export = await Export.findOne({
+          where: { destinationId: destination.id },
+        });
+      });
+
+      afterEach(async () => {
+        await profile.destroy();
+      });
+
+      test("Sync syncMode allows creating, updating and deleting profiles", async () => {
+        await destination.update({ syncMode: "Sync" });
+
+        await destination.sendExport(_export, true);
+        expect(exportArgs.destinationSyncActions.create).toBe(true);
+        expect(exportArgs.destinationSyncActions.update).toBe(true);
+        expect(exportArgs.destinationSyncActions.delete).toBe(true);
+      });
+
+      test("Enrich syncMode only allows updating profiles", async () => {
+        await destination.update({ syncMode: "Enrich" });
+
+        await destination.sendExport(_export, true);
+        expect(exportArgs.destinationSyncActions.create).toBe(false);
+        expect(exportArgs.destinationSyncActions.update).toBe(true);
+        expect(exportArgs.destinationSyncActions.delete).toBe(false);
+
+        await profile.destroy();
+      });
+
+      test("Additive syncMode only allows creating and updating profiles", async () => {
+        await destination.update({ syncMode: "Additive" });
+
+        await destination.sendExport(_export, true);
+        expect(exportArgs.destinationSyncActions.create).toBe(true);
+        expect(exportArgs.destinationSyncActions.update).toBe(true);
+        expect(exportArgs.destinationSyncActions.delete).toBe(false);
+
+        await profile.destroy();
+      });
     });
 
     test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {

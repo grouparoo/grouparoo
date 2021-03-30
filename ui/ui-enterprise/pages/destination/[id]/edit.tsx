@@ -167,7 +167,7 @@ export default function Page(props) {
                   <option value={""} disabled>
                     Select an option
                   </option>
-                  {destination.supportedSyncModes.map((mode) => (
+                  {destination.syncModes.map((mode) => (
                     <option key={mode} value={mode}>
                       {mode}
                     </option>

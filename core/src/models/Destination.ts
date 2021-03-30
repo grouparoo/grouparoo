@@ -157,7 +157,7 @@ export class Destination extends LoggedModel<Destination> {
 
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
-    const supportedSyncModes = await this.getSupportedSyncModes();
+    const syncModes = await this.getSupportedSyncModes();
     const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
@@ -169,7 +169,7 @@ export class Destination extends LoggedModel<Destination> {
       state: this.state,
       locked: this.locked,
       syncMode: this.syncMode,
-      supportedSyncModes,
+      syncModes,
       app: app ? await app.apiData() : null,
       mapping,
       options,
@@ -282,6 +282,15 @@ export class Destination extends LoggedModel<Destination> {
 
   async getSupportedSyncModes() {
     return DestinationOps.getSupportedSyncModes(this);
+  }
+
+  async validateSyncMode() {
+    const supportedModes = await this.getSupportedSyncModes();
+    if (!supportedModes.includes(this.syncMode)) {
+      throw new Error(
+        `${this.name} does not support sync mode "${this.syncMode}"`
+      );
+    }
   }
 
   async validateMappings(
@@ -482,6 +491,11 @@ export class Destination extends LoggedModel<Destination> {
         `a destination of type ${instance.type} cannot be created as there are no profile export methods`
       );
     }
+  }
+
+  @BeforeSave
+  static async validateSyncMode(instance: Destination) {
+    await instance.validateSyncMode();
   }
 
   @BeforeSave

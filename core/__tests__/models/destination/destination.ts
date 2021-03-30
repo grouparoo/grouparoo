@@ -424,6 +424,18 @@ describe("models/destination", () => {
         await ok.setOptions({ table: "users" });
         await ok.destroy();
       });
+
+      test("a destination cannot set an unsupported sync mode", async () => {
+        const destination = Destination.build({
+          appId: app.id,
+          type: "test-plugin-export",
+          syncMode: "RandomSyncMode",
+        });
+
+        await expect(destination.save()).rejects.toThrow(
+          /does not support sync mode/
+        );
+      });
     });
 
     describe("with groups", () => {
