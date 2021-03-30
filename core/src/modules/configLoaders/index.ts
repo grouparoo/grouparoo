@@ -8,6 +8,7 @@ import {
   validateConfigObjects,
   IdsByClass,
 } from "../../classes/codeConfig";
+import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
 import { loadSource, deleteSources } from "./source";
 import { loadProperty, deleteProperties } from "./property";
@@ -206,9 +207,11 @@ export async function processConfigObjects(
           throw new Error(`unknown config object class: ${configObject.class}`);
       }
     } catch (error) {
+      const { message } = GrouparooErrorSerializer(error);
+
       const errorMessage = `[ config ] error with ${configObject?.class} \`${
         configObject.key || configObject.name
-      }\` (${configObject.id}): ${error}`;
+      }\` (${configObject.id}): ${message}`;
       errors.push(errorMessage);
       log(errorMessage, "warning");
       continue;

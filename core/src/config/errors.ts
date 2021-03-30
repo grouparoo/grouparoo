@@ -148,7 +148,7 @@ export const DEFAULT = {
   },
 };
 
-function GrouparooErrorSerializer(error) {
+export function GrouparooErrorSerializer(error) {
   let message = "";
   let code = error.code || undefined;
   let fields = [];
