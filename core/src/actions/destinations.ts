@@ -128,6 +128,7 @@ export class DestinationCreate extends AuthenticatedAction {
       name: params.name,
       type: params.type,
       appId: params.appId,
+      syncMode: params.syncMode,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
