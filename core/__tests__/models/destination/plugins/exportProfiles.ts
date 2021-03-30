@@ -60,6 +60,7 @@ describe("models/destination", () => {
             description: "a test app connection",
             app: "test-template-app",
             direction: "export",
+            syncModes: ["sync", "enrich", "additive"],
             options: [],
             methods: {
               destinationMappingOptions: async () => {
