@@ -22,7 +22,7 @@ describe("models/destination", () => {
       appOptions: null,
       destination: null,
       destinationOptions: null,
-      destinationSyncActions: null,
+      syncOperations: null,
       profile: null,
       oldProfileProperties: null,
       newProfileProperties: null,
@@ -90,7 +90,7 @@ describe("models/destination", () => {
                 appOptions,
                 destination,
                 destinationOptions,
-                destinationSyncActions,
+                syncOperations,
                 export: {
                   profile,
                   oldProfileProperties,
@@ -105,7 +105,7 @@ describe("models/destination", () => {
                   appOptions,
                   destination,
                   destinationOptions,
-                  destinationSyncActions,
+                  syncOperations,
                   profile,
                   oldProfileProperties,
                   newProfileProperties,
@@ -137,7 +137,7 @@ describe("models/destination", () => {
         appOptions: null,
         destination: null,
         destinationOptions: null,
-        destinationSyncActions: null,
+        syncOperations: null,
         profile: null,
         oldProfileProperties: null,
         newProfileProperties: null,
@@ -589,18 +589,18 @@ describe("models/destination", () => {
         await destination.update({ syncMode: "sync" });
 
         await destination.sendExport(_export, true);
-        expect(exportArgs.destinationSyncActions.create).toBe(true);
-        expect(exportArgs.destinationSyncActions.update).toBe(true);
-        expect(exportArgs.destinationSyncActions.delete).toBe(true);
+        expect(exportArgs.syncOperations.create).toBe(true);
+        expect(exportArgs.syncOperations.update).toBe(true);
+        expect(exportArgs.syncOperations.delete).toBe(true);
       });
 
       test("Enrich syncMode only allows updating profiles", async () => {
         await destination.update({ syncMode: "enrich" });
 
         await destination.sendExport(_export, true);
-        expect(exportArgs.destinationSyncActions.create).toBe(false);
-        expect(exportArgs.destinationSyncActions.update).toBe(true);
-        expect(exportArgs.destinationSyncActions.delete).toBe(false);
+        expect(exportArgs.syncOperations.create).toBe(false);
+        expect(exportArgs.syncOperations.update).toBe(true);
+        expect(exportArgs.syncOperations.delete).toBe(false);
 
         await profile.destroy();
       });
@@ -609,9 +609,9 @@ describe("models/destination", () => {
         await destination.update({ syncMode: "additive" });
 
         await destination.sendExport(_export, true);
-        expect(exportArgs.destinationSyncActions.create).toBe(true);
-        expect(exportArgs.destinationSyncActions.update).toBe(true);
-        expect(exportArgs.destinationSyncActions.delete).toBe(false);
+        expect(exportArgs.syncOperations.create).toBe(true);
+        expect(exportArgs.syncOperations.update).toBe(true);
+        expect(exportArgs.syncOperations.delete).toBe(false);
 
         await profile.destroy();
       });
