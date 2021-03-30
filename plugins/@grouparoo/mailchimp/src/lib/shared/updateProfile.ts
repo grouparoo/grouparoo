@@ -140,8 +140,12 @@ export const updateProfile: UpdateProfileMethod = async ({
       error.message = `${error.message} | ${error.errors
         .map((e) => JSON.stringify(e))
         .join(", ")}`;
-    }
 
+      // just in case of one of the multiple errors message is the one related to the email strict validation.
+      if (error.message.includes("looks fake or invalid")) {
+        error.errorLevel = "info";
+      }
+    }
     throw error;
   }
 

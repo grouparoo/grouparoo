@@ -558,7 +558,7 @@ describe("mailchimp/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
   });
 
-  test("can add a user passing a invalid email", async () => {
+  test("can't add a user passing a invalid email", async () => {
     await expect(
       runExport({
         oldProfileProperties: {},
@@ -572,7 +572,7 @@ describe("mailchimp/exportProfile", () => {
     ).rejects.toThrow();
   });
 
-  test("can add a user passing another invalid email", async () => {
+  test("can't use an email that looks like a fake email (should return an info level error)", async () => {
     try {
       await runExport({
         oldProfileProperties: {},
@@ -585,6 +585,7 @@ describe("mailchimp/exportProfile", () => {
       });
     } catch (error) {
       expect(error).toBeInstanceOf(Error);
+      expect(error.message).toMatch(/looks fake or invalid/i);
       expect(error.errorLevel).toBe("info");
     }
   });
