@@ -226,7 +226,7 @@ export interface ExportProfilesPluginMethod {
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    destinationSyncActions: DestinationSyncActions;
+    destinationSyncActions?: DestinationSyncActions;
     exports: ExportedProfile[];
   }): Promise<{
     success: boolean;
