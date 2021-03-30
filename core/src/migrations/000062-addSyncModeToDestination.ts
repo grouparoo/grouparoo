@@ -3,11 +3,11 @@ export default {
     await migration.addColumn("destinations", "syncMode", {
       type: DataTypes.STRING(191),
       allowNull: false,
-      defaultValue: "sync",
+      defaultValue: "Sync",
     });
 
     await migration.sequelize.query(
-      `UPDATE "destinations" SET "syncMode"="sync"`
+      `UPDATE "destinations" SET "syncMode"='Sync'`
     );
   },
 
