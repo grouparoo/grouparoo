@@ -427,7 +427,7 @@ export namespace DestinationOps {
       destination,
       destinationId,
       destinationOptions,
-      destinationSyncActions,
+      syncOperations,
       exports: _exports,
     }) {
       const outErrors: ErrorWithProfileId[] = [];
@@ -445,7 +445,7 @@ export namespace DestinationOps {
             destination,
             destinationId,
             destinationOptions,
-            destinationSyncActions,
+            syncOperations,
             export: _export,
           });
 
@@ -531,7 +531,7 @@ export namespace DestinationOps {
     );
 
     const syncMode = destination.syncMode;
-    const syncActions = DestinationSyncModeData[syncMode];
+    const syncOperations = DestinationSyncModeData[syncMode];
 
     const options = await destination.getOptions();
     const app = await destination.$get("app");
@@ -571,7 +571,7 @@ export namespace DestinationOps {
         destination,
         destinationId: destination.id,
         destinationOptions: options,
-        destinationSyncActions: syncActions,
+        syncOperations,
         exports: exportedProfiles,
       });
 

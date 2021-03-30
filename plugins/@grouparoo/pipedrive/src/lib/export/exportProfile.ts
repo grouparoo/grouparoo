@@ -19,7 +19,7 @@ class InfoError extends Error {
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
-  destinationSyncActions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -47,7 +47,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const foundId = newFoundId || oldFoundId;
   if (toDelete) {
-    if (!destinationSyncActions.delete) {
+    if (!syncOperations.delete) {
       // only clear groups if syncMode does not allow deletion
       newGroups = [];
     } else {
@@ -70,7 +70,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (foundId) {
     // Update existing Person
-    if (!destinationSyncActions.update) {
+    if (!syncOperations.update) {
       if (toDelete) {
         throw new InfoError("Destination sync mode does not delete profiles.");
       }
@@ -82,7 +82,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     await client.updatePerson(foundId, payload);
   } else if (!toDelete) {
-    if (!destinationSyncActions.create) {
+    if (!syncOperations.create) {
       throw new InfoError(
         "Destination sync mode does not create new profiles."
       );
@@ -91,7 +91,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     await client.createPerson(payload);
   }
 
-  if (toDelete && !destinationSyncActions.delete) {
+  if (toDelete && !syncOperations.delete) {
     throw new InfoError(
       "Destination sync mode does not delete profiles. Only group membership has been cleared."
     );

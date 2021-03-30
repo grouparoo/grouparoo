@@ -46,7 +46,7 @@ export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 const SYNC_MODES = ["Sync", "Additive", "Enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
-export interface DestinationSyncActions {
+export interface DestinationSyncOperations {
   create: boolean;
   update: boolean;
   delete: boolean;
@@ -54,7 +54,7 @@ export interface DestinationSyncActions {
 }
 export const DestinationSyncModeData: Record<
   DestinationSyncMode,
-  DestinationSyncActions
+  DestinationSyncOperations
 > = {
   Sync: {
     create: true,

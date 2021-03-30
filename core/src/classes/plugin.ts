@@ -3,7 +3,7 @@ import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
 import { ExportErrorLevel } from "../models/Export";
 import {
   Destination,
-  DestinationSyncActions,
+  DestinationSyncOperations,
   DestinationSyncMode,
   SimpleDestinationOptions,
 } from "../models/Destination";
@@ -203,10 +203,10 @@ export interface ExportProfilePluginMethod {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
+    syncOperations?: DestinationSyncOperations;
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    destinationSyncActions?: DestinationSyncActions;
     export: ExportedProfile;
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }
@@ -223,10 +223,10 @@ export interface ExportProfilesPluginMethod {
     app: App;
     appId: string;
     appOptions: SimpleAppOptions;
+    syncOperations?: DestinationSyncOperations;
     destination: Destination;
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
-    destinationSyncActions?: DestinationSyncActions;
     exports: ExportedProfile[];
   }): Promise<{
     success: boolean;
