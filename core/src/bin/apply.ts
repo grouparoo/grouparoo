@@ -7,6 +7,7 @@ import {
   processConfigObjects,
   deleteLockedObjects,
 } from "../modules/configLoaders";
+import pluralize from "pluralize";
 
 export class Apply extends CLI {
   constructor() {
@@ -50,7 +51,10 @@ export class Apply extends CLI {
 
         GrouparooCLI.logger.log("");
         GrouparooCLI.logger.log(
-          `✅ Config applied - ${configObjects.length} config objects up-to-date!`
+          `✅ Config applied - ${configObjects.length} config ${pluralize(
+            "object",
+            configObjects.length
+          )} up-to-date!`
         );
       },
       { catchError: true }
