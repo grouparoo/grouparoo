@@ -63,7 +63,7 @@ describe("models/destination", () => {
             app: "test-template-app",
             direction: "export",
             options: [],
-            syncModes: ["Sync", "Enrich", "Additive"],
+            syncModes: ["sync", "enrich", "additive"],
             methods: {
               destinationMappingOptions: async () => {
                 return {
@@ -586,7 +586,7 @@ describe("models/destination", () => {
       });
 
       test("Sync syncMode allows creating, updating and deleting profiles", async () => {
-        await destination.update({ syncMode: "Sync" });
+        await destination.update({ syncMode: "sync" });
 
         await destination.sendExport(_export, true);
         expect(exportArgs.destinationSyncActions.create).toBe(true);
@@ -595,7 +595,7 @@ describe("models/destination", () => {
       });
 
       test("Enrich syncMode only allows updating profiles", async () => {
-        await destination.update({ syncMode: "Enrich" });
+        await destination.update({ syncMode: "enrich" });
 
         await destination.sendExport(_export, true);
         expect(exportArgs.destinationSyncActions.create).toBe(false);
@@ -606,7 +606,7 @@ describe("models/destination", () => {
       });
 
       test("Additive syncMode only allows creating and updating profiles", async () => {
-        await destination.update({ syncMode: "Additive" });
+        await destination.update({ syncMode: "additive" });
 
         await destination.sendExport(_export, true);
         expect(exportArgs.destinationSyncActions.create).toBe(true);
