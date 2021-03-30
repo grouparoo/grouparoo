@@ -137,7 +137,7 @@ export namespace DestinationOps {
    */
   export async function getSupportedSyncModes(destination: Destination) {
     const { pluginConnection } = await destination.getPlugin();
-    return pluginConnection.syncModes || ["Sync"];
+    return pluginConnection.syncModes || ["sync"];
   }
 
   /**

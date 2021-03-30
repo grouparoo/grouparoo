@@ -179,7 +179,7 @@ describe("pipedrive/exportProfile", () => {
   test("can not create a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        destinationSyncActions: DestinationSyncModeData["Enrich"],
+        destinationSyncActions: DestinationSyncModeData["enrich"],
         oldProfileProperties: {},
         newProfileProperties: { Name: "Jimmy Doe", Email: email2 },
         oldGroups: [],
@@ -495,7 +495,7 @@ describe("pipedrive/exportProfile", () => {
   test("can clear groups if deleting and sync mode does not allow deletes but allows updates", async () => {
     await expect(
       runExport({
-        destinationSyncActions: DestinationSyncModeData["Additive"],
+        destinationSyncActions: DestinationSyncModeData["additive"],
         oldProfileProperties: {
           Email: email2,
           Name: "Bobby Jones",

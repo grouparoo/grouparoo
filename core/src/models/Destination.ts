@@ -43,7 +43,7 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["Sync", "Additive", "Enrich"] as const;
+const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
 export interface DestinationSyncOperations {
@@ -56,19 +56,19 @@ export const DestinationSyncModeData: Record<
   DestinationSyncMode,
   DestinationSyncOperations
 > = {
-  Sync: {
+  sync: {
     create: true,
     update: true,
     delete: true,
     description: "Sync all profiles (create, update, delete)",
   },
-  Enrich: {
+  enrich: {
     create: false,
     update: true,
     delete: false,
     description: "Only update existing profiles (update)",
   },
-  Additive: {
+  additive: {
     create: true,
     update: true,
     delete: false,
@@ -143,7 +143,8 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @Default("Sync")
+  @AllowNull(false)
+  @Default("sync")
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 

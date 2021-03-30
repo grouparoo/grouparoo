@@ -54,7 +54,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export profiles to Pipedrive as Person contacts",
           app: "pipedrive",
-          syncModes: ["Sync", "Additive", "Enrich"],
+          syncModes: ["sync", "additive", "enrich"],
           options: [],
           methods: {
             exportProfile,

@@ -349,7 +349,7 @@ export namespace helper {
           direction: "export",
           description: "export profiles to nowhere",
           app: "test-plugin-app",
-          syncModes: ["Sync", "Enrich", "Additive"],
+          syncModes: ["sync", "enrich", "additive"],
           options: [
             { key: "table", required: true },
             { key: "where", required: false },
