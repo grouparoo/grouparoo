@@ -110,6 +110,7 @@ describe("integration/runs/sqlite", () => {
       name: "test destination",
       type: "sqlite-export",
       appId: app.id,
+      syncMode: "TODO",
       options: {
         table: profilesDestinationTableName,
         primaryKey: "id",

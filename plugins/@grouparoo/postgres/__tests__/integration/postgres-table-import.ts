@@ -105,6 +105,7 @@ describe("integration/runs/postgres", () => {
       name: "test destination",
       type: "postgres-export",
       appId: app.id,
+      syncMode: "TODO",
       options: {
         table: profilesDestinationTableName,
         primaryKey: "id",

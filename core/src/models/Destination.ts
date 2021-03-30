@@ -43,7 +43,7 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["sync", "additive", "enrich"] as const;
+const SYNC_MODES = ["sync", "additive", "enrich", "TODO"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
 export interface DestinationSyncOperations {
@@ -73,6 +73,13 @@ export const DestinationSyncModeData: Record<
     update: true,
     delete: false,
     description: "Sync all profiles, but do not delete (create, update)",
+  },
+  TODO: {
+    create: false,
+    update: false,
+    delete: false,
+    description:
+      "To be removed later. Used in plugins that are yet to be updated for sync modes.",
   },
 };
 

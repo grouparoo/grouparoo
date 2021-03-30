@@ -110,6 +110,7 @@ describe("integration/runs/mysql", () => {
       name: "test destination",
       type: "mysql-export",
       appId: app.id,
+      syncMode: "TODO",
       options: {
         table: profilesDestinationTableName,
         primaryKey: "id",

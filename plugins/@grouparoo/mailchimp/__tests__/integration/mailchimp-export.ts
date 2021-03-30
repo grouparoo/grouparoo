@@ -155,6 +155,7 @@ describe("integration/runs/mailchimp-export", () => {
       name: "test destination",
       type: "mailchimp-export",
       appId: app.id,
+      syncMode: "TODO",
       options: destinationOptions,
       mapping: {
         email_address: "email",
