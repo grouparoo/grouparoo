@@ -13,8 +13,6 @@ import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import Loader from "@grouparoo/ui-components/components/loader";
 import { Models, Actions } from "@grouparoo/ui-components/utils/apiData";
 
-const SYNC_MODES = ["Sync", "Enrich", "Additive"]; // TODO maybe pull this in from core somehow
-
 export default function Page(props) {
   const {
     errorHandler,
@@ -169,9 +167,9 @@ export default function Page(props) {
                   <option value={""} disabled>
                     Select an option
                   </option>
-                  {SYNC_MODES.map((o, idx) => (
-                    <option key={o} value={o}>
-                      {o}
+                  {destination.supportedSyncModes.map((mode) => (
+                    <option key={mode} value={mode}>
+                      {mode}
                     </option>
                   ))}
                 </Form.Control>

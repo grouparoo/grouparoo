@@ -4,6 +4,7 @@ import { ExportErrorLevel } from "../models/Export";
 import {
   Destination,
   DestinationSyncActions,
+  DestinationSyncMode,
   SimpleDestinationOptions,
 } from "../models/Destination";
 import { Run } from "../models/Run";
@@ -73,6 +74,7 @@ export interface PluginConnection {
   options: ConnectionOption[];
   propertyOptions?: PluginConnectionPropertyOption[];
   scheduleOptions?: PluginConnectionScheduleOption[];
+  supportedSyncModes?: DestinationSyncMode[];
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;

@@ -157,6 +157,7 @@ export class Destination extends LoggedModel<Destination> {
 
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
+    const supportedSyncModes = await this.getSupportedSyncModes();
     const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
@@ -168,6 +169,7 @@ export class Destination extends LoggedModel<Destination> {
       state: this.state,
       locked: this.locked,
       syncMode: this.syncMode,
+      supportedSyncModes,
       app: app ? await app.apiData() : null,
       mapping,
       options,
@@ -276,6 +278,10 @@ export class Destination extends LoggedModel<Destination> {
 
   async unTrackGroup() {
     return DestinationOps.unTrackGroup(this);
+  }
+
+  async getSupportedSyncModes() {
+    return DestinationOps.getSupportedSyncModes(this);
   }
 
   async validateMappings(

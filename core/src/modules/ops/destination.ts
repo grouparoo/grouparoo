@@ -1,5 +1,6 @@
 import {
   Destination,
+  DestinationSyncMode,
   DestinationSyncModeData,
   SimpleDestinationOptions,
 } from "../../models/Destination";
@@ -129,6 +130,14 @@ export namespace DestinationOps {
       properties: mappedProfileProperties,
       groupNames: mappedGroupNames,
     });
+  }
+
+  /**
+   * Get the Destination Connection's supported Sync Modes
+   */
+  export async function getSupportedSyncModes(destination: Destination) {
+    const { pluginConnection } = await destination.getPlugin();
+    return pluginConnection.supportedSyncModes || ["Sync"];
   }
 
   /**
