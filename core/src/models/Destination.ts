@@ -50,36 +50,57 @@ export interface DestinationSyncOperations {
   create: boolean;
   update: boolean;
   delete: boolean;
-  description: string;
 }
+
 export const DestinationSyncModeData: Record<
   DestinationSyncMode,
-  DestinationSyncOperations
+  {
+    key: DestinationSyncMode;
+    displayName: string;
+    description: string;
+    operations: DestinationSyncOperations;
+  }
 > = {
   sync: {
-    create: true,
-    update: true,
-    delete: true,
+    key: "sync",
+    displayName: "Sync",
     description: "Sync all profiles (create, update, delete)",
-  },
-  enrich: {
-    create: false,
-    update: true,
-    delete: false,
-    description: "Only update existing profiles (update)",
+    operations: {
+      create: true,
+      update: true,
+      delete: true,
+    },
   },
   additive: {
-    create: true,
-    update: true,
-    delete: false,
+    key: "additive",
+    displayName: "Additive",
     description: "Sync all profiles, but do not delete (create, update)",
+    operations: {
+      create: true,
+      update: true,
+      delete: false,
+    },
+  },
+  enrich: {
+    key: "enrich",
+    displayName: "Enrich",
+    description: "Only update existing profiles (update)",
+    operations: {
+      create: false,
+      update: true,
+      delete: false,
+    },
   },
   TODO: {
-    create: false,
-    update: false,
-    delete: false,
+    key: "TODO",
+    displayName: "TODO",
     description:
       "To be removed later. Used in plugins that are yet to be updated for sync modes.",
+    operations: {
+      create: false,
+      update: false,
+      delete: false,
+    },
   },
 };
 
@@ -165,10 +186,12 @@ export class Destination extends LoggedModel<Destination> {
 
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
-    const syncModes = await this.getSupportedSyncModes();
     const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
+
+    const syncModes = await this.getSupportedSyncModes();
+    const syncModeData = syncModes.map((mode) => DestinationSyncModeData[mode]);
 
     return {
       id: this.id,
@@ -177,7 +200,7 @@ export class Destination extends LoggedModel<Destination> {
       state: this.state,
       locked: this.locked,
       syncMode: this.syncMode,
-      syncModes,
+      syncModes: syncModeData,
       app: app ? await app.apiData() : null,
       mapping,
       options,

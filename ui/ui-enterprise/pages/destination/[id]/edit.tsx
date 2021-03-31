@@ -168,8 +168,8 @@ export default function Page(props) {
                     Select an option
                   </option>
                   {destination.syncModes.map((mode) => (
-                    <option key={mode} value={mode}>
-                      {mode}
+                    <option key={mode.key} value={mode.key}>
+                      {mode.displayName} | {mode.description}
                     </option>
                   ))}
                 </Form.Control>

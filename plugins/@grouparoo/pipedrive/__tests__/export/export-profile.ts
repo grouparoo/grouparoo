@@ -89,7 +89,7 @@ async function cleanUp() {
 }
 
 async function runExport({
-  syncOperations = DestinationSyncModeData.sync,
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -179,7 +179,7 @@ describe("pipedrive/exportProfile", () => {
   test("can not create a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData["enrich"],
+        syncOperations: DestinationSyncModeData.enrich.operations,
         oldProfileProperties: {},
         newProfileProperties: { Name: "Jimmy Doe", Email: email2 },
         oldGroups: [],
@@ -219,7 +219,6 @@ describe("pipedrive/exportProfile", () => {
           update: false,
           create: true,
           delete: true,
-          description: "No updates",
         },
         oldProfileProperties: {
           Name: "John Doe",
@@ -470,7 +469,6 @@ describe("pipedrive/exportProfile", () => {
           create: true,
           delete: false,
           update: false,
-          description: "Only create",
         },
         oldProfileProperties: {
           Email: email2,
@@ -495,7 +493,7 @@ describe("pipedrive/exportProfile", () => {
   test("can clear groups if deleting and sync mode does not allow deletes but allows updates", async () => {
     await expect(
       runExport({
-        syncOperations: DestinationSyncModeData["additive"],
+        syncOperations: DestinationSyncModeData.additive.operations,
         oldProfileProperties: {
           Email: email2,
           Name: "Bobby Jones",

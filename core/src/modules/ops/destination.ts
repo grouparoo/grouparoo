@@ -1,6 +1,5 @@
 import {
   Destination,
-  DestinationSyncMode,
   DestinationSyncModeData,
   SimpleDestinationOptions,
 } from "../../models/Destination";
@@ -531,7 +530,7 @@ export namespace DestinationOps {
     );
 
     const syncMode = destination.syncMode;
-    const syncOperations = DestinationSyncModeData[syncMode];
+    const syncOperations = DestinationSyncModeData[syncMode].operations;
 
     const options = await destination.getOptions();
     const app = await destination.$get("app");
