@@ -302,6 +302,7 @@ describe("models/profile", () => {
             expect(properties[k].state).toEqual("ready");
           } else {
             expect(properties[k].state).toEqual("pending");
+            expect(properties[k].startedAt).toBeNull();
           }
         }
       });

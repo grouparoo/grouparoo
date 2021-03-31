@@ -7,7 +7,7 @@ const data = async (props = {}) => {
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     email: faker.internet.email(),
-    passwordHash: faker.random.uuid(),
+    passwordHash: faker.random.alphaNumeric(10),
     lastLoginAt: new Date(),
 
     createdAt: new Date(),
