@@ -182,6 +182,24 @@ describe("mongo/query/profileProperty", () => {
     expect(value).toEqual([true]);
   });
 
+  test("can get only the field of interest without needing to exclude the _id on the projection", async () => {
+    const query = [
+      {
+        $match: {
+          email: "{{email}}",
+        },
+      },
+      {
+        $project: {
+          ios_app: 1,
+        },
+      },
+    ];
+    const queryString = JSON.stringify(query);
+    const value = await getPropertyValue(queryString);
+    expect(value).toEqual([true]);
+  });
+
   test("returns undefined when data is not available", async () => {
     const query = [
       {
