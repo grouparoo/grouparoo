@@ -15,8 +15,14 @@ export const executeQuery: ExecuteQueryMethod = async ({
   } else {
     pipeline.push({ $match: jsonQuery });
   }
-  return connection.db
+  const result = await connection.db
     .collection(sourceOptions.table)
     .aggregate(pipeline)
     .toArray();
+  for (const entry of result) {
+    if (Object.keys(entry).length > 1 && entry.hasOwnProperty("_id")) {
+      delete entry["_id"];
+    }
+  }
+  return result;
 };
