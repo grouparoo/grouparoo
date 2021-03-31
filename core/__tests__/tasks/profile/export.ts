@@ -78,6 +78,7 @@ describe("tasks/profile:export", () => {
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
+              syncModes: ["sync", "additive", "enrich"],
               options: [],
               methods: {
                 exportProfile: async () => {
