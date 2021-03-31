@@ -442,7 +442,7 @@ describe("models/app", () => {
 
     test("api.rpc.app.disconnect", async () => {
       await redis.doCluster("api.rpc.app.disconnect");
-      await utils.sleep(100);
+      await utils.sleep(1000);
       expect(App.disconnect).toHaveBeenCalled();
     });
   });
