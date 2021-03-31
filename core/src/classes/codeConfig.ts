@@ -3,6 +3,7 @@ import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
 import extractDuplicates from "../modules/validators/extractDuplicates";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
+import { DestinationSyncMode } from "../models/Destination";
 
 export interface IdsByClass {
   app?: string[];
@@ -39,6 +40,7 @@ export interface ConfigurationObject {
   permissions?: Array<{ id: string; read: boolean; write: boolean }>;
   value?: string | boolean | number;
   mapping?: { [key: string]: any };
+  syncMode?: DestinationSyncMode;
   bootstrappedProperty?: ConfigurationObject;
   destinationGroupMemberships?: { [key: string]: string };
 
