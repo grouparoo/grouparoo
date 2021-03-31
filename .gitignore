@@ -17,6 +17,7 @@ apps/*/*.log
 
 # API
 log
+logs
 pids
 dist
 core/files/*
