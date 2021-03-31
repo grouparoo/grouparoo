@@ -9,7 +9,7 @@ export function getConnection() {
     app: "mongo",
     name: "mongo-query-import",
     description:
-      "Import or update profiles via a custom MongoDB query. Are accepted regular find queries or the entire aggregate pipeline.",
+      "Import or update profiles via a custom MongoDB query. Regular find queries or the entire aggregate pipelines are accepted .",
     options: [
       {
         key: "table",
