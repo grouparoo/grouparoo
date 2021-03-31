@@ -1,4 +1,5 @@
 import path from "path";
+import { getParentPath } from "../utils/pluginDetails";
 
 export const DEFAULT = {
   general: (config) => {
@@ -54,9 +55,13 @@ export const DEFAULT = {
         public: [path.join(__dirname, "..", "..", "public")],
         next: [config.next.path],
         pid: [path.join(process.cwd(), "pids")],
-        log: [
-          process.env.GROUPAROO_LOGS_PATH || path.join(process.cwd(), "log"),
-        ],
+        log: process.env.GROUPAROO_LOGS_PATH
+          ? [
+              path.isAbsolute(process.env.GROUPAROO_LOGS_PATH)
+                ? process.env.GROUPAROO_LOGS_PATH
+                : path.join(getParentPath(), process.env.GROUPAROO_LOGS_PATH),
+            ]
+          : [],
         plugin: [path.join(process.cwd(), "..", "node_modules")],
         locale: [path.join(process.cwd(), "locales")],
         test: [path.join(process.cwd(), "__tests__")],
