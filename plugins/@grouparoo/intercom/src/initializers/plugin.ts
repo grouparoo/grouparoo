@@ -55,17 +55,18 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export Profiles to contacts in an Intercom account.",
           app: "intercom",
+          syncModes: ["sync", "enrich", "additive"],
           options: [
             {
               key: "creationMode",
               displayName: "Creation",
-              required: true,
+              required: false,
               description: "How should Grouparoo create Intercom contacts?",
             },
             {
               key: "removalMode",
               displayName: "Removal",
-              required: true,
+              required: false,
               description: "How should Grouparoo remove Intercom contacts?",
             },
           ],

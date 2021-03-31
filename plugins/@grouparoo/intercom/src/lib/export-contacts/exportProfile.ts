@@ -13,6 +13,7 @@ import {
   IntercomCacheData,
   getTagIdMap,
 } from "./listMethods";
+import { DestinationSyncOperations } from "@grouparoo/core/dist/models/Destination";
 
 interface IntercomContact {
   id: string;
@@ -78,6 +79,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
   destinationOptions,
+  syncOperations,
   export: {
     toDelete,
     newProfileProperties,
@@ -104,6 +106,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (toDelete) {
     await deleteUser(
       client,
+      syncOperations,
       destinationOptions,
       cacheData,
       found,
@@ -123,6 +126,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   );
   const contact = await createOrUpdateUser(
     client,
+    syncOperations,
     destinationOptions,
     found ? found.id : null,
     payload
@@ -272,6 +276,7 @@ export async function findContact(
 
 async function deleteUser(
   client: any,
+  syncOperations: DestinationSyncOperations,
   destinationOptions: SimpleDestinationOptions,
   cacheData: IntercomCacheData,
   user: IntercomContact,
@@ -287,14 +292,16 @@ async function deleteUser(
   newGroups = [];
   await updateTags(client, cacheData, user, oldGroups, newGroups);
 
+  if (!syncOperations.delete) {
+    throw new InfoError("Destination is not removing contacts.");
+  }
+
   const { removalMode } = destinationOptions;
   switch (removalMode) {
     case RemovalMode.Archive:
       return client.contacts.archive(user.id);
     case RemovalMode.Delete:
       return client.contacts.delete(user.id);
-    case RemovalMode.Skip:
-      throw new InfoError("Destination is not removing contacts.");
     default:
       throw new Error(`Unknown removalMode: ${removalMode}`);
   }
@@ -356,8 +363,13 @@ async function makePayload(
 
 function addCreationPayload(
   payload: any,
+  syncOperations: DestinationSyncOperations,
   destinationOptions: SimpleDestinationOptions
 ) {
+  if (!syncOperations.create) {
+    throw new InfoError("Destination is not creating contacts.");
+  }
+
   const { creationMode } = destinationOptions;
   const external_id = payload.external_id || null;
   let role = null;
@@ -375,9 +387,6 @@ function addCreationPayload(
         role = "lead";
       }
       break;
-    case CreationMode.Enrich:
-      // not updating
-      throw new InfoError("Destination is not creating contacts.");
     default:
       throw new Error(`Unknown creationMode: ${creationMode}`);
   }
@@ -386,20 +395,24 @@ function addCreationPayload(
 
 function addUpdatePayload(
   payload: any,
+  syncOperations: DestinationSyncOperations,
   destinationOptions: SimpleDestinationOptions
 ) {
+  if (!syncOperations.update) {
+    throw new InfoError("Destination is not updating contacts");
+  }
+
   const { creationMode } = destinationOptions;
   const external_id = payload.external_id || null;
   const extra: any = {};
   switch (creationMode) {
     case CreationMode.User:
     case CreationMode.Lead:
-    case CreationMode.Enrich:
       // no changes
       break;
     case CreationMode.Lifecycle:
       // make sure it's the right one
-      if (external_id) {
+      if (external_id && syncOperations.create) {
         extra.role = "user";
       }
       // but note: can't convert user back to lead
@@ -413,6 +426,7 @@ function addUpdatePayload(
 
 async function createOrUpdateUser(
   client: any,
+  syncOperations: DestinationSyncOperations,
   destinationOptions: SimpleDestinationOptions,
   destinationId: string,
   payload: any,
@@ -420,12 +434,12 @@ async function createOrUpdateUser(
 ): Promise<IntercomContact> {
   try {
     if (destinationId) {
-      payload = addUpdatePayload(payload, destinationOptions);
+      payload = addUpdatePayload(payload, syncOperations, destinationOptions);
       attemptedDestinationIds.push(destinationId);
       const { body } = await client.contacts.update(destinationId, payload);
       return body;
     } else {
-      payload = addCreationPayload(payload, destinationOptions);
+      payload = addCreationPayload(payload, syncOperations, destinationOptions);
       const { body } = await client.contacts.create(payload);
       return body;
     }
@@ -462,6 +476,7 @@ async function createOrUpdateUser(
             // try again
             return await createOrUpdateUser(
               client,
+              syncOperations,
               destinationOptions,
               conflictDestinationId,
               payload,

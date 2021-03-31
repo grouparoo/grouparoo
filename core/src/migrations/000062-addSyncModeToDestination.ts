@@ -10,6 +10,11 @@ export default {
       await migration.sequelize.query(
         `UPDATE "destinations" SET "syncMode"='sync'`
       );
+
+      // TODO Intercom option migration
+      // creationMode Enrich, removalMode Skip => Enrich
+      // creationMode != Enrich, removalMode Skip => Additive
+      // creationMode Enrich, removalMode != Skip => ???? Only update and delete
     });
   },
 
