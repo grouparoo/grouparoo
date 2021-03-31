@@ -78,7 +78,9 @@ export class Validate extends CLI {
         throw new Error("validate-rollback");
       });
     } catch (error) {
-      if (error.message !== "validate-rollback") throw error;
+      if (error.message !== "validate-rollback") {
+        GrouparooCLI.logger.fatal(`Validation failed - ${error.message}`);
+      }
     }
 
     return true;
