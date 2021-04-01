@@ -42,7 +42,6 @@ export default {
         await migration.sequelize.query(
           `UPDATE "destinations" SET "syncMode"=? WHERE "id"=?`,
           {
-            logging: true,
             replacements: [syncMode, destId],
           }
         );
@@ -51,7 +50,6 @@ export default {
       await migration.sequelize.query(
         `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
         {
-          logging: true,
           replacements: [Object.keys(intercomDestinations)],
         }
       );
