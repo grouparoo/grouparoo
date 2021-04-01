@@ -1,26 +1,25 @@
 import os from "os";
 import { api, env } from "actionhero";
 import PluginDetails from "../utils/pluginDetails";
-import {
-  App,
-  ApiKey,
-  Source,
-  Schedule,
-  Destination,
-  Import,
-  File,
-  Group,
-  GroupRule,
-  Export,
-  Event,
-  Profile,
-  ProfileProperty,
-  Property,
-  Run,
-  Team,
-  TeamMember,
-  Notification,
-} from "../index";
+
+import { App } from "../models/App";
+import { ApiKey } from "../models/ApiKey";
+import { Source } from "../models/Source";
+import { Schedule } from "../models/Schedule";
+import { Destination } from "../models/Destination";
+import { Import } from "../models/Import";
+import { File } from "../models/File";
+import { Group } from "../models/Group";
+import { GroupRule } from "../models/GroupRule";
+import { Export } from "../models/Export";
+import { Event } from "../models/Event";
+import { Profile } from "../models/Profile";
+import { ProfileProperty } from "../models/ProfileProperty";
+import { Property } from "../models/Property";
+import { Run } from "../models/Run";
+import { Team } from "../models/Team";
+import { TeamMember } from "../models/TeamMember";
+import { Notification } from "../models/Notification";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -146,6 +145,7 @@ export namespace StatusReporters {
         Team,
         TeamMember,
       ];
+
       for (const i in Models) {
         //@ts-ignore
         const model: typeof App = Models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
