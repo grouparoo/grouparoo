@@ -1,6 +1,6 @@
 import os from "os";
 import { api, env } from "actionhero";
-import PluginDetails from "./../utils/pluginDetails";
+import PluginDetails from "../utils/pluginDetails";
 import {
   App,
   ApiKey,
@@ -19,9 +19,10 @@ import {
   Run,
   Team,
   TeamMember,
+  Notification,
 } from "../index";
 
-export interface TelemetryMetric {
+export interface StatusMetric {
   // the possible attributes for a metric are:
   // { collection, topic, aggregation, key, value, count, min, max, avg, imports, exports, runs, errors }
   collection: string;
@@ -39,10 +40,10 @@ export interface TelemetryMetric {
   errors?: number;
 }
 
-export namespace TelemetryReporters {
+export namespace StatusReporters {
   export namespace Cluster {
     export namespace Workers {
-      export async function countWorkers() {
+      export async function countWorkers(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "workers",
@@ -50,10 +51,19 @@ export namespace TelemetryReporters {
           count: Object.keys(await api.resque.queue.workers()).length,
         };
       }
+
+      export async function countErrors(): Promise<StatusMetric> {
+        return {
+          collection: "cluster",
+          topic: "resqueErrors",
+          aggregation: "count",
+          count: await api.resque.queue.failedCount(),
+        };
+      }
     }
 
     export namespace OS {
-      export async function exact() {
+      export async function exact(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "os",
@@ -64,7 +74,7 @@ export namespace TelemetryReporters {
     }
 
     export namespace NODE_ENV {
-      export async function exact() {
+      export async function exact(): Promise<StatusMetric> {
         return {
           collection: "cluster",
           topic: "node_env",
@@ -73,11 +83,22 @@ export namespace TelemetryReporters {
         };
       }
     }
+
+    export namespace NOTIFICATIONS {
+      export async function unread(): Promise<StatusMetric> {
+        return {
+          collection: "cluster",
+          topic: "unreadNotifications",
+          aggregation: "count",
+          count: await Notification.count({ where: { readAt: null } }),
+        };
+      }
+    }
   }
 
   export namespace Plugins {
     export async function Versions() {
-      const metrics: TelemetryMetric[] = [];
+      const metrics: StatusMetric[] = [];
 
       metrics.push({
         collection: "cluster",
@@ -104,7 +125,7 @@ export namespace TelemetryReporters {
 
   export namespace Totals {
     export async function Models() {
-      const metrics: TelemetryMetric[] = [];
+      const metrics: StatusMetric[] = [];
 
       const Models = [
         App,
@@ -140,7 +161,7 @@ export namespace TelemetryReporters {
     }
 
     export async function SourceTotals() {
-      const metrics: TelemetryMetric[] = [];
+      const metrics: StatusMetric[] = [];
       const sources = await Source.findAll();
       for (const i in sources) {
         const source = sources[i];
@@ -165,7 +186,7 @@ export namespace TelemetryReporters {
     }
 
     export async function DestinationTotals() {
-      const metrics: TelemetryMetric[] = [];
+      const metrics: StatusMetric[] = [];
 
       const destinations = await Destination.findAll();
       for (const i in destinations) {
@@ -183,6 +204,15 @@ export namespace TelemetryReporters {
 
       return mergeMetrics(metrics);
     }
+
+    export async function runningRuns(): Promise<StatusMetric> {
+      return {
+        collection: "totals",
+        topic: "runningRuns",
+        aggregation: "count",
+        count: await Run.count({ where: { state: "running" } }),
+      };
+    }
   }
 }
 
@@ -190,8 +220,8 @@ export namespace TelemetryReporters {
  * Merge the counts from metrics with matching collections, topics, and aggregations.
  * This is useful for when you have 2 sources using the same app, and you want to report on the app's totals
  */
-function mergeMetrics(metrics: TelemetryMetric[]) {
-  var mergedMetrics = [];
+function mergeMetrics(metrics: StatusMetric[]) {
+  var mergedMetrics: Array<StatusMetric> = [];
   metrics.forEach((item, idx) => {
     const found = mergedMetrics.some((el, i) => {
       if (i === idx) return false;
