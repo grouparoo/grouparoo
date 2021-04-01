@@ -47,12 +47,14 @@ export default {
         );
       }
 
-      await migration.sequelize.query(
-        `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
-        {
-          replacements: [Object.keys(intercomDestinations)],
-        }
-      );
+      if (intercomDestinations.length > 0) {
+        await migration.sequelize.query(
+          `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
+          {
+            replacements: [Object.keys(intercomDestinations)],
+          }
+        );
+      }
     });
   },
 
