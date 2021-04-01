@@ -43,12 +43,20 @@ describe("tasks/telemetry", () => {
       expect(metrics[1]).toEqual(
         expect.objectContaining({
           collection: "cluster",
+          topic: "resqueErrors",
+          count: 0, // we hope
+        })
+      );
+
+      expect(metrics[2]).toEqual(
+        expect.objectContaining({
+          collection: "cluster",
           topic: "os",
           aggregation: "exact",
         })
       );
 
-      expect(metrics[2]).toEqual(
+      expect(metrics[3]).toEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "node_env",
@@ -57,7 +65,7 @@ describe("tasks/telemetry", () => {
         })
       );
 
-      expect(metrics[3]).toEqual(
+      expect(metrics[4]).toEqual(
         expect.objectContaining({
           collection: "cluster",
           topic: "@grouparoo/core",
@@ -66,7 +74,7 @@ describe("tasks/telemetry", () => {
         })
       );
 
-      expect(metrics[4]).toEqual(
+      expect(metrics[5]).toEqual(
         expect.objectContaining({
           collection: "totals",
           topic: "App",
