@@ -148,7 +148,6 @@ describe("integration/runs/hubspot", () => {
       name: "test destination",
       type: "hubspot-export",
       appId: app.id,
-      syncMode: "TODO",
       mapping: {
         email: "email",
         firstname: "firstName",

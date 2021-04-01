@@ -43,7 +43,7 @@ export interface SimpleDestinationGroupMembership {
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
 
-const SYNC_MODES = ["sync", "additive", "enrich", "TODO"] as const;
+const SYNC_MODES = ["sync", "additive", "enrich"] as const;
 export type DestinationSyncMode = typeof SYNC_MODES[number];
 
 export interface DestinationSyncOperations {
@@ -88,17 +88,6 @@ export const DestinationSyncModeData: Record<
     operations: {
       create: false,
       update: true,
-      delete: false,
-    },
-  },
-  TODO: {
-    key: "TODO",
-    displayName: "TODO",
-    description:
-      "To be removed later. Used in plugins that are yet to be updated for sync modes.",
-    operations: {
-      create: false,
-      update: false,
       delete: false,
     },
   },
@@ -315,17 +304,19 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateSyncMode() {
-    if (this.state === "ready") {
-      if (!this.syncMode) {
-        throw new Error(`Sync mode is required for destination ${this.name}`);
-      }
+    if (this.state !== "ready") return;
 
-      const supportedModes = await this.getSupportedSyncModes();
-      if (!supportedModes.includes(this.syncMode)) {
-        throw new Error(
-          `${this.name} does not support sync mode "${this.syncMode}"`
-        );
-      }
+    const supportedModes = await this.getSupportedSyncModes();
+    if (supportedModes.length === 0) return; // for destinations that have not implemented sync modes
+
+    if (!this.syncMode) {
+      throw new Error(`Sync mode is required for destination ${this.name}`);
+    }
+
+    if (!supportedModes.includes(this.syncMode)) {
+      throw new Error(
+        `${this.name} does not support sync mode "${this.syncMode}"`
+      );
     }
   }
 

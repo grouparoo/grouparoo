@@ -160,7 +160,7 @@ export default function Page(props) {
                 <Form.Control
                   as="select"
                   required={true}
-                  disabled={loading}
+                  disabled={loading || destination.syncModes.length === 0}
                   defaultValue={destination.syncMode?.toString() || ""}
                   onChange={(e) => update(e)}
                 >
@@ -173,6 +173,11 @@ export default function Page(props) {
                     </option>
                   ))}
                 </Form.Control>
+                <Form.Text className="text-muted">
+                  {destination.syncModes.length > 0
+                    ? "How should this destination sync profiles?"
+                    : "This destination has not been updated to support sync modes."}
+                </Form.Text>
               </Form.Group>
 
               <p>

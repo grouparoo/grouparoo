@@ -66,7 +66,6 @@ module.exports = async function getConfig() {
         // if not provided , name auto-generates (Sync to Mailchimp Destination)
         type: "mailchimp-export", // required
         appId: "mailchimpapp", // required
-        syncMode: "TODO", // required
         // if not provided groupId will be the one auto created of "everyone in this table"
         // ${parent}_destination_group (magic_table_destination_group)
         options: {
