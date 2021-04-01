@@ -17,14 +17,23 @@ export namespace Status {
     // information about how Grouparoo is being operated
     metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
     metrics.push(await StatusReporters.Cluster.Workers.countErrors());
+    metrics.push(await StatusReporters.Cluster.Workers.leader());
     metrics.push(await StatusReporters.Cluster.OS.exact());
     metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
 
     // usage counts
     metrics.push(...(await StatusReporters.Totals.Models()));
 
+    // thing in progress
+    metrics.push(await StatusReporters.Pending.pendingImports());
+    metrics.push(await StatusReporters.Pending.pendingExports());
+    metrics.push(await StatusReporters.Pending.pendingProfiles());
+    metrics.push(...(await StatusReporters.Pending.pendingRuns()));
+
     await set(metrics);
-    await chatRoom.broadcast(null, "system:status", { metrics });
+    await chatRoom.broadcast({}, "system:status", { metrics });
+
+    return metrics;
   }
 
   export async function get(limit = maxSamples) {

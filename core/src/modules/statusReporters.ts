@@ -1,6 +1,7 @@
 import os from "os";
-import { api, env } from "actionhero";
+import { api, env, task } from "actionhero";
 import PluginDetails from "../utils/pluginDetails";
+import { Op } from "sequelize";
 
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -26,7 +27,7 @@ export interface StatusMetric {
   // { collection, topic, aggregation, key, value, count, min, max, avg, imports, exports, runs, errors }
   collection: string;
   topic: string;
-  aggregation: string;
+  aggregation: "count" | "exact";
   key?: string;
   value?: string;
   count?: number;
@@ -37,6 +38,7 @@ export interface StatusMetric {
   exports?: number;
   runs?: number;
   errors?: number;
+  metadata?: string;
 }
 
 export namespace StatusReporters {
@@ -57,6 +59,16 @@ export namespace StatusReporters {
           topic: "resqueErrors",
           aggregation: "count",
           count: await api.resque.queue.failedCount(),
+        };
+      }
+
+      export async function leader(): Promise<StatusMetric> {
+        const resqueDetails = await task.details();
+        return {
+          collection: "cluster",
+          topic: "resqueLeader",
+          aggregation: "exact",
+          value: resqueDetails.leader || "None",
         };
       }
     }
@@ -204,13 +216,69 @@ export namespace StatusReporters {
 
       return mergeMetrics(metrics);
     }
+  }
 
-    export async function runningRuns(): Promise<StatusMetric> {
-      return {
-        collection: "totals",
-        topic: "runningRuns",
+  export namespace Pending {
+    export async function pendingRuns() {
+      const metrics: StatusMetric[] = [];
+
+      const activeRuns = await Run.findAll({ where: { state: "running" } });
+
+      metrics.push({
+        collection: "pending",
+        topic: "runs",
         aggregation: "count",
-        count: await Run.count({ where: { state: "running" } }),
+        count: activeRuns.length,
+      });
+
+      for (const i in activeRuns) {
+        const run = activeRuns[i];
+        const creatorName = await run.getCreatorName();
+        const percentComplete = run.percentComplete;
+        const highWaterMark = run.highWaterMark
+          ? Object.values(run.highWaterMark)[0]
+          : run.groupHighWaterMark;
+
+        metrics.push({
+          collection: "percentComplete",
+          topic: "runs",
+          aggregation: "exact",
+          key: run.id,
+          value: creatorName,
+          count: percentComplete,
+          metadata: highWaterMark?.toString(),
+        });
+      }
+
+      return mergeMetrics(metrics);
+    }
+
+    export async function pendingProfiles(): Promise<StatusMetric> {
+      return {
+        collection: "pending",
+        topic: "profiles",
+        aggregation: "count",
+        count: await Profile.count({ where: { state: { [Op.ne]: "ready" } } }),
+      };
+    }
+
+    export async function pendingImports(): Promise<StatusMetric> {
+      return {
+        collection: "pending",
+        topic: "imports",
+        aggregation: "count",
+        count: await Import.count({ where: { exportedAt: null } }),
+      };
+    }
+
+    export async function pendingExports(): Promise<StatusMetric> {
+      return {
+        collection: "pending",
+        topic: "exports",
+        aggregation: "count",
+        count: await Export.count({
+          where: { completedAt: null, errorMessage: null },
+        }),
       };
     }
   }

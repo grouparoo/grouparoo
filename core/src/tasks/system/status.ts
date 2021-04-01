@@ -1,31 +1,31 @@
-import { Task, api } from "actionhero";
+import { Task, api, log } from "actionhero";
 import { GrouparooCLI } from "../../modules/cli";
 import { CLS } from "../../modules/cls";
+import { Status } from "../../modules/status";
+import { StatusMetric } from "../../modules/statusReporters";
 
 export class StatusTask extends Task {
   constructor() {
     super();
     this.name = "status";
-    this.description = "log and display status";
-    this.frequency = 1000 * 10; // every 10 seconds
-    this.frequency =
-      process.env.GROUPAROO_RUN_MODE === "cli:run" ? 1000 * 10 : 0; // every 10 seconds
+    this.description =
+      "Calculate and store status.  If we are running via the CLI, log it there too";
+    this.frequency = 1000 * 5; // every 5 seconds
     this.queue = "system";
   }
 
   async run() {
-    // double check...
-    if (process.env.GROUPAROO_RUN_MODE !== "cli:run") return;
-
-    const toStop = await this.checkForComplete();
-    if (toStop) await this.stopServer();
+    const runMode = process.env.GROUPAROO_RUN_MODE;
+    const samples = await this.getSamples();
+    if (runMode === "cli:run") this.logSamples(samples);
+    const complete = await this.checkForComplete(samples);
+    if (runMode === "cli:run" && complete) await this.stopServer();
   }
 
-  async checkForComplete() {
-    const { pendingStatus } = await this.statusReport();
+  async checkForComplete(samples: StatusMetric[]) {
     let pendingItems = 0;
-    for (const key in pendingStatus) {
-      pendingItems += pendingStatus[key][0] as number;
+    for (const sample of samples) {
+      if (sample.collection === "pending") pendingItems += sample.count;
     }
 
     if (pendingItems > 0) return false;
@@ -33,9 +33,9 @@ export class StatusTask extends Task {
   }
 
   async stopServer() {
-    GrouparooCLI.logger.log("All Tasks Complete!");
+    log("All Tasks Complete!", "notice");
 
-    // do not await so the task can end so the server can shut down
+    // do not await so the promise can end so the server can shut down
     new Promise(async () => {
       await api.process.stop();
       GrouparooCLI.logger.log(
@@ -45,22 +45,37 @@ export class StatusTask extends Task {
     });
   }
 
-  async statusReport(title = "Status") {
-    let pendingStatus: GrouparooCLI.LogStatus;
-    let runStatus: GrouparooCLI.LogStatus;
-
+  async getSamples() {
+    let samples: StatusMetric[];
     await CLS.wrap(async () => {
-      pendingStatus = await GrouparooCLI.getPendingStatus();
-      runStatus = await GrouparooCLI.getRunsStatus();
-
-      if (process.env.NODE_ENV !== "test") {
-        GrouparooCLI.logger.status(title, [
-          { header: "Pending Items", status: pendingStatus },
-          { header: "Active Runs", status: runStatus },
-        ]);
-      }
+      samples = await Status.sample();
     });
 
-    return { pendingStatus, runStatus };
+    return samples;
+  }
+
+  logSamples(samples: StatusMetric[]) {
+    if (process.env.NODE_ENV === "test") return;
+
+    const pendingItems = samples
+      .filter((s) => s.collection === "pending")
+      .map((s) => {
+        return { [s.topic]: [s.count] };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    const pendingRuns = samples
+      .filter((s) => s.topic === "runs" && s.collection === "percentComplete")
+      .map((s) => {
+        return {
+          [s.value]: [`${s.count}%${s.metadata ? ` (${s.metadata})` : ""}`],
+        };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    GrouparooCLI.logger.status("Status", [
+      { header: "Pending Items", status: pendingItems },
+      { header: "Active Runs", status: pendingRuns },
+    ]);
   }
 }

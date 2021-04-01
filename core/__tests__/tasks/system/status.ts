@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run, Log, Import, Export, plugin } from "../../../src";
+import { Run } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../src/tasks/system/status";
 
@@ -23,23 +23,13 @@ describe("tasks/status", () => {
       expect(found[0].timestamp).toBeNull();
     });
 
-    test("it will have no recurring frequency when the server is started", async () => {
-      const instance = new StatusTask();
-      expect(instance.frequency).toBe(0);
-    });
-
-    test("it will have a recurring frequency when the server is running", async () => {
-      process.env.GROUPAROO_RUN_MODE = "cli:run";
-      const instance = new StatusTask();
-      expect(instance.frequency).toBeGreaterThan(0);
-    });
-
     test("will be complete with no pending items", async () => {
       await Run.truncate(); // there will be pending runs from `factories.properties()`
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      const complete = await instance.checkForComplete();
+      const samples = await instance.getSamples();
+      const complete = await instance.checkForComplete(samples);
       expect(complete).toBe(true);
     });
 
@@ -49,7 +39,8 @@ describe("tasks/status", () => {
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      expect(await instance.checkForComplete()).toBe(false);
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
       await profile.destroy();
     });
 
@@ -60,7 +51,8 @@ describe("tasks/status", () => {
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      expect(await instance.checkForComplete()).toBe(false);
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
       await profile.destroy();
     });
 
@@ -71,7 +63,8 @@ describe("tasks/status", () => {
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      expect(await instance.checkForComplete()).toBe(false);
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
       await profile.destroy();
     });
 
@@ -80,7 +73,8 @@ describe("tasks/status", () => {
 
       process.env.GROUPAROO_RUN_MODE = "cli:run";
       const instance = new StatusTask();
-      expect(await instance.checkForComplete()).toBe(false);
+      const samples = await instance.getSamples();
+      expect(await instance.checkForComplete(samples)).toBe(false);
       await run.destroy();
     });
   });
