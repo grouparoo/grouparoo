@@ -155,30 +155,30 @@ export default function Page(props) {
                 </Form.Control.Feedback>
               </Form.Group>
 
-              <Form.Group controlId="syncMode">
-                <Form.Label>Sync Mode</Form.Label>
-                <Form.Control
-                  as="select"
-                  required={true}
-                  disabled={loading || destination.syncModes.length === 0}
-                  defaultValue={destination.syncMode?.toString() || ""}
-                  onChange={(e) => update(e)}
-                >
-                  <option value={""} disabled>
-                    Select an option
-                  </option>
-                  {destination.syncModes.map((mode) => (
-                    <option key={mode.key} value={mode.key}>
-                      {mode.displayName} | {mode.description}
+              {destination.syncModes.length > 0 ? (
+                <Form.Group controlId="syncMode">
+                  <Form.Label>Sync Mode</Form.Label>
+                  <Form.Control
+                    as="select"
+                    required={true}
+                    disabled={loading}
+                    defaultValue={destination.syncMode?.toString() || ""}
+                    onChange={(e) => update(e)}
+                  >
+                    <option value={""} disabled>
+                      Select an option
                     </option>
-                  ))}
-                </Form.Control>
-                <Form.Text className="text-muted">
-                  {destination.syncModes.length > 0
-                    ? "How should this destination sync profiles?"
-                    : "This destination has not been updated to support sync modes."}
-                </Form.Text>
-              </Form.Group>
+                    {destination.syncModes.map((mode) => (
+                      <option key={mode.key} value={mode.key}>
+                        {mode.displayName} | {mode.description}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Form.Text className="text-muted">
+                    How should this destination sync profiles?
+                  </Form.Text>
+                </Form.Group>
+              ) : null}
 
               <p>
                 <strong>App</strong>:{" "}
