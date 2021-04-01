@@ -171,8 +171,7 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
-  @AllowNull(false)
-  @Default("sync")
+  @AllowNull(true)
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 
@@ -316,11 +315,17 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateSyncMode() {
-    const supportedModes = await this.getSupportedSyncModes();
-    if (!supportedModes.includes(this.syncMode)) {
-      throw new Error(
-        `${this.name} does not support sync mode "${this.syncMode}"`
-      );
+    if (this.state === "ready") {
+      if (!this.syncMode) {
+        throw new Error(`Sync mode is required for destination ${this.name}`);
+      }
+
+      const supportedModes = await this.getSupportedSyncModes();
+      if (!supportedModes.includes(this.syncMode)) {
+        throw new Error(
+          `${this.name} does not support sync mode "${this.syncMode}"`
+        );
+      }
     }
   }
 

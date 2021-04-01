@@ -118,6 +118,7 @@ describe("tasks/profile:export", () => {
         destination = await Destination.create({
           name: "test destination",
           type: "export-from-test-template-app",
+          syncMode: "sync",
           appId: app.id,
         });
         await destination.setMapping({

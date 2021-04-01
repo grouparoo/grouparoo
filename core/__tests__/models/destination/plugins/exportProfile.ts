@@ -151,6 +151,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-app",
+        syncMode: "sync",
         appId: app.id,
       });
       await destination.update({ state: "ready" });

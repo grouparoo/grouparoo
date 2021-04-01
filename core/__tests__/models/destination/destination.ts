@@ -34,6 +34,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test destination",
         type: "test-plugin-export",
+        syncMode: "sync",
         appId: app.id,
       });
 
@@ -62,12 +63,14 @@ describe("models/destination", () => {
     test("draft destination can share the same name, but not with ready destination", async () => {
       const destinationOne = await Destination.create({
         type: "test-plugin-export",
+        syncMode: "sync",
         appId: app.id,
       });
 
       const otherApp = await helper.factories.app();
       const destinationTwo = await Destination.create({
         type: "test-plugin-export",
+        syncMode: "sync",
         appId: otherApp.id,
       });
 
@@ -352,6 +355,7 @@ describe("models/destination", () => {
         const destination = Destination.build({
           appId: app.id,
           type: "test-plugin-export",
+          syncMode: "sync",
           state: "ready",
         });
 
@@ -425,16 +429,47 @@ describe("models/destination", () => {
         await ok.destroy();
       });
 
-      test("a destination cannot set an unsupported sync mode", async () => {
+      test("a destination cannot be created in the ready state with missing syncMode", async () => {
         const destination = Destination.build({
+          appId: app.id,
+          type: "test-plugin-export",
+          state: "ready",
+        });
+
+        await expect(destination.save()).rejects.toThrow(
+          /Sync mode is required/
+        );
+      });
+
+      test("destination syncMode must be set on ready", async () => {
+        const destination = await Destination.create({
+          appId: app.id,
+          type: "test-plugin-export",
+        });
+
+        await destination.setOptions({ table: "some table" });
+
+        await expect(destination.update({ state: "ready" })).rejects.toThrow(
+          /Sync mode is required/
+        );
+
+        await destination.destroy();
+      });
+
+      test("a destination cannot set an unsupported sync mode", async () => {
+        const destination = await Destination.create({
           appId: app.id,
           type: "test-plugin-export",
           syncMode: "RandomSyncMode",
         });
 
-        await expect(destination.save()).rejects.toThrow(
+        await destination.setOptions({ table: "some table" });
+
+        await expect(destination.update({ state: "ready" })).rejects.toThrow(
           /does not support sync mode/
         );
+
+        await destination.destroy();
       });
     });
 
@@ -446,6 +481,7 @@ describe("models/destination", () => {
         destination = await Destination.create({
           name: "test destination",
           appId: app.id,
+          syncMode: "sync",
           type: "test-plugin-export",
         });
 

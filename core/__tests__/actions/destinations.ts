@@ -63,21 +63,6 @@ describe("actions/destinations", () => {
       id = destination.id;
     });
 
-    test("destination must specify syncMode on creation", async () => {
-      connection.params = {
-        csrfToken,
-        name: "test destination",
-        type: "test-plugin-export",
-        appId: app.id,
-      };
-      const { error } = await specHelper.runAction(
-        "destination:create",
-        connection
-      );
-
-      expect(error.message).toMatch(/syncMode is a required parameter/);
-    });
-
     test("only one destination can be created for each app with the same options", async () => {
       connection.params = {
         csrfToken,

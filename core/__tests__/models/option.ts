@@ -255,6 +255,7 @@ describe("models/option", () => {
           connection = await Destination.create({
             name: "destination - default option values",
             type: "export-from-test-template-app",
+            syncMode: "sync",
             appId: appWithOptions.id,
           });
         });

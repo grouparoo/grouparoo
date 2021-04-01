@@ -3,12 +3,11 @@ export default {
     await migration.sequelize.transaction(async () => {
       await migration.addColumn("destinations", "syncMode", {
         type: DataTypes.STRING(191),
-        allowNull: false,
-        defaultValue: "sync",
+        allowNull: true,
       });
 
       await migration.sequelize.query(
-        `UPDATE "destinations" SET "syncMode"='sync'`
+        `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready'`
       );
 
       // TODO Intercom option migration
