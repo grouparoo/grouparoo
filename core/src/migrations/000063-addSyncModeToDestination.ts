@@ -8,12 +8,12 @@ export default {
 
       // Pipedrive
       await migration.sequelize.query(
-        `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready' AND "type"='pipedrive-export'`
+        `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready' AND "type"='pipedrive-export' AND "locked" IS NULL`
       );
 
       // Intercom
       const [intercomOptions] = await migration.sequelize.query(
-        `SELECT "ownerId" AS "id", "key", "value" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "state"='ready' AND d.type='intercom-export-contacts'`
+        `SELECT "ownerId" AS "id", "key", "value" FROM "options" o JOIN "destinations" d ON o."ownerId"=d.id WHERE "state"='ready' AND d.type='intercom-export-contacts' AND "locked" IS NULL`
       );
 
       const intercomDestinations = intercomOptions.reduce((dest, opt) => {
