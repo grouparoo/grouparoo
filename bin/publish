@@ -85,7 +85,7 @@ if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
   # and update main with this new version
   git checkout main
   git pull
-  git merge stable
+  git rebase stable
   git push origin main
 
   # Make sure to exit script with code 1 if publish failed

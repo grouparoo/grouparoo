@@ -6,6 +6,7 @@ import {
   loadConfigObjects,
   processConfigObjects,
 } from "../modules/configLoaders";
+import pluralize from "pluralize";
 
 export class Validate extends CLI {
   constructor() {
@@ -43,7 +44,12 @@ export class Validate extends CLI {
       );
     }
 
-    GrouparooCLI.logger.log(`Validating ${configObjects.length} objects...`);
+    GrouparooCLI.logger.log(
+      `Validating ${configObjects.length} ${pluralize(
+        "object",
+        configObjects.length
+      )}...`
+    );
 
     try {
       await api.sequelize.transaction(async () => {
@@ -55,21 +61,26 @@ export class Validate extends CLI {
         if (errors.length > 0) {
           GrouparooCLI.logger.log("");
           GrouparooCLI.logger.fatal(
-            `Validation failed - ${errors.length} validation error${
-              errors.length !== 1 ? "s" : ""
-            }`
+            `Validation failed - ${errors.length} validation ${pluralize(
+              "errors",
+              errors.length
+            )}`
           );
         } else {
           GrouparooCLI.logger.log("");
           GrouparooCLI.logger.log(
-            `✅ Validation succeeded - ${configObjects.length} config objects OK!`
+            `✅ Validation succeeded - ${
+              configObjects.length
+            } config ${pluralize("object", configObjects.length)} OK!`
           );
         }
 
         throw new Error("validate-rollback");
       });
     } catch (error) {
-      if (error.message !== "validate-rollback") throw error;
+      if (error.message !== "validate-rollback") {
+        GrouparooCLI.logger.fatal(`Validation failed - ${error.message}`);
+      }
     }
 
     return true;

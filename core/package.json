@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.2.9",
+  "version": "0.2.12-alpha.0",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -35,7 +35,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/client-web": "0.2.9",
+    "@grouparoo/client-web": "0.2.12-alpha.0",
     "@types/fs-extra": "*",
     "@types/node": "*",
     "@types/validator": "*",
@@ -65,6 +65,7 @@
     "pacote": "11.3.1",
     "pg": "8.5.1",
     "pg-hstore": "2.3.3",
+    "pluralize": "8.0.0",
     "prettier": "2.2.1",
     "reflect-metadata": "0.1.13",
     "sequelize": "6.6.2",
@@ -78,9 +79,10 @@
     "ws": "7.4.4"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.2.9",
+    "@grouparoo/spec-helper": "0.2.12-alpha.0",
     "@types/faker": "*",
     "@types/jest": "*",
+    "@types/pluralize": "0.0.29",
     "csv-parse": "4.15.3",
     "jest": "26.6.3",
     "jest-fetch-mock": "3.0.3",

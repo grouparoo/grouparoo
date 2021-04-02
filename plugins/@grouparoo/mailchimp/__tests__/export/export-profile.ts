@@ -32,6 +32,7 @@ const brandNewName = "Jake";
 const invalidPhone = "000";
 const invalidNumber = "AAAAA";
 const invalidEmail = "AAAAA";
+const otherInvalidEmail = "foo@example.com";
 
 // comment this to generate new emails.
 // const newEmails = true;
@@ -557,7 +558,7 @@ describe("mailchimp/exportProfile", () => {
     expect(nonexistentUser).toBe(null);
   });
 
-  test("can add a user passing a invalid email", async () => {
+  test("can't add a user passing a invalid email", async () => {
     await expect(
       runExport({
         oldProfileProperties: {},
@@ -569,5 +570,23 @@ describe("mailchimp/exportProfile", () => {
         toDelete: false,
       })
     ).rejects.toThrow();
+  });
+
+  test("can't use an email that looks like a fake email (should return an info level error)", async () => {
+    try {
+      await runExport({
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email_address: otherInvalidEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      });
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toMatch(/looks fake or invalid/i);
+      expect(error.errorLevel).toBe("info");
+    }
   });
 });

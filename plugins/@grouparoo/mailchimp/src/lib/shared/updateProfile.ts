@@ -130,13 +130,22 @@ export const updateProfile: UpdateProfileMethod = async ({
       tags: tagPayload,
     });
   } catch (error) {
-    // sometimes there are multiple errors that mailchimp puts in error.errors (which are json objects)
+    const errorMessage = error?.response?.body?.detail || "";
+    // in case of strict validation cases the error must be set to info level.
+    if (errorMessage.includes("looks fake or invalid")) {
+      error.errorLevel = "info";
+    }
     if (error.errors) {
+      // sometimes there are multiple errors that mailchimp puts in error.errors (which are json objects)
       error.message = `${error.message} | ${error.errors
         .map((e) => JSON.stringify(e))
         .join(", ")}`;
-    }
 
+      // just in case of one of the multiple errors message is the one related to the email strict validation.
+      if (error.message.includes("looks fake or invalid")) {
+        error.errorLevel = "info";
+      }
+    }
     throw error;
   }
 

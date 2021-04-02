@@ -52,7 +52,7 @@ export class Plugins extends Initializer {
               displayName: "Connection String URI",
               required: true,
               description:
-                "The MongoDB Connection String. Normally, this is connection string is provided by the Mongo DB service.",
+                "The MongoDB Connection String. Normally, this connection string is provided by the Mongo DB service.",
               placeholder: "mongodb://localhost:27017",
             },
             {
