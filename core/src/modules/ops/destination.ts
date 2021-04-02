@@ -529,10 +529,8 @@ export namespace DestinationOps {
       destination
     );
 
-    const syncMode = destination.syncMode;
-    const syncOperations = syncMode
-      ? DestinationSyncModeData[syncMode].operations
-      : DestinationSyncModeData.sync.operations; // allow everything for those that have not implemented sync modes
+    const syncMode = await destination.getSyncMode();
+    const syncOperations = DestinationSyncModeData[syncMode].operations;
 
     const options = await destination.getOptions();
     const app = await destination.$get("app");

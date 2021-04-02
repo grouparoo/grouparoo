@@ -178,6 +178,7 @@ export class Destination extends LoggedModel<Destination> {
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
 
+    const syncMode = await this.getSyncMode();
     const syncModes = await this.getSupportedSyncModes();
     const syncModeData = syncModes.map((mode) => DestinationSyncModeData[mode]);
 
@@ -187,7 +188,7 @@ export class Destination extends LoggedModel<Destination> {
       type: this.type,
       state: this.state,
       locked: this.locked,
-      syncMode: this.syncMode,
+      syncMode,
       syncModes: syncModeData,
       app: app ? await app.apiData() : null,
       mapping,
@@ -303,17 +304,36 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.getSupportedSyncModes(this);
   }
 
+  async getSyncMode() {
+    if (this.syncMode) return this.syncMode;
+
+    const supportedSyncModes = await this.getSupportedSyncModes();
+    if (supportedSyncModes.length === 1) {
+      // If destination only supports one sync mode, use it
+      return supportedSyncModes[0];
+    } else if (supportedSyncModes.length === 0) {
+      // If destination does not support sync modes, let it create, update, and delete
+      return "sync";
+    }
+
+    return null;
+  }
+
   async validateSyncMode() {
     if (this.state !== "ready") return;
 
     const supportedModes = await this.getSupportedSyncModes();
-    if (supportedModes.length === 0) return; // for destinations that have not implemented sync modes
 
-    if (!this.syncMode) {
+    // Sync mode is not required for destinations that:
+    //    1. Have not implemented sync modes
+    //    2. Only support one sync mode (it'll always be used)
+    const isRequired = supportedModes.length > 1;
+
+    if (isRequired && !this.syncMode) {
       throw new Error(`Sync mode is required for destination ${this.name}`);
     }
 
-    if (!supportedModes.includes(this.syncMode)) {
+    if (this.syncMode && !supportedModes.includes(this.syncMode)) {
       throw new Error(
         `${this.name} does not support sync mode "${this.syncMode}"`
       );
