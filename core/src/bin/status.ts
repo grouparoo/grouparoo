@@ -67,7 +67,7 @@ export class StatusCLI extends CLI {
         .reduce((s, arr) => Object.assign(s, arr), {});
 
       const pendingRuns = samples
-        .filter((s) => s.topic === "runs" && s.collection === "percentComplete")
+        .filter((s) => s.topic === "Run" && s.collection === "percentComplete")
         .map((s) => {
           return {
             [s.value]: [`${s.count}%${s.metadata ? ` (${s.metadata})` : ""}`],

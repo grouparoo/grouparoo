@@ -241,7 +241,7 @@ export namespace StatusReporters {
 
         metrics.push({
           collection: "percentComplete",
-          topic: "runs",
+          topic: "Run",
           aggregation: "exact",
           key: run.id,
           value: creatorName,
@@ -256,7 +256,7 @@ export namespace StatusReporters {
     export async function pendingProfiles(): Promise<StatusMetric> {
       return {
         collection: "pending",
-        topic: "profiles",
+        topic: "Profile",
         aggregation: "count",
         count: await Profile.count({ where: { state: { [Op.ne]: "ready" } } }),
       };
@@ -265,7 +265,7 @@ export namespace StatusReporters {
     export async function pendingImports(): Promise<StatusMetric> {
       return {
         collection: "pending",
-        topic: "imports",
+        topic: "Import",
         aggregation: "count",
         count: await Import.count({ where: { exportedAt: null } }),
       };
@@ -274,7 +274,7 @@ export namespace StatusReporters {
     export async function pendingExports(): Promise<StatusMetric> {
       return {
         collection: "pending",
-        topic: "exports",
+        topic: "Export",
         aggregation: "count",
         count: await Export.count({
           where: { completedAt: null, errorMessage: null },
