@@ -44,7 +44,10 @@ export async function loadDestination(
     group = await getParentByName(Group, configObject.groupId);
   }
 
-  await destination.update({ name: configObject.name });
+  await destination.update({
+    name: configObject.name,
+    syncMode: configObject.syncMode,
+  });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));
 
