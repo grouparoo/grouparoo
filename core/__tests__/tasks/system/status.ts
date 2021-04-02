@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { Run } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../src/tasks/system/status";
+import { Status } from "../../../src/modules/status";
 
 describe("tasks/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -76,6 +77,15 @@ describe("tasks/status", () => {
       const samples = await instance.getSamples();
       expect(await instance.checkForComplete(samples)).toBe(false);
       await run.destroy();
+    });
+
+    test("running the task will create a status sample", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      const instance = new StatusTask();
+      await instance.getSamples();
+
+      const samples = await Status.get();
+      expect(samples.length).toBe(1);
     });
   });
 });

@@ -73,4 +73,87 @@ describe("modules/status", () => {
       expect(foundMetrics.length).toBe(3);
     });
   });
+
+  describe("sample", () => {
+    test("a sample contains data", async () => {
+      const sample = await Status.sample();
+      expect(sample).toEqual([
+        {
+          aggregation: "count",
+          collection: "cluster",
+          count: 0,
+          topic: "workers",
+        },
+        {
+          aggregation: "count",
+          collection: "cluster",
+          count: 0,
+          topic: "resqueErrors",
+        },
+        {
+          aggregation: "exact",
+          collection: "cluster",
+          topic: "resqueLeader",
+          value: "None",
+        },
+        expect.objectContaining({
+          aggregation: "exact",
+          collection: "cluster",
+          topic: "os",
+          // value: "darwin/20.3.0",
+        }),
+        {
+          aggregation: "exact",
+          collection: "cluster",
+          topic: "node_env",
+          value: "test",
+        },
+        {
+          aggregation: "count",
+          collection: "totals",
+          count: 0,
+          topic: "Profile",
+        },
+        {
+          aggregation: "count",
+          collection: "totals",
+          count: 0,
+          topic: "Group",
+        },
+        {
+          aggregation: "count",
+          collection: "pending",
+          count: 0,
+          topic: "Import",
+        },
+        {
+          aggregation: "count",
+          collection: "pending",
+          count: 0,
+          topic: "Export",
+        },
+        {
+          aggregation: "count",
+          collection: "pending",
+          count: 0,
+          topic: "Profile",
+        },
+        {
+          aggregation: "count",
+          collection: "pending",
+          count: 1,
+          topic: "runs",
+        },
+        expect.objectContaining({
+          aggregation: "exact",
+          collection: "percentComplete",
+          count: 0,
+          // key: "run_c81ec3d2-2c3f-4097-b3cd-f2428e60095f",
+          // metadata: undefined,
+          topic: "Run",
+          value: "purchaseAmounts",
+        }),
+      ]);
+    });
+  });
 });
