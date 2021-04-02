@@ -1,4 +1,6 @@
 import { api, config, chatRoom } from "actionhero";
+import { Group } from "../models/Group";
+import { Profile } from "../models/Profile";
 import { StatusReporters, StatusMetric } from "./statusReporters";
 
 export namespace Status {
@@ -21,8 +23,8 @@ export namespace Status {
     metrics.push(await StatusReporters.Cluster.OS.exact());
     metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
 
-    // usage counts
-    metrics.push(...(await StatusReporters.Totals.Models()));
+    // usage counts (we only care about some of the models)
+    metrics.push(...(await StatusReporters.Totals.Models([Profile, Group])));
 
     // thing in progress
     metrics.push(await StatusReporters.Pending.pendingImports());

@@ -135,10 +135,8 @@ export namespace StatusReporters {
   }
 
   export namespace Totals {
-    export async function Models() {
-      const metrics: StatusMetric[] = [];
-
-      const Models = [
+    export async function Models(
+      models = [
         App,
         ApiKey,
         Source,
@@ -156,11 +154,13 @@ export namespace StatusReporters {
         Run,
         Team,
         TeamMember,
-      ];
+      ]
+    ) {
+      const metrics: StatusMetric[] = [];
 
-      for (const i in Models) {
+      for (const i in models) {
         //@ts-ignore
-        const model: typeof App = Models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
+        const model: typeof App = models[i]; // pick one of the Models so that the types are the same.  TODO: make this better
         metrics.push({
           collection: "totals",
           topic: model.name,
