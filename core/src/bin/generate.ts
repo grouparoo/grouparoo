@@ -74,6 +74,12 @@ Commands:
         description:
           "For batch generators, what should we use for the high-water-mark?",
       },
+      "sync-mode": {
+        required: false,
+        letter: "s",
+        description:
+          "For destination generators, how will we sync to the destination?",
+      },
       overwrite: {
         required: true,
         default: false,

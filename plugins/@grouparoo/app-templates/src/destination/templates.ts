@@ -15,6 +15,10 @@ export class DestinationTemplate extends ConfigTemplate {
         required: true,
         description: `The id of the ${name} App to use for this Destination, e.g: \`--parent data_warehouse\``,
       },
+      "sync-mode": {
+        required: false,
+        description: `How should profiles sync to the destination? e.g. \`--sync-mode additive\``,
+      },
     };
     this.files = files;
     this.destinationDir = "destinations";
