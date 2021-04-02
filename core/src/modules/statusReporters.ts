@@ -250,7 +250,7 @@ export namespace StatusReporters {
         });
       }
 
-      return mergeMetrics(metrics);
+      return metrics;
     }
 
     export async function pendingProfiles(): Promise<StatusMetric> {
