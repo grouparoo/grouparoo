@@ -575,8 +575,13 @@ function assignActions(exports: BatchExport[], config: BatchConfig) {
 
 function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
   const { toDelete, destinationId } = exportedProfile;
-  const { syncMode } = config;
-  const mode = BatchSyncModeData[syncMode];
+  const { syncMode, syncOperations } = config;
+
+  const mode = syncOperations || BatchSyncModeData[syncMode];
+  if (!mode) {
+    throw new Error("Unknown sync mode.");
+  }
+
   let skippedMessage = null;
 
   // all shouldX are falsy to start with

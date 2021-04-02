@@ -6,6 +6,7 @@ import {
   SimpleDestinationOptions,
   ErrorWithProfileId,
 } from "@grouparoo/core";
+import { DestinationSyncOperations } from "@grouparoo/core/dist/models/Destination";
 
 export enum BatchGroupMode {
   WithinGroup = "WithinGroup", // update group by group
@@ -65,7 +66,8 @@ export interface BatchConfig {
   batchSize: number; // max number to update, create, delete
   findSize: number; // max query parameters to send to findAndSetDestinationIds
   groupMode: BatchGroupMode;
-  syncMode: BatchSyncMode;
+  syncMode?: BatchSyncMode; // New plugins should pass syncOperations instead
+  syncOperations?: DestinationSyncOperations;
   foreignKey: string;
   connection?: any;
   app?: App;
