@@ -71,10 +71,11 @@ export const DEFAULT = {
       },
 
       startingChatRooms: {
-        "model:run": {},
+        "system:status": {},
+        // "model:run": {},
         "model:log": {},
         "model:event": {},
-        "model:profile": {},
+        // "model:profile": {},
         "model:group": {},
       },
     };

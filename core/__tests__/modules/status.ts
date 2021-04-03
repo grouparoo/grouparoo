@@ -110,6 +110,12 @@ describe("modules/status", () => {
         },
         {
           aggregation: "count",
+          collection: "cluster",
+          topic: "unreadNotifications",
+          count: 0,
+        },
+        {
+          aggregation: "count",
           collection: "totals",
           count: 0,
           topic: "Profile",
@@ -142,7 +148,7 @@ describe("modules/status", () => {
           aggregation: "count",
           collection: "pending",
           count: 1,
-          topic: "runs",
+          topic: "Run",
         },
         expect.objectContaining({
           aggregation: "exact",

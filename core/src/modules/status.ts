@@ -22,6 +22,7 @@ export namespace Status {
     metrics.push(await StatusReporters.Cluster.Workers.leader());
     metrics.push(await StatusReporters.Cluster.OS.exact());
     metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
+    metrics.push(await StatusReporters.Cluster.NOTIFICATIONS.unread());
 
     // usage counts (we only care about some of the models)
     metrics.push(...(await StatusReporters.Totals.Models([Profile, Group])));

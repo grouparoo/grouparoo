@@ -3,7 +3,7 @@ import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { Models, Actions } from "../../utils/apiData";
-import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
+import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import Moment from "react-moment";
 import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
 
@@ -158,7 +158,7 @@ export function GroupsByNewestMember({ execApi }) {
 }
 
 export function RunningRuns({ execApi }) {
-  useRealtimeModelStream("run", "totals-runs-list", load);
+  useRealtimeStream("model:run", "totals-runs-list", load);
   const [runs, setRuns] = useState<Models.RunType[]>([]);
   useEffect(() => {
     load();

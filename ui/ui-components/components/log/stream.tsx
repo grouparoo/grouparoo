@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
-import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
+import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import { Models } from "../../utils/apiData";
 
 const limit = 1000;
@@ -10,7 +10,7 @@ export default function LogsList(props) {
   const [latestTimestamp, setLatestTimestamp] = useState(0);
 
   // websocket
-  useRealtimeModelStream("log", "log-stream", handleMessage);
+  useRealtimeStream("model:log", "log-stream", handleMessage);
 
   useEffect(() => {
     const listElement = document.getElementById("logs-stream");

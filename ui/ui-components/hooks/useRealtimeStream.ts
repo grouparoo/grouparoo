@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 
-const socketKey = "ACTIONHERO_WEBSOCKET";
+// we are going to attach a single websocket to `window.GROUPAROO-WEBSOCKET` so that we can re-use it.
+const socketKey = "GROUPAROO-WEBSOCKET";
 
-export const useRealtimeModelStream = (
-  modelName: string,
+export const useRealtimeStream = (
+  room: string,
   key: string,
   messageCallback: Function
 ) => {
@@ -17,7 +18,6 @@ export const useRealtimeModelStream = (
   }
 
   const client = globalThis[socketKey];
-  const [room] = useState(`model:${modelName}`);
 
   useEffect(() => {
     if (toConnect) connect();
@@ -40,6 +40,7 @@ export const useRealtimeModelStream = (
       console.log("[websocket] disconnected");
     });
     client.on("error", function (error) {
+      if (error?.status.includes("connection already in this room")) return;
       console.log("[websocket] error", error.stack);
     });
     client.on("reconnect", function () {
@@ -90,11 +91,13 @@ export const useRealtimeModelStream = (
   }
 
   function joinRoom() {
-    if (!client.rooms.includes(room) && !client.pendingRooms.includes(room)) {
-      client.pendingRooms.push(room);
-      client.roomAdd(room);
-    }
-    client.pendingRooms = Array.from(new Set(client.pendingRooms));
+    client.detailsView(() => {
+      if (!client.rooms.includes(room) && !client.pendingRooms.includes(room)) {
+        client.pendingRooms.push(room);
+        client.roomAdd(room);
+      }
+      client.pendingRooms = Array.from(new Set(client.pendingRooms));
+    });
   }
 
   async function disconnect() {

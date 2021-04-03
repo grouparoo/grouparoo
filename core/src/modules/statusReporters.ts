@@ -226,7 +226,7 @@ export namespace StatusReporters {
 
       metrics.push({
         collection: "pending",
-        topic: "runs",
+        topic: "Run",
         aggregation: "count",
         count: activeRuns.length,
       });
