@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/intercom/intercom.png",
@@ -30,9 +32,11 @@ export class Plugins extends Initializer {
         new AppTemplate("intercom", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("intercom", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "intercom",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes
+        ),
       ],
       apps: [
         {
@@ -55,7 +59,7 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export Profiles to contacts in an Intercom account.",
           app: "intercom",
-          syncModes: ["sync", "enrich", "additive"],
+          syncModes,
           options: [
             {
               key: "creationMode",

@@ -9,6 +9,7 @@ export { ApiKey } from "./models/ApiKey";
 export {
   Destination,
   SimpleDestinationOptions,
+  DestinationSyncMode,
   DestinationSyncOperations,
 } from "./models/Destination";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
