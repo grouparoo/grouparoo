@@ -3,10 +3,10 @@ import {
   App,
   SimpleAppOptions,
   Destination,
+  DestinationSyncOperations,
   SimpleDestinationOptions,
   ErrorWithProfileId,
 } from "@grouparoo/core";
-import { DestinationSyncOperations } from "@grouparoo/core/dist/models/Destination";
 
 export enum BatchGroupMode {
   WithinGroup = "WithinGroup", // update group by group

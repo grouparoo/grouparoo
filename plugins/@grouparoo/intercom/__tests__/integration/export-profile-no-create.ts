@@ -5,7 +5,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { getTagId } from "../../src/lib/export-contacts/listMethods";
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
-import { DestinationSyncOperations } from "@grouparoo/core/dist/models/Destination";
+import { DestinationSyncOperations } from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
