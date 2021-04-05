@@ -1,6 +1,7 @@
+import fs from "fs";
 import { URL } from "url";
 import { join, isAbsolute } from "path";
-import { getParentPath } from "../utils/pluginDetails";
+import { getParentPath, getPluginManifest } from "../utils/pluginDetails";
 import { log } from "actionhero";
 
 // import {CLS} from '../modules/cls'
@@ -95,6 +96,16 @@ export const DEFAULT = {
       log(message, "debug");
     }
 
+    /** Load plugin migrations */
+    const { plugins } = getPluginManifest();
+    const pluginMigrations = [];
+    for (const plugin of plugins) {
+      const path = join(plugin.path, "dist", "migrations");
+      if (fs.existsSync(path)) {
+        pluginMigrations.push(path);
+      }
+    }
+
     return {
       _toExpand: false,
       logging,
@@ -106,7 +117,7 @@ export const DEFAULT = {
       username: username,
       password: password,
       models: [join(__dirname, "..", "models")],
-      migrations: [join(__dirname, "..", "migrations")],
+      migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],
       storage, // only used for sqlite
       dialectOptions: { ssl },
       transactionType: "DEFERRED",
