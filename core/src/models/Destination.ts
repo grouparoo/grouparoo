@@ -320,8 +320,6 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateSyncMode() {
-    if (this.state !== "ready") return;
-
     const supportedModes = await this.getSupportedSyncModes();
 
     // Sync mode is not required for destinations that:
@@ -542,6 +540,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeSave
   static async validateSyncMode(instance: Destination) {
+    if (instance.state !== "ready") return;
     await instance.validateSyncMode();
   }
 
