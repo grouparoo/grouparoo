@@ -59,7 +59,7 @@
     "libphonenumber-js": "1.9.14",
     "mime": "2.5.2",
     "moment": "2.29.1",
-    "mustache": "4.1.0",
+    "mustache": "4.2.0",
     "node-resque": "8.2.4",
     "nodemon": "2.0.7",
     "pacote": "11.3.1",
