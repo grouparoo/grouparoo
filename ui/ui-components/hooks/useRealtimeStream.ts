@@ -40,8 +40,7 @@ export const useRealtimeStream = (
       console.log("[websocket] disconnected");
     });
     client.on("error", function (error) {
-      if (error?.status.includes("connection already in this room")) return;
-      console.log("[websocket] error", error.stack);
+      handleError(error);
     });
     client.on("reconnect", function () {
       console.log("[websocket] reconnect");
@@ -51,7 +50,7 @@ export const useRealtimeStream = (
     });
     client.on("message", function (message) {
       if (message.error) {
-        console.error("[websocket] - error", message);
+        handleError(message);
       }
     });
     client.on("alert", function (message) {
@@ -68,8 +67,21 @@ export const useRealtimeStream = (
     );
 
     client.connect(function (error, details) {
-      if (error) console.error(error);
+      handleError(error);
     });
+  }
+
+  function handleError(error) {
+    if (!error) {
+      return;
+    } else if (
+      error.status &&
+      error.status.includes("connection already in this room")
+    ) {
+      return;
+    }
+
+    console.log("[websocket] error", error.stack);
   }
 
   function handleMessage(context, from, messageRoom, sentAt, message) {
