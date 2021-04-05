@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
+import Link from "next/link";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
   GrouparooChart,
@@ -175,14 +176,18 @@ export default function ResqueOverview(props) {
                 <tbody>
                   <tr className="table-warning">
                     <td>
-                      <a href="/resque/failed">
-                        <strong>failed</strong>
-                      </a>
+                      <Link href="/resque/failed">
+                        <a>
+                          <strong>failed</strong>
+                        </a>
+                      </Link>
                     </td>
                     <td>
-                      <a href="/resque/failed">
-                        <strong>{failedCount || 0}</strong>
-                      </a>
+                      <Link href="/resque/failed">
+                        <a>
+                          <strong>{failedCount || 0}</strong>
+                        </a>
+                      </Link>
                     </td>
                   </tr>
 
@@ -190,10 +195,14 @@ export default function ResqueOverview(props) {
                     return (
                       <tr key={q}>
                         <td>
-                          <a href={`/resque/queue/${q}`}>{q}</a>
+                          <Link href={`/resque/queue/${q}`}>
+                            <a>{q}</a>
+                          </Link>
                         </td>
                         <td>
-                          <a href={`/resque/queue/${q}`}>{queues[q].length}</a>
+                          <Link href={`/resque/queue/${q}`}>
+                            <a>{queues[q].length}</a>
+                          </Link>
                         </td>
                       </tr>
                     );
