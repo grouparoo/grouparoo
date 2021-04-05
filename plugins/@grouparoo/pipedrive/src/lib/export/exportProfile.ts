@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportProfilePluginMethod, InfoError } from "@grouparoo/core";
 import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
@@ -6,15 +6,6 @@ import {
   getKnownPersonFieldMap,
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
-
-class InfoError extends Error {
-  errorLevel: string;
-
-  constructor(message) {
-    super(message);
-    this.errorLevel = "info";
-  }
-}
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,

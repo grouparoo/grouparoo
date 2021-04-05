@@ -2,7 +2,7 @@ import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
-import { AuthenticationError } from "../modules/middleware/authentication";
+import { AuthenticationError } from "../modules/errors";
 
 export class SessionCreate extends CLSAction {
   constructor() {

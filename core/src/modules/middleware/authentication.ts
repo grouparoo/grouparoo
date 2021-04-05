@@ -2,25 +2,7 @@ import { api, config, action, Connection, chatRoom } from "actionhero";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
-
-export class AuthenticationError extends Error {
-  code: string;
-
-  constructor(message: string, code = "AUTHENTICATION_ERROR") {
-    super(message);
-    this.code = code;
-  }
-}
-
-export class AuthorizationError extends Error {
-  code: string;
-
-  constructor(mode: string, topic: string, code = "AUTHORIZATION_ERROR") {
-    const message = `Not authorized for mode "${mode}" on topic "${topic}"`;
-    super(message);
-    this.code = code;
-  }
-}
+import { AuthenticationError, AuthorizationError } from "../errors";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",

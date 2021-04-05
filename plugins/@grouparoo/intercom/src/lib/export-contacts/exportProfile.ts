@@ -2,6 +2,8 @@ import { api } from "actionhero";
 import {
   ExportProfilePluginMethod,
   SimpleDestinationOptions,
+  DestinationSyncOperations,
+  InfoError,
   makeBaseCacheKey,
 } from "@grouparoo/core";
 import { connect } from "../connect";
@@ -13,7 +15,6 @@ import {
   IntercomCacheData,
   getTagIdMap,
 } from "./listMethods";
-import { DestinationSyncOperations } from "@grouparoo/core/dist/models/Destination";
 
 interface IntercomContact {
   id: string;
@@ -21,15 +22,6 @@ interface IntercomContact {
   tags: {
     data: { id: string }[];
   };
-}
-
-class InfoError extends Error {
-  errorLevel: string;
-
-  constructor(message) {
-    super(message);
-    this.errorLevel = "info";
-  }
 }
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {

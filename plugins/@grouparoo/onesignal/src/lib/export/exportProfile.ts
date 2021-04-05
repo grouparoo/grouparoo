@@ -1,15 +1,6 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportProfilePluginMethod, InfoError } from "@grouparoo/core";
 import { HTTPError } from "onesignal-node";
 import { connect } from "../connect";
-
-class InfoError extends Error {
-  errorLevel: string;
-
-  constructor(message) {
-    super(message);
-    this.errorLevel = "info";
-  }
-}
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,

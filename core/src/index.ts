@@ -6,7 +6,11 @@ export * from "./classes/configTemplate";
 
 export { App, SimpleAppOptions } from "./models/App";
 export { ApiKey } from "./models/ApiKey";
-export { Destination, SimpleDestinationOptions } from "./models/Destination";
+export {
+  Destination,
+  SimpleDestinationOptions,
+  DestinationSyncOperations,
+} from "./models/Destination";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
 export { Event } from "./models/Event";
 export { EventData } from "./models/EventData";
@@ -35,4 +39,5 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { waitForLock } from "./modules/locks";
+export { InfoError } from "./modules/errors";
 export * from "./modules/cache";
