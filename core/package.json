@@ -39,7 +39,7 @@
     "@types/fs-extra": "*",
     "@types/node": "*",
     "@types/validator": "*",
-    "actionhero": "25.0.8",
+    "actionhero": "25.0.9",
     "ah-next-plugin": "0.5.2",
     "ah-sequelize-plugin": "3.0.1",
     "bcryptjs": "2.4.3",
