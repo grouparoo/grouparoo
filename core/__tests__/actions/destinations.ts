@@ -142,6 +142,7 @@ describe("actions/destinations", () => {
       expect(error).toBeUndefined();
       expect(destination.id).toBeTruthy();
       expect(destination.name).toBe("test destination");
+      expect(destination.syncMode).toBe("sync");
       expect(destination.app.name).toBe("test app");
     });
 
