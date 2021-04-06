@@ -8,11 +8,10 @@ import {
   PendingImports,
   PendingExports,
 } from "../components/visualizations/homepageWidgets";
-import { useApi } from "../hooks/useApi";
+import { StatusHandler } from "../utils/statusHandler";
 
 export default function Page(props) {
-  const { errorHandler, statusHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { statusHandler }: { statusHandler: StatusHandler } = props;
 
   return (
     <>

@@ -1,26 +1,34 @@
 import { EventDispatcher } from "./eventDispatcher";
 
-export class StatusHandler extends EventDispatcher {}
-
-export class StatusStore {
-  limit: number;
+export class StatusHandler extends EventDispatcher {
+  maxSamples: 50;
   samples: any[];
 
-  constructor(statsHandler: EventDispatcher) {
-    this.limit = 100;
+  constructor() {
+    super();
+    this.maxSamples = 50;
     this.samples = [];
-
-    statsHandler.subscribe("statsStore", (data) => {
-      this.samples.push(data);
-      if (this.samples.length > this.limit) this.samples.shift();
-    });
   }
 
-  getSamples() {
-    return this.samples;
+  async afterPublish(data) {
+    this.samples.push(data);
+    this.trim();
   }
 
-  latestSample() {
-    this.samples[0];
+  async afterSubscribe(name, handler) {
+    const latestSample = this.samples[this.samples.length - 1];
+    if (latestSample) await handler(latestSample);
+  }
+
+  private trim() {
+    while (this.samples.length > this.maxSamples) this.samples.shift();
+  }
+
+  /**
+   * Do a manual sample now vs waiting for the websocket to broadcast
+   */
+  async sample(execApi) {
+    const { metrics, timestamp } = await execApi("get", `/status/private`);
+    this.publish({ metrics, timestamp });
   }
 }

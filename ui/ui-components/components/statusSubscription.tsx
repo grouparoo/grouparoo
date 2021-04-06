@@ -2,13 +2,25 @@ import { useEffect, useState } from "react";
 import { useRealtimeStream } from "../hooks/useRealtimeStream";
 import { SessionHandler } from "../utils/sessionHandler";
 import { StatusHandler } from "../utils/statusHandler";
+import { ErrorHandler } from "../utils/errorHandler";
+import { useApi } from "../hooks/useApi";
 
 export default function StatusSubscription(props) {
   const {
     sessionHandler,
     statusHandler,
-  }: { sessionHandler: SessionHandler; statusHandler: StatusHandler } = props;
+    errorHandler,
+  }: {
+    sessionHandler: SessionHandler;
+    statusHandler: StatusHandler;
+    errorHandler: ErrorHandler;
+  } = props;
+  const { execApi } = useApi(props, errorHandler);
   const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    statusHandler.sample(execApi);
+  }, []);
 
   useRealtimeStream("system:status", "status-subscription", (data) => {
     statusHandler.publish(data);

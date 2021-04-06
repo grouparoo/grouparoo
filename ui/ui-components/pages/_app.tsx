@@ -23,7 +23,7 @@ import { RunsHandler } from "../utils/runsHandler";
 import { ScheduleHandler } from "../utils/scheduleHandler";
 import { SessionHandler } from "../utils/sessionHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
-import { StatusHandler, StatusStore } from "../utils/statusHandler";
+import { StatusHandler } from "../utils/statusHandler";
 import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
@@ -42,7 +42,6 @@ const scheduleHandler = new ScheduleHandler();
 const sessionHandler = new SessionHandler();
 const setupStepHandler = new SetupStepHandler();
 const statusHandler = new StatusHandler();
-const statusStore = new StatusStore(statusHandler);
 const sourceHandler = new SourceHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
@@ -69,7 +68,6 @@ export default function GrouparooWebApp(props) {
     sessionHandler,
     setupStepHandler,
     statusHandler,
-    statusStore,
     sourceHandler,
     teamHandler,
     teamMemberHandler,
