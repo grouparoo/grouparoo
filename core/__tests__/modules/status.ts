@@ -62,7 +62,7 @@ describe("modules/status", () => {
       const foundMetrics = await Status.get();
       expect(foundMetrics.length).toBe(5);
       for (let i = 0; i < foundMetrics.length - 1; i++) {
-        expect(foundMetrics[i].timestamp).toBeLessThanOrEqual(
+        expect(foundMetrics[i].timestamp).toBeGreaterThanOrEqual(
           foundMetrics[i + 1].timestamp
         );
       }

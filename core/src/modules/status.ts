@@ -59,7 +59,7 @@ export namespace Status {
       .slice(0, limit)
       .map((v) => JSON.parse(v) as StatusObject)
       .sort((a, b) => {
-        return a.timestamp - b.timestamp;
+        return b.timestamp - a.timestamp;
       });
 
     return values;

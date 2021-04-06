@@ -38,7 +38,7 @@ export class PrivateStatus extends AuthenticatedAction {
       })
     ).value;
 
-    const samples = await Status.get(1);
+    const samples = await Status.get();
 
     return {
       clusterName,
