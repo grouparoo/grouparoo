@@ -1,10 +1,11 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   export: {
     toDelete,
     newProfileProperties,
@@ -36,7 +37,26 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        await client.deleteContact(contactToDelete["vid"]);
+        if (!syncOperations.delete) {
+          // only clear groups
+          if (syncOperations.update) {
+            for (const group of oldGroups) {
+              await removeFromList(
+                client,
+                appId,
+                appOptions,
+                contactToDelete.properties.email.value,
+                group
+              );
+            }
+          }
+
+          throw new Errors.InfoError(
+            "Destination sync mode does not allow removing profiles."
+          );
+        }
+
+        await client.deleteContact(contactToDelete.vid);
       }
       return { success: true };
     } else {
@@ -65,8 +85,22 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           sortedDataFields[v] = formattedDataFields[v];
         });
 
+      if (contact && !syncOperations.update) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow updating existing profiles."
+        );
+      }
+
+      if (!contact && !syncOperations.create) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow creating new profiles."
+        );
+      }
+
       // change email
-      if (oldContact) {
+      if (oldContact && syncOperations.delete) {
+        // Because hubspot changes FK by deleting the old one,
+        // if sync mode does not delete we will leave the old one orphaned
         await client.deleteContact(oldContact.vid);
       }
 

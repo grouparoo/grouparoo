@@ -6,6 +6,7 @@ import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { HubspotClient } from "../../src/lib/client";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_ds789a789gdf789jh.m678rt90-90-3k";
 
@@ -107,6 +108,7 @@ async function cleanUp(suppressErrors) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -121,6 +123,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -142,6 +145,22 @@ describe("hubspot/exportProfile", () => {
   afterAll(async () => {
     await cleanUp(true);
   }, helper.setupTime);
+
+  test("cannot create profile on Hubspot if sync mode does not allow it", async () => {
+    user = await apiClient.getContactByEmail(email);
+    expect(user).toBe(null);
+
+    await expect(
+      runExport({
+        syncOperations: { create: false, update: true, delete: true },
+        oldProfileProperties: {},
+        newProfileProperties: { email, firstname: firstName },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow creating/);
+  });
 
   test("can create profile on Hubspot", async () => {
     user = await apiClient.getContactByEmail(email);
@@ -173,6 +192,36 @@ describe("hubspot/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
+    const user = await apiClient.getContactByEmail(email);
+    expect(user["properties"]["email"]["value"]).toBe(email);
+    expect(user["properties"]["firstname"]["value"]).toBe(firstName);
+    expect(user["properties"]["lastname"]["value"]).toBe(lastName);
+    expect(user["properties"]["mobilephone"]["value"]).toBe(phoneNumber);
+  });
+
+  test("cannot update existing profile if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: true },
+        oldProfileProperties: {
+          email,
+          firstname: firstName,
+          lastname: lastName,
+          mobilephone: phoneNumber,
+        },
+        newProfileProperties: {
+          email,
+          firstname: alternativeName,
+          lastname: alternativeLastName,
+          mobilephone: newPhoneNumber,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow updating/);
+
+    // no change
     const user = await apiClient.getContactByEmail(email);
     expect(user["properties"]["email"]["value"]).toBe(email);
     expect(user["properties"]["firstname"]["value"]).toBe(firstName);
@@ -375,8 +424,56 @@ describe("hubspot/exportProfile", () => {
     );
   });
 
+  test("it cannot change the email address if sync mode is only updating", async () => {
+    // hubspot requires creating new user on FK change
+    await expect(
+      runExport({
+        syncOperations: { create: false, update: true, delete: false },
+        oldProfileProperties: {
+          email,
+        },
+        newProfileProperties: {
+          email: alternativeEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow creating/);
+
+    const oldUser = await apiClient.getContactByEmail(email);
+    expect(oldUser).not.toBe(null);
+    expect(oldUser["properties"]["email"]["value"]).toBe(email);
+
+    const newUser = await apiClient.getContactByEmail(alternativeEmail);
+    expect(newUser).toBe(null);
+  });
+
   test("it can change the email address", async () => {
     await runExport({
+      oldProfileProperties: {
+        email: alternativeEmail,
+      },
+      newProfileProperties: {
+        email,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    const user = await apiClient.getContactByEmail(alternativeEmail);
+    expect(user).toBe(null);
+
+    const newUser = await apiClient.getContactByEmail(email);
+    expect(newUser).not.toBe(null);
+    expect(newUser["properties"]["email"]["value"]).toBe(email);
+  });
+
+  test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
+    // hubspot requires deleting the old user on FK change
+    await runExport({
+      syncOperations: { create: true, update: true, delete: false },
       oldProfileProperties: {
         email,
       },
@@ -387,12 +484,14 @@ describe("hubspot/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    const user = await apiClient.getContactByEmail(alternativeEmail);
-    expect(user).not.toBe(null);
-    expect(user["properties"]["email"]["value"]).toBe(alternativeEmail);
 
     const oldUser = await apiClient.getContactByEmail(email);
-    expect(oldUser).toBe(null);
+    expect(oldUser).not.toBe(null);
+    expect(oldUser["properties"]["email"]["value"]).toBe(email);
+
+    const newUser = await apiClient.getContactByEmail(alternativeEmail);
+    expect(newUser).not.toBe(null);
+    expect(newUser["properties"]["email"]["value"]).toBe(alternativeEmail);
   });
 
   test("it can change the email address along other properties", async () => {
@@ -408,7 +507,7 @@ describe("hubspot/exportProfile", () => {
         mobilephone: otherPhoneNumber,
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: [listOne],
       toDelete: false,
     });
     const user = await apiClient.getContactByEmail(otherEmail);
@@ -416,8 +515,70 @@ describe("hubspot/exportProfile", () => {
     expect(user["properties"]["firstname"]["value"]).toBe(otherName);
     expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
 
+    const listOneId = await getListId(listOne);
+
+    expect(listOneId).not.toBe(null);
+    expect(user["list-memberships"].length).toBe(1);
+    expect(user["list-memberships"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ "internal-list-id": listOneId }),
+      ])
+    );
+
     const oldUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(oldUser).toBe(null);
+  });
+
+  test("can not delete a user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: false },
+        oldProfileProperties: {
+          email: otherEmail,
+        },
+        newProfileProperties: {
+          email: otherEmail,
+        },
+        oldGroups: [listOne],
+        newGroups: [listOne],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not allow removing/);
+
+    // no changes to the user and properties
+    const user = await apiClient.getContactByEmail(otherEmail);
+    expect(user["properties"]["email"]["value"]).toBe(otherEmail);
+    expect(user["properties"]["firstname"]["value"]).toBe(otherName);
+    expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
+
+    // groups can't be removed because syncOperations.update: false
+    expect(user["list-memberships"]).toHaveLength(1);
+  });
+
+  test("can not delete a user if sync mode does not allow it, but will remove them from groups", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: true, delete: false },
+        oldProfileProperties: {
+          email: otherEmail,
+        },
+        newProfileProperties: {
+          email: otherEmail,
+        },
+        oldGroups: [listOne],
+        newGroups: [listOne],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not allow removing/);
+
+    // no changes to the user and properties
+    const user = await apiClient.getContactByEmail(otherEmail);
+    expect(user["properties"]["email"]["value"]).toBe(otherEmail);
+    expect(user["properties"]["firstname"]["value"]).toBe(otherName);
+    expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
+
+    // but it should be removed from groups
+    expect(user["list-memberships"]).toHaveLength(0);
   });
 
   test("can delete a user", async () => {
