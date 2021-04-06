@@ -38,9 +38,7 @@ export function loadAppOptions(): SimpleAppOptions {
 
 export const appOptions = loadAppOptions();
 
-export const sourceOptions = {
-  fields: "name,createdAt",
-};
+export const sourceOptions = {};
 
 const allCollections = [
   usersCollectionName,
@@ -150,24 +148,24 @@ const collectionsOptions = {
   },
 };
 
-let client;
+let connection;
 
 export async function getClient() {
-  if (client) {
-    return client;
+  if (connection) {
+    return connection;
   }
-  client = await connect({
+  connection = await connect({
     appOptions,
     app: null,
     appId,
   });
-  return client;
+  return connection;
 }
 
 export async function endClient() {
-  if (client) {
-    await client.client.close();
-    client = null;
+  if (connection) {
+    await connection.client.close();
+    connection = null;
   }
 }
 
@@ -185,7 +183,7 @@ export function getConfig() {
 async function dropTables() {
   for (const collectionName of allCollections) {
     try {
-      await client.db.collection(collectionName).drop();
+      await connection.db.collection(collectionName).drop();
     } catch (err) {
       // ignores in case the collection doesn't exist.
     }
@@ -195,7 +193,10 @@ async function dropTables() {
 async function createTables() {
   await dropTables();
   for (const tableName of allCollections) {
-    await client.db.createCollection(tableName, collectionsOptions[tableName]);
+    await connection.db.createCollection(
+      tableName,
+      collectionsOptions[tableName]
+    );
   }
 }
 
@@ -205,7 +206,7 @@ async function fillTable(collectionName, fileName) {
   const docs = parseCsvToObject(rows, collectionName);
   for (const doc of docs) {
     try {
-      await client.db.collection(collectionName).insertOne(doc);
+      await connection.db.collection(collectionName).insertOne(doc);
     } catch (err) {
       console.log(err);
     }
@@ -219,7 +220,7 @@ async function fillTableJson(collectionName, fileName) {
   for (const doc of locations) {
     try {
       doc.properties.updated = new Date(doc.properties.updated);
-      await client.db.collection(collectionName).insertOne(doc);
+      await connection.db.collection(collectionName).insertOne(doc);
     } catch (err) {
       console.log(err);
     }
@@ -287,7 +288,7 @@ export async function beforeData(): Promise<{
 }> {
   await getClient();
   await populate();
-  return { client };
+  return { client: connection };
 }
 
 export async function afterData() {

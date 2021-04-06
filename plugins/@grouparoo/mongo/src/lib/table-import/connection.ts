@@ -15,16 +15,6 @@ export function getConnection() {
       "Import or update Profiles from a Mongo DB database collection.",
     tableOptionDescription: "The table to scan",
     tableOptionDisplayName: "Collection",
-    sourceOptions: {
-      options: [
-        {
-          key: "fields",
-          displayName: "Fields",
-          required: true,
-          description: "Comma separated list of fields",
-        },
-      ],
-    },
     getSampleRows,
     getColumns,
     getTables,

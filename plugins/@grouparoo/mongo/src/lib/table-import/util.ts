@@ -4,7 +4,6 @@ import {
   FilterOperation,
   MatchCondition,
 } from "@grouparoo/app-templates/dist/source/table";
-import { SimpleSourceOptions } from "@grouparoo/core";
 
 export enum MongoAggregationMethod {
   Exact = "$eq",
@@ -170,20 +169,12 @@ export async function getMostTrendingType(
     const currentCount = trendingTypes[nestedType];
     trendingTypes[nestedType] = currentCount ? currentCount + 1 : 1;
   }
-  return Object.keys(trendingTypes).reduce((a, b) =>
-    trendingTypes[a] > trendingTypes[b] ? a : b
-  );
-}
-
-export function getFields(sourceOptions: SimpleSourceOptions): Array<string> {
-  let fields = [];
-  if (sourceOptions) {
-    fields = sourceOptions.fields
-      .toString()
-      .split(",")
-      .map((f) => f.trim());
+  if (Object.keys(trendingTypes).length > 0) {
+    return Object.keys(trendingTypes).reduce((a, b) =>
+      trendingTypes[a] > trendingTypes[b] ? a : b
+    );
   }
-  return fields;
+  return null;
 }
 
 function getNestedValue(entity, fieldName) {
@@ -192,4 +183,81 @@ function getNestedValue(entity, fieldName) {
     entity = entity[step];
   }
   return entity;
+}
+
+export async function getFields(
+  connection: any,
+  tableName: string
+): Promise<Array<string>> {
+  const firstLevelFieldsResult = await connection.db
+    .collection(tableName)
+    .aggregate([
+      { $project: { keyValue: { $objectToArray: "$$ROOT" } } },
+      { $unwind: "$keyValue" },
+      { $group: { _id: null, keys: { $addToSet: "$keyValue.k" } } },
+    ])
+    .toArray();
+
+  if (firstLevelFieldsResult.length > 0) {
+    const allFields = await getAllFields(
+      connection,
+      tableName,
+      firstLevelFieldsResult[0].keys
+    );
+    return Array.from(allFields);
+  }
+  return [];
+}
+
+async function getAllFields(
+  connection: any,
+  tableName: string,
+  firstLevelFields: Array<string>
+): Promise<Set<string>> {
+  let allFields = new Set<string>();
+  const docs = await connection.db
+    .collection(tableName)
+    .aggregate([{ $sample: { size: 10 } }, { $project: { _id: 0 } }])
+    .toArray();
+  for (const doc of docs) {
+    for (const [key, value] of Object.entries(doc)) {
+      if (
+        value !== null &&
+        typeof value === "object" &&
+        !Array.isArray(value) && // TODO: consider array.
+        Object.keys(value).length > 0
+      ) {
+        if (firstLevelFields.indexOf(key) >= 0) {
+          firstLevelFields.splice(firstLevelFields.indexOf(key), 1);
+        }
+        const nestedFields = getDocumentNestedFields(value, new Set(), key);
+        allFields = new Set<string>([...allFields, ...nestedFields]);
+      }
+    }
+  }
+  return new Set<string>([...firstLevelFields, ...allFields]);
+}
+
+function getDocumentNestedFields(
+  document: any,
+  fields: Set<string>,
+  fieldName: string = ""
+): Set<string> {
+  for (const [key, value] of Object.entries(document)) {
+    if (
+      value !== null &&
+      typeof value === "object" &&
+      !Array.isArray(value) && // TODO: consider array.
+      Object.keys(value).length > 0
+    ) {
+      getDocumentNestedFields(
+        value,
+        fields,
+        fieldName === "" ? key : `${fieldName}.${key}`
+      );
+    } else if (!Array.isArray(value)) {
+      fields.add(fieldName === "" ? key : `${fieldName}.${key}`);
+    }
+  }
+  return fields;
 }
