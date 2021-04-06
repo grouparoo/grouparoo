@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod, InfoError } from "@grouparoo/core";
+import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
 import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
@@ -63,10 +63,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // Update existing Person
     if (!syncOperations.update) {
       if (toDelete) {
-        throw new InfoError("Destination sync mode does not delete profiles.");
+        throw new Errors.InfoError(
+          "Destination sync mode does not delete profiles."
+        );
       }
 
-      throw new InfoError(
+      throw new Errors.InfoError(
         "Destination sync mode does not update existing profiles."
       );
     }
@@ -74,7 +76,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     await client.updatePerson(foundId, payload);
   } else if (!toDelete) {
     if (!syncOperations.create) {
-      throw new InfoError(
+      throw new Errors.InfoError(
         "Destination sync mode does not create new profiles."
       );
     }
@@ -83,7 +85,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   if (toDelete && !syncOperations.delete) {
-    throw new InfoError(
+    throw new Errors.InfoError(
       "Destination sync mode does not delete profiles. Only group membership has been cleared."
     );
   }

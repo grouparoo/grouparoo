@@ -1,9 +1,9 @@
 import { api } from "actionhero";
 import {
+  Errors,
   ExportProfilePluginMethod,
   SimpleDestinationOptions,
   DestinationSyncOperations,
-  InfoError,
   makeBaseCacheKey,
 } from "@grouparoo/core";
 import { connect } from "../connect";
@@ -285,7 +285,7 @@ async function deleteUser(
   await updateTags(client, cacheData, user, oldGroups, newGroups);
 
   if (!syncOperations.delete) {
-    throw new InfoError("Destination is not removing contacts.");
+    throw new Errors.InfoError("Destination is not removing contacts.");
   }
 
   const { removalMode } = destinationOptions;
@@ -359,7 +359,7 @@ function addCreationPayload(
   destinationOptions: SimpleDestinationOptions
 ) {
   if (!syncOperations.create) {
-    throw new InfoError("Destination is not creating contacts.");
+    throw new Errors.InfoError("Destination is not creating contacts.");
   }
 
   const { creationMode } = destinationOptions;
@@ -391,7 +391,7 @@ function addUpdatePayload(
   destinationOptions: SimpleDestinationOptions
 ) {
   if (!syncOperations.update) {
-    throw new InfoError("Destination is not updating contacts");
+    throw new Errors.InfoError("Destination is not updating contacts");
   }
 
   const { creationMode } = destinationOptions;

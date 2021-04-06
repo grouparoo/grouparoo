@@ -40,5 +40,5 @@ export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
 export { waitForLock } from "./modules/locks";
-export { InfoError } from "./modules/errors";
+export { Errors } from "./modules/errors";
 export * from "./modules/cache";
