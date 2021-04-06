@@ -51,44 +51,6 @@ export class SourcesList extends AuthenticatedAction {
   }
 }
 
-export class SourcesCountPending extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "sources:countPending";
-    this.description = "return counts of pending profile properties by source";
-    this.outputExample = {};
-    this.permission = { topic: "profile", mode: "read" };
-    this.inputs = {};
-  }
-
-  async runWithinTransaction() {
-    const countsBySource = await Property.findAll({
-      attributes: [
-        "sourceId",
-        [
-          api.sequelize.fn(
-            "COUNT",
-            api.sequelize.fn("DISTINCT", api.sequelize.col("profileId"))
-          ),
-          "count",
-        ],
-      ],
-      group: ["sourceId"],
-      include: [
-        { model: ProfileProperty, attributes: [], where: { state: "pending" } },
-      ],
-      raw: true,
-    });
-
-    const counts: { [sourceId: string]: number } = {};
-    countsBySource.forEach((record) => {
-      counts[record.sourceId] = record["count"];
-    });
-
-    return { counts };
-  }
-}
-
 export class SourceConnectionApps extends AuthenticatedAction {
   constructor() {
     super();

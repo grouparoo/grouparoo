@@ -2,44 +2,40 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
-import { Models, Actions } from "../../utils/apiData";
-import { useRealtimeStream } from "../../hooks/useRealtimeStream";
+import { Models } from "../../utils/apiData";
 import Moment from "react-moment";
 import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
+import { StatusHandler } from "../../utils/statusHandler";
+import Loading from "../loader";
 
-const TIMEOUT = 5 * 1000;
 const maxSampleLength = 20;
-const useCache = false;
 
-export function BigNumber({ execApi, model, title, href = null }) {
-  const [total, setTotal] = useState<number>(null);
-  let timer;
+export function BigTotalNumber({
+  statusHandler,
+  model,
+  title,
+  href = null,
+}: {
+  statusHandler: StatusHandler;
+  model: string;
+  title: string;
+  href?: string;
+}) {
+  const [total, setTotal] = useState<number>(-1);
+  const subscriptionName = `big-total-number-${title}`;
 
   useEffect(() => {
-    startTimer();
+    statusHandler.subscribe(subscriptionName, ({ metrics }) => {
+      const _total =
+        metrics.find((m) => m.collection === "totals" && m.topic === model)
+          ?.count ?? -1;
+      setTotal(_total);
+    });
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe(subscriptionName);
     };
   }, []);
-
-  function startTimer() {
-    load();
-    timer = setInterval(load, TIMEOUT);
-  }
-
-  async function load() {
-    const { total }: Actions.TotalsAction = await execApi(
-      "get",
-      `/totals`,
-      { model },
-      null,
-      null,
-      useCache
-    );
-
-    if (total) setTotal(total);
-  }
 
   return (
     <Card>
@@ -53,55 +49,55 @@ export function BigNumber({ execApi, model, title, href = null }) {
             title
           )}
         </Card.Title>
-        <span style={{ fontSize: 25 }}>{total ? total : "..."}</span>
+
+        <span style={{ fontSize: 25 }}>{total >= 0 ? total : <Loading />}</span>
       </Card.Body>
     </Card>
   );
 }
 
-export function GroupsByNewestMember({ execApi }) {
-  const [groups, setGroups] = useState<Models.GroupType[]>([]);
-  const [newestMembersAdded, setNewestMembersAdded] = useState<{
-    [id: string]: number;
-  }>({});
+export function GroupsByNewestMember({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  type GroupType = {
+    id: string;
+    name: string;
+    profilesCount: number;
+    newestMembersAdded: string;
+  };
 
-  let timer;
+  const [groups, setGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
-    startTimer();
+    statusHandler.subscribe(`groups-by-newest-member`, ({ metrics }) => {
+      const _groups: GroupType[] = metrics
+        .filter((s) => s.topic === "Group" && s.collection === "byNewestMember")
+        .map((s) => {
+          return {
+            id: s.key,
+            name: s.value,
+            profilesCount: s.count,
+            newestMembersAdded: s.metadata,
+          };
+        });
+
+      setGroups(_groups);
+    });
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe(`groups-by-newest-member`);
     };
   }, []);
 
-  function startTimer() {
-    load();
-    timer = setInterval(load, TIMEOUT);
-  }
-
-  async function load() {
-    const {
-      groups,
-      newestMembersAdded,
-    }: Actions.GroupsListByNewestMember = await execApi(
-      "get",
-      `/groups/byNewestMember`,
-      null,
-      null,
-      useCache
-    );
-
-    if (groups) setGroups(groups);
-    if (newestMembersAdded) setNewestMembersAdded(newestMembersAdded);
-  }
-
-  if (groups.length === 0)
+  if (groups.length === 0) {
     return (
       <Card>
         <Card.Body>No Groups</Card.Body>
       </Card>
     );
+  }
 
   return (
     <Card>
@@ -119,28 +115,21 @@ export function GroupsByNewestMember({ execApi }) {
               return (
                 <tr key={`group-${group.id}`}>
                   <td>
-                    {group.type === "calculated" ? (
-                      <EnterpriseLink
-                        href="/group/[id]/rules"
-                        as={`/group/${group.id}/rules`}
-                      >
-                        <a>{group.name}</a>
-                      </EnterpriseLink>
-                    ) : (
-                      <EnterpriseLink
-                        href="/group/[id]/edit"
-                        as={`/group/${group.id}/edit`}
-                      >
-                        <a>{group.name}</a>
-                      </EnterpriseLink>
-                    )}
+                    <EnterpriseLink
+                      href="/group/[id]/rules"
+                      as={`/group/${group.id}/rules`}
+                    >
+                      <a>{group.name}</a>
+                    </EnterpriseLink>
                   </td>
                   <td>{group.profilesCount}</td>
                   <td>
-                    {newestMembersAdded[group.id] ? (
-                      <Moment fromNow>{newestMembersAdded[group.id]}</Moment>
+                    {parseInt(group.newestMembersAdded) !== NaN ? (
+                      <Moment fromNow>
+                        {parseInt(group.newestMembersAdded)}
+                      </Moment>
                     ) : (
-                      "No Group Members"
+                      group.newestMembersAdded
                     )}
                   </td>
                 </tr>
@@ -157,31 +146,33 @@ export function GroupsByNewestMember({ execApi }) {
   );
 }
 
-export function RunningRuns({ execApi }) {
-  useRealtimeStream("model:run", "totals-runs-list", load);
+export function RunningRuns({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
   const [runs, setRuns] = useState<Models.RunType[]>([]);
+
   useEffect(() => {
-    load();
+    statusHandler.subscribe(`running-runs-chart`, ({ metrics }) => {
+      const _runs: Models.RunType[] = metrics
+        .filter((s) => s.topic === "Run" && s.collection === "percentComplete")
+        .map((s) => {
+          return {
+            id: s.key,
+            creatorName: s.value,
+            percentComplete: s.count,
+            highWaterMark: s.metadata,
+          };
+        });
+
+      setRuns(_runs);
+    });
+
+    return () => {
+      statusHandler.unsubscribe(`running-runs-chart`);
+    };
   }, []);
-
-  async function load() {
-    const { runs }: Actions.RunsList = await execApi(
-      "get",
-      `/runs`,
-      {
-        state: "running",
-      },
-      null,
-      null,
-      useCache
-    );
-
-    if (runs) {
-      setRuns(runs);
-    } else {
-      setRuns([]);
-    }
-  }
 
   if (runs.length === 0) {
     return (
@@ -205,22 +196,14 @@ export function RunningRuns({ execApi }) {
           </thead>
           <tbody>
             {runs.map((run) => {
-              const higWaterMarkCollection =
-                run.highWaterMark || run.groupHighWaterMark;
-              const highWaterMark = higWaterMarkCollection
-                ? Object.values(higWaterMarkCollection)[0]
-                : "n/a";
-
               return (
                 <tr key={`run-${run.id}`}>
                   <td>
                     <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
-                      <a>
-                        {run.creatorType}: {run.creatorName}
-                      </a>
+                      <a>{run.creatorName}</a>
                     </Link>
                   </td>
-                  <td>{highWaterMark}</td>
+                  <td>{run.highWaterMark}</td>
                   <td>
                     <ProgressBar
                       variant="info"
@@ -240,66 +223,40 @@ export function RunningRuns({ execApi }) {
   );
 }
 
-export function ScheduleRuns({ execApi }) {
-  const [sources, setSources] = useState<Models.SourceType[]>([]);
-  const [runs, setRuns] = useState<{ [id: string]: Models.RunType }>({});
+export function ScheduleRuns({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  type SourceScheduleType = {
+    id: string;
+    name: string;
+    recurring: boolean;
+    nextRunAt: number;
+  };
 
-  let timer;
+  const [sources, setSources] = useState<SourceScheduleType[]>([]);
 
   useEffect(() => {
-    startTimer();
+    statusHandler.subscribe(`schedule-next-runs-chart`, ({ metrics }) => {
+      const _sources: SourceScheduleType[] = metrics
+        .filter((s) => s.topic === "Source" && s.collection === "nextRun")
+        .map((s) => {
+          return {
+            id: s.key,
+            name: s.value,
+            recurring: s.count === 1,
+            nextRunAt: parseInt(s.metadata),
+          };
+        });
+
+      setSources(_sources);
+    });
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe(`schedule-next-runs-chart`);
     };
   }, []);
-
-  function startTimer() {
-    load();
-    timer = setInterval(load, TIMEOUT);
-  }
-
-  async function load() {
-    const { sources }: Actions.SourcesList = await execApi(
-      "get",
-      `/sources`,
-      null,
-      null,
-      null,
-      useCache
-    );
-    if (!sources) return;
-
-    const sourcesWithSchedules = sources.filter(
-      (source) => source?.schedule?.recurring
-    );
-
-    const runs = {};
-    await Promise.all(
-      sourcesWithSchedules.map(async (source) => {
-        const run = await loadRun(source);
-        runs[source.id] = run;
-      })
-    );
-
-    setSources(sourcesWithSchedules);
-    setRuns(runs);
-  }
-
-  async function loadRun(source: Models.SourceType) {
-    const { runs }: { runs: Models.RunType[] } = await execApi(
-      "get",
-      `/runs`,
-      {
-        id: source.schedule.id,
-        limit: 1,
-      },
-      null,
-      null,
-      useCache
-    );
-    return runs[0];
-  }
 
   if (sources.length === 0) {
     return (
@@ -321,53 +278,27 @@ export function ScheduleRuns({ execApi }) {
             </tr>
           </thead>
           <tbody>
-            {sources.map((source) => {
-              const run = runs[source.id];
-              const recurringFrequencyMinutes =
-                source.schedule.recurringFrequency / (60 * 1000);
+            {sources.map((sourceSchedule) => {
+              if (!sourceSchedule.recurring) return null;
 
               return (
-                <tr key={`source-${source.id}`}>
+                <tr key={`source-${sourceSchedule.id}`}>
                   <td>
                     <EnterpriseLink
                       href="/source/[id]/schedule"
-                      as={`/source/${source.id}/schedule`}
+                      as={`/source/${sourceSchedule.id}/schedule`}
                     >
-                      <a>{source.name}</a>
+                      <a>{sourceSchedule.name}</a>
                     </EnterpriseLink>
                   </td>
                   <td>
-                    {run?.updatedAt &&
-                    new Date(run.updatedAt).getTime() +
-                      source.schedule.recurringFrequency >
-                      new Date().getTime() &&
-                    recurringFrequencyMinutes > 0 ? (
+                    {sourceSchedule.nextRunAt > 0 ? (
                       <>
-                        in{" "}
-                        <Moment
-                          add={{
-                            minutes: recurringFrequencyMinutes,
-                          }}
-                          toNow
-                          ago
-                        >
-                          {run.updatedAt}
-                        </Moment>
+                        <Moment fromNow>{sourceSchedule.nextRunAt}</Moment>
                       </>
-                    ) : null}
-
-                    {(run?.updatedAt &&
-                      new Date(run.updatedAt).getTime() +
-                        source.schedule.recurringFrequency <=
-                        new Date().getTime() &&
-                      recurringFrequencyMinutes) ||
-                    !run ? (
-                      source.schedule.recurring ? (
-                        <strong>Soon</strong>
-                      ) : (
-                        "N/A"
-                      )
-                    ) : null}
+                    ) : (
+                      "Soon"
+                    )}
                   </td>
                 </tr>
               );
@@ -381,79 +312,65 @@ export function ScheduleRuns({ execApi }) {
 
 const pendingImportSamples: ChartLinData = [];
 const pendingImportKeys: string[] = [];
-export function PendingImports({ execApi }) {
-  const [sources, setSources] = useState<Models.SourceType[]>([]);
-  const [pendingProfilesCount, setPendingProfilesCount] = useState(0);
-  const [mostRecentImport, setMostRecentImport] = useState<Models.ImportType>();
-  let timer;
+export function PendingImports({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  type ImportsBySource = {
+    id: string;
+    name: string;
+    pending: number;
+  };
+
+  const [sources, setSources] = useState<ImportsBySource[]>([]);
+  const [pendingProfilesCount, setPendingProfilesCount] = useState(-1);
 
   useEffect(() => {
-    startTimer();
+    statusHandler.subscribe(
+      `pending-imports-chart`,
+      ({ metrics, timestamp }) => {
+        const _sources: ImportsBySource[] = metrics
+          .filter(
+            (s) => s.topic === "Import" && s.collection === "pendingBySource"
+          )
+          .map((s) => {
+            if (!pendingImportKeys.includes(s.value)) {
+              pendingImportKeys.push(s.value);
+            }
+
+            const idx = pendingImportKeys.indexOf(s.value);
+
+            if (!pendingImportSamples[idx]) pendingImportSamples[idx] = [];
+            pendingImportSamples[idx].push({
+              x: timestamp,
+              y: s.count,
+            });
+            if (pendingImportSamples[idx].length > maxSampleLength) {
+              pendingImportSamples[idx].shift();
+            }
+
+            return {
+              id: s.key,
+              name: s.value,
+              pending: s.count,
+            };
+          });
+
+        setSources(_sources);
+
+        const _pendingProfilesCount = metrics.find(
+          (s) => s.topic === "Profile" && s.collection === "pending"
+        ).count;
+
+        setPendingProfilesCount(_pendingProfilesCount);
+      }
+    );
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe(`pending-imports-chart`);
     };
   }, []);
-
-  function startTimer() {
-    load();
-    timer = setInterval(load, TIMEOUT);
-  }
-
-  async function load() {
-    const { sources }: Actions.SourcesList = await execApi("get", `/sources`, {
-      state: "ready",
-    });
-
-    const {
-      total: _pendingProfilesCount,
-    }: Actions.ProfilesList = await execApi("get", "/profiles", {
-      state: "pending",
-      limit: 1,
-    });
-
-    const { counts }: Actions.SourcesCountPending = await execApi(
-      "get",
-      `/sources/countPending`,
-      null,
-      null,
-      null,
-      useCache
-    );
-
-    const { imports }: Actions.ImportsList = await execApi(
-      "get",
-      "/imports",
-      {
-        limit: 1,
-      },
-      null,
-      null,
-      useCache
-    );
-
-    const now = new Date().getTime();
-    for (const i in sources) {
-      const source = sources[i];
-      if (!pendingImportKeys.includes(source.name)) {
-        pendingImportKeys.push(source.name);
-      }
-      const idx = pendingImportKeys.indexOf(source.name);
-      if (!pendingImportSamples[idx]) pendingImportSamples[idx] = [];
-      pendingImportSamples[idx].push({ x: now, y: counts[source.id] || 0 });
-      if (pendingImportSamples[idx].length > maxSampleLength) {
-        pendingImportSamples[idx].shift();
-      }
-    }
-
-    if (sources) setSources(sources);
-    if (imports) setMostRecentImport(imports[0]);
-    if (_pendingProfilesCount !== undefined) {
-      setPendingProfilesCount(_pendingProfilesCount);
-    } else {
-      setPendingProfilesCount(0);
-    }
-  }
 
   if (sources.length === 0) {
     return (
@@ -475,12 +392,6 @@ export function PendingImports({ execApi }) {
             minPoints={maxSampleLength}
           />
         </div>
-        Most Recent Import:{" "}
-        {mostRecentImport ? (
-          <Moment fromNow>{mostRecentImport.createdAt}</Moment>
-        ) : (
-          "Never"
-        )}
       </Card.Body>
     </Card>
   );
@@ -488,71 +399,66 @@ export function PendingImports({ execApi }) {
 
 const pendingExportSamples: ChartLinData = [];
 const pendingExportKeys: string[] = [];
-export function PendingExports({ execApi }) {
-  const [destinations, setDestinations] = useState<Models.DestinationType[]>(
-    []
-  );
+export function PendingExports({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  type ExportsByDestination = {
+    id: string;
+    name: string;
+    pending: number;
+  };
+
+  const [destinations, setDestinations] = useState<ExportsByDestination[]>([]);
   const [pendingExportsCount, setPendingExportsCount] = useState(0);
-  const [mostRecentExport, setMostRecentExport] = useState<Models.ExportType>();
-  let timer;
 
   useEffect(() => {
-    startTimer();
+    statusHandler.subscribe(
+      `pending-exports-chart`,
+      ({ metrics, timestamp }) => {
+        const _destinations: ExportsByDestination[] = metrics
+          .filter(
+            (s) =>
+              s.topic === "Export" && s.collection === "pendingByDestination"
+          )
+          .map((s) => {
+            if (!pendingExportKeys.includes(s.value)) {
+              pendingExportKeys.push(s.value);
+            }
+
+            const idx = pendingExportKeys.indexOf(s.value);
+
+            if (!pendingExportSamples[idx]) pendingExportSamples[idx] = [];
+            pendingExportSamples[idx].push({
+              x: timestamp,
+              y: s.count,
+            });
+            if (pendingExportSamples[idx].length > maxSampleLength) {
+              pendingExportSamples[idx].shift();
+            }
+
+            return {
+              id: s.key,
+              name: s.value,
+              pending: s.count,
+            };
+          });
+
+        setDestinations(_destinations);
+
+        const _pendingExportsCount = metrics.find(
+          (s) => s.topic === "Export" && s.collection === "pending"
+        ).count;
+
+        setPendingExportsCount(_pendingExportsCount);
+      }
+    );
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe(`pending-exports-chart`);
     };
   }, []);
-
-  function startTimer() {
-    load();
-    timer = setInterval(load, TIMEOUT);
-  }
-
-  async function load() {
-    const { destinations }: Actions.DestinationsList = await execApi(
-      "get",
-      `/destinations`,
-      null,
-      null,
-      null,
-      useCache
-    );
-
-    const { exports: _exports }: Actions.ExportsList = await execApi(
-      "get",
-      "/exports",
-      { limit: 1 },
-      null,
-      null,
-      useCache
-    );
-
-    const now = new Date().getTime();
-    let _pendingExportsCount = 0;
-
-    for (const i in destinations) {
-      const destination = destinations[i];
-      if (!pendingExportKeys.includes(destination.name)) {
-        pendingExportKeys.push(destination.name);
-      }
-      const idx = pendingExportKeys.indexOf(destination.name);
-      if (!pendingExportSamples[idx]) pendingExportSamples[idx] = [];
-      pendingExportSamples[idx].push({
-        x: now,
-        y: destination.exportTotals.created + destination.exportTotals.started,
-      });
-      if (pendingExportSamples[idx].length > maxSampleLength) {
-        pendingExportSamples[idx].shift();
-      }
-      _pendingExportsCount +=
-        destination.exportTotals.created + destination.exportTotals.started;
-    }
-
-    if (destinations) setDestinations(destinations);
-    if (_exports) setMostRecentExport(_exports[0]);
-    if (destinations) setPendingExportsCount(_pendingExportsCount);
-  }
 
   if (destinations.length === 0) {
     return (
@@ -574,12 +480,6 @@ export function PendingExports({ execApi }) {
             minPoints={maxSampleLength}
           />
         </div>
-        Most Recent Export:{" "}
-        {mostRecentExport ? (
-          <Moment fromNow>{mostRecentExport.createdAt}</Moment>
-        ) : (
-          "Never"
-        )}
       </Card.Body>
     </Card>
   );

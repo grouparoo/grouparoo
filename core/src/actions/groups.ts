@@ -48,29 +48,6 @@ export class GroupsList extends AuthenticatedAction {
   }
 }
 
-export class GroupsListByNewestMember extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "groups:list:byNewestMember";
-    this.description = "return the newest member timestamps for each group";
-    this.outputExample = {};
-    this.permission = { topic: "group", mode: "read" };
-    this.inputs = {
-      limit: { required: true, default: 5, formatter: parseInt },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
-      params.limit
-    );
-    return {
-      groups: await Promise.all(groups.map((g) => g.apiData())),
-      newestMembersAdded,
-    };
-  }
-}
-
 export class GroupsRuleOptions extends AuthenticatedAction {
   constructor() {
     super();

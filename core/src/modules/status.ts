@@ -29,12 +29,24 @@ export namespace Status {
 
     // thing in progress
     metrics.push(await StatusReporters.Pending.pendingImports());
+    metrics.push(...(await StatusReporters.Pending.pendingImportsBySource()));
     metrics.push(await StatusReporters.Pending.pendingExports());
+    metrics.push(
+      ...(await StatusReporters.Pending.pendingExportsByDestination())
+    );
     metrics.push(await StatusReporters.Pending.pendingProfiles());
     metrics.push(...(await StatusReporters.Pending.pendingRuns()));
 
-    await set(metrics);
-    await chatRoom.broadcast({}, "system:status", { metrics });
+    // additional things
+    metrics.push(...(await StatusReporters.Groups.byNewestMember()));
+    metrics.push(...(await StatusReporters.Sources.nextRuns()));
+
+    const { timestamp } = await set(metrics);
+
+    await chatRoom.broadcast({}, "system:status", {
+      timestamp,
+      metrics,
+    });
 
     return metrics;
   }
@@ -67,6 +79,8 @@ export namespace Status {
     const key = `${cachePrefix}${now.getTime()}`;
     await redis.set(key, JSON.stringify(status));
     await redis.expire(key, ttl);
+
+    return status;
   }
 
   function getRedis() {

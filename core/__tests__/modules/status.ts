@@ -132,6 +132,14 @@ describe("modules/status", () => {
           count: 0,
           topic: "Import",
         },
+        expect.objectContaining({
+          aggregation: "count",
+          collection: "pendingBySource",
+          count: 0,
+          // key: "src_9bbacb85-f006-4413-a9b7-543ecabd7394",
+          topic: "Import",
+          // value: "source name",
+        }),
         {
           aggregation: "count",
           collection: "pending",
@@ -158,6 +166,15 @@ describe("modules/status", () => {
           // metadata: undefined,
           topic: "Run",
           value: "purchaseAmounts",
+        }),
+        expect.objectContaining({
+          aggregation: "exact",
+          collection: "nextRun",
+          count: 0,
+          // key: "run_c81ec3d2-2c3f-4097-b3cd-f2428e60095f",
+          // metadata: undefined,
+          topic: "Source",
+          // value: "source name",
         }),
       ]);
     });

@@ -22,6 +22,9 @@ import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 
+import { GroupOps } from "../modules/ops/group";
+import { SourceOps } from "../modules/ops/source";
+
 export interface StatusMetric {
   // the possible attributes for a metric are:
   // { collection, topic, aggregation, key, value, count, min, max, avg, imports, exports, runs, errors }
@@ -271,6 +274,25 @@ export namespace StatusReporters {
       };
     }
 
+    export async function pendingImportsBySource() {
+      const metrics: StatusMetric[] = [];
+      const sources = await Source.findAll();
+      const { counts } = await SourceOps.pendingImportsBySource();
+
+      for (const source of sources) {
+        metrics.push({
+          collection: "pendingBySource",
+          topic: "Import",
+          aggregation: "count",
+          key: source.id,
+          value: source.name,
+          count: counts[source.id] || 0,
+        });
+      }
+
+      return metrics;
+    }
+
     export async function pendingExports(): Promise<StatusMetric> {
       return {
         collection: "pending",
@@ -280,6 +302,84 @@ export namespace StatusReporters {
           where: { completedAt: null, errorMessage: null },
         }),
       };
+    }
+
+    export async function pendingExportsByDestination() {
+      const metrics: StatusMetric[] = [];
+      const destinations = await Destination.findAll();
+
+      for (const destination of destinations) {
+        const apiData = await destination.apiData();
+        metrics.push({
+          collection: "pendingByDestination",
+          topic: "Export",
+          aggregation: "count",
+          key: apiData.id,
+          value: apiData.name,
+          count: apiData.exportTotals.created + apiData.exportTotals.started,
+        });
+      }
+
+      return metrics;
+    }
+  }
+
+  export namespace Groups {
+    export async function byNewestMember() {
+      const metrics: StatusMetric[] = [];
+      const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
+        25
+      );
+
+      for (const group of groups) {
+        const apiData = await group.apiData();
+
+        metrics.push({
+          collection: "byNewestMember",
+          topic: "Group",
+          aggregation: "exact",
+          key: apiData.id,
+          value: apiData.name,
+          count: apiData.profilesCount,
+          metadata: newestMembersAdded[apiData.id]
+            ? newestMembersAdded[apiData.id].toString()
+            : "No Group Members",
+        });
+      }
+
+      return metrics;
+    }
+  }
+
+  export namespace Sources {
+    export async function nextRuns() {
+      const metrics: StatusMetric[] = [];
+      const sources = await Source.findAll();
+
+      for (const source of sources) {
+        const schedule = await source.$get("schedule");
+        const latestRun = schedule
+          ? await Run.findOne({
+              where: { creatorId: schedule.id },
+              order: [["updatedAt", "desc"]],
+            })
+          : null;
+        const nextRunAt = latestRun
+          ? latestRun.updatedAt.getTime() + schedule.recurringFrequency
+          : -1;
+
+        metrics.push({
+          collection: "nextRun",
+          topic: "Source",
+          aggregation: "exact",
+          key: source.id,
+          value: source.name,
+          count: schedule?.recurring ? 1 : 0,
+          metadata: nextRunAt.toString(),
+        });
+      }
+
+      return metrics;
     }
   }
 }

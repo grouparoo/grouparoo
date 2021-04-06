@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import {
-  BigNumber,
+  BigTotalNumber,
   GroupsByNewestMember,
   RunningRuns,
   ScheduleRuns,
@@ -11,7 +11,7 @@ import {
 import { useApi } from "../hooks/useApi";
 
 export default function Page(props) {
-  const { errorHandler } = props;
+  const { errorHandler, statusHandler } = props;
   const { execApi } = useApi(props, errorHandler);
 
   return (
@@ -23,8 +23,8 @@ export default function Page(props) {
       <h2>Totals</h2>
       <Row>
         <Col>
-          <BigNumber
-            execApi={execApi}
+          <BigTotalNumber
+            statusHandler={statusHandler}
             href="/profiles"
             model="Profile"
             title="Profiles"
@@ -32,8 +32,8 @@ export default function Page(props) {
         </Col>
 
         <Col>
-          <BigNumber
-            execApi={execApi}
+          <BigTotalNumber
+            statusHandler={statusHandler}
             href="/groups"
             model="Group"
             title="Groups"
@@ -43,21 +43,21 @@ export default function Page(props) {
 
       <br />
       <h2>Runs</h2>
-      <RunningRuns execApi={execApi} />
+      <RunningRuns statusHandler={statusHandler} />
       <br />
-      <ScheduleRuns execApi={execApi} />
+      <ScheduleRuns statusHandler={statusHandler} />
 
       <br />
       <h2>Updating Data in Grouparoo</h2>
-      <PendingImports execApi={execApi} />
+      <PendingImports statusHandler={statusHandler} />
 
       <br />
       <h2>Exporting Data to Destinations</h2>
-      <PendingExports execApi={execApi} />
+      <PendingExports statusHandler={statusHandler} />
 
       <br />
       <h2>Recently Updated Groups</h2>
-      <GroupsByNewestMember execApi={execApi} />
+      <GroupsByNewestMember statusHandler={statusHandler} />
     </>
   );
 }
