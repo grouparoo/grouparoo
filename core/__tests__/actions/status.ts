@@ -26,7 +26,7 @@ describe("actions/status", () => {
     let csrfToken;
 
     beforeAll(async () => {
-      await specHelper.runTask("system:status", {});
+      await specHelper.runTask("status", {});
     });
 
     beforeAll(async () => {

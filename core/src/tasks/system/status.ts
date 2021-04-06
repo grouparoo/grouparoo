@@ -7,7 +7,7 @@ import { StatusMetric } from "../../modules/statusReporters";
 export class StatusTask extends Task {
   constructor() {
     super();
-    this.name = "system:status";
+    this.name = "status";
     this.description =
       "Calculate and store status.  If we are running via the CLI, log it there too";
     this.frequency = 1000 * 5; // every 5 seconds
