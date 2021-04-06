@@ -31,26 +31,30 @@ const tables = {
 
 export default {
   up: async function (migration) {
-    for (const table in tables) {
-      await migration.renameColumn(table, "guid", "id");
-      const cols = tables[table];
-      for (const j in cols) {
-        const oldName = cols[j];
-        const newName = oldName.replace("Guid", "Id");
-        await migration.renameColumn(table, oldName, newName);
+    await migration.sequelize.transaction(async () => {
+      for (const table in tables) {
+        await migration.renameColumn(table, "guid", "id");
+        const cols = tables[table];
+        for (const j in cols) {
+          const oldName = cols[j];
+          const newName = oldName.replace("Guid", "Id");
+          await migration.renameColumn(table, oldName, newName);
+        }
       }
-    }
+    });
   },
 
   down: async function (migration) {
-    for (const table in tables) {
-      await migration.renameColumn(table, "id", "guid");
-      const cols = tables[table];
-      for (const j in cols) {
-        const newName = cols[j];
-        const oldName = newName.replace("Guid", "Id");
-        await migration.renameColumn(table, oldName, newName);
+    await migration.sequelize.transaction(async () => {
+      for (const table in tables) {
+        await migration.renameColumn(table, "id", "guid");
+        const cols = tables[table];
+        for (const j in cols) {
+          const newName = cols[j];
+          const oldName = newName.replace("Guid", "Id");
+          await migration.renameColumn(table, oldName, newName);
+        }
       }
-    }
+    });
   },
 };
