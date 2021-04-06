@@ -26,7 +26,8 @@ export class ImportAssociateProfile extends Task {
     try {
       await CLS.wrap(
         async () => {
-          _import = await Import.findById(importId);
+          _import = await Import.findOne({ where: { id: importId } });
+          if (!_import) return;
           if (_import.profileId) return;
 
           const { profile, isNew } = await _import.associateProfile();
