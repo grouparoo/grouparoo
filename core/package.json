@@ -26,7 +26,7 @@
     "prepare": "./bin/build",
     "dev": "./bin/dev",
     "pretest": "npm run lint && npm run prepare",
-    "test": "jest --maxWorkers 5",
+    "test": "jest",
     "lint": "prettier --check src __tests__",
     "docs": "typedoc --out docs --theme default src/index.ts",
     "import": "./api/bin/import",
