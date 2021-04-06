@@ -98,7 +98,9 @@ describe("actions/status", () => {
           connection
         );
 
-        const nodeEnvMetric = metrics.find(
+        expect(metrics.length).toBeGreaterThanOrEqual(1);
+        const firstSamples = metrics[0];
+        const nodeEnvMetric = firstSamples.metrics.find(
           (s) => s.collection === "cluster" && s.topic === "node_env"
         );
         expect(nodeEnvMetric.value).toBe("test");

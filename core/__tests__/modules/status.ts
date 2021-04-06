@@ -90,12 +90,11 @@ describe("modules/status", () => {
           count: 0,
           topic: "resqueErrors",
         },
-        {
+        expect.objectContaining({
           aggregation: "exact",
           collection: "cluster",
-          topic: "resqueLeader",
-          value: "None",
-        },
+          topic: "resqueDetails",
+        }),
         expect.objectContaining({
           aggregation: "exact",
           collection: "cluster",

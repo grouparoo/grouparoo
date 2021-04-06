@@ -65,13 +65,15 @@ export namespace StatusReporters {
         };
       }
 
-      export async function leader(): Promise<StatusMetric> {
+      export async function details(): Promise<StatusMetric> {
         const resqueDetails = await task.details();
+
         return {
           collection: "cluster",
-          topic: "resqueLeader",
+          topic: "resqueDetails",
           aggregation: "exact",
           value: resqueDetails.leader || "None",
+          metadata: JSON.stringify(resqueDetails),
         };
       }
     }

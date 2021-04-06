@@ -48,8 +48,7 @@ export class PrivateStatus extends AuthenticatedAction {
       description: packageJSON.description,
       version: packageJSON.version,
       uptime: new Date().getTime() - api.bootTime,
-      metrics: samples[0]?.metrics,
-      timestamp: samples[0]?.timestamp,
+      metrics: samples.slice(0, 10),
     };
   }
 }
