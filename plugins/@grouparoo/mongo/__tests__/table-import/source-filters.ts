@@ -9,7 +9,6 @@ const sourceFilters = getConnection().methods.sourceFilters;
 const { appOptions, purchasesTableName } = getConfig();
 const sourceOptions = {
   table: purchasesTableName,
-  fields: "id,amount,date,id,profile_id,purchase,stamp",
 };
 let client;
 
@@ -45,6 +44,7 @@ describe("mongo/table/sourceFilters", () => {
     );
     const columnNames = columns.map((r) => r.key);
     expect(columnNames).toEqual([
+      "_id",
       "amount",
       "date",
       "id",
@@ -52,9 +52,14 @@ describe("mongo/table/sourceFilters", () => {
       "purchase",
       "stamp",
     ]); // leaves out
-    expect(columns.length).toBe(6);
+    expect(columns.length).toBe(7);
 
     expect(columns[0]).toMatchObject({
+      key: "_id",
+      ops: ["equals", "does not equal", "contains", "does not contain"],
+    });
+
+    expect(columns[1]).toMatchObject({
       key: "amount",
       ops: [
         "equals",
@@ -65,7 +70,7 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[1]).toMatchObject({
+    expect(columns[2]).toMatchObject({
       key: "date",
       ops: [
         "equals",
@@ -76,7 +81,7 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[2]).toMatchObject({
+    expect(columns[3]).toMatchObject({
       key: "id",
       ops: [
         "equals",
@@ -87,7 +92,7 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[3]).toMatchObject({
+    expect(columns[4]).toMatchObject({
       key: "profile_id",
       ops: [
         "equals",
@@ -98,11 +103,11 @@ describe("mongo/table/sourceFilters", () => {
         "less than or equal to",
       ],
     });
-    expect(columns[4]).toMatchObject({
+    expect(columns[5]).toMatchObject({
       key: "purchase",
       ops: ["equals", "does not equal", "contains", "does not contain"],
     });
-    expect(columns[5]).toMatchObject({
+    expect(columns[6]).toMatchObject({
       key: "stamp",
       ops: [
         "equals",

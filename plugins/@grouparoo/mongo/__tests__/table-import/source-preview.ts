@@ -27,13 +27,11 @@ describe("mongo/table/sourcePreview", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
-
-  afterAll(async () => await afterData());
+  // afterAll(async () => await afterData());
 
   test("gets list of columns that can handle highwatermark", async () => {
     const sourceOptions = {
       table: purchasesTableName,
-      fields: "id,amount,date,id,profile_id,purchase, stamp", // Add a whitespace to test the strip.
     };
     const preview = await getPreview(sourceOptions);
     const row = preview[0];
@@ -64,11 +62,11 @@ describe("mongo/table/sourcePreview", () => {
   test("gets list of columns from location collection", async () => {
     const locationSourceOptions = {
       table: locationsTableName,
-      fields: "id,type,properties, geometry", // Add a whitespace to test the strip.
     };
 
     const preview = await getPreview(locationSourceOptions);
     const row = preview[0];
+
     expect(preview.length).toEqual(10);
 
     let value;

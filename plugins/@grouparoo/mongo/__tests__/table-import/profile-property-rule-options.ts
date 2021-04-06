@@ -9,7 +9,6 @@ const propertyOptions = getConnection().propertyOptions;
 const { appOptions, purchasesTableName } = getConfig();
 const sourceOptions = {
   table: purchasesTableName,
-  fields: "id,amount,date,id,profile_id,purchase,stamp",
 };
 let client;
 

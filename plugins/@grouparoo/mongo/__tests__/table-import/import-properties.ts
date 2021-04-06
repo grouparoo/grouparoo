@@ -242,7 +242,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: purchasesTableName,
-        fields: "id,amount,date,id,profile_id,purchase,stamp",
       };
     });
 
@@ -342,7 +341,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: purchasesTableName,
-        fields: "id,amount,date,id,profile_id,purchase,stamp",
       };
     });
     describe("equals", () => {

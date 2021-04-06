@@ -42,8 +42,6 @@ describe("mongo/table/scheduleOptions", () => {
     });
     await source.setOptions({
       table: locationsTableName,
-      fields:
-        "id,type,properties.sig,properties.mag,properties.time,properties.updated",
     });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });

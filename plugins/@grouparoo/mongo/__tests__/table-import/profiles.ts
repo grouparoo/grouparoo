@@ -86,8 +86,6 @@ describe("mongo/table/profiles", () => {
 
     await source.setOptions({
       table: usersTableName,
-      fields:
-        "id,email,first_name,last_name,gender,vip,android_app,ltv,date,stamp",
     });
     await source.setMapping(sourceMapping);
     await source.update({ state: "ready" });

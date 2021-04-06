@@ -38,9 +38,7 @@ export function loadAppOptions(): SimpleAppOptions {
 
 export const appOptions = loadAppOptions();
 
-export const sourceOptions = {
-  fields: "name,createdAt",
-};
+export const sourceOptions = {};
 
 const allCollections = [
   usersCollectionName,
