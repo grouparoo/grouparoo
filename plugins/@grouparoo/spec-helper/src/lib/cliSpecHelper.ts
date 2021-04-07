@@ -64,7 +64,10 @@ export namespace CLISpecHelper {
   "version": "0.0.1",
   "license": "MPL-2.0",
   "private": true,
-  "dependencies": {},
+  "dependencies": {
+    "@grouparoo/core": "file:${corePath()}",
+    "${pluginName}": "file:${pluginPath}"
+  },
   "scripts": {},
   "grouparoo": {
     "plugins": ["${pluginName}"]
@@ -74,9 +77,19 @@ export namespace CLISpecHelper {
 
     fs.writeFileSync(path.join(projectPath, "package.json"), template);
 
-    // we cannot pre-write the dependencies in the package.json, we need to use the npm cli so the symlinks are built
-    await spawnPromise("npm", ["install", corePath()], projectPath);
-    await spawnPromise("npm", ["install", pluginPath], projectPath);
+    // we don't want to use NPM because it will try to re-run scripts (even with --ignore-scripts)
+    // npm would also be slow
+    fs.mkdirpSync(path.join(projectPath, "node_modules", "@grouparoo"));
+    fs.createSymlinkSync(
+      corePath(),
+      path.join(projectPath, "node_modules", "@grouparoo", "core"),
+      "dir"
+    );
+    fs.createSymlinkSync(
+      pluginPath,
+      path.join(projectPath, "node_modules", pluginName),
+      "dir"
+    );
   }
 
   function writeEnvFile(projectPath: string) {
