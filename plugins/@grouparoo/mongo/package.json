@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.2.12-alpha.0",
-    "mongodb": "3.6.5"
+    "mongodb": "3.6.6"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.12-alpha.0",
