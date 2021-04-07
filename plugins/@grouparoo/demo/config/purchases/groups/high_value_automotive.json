@@ -1,0 +1,24 @@
+{
+  "id": "high_value_automotive",
+  "name": "High Value with Recent Automotive Purchase",
+  "class": "Group",
+  "type": "calculated",
+  "rules": [
+    {
+      "propertyId": "ltv",
+      "operation": { "op": "gt" },
+      "match": "100"
+    },
+    {
+      "propertyId": "last_purchase_date",
+      "operation": { "op": "relative_gt" },
+      "relativeMatchNumber": "60",
+      "relativeMatchUnit": "days"
+    },
+    {
+      "propertyId": "last_purchase_category",
+      "operation": { "op": "eq" },
+      "match": "Automotive"
+    }
+  ]
+}

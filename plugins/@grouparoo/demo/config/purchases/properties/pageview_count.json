@@ -1,0 +1,11 @@
+{
+  "id": "pageview_count",
+  "name": "pageviewCount",
+  "class": "Property",
+  "type": "integer",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "event_pageviews",
+  "options": { "aggregationMethod": "count", "column": "[data]-page" },
+  "filters": []
+}

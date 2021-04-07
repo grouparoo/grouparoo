@@ -1,0 +1,9 @@
+{
+  "id": "events",
+  "name": "Grouparoo Events",
+  "class": "App",
+  "type": "events",
+  "options": {
+    "identifyingPropertyId": "user_id"
+  }
+}
