@@ -24,7 +24,8 @@
     "prepare": "rm -rf dist && tsc --declaration",
     "test": "jest",
     "pretest": "npm run lint && npm run prepare",
-    "lint": "prettier --check src "
+    "lint": "prettier --check src ",
+    "watch": "tsc --watch"
   },
   "dependencies": {
     "csv-parse": "4.15.3",
