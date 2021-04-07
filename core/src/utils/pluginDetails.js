@@ -22,9 +22,13 @@ function readPackageJson(path) {
 
 function getParentPath() {
   if (process.env.GROUPAROO_PARENT_PATH) {
-    return fs.realpathSync(
-      path.join(process.cwd(), process.env.GROUPAROO_PARENT_PATH)
-    );
+    if (path.isAbsolute(process.env.GROUPAROO_PARENT_PATH)) {
+      return process.env.GROUPAROO_PARENT_PATH;
+    } else {
+      return fs.realpathSync(
+        path.join(process.cwd(), process.env.GROUPAROO_PARENT_PATH)
+      );
+    }
   }
 
   if (grouparooMonorepoApp) {
