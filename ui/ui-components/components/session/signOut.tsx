@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Loader from "../loader";
 import { useApi } from "../../hooks/useApi";
+import { disconnectWebsocket } from "../../hooks/useRealtimeStream";
 
 export default function SignOutForm(props) {
   const { errorHandler, successHandler, sessionHandler } = props;
@@ -14,6 +15,7 @@ export default function SignOutForm(props) {
 
   async function load() {
     window.localStorage.clear();
+    disconnectWebsocket();
 
     try {
       await execApi("delete", `/session`);

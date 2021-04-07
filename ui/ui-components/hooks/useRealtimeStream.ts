@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 // we are going to attach a single websocket to `window.GROUPAROO-WEBSOCKET` so that we can re-use it.
 const socketKey = "GROUPAROO-WEBSOCKET";
@@ -20,7 +20,11 @@ export const useRealtimeStream = (
   const client = globalThis[socketKey];
 
   useEffect(() => {
-    if (toConnect) connect();
+    if (toConnect) {
+      connect();
+    } else if (client.state === "disconnected") {
+      reconnect();
+    }
 
     registerCallback();
     joinRoom();
@@ -49,9 +53,7 @@ export const useRealtimeStream = (
       console.log("[websocket] reconnecting");
     });
     client.on("message", function (message) {
-      if (message.error) {
-        handleError(message);
-      }
+      if (message.error) handleError(message);
     });
     client.on("alert", function (message) {
       alert("[websocket] " + JSON.stringify(message));
@@ -71,6 +73,12 @@ export const useRealtimeStream = (
     });
   }
 
+  async function reconnect() {
+    client.connect(function (error, details) {
+      handleError(error);
+    });
+  }
+
   function handleError(error) {
     if (!error) {
       return;
@@ -79,9 +87,17 @@ export const useRealtimeStream = (
       error.status.includes("connection already in this room")
     ) {
       return;
+    } else if (
+      error.error &&
+      error.error.message.includes("Please log in to continue")
+    ) {
+      return;
     }
 
-    console.log("[websocket] error", error.stack);
+    console.log(
+      "[websocket] error",
+      error.stack ? error.stack : error.error ? error.error.message : error
+    );
   }
 
   function handleMessage(context, from, messageRoom, sentAt, message) {
@@ -111,9 +127,17 @@ export const useRealtimeStream = (
       client.pendingRooms = Array.from(new Set(client.pendingRooms));
     });
   }
-
-  async function disconnect() {
-    delete client.pendingRooms;
-    client.disconnect();
-  }
 };
+
+export async function disconnectWebsocket() {
+  if (!globalThis.ActionheroWebsocketClient) return;
+  if (!globalThis[socketKey]) return;
+
+  const client = globalThis[socketKey];
+  try {
+    delete client.pendingRooms;
+    await client.disconnect();
+  } catch (error) {
+    console.error(error);
+  }
+}

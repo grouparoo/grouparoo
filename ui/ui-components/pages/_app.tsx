@@ -77,10 +77,14 @@ export default function GrouparooWebApp(props) {
   return (
     <Injection {...combinedProps}>
       <PageTransition />
-      <StatusSubscription {...combinedProps} />
+
       <Layout hydrationError={hydrationError} {...combinedProps}>
         <Component {...combinedProps} err={err} />
       </Layout>
+
+      {combinedProps.currentTeamMember.id ? (
+        <StatusSubscription {...combinedProps} />
+      ) : null}
     </Injection>
   );
 }
