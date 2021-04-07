@@ -59,6 +59,7 @@ export class Plugins extends Initializer {
             "Export Profiles to Hubspot and add them to Contact Lists.",
           app: "hubspot",
           syncModes,
+          defaultSyncMode: "sync",
           options: [],
           methods: {
             exportProfile,
