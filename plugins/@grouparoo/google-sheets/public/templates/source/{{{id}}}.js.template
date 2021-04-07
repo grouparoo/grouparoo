@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "{{{__pluginName}}}-table-import",
+      type: "google-sheet-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "google_sheet_app"`
       options: {
         sheet_url: "https://sheets.google.com/...", // The URL of your sheet.
