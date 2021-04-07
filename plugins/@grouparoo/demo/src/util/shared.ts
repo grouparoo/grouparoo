@@ -2,7 +2,7 @@ import sharedExecSync from "./exec";
 import { api } from "actionhero";
 import path from "path";
 import Database from "./database";
-import { Run, SimpleAppOptions } from "@grouparoo/core";
+import { Run } from "@grouparoo/core";
 
 const LOG_LEVEL = 1;
 
