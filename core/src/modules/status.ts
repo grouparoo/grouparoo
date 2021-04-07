@@ -55,6 +55,8 @@ export namespace Status {
     const redis = getRedis();
     const keyMatch = `${cachePrefix}*`;
     const keys = await redis.keys(keyMatch);
+    if (keys.length === 0) return [];
+
     const values = (await redis.mget(keys))
       .slice(0, limit)
       .map((v) => JSON.parse(v) as StatusObject)

@@ -28,8 +28,7 @@ export class StatusTask extends Task {
       if (sample.collection === "pending") pendingItems += sample.count;
     }
 
-    if (pendingItems > 0) return false;
-    return true;
+    return pendingItems > 0 ? false : true;
   }
 
   async stopServer() {
