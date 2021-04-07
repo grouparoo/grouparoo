@@ -1,6 +1,40 @@
-import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
+import {
+  ExportProfilePluginMethod,
+  Errors,
+  SimpleAppOptions,
+  DestinationSyncOperations,
+} from "@grouparoo/core";
+import { HubspotClient } from "../client";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
+
+const deleteContactOrClearGroups = async (
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  syncOperations: DestinationSyncOperations,
+  contact: any,
+  groups: string[],
+  doThrow: boolean = false
+) => {
+  if (syncOperations.delete) {
+    await client.deleteContact(contact.vid);
+  } else {
+    if (syncOperations.update) {
+      // clear groups
+      const email = contact.properties.email.value;
+      for (const group of groups) {
+        await removeFromList(client, appId, appOptions, email, group);
+      }
+    }
+
+    if (doThrow) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow removing profiles."
+      );
+    }
+  }
+};
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
@@ -37,26 +71,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        if (!syncOperations.delete) {
-          // only clear groups
-          if (syncOperations.update) {
-            for (const group of oldGroups) {
-              await removeFromList(
-                client,
-                appId,
-                appOptions,
-                contactToDelete.properties.email.value,
-                group
-              );
-            }
-          }
-
-          throw new Errors.InfoError(
-            "Destination sync mode does not allow removing profiles."
-          );
-        }
-
-        await client.deleteContact(contactToDelete.vid);
+        await deleteContactOrClearGroups(
+          client,
+          appId,
+          appOptions,
+          syncOperations,
+          contactToDelete,
+          oldGroups,
+          true
+        );
       }
       return { success: true };
     } else {
@@ -98,10 +121,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
 
       // change email
-      if (oldContact && syncOperations.delete) {
-        // Because hubspot changes FK by deleting the old one,
-        // if sync mode does not delete we will leave the old one orphaned
-        await client.deleteContact(oldContact.vid);
+      if (oldContact) {
+        await deleteContactOrClearGroups(
+          client,
+          appId,
+          appOptions,
+          syncOperations,
+          oldContact,
+          oldGroups
+        );
       }
 
       await client.createOrUpdateContact(sortedDataFields);

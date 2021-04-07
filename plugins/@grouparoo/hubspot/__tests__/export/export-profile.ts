@@ -435,8 +435,8 @@ describe("hubspot/exportProfile", () => {
         newProfileProperties: {
           email: alternativeEmail,
         },
-        oldGroups: [],
-        newGroups: [],
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [listOne, listTwo, listThree],
         toDelete: false,
       })
     ).rejects.toThrow(/sync mode does not allow creating/);
@@ -444,6 +444,7 @@ describe("hubspot/exportProfile", () => {
     const oldUser = await apiClient.getContactByEmail(email);
     expect(oldUser).not.toBe(null);
     expect(oldUser["properties"]["email"]["value"]).toBe(email);
+    expect(oldUser["list-memberships"]).toHaveLength(3);
 
     const newUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(newUser).toBe(null);
@@ -452,22 +453,39 @@ describe("hubspot/exportProfile", () => {
   test("it can change the email address", async () => {
     await runExport({
       oldProfileProperties: {
-        email: alternativeEmail,
-      },
-      newProfileProperties: {
         email,
       },
-      oldGroups: [],
-      newGroups: [],
+      newProfileProperties: {
+        email: alternativeEmail,
+      },
+      oldGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree],
       toDelete: false,
     });
 
-    const user = await apiClient.getContactByEmail(alternativeEmail);
+    const user = await apiClient.getContactByEmail(email);
     expect(user).toBe(null);
 
-    const newUser = await apiClient.getContactByEmail(email);
+    const newUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(newUser).not.toBe(null);
-    expect(newUser["properties"]["email"]["value"]).toBe(email);
+    expect(newUser["properties"]["email"]["value"]).toBe(alternativeEmail);
+
+    const listOneId = await getListId(listOne);
+    const listTwoId = await getListId(listTwo);
+    const listThreeId = await getListId(listThree);
+
+    expect(listOneId).not.toBe(null);
+    expect(listTwoId).not.toBe(null);
+    expect(listThreeId).not.toBe(null);
+
+    expect(newUser["list-memberships"].length).toBe(3);
+    expect(newUser["list-memberships"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ "internal-list-id": listOneId }),
+        expect.objectContaining({ "internal-list-id": listTwoId }),
+        expect.objectContaining({ "internal-list-id": listThreeId }),
+      ])
+    );
   });
 
   test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
@@ -475,29 +493,33 @@ describe("hubspot/exportProfile", () => {
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
       oldProfileProperties: {
-        email,
-      },
-      newProfileProperties: {
         email: alternativeEmail,
       },
-      oldGroups: [],
-      newGroups: [],
+      newProfileProperties: {
+        email,
+      },
+      oldGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree],
       toDelete: false,
     });
 
-    const oldUser = await apiClient.getContactByEmail(email);
+    // old user still there
+    const oldUser = await apiClient.getContactByEmail(alternativeEmail);
     expect(oldUser).not.toBe(null);
-    expect(oldUser["properties"]["email"]["value"]).toBe(email);
+    expect(oldUser["properties"]["email"]["value"]).toBe(alternativeEmail);
+    expect(oldUser["list-memberships"]).toHaveLength(0); // but has been removed from lists
 
-    const newUser = await apiClient.getContactByEmail(alternativeEmail);
+    // new user created
+    const newUser = await apiClient.getContactByEmail(email);
     expect(newUser).not.toBe(null);
-    expect(newUser["properties"]["email"]["value"]).toBe(alternativeEmail);
+    expect(newUser["properties"]["email"]["value"]).toBe(email);
+    expect(newUser["list-memberships"]).toHaveLength(3);
   });
 
   test("it can change the email address along other properties", async () => {
     await runExport({
       oldProfileProperties: {
-        email: alternativeEmail,
+        email,
         firstname: alternativeName,
         mobilephone: newPhoneNumber,
       },
@@ -525,7 +547,7 @@ describe("hubspot/exportProfile", () => {
       ])
     );
 
-    const oldUser = await apiClient.getContactByEmail(alternativeEmail);
+    const oldUser = await apiClient.getContactByEmail(email);
     expect(oldUser).toBe(null);
   });
 
