@@ -28,7 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "aws-sdk": "2.881.0",
+    "aws-sdk": "2.882.0",
     "fs-extra": "9.1.0"
   },
   "devDependencies": {
