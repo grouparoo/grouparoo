@@ -101,6 +101,35 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(path.join(projectPath, ".env"), template);
   }
 
+  export function enableBootstrappedProperty(
+    projectPath: string,
+    sourceName: string
+  ) {
+    const file = path.join(
+      projectPath,
+      "config",
+      "sources",
+      `${sourceName}.js`
+    );
+    const contents = fs.readFileSync(file).toString();
+    const lines = contents.split(os.EOL);
+    const updatedLines: string[] = [];
+
+    let inBootstrap = false;
+    for (const line of lines) {
+      if (line.includes("bootstrappedProperty: {")) inBootstrap = true;
+      if (inBootstrap && line === "") inBootstrap = false;
+
+      if (!inBootstrap) {
+        updatedLines.push(line);
+      } else {
+        updatedLines.push(line.replace("// ", ""));
+      }
+    }
+
+    fs.writeFileSync(file, updatedLines.join(os.EOL));
+  }
+
   export function prepareForCLITest(
     pluginName: string,
     pluginPath: string,
