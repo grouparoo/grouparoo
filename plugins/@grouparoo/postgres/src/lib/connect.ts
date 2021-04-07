@@ -36,7 +36,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
     // @ts-ignore
-    client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
+    client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp with zone
 
     if (appOptions.schema) {
       await client.query(format(`SET search_path TO %L;`, appOptions.schema));
@@ -46,25 +46,13 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   return pool;
 };
 
-function formatAsText(text) {
+function formatAsText(text: string) {
   return text;
 }
-function formatInUtcDefault(text) {
-  if (!text) return text;
-  const zone = timeZoneOffset(text);
-  if (!zone) return parseDate(text + ".000Z");
-  return parseDate(text);
-}
 
-// from parseDate library
-var TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
-function timeZoneOffset(isoDate) {
-  if (isoDate.endsWith("+00")) {
-    return true;
-  }
-  var zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
-  if (!zone) {
-    return false;
-  }
-  return true;
+function formatInUtcDefault(text: string) {
+  let hasTZ = false;
+  if (text.includes("+") || text.includes("Z")) hasTZ = true;
+  const parsedAsDate = parseDate(hasTZ ? text : text + "Z");
+  return parsedAsDate;
 }
