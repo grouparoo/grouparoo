@@ -1,7 +1,6 @@
 import { CLI, log } from "actionhero";
 import { users, purchases } from "../../../sample_data";
 import { loadConfigFiles } from "../../../configFiles";
-import { groups } from "../../../groups";
 import { events } from "../../../events";
 import { init, finalize } from "../../../util/shared";
 
@@ -26,7 +25,6 @@ export class Console extends CLI {
     await events({ scale });
     await loadConfigFiles("setup");
     await loadConfigFiles("purchases");
-    await groups();
     await finalize();
     return true;
   }
