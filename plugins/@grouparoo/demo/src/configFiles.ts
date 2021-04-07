@@ -78,7 +78,7 @@ async function unlockAll() {
     if (attributes.locked) {
       log(3, `Unlocking ${name}`);
       await Model.scope(null).update(
-        { locked: false },
+        { locked: null },
         {
           where: { locked: "config:code" },
           hooks: false,
