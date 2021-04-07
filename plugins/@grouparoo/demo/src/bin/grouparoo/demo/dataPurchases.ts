@@ -26,7 +26,6 @@ export class Console extends CLI {
     await events({ scale });
     await loadConfigFiles("setup");
     await loadConfigFiles("purchases");
-    await loadConfigFiles("events");
     await groups();
     await finalize();
     return true;
