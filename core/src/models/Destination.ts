@@ -1,4 +1,4 @@
-import { task, api } from "actionhero";
+import { task, api, log } from "actionhero";
 import {
   Table,
   Column,
@@ -179,8 +179,10 @@ export class Destination extends LoggedModel<Destination> {
     const exportTotals = await this.getExportTotals();
 
     const syncMode = await this.getSyncMode();
-    const syncModes = await this.getSupportedSyncModes();
-    const syncModeData = syncModes.map((mode) => DestinationSyncModeData[mode]);
+    const { supportedModes } = await this.getSupportedSyncModes();
+    const syncModeData = supportedModes.map(
+      (mode) => DestinationSyncModeData[mode]
+    );
 
     return {
       id: this.id,
@@ -306,12 +308,19 @@ export class Destination extends LoggedModel<Destination> {
 
   async getSyncMode() {
     if (this.syncMode) return this.syncMode;
+    const { supportedModes, defaultMode } = await this.getSupportedSyncModes();
+    if (supportedModes.length > 1 && defaultMode) {
+      // If destination has defined a default sync mode, use it but warn about its usage
+      log(
+        `Using default sync mode "${defaultMode}" for destination "${this.name}". You should explicitly set a sync mode for the destination to prevent unintended behavior.`,
+        "warning"
+      );
 
-    const supportedSyncModes = await this.getSupportedSyncModes();
-    if (supportedSyncModes.length === 1) {
+      return defaultMode;
+    } else if (supportedModes.length === 1) {
       // If destination only supports one sync mode, use it
-      return supportedSyncModes[0];
-    } else if (supportedSyncModes.length === 0) {
+      return supportedModes[0];
+    } else if (supportedModes.length === 0) {
       // If destination does not support sync modes, let it create, update, and delete
       return "sync";
     }
@@ -320,12 +329,13 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   async validateSyncMode() {
-    const supportedModes = await this.getSupportedSyncModes();
+    const { supportedModes, defaultMode } = await this.getSupportedSyncModes();
 
     // Sync mode is not required for destinations that:
     //    1. Have not implemented sync modes
     //    2. Only support one sync mode (it'll always be used)
-    const isRequired = supportedModes.length > 1;
+    //    3. Have defined a default sync mode
+    const isRequired = supportedModes.length > 1 && !defaultMode;
 
     if (isRequired && !this.syncMode) {
       throw new Error(`Sync mode is required for destination ${this.name}`);

@@ -75,6 +75,7 @@ export interface PluginConnection {
   propertyOptions?: PluginConnectionPropertyOption[];
   scheduleOptions?: PluginConnectionScheduleOption[];
   syncModes?: DestinationSyncMode[];
+  defaultSyncMode?: DestinationSyncMode;
   methods?: {
     sourceOptions?: SourceOptionsMethod;
     sourcePreview?: SourcePreviewMethod;

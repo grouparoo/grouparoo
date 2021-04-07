@@ -441,6 +441,21 @@ describe("models/destination", () => {
         );
       });
 
+      test("a destination can be ready without syncMode if a default has been defined", async () => {
+        const destination = await Destination.create({
+          appId: app.id,
+          type: "test-plugin-export-batch", //has default mode "additive"
+        });
+
+        await destination.setOptions({ table: "some table" });
+        await destination.update({ state: "ready" });
+
+        const syncMode = await destination.getSyncMode();
+        expect(syncMode).toBe("additive");
+
+        await destination.destroy();
+      });
+
       test("destination syncMode must be set on ready", async () => {
         const destination = await Destination.create({
           appId: app.id,
