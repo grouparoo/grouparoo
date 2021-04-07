@@ -7,12 +7,12 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}-objects-export",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "salesforce_app"`
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
 
       // Note that depending on your Salesforce configuration, not all options are required
       // Learn more @ https://www.grouparoo.com/blog/salesforce-destination
 
       options: {
-        syncMode: "User", // How should Grouparoo modify Salesforce objects? Options: "Sync", "Enrich", "Additive"
         profileObject: "Contact", // Which object in Salesforce represents a Grouparoo profile?
         profileMatchField: "Email", // Which field in the profile Object is used to match Grouparoo profiles?
         groupObject: "Account", // Which object in Salesforce represents a Grouparoo group?

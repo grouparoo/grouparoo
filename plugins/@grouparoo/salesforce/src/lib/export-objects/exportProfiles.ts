@@ -9,6 +9,7 @@ import {
   ErrorWithProfileId,
   SimpleAppOptions,
   SimpleDestinationOptions,
+  DestinationSyncOperations,
 } from "@grouparoo/core";
 
 export interface MyBatchMethod {
@@ -16,6 +17,7 @@ export interface MyBatchMethod {
     appId: string;
     appOptions: SimpleAppOptions;
     destinationOptions: SimpleDestinationOptions;
+    syncOperations: DestinationSyncOperations;
     exports: BatchExport[];
   }): Promise<{
     success: boolean;
@@ -28,12 +30,14 @@ export const exportBatch: MyBatchMethod = async ({
   appId,
   appOptions,
   destinationOptions,
+  syncOperations,
   exports,
 }) => {
   return exportSalesforceBatch({
     appId,
     appOptions,
     exports,
+    syncOperations,
     model: destinationModel(destinationOptions),
   });
 };
@@ -42,6 +46,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
   destinationOptions,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
@@ -49,6 +54,7 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
     appId,
     appOptions,
     destinationOptions,
+    syncOperations,
     exports: batchExports,
   });
 };

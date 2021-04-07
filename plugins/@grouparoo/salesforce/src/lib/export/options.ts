@@ -6,7 +6,6 @@ import {
 import { connect } from "../connect";
 import { describeObject, SalesforceCacheData } from "../objects";
 import { getSupportedSalesforceTypes } from "./mapping";
-import { BatchSyncModeData } from "@grouparoo/app-templates/dist/destination/batch";
 
 export interface WhichOptions {
   profile?: boolean;
@@ -30,8 +29,6 @@ export const getDestinationOptions: SalesforceDestinationOptions = async ({
 }) => {
   const cacheData: SalesforceCacheData = { appId, appOptions };
   const out: DestinationOptionsMethodResponse = {};
-
-  Object.assign(out, getSyncModes());
 
   const conn = await connect(appOptions);
   if (which.profile) {
@@ -60,19 +57,6 @@ export const getDestinationOptions: SalesforceDestinationOptions = async ({
   }
   return out;
 };
-
-function getSyncModes() {
-  const out: DestinationOptionsMethodResponse = {
-    syncMode: { type: "list", options: [], descriptions: [] },
-  };
-
-  for (const mode in BatchSyncModeData) {
-    out.syncMode.options.push(mode);
-    out.syncMode.descriptions.push(BatchSyncModeData[mode].description);
-  }
-
-  return out;
-}
 
 async function getProfileOptions(
   conn: any,

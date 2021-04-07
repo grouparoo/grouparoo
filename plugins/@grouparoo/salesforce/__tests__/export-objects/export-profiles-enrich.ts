@@ -6,6 +6,7 @@ import { destinationModel } from "../../src/lib/export-objects/model";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { getModelHelpers } from "../utils/modelHelper";
 import { helper } from "@grouparoo/spec-helper";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(
   __dirname,
@@ -24,8 +25,8 @@ require("./../fixtures/export-objects/export-profiles-enrich");
 
 const appOptions = loadAppOptions(newNock);
 const appId = "app_f3bb07d8-0c4f-49b5-ad42-545f2e8662e9";
+const syncOperations = DestinationSyncModeData.enrich.operations;
 const destinationOptions = {
-  syncMode: "Enrich",
   profileObject: "Contact",
   profileMatchField: "Email",
   groupObject: "Campaign",
@@ -38,8 +39,6 @@ const destinationOptions = {
   profileReferenceMatchField: "Name",
 };
 const model = destinationModel(destinationOptions);
-
-const syncOptions = Object.assign({}, destinationOptions, { syncMode: "Sync" });
 
 const email1 = "enrichbrian@demo.com";
 const id1 = "pro1";
@@ -109,6 +108,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -151,7 +151,8 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
-      destinationOptions: syncOptions,
+      destinationOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -199,6 +200,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -268,6 +270,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -309,6 +312,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -374,6 +378,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -415,6 +420,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -460,6 +466,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id3,
@@ -491,7 +498,8 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
-      destinationOptions: syncOptions,
+      destinationOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -528,6 +536,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -591,6 +600,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -649,6 +659,7 @@ describe("salesforce/sales-cloud/export-profiles/enrich", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
