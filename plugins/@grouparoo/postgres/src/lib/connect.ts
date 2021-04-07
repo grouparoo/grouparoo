@@ -50,9 +50,11 @@ function formatAsText(text: string) {
   return text;
 }
 
-function formatInUtcDefault(text: string) {
+const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
+export function formatInUtcDefault(text: string) {
   let hasTZ = false;
-  if (text.includes("+") || text.includes("Z")) hasTZ = true;
-  const parsedAsDate = parseDate(hasTZ ? text : text + "Z");
+  if (text.length > 19 && text.match(TIME_ZONE)) hasTZ = true;
+
+  const parsedAsDate: Date = parseDate(hasTZ ? text : text + "Z");
   return parsedAsDate;
 }
