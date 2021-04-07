@@ -89,9 +89,9 @@ SERVER_TOKEN=my-server-token
 
 # GROUPAROO_CONFIG_DIR=/path/to/config
 
-GROUPAROO_LOG_LEVEL=crit
+GROUPAROO_LOG_LEVEL=info
 # GROUPAROO_LOGS_PATH="logs"
-# GROUPAROO_LOGS_STDOUT_DISABLE_COLOR=true
+GROUPAROO_LOGS_STDOUT_DISABLE_COLOR=true
 # GROUPAROO_LOGS_STDOUT_DISABLE_TIMESTAMP=true
 
 REDIS_URL="redis://mock"
@@ -133,7 +133,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
   export function prepareForCLITest(
     pluginName: string,
     pluginPath: string,
-    projectPath: string = `${os.tmpdir()}/grouparoo_test/cli_${jestId}`
+    projectPath: string = `${os.tmpdir()}/grouparoo_test/cli/${pluginName}/${jestId}`
   ) {
     // TODO: This only works within the monorepo
     const cliRoot = path.join(
