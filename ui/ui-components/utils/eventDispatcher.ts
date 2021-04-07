@@ -12,6 +12,10 @@ export class EventDispatcher {
   }
 
   async publish(data) {
+    if (typeof this.beforePublish === "function") {
+      await this.beforePublish(data);
+    }
+
     const subscriptionKeys = Object.keys(this.subscriptions);
     for (const i in subscriptionKeys) {
       const key = subscriptionKeys[i];
@@ -23,9 +27,14 @@ export class EventDispatcher {
     }
   }
 
+  async beforePublish(data) {}
   async afterPublish(data) {}
 
   async subscribe(name: string, handler: Function) {
+    if (typeof this.beforeSubscribe === "function") {
+      await this.beforeSubscribe(name, handler);
+    }
+
     this.subscriptions[name] = handler;
 
     if (typeof this.afterSubscribe === "function") {
@@ -33,6 +42,7 @@ export class EventDispatcher {
     }
   }
 
+  async beforeSubscribe(name, handler) {}
   async afterSubscribe(name, handler) {}
 
   unsubscribe(name) {

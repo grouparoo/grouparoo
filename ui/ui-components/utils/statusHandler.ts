@@ -10,7 +10,7 @@ export class StatusHandler extends EventDispatcher {
     this.samples = [];
   }
 
-  async afterPublish(data) {
+  async beforePublish(data) {
     this.samples.push(data);
     this.trim();
   }
@@ -24,11 +24,11 @@ export class StatusHandler extends EventDispatcher {
     while (this.samples.length > this.maxSamples) this.samples.shift();
   }
 
-  /**
-   * Do a manual sample now vs waiting for the websocket to broadcast
-   */
-  async sample(execApi) {
-    const { metrics, timestamp } = await execApi("get", `/status/private`);
-    this.publish({ metrics, timestamp });
+  async getSamples(execApi) {
+    const { metrics } = await execApi("get", `/status/private`);
+    if (metrics.length === 0) return;
+    const mostRecent = metrics.shift();
+    this.samples.push(...metrics.reverse());
+    this.publish(mostRecent);
   }
 }

@@ -19,7 +19,7 @@ export default function StatusSubscription(props) {
   const [active, setActive] = useState(false);
 
   useEffect(() => {
-    statusHandler.sample(execApi);
+    statusHandler.getSamples(execApi);
   }, []);
 
   useRealtimeStream("system:status", "status-subscription", (data) => {
