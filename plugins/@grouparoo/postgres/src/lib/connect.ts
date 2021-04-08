@@ -46,23 +46,28 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   return pool;
 };
 
-function formatAsText(text) {
+export function formatAsText(text: string) {
   return text;
 }
-function formatInUtcDefault(text) {
-  if (!text) return text;
+
+export function formatInUtcDefault(text: string) {
+  if (!text) return null;
   const zone = timeZoneOffset(text);
-  if (!zone) return parseDate(text + ".000Z");
-  return parseDate(text);
+  let date: Date = parseDate(text);
+
+  if (!zone) {
+    const dateInUTC: Date = parseDate(text + "+00");
+    if (dateInUTC instanceof Date) date = dateInUTC;
+  }
+
+  return date;
 }
 
 // from parseDate library
-var TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
-function timeZoneOffset(isoDate) {
-  if (isoDate.endsWith("+00")) {
-    return true;
-  }
-  var zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
+const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
+function timeZoneOffset(isoDate: String) {
+  if (isoDate.endsWith("+00")) return true;
+  const zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
   if (!zone) {
     return false;
   }
