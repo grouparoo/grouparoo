@@ -10,6 +10,8 @@ const connection: PluginConnection = {
   direction: "export",
   description: "Export Profiles to a Mailchimp list with MergeVars and Tags.",
   app: "mailchimp",
+  syncModes: ["sync", "additive", "enrich"],
+  defaultSyncMode: "sync",
   options: [
     {
       key: "listId",

@@ -1,7 +1,12 @@
-import { ExportedProfile } from "@grouparoo/core";
+import {
+  ExportedProfile,
+  DestinationSyncOperations,
+  Errors,
+} from "@grouparoo/core";
 
 export interface UpdateProfileMethod {
   (argument: {
+    syncOperations: DestinationSyncOperations;
     client: any;
     listId: string;
     mailchimpId: string;
@@ -17,6 +22,7 @@ export interface UpdateProfileMethod {
 }
 
 export const updateProfile: UpdateProfileMethod = async ({
+  syncOperations,
   client,
   listId,
   mailchimpId,
@@ -34,12 +40,19 @@ export const updateProfile: UpdateProfileMethod = async ({
   if (!mailchimpId) {
     throw new Error("mailchimpId is required");
   }
-
   if (toDelete) {
     if (noDelete) {
       return { success: true };
     }
-    await deleteMember(client, listId, mailchimpId, oldGroups, newGroups);
+    await deleteContactOrClearGroups(
+      client,
+      listId,
+      mailchimpId,
+      oldGroups,
+      newGroups,
+      syncOperations,
+      true
+    );
     return { success: true };
   }
   let exists = false;
@@ -68,15 +81,15 @@ export const updateProfile: UpdateProfileMethod = async ({
   }
 
   try {
-    const getResponse = await client.get(
+    const response = await client.get(
       `/lists/${listId}/members/${mailchimpId}`
     );
-    if (getResponse.unique_email_id) {
+    if (response["unique_email_id"] && response["status"] !== "archived") {
       exists = true;
     }
 
     // mailchimp changes the case of tags...
-    existingTagNames = getResponse.tags.map((t) => normalizeGroupName(t.name));
+    existingTagNames = response.tags.map((t) => normalizeGroupName(t.name));
   } catch (error) {
     // TODO: just letting this go for now.
     // is there a specific error if the user doesn't exist?
@@ -101,6 +114,18 @@ export const updateProfile: UpdateProfileMethod = async ({
   const route = exists
     ? `/lists/${listId}/members/${mailchimpId}`
     : `/lists/${listId}/members`;
+
+  if (exists && !syncOperations.update) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not allow updating existing profiles."
+    );
+  }
+
+  if (!exists && !syncOperations.create) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not allow creating new profiles."
+    );
+  }
 
   try {
     await client[method](route, payload);
@@ -156,12 +181,14 @@ function normalizeGroupName(group: any) {
   return String(group).toLocaleLowerCase();
 }
 
-export async function deleteMember(
+export async function deleteContactOrClearGroups(
   client,
   listId,
   mailchimpId,
   oldGroups,
-  newGroups
+  newGroups,
+  syncOperations: DestinationSyncOperations,
+  doThrow: boolean = false
 ) {
   try {
     let tagsToRemove = Array.from(new Set(oldGroups.concat(newGroups)));
@@ -171,10 +198,19 @@ export async function deleteMember(
         status: "inactive",
       })),
     });
-    await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+
+    if (syncOperations.delete) {
+      await client.delete(`/lists/${listId}/members/${mailchimpId}`);
+    }
   } catch (error) {
     if (error?.status !== 405) {
       throw error;
     }
+  }
+
+  if (doThrow && !syncOperations.delete) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not allow removing profiles."
+    );
   }
 }

@@ -9,8 +9,8 @@ import {
   loadDestinationOptions,
 } from "../utils/nockHelper";
 import { generateMailchimpId } from "../../src/lib/shared/generateMailchimpId";
-import crypto from "crypto";
 import fs from "fs";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_ch1mp-dfsjklfdsklj90-01-3k";
 
@@ -106,7 +106,7 @@ async function getUser(email) {
     const response = await apiClient.get(
       `/lists/${listId}/members/${mailchimpId}`
     );
-    if (!response.unique_email_id || response.status === "archived") {
+    if (!response["unique_email_id"] || response.status === "archived") {
       return null;
     }
     return response;
@@ -120,6 +120,7 @@ async function cleanUp(suppressErrors) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -134,6 +135,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -156,6 +158,25 @@ describe("mailchimp/exportProfile", () => {
     await cleanUp(true);
     await apiClient.end();
   }, helper.setupTime);
+
+  test("cannot create profile on Mailchimp if sync mode does not allow it", async () => {
+    user = await getUser(emails["email"]);
+    expect(user).toBe(null);
+
+    await expect(
+      runExport({
+        syncOperations: { create: false, update: true, delete: true },
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email_address: emails["email"],
+          FNAME: first_name,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow creating/);
+  });
 
   test("can create profile on Mailchimp", async () => {
     user = await getUser(emails["email"]);
@@ -400,6 +421,23 @@ describe("mailchimp/exportProfile", () => {
     expect(oldUser).toBe(null);
   });
 
+  test("cannot change email address if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: true },
+        oldProfileProperties: {
+          email_address: emails["alternativeEmail"],
+        },
+        newProfileProperties: {
+          email_address: emails["email"],
+        },
+        oldGroups: [listOne],
+        newGroups: [listOne],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow updating/);
+  });
+
   test("it can change the email address along other properties", async () => {
     await runExport({
       oldProfileProperties: {
@@ -433,6 +471,27 @@ describe("mailchimp/exportProfile", () => {
     expect(oldUser).toBe(null);
   });
 
+  test("can not delete a user if sync mode does not allow it but should remove the tags", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: true, delete: false },
+        oldProfileProperties: {
+          email_address: emails["otherEmail"],
+        },
+        newProfileProperties: {
+          email_address: emails["otherEmail"],
+        },
+        oldGroups: [listOne, listTwo, listThree],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not allow removing/);
+    user = await getUser(emails["otherEmail"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["otherEmail"]);
+    expect(user["tags"].length).toEqual(0);
+  });
+
   test("can delete and restore a user", async () => {
     await runExport({
       oldProfileProperties: {
@@ -441,7 +500,7 @@ describe("mailchimp/exportProfile", () => {
       newProfileProperties: {
         email_address: emails["otherEmail"],
       },
-      oldGroups: [listOne, listTwo],
+      oldGroups: [],
       newGroups: [],
       toDelete: true,
     });
@@ -456,7 +515,7 @@ describe("mailchimp/exportProfile", () => {
         FNAME: first_name,
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: [listThree],
       toDelete: false,
     });
 

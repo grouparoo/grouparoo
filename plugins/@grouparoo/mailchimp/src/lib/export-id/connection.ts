@@ -11,6 +11,8 @@ const connection: PluginConnection = {
   description:
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
   app: "mailchimp",
+  syncModes: ["enrich"],
+  defaultSyncMode: "enrich",
   options: [
     {
       key: "listId",

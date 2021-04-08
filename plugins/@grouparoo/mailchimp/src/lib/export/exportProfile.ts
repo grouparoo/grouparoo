@@ -1,12 +1,16 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
-import { deleteMember, updateProfile } from "../shared/updateProfile";
+import {
+  deleteContactOrClearGroups,
+  updateProfile,
+} from "../shared/updateProfile";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   destinationOptions,
   export: profileToExport,
+  syncOperations,
 }) => {
   const client = await connect(appOptions);
 
@@ -41,6 +45,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const oldMailchimpId = generateMailchimpId(
       oldProfileProperties["email_address"]
     );
+    if (!syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow updating existing profiles."
+      );
+    }
     try {
       // this will update the email of existing member only if the new email (email_address) do not exists yet.
       await client.put(`/lists/${listId}/members/${oldMailchimpId}`, {
@@ -51,11 +60,20 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     } catch (error) {
       // Another user with the new email address (email_address) already exists,
       // so we need to delete the old one and let the updateProfile reuse the existing one.
-      await deleteMember(client, listId, oldMailchimpId, oldGroups, newGroups);
+      await deleteContactOrClearGroups(
+        client,
+        listId,
+        oldMailchimpId,
+        oldGroups,
+        newGroups,
+        syncOperations,
+        true
+      );
     }
   }
 
   return updateProfile({
+    syncOperations,
     client,
     listId,
     mailchimpId,
