@@ -248,6 +248,44 @@ describe("app-templates/destination/batch", () => {
 
       expect(removeFromGroups).toBeCalledTimes(2);
     });
+
+    test("can limit batch size when finding destinationIds", async () => {
+      const batchSize = 100;
+      const findSize = 50;
+
+      const batchExports = await generateBatchExports(
+        100,
+        BatchTestAction.Create
+      );
+
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
+        async ({ foreignKeys }) => {
+          expect(foreignKeys.length).toBe(findSize);
+        }
+      );
+
+      await exportProfilesInBatch(
+        batchExports,
+        {
+          batchSize,
+          findSize,
+          groupMode: BatchGroupMode.TotalMembers,
+          syncMode: BatchSyncMode.Sync,
+          foreignKey: "id",
+        },
+        {
+          getClient: noOp,
+          deleteByDestinationIds: noOp,
+          findAndSetDestinationIds,
+          updateByDestinationIds: noOp,
+          createByForeignKeyAndSetDestinationIds: noOp,
+          addToGroups: noOp,
+          removeFromGroups: noOp,
+        }
+      );
+
+      expect(findAndSetDestinationIds).toBeCalledTimes(2);
+    });
   });
 
   describe("foreign key changes", () => {
