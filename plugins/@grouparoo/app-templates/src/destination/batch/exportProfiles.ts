@@ -1,3 +1,4 @@
+import { Errors } from "@grouparoo/core";
 import { BatchSyncModeData } from "./types";
 import { setGroupNames, checkErrors } from "../shared/batch";
 import {
@@ -383,10 +384,9 @@ async function deleteExports(
       continue;
     }
     if (!exportedProfile.destinationId) {
-      // should we try again for just this one or something and look them up?
-      // maybe it should make an error. if's a timing issue, we want to be sure to delete it.
+      // if trying to delete someone that doesn't exist, just inform the user
       try {
-        throw new Error(
+        throw new Errors.InfoError(
           `destinationId not found to delete: ${exportedProfile.foreignKeyValue}`
         );
       } catch (error) {
