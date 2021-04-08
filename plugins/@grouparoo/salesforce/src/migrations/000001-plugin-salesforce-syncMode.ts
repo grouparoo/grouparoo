@@ -16,6 +16,7 @@ export default {
           case "Additive":
             syncMode = "additive";
             break;
+          case "Sync":
           default:
             // if option was not set, salesforce defaulted to "sync"
             syncMode = "sync";
@@ -36,7 +37,7 @@ export default {
         await migration.sequelize.query(
           `DELETE FROM "options" WHERE "key"='syncMode' AND "ownerId" IN(?)`,
           {
-            replacements: destinationIds,
+            replacements: [destinationIds],
           }
         );
       }
