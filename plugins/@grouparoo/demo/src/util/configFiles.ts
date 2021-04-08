@@ -6,8 +6,8 @@ import {
   loadConfigDirectory,
   getConfigDir,
 } from "@grouparoo/core/dist/modules/configLoaders";
-import { getAppOptions } from "./sample_data";
-import { prettier, log } from "./util/shared";
+import { getAppOptions } from "../postgres/sample_data";
+import { prettier, log } from "./shared";
 
 export async function writeConfigFiles() {
   const configDir = getConfigDir();
@@ -46,7 +46,7 @@ function deleteDir(configDir) {
 }
 
 function copyDir(configDir, subDir = null) {
-  let dirPath = path.resolve(path.join(__dirname, "..", "config"));
+  let dirPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   if (subDir) {
     dirPath = path.join(dirPath, subDir);
     configDir = path.join(configDir, subDir);

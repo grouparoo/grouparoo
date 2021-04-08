@@ -1,6 +1,6 @@
 import { CLI } from "actionhero";
 import { init } from "../../../util/shared";
-import { loadConfigFiles } from "../../../configFiles";
+import { loadConfigFiles } from "../../../util/configFiles";
 
 export class Console extends CLI {
   constructor() {

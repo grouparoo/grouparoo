@@ -1,9 +1,11 @@
 import { Client } from "pg";
-import { log, execSync, userCreatedAt, numberOfUsers } from "./shared";
+import { log, execSync, userCreatedAt, numberOfUsers } from "../util/shared";
 import { api, config } from "actionhero";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
 import path from "path";
+
+export const SCHEMA_NAME = "demo";
 
 export function readCsvTable(tableName) {
   const filePath = path.resolve(
@@ -61,7 +63,7 @@ function findConfig() {
 export default class Postgres {
   client: Client;
   config: { [key: string]: any };
-  constructor(schema) {
+  constructor(schema = SCHEMA_NAME) {
     this.config = Object.assign({}, findConfig(), { schema });
     this.client = null;
   }

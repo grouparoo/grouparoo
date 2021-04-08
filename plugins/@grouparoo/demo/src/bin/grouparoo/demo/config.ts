@@ -1,5 +1,5 @@
 import { CLI } from "actionhero";
-import { writeConfigFiles } from "../../../configFiles";
+import { writeConfigFiles } from "../../../util/configFiles";
 
 export class Console extends CLI {
   constructor() {

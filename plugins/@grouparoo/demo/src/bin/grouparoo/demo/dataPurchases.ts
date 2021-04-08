@@ -1,7 +1,7 @@
 import { CLI, log } from "actionhero";
-import { users, purchases } from "../../../sample_data";
-import { loadConfigFiles } from "../../../configFiles";
-import { events } from "../../../events";
+import { users, purchases } from "../../../postgres/sample_data";
+import { loadConfigFiles } from "../../../util/configFiles";
+import { events } from "../../../events/events";
 import { init, finalize } from "../../../util/shared";
 
 export class Console extends CLI {
