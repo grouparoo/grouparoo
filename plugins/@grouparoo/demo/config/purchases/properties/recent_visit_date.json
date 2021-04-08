@@ -1,0 +1,14 @@
+{
+  "id": "recent_visit_date",
+  "name": "recentVisitDate",
+  "class": "Property",
+  "type": "date",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "event_pageviews",
+  "options": {
+    "aggregationMethod": "most recent value",
+    "column": "occurredAt"
+  },
+  "filters": []
+}

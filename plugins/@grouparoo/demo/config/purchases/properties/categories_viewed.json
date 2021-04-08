@@ -1,0 +1,14 @@
+{
+  "id": "categories_viewed",
+  "name": "categoriesViewed",
+  "class": "Property",
+  "type": "string",
+  "unique": false,
+  "isArray": true,
+  "sourceId": "event_pageviews",
+  "options": {
+    "column": "[data]-category",
+    "aggregationMethod": "all values"
+  },
+  "filters": [{ "key": "[data]-page", "op": "equals", "match": "/product" }]
+}

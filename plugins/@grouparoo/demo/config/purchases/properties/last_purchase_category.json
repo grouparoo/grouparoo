@@ -1,0 +1,15 @@
+{
+  "id": "last_purchase_category",
+  "name": "lastPurchaseCategory",
+  "class": "Property",
+  "type": "string",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_purchases",
+  "options": {
+    "column": "category",
+    "aggregationMethod": "most recent value",
+    "sortColumn": "created_at"
+  },
+  "filters": [{ "key": "state", "op": "equals", "match": "successful" }]
+}

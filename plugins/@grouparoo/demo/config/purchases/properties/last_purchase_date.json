@@ -1,0 +1,15 @@
+{
+  "id": "last_purchase_date",
+  "name": "lastPurchaseDate",
+  "class": "Property",
+  "type": "date",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_purchases",
+  "options": {
+    "column": "created_at",
+    "aggregationMethod": "most recent value",
+    "sortColumn": "created_at"
+  },
+  "filters": [{ "key": "state", "op": "equals", "match": "successful" }]
+}

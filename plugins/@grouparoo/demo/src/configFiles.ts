@@ -57,10 +57,10 @@ function copyDir(configDir, subDir = null) {
 
 function updatePurchases(configDir) {
   const purchasesDir = path.join(configDir, "purchases");
-  const appPath = path.join(purchasesDir, "app.json");
+  const appPath = path.join(purchasesDir, "apps", "demo_db.json");
   const appOptions = getAppOptions();
   const contents = fs.readJSONSync(appPath);
-  const app = contents.find((j) => j.class === "App");
+  const app = contents;
   app.options = appOptions;
   const out = JSON.stringify(contents);
   fs.writeFileSync(appPath, out);
@@ -78,7 +78,7 @@ async function unlockAll() {
     if (attributes.locked) {
       log(3, `Unlocking ${name}`);
       await Model.scope(null).update(
-        { locked: false },
+        { locked: null },
         {
           where: { locked: "config:code" },
           hooks: false,

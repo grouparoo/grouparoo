@@ -1,0 +1,19 @@
+{
+  "id": "recent_automotive_shoppers",
+  "name": "Recent Automotive Shoppers",
+  "class": "Group",
+  "type": "calculated",
+  "rules": [
+    {
+      "propertyId": "categories_viewed",
+      "match": "Automotive",
+      "operation": { "op": "eq" }
+    },
+    {
+      "propertyId": "recent_visit_date",
+      "operation": { "op": "relative_gt" },
+      "relativeMatchNumber": "14",
+      "relativeMatchUnit": "days"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "id": "language",
+  "name": "Language",
+  "class": "Property",
+  "type": "string",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_users",
+  "options": {
+    "column": "language",
+    "aggregationMethod": "exact",
+    "sortColumn": null
+  },
+  "filters": []
+}
