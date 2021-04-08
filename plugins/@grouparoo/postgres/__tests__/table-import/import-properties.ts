@@ -150,7 +150,7 @@ describe("postgres/table/profileProperties", () => {
           "2020-02-01T12:13:14.000Z"
         );
         expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
-          "2020-02-02T12:13:14.000Z"
+          "2020-02-02T12:13:14.500Z"
         );
       });
     });
@@ -208,8 +208,21 @@ describe("postgres/table/profileProperties", () => {
           "2020-02-01T12:13:14.000Z"
         );
         expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
-          "2020-02-02T12:13:14.000Z"
+          "2020-02-02T12:13:14.500Z"
         );
+      });
+
+      test("to get a timestamp - decimals or not", async () => {
+        const column = "stamp";
+        const values = await getPropertyValues({
+          column,
+          sourceMapping,
+          aggregationMethod,
+        });
+
+        for (const profileId in values) {
+          expect(values[profileId][0]).toBeInstanceOf(Date);
+        }
       });
     });
   });
@@ -266,6 +279,60 @@ describe("postgres/table/profileProperties", () => {
         });
         expect(values[profile.id]).toEqual([2.23]);
         expect(values[otherProfile.id]).toEqual([3.14]);
+      });
+
+      describe("timestamps", () => {
+        const column = "stamp";
+        test("count", async () => {
+          const values = await getPropertyValues({
+            column,
+            sourceMapping,
+            aggregationMethod: "count",
+          });
+          expect(values[profile.id]).toEqual([6]);
+          expect(values[otherProfile.id]).toEqual([5]);
+        });
+
+        test("min", async () => {
+          const values = await getPropertyValues({
+            column,
+            sourceMapping,
+            aggregationMethod: "min",
+          });
+          expect((<Date[]>values[profile.id])[0].toISOString()).toEqual(
+            "2020-02-01T12:13:14.000Z"
+          );
+          expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
+            "2020-02-02T12:13:14.000Z"
+          );
+        });
+
+        test("max", async () => {
+          const values = await getPropertyValues({
+            column,
+            sourceMapping,
+            aggregationMethod: "max",
+          });
+          expect((<Date[]>values[profile.id])[0].toISOString()).toEqual(
+            "2020-02-20T12:13:14.000Z"
+          );
+          expect((<Date[]>values[otherProfile.id])[0].toISOString()).toEqual(
+            "2020-02-19T12:13:14.000Z"
+          );
+        });
+
+        test("to get a timestamp - decimals or not", async () => {
+          const column = "stamp";
+          const values = await getPropertyValues({
+            column,
+            sourceMapping,
+            aggregationMethod: "exact",
+          });
+
+          for (const profileId in values) {
+            expect(values[profileId][0]).toBeInstanceOf(Date);
+          }
+        });
       });
 
       describe("dates", () => {

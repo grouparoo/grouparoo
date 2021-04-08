@@ -36,7 +36,7 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
     // @ts-ignore
     client.setTypeParser(types.builtins.TIMESTAMP, formatInUtcDefault); // Timestamp without zone
     // @ts-ignore
-    client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp with zone
+    client.setTypeParser(types.builtins.TIMESTAMPTZ, formatInUtcDefault); // Timestamp without zone
 
     if (appOptions.schema) {
       await client.query(format(`SET search_path TO %L;`, appOptions.schema));
@@ -46,15 +46,30 @@ export const connect: ConnectPluginAppMethod = async ({ appOptions }) => {
   return pool;
 };
 
-function formatAsText(text: string) {
+export function formatAsText(text: string) {
   return text;
 }
 
-const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
 export function formatInUtcDefault(text: string) {
-  let hasTZ = false;
-  if (text.length > 19 && text.match(TIME_ZONE)) hasTZ = true;
+  if (!text) return null;
+  const zone = timeZoneOffset(text);
+  let date: Date = parseDate(text);
 
-  const parsedAsDate: Date = parseDate(hasTZ ? text : text + "Z");
-  return parsedAsDate;
+  if (!zone) {
+    const dateInUTC: Date = parseDate(text + "+00");
+    if (dateInUTC instanceof Date) date = dateInUTC;
+  }
+
+  return date;
+}
+
+// from parseDate library
+const TIME_ZONE = /([Z+-])(\d{2})?:?(\d{2})?:?(\d{2})?/;
+function timeZoneOffset(isoDate: String) {
+  if (isoDate.endsWith("+00")) return true;
+  const zone: any = TIME_ZONE.exec(isoDate.split(" ")[1]);
+  if (!zone) {
+    return false;
+  }
+  return true;
 }
