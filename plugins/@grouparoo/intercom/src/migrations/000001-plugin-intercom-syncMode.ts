@@ -44,7 +44,7 @@ export default {
         await migration.sequelize.query(
           `UPDATE "options" SET "value"='' WHERE ("value"='Skip' OR "value"='Enrich') AND "ownerId" IN(?) AND "key" IN ('creationMode', 'removalMode')`,
           {
-            replacements: destinationIds,
+            replacements: [destinationIds],
           }
         );
       }
