@@ -72,7 +72,7 @@
     "sequelize-typescript": "2.1.0",
     "sqlite3": "5.0.2",
     "ts-node": "9.1.1",
-    "umzug": "2.3.0",
+    "umzug": "v3.0.0-beta.5",
     "uuid": "8.3.2",
     "validator": "13.5.2",
     "winston": "3.3.3",

@@ -256,7 +256,7 @@ importers:
       type-fest: 1.0.1
       typedoc: 0.20.35
       typescript: 4.2.3
-      umzug: 2.3.0
+      umzug: v3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.5.2
       winston: 3.3.3
@@ -299,7 +299,7 @@ importers:
       sequelize-typescript: 2.1.0_4a98edc2678f3d65b8f6cc9a32529f2c
       sqlite3: 5.0.2
       ts-node: 9.1.1_typescript@4.2.3
-      umzug: 2.3.0
+      umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.5.2
       winston: 3.3.3
@@ -14397,13 +14397,6 @@ packages:
   /umask/1.1.0:
     resolution: {integrity: sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=}
     dev: true
-
-  /umzug/2.3.0:
-    resolution: {integrity: sha512-Z274K+e8goZK8QJxmbRPhl89HPO1K+ORFtm6rySPhFKfKc5GHhqdzD0SGhSWHkzoXasqJuItdhorSvY7/Cgflw==}
-    engines: {node: '>=6.0.0'}
-    dependencies:
-      bluebird: 3.7.2
-    dev: false
 
   /umzug/3.0.0-beta.5:
     resolution: {integrity: sha512-f9R1rNgtvZgeilVgnS3ULGGTYu5ve0Xw7qgIIIfqYeYH6AFbWRSS5j9x2Lj4vnMMmHqqZimarxYHhMVQUikQWQ==}
