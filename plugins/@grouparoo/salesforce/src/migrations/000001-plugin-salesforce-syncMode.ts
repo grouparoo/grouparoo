@@ -45,6 +45,43 @@ export default {
   },
 
   down: async function (migration) {
-    // TODO based on sync mode, set option
+    // TODO: test this to make sure it works!!
+    await migration.sequelize.transaction(async () => {
+      // Get sync modes
+      const [destinations] = await migration.sequelize.query(
+        `SELECT "id", "syncMode" FROM "destinations" WHERE "type"='salesforce-objects-export' AND "syncMode" IS NOT NULL AND "locked" IS NULL`
+      );
+
+      // Add corresponding "syncMode" option for each destination
+      const newOptions = [];
+      for (const dest of destinations) {
+        let syncMode: string;
+        switch (dest.syncMode) {
+          case "sync":
+            syncMode = "Sync";
+            break;
+          case "enrich":
+            syncMode = "Enrich";
+            break;
+          case "additive":
+            syncMode = "Additive";
+            break;
+          default:
+            continue;
+        }
+
+        newOptions.push({
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          ownerId: dest.id,
+          ownerType: "destination",
+          key: "syncMode",
+          value: syncMode,
+          type: "string",
+        });
+      }
+
+      await migration.bulkInsert("options", newOptions);
+    });
   },
 };
