@@ -1,6 +1,7 @@
 import { CLI } from "actionhero";
 import { init } from "../../../util/shared";
-import { loadConfigFiles } from "../../../configFiles";
+import { loadConfigFiles } from "../../../util/configFiles";
+import { getConfig } from "./config";
 
 export class Console extends CLI {
   constructor() {
@@ -10,8 +11,9 @@ export class Console extends CLI {
   }
 
   async run() {
+    const { db, subDirs } = getConfig("setup");
     await init({ reset: true });
-    await loadConfigFiles("setup");
+    await loadConfigFiles(db, subDirs);
     return true;
   }
 }
