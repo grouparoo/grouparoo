@@ -18,8 +18,10 @@ describe("tasks/export:enqueue", () => {
       pendingExportB: Export,
       recentStartedExport: Export,
       stuckStartedExport: Export,
-      completeExport: Export,
-      errorExport: Export,
+      newCompleteExport: Export,
+      oldCompleteExport: Export,
+      newErrorExport: Export,
+      oldErrorExport: Export,
       infoExport: Export;
 
     beforeEach(async () => {
@@ -67,7 +69,7 @@ describe("tasks/export:enqueue", () => {
         startedAt: new Date(0),
       });
 
-      completeExport = await Export.create({
+      newCompleteExport = await Export.create({
         profileId: profile.id,
         destinationId: destination.id,
         oldProfileProperties: {},
@@ -78,7 +80,18 @@ describe("tasks/export:enqueue", () => {
         completedAt: new Date(),
       });
 
-      errorExport = await Export.create({
+      oldCompleteExport = await Export.create({
+        profileId: profile.id,
+        destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        startedAt: new Date(0),
+        completedAt: new Date(1),
+      });
+
+      newErrorExport = await Export.create({
         profileId: profile.id,
         destinationId: destination.id,
         oldProfileProperties: {},
@@ -86,6 +99,18 @@ describe("tasks/export:enqueue", () => {
         newGroups: [],
         oldGroups: [],
         startedAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+      });
+
+      oldErrorExport = await Export.create({
+        profileId: profile.id,
+        destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        startedAt: new Date(0),
         errorMessage: "Oh No!",
         errorLevel: "error",
       });
@@ -128,8 +153,14 @@ describe("tasks/export:enqueue", () => {
       expect(foundTasks[0].args[0].exportIds).not.toContain(
         recentStartedExport.id
       );
-      expect(foundTasks[0].args[0].exportIds).not.toContain(completeExport.id);
-      expect(foundTasks[0].args[0].exportIds).not.toContain(errorExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(
+        newCompleteExport.id
+      );
+      expect(foundTasks[0].args[0].exportIds).not.toContain(
+        oldCompleteExport.id
+      );
+      expect(foundTasks[0].args[0].exportIds).not.toContain(newErrorExport.id);
+      expect(foundTasks[0].args[0].exportIds).not.toContain(oldErrorExport.id);
       expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
     });
 
