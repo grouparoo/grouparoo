@@ -1,9 +1,8 @@
 import { CLI, log } from "actionhero";
 import { users, purchases } from "../../../util/sample_data";
 import { loadConfigFiles } from "../../../util/configFiles";
-import { events } from "../../../events/events";
 import { init, finalize } from "../../../util/shared";
-import Connection from "../../../postgres/connection";
+import { getConfig } from "./config";
 
 export class Console extends CLI {
   constructor() {
@@ -18,13 +17,13 @@ export class Console extends CLI {
 
   async run({ params }) {
     const scale = parseInt(params.scale);
-    const db = new Connection();
+    const { db, subDirs } = getConfig("events");
     if (scale > 1) log(`Using scale = ${params.scale}`);
 
     await init({ reset: true });
     await users(db, { scale });
     await purchases(db, { scale });
-    await loadConfigFiles(db, ["shared", "setup", "purchases"]);
+    await loadConfigFiles(db, ["setup"].concat(subDirs));
     await finalize();
     return true;
   }
