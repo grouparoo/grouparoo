@@ -146,22 +146,18 @@ describe("tasks/export:enqueue", () => {
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].exportIds.length).toBe(3);
-      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportA.id);
-      expect(foundTasks[0].args[0].exportIds).toContain(pendingExportB.id);
-      expect(foundTasks[0].args[0].exportIds).toContain(stuckStartedExport.id);
-      expect(foundTasks[0].args[0].exportIds).not.toContain(
-        recentStartedExport.id
-      );
-      expect(foundTasks[0].args[0].exportIds).not.toContain(
-        newCompleteExport.id
-      );
-      expect(foundTasks[0].args[0].exportIds).not.toContain(
-        oldCompleteExport.id
-      );
-      expect(foundTasks[0].args[0].exportIds).not.toContain(newErrorExport.id);
-      expect(foundTasks[0].args[0].exportIds).not.toContain(oldErrorExport.id);
-      expect(foundTasks[0].args[0].exportIds).not.toContain(infoExport.id);
+      const exportIds = foundTasks[0].args[0].exportIds;
+
+      expect(exportIds.length).toBe(3);
+      expect(exportIds).toContain(pendingExportA.id);
+      expect(exportIds).toContain(pendingExportB.id);
+      expect(exportIds).toContain(stuckStartedExport.id);
+      expect(exportIds).not.toContain(recentStartedExport.id);
+      expect(exportIds).not.toContain(newCompleteExport.id);
+      expect(exportIds).not.toContain(oldCompleteExport.id);
+      expect(exportIds).not.toContain(newErrorExport.id);
+      expect(exportIds).not.toContain(oldErrorExport.id);
+      expect(exportIds).not.toContain(infoExport.id);
     });
 
     test("checking again will find no results as the exports should have a startedAt", async () => {
