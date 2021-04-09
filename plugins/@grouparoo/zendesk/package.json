@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.2.12-alpha.1",
-    "node-zendesk": "2.0.5"
+    "node-zendesk": "2.0.6"
   },
   "devDependencies": {
     "@grouparoo/core": "0.2.12-alpha.1",
