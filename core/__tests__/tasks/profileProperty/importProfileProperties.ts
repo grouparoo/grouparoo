@@ -69,17 +69,17 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       const property = await Property.findOne();
       const profile = await helper.factories.profile();
 
-      await specHelper.runTask("import:associateProfiles", {
+      await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: ["missing"],
         propertyId: "missing",
       });
 
-      await specHelper.runTask("import:associateProfiles", {
+      await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: [profile.id],
         propertyId: "missing",
       });
 
-      await specHelper.runTask("import:associateProfiles", {
+      await specHelper.runTask("profileProperty:importProfileProperties", {
         profileIds: ["missing"],
         propertyId: property.id,
       });
