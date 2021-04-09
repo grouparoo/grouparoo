@@ -507,11 +507,10 @@ export namespace DestinationOps {
     for (const _export of givenExports) {
       // TODO: maybe should recalcuate hasChanges and from current mostRecent
       if (!_export.hasChanges) {
-        // do not include exports with hasChanges=false
-        await _export.completeAndMarkMostRecent();
-        continue;
+        await _export.completeAndMarkMostRecent(); // do not include exports with hasChanges=false
+      } else {
+        _exports.push(_export);
       }
-      _exports.push(_export);
     }
 
     const exportProfiles: ExportProfilesPluginMethod = await getBatchFunction(
@@ -527,9 +526,7 @@ export namespace DestinationOps {
     const parallelismOk = await app.checkAndUpdateParallelism("incr");
     if (!parallelismOk) {
       const error = new Error(`parallelism limit reached for ${app.type}`);
-      if (synchronous) {
-        throw error;
-      }
+      if (synchronous) throw error;
       return {
         success: false,
         error,
