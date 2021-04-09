@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+
+/**
+ * Run me as if I were a bash program eg: `migrator up`
+ */
+
+const path = require("path");
+const { Sequelize } = require("sequelize-typescript");
+const { Umzug, SequelizeStorage } = require("umzug");
+
+const args = process.argv.slice(2);
+
+async function main() {
+  let exitCode = 0;
+  const env = process.env.NODE_ENV || "development";
+  const configFile = path.resolve(
+    __dirname,
+    "..",
+    "dist",
+    "config",
+    "sequelize.js"
+  );
+  const CONFIG = Object.assign({}, (await import(configFile))[env], {
+    autoMigrate: false,
+  });
+
+  const sequelize = new Sequelize(CONFIG);
+
+  // learn more about configuring umzug @ https://github.com/actionhero/ah-sequelize-plugin/blob/master/src/initializers/sequelize.ts
+  const umzug = new Umzug({
+    storage: new SequelizeStorage({ sequelize: sequelize }),
+    migrations: {
+      params: [sequelize.getQueryInterface(), sequelize.constructor],
+      path: CONFIG.migrations[0],
+      pattern: /(\.js|\w{3,}\.ts)$/,
+      nameFormatter: (filename) => path.parse(filename).name,
+    },
+    logging: console.log,
+  });
+
+  umzug.on("migrating", logUmzugEvent("migrating"));
+  umzug.on("migrated", logUmzugEvent("migrated"));
+  umzug.on("reverting", logUmzugEvent("reverting"));
+  umzug.on("reverted", logUmzugEvent("reverted"));
+
+  if (args[0] === "up") {
+    await upOne(umzug);
+  } else if (args[0] === "down") {
+    await downOne(umzug);
+  } else {
+    console.error("No arg provided or unknown arg - try `./bin/migrator up`");
+    exitCode = 1;
+  }
+
+  completeProcess(exitCode);
+}
+
+async function upOne(umzug) {
+  const pendingMigrations = await umzug.pending();
+  if (pendingMigrations.length === 0) return;
+  await umzug.up(pendingMigrations[0].file);
+}
+
+async function downOne(umzug) {
+  // going down one migration is the deafaule
+  await umzug.down();
+}
+
+function completeProcess(exitCode) {
+  exitCode === 0
+    ? console.log("✅ Done")
+    : console.error("❌ Something went wrong");
+  process.nextTick(() => process.exit(exitCode));
+}
+
+function logUmzugEvent(eventName) {
+  return function (name, migration) {
+    console.log(`${name} ${eventName}`);
+  };
+}
+
+main();
