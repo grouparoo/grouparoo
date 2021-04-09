@@ -20,7 +20,7 @@ export class DestinationTemplate extends ConfigTemplate {
         description: `The id of the ${name} App to use for this Destination, e.g: \`--parent data_warehouse\``,
       },
       "sync-mode": {
-        required: Boolean(syncModes && syncModes.length > 1),
+        required: false,
         description: `How should profiles sync to the destination? e.g. \`--sync-mode additive\`. ${
           syncModes && syncModes.length > 0
             ? "Options: " + syncModes.join(", ")
