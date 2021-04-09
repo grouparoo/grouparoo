@@ -12,7 +12,7 @@ export class Console extends CLI {
 
   async run() {
     const db = new Connection();
-    await writeConfigFiles(db, "purchases");
+    await writeConfigFiles(db, ["purchases", "events", "shared"]);
     return true;
   }
 }

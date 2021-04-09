@@ -25,8 +25,7 @@ export class Console extends CLI {
     await users(db, { scale });
     await purchases(db, { scale });
     await events({ scale });
-    await loadConfigFiles(null, "setup");
-    await loadConfigFiles(db, "purchases");
+    await loadConfigFiles(db, ["setup", "purchases", "events", "shared"]);
     await finalize();
     return true;
   }

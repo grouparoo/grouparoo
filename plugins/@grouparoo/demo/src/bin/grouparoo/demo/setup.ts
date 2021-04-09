@@ -11,7 +11,7 @@ export class Console extends CLI {
 
   async run() {
     await init({ reset: true });
-    await loadConfigFiles(null, "setup");
+    await loadConfigFiles(null, ["setup"]);
     return true;
   }
 }

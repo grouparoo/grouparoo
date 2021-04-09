@@ -9,15 +9,15 @@ import {
 import { prettier, log } from "./shared";
 import Connection from "./connection";
 
-export async function writeConfigFiles(db: Connection, subDir: string) {
+export async function writeConfigFiles(db: Connection, subDirs: string[]) {
   const configDir = getConfigDir();
-  await generateConfig(db, configDir, subDir);
+  await generateConfig(db, configDir, subDirs);
   await prettier(configDir);
 }
 
-export async function loadConfigFiles(db: Connection, subDir: string) {
+export async function loadConfigFiles(db: Connection, subDirs: string[]) {
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(db, configDir, subDir);
+  await generateConfig(db, configDir, subDirs);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -29,13 +29,17 @@ export async function loadConfigFiles(db: Connection, subDir: string) {
   await unlockAll();
 }
 
-async function generateConfig(db: Connection, configDir, subDir: string) {
+async function generateConfig(db: Connection, configDir, subDirs: string[]) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
 
-  copyDir(configDir, subDir);
-  if (subDir === "purchases") {
-    updatePurchases(db, configDir);
+  for (const subDir of subDirs) {
+    copyDir(configDir, subDir);
+    switch (subDir) {
+      case "purchases":
+        updatePurchases(db, configDir);
+        break;
+    }
   }
 }
 
