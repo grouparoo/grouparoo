@@ -87,5 +87,22 @@ describe("tasks/status", () => {
       const samples = await Status.get();
       expect(samples.length).toBe(1);
     });
+
+    test("running the task will update the frequency for the next run", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      const startingFrequency = api.tasks.tasks["status"].frequency;
+      expect(startingFrequency).toBe(1000 * 5);
+
+      await specHelper.runFullTask("status", {});
+
+      const endingFrequency = api.tasks.tasks["status"].frequency;
+      expect(endingFrequency).toBe(1000 * 10);
+
+      const foundTasks = await specHelper.findEnqueuedTasks("status");
+      expect(foundTasks.length).toBe(1);
+      expect(foundTasks[0].timestamp).toBeGreaterThan(
+        new Date().getTime() + startingFrequency
+      );
+    });
   });
 });

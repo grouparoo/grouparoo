@@ -3,6 +3,7 @@ import { GrouparooCLI } from "../../modules/cli";
 import { CLS } from "../../modules/cls";
 import { Status } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
+import { plugin } from "../../modules/plugin";
 
 export class StatusTask extends Task {
   constructor() {
@@ -10,7 +11,7 @@ export class StatusTask extends Task {
     this.name = "status";
     this.description =
       "Calculate and store status.  If we are running via the CLI, log it there too";
-    this.frequency = 1000 * 5; // every 5 seconds
+    this.frequency = 1000 * 5; // every 5 seconds by default, but will be modified by `updateTaskFrequency` after the first run
     this.queue = "system";
   }
 
@@ -20,6 +21,7 @@ export class StatusTask extends Task {
     if (runMode === "cli:run") this.logSamples(samples);
     const complete = await this.checkForComplete(samples);
     if (runMode === "cli:run" && complete) await this.stopServer();
+    await this.updateTaskFrequency();
   }
 
   async checkForComplete(samples: StatusMetric[]) {
@@ -76,5 +78,19 @@ export class StatusTask extends Task {
       { header: "Pending Items", status: pendingItems },
       { header: "Active Runs", status: pendingRuns },
     ]);
+  }
+
+  async updateTaskFrequency() {
+    const frequency =
+      parseInt(
+        (
+          await plugin.readSetting(
+            "interface",
+            "status-calculation-frequency-seconds"
+          )
+        ).value
+      ) * 1000;
+
+    api.tasks.tasks["status"].frequency = frequency;
   }
 }
