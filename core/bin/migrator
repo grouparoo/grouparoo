@@ -1,7 +1,8 @@
-#!/usr/bin/env node
+#!node_modules/.bin/ts-node-script
 
 /**
- * Run me as if I were a bash program eg: `migrator up`
+ * Run me as if I were a bash program eg: `./bin/migrator up`
+ * I need to be run from the working directory of `grouparoo/core` (not within bin), as I'm using a relative shebang for ts_node
  */
 
 const path = require("path");
@@ -16,11 +17,11 @@ async function main() {
   const configFile = path.resolve(
     __dirname,
     "..",
-    "dist",
+    "src",
     "config",
-    "sequelize.js"
+    "sequelize.ts"
   );
-  const CONFIG = Object.assign({}, (await import(configFile))[env], {
+  const CONFIG = Object.assign({}, require(configFile)[env], {
     autoMigrate: false,
   });
 
