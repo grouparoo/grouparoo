@@ -13,7 +13,6 @@ export const useRealtimeStream = (
   if (!globalThis[socketKey]) {
     globalThis[socketKey] = new globalThis.ActionheroWebsocketClient();
     globalThis[socketKey].messageCallbacks = {};
-    globalThis[socketKey].pendingRooms = [];
     toConnect = true;
   }
 
@@ -27,7 +26,7 @@ export const useRealtimeStream = (
     }
 
     registerCallback();
-    joinRoom();
+    setTimeout(() => joinRoom(), 1); // need to break hook-chain
 
     return () => {
       delete client.messageCallbacks[room][key];
@@ -101,12 +100,6 @@ export const useRealtimeStream = (
   }
 
   function handleMessage(context, from, messageRoom, sentAt, message) {
-    if (client.pendingRooms) {
-      client.pendingRooms = client.pendingRooms.filter(
-        (r) => r !== messageRoom
-      );
-    }
-
     for (const key in client.messageCallbacks[messageRoom]) {
       const cb = client.messageCallbacks[messageRoom][key];
       cb(message);
@@ -120,11 +113,7 @@ export const useRealtimeStream = (
 
   function joinRoom() {
     client.detailsView(() => {
-      if (!client.rooms.includes(room) && !client.pendingRooms.includes(room)) {
-        client.pendingRooms.push(room);
-        client.roomAdd(room);
-      }
-      client.pendingRooms = Array.from(new Set(client.pendingRooms));
+      if (!client.rooms.includes(room)) client.roomAdd(room);
     });
   }
 };
@@ -135,7 +124,6 @@ export async function disconnectWebsocket() {
 
   const client = globalThis[socketKey];
   try {
-    delete client.pendingRooms;
     await client.disconnect();
   } catch (error) {
     console.error(error);
