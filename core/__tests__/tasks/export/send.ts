@@ -15,6 +15,21 @@ describe("tasks/export:send", () => {
     expect(found.length).toEqual(1);
   });
 
+  test("does not throw if the destination or export cannot be found", async () => {
+    await specHelper.runTask("export:send", {
+      destinationId: "missing",
+      exportId: "missing",
+    });
+
+    const destination = await helper.factories.destination();
+    await specHelper.runTask("export:send", {
+      destinationId: destination.id,
+      exportId: "missing",
+    });
+
+    await destination.destroy();
+  });
+
   describe("within an export workflow", () => {
     let destination: Destination, group: Group, profile: Profile, run: Run;
 

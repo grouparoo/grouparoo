@@ -22,6 +22,12 @@ describe("tasks/profile:export", () => {
       expect(found.length).toEqual(1);
     });
 
+    test("does not throw if the profile cannot be found", async () => {
+      await specHelper.runTask("profile:export", {
+        profileId: "missing",
+      });
+    });
+
     test("enqueuing more than one tasks for the same profile will de-duplicate", async () => {
       await task.enqueue("profile:export", { profileId: "abc123" });
       await task.enqueue("profile:export", { profileId: "abc123" });

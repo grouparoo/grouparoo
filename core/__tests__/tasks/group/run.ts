@@ -67,6 +67,12 @@ describe("tasks/group:run", () => {
       await task.enqueue("group:run", { runId: "abc123" }); // does not throw
     });
 
+    test("does not throw if the run cannot be found", async () => {
+      await specHelper.runTask("group:run", {
+        runId: "missing",
+      });
+    });
+
     it("can create imports for profiles which should be added", async () => {
       let imports = [];
       await group.setRules([

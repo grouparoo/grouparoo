@@ -13,6 +13,12 @@ describe("tasks/profile:destroyEvents", () => {
       expect(found.length).toEqual(1);
     });
 
+    test("does not throw if the profile cannot be found", async () => {
+      await specHelper.runTask("profile:destroyEvents", {
+        profileId: "missing",
+      });
+    });
+
     test("it will destroy the profile's events", async () => {
       const profile = await helper.factories.profile();
       const event = await helper.factories.event();

@@ -25,6 +25,12 @@ describe("tasks/schedule:run", () => {
       await task.enqueue("schedule:run", { runId: "12345" }); // does not throw
     });
 
+    test("does not throw if the run cannot be found", async () => {
+      await specHelper.runTask("schedule:run", {
+        runId: "missing",
+      });
+    });
+
     test("throws without a runId", async () => {
       await expect(
         task.enqueue("schedule:run", {
