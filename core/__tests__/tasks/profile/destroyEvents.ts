@@ -8,7 +8,7 @@ describe("tasks/profile:destroyEvents", () => {
 
   describe("profile:destroyEvents", () => {
     test("can be enqueued", async () => {
-      await task.enqueue("profile:destroyEvents", { id: "abc123" });
+      await task.enqueue("profile:destroyEvents", { profileId: "abc123" });
       const found = await specHelper.findEnqueuedTasks("profile:destroyEvents");
       expect(found.length).toEqual(1);
     });
@@ -22,7 +22,9 @@ describe("tasks/profile:destroyEvents", () => {
       let count = await Event.count();
       expect(count).toBe(2);
 
-      await specHelper.runTask("profile:destroyEvents", { id: profile.id });
+      await specHelper.runTask("profile:destroyEvents", {
+        profileId: profile.id,
+      });
 
       count = await Event.count();
       expect(count).toBe(1);

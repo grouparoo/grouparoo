@@ -25,9 +25,11 @@ export class RunGroup extends CLSTask {
     //    > Create imports for those profiles whose last update is older than the run's start time to remove them
     // 4. Delete any group members still hanging around from a pervious run that this run may have canceled
 
-    const run = await Run.findById(params.runId);
+    const run = await Run.findOne({ where: { id: params.runId } });
+    if (!run) return;
     if (run.state === "stopped") return;
-    const group = await Group.findById(run.creatorId);
+    const group = await Group.findOne({ where: { id: run.creatorId } });
+    if (!group) return;
 
     const force = run.force || false;
     const destinationId = run.destinationId;

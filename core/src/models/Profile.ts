@@ -247,7 +247,7 @@ export class Profile extends LoggedModel<Profile> {
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
     await CLS.enqueueTask("profile:destroyEvents", {
-      id: instance.id,
+      profileId: instance.id,
     });
   }
 

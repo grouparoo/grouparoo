@@ -17,12 +17,13 @@ export class ExportSend extends RetryableTask {
   }
 
   async runWithinTransaction(params) {
-    const destination = await Destination.findById(params.destinationId);
-    const _export = await Export.findById(params.exportId);
-    if (_export.completedAt) {
-      // be sure not to export twice
-      return;
-    }
+    const destination = await Destination.findOne({
+      where: { id: params.destinationId },
+    });
+    if (!destination) return;
+    const _export = await Export.findOne({ where: { id: params.exportId } });
+    if (!_export) return; // the export was deleted
+    if (_export.completedAt) return; // be sure not to export twice
 
     const { success, retryDelay, error } = await destination.sendExport(
       _export
