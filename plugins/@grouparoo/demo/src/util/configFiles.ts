@@ -6,18 +6,18 @@ import {
   loadConfigDirectory,
   getConfigDir,
 } from "@grouparoo/core/dist/modules/configLoaders";
-import { getAppOptions } from "../postgres/sample_data";
 import { prettier, log } from "./shared";
+import Connection from "./connection";
 
-export async function writeConfigFiles() {
+export async function writeConfigFiles(db: Connection, subDir: string) {
   const configDir = getConfigDir();
-  await generateConfig(configDir);
+  await generateConfig(db, configDir, subDir);
   await prettier(configDir);
 }
 
-export async function loadConfigFiles(subDir = null) {
+export async function loadConfigFiles(db: Connection, subDir: string) {
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(configDir, subDir);
+  await generateConfig(db, configDir, subDir);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -29,13 +29,13 @@ export async function loadConfigFiles(subDir = null) {
   await unlockAll();
 }
 
-async function generateConfig(configDir, subDir = null) {
+async function generateConfig(db: Connection, configDir, subDir: string) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
 
   copyDir(configDir, subDir);
-  if (!subDir || subDir === "purchases") {
-    updatePurchases(configDir);
+  if (subDir === "purchases") {
+    updatePurchases(db, configDir);
   }
 }
 
@@ -45,20 +45,17 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, subDir = null) {
-  let dirPath = path.resolve(path.join(__dirname, "..", "..", "config"));
-  if (subDir) {
-    dirPath = path.join(dirPath, subDir);
-    configDir = path.join(configDir, subDir);
-  }
+function copyDir(configDir, subDir: string) {
+  let dirPath = path.resolve(
+    path.join(__dirname, "..", "..", "config", subDir)
+  );
   fs.mkdirpSync(configDir);
   fs.copySync(dirPath, configDir);
 }
 
-function updatePurchases(configDir) {
-  const purchasesDir = path.join(configDir, "purchases");
-  const appPath = path.join(purchasesDir, "apps", "demo_db.json");
-  const appOptions = getAppOptions();
+function updatePurchases(db: Connection, configDir) {
+  const appPath = path.join(configDir, "apps", "demo_db.json");
+  const appOptions = db.getAppOptions();
   const contents = fs.readJSONSync(appPath);
   const app = contents;
   app.options = appOptions;

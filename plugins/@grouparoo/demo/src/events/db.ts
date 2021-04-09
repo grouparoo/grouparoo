@@ -1,4 +1,5 @@
-import Postgres, { readCsvTable } from "../postgres/connection";
+import Postgres from "../postgres/connection";
+import { readCsvTable } from "../util/sample_data";
 import { log } from "../util/shared";
 
 export async function getPurchases(limit = null) {
