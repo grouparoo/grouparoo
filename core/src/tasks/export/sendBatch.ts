@@ -20,7 +20,7 @@ export class ExportSendBatches extends RetryableTask {
   async runWithinTransaction(params) {
     const destinationId: string = params.destinationId;
     const exportIds: string[] = params.exportIds;
-    const destination = await Destination.findOne({
+    const destination = await Destination.scope(null).findOne({
       where: { id: destinationId },
     });
     if (!destination) return;
