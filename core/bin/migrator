@@ -23,6 +23,8 @@ async function main() {
   );
   const CONFIG = Object.assign({}, require(configFile)[env], {
     autoMigrate: false,
+    logging: logSequelizeQuery,
+    retry: undefined,
   });
 
   const sequelize = new Sequelize(CONFIG);
@@ -78,6 +80,11 @@ function logUmzugEvent(eventName) {
   return function (name, migration) {
     console.log(`${name} ${eventName}`);
   };
+}
+
+function logSequelizeQuery(string) {
+  if (string.includes("SequelizeMeta")) return; // skip all the boilerplate storage logs
+  console.log(string);
 }
 
 main();
