@@ -13,14 +13,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2762,
+      expires_in: 518,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:07 GMT",
+      "Fri, 09 Apr 2021 15:22:31 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -37,11 +37,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "15bf7#178b7180435", result: [], success: true }, [
+  .reply(200, { requestId: "1397c#178b73a416d", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:07 GMT",
+    "Fri, 09 Apr 2021 15:22:31 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -53,15 +53,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "4bd3#178b7180550", result: [], success: true }, [
+  .reply(200, { requestId: "148df#178b73a4320", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:08 GMT",
+    "Fri, 09 Apr 2021 15:22:32 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "59",
+    "60",
     "Connection",
     "close",
   ]);
@@ -69,15 +69,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian3%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "1bce#178b7180659", result: [], success: true }, [
+  .reply(200, { requestId: "363#178b73a44eb", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:08 GMT",
+    "Fri, 09 Apr 2021 15:22:32 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "59",
+    "58",
     "Connection",
     "close",
   ]);
@@ -85,11 +85,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "other%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "fe69#178b7180807", result: [], success: true }, [
+  .reply(200, { requestId: "72e1#178b73a46f9", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:08 GMT",
+    "Fri, 09 Apr 2021 15:22:33 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -106,14 +106,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "96b1#178b718090a",
+      requestId: "a517#178b73a487f",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:09 GMT",
+      "Fri, 09 Apr 2021 15:22:33 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -131,14 +131,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "dfaf#178b71809d9",
+      requestId: "c324#178b73a49a9",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:09 GMT",
+      "Fri, 09 Apr 2021 15:22:33 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -151,11 +151,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "bad3#178b7180aa8", result: [], success: true }, [
+  .reply(200, { requestId: "fccf#178b73a4bd9", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:09 GMT",
+    "Fri, 09 Apr 2021 15:22:34 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -176,14 +176,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2760,
+      expires_in: 514,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:09 GMT",
+      "Fri, 09 Apr 2021 15:22:35 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -200,11 +200,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "12a5e#178b7180c68", result: [], success: true }, [
+  .reply(200, { requestId: "150dd#178b73a5308", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:09 GMT",
+    "Fri, 09 Apr 2021 15:22:36 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -216,15 +216,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "e6ff#178b7180dc8", result: [], success: true }, [
+  .reply(200, { requestId: "16e91#178b73a55e0", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:10 GMT",
+    "Fri, 09 Apr 2021 15:22:36 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "59",
+    "60",
     "Connection",
     "close",
   ]);
@@ -232,11 +232,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "b3cd#178b7181015", result: [], success: true }, [
+  .reply(200, { requestId: "d61d#178b73a58ee", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:11 GMT",
+    "Fri, 09 Apr 2021 15:22:39 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -257,14 +257,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2758,
+      expires_in: 509,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:11 GMT",
+      "Fri, 09 Apr 2021 15:22:39 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -281,11 +281,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "1294d#178b71812f4", result: [], success: true }, [
+  .reply(200, { requestId: "13f01#178b73a62fe", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:11 GMT",
+    "Fri, 09 Apr 2021 15:22:40 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -303,19 +303,19 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "11b7b#178b71813e3",
-      result: [{ id: 4983, status: "created" }],
+      requestId: "2e2f#178b73a64bf",
+      result: [{ id: 4999, status: "created" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:12 GMT",
+      "Fri, 09 Apr 2021 15:22:42 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "90",
+      "89",
       "Connection",
       "close",
     ]
@@ -327,15 +327,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "8757#178b71817d2",
+      requestId: "b156#178b73a6d7c",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:12Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:42Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -344,7 +344,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:12 GMT",
+      "Fri, 09 Apr 2021 15:22:43 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -359,16 +359,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "7768#178b718193e",
+      requestId: "e99f#178b73a7051",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "brian@bleonard.com",
           firstName: "Brian",
           lastName: null,
@@ -389,7 +389,118 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:13 GMT",
+      "Fri, 09 Apr 2021 15:22:43 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Content-Length",
+      "322",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/identity/oauth/token")
+  .query({
+    grant_type: "client_credentials",
+    client_id: "98628d43-73e8-7a3d-9725-f1fd7be3755c",
+    client_secret: "qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      access_token: "my-access-token",
+      token_type: "bearer",
+      expires_in: 505,
+      scope: "my-user@grouparoo.com",
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:22:43 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Cache-Control",
+      "no-store",
+      "Pragma",
+      "no-cache",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/rest/v1/leads.json")
+  .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
+  .once()
+  .reply(
+    200,
+    {
+      requestId: "a964#178b73a7247",
+      result: [
+        {
+          id: 4999,
+          firstName: "Brian",
+          lastName: null,
+          email: "brian@bleonard.com",
+          updatedAt: "2021-04-09T15:22:42Z",
+          createdAt: "2021-04-09T15:22:42Z",
+        },
+      ],
+      success: true,
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:22:44 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Content-Length",
+      "205",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/rest/v1/leads.json")
+  .query({
+    fields:
+      "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
+    filterType: "id",
+    filterValues: "4999",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      requestId: "5820#178b73a73c1",
+      result: [
+        {
+          id: 4999,
+          email: "brian@bleonard.com",
+          firstName: "Brian",
+          lastName: null,
+          textarea_field: null,
+          boolean_field: false,
+          email_field: null,
+          integer_field: null,
+          float_field: null,
+          datetime_field: null,
+          score_field: null,
+          percent_field: null,
+          currency_field: null,
+        },
+      ],
+      success: true,
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:22:44 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -402,11 +513,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "be91#178b7181a64", result: [], success: true }, [
+  .reply(200, { requestId: "9a83#178b73a7571", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:13 GMT",
+    "Fri, 09 Apr 2021 15:22:45 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -427,141 +538,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2756,
+      expires_in: 504,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:13 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Transfer-Encoding",
-      "chunked",
-      "Connection",
-      "close",
-      "Cache-Control",
-      "no-store",
-      "Pragma",
-      "no-cache",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
-  .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
-  .once()
-  .reply(
-    200,
-    {
-      requestId: "32a9#178b7181c50",
-      result: [
-        {
-          id: 4983,
-          firstName: "Brian",
-          lastName: null,
-          email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:12Z",
-          createdAt: "2021-04-09T14:45:12Z",
-        },
-      ],
-      success: true,
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:45:14 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Content-Length",
-      "205",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
-  .query({
-    fields:
-      "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
-    filterType: "id",
-    filterValues: "4983",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      requestId: "113de#178b7181e71",
-      result: [
-        {
-          id: 4983,
-          email: "brian@bleonard.com",
-          firstName: "Brian",
-          lastName: null,
-          textarea_field: null,
-          boolean_field: false,
-          email_field: null,
-          integer_field: null,
-          float_field: null,
-          datetime_field: null,
-          score_field: null,
-          percent_field: null,
-          currency_field: null,
-        },
-      ],
-      success: true,
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:45:14 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Content-Length",
-      "323",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
-  .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
-  .once()
-  .reply(200, { requestId: "12c4b#178b7181fc2", result: [], success: true }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Fri, 09 Apr 2021 14:45:14 GMT",
-    "Content-Type",
-    "application/json;charset=UTF-8",
-    "Content-Length",
-    "60",
-    "Connection",
-    "close",
-  ]);
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/identity/oauth/token")
-  .query({
-    grant_type: "client_credentials",
-    client_id: "98628d43-73e8-7a3d-9725-f1fd7be3755c",
-    client_secret: "qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      access_token: "my-access-token",
-      token_type: "bearer",
-      expires_in: 2754,
-      scope: "my-user@grouparoo.com",
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:45:15 GMT",
+      "Fri, 09 Apr 2021 15:22:45 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -584,15 +568,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "182d4#178b71821bb",
+      requestId: "eeaa#178b73a78ae",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:12Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:42Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -601,11 +585,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:15 GMT",
+      "Fri, 09 Apr 2021 15:22:45 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "206",
+      "205",
       "Connection",
       "close",
     ]
@@ -617,7 +601,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian@bleonard.com",
-        id: 4983,
+        id: 4999,
         firstName: "John",
         lastName: "Smith",
       },
@@ -627,15 +611,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "9260#178b71822c3",
-      result: [{ id: 4983, status: "updated" }],
+      requestId: "40ef#178b73a7afb",
+      result: [{ id: 4999, status: "updated" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:16 GMT",
+      "Fri, 09 Apr 2021 15:22:49 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -654,15 +638,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "b883#178b7182729",
-      result: [{ id: 4984, status: "created" }],
+      requestId: "afd4#178b73a86cf",
+      result: [{ id: 5000, status: "created" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:17 GMT",
+      "Fri, 09 Apr 2021 15:22:52 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -677,16 +661,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "48bf#178b7182a60",
+      requestId: "15b5e#178b73a9468",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "brian@bleonard.com",
           firstName: "John",
           lastName: "Smith",
@@ -707,11 +691,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:17 GMT",
+      "Fri, 09 Apr 2021 15:22:53 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "324",
+      "325",
       "Connection",
       "close",
     ]
@@ -723,15 +707,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "570c#178b7182b54",
+      requestId: "2936#178b73a96a5",
       result: [
         {
-          id: 4984,
+          id: 5000,
           firstName: "Andy",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:16Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:22:52Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -740,7 +724,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:18 GMT",
+      "Fri, 09 Apr 2021 15:22:53 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -755,16 +739,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4984",
+    filterValues: "5000",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "faf7#178b7182de2",
+      requestId: "160bf#178b73a97c0",
       result: [
         {
-          id: 4984,
+          id: 5000,
           email: "brian2@bleonard.com",
           firstName: "Andy",
           lastName: null,
@@ -785,11 +769,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:18 GMT",
+      "Fri, 09 Apr 2021 15:22:53 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "322",
+      "323",
       "Connection",
       "close",
     ]
@@ -807,14 +791,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2751,
+      expires_in: 495,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:18 GMT",
+      "Fri, 09 Apr 2021 15:22:54 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -834,15 +818,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "9ba7#178b7182fe7",
+      requestId: "a6f9#178b73a9a7b",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "John",
           lastName: "Smith",
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:15Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:48Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -851,7 +835,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:19 GMT",
+      "Fri, 09 Apr 2021 15:22:54 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -867,7 +851,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian@bleonard.com",
-        id: 4983,
+        id: 4999,
         firstName: "Brian",
         lastName: null,
       },
@@ -877,19 +861,19 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "e566#178b7183108",
-      result: [{ id: 4983, status: "updated" }],
+      requestId: "10968#178b73a9c6e",
+      result: [{ id: 4999, status: "updated" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:20 GMT",
+      "Fri, 09 Apr 2021 15:22:57 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "89",
+      "90",
       "Connection",
       "close",
     ]
@@ -900,16 +884,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "f71f#178b7183556",
+      requestId: "3e42#178b73aa6cc",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "brian@bleonard.com",
           firstName: "Brian",
           lastName: null,
@@ -930,7 +914,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:20 GMT",
+      "Fri, 09 Apr 2021 15:22:57 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -948,14 +932,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "26e2#178b718361a",
+      requestId: "a1e9#178b73aa7fb",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:20 GMT",
+      "Fri, 09 Apr 2021 15:22:57 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -977,14 +961,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2749,
+      expires_in: 491,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:20 GMT",
+      "Fri, 09 Apr 2021 15:22:58 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1004,15 +988,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "1812d#178b7183839",
+      requestId: "17e9#178b73aa9b6",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -1021,11 +1005,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:21 GMT",
+      "Fri, 09 Apr 2021 15:22:58 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "206",
+      "205",
       "Connection",
       "close",
     ]
@@ -1034,25 +1018,25 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .post("/rest/v1/leads.json", {
     lookupField: "id",
     action: "updateOnly",
-    input: [{ email: "brian@bleonard.com", id: 4983, firstName: "Brian" }],
+    input: [{ email: "brian@bleonard.com", id: 4999, firstName: "Brian" }],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "623f#178b7183945",
-      result: [{ id: 4983, status: "updated" }],
+      requestId: "14c0f#178b73aaba6",
+      result: [{ id: 4999, status: "updated" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:22 GMT",
+      "Fri, 09 Apr 2021 15:22:59 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "89",
+      "90",
       "Connection",
       "close",
     ]
@@ -1066,14 +1050,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "17216#178b7183d12",
+      requestId: "5d5f#178b73aafc0",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:22 GMT",
+      "Fri, 09 Apr 2021 15:22:59 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1091,7 +1075,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "7bfa#178b7183dee",
+      requestId: "ca8d#178b73ab116",
       warnings: [],
       result: [
         {
@@ -1132,7 +1116,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:22 GMT",
+      "Fri, 09 Apr 2021 15:23:00 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1152,16 +1136,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "ff3e#178b7184a75",
+      requestId: "3832#178b73ab1f0",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab04.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab15.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -1170,7 +1154,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:25 GMT",
+      "Fri, 09 Apr 2021 15:23:00 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1180,20 +1164,20 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1122/leads.json", { input: [{ id: 4983 }] })
+  .post("/rest/v1/lists/1130/leads.json", { input: [{ id: 4999 }] })
   .once()
   .reply(
     200,
     {
-      requestId: "eb41#178b7184b94",
-      result: [{ id: 4983, status: "added" }],
+      requestId: "3538#178b73ab368",
+      result: [{ id: 4999, status: "added" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:26 GMT",
+      "Fri, 09 Apr 2021 15:23:01 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -1211,16 +1195,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "16e9b#178b7184c95",
+      requestId: "d7ef#178b73ab576",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab36.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab04.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -1229,7 +1213,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:26 GMT",
+      "Fri, 09 Apr 2021 15:23:01 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1239,20 +1223,20 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "14420#178b7184e10",
+      requestId: "737e#178b73ab700",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -1261,11 +1245,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:27 GMT",
+      "Fri, 09 Apr 2021 15:23:01 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "206",
+      "205",
       "Connection",
       "close",
     ]
@@ -1279,14 +1263,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "12523#178b71859ed",
+      requestId: "333d#178b73ac220",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:29 GMT",
+      "Fri, 09 Apr 2021 15:23:04 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1308,14 +1292,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2739,
+      expires_in: 485,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:29 GMT",
+      "Fri, 09 Apr 2021 15:23:04 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1338,23 +1322,23 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "12738#178b7185b7f",
+      requestId: "be75#178b73ac438",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
         {
-          id: 4984,
+          id: 5000,
           firstName: "Andy",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:16Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:22:52Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -1363,11 +1347,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:30 GMT",
+      "Fri, 09 Apr 2021 15:23:05 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "353",
+      "352",
       "Connection",
       "close",
     ]
@@ -1377,18 +1361,18 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     lookupField: "id",
     action: "updateOnly",
     input: [
-      { email: "brian@bleonard.com", id: 4983, firstName: "Brian" },
-      { email: "brian2@bleonard.com", id: 4984, firstName: "Sally" },
+      { email: "brian@bleonard.com", id: 4999, firstName: "Brian" },
+      { email: "brian2@bleonard.com", id: 5000, firstName: "Sally" },
     ],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "c5ad#178b7185c53",
+      requestId: "324a#178b73ac599",
       result: [
-        { id: 4983, status: "updated" },
-        { id: 4984, status: "updated" },
+        { id: 4999, status: "updated" },
+        { id: 5000, status: "updated" },
       ],
       success: true,
     },
@@ -1396,7 +1380,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:31 GMT",
+      "Fri, 09 Apr 2021 15:23:06 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -1414,16 +1398,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "5f68#178b71861dd",
+      requestId: "9c0a#178b73acb81",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab04.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -1432,7 +1416,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:31 GMT",
+      "Fri, 09 Apr 2021 15:23:07 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1442,17 +1426,17 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1122/leads.json", {
-    input: [{ id: 4983 }, { id: 4984 }],
+  .post("/rest/v1/lists/1130/leads.json", {
+    input: [{ id: 4999 }, { id: 5000 }],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "12ae0#178b71862d3",
+      requestId: "f658#178b73acd07",
       result: [
-        { id: 4983, status: "added" },
-        { id: 4984, status: "added" },
+        { id: 4999, status: "added" },
+        { id: 5000, status: "added" },
       ],
       success: true,
     },
@@ -1460,11 +1444,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:32 GMT",
+      "Fri, 09 Apr 2021 15:23:07 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "117",
+      "116",
       "Connection",
       "close",
     ]
@@ -1478,14 +1462,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "1025f#178b71863ef",
+      requestId: "e44b#178b73ad060",
       warnings: ["No assets found for the given search criteria."],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:32 GMT",
+      "Fri, 09 Apr 2021 15:23:08 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1503,7 +1487,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "10da3#178b71864b6",
+      requestId: "9aad#178b73ad1f0",
       warnings: [],
       result: [
         {
@@ -1544,7 +1528,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:32 GMT",
+      "Fri, 09 Apr 2021 15:23:08 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1564,16 +1548,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "23b4#178b7186588",
+      requestId: "10eee#178b73ad2bb",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab15.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -1582,7 +1566,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:32 GMT",
+      "Fri, 09 Apr 2021 15:23:08 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1592,24 +1576,24 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1123/leads.json", { input: [{ id: 4983 }] })
+  .post("/rest/v1/lists/1131/leads.json", { input: [{ id: 4999 }] })
   .once()
   .reply(
     200,
     {
-      requestId: "e0d7#178b7186676",
-      result: [{ id: 4983, status: "added" }],
+      requestId: "11d30#178b73ad3b5",
+      result: [{ id: 4999, status: "added" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:32 GMT",
+      "Fri, 09 Apr 2021 15:23:09 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "87",
+      "88",
       "Connection",
       "close",
     ]
@@ -1623,16 +1607,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "42e5#178b7186773",
+      requestId: "333#178b73ad5e5",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -1641,7 +1625,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:33 GMT",
+      "Fri, 09 Apr 2021 15:23:09 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1651,28 +1635,28 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "6c5#178b718688d",
+      requestId: "26a2#178b73ad6df",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
         {
-          id: 4984,
+          id: 5000,
           firstName: "Sally",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:30Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:23:05Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -1681,30 +1665,30 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:33 GMT",
+      "Fri, 09 Apr 2021 15:23:10 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "352",
+      "353",
       "Connection",
       "close",
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1123/leads.json", "listId=1123&_method=GET")
+  .post("/rest/v1/list/1131/leads.json", "listId=1131&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "14340#178b7186bae",
+      requestId: "8c6d#178b73ad94c",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -1713,11 +1697,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:34 GMT",
+      "Fri, 09 Apr 2021 15:23:10 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "206",
+      "205",
       "Connection",
       "close",
     ]
@@ -1728,16 +1712,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4984",
+    filterValues: "5000",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "5a27#178b7187970",
+      requestId: "b15c#178b73adba9",
       result: [
         {
-          id: 4984,
+          id: 5000,
           email: "brian2@bleonard.com",
           firstName: "Sally",
           lastName: null,
@@ -1758,7 +1742,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:37 GMT",
+      "Fri, 09 Apr 2021 15:23:11 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -1780,14 +1764,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2731,
+      expires_in: 478,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:38 GMT",
+      "Fri, 09 Apr 2021 15:23:11 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1810,23 +1794,23 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "c381#178b7187b95",
+      requestId: "13876#178b73add6d",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
         {
-          id: 4984,
+          id: 5000,
           firstName: "Sally",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:30Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:23:05Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -1835,11 +1819,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:38 GMT",
+      "Fri, 09 Apr 2021 15:23:11 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "353",
+      "354",
       "Connection",
       "close",
     ]
@@ -1849,18 +1833,18 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     lookupField: "id",
     action: "updateOnly",
     input: [
-      { email: "brian@bleonard.com", id: 4983, firstName: "Brian" },
-      { email: "brian2@bleonard.com", id: 4984, firstName: "Sally" },
+      { email: "brian@bleonard.com", id: 4999, firstName: "Brian" },
+      { email: "brian2@bleonard.com", id: 5000, firstName: "Sally" },
     ],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "39e1#178b7187dba",
+      requestId: "bf2e#178b73ade7e",
       result: [
-        { id: 4983, status: "updated" },
-        { id: 4984, status: "updated" },
+        { id: 4999, status: "updated" },
+        { id: 5000, status: "updated" },
       ],
       success: true,
     },
@@ -1868,7 +1852,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:39 GMT",
+      "Fri, 09 Apr 2021 15:23:13 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -1886,16 +1870,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "e630#178b71881ac",
+      requestId: "f3f8#178b73ae3a8",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab28.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -1904,7 +1888,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:39 GMT",
+      "Fri, 09 Apr 2021 15:23:13 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1914,17 +1898,17 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .delete("/rest/v1/lists/1123/leads.json")
-  .query({ id: ["4983", "4984"] })
+  .delete("/rest/v1/lists/1131/leads.json")
+  .query({ id: ["4999", "5000"] })
   .once()
   .reply(
     200,
     {
-      requestId: "68aa#178b7188279",
+      requestId: "2154#178b73ae4e9",
       result: [
-        { id: 4983, status: "removed" },
+        { id: 4999, status: "removed" },
         {
-          id: 4984,
+          id: 5000,
           status: "skipped",
           reasons: [{ code: "1015", message: "Lead not in list" }],
         },
@@ -1935,7 +1919,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:40 GMT",
+      "Fri, 09 Apr 2021 15:23:14 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -1953,16 +1937,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "10f9#178b7188962",
+      requestId: "10543#178b73ae86e",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -1971,7 +1955,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:41 GMT",
+      "Fri, 09 Apr 2021 15:23:14 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -1981,17 +1965,17 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1122/leads.json", {
-    input: [{ id: 4983 }, { id: 4984 }],
+  .post("/rest/v1/lists/1130/leads.json", {
+    input: [{ id: 4999 }, { id: 5000 }],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "5270#178b7188a43",
+      requestId: "c85c#178b73af56f",
       result: [
-        { id: 4983, status: "added" },
-        { id: 4984, status: "added" },
+        { id: 4999, status: "added" },
+        { id: 5000, status: "added" },
       ],
       success: true,
     },
@@ -1999,7 +1983,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:42 GMT",
+      "Fri, 09 Apr 2021 15:23:17 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2009,28 +1993,28 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "12fac#178b7188ca5",
+      requestId: "19f3#178b73af7bd",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
         {
-          id: 4984,
+          id: 5000,
           firstName: "Sally",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:30Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:23:05Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -2039,23 +2023,23 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:42 GMT",
+      "Fri, 09 Apr 2021 15:23:18 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "354",
+      "353",
       "Connection",
       "close",
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1123/leads.json", "listId=1123&_method=GET")
+  .post("/rest/v1/list/1131/leads.json", "listId=1131&_method=GET")
   .once()
-  .reply(200, { requestId: "1ca8#178b7189057", result: [], success: true }, [
+  .reply(200, { requestId: "2f61#178b73af8ef", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:43 GMT",
+    "Fri, 09 Apr 2021 15:23:18 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -2076,14 +2060,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2725,
+      expires_in: 470,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:43 GMT",
+      "Fri, 09 Apr 2021 15:23:19 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2103,15 +2087,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "87d8#178b71892be",
+      requestId: "16f74#178b73afc3b",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: null,
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:19Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:22:56Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -2120,11 +2104,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:44 GMT",
+      "Fri, 09 Apr 2021 15:23:19 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "205",
+      "206",
       "Connection",
       "close",
     ]
@@ -2139,15 +2123,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "16628#178b7189596",
+      requestId: "515a#178b73afdfc",
       result: [
         {
-          id: 4984,
+          id: 5000,
           firstName: "Sally",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:30Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:23:05Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -2156,11 +2140,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:45 GMT",
+      "Fri, 09 Apr 2021 15:23:19 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "207",
+      "206",
       "Connection",
       "close",
     ]
@@ -2172,21 +2156,21 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "other@bleonard.com",
-        id: 4983,
+        id: 4999,
         firstName: "Brian",
         lastName: "Test",
       },
-      { email: "brian2@bleonard.com", id: 4984, firstName: "Evan" },
+      { email: "brian2@bleonard.com", id: 5000, firstName: "Evan" },
     ],
   })
   .once()
   .reply(
     200,
     {
-      requestId: "ddd4#178b718973c",
+      requestId: "1713d#178b73aff31",
       result: [
-        { id: 4983, status: "updated" },
-        { id: 4984, status: "updated" },
+        { id: 4999, status: "updated" },
+        { id: 5000, status: "updated" },
       ],
       success: true,
     },
@@ -2194,11 +2178,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:45 GMT",
+      "Fri, 09 Apr 2021 15:23:21 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "120",
+      "121",
       "Connection",
       "close",
     ]
@@ -2212,16 +2196,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "f932#178b7189a3c",
+      requestId: "243b#178b73b0412",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab15.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab28.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -2230,7 +2214,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:46 GMT",
+      "Fri, 09 Apr 2021 15:23:21 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2240,21 +2224,21 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .delete("/rest/v1/lists/1122/leads.json")
-  .query({ id: "4984" })
+  .delete("/rest/v1/lists/1130/leads.json")
+  .query({ id: "5000" })
   .once()
   .reply(
     200,
     {
-      requestId: "a8b2#178b7189b22",
-      result: [{ id: 4984, status: "removed" }],
+      requestId: "754b#178b73b04e4",
+      result: [{ id: 5000, status: "removed" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:46 GMT",
+      "Fri, 09 Apr 2021 15:23:22 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2272,16 +2256,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "9f7d#178b7189cb4",
+      requestId: "c74#178b73b08b0",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab04.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab36.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -2290,7 +2274,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:46 GMT",
+      "Fri, 09 Apr 2021 15:23:22 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2300,24 +2284,24 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1122/leads.json", { input: [{ id: 4983 }] })
+  .post("/rest/v1/lists/1130/leads.json", { input: [{ id: 4999 }] })
   .once()
   .reply(
     200,
     {
-      requestId: "5da#178b7189e36",
-      result: [{ id: 4983, status: "added" }],
+      requestId: "1797#178b73b0ac3",
+      result: [{ id: 4999, status: "added" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:47 GMT",
+      "Fri, 09 Apr 2021 15:23:23 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "86",
+      "87",
       "Connection",
       "close",
     ]
@@ -2331,16 +2315,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "28f5#178b718a0c3",
+      requestId: "1236c#178b73b0cac",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab36.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -2349,7 +2333,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:47 GMT",
+      "Fri, 09 Apr 2021 15:23:23 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2359,24 +2343,24 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1123/leads.json", { input: [{ id: 4983 }] })
+  .post("/rest/v1/lists/1131/leads.json", { input: [{ id: 4999 }] })
   .once()
   .reply(
     200,
     {
-      requestId: "6593#178b718a1a0",
-      result: [{ id: 4983, status: "added" }],
+      requestId: "185df#178b73b0de5",
+      result: [{ id: 4999, status: "added" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:48 GMT",
+      "Fri, 09 Apr 2021 15:23:24 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "87",
+      "88",
       "Connection",
       "close",
     ]
@@ -2387,16 +2371,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "3dc1#178b718a3fc",
+      requestId: "c7a0#178b73b10b8",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "other@bleonard.com",
           firstName: "Brian",
           lastName: "Test",
@@ -2417,7 +2401,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:48 GMT",
+      "Fri, 09 Apr 2021 15:23:24 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2430,11 +2414,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "386a#178b718a5e1", result: [], success: true }, [
+  .reply(200, { requestId: "ae3b#178b73b127e", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:49 GMT",
+    "Fri, 09 Apr 2021 15:23:25 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -2448,16 +2432,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4984",
+    filterValues: "5000",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "71f4#178b718a72a",
+      requestId: "11d8#178b73b13f9",
       result: [
         {
-          id: 4984,
+          id: 5000,
           email: "brian2@bleonard.com",
           firstName: "Evan",
           lastName: null,
@@ -2478,7 +2462,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:49 GMT",
+      "Fri, 09 Apr 2021 15:23:25 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2488,20 +2472,20 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "104b1#178b718a82e",
+      requestId: "f315#178b73b14d5",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "other@bleonard.com",
-          updatedAt: "2021-04-09T14:45:45Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:20Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -2510,30 +2494,30 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:50 GMT",
+      "Fri, 09 Apr 2021 15:23:26 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "208",
+      "207",
       "Connection",
       "close",
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1123/leads.json", "listId=1123&_method=GET")
+  .post("/rest/v1/list/1131/leads.json", "listId=1131&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "109aa#178b718aacc",
+      requestId: "b550#178b73b16d0",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "other@bleonard.com",
-          updatedAt: "2021-04-09T14:45:45Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:20Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -2542,11 +2526,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:50 GMT",
+      "Fri, 09 Apr 2021 15:23:26 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "208",
+      "207",
       "Connection",
       "close",
     ]
@@ -2564,14 +2548,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2719,
+      expires_in: 463,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:50 GMT",
+      "Fri, 09 Apr 2021 15:23:26 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2591,15 +2575,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "9b9a#178b718ac90",
+      requestId: "f8d#178b73b18a7",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "other@bleonard.com",
-          updatedAt: "2021-04-09T14:45:45Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:20Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -2608,11 +2592,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:50 GMT",
+      "Fri, 09 Apr 2021 15:23:26 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "207",
+      "206",
       "Connection",
       "close",
     ]
@@ -2626,16 +2610,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "167cf#178b718ad52",
+      requestId: "16c25#178b73b196d",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab36.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -2644,7 +2628,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:51 GMT",
+      "Fri, 09 Apr 2021 15:23:26 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2654,25 +2638,25 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .delete("/rest/v1/lists/1122/leads.json")
-  .query({ id: "4983" })
+  .delete("/rest/v1/lists/1130/leads.json")
+  .query({ id: "4999" })
   .once()
   .reply(
     200,
     {
-      requestId: "15fc1#178b718ae1a",
-      result: [{ id: 4983, status: "removed" }],
+      requestId: "ad#178b73b1a68",
+      result: [{ id: 4999, status: "removed" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:51 GMT",
+      "Fri, 09 Apr 2021 15:23:27 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "90",
+      "87",
       "Connection",
       "close",
     ]
@@ -2686,16 +2670,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "32be#178b718afe3",
+      requestId: "11a08#178b73b1dee",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab36.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab28.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -2704,7 +2688,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:51 GMT",
+      "Fri, 09 Apr 2021 15:23:28 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2714,21 +2698,21 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .delete("/rest/v1/lists/1123/leads.json")
-  .query({ id: "4983" })
+  .delete("/rest/v1/lists/1131/leads.json")
+  .query({ id: "4999" })
   .once()
   .reply(
     200,
     {
-      requestId: "17807#178b718b2aa",
-      result: [{ id: 4983, status: "removed" }],
+      requestId: "154c9#178b73b1ec3",
+      result: [{ id: 4999, status: "removed" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:53 GMT",
+      "Fri, 09 Apr 2021 15:23:28 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2743,16 +2727,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "299f#178b718b6ac",
+      requestId: "74d3#178b73b20d5",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "other@bleonard.com",
           firstName: "Brian",
           lastName: "Test",
@@ -2773,7 +2757,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:53 GMT",
+      "Fri, 09 Apr 2021 15:23:28 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2783,28 +2767,28 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
-  .reply(200, { requestId: "1409f#178b718b792", result: [], success: true }, [
+  .reply(200, { requestId: "89f3#178b73b21eb", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:53 GMT",
+    "Fri, 09 Apr 2021 15:23:29 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "60",
+    "59",
     "Connection",
     "close",
   ]);
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1123/leads.json", "listId=1123&_method=GET")
+  .post("/rest/v1/list/1131/leads.json", "listId=1131&_method=GET")
   .once()
-  .reply(200, { requestId: "172cb#178b718b887", result: [], success: true }, [
+  .reply(200, { requestId: "127bc#178b73b23d7", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:45:53 GMT",
+    "Fri, 09 Apr 2021 15:23:29 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -2825,14 +2809,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2715,
+      expires_in: 459,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:54 GMT",
+      "Fri, 09 Apr 2021 15:23:29 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -2852,15 +2836,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "4560#178b718baa7",
+      requestId: "e406#178b73b25dc",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "other@bleonard.com",
-          updatedAt: "2021-04-09T14:45:45Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:20Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -2869,7 +2853,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:54 GMT",
+      "Fri, 09 Apr 2021 15:23:30 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2888,15 +2872,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "a86b#178b718bbe7",
+      requestId: "7c8f#178b73b26ff",
       result: [
         {
-          id: 4984,
+          id: 5000,
           firstName: "Evan",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:45:45Z",
-          createdAt: "2021-04-09T14:45:16Z",
+          updatedAt: "2021-04-09T15:23:20Z",
+          createdAt: "2021-04-09T15:22:51Z",
         },
       ],
       success: true,
@@ -2905,7 +2889,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:54 GMT",
+      "Fri, 09 Apr 2021 15:23:30 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -2915,25 +2899,25 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/leads.json", { input: [{ id: 4984 }] })
+  .post("/rest/v1/leads.json", { input: [{ id: 5000 }] })
   .query({ _method: "DELETE" })
   .once()
   .reply(
     200,
     {
-      requestId: "11ab1#178b718bced",
-      result: [{ id: 4984, status: "deleted" }],
+      requestId: "f1ae#178b73b27db",
+      result: [{ id: 5000, status: "deleted" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:57 GMT",
+      "Fri, 09 Apr 2021 15:23:33 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "90",
+      "89",
       "Connection",
       "close",
     ]
@@ -2945,7 +2929,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian@bleonard.com",
-        id: 4983,
+        id: 4999,
         firstName: "Brian",
         lastName: "Test",
       },
@@ -2955,19 +2939,19 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "7740#178b718c65c",
-      result: [{ id: 4983, status: "updated" }],
+      requestId: "17811#178b73b320b",
+      result: [{ id: 4999, status: "updated" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:58 GMT",
+      "Fri, 09 Apr 2021 15:23:34 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "89",
+      "90",
       "Connection",
       "close",
     ]
@@ -2981,16 +2965,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "15e6#178b718c9c6",
+      requestId: "18020#178b73b3674",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab36.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -2999,7 +2983,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:58 GMT",
+      "Fri, 09 Apr 2021 15:23:34 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3009,24 +2993,24 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/lists/1122/leads.json", { input: [{ id: 4983 }] })
+  .post("/rest/v1/lists/1130/leads.json", { input: [{ id: 4999 }] })
   .once()
   .reply(
     200,
     {
-      requestId: "5b6#178b718cb68",
-      result: [{ id: 4983, status: "added" }],
+      requestId: "119ff#178b73b3921",
+      result: [{ id: 4999, status: "added" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:59 GMT",
+      "Fri, 09 Apr 2021 15:23:35 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "86",
+      "88",
       "Connection",
       "close",
     ]
@@ -3037,16 +3021,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "9cd6#178b718ceb8",
+      requestId: "10564#178b73b3ac4",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "brian@bleonard.com",
           firstName: "Brian",
           lastName: "Test",
@@ -3067,11 +3051,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:45:59 GMT",
+      "Fri, 09 Apr 2021 15:23:35 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "324",
+      "325",
       "Connection",
       "close",
     ]
@@ -3080,11 +3064,27 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "other%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "65db#178b718d099", result: [], success: true }, [
+  .reply(200, { requestId: "17c50#178b73b3cc1", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:00 GMT",
+    "Fri, 09 Apr 2021 15:23:36 GMT",
+    "Content-Type",
+    "application/json;charset=UTF-8",
+    "Content-Length",
+    "60",
+    "Connection",
+    "close",
+  ]);
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/rest/v1/leads.json")
+  .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
+  .once()
+  .reply(200, { requestId: "a748#178b73b3dde", result: [], success: true }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Fri, 09 Apr 2021 15:23:36 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -3094,56 +3094,40 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   ]);
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
-  .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
-  .once()
-  .reply(200, { requestId: "11082#178b718d3f2", result: [], success: true }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Fri, 09 Apr 2021 14:46:01 GMT",
-    "Content-Type",
-    "application/json;charset=UTF-8",
-    "Content-Length",
-    "60",
-    "Connection",
-    "close",
-  ]);
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
   .query({
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4984",
+    filterValues: "5000",
   })
   .once()
-  .reply(200, { requestId: "121bd#178b718d591", result: [], success: true }, [
+  .reply(200, { requestId: "25fd#178b73b3edc", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:01 GMT",
+    "Fri, 09 Apr 2021 15:23:36 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "60",
+    "59",
     "Connection",
     "close",
   ]);
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1122/leads.json", "listId=1122&_method=GET")
+  .post("/rest/v1/list/1130/leads.json", "listId=1130&_method=GET")
   .once()
   .reply(
     200,
     {
-      requestId: "17c29#178b718d681",
+      requestId: "ee1e#178b73b41d3",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:57Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:33Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -3152,27 +3136,27 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:01 GMT",
+      "Fri, 09 Apr 2021 15:23:37 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "208",
+      "207",
       "Connection",
       "close",
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/list/1123/leads.json", "listId=1123&_method=GET")
+  .post("/rest/v1/list/1131/leads.json", "listId=1131&_method=GET")
   .once()
-  .reply(200, { requestId: "14ce1#178b718d917", result: [], success: true }, [
+  .reply(200, { requestId: "ef92#178b73b4314", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:02 GMT",
+    "Fri, 09 Apr 2021 15:23:37 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "60",
+    "59",
     "Connection",
     "close",
   ]);
@@ -3189,14 +3173,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2707,
+      expires_in: 451,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:02 GMT",
+      "Fri, 09 Apr 2021 15:23:38 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3213,15 +3197,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "12442#178b718dc7d", result: [], success: true }, [
+  .reply(200, { requestId: "6f00#178b73b46b1", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:03 GMT",
+    "Fri, 09 Apr 2021 15:23:38 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "60",
+    "59",
     "Connection",
     "close",
   ]);
@@ -3249,19 +3233,19 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "135cc#178b718dd4b",
-      result: [{ id: 4985, status: "created" }],
+      requestId: "9348#178b73b47b7",
+      result: [{ id: 5001, status: "created" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:04 GMT",
+      "Fri, 09 Apr 2021 15:23:43 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "90",
+      "89",
       "Connection",
       "close",
     ]
@@ -3273,15 +3257,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "11580#178b718e0c3",
+      requestId: "185f4#178b73b5b0a",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Evan",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:03Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:42Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -3290,7 +3274,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:04 GMT",
+      "Fri, 09 Apr 2021 15:23:43 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3305,16 +3289,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "931f#178b718e1e3",
+      requestId: "10fb8#178b73b5bf3",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Evan",
           lastName: null,
@@ -3335,11 +3319,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:04 GMT",
+      "Fri, 09 Apr 2021 15:23:44 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "361",
+      "362",
       "Connection",
       "close",
     ]
@@ -3357,14 +3341,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2705,
+      expires_in: 445,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:04 GMT",
+      "Fri, 09 Apr 2021 15:23:44 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3384,15 +3368,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "47f6#178b718e388",
+      requestId: "ef8e#178b73b5deb",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Evan",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:03Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:42Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -3401,7 +3385,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:04 GMT",
+      "Fri, 09 Apr 2021 15:23:44 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3417,7 +3401,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
         textarea_field: null,
         boolean_field: null,
@@ -3435,15 +3419,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "6562#178b718e46b",
-      result: [{ id: 4985, status: "updated" }],
+      requestId: "1b09#178b73b5f2d",
+      result: [{ id: 5001, status: "updated" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:07 GMT",
+      "Fri, 09 Apr 2021 15:23:46 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3458,16 +3442,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "10ba7#178b718ef26",
+      requestId: "14ba4#178b73b66b6",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -3488,7 +3472,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:08 GMT",
+      "Fri, 09 Apr 2021 15:23:46 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3510,14 +3494,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2701,
+      expires_in: 442,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:08 GMT",
+      "Fri, 09 Apr 2021 15:23:46 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3537,15 +3521,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "58a8#178b718f16e",
+      requestId: "12dff#178b73b6a57",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -3554,11 +3538,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:08 GMT",
+      "Fri, 09 Apr 2021 15:23:47 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "206",
+      "207",
       "Connection",
       "close",
     ]
@@ -3570,7 +3554,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
         boolean_field: "other",
       },
@@ -3580,7 +3564,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "612f#178b718f260",
+      requestId: "153#178b73b6b97",
       result: [
         {
           status: "skipped",
@@ -3599,11 +3583,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:09 GMT",
+      "Fri, 09 Apr 2021 15:23:48 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "177",
+      "176",
       "Connection",
       "close",
     ]
@@ -3614,16 +3598,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "864b#178b718f4e5",
+      requestId: "e168#178b73b6e04",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -3644,7 +3628,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:09 GMT",
+      "Fri, 09 Apr 2021 15:23:48 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3666,14 +3650,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2700,
+      expires_in: 440,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:09 GMT",
+      "Fri, 09 Apr 2021 15:23:48 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3693,15 +3677,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "13af4#178b718f7f3",
+      requestId: "f741#178b73b701e",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -3710,11 +3694,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:10 GMT",
+      "Fri, 09 Apr 2021 15:23:49 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "207",
+      "206",
       "Connection",
       "close",
     ]
@@ -3726,7 +3710,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
         email_field: "bademail",
       },
@@ -3736,7 +3720,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "16118#178b719096a",
+      requestId: "fbbe#178b73b735c",
       result: [
         {
           status: "skipped",
@@ -3755,11 +3739,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:14 GMT",
+      "Fri, 09 Apr 2021 15:23:49 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "179",
+      "178",
       "Connection",
       "close",
     ]
@@ -3770,16 +3754,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "b294#178b7190b8b",
+      requestId: "de06#178b73b74ca",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -3800,7 +3784,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:15 GMT",
+      "Fri, 09 Apr 2021 15:23:50 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3822,14 +3806,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2693,
+      expires_in: 439,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:16 GMT",
+      "Fri, 09 Apr 2021 15:23:50 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -3849,15 +3833,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "f4cd#178b7191149",
+      requestId: "4eb7#178b73b778d",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -3866,7 +3850,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:16 GMT",
+      "Fri, 09 Apr 2021 15:23:51 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3882,7 +3866,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
         integer_field: 14.1,
       },
@@ -3892,7 +3876,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "a4c6#178b7191383",
+      requestId: "171b0#178b73b7a92",
       result: [
         {
           status: "skipped",
@@ -3911,11 +3895,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:17 GMT",
+      "Fri, 09 Apr 2021 15:23:52 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "176",
+      "177",
       "Connection",
       "close",
     ]
@@ -3926,16 +3910,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "5754#178b7191b80",
+      requestId: "edb#178b73b7cdb",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -3956,7 +3940,162 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:19 GMT",
+      "Fri, 09 Apr 2021 15:23:52 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Content-Length",
+      "322",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/identity/oauth/token")
+  .query({
+    grant_type: "client_credentials",
+    client_id: "98628d43-73e8-7a3d-9725-f1fd7be3755c",
+    client_secret: "qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      access_token: "my-access-token",
+      token_type: "bearer",
+      expires_in: 437,
+      scope: "my-user@grouparoo.com",
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:23:52 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Cache-Control",
+      "no-store",
+      "Pragma",
+      "no-cache",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/rest/v1/leads.json")
+  .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
+  .once()
+  .reply(
+    200,
+    {
+      requestId: "c032#178b73b7f18",
+      result: [
+        {
+          id: 5001,
+          firstName: "Maria",
+          lastName: null,
+          email: "brian2@bleonard.com",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
+        },
+      ],
+      success: true,
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:23:53 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Content-Length",
+      "206",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .post("/rest/v1/leads.json", {
+    lookupField: "id",
+    action: "updateOnly",
+    input: [
+      {
+        email: "brian2@bleonard.com",
+        id: 5001,
+        firstName: "Maria",
+        float_field: "14c",
+      },
+    ],
+  })
+  .once()
+  .reply(
+    200,
+    {
+      requestId: "eb6a#178b73b80bb",
+      result: [
+        {
+          status: "skipped",
+          reasons: [
+            {
+              code: "1003",
+              message: "Invalid value for field 'float_field' and value '14c'",
+            },
+          ],
+        },
+      ],
+      success: true,
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:23:53 GMT",
+      "Content-Type",
+      "application/json;charset=UTF-8",
+      "Content-Length",
+      "173",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
+  .get("/rest/v1/leads.json")
+  .query({
+    fields:
+      "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
+    filterType: "id",
+    filterValues: "5001",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      requestId: "fef8#178b73b81aa",
+      result: [
+        {
+          id: 5001,
+          email: "brian2@bleonard.com",
+          firstName: "Maria",
+          lastName: null,
+          textarea_field: null,
+          boolean_field: false,
+          email_field: null,
+          integer_field: null,
+          float_field: null,
+          datetime_field: null,
+          score_field: null,
+          percent_field: null,
+          currency_field: null,
+        },
+      ],
+      success: true,
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Fri, 09 Apr 2021 15:23:53 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -3978,14 +4117,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2690,
+      expires_in: 435,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:19 GMT",
+      "Fri, 09 Apr 2021 15:23:53 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -4005,15 +4144,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "12dd8#178b71929c1",
+      requestId: "b61c#178b73b834d",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -4022,11 +4161,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:23 GMT",
+      "Fri, 09 Apr 2021 15:23:54 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "207",
+      "206",
       "Connection",
       "close",
     ]
@@ -4038,9 +4177,9 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
-        float_field: "14c",
+        datetime_field: "yesterday",
       },
     ],
   })
@@ -4048,14 +4187,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "218c#178b7192d99",
+      requestId: "208d#178b73b8650",
       result: [
         {
           status: "skipped",
           reasons: [
             {
               code: "1003",
-              message: "Invalid value for field 'float_field' and value '14c'",
+              message:
+                "Invalid value for field 'datetime_field' and value 'yesterday'",
             },
           ],
         },
@@ -4066,11 +4206,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:23 GMT",
+      "Fri, 09 Apr 2021 15:23:55 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "173",
+      "182",
       "Connection",
       "close",
     ]
@@ -4081,16 +4221,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "151ea#178b719327b",
+      requestId: "1075b#178b73b882f",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -4111,7 +4251,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:26 GMT",
+      "Fri, 09 Apr 2021 15:23:55 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4133,14 +4273,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2682,
+      expires_in: 434,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:27 GMT",
+      "Fri, 09 Apr 2021 15:23:55 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -4160,15 +4300,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "5dae#178b7193ee3",
+      requestId: "3315#178b73b89bd",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -4177,7 +4317,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:28 GMT",
+      "Fri, 09 Apr 2021 15:23:55 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4193,163 +4333,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian2@bleonard.com",
-        id: 4985,
-        firstName: "Maria",
-        datetime_field: "yesterday",
-      },
-    ],
-  })
-  .once()
-  .reply(
-    200,
-    {
-      requestId: "10589#178b7194015",
-      result: [
-        {
-          status: "skipped",
-          reasons: [
-            {
-              code: "1003",
-              message:
-                "Invalid value for field 'datetime_field' and value 'yesterday'",
-            },
-          ],
-        },
-      ],
-      success: true,
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:46:28 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Content-Length",
-      "183",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
-  .query({
-    fields:
-      "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
-    filterType: "id",
-    filterValues: "4985",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      requestId: "abef#178b7194159",
-      result: [
-        {
-          id: 4985,
-          email: "brian2@bleonard.com",
-          firstName: "Maria",
-          lastName: null,
-          textarea_field: null,
-          boolean_field: false,
-          email_field: null,
-          integer_field: null,
-          float_field: null,
-          datetime_field: null,
-          score_field: null,
-          percent_field: null,
-          currency_field: null,
-        },
-      ],
-      success: true,
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:46:30 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Content-Length",
-      "323",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/identity/oauth/token")
-  .query({
-    grant_type: "client_credentials",
-    client_id: "98628d43-73e8-7a3d-9725-f1fd7be3755c",
-    client_secret: "qZyFW90pDnrdHZTS4whWqTtqeVAjZlsT",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      access_token: "my-access-token",
-      token_type: "bearer",
-      expires_in: 2679,
-      scope: "my-user@grouparoo.com",
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:46:30 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Transfer-Encoding",
-      "chunked",
-      "Connection",
-      "close",
-      "Cache-Control",
-      "no-store",
-      "Pragma",
-      "no-cache",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .get("/rest/v1/leads.json")
-  .query({ filterType: "email", filterValues: "brian2%40bleonard.com" })
-  .once()
-  .reply(
-    200,
-    {
-      requestId: "17495#178b719486d",
-      result: [
-        {
-          id: 4985,
-          firstName: "Maria",
-          lastName: null,
-          email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
-        },
-      ],
-      success: true,
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Fri, 09 Apr 2021 14:46:32 GMT",
-      "Content-Type",
-      "application/json;charset=UTF-8",
-      "Content-Length",
-      "207",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/v1/leads.json", {
-    lookupField: "id",
-    action: "updateOnly",
-    input: [
-      {
-        email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "Maria",
         percent_field: "100%",
       },
@@ -4359,7 +4343,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "1384b#178b7194fdf",
+      requestId: "57ea#178b73b8c23",
       result: [
         {
           status: "skipped",
@@ -4378,11 +4362,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:32 GMT",
+      "Fri, 09 Apr 2021 15:23:56 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "177",
+      "176",
       "Connection",
       "close",
     ]
@@ -4393,16 +4377,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "1bd3#178b719527b",
+      requestId: "122fb#178b73b8d18",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -4423,11 +4407,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:34 GMT",
+      "Fri, 09 Apr 2021 15:23:56 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "323",
+      "324",
       "Connection",
       "close",
     ]
@@ -4436,15 +4420,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "brian3%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "11612#178b719596a", result: [], success: true }, [
+  .reply(200, { requestId: "8f79#178b73b8f29", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:35 GMT",
+    "Fri, 09 Apr 2021 15:23:57 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
-    "60",
+    "59",
     "Connection",
     "close",
   ]);
@@ -4461,14 +4445,14 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       access_token: "my-access-token",
       token_type: "bearer",
-      expires_in: 2674,
+      expires_in: 432,
       scope: "my-user@grouparoo.com",
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:35 GMT",
+      "Fri, 09 Apr 2021 15:23:57 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -4492,23 +4476,23 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "3bd9#178b7195b31",
+      requestId: "b1ec#178b73b9146",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Brian",
           lastName: "Test",
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:45:57Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:33Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -4517,7 +4501,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:35 GMT",
+      "Fri, 09 Apr 2021 15:23:57 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4533,13 +4517,13 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     input: [
       {
         email: "brian@bleonard.com",
-        id: 4983,
+        id: 4999,
         firstName: "Sam",
         lastName: "Test",
       },
       {
         email: "brian2@bleonard.com",
-        id: 4985,
+        id: 5001,
         firstName: "William",
         email_field: "bademail",
       },
@@ -4549,9 +4533,9 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "2661#178b7195dcd",
+      requestId: "129ab#178b73b92c4",
       result: [
-        { id: 4983, status: "updated" },
+        { id: 4999, status: "updated" },
         {
           status: "skipped",
           reasons: [
@@ -4569,11 +4553,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:37 GMT",
+      "Fri, 09 Apr 2021 15:23:59 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "209",
+      "210",
       "Connection",
       "close",
     ]
@@ -4594,15 +4578,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "14dab#178b7196329",
-      result: [{ id: 4986, status: "created" }],
+      requestId: "11eb5#178b73b9b96",
+      result: [{ id: 5002, status: "created" }],
       success: true,
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:38 GMT",
+      "Fri, 09 Apr 2021 15:24:02 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4617,16 +4601,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4983",
+    filterValues: "4999",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "f53b#178b71967e6",
+      requestId: "8389#178b73ba4c1",
       result: [
         {
-          id: 4983,
+          id: 4999,
           email: "brian@bleonard.com",
           firstName: "Sam",
           lastName: "Test",
@@ -4647,7 +4631,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:38 GMT",
+      "Fri, 09 Apr 2021 15:24:02 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4662,16 +4646,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4985",
+    filterValues: "5001",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "af9b#178b71968f4",
+      requestId: "944e#178b73ba5ae",
       result: [
         {
-          id: 4985,
+          id: 5001,
           email: "brian2@bleonard.com",
           firstName: "Maria",
           lastName: null,
@@ -4692,7 +4676,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:40 GMT",
+      "Fri, 09 Apr 2021 15:24:02 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4708,15 +4692,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "873f#178b7197162",
+      requestId: "bf00#178b73ba6f9",
       result: [
         {
-          id: 4986,
+          id: 5002,
           firstName: "Liz",
           lastName: null,
           email: "brian3@bleonard.com",
-          updatedAt: "2021-04-09T14:46:38Z",
-          createdAt: "2021-04-09T14:46:37Z",
+          updatedAt: "2021-04-09T15:24:02Z",
+          createdAt: "2021-04-09T15:24:01Z",
         },
       ],
       success: true,
@@ -4725,7 +4709,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:41 GMT",
+      "Fri, 09 Apr 2021 15:24:03 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4740,16 +4724,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     fields:
       "email%2CfirstName%2ClastName%2Cid%2Ctextarea_field%2Cboolean_field%2Cemail_field%2Cinteger_field%2Cfloat_field%2Cdatetime_field%2Cscore_field%2Cpercent_field%2Ccurrency_field",
     filterType: "id",
-    filterValues: "4986",
+    filterValues: "5002",
   })
   .once()
   .reply(
     200,
     {
-      requestId: "185ba#178b719725b",
+      requestId: "fad4#178b73ba7da",
       result: [
         {
-          id: 4986,
+          id: 5002,
           email: "brian3@bleonard.com",
           firstName: "Liz",
           lastName: null,
@@ -4770,11 +4754,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:41 GMT",
+      "Fri, 09 Apr 2021 15:24:05 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "339",
+      "338",
       "Connection",
       "close",
     ]
@@ -4786,15 +4770,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "9fe6#178b71974ee",
+      requestId: "998a#178b73bb123",
       result: [
         {
-          id: 4983,
+          id: 4999,
           firstName: "Sam",
           lastName: "Test",
           email: "brian@bleonard.com",
-          updatedAt: "2021-04-09T14:46:36Z",
-          createdAt: "2021-04-09T14:45:12Z",
+          updatedAt: "2021-04-09T15:23:58Z",
+          createdAt: "2021-04-09T15:22:42Z",
         },
       ],
       success: true,
@@ -4803,7 +4787,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:42 GMT",
+      "Fri, 09 Apr 2021 15:24:06 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4819,15 +4803,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "14eeb#178b719760c",
+      requestId: "9c34#178b73bb37e",
       result: [
         {
-          id: 4985,
+          id: 5001,
           firstName: "Maria",
           lastName: null,
           email: "brian2@bleonard.com",
-          updatedAt: "2021-04-09T14:46:06Z",
-          createdAt: "2021-04-09T14:46:03Z",
+          updatedAt: "2021-04-09T15:23:45Z",
+          createdAt: "2021-04-09T15:23:42Z",
         },
       ],
       success: true,
@@ -4836,11 +4820,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:42 GMT",
+      "Fri, 09 Apr 2021 15:24:07 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "207",
+      "206",
       "Connection",
       "close",
     ]
@@ -4852,15 +4836,15 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      requestId: "b3de#178b7197a8c",
+      requestId: "c66e#178b73bb942",
       result: [
         {
-          id: 4986,
+          id: 5002,
           firstName: "Liz",
           lastName: null,
           email: "brian3@bleonard.com",
-          updatedAt: "2021-04-09T14:46:38Z",
-          createdAt: "2021-04-09T14:46:37Z",
+          updatedAt: "2021-04-09T15:24:02Z",
+          createdAt: "2021-04-09T15:24:01Z",
         },
       ],
       success: true,
@@ -4869,7 +4853,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:43 GMT",
+      "Fri, 09 Apr 2021 15:24:08 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
@@ -4882,11 +4866,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .get("/rest/v1/leads.json")
   .query({ filterType: "email", filterValues: "other%40bleonard.com" })
   .once()
-  .reply(200, { requestId: "873e#178b7197b89", result: [], success: true }, [
+  .reply(200, { requestId: "aaaa#178b73bbb4c", result: [], success: true }, [
     "Server",
     "nginx",
     "Date",
-    "Fri, 09 Apr 2021 14:46:43 GMT",
+    "Fri, 09 Apr 2021 15:24:08 GMT",
     "Content-Type",
     "application/json;charset=UTF-8",
     "Content-Length",
@@ -4896,18 +4880,18 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   ]);
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
   .post("/rest/v1/leads.json", {
-    input: [{ id: 4983 }, { id: 4985 }, { id: 4986 }],
+    input: [{ id: 4999 }, { id: 5001 }, { id: 5002 }],
   })
   .query({ _method: "DELETE" })
   .once()
   .reply(
     200,
     {
-      requestId: "15e65#178b7197c73",
+      requestId: "bc51#178b73bbc3c",
       result: [
-        { id: 4983, status: "deleted" },
-        { id: 4985, status: "deleted" },
-        { id: 4986, status: "deleted" },
+        { id: 4999, status: "deleted" },
+        { id: 5001, status: "deleted" },
+        { id: 5002, status: "deleted" },
       ],
       success: true,
     },
@@ -4915,11 +4899,11 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:44 GMT",
+      "Fri, 09 Apr 2021 15:24:11 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Content-Length",
-      "152",
+      "151",
       "Connection",
       "close",
     ]
@@ -4933,16 +4917,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "a6a0#178b7197d84",
+      requestId: "11999#178b73bca12",
       warnings: [],
       result: [
         {
-          id: 1122,
+          id: 1130,
           name: "(test) High Value",
-          createdAt: "2021-04-09T14:45:25Z+0000",
-          updatedAt: "2021-04-09T14:45:25Z+0000",
+          createdAt: "2021-04-09T15:23:00Z+0000",
+          updatedAt: "2021-04-09T15:23:00Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab28.marketo.com/#ST1122A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1130A1",
           workspace: "Default",
         },
       ],
@@ -4951,7 +4935,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:44 GMT",
+      "Fri, 09 Apr 2021 15:24:12 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -4961,22 +4945,22 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/asset/v1/staticList/1122/delete.json")
+  .post("/rest/asset/v1/staticList/1130/delete.json")
   .once()
   .reply(
     200,
     {
       success: true,
       errors: [],
-      requestId: "127f8#178b7197e88",
+      requestId: "152c8#178b73bcaf3",
       warnings: [],
-      result: [{ id: 1122 }],
+      result: [{ id: 1130 }],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:44 GMT",
+      "Fri, 09 Apr 2021 15:24:12 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -4994,16 +4978,16 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     {
       success: true,
       errors: [],
-      requestId: "6b2f#178b7197fa6",
+      requestId: "c77f#178b73bcbed",
       warnings: [],
       result: [
         {
-          id: 1123,
+          id: 1131,
           name: "(test) Churned",
-          createdAt: "2021-04-09T14:45:32Z+0000",
-          updatedAt: "2021-04-09T14:45:32Z+0000",
+          createdAt: "2021-04-09T15:23:08Z+0000",
+          updatedAt: "2021-04-09T15:23:08Z+0000",
           folder: { id: 12, type: "Folder" },
-          computedUrl: "https://app-ab21.marketo.com/#ST1123A1",
+          computedUrl: "https://app-ab21.marketo.com/#ST1131A1",
           workspace: "Default",
         },
       ],
@@ -5012,7 +4996,7 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:44 GMT",
+      "Fri, 09 Apr 2021 15:24:12 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
@@ -5022,22 +5006,22 @@ nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://123-abc-456.mktorest.com:443", { encodedQueryParams: true })
-  .post("/rest/asset/v1/staticList/1123/delete.json")
+  .post("/rest/asset/v1/staticList/1131/delete.json")
   .once()
   .reply(
     200,
     {
       success: true,
       errors: [],
-      requestId: "dd90#178b7198082",
+      requestId: "6cf3#178b73bccba",
       warnings: [],
-      result: [{ id: 1123 }],
+      result: [{ id: 1131 }],
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Fri, 09 Apr 2021 14:46:45 GMT",
+      "Fri, 09 Apr 2021 15:24:12 GMT",
       "Content-Type",
       "application/json;charset=UTF-8",
       "Transfer-Encoding",
