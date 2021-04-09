@@ -19,6 +19,28 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       expect(found.length).toEqual(1);
     });
 
+    test("does not throw if the profile or property cannot be found", async () => {
+      const property = await Property.findOne();
+      const profile = await helper.factories.profile();
+
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileId: "missing",
+        propertyId: "missing",
+      });
+
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileId: profile.id,
+        propertyId: "missing",
+      });
+
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileId: "missing",
+        propertyId: property.id,
+      });
+
+      await profile.destroy();
+    });
+
     test("will import profile properties that have no dependencies", async () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({

@@ -27,6 +27,12 @@ describe("tasks/event:associateProfile", () => {
       expect(foundTasks.length).toEqual(1);
     });
 
+    test("does not throw if the event cannot be found", async () => {
+      await specHelper.runTask("event:associateProfile", {
+        eventId: "missing",
+      });
+    });
+
     test("it will create a new profile from provided event data", async () => {
       const event = await helper.factories.event({
         anonymousId: "abc123",

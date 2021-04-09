@@ -25,8 +25,7 @@ export class ProfileExport extends RetryableTask {
       where: { id: params.profileId },
     });
 
-    // the profile may have been deleted or merged by the time this task ran
-    if (!profile) return;
+    if (!profile) return; // the profile may have been deleted or merged by the time this task ran
     if (profile.state !== "ready") return;
 
     const imports = await Import.findAll({

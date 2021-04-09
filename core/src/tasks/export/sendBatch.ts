@@ -20,7 +20,10 @@ export class ExportSendBatches extends RetryableTask {
   async runWithinTransaction(params) {
     const destinationId: string = params.destinationId;
     const exportIds: string[] = params.exportIds;
-    const destination = await Destination.findById(params.destinationId);
+    const destination = await Destination.scope(null).findOne({
+      where: { id: destinationId },
+    });
+    if (!destination) return;
 
     const _exports = await Export.findAll({
       where: {
@@ -30,9 +33,7 @@ export class ExportSendBatches extends RetryableTask {
       },
     });
 
-    if (_exports.length === 0) {
-      return;
-    }
+    if (_exports.length === 0) return;
 
     const {
       success,
