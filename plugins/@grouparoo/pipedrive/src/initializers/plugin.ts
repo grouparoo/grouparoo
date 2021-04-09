@@ -24,6 +24,7 @@ export class Plugins extends Initializer {
 
   async initialize() {
     const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
 
     plugin.registerPlugin({
       name: packageJSON.name,
@@ -35,7 +36,8 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "pipedrive",
           [path.join(templateRoot, "destination", "*.template")],
-          syncModes
+          syncModes,
+          defaultSyncMode
         ),
       ],
       apps: [
@@ -59,7 +61,7 @@ export class Plugins extends Initializer {
           description: "Export profiles to Pipedrive as Person contacts",
           app: "pipedrive",
           syncModes,
-          defaultSyncMode: "sync",
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
