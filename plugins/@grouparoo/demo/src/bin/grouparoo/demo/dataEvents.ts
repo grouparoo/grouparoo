@@ -8,9 +8,9 @@ import Connection from "../../../postgres/connection";
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "demo-data-purchases";
+    this.name = "demo-data-events";
     this.description =
-      "Load eCommerce users and purchases into a source database and create properties.";
+      "Load eCommerce users and purchases into a source database and create properties including events.";
     this.inputs = {
       scale: { required: false, default: "1" },
     };
@@ -24,7 +24,8 @@ export class Console extends CLI {
     await init({ reset: true });
     await users(db, { scale });
     await purchases(db, { scale });
-    await loadConfigFiles(db, ["shared", "setup", "purchases"]);
+    await events({ scale });
+    await loadConfigFiles(db, ["setup", "shared", "purchases", "events"]);
     await finalize();
     return true;
   }
