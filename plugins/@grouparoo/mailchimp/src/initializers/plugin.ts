@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
@@ -10,13 +10,13 @@ import emailDestination from "../lib/export/connection";
 import idDestination from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
 
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import {
   MailchimpAppTemplate,
   MailchimpSourceTemplate,
   MailchimpPropertyTemplate,
-  MailchimpEmailDestinationTemplate,
-  MailchimpIdDestinationTemplate,
 } from "../lib/templates";
+import { DestinationTemplate } from "../../../app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -34,8 +34,16 @@ export class Plugins extends Initializer {
         MailchimpAppTemplate,
         MailchimpSourceTemplate,
         MailchimpPropertyTemplate,
-        MailchimpEmailDestinationTemplate,
-        MailchimpIdDestinationTemplate,
+        new DestinationTemplate(
+          "mailchimp:email",
+          [path.join(templateRoot, "destination", "email", "*.template")],
+          ["sync", "additive", "enrich"]
+        ),
+        new DestinationTemplate(
+          "mailchimp:id",
+          [path.join(templateRoot, "destination", "id", "*.template")],
+          ["enrich"]
+        ),
       ],
       apps: [
         {
