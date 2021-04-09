@@ -37,7 +37,7 @@ export class EventAssociateProfile extends Task {
     try {
       await CLS.wrap(
         async () => {
-          event = await Event.findOne({ where: { id: eventId } });
+          event = await Event.scope(null).findOne({ where: { id: eventId } });
           if (!event) return;
 
           const app = await App.findOne({ where: { type: "events" } });
