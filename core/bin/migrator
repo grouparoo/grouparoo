@@ -14,6 +14,8 @@ const direction = args[0];
 const migrationName = args[1];
 
 if (!direction) completeProcess(`direction is required (up or down)`);
+if (!["up", "down"].includes(direction))
+  completeProcess(`invalid direction ${direction}`);
 if (direction === "down" && !migrationName)
   completeProcess(`migrationName is required`);
 
@@ -61,10 +63,6 @@ async function main() {
     await upOne(uzmugs);
   } else if (args[0] === "down") {
     await downOne(uzmugs);
-  } else {
-    completeProcess(
-      "No arg provided or unknown arg - try `./bin/migrator up {migrationName}`"
-    );
   }
 }
 
