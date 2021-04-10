@@ -17,7 +17,6 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 export const sendProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
-  destinationOptions,
   export: {
     toDelete,
     newProfileProperties,
@@ -29,6 +28,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
+
   const client = await connect(appOptions);
   const email = newProfileProperties["email"]; // this is how we will identify profiles
   const currentEmail = oldProfileProperties["email"];
@@ -116,12 +116,4 @@ function formatVar(value) {
   } else {
     return value;
   }
-}
-
-async function getUser(client, email): Promise<any> {
-  const userResponse = await client.users.get({ email });
-  if ("user" in userResponse) {
-    return userResponse.user;
-  }
-  return null;
 }
