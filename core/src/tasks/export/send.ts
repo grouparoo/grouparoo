@@ -38,6 +38,8 @@ export class ExportSend extends Task {
       response = await destination.sendExport(_export);
     });
 
+    if (!response) return; // we exited early
+
     if (!response.success) {
       if (response.retryDelay) {
         return CLS.enqueueTaskIn(

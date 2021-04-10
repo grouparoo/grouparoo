@@ -47,6 +47,8 @@ export class ExportSendBatches extends Task {
       response = await destination.sendExports(_exports);
     });
 
+    if (!response) return; // we exited early
+
     if (!response.success) {
       if (response.retryexportIds.length === _exports.length) {
         // all failed!
