@@ -1,0 +1,121 @@
+#!node_modules/.bin/ts-node-script
+
+/**
+ * Run me as if I were a bash program eg: `./bin/migrator up [name]` or `./bin/migrator down <name>}`
+ * I need to be run from the working directory of `grouparoo/core` (not within bin), as I'm using a relative shebang for ts_node
+ */
+
+const path = require("path");
+const { Sequelize } = require("sequelize-typescript");
+const { Umzug, SequelizeStorage } = require("umzug");
+
+const args = process.argv.slice(2);
+const direction = args[0];
+const migrationName = args[1];
+
+if (!direction) completeProcess(`direction is required (up or down)`);
+if (!["up", "down"].includes(direction))
+  completeProcess(`invalid direction ${direction}`);
+if (direction === "down" && !migrationName)
+  completeProcess(`migrationName is required`);
+
+async function main() {
+  const env = process.env.NODE_ENV || "development";
+  const configFile = path.resolve(
+    __dirname,
+    "..",
+    "src",
+    "config",
+    "sequelize.ts"
+  );
+  const CONFIG = Object.assign({}, require(configFile)[env], {
+    autoMigrate: false,
+    logging: logSequelizeQuery,
+    retry: undefined,
+  });
+
+  const sequelize = new Sequelize(CONFIG);
+
+  const uzmugs = [];
+
+  // learn more about configuring umzug @ https://github.com/actionhero/ah-sequelize-plugin/blob/master/src/initializers/sequelize.ts
+  CONFIG.migrations.forEach((dir) => {
+    const umzug = new Umzug({
+      storage: new SequelizeStorage({ sequelize: sequelize }),
+      migrations: {
+        params: [sequelize.getQueryInterface(), sequelize.constructor],
+        path: dir,
+        pattern: /(\.js|\w{3,}\.ts)$/,
+        nameFormatter: (filename) => path.parse(filename).name,
+      },
+      logging: console.log,
+    });
+
+    umzug.on("migrating", logUmzugEvent("migrating"));
+    umzug.on("migrated", logUmzugEvent("migrated"));
+    umzug.on("reverting", logUmzugEvent("reverting"));
+    umzug.on("reverted", logUmzugEvent("reverted"));
+
+    uzmugs.push(umzug);
+  });
+
+  if (args[0] === "up") {
+    await upOne(uzmugs);
+  } else if (args[0] === "down") {
+    await downOne(uzmugs);
+  }
+}
+
+async function upOne(umzugs) {
+  for (const umzug of umzugs) {
+    const pendingMigrations = await umzug.pending();
+    if (pendingMigrations.length === 0) continue;
+    await umzug.up(pendingMigrations[0].file);
+    break;
+  }
+  completeProcess();
+}
+
+async function downOne(umzugs) {
+  let found = false;
+  for (const umzug of umzugs) {
+    try {
+      await umzug.down(migrationName);
+      found = true;
+      break;
+    } catch (error) {
+      if (error.message.match(/Unable to find migration/)) {
+        // it's OK
+      } else throw error;
+    }
+  }
+
+  completeProcess(
+    found
+      ? null
+      : `could not find migration \`${migrationName}\` in the migration directories`
+  );
+}
+
+function completeProcess(failureReason) {
+  let exitCode = 0;
+  if (failureReason) exitCode = 1;
+
+  !failureReason
+    ? console.log("✅ Done")
+    : console.error(`❌ ${failureReason || "Something went wrong"}`);
+  process.nextTick(() => process.exit(exitCode));
+}
+
+function logUmzugEvent(eventName) {
+  return function (name, migration) {
+    console.log(`${name} ${eventName}`);
+  };
+}
+
+function logSequelizeQuery(string) {
+  if (string.includes("SequelizeMeta")) return; // skip all the boilerplate storage logs
+  console.log(string);
+}
+
+main();
