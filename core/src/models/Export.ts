@@ -153,9 +153,7 @@ export class Export extends Model {
 
   async setError(error: Error) {
     this.errorMessage = error.message || error.toString();
-    if (error["errorLevel"]) {
-      this.errorLevel = error["errorLevel"];
-    }
+    if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
     await this.save();
   }
 
