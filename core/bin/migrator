@@ -1,7 +1,7 @@
 #!node_modules/.bin/ts-node-script
 
 /**
- * Run me as if I were a bash program eg: `./bin/migrator up`
+ * Run me as if I were a bash program eg: `./bin/migrator up [name]` or `./bin/migrator down <name>}`
  * I need to be run from the working directory of `grouparoo/core` (not within bin), as I'm using a relative shebang for ts_node
  */
 
@@ -10,9 +10,14 @@ const { Sequelize } = require("sequelize-typescript");
 const { Umzug, SequelizeStorage } = require("umzug");
 
 const args = process.argv.slice(2);
+const direction = args[0];
+const migrationName = args[1];
+
+if (!direction) completeProcess(`direction is required (up or down)`);
+if (direction === "down" && !migrationName)
+  completeProcess(`migrationName is required`);
 
 async function main() {
-  let exitCode = 0;
   const env = process.env.NODE_ENV || "development";
   const configFile = path.resolve(
     __dirname,
@@ -29,50 +34,78 @@ async function main() {
 
   const sequelize = new Sequelize(CONFIG);
 
+  const uzmugs = [];
+
   // learn more about configuring umzug @ https://github.com/actionhero/ah-sequelize-plugin/blob/master/src/initializers/sequelize.ts
-  const umzug = new Umzug({
-    storage: new SequelizeStorage({ sequelize: sequelize }),
-    migrations: {
-      params: [sequelize.getQueryInterface(), sequelize.constructor],
-      path: CONFIG.migrations[0],
-      pattern: /(\.js|\w{3,}\.ts)$/,
-      nameFormatter: (filename) => path.parse(filename).name,
-    },
-    logging: console.log,
+  CONFIG.migrations.forEach((dir) => {
+    const umzug = new Umzug({
+      storage: new SequelizeStorage({ sequelize: sequelize }),
+      migrations: {
+        params: [sequelize.getQueryInterface(), sequelize.constructor],
+        path: dir,
+        pattern: /(\.js|\w{3,}\.ts)$/,
+        nameFormatter: (filename) => path.parse(filename).name,
+      },
+      logging: console.log,
+    });
+
+    umzug.on("migrating", logUmzugEvent("migrating"));
+    umzug.on("migrated", logUmzugEvent("migrated"));
+    umzug.on("reverting", logUmzugEvent("reverting"));
+    umzug.on("reverted", logUmzugEvent("reverted"));
+
+    uzmugs.push(umzug);
   });
 
-  umzug.on("migrating", logUmzugEvent("migrating"));
-  umzug.on("migrated", logUmzugEvent("migrated"));
-  umzug.on("reverting", logUmzugEvent("reverting"));
-  umzug.on("reverted", logUmzugEvent("reverted"));
-
   if (args[0] === "up") {
-    await upOne(umzug);
+    await upOne(uzmugs);
   } else if (args[0] === "down") {
-    await downOne(umzug);
+    await downOne(uzmugs);
   } else {
-    console.error("No arg provided or unknown arg - try `./bin/migrator up`");
-    exitCode = 1;
+    completeProcess(
+      "No arg provided or unknown arg - try `./bin/migrator up {migrationName}`"
+    );
+  }
+}
+
+async function upOne(umzugs) {
+  for (const umzug of umzugs) {
+    const pendingMigrations = await umzug.pending();
+    if (pendingMigrations.length === 0) continue;
+    await umzug.up(pendingMigrations[0].file);
+    break;
+  }
+  completeProcess();
+}
+
+async function downOne(umzugs) {
+  let found = false;
+  for (const umzug of umzugs) {
+    try {
+      await umzug.down(migrationName);
+      found = true;
+      break;
+    } catch (error) {
+      if (error.message.match(/Unable to find migration/)) {
+        // it's OK
+      } else throw error;
+    }
   }
 
-  completeProcess(exitCode);
+  completeProcess(
+    found
+      ? null
+      : `could not find migration \`${migrationName}\` in the migration directories`
+  );
 }
 
-async function upOne(umzug) {
-  const pendingMigrations = await umzug.pending();
-  if (pendingMigrations.length === 0) return;
-  await umzug.up(pendingMigrations[0].file);
-}
+function completeProcess(failureReason) {
+  let exitCode = 0;
+  if (failureReason) exitCode = 1;
 
-async function downOne(umzug) {
-  // going down one migration is the deafaule
-  await umzug.down();
-}
-
-function completeProcess(exitCode) {
-  exitCode === 0
+  !failureReason
     ? console.log("✅ Done")
-    : console.error("❌ Something went wrong");
+    : console.error(`❌ ${failureReason || "Something went wrong"}`);
   process.nextTick(() => process.exit(exitCode));
 }
 
