@@ -7,9 +7,7 @@ import path from "path";
 
 const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
-const host = "https://telemetry.grouparoo.com";
 const route = "/api/v1/subscribers";
-const method = "POST";
 const source = `${packageJSON.name}`;
 const medium = "app";
 const campaign = `v${packageJSON.version}`;
@@ -31,8 +29,8 @@ export async function GrouparooSubscription(
     const customerId = setting.value;
 
     try {
-      const response = await fetch(`${host}${route}`, {
-        method,
+      const response = await fetch(`${config.telemetry.host}${route}`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: teamMember.email,
