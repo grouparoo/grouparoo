@@ -1,3 +1,5 @@
+import crypto from "crypto";
+
 export default {
   up: async function (migration) {
     await migration.sequelize.transaction(async () => {
@@ -45,7 +47,54 @@ export default {
   },
 
   down: async function (migration) {
-    // TODO: We could do better here by creating the options based on the destination's syncMode
-    throw new Error("irreversible migration");
+    await migration.sequelize.transaction(async () => {
+      // Get sync modes
+      const [destinations] = await migration.sequelize.query(
+        `SELECT "id", "syncMode" FROM "destinations" WHERE "type"='salesforce-objects-export' AND "syncMode" IS NOT NULL AND "locked" IS NULL`
+      );
+
+      // Add corresponding "syncMode" option for each destination
+      const newOptions = [];
+      for (const dest of destinations) {
+        let syncMode: string;
+        switch (dest.syncMode) {
+          case "sync":
+            syncMode = "Sync";
+            break;
+          case "enrich":
+            syncMode = "Enrich";
+            break;
+          case "additive":
+            syncMode = "Additive";
+            break;
+          default:
+            continue;
+        }
+
+        newOptions.push({
+          id: `opt_${crypto.randomBytes(16).toString("hex")}`,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          ownerId: dest.id,
+          ownerType: "destination",
+          key: "syncMode",
+          value: syncMode,
+          type: "string",
+        });
+      }
+
+      await migration.bulkInsert("options", newOptions);
+
+      // Remove syncMode from salesforce destinations
+      await migration.bulkUpdate(
+        "destinations",
+        {
+          syncMode: null,
+        },
+        {
+          id: destinations.map((d) => d.id),
+        }
+      );
+    });
   },
 };
