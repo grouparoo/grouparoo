@@ -1,6 +1,7 @@
 import { CLI } from "actionhero";
 import { writeConfigFiles } from "../../../util/configFiles";
 import Postgres from "../../../postgres/connection";
+import Mongo from "../../../mongo/connection";
 
 export class Console extends CLI {
   constructor() {
@@ -26,9 +27,17 @@ export class Console extends CLI {
 export function getConfig(type): { db: any; subDirs: string[] } {
   switch (type) {
     case "purchases":
-      return { db: new Postgres(), subDirs: ["shared", "purchases"] };
+      return {
+        db: new Postgres(),
+        subDirs: ["shared", "purchases", "identity"],
+      };
     case "events":
-      return { db: new Postgres(), subDirs: ["shared", "purchases", "events"] };
+      return {
+        db: new Postgres(),
+        subDirs: ["shared", "purchases", "identity", "events"],
+      };
+    case "mongo":
+      return { db: new Mongo(), subDirs: ["shared", "mongo", "identity"] };
     case "setup":
       return { db: null, subDirs: ["setup"] };
     default:

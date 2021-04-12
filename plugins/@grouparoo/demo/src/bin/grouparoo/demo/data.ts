@@ -31,7 +31,7 @@ export class Console extends CLI {
 
     await init({ reset: true });
 
-    if (["events", "purchases"].includes(type)) {
+    if (["events", "mongo", "purchases"].includes(type)) {
       await users(db, { scale });
       await purchases(db, { scale });
     }

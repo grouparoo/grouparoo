@@ -150,7 +150,6 @@ export default class Postgres extends Connection {
     const insertQuery = `INSERT INTO ${sqlTable} (${columnNames}) VALUES (${variables})`;
 
     const values: Array<any> = keys.map((key) => getValue(row, key));
-    console.log(values.join(", "));
     await this.query(2, insertQuery, values);
   }
 

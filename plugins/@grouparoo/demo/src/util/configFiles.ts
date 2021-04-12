@@ -37,12 +37,8 @@ async function generateConfig(db: Connection, configDir, subDirs: string[]) {
 
   for (const subDir of subDirs) {
     copyDir(configDir, subDir);
-    switch (subDir) {
-      case "purchases":
-        updatePurchases(db, configDir);
-        break;
-    }
   }
+  updateDatabase(db, configDir);
 }
 
 function deleteDir(configDir) {
@@ -59,7 +55,10 @@ function copyDir(configDir, subDir: string) {
   fs.copySync(dirPath, configDir);
 }
 
-function updatePurchases(db: Connection, configDir) {
+function updateDatabase(db: Connection, configDir) {
+  if (!db) {
+    return;
+  }
   const appPath = path.join(configDir, "apps", "demo_db.json");
   const appOptions = db.getAppOptions();
   const contents = fs.readJSONSync(appPath);
