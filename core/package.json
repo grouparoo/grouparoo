@@ -52,7 +52,7 @@
     "faker": "5.5.2",
     "fs-extra": "9.1.0",
     "glob": "7.1.6",
-    "ioredis": "4.25.0",
+    "ioredis": "4.26.0",
     "ioredis-mock": "5.4.1",
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
