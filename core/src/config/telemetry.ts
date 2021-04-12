@@ -7,9 +7,9 @@ export const DEFAULT = {
         ) || process.env.NODE_ENV === "test"
           ? false
           : true,
-      url:
+      host:
         process.env.GROUPAROO_TELEMETRY_URL ||
-        "https://telemetry.grouparoo.com/api/v1/telemetry",
+        "https://telemetry.grouparoo.com",
     };
   },
 };

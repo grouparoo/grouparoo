@@ -1,10 +1,10 @@
+import "isomorphic-fetch";
 import { TeamMember } from "../models/TeamMember";
 import { CLS } from "../modules/cls";
 import { plugin } from "../modules/plugin";
-import { log } from "actionhero";
+import { config, log } from "actionhero";
 import path from "path";
 
-require("isomorphic-fetch"); // I need to be required vs imported to avoid TS conflicts with the @grouparoo/ui-* package which has its own fetch polyfill
 const packageJSON = require(path.join(__dirname, "..", "..", "package.json"));
 
 const host = "https://telemetry.grouparoo.com";
@@ -21,9 +21,10 @@ const campaign = `v${packageJSON.version}`;
  */
 export async function GrouparooSubscription(
   teamMember: TeamMember,
-  subscribe = true
+  subscribed = true
 ) {
   if (process.env.NODE_ENV === "test") return;
+  if (!config.telemetry.enabled) return;
 
   CLS.afterCommit(async () => {
     const setting = await plugin.readSetting("telemetry", "customer-id");
@@ -41,7 +42,7 @@ export async function GrouparooSubscription(
           medium,
           campaign,
           customerId,
-          subscribe,
+          subscribed,
         }),
       }).then((r) => r.json());
 

@@ -19,7 +19,7 @@ export class TeamInitialize extends CLSAction {
       password: { required: true },
       email: { required: true },
       companyName: { required: false },
-      subscribe: { required: false, default: true },
+      subscribed: { required: false, default: true },
     };
   }
 
@@ -47,7 +47,7 @@ export class TeamInitialize extends CLSAction {
 
     await teamMember.updatePassword(params.password);
 
-    await GrouparooSubscription(teamMember, params.subscribe);
+    await GrouparooSubscription(teamMember, params.subscribed);
 
     if (params.companyName) {
       const clusterNameSetting = await Setting.findOne({

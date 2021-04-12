@@ -129,7 +129,7 @@ export default function Page(props) {
         <Form.Group>
           <Form.Check
             type="checkbox"
-            name="subscribe"
+            name="subscribed"
             label={`Subscribe to the Grouparoo Newsletter`}
             defaultChecked
             ref={register}
