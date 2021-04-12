@@ -19,7 +19,10 @@ const campaign = `v${packageJSON.version}`;
  * We also want to allow for this method to fail, and not block anything else in the server.
  * Therefore, we don't await the top-level CLS.afterCommit method
  */
-export async function GrouparooSubscription(teamMember: TeamMember) {
+export async function GrouparooSubscription(
+  teamMember: TeamMember,
+  subscribe = true
+) {
   if (process.env.NODE_ENV === "test") return;
 
   CLS.afterCommit(async () => {
@@ -38,6 +41,7 @@ export async function GrouparooSubscription(teamMember: TeamMember) {
           medium,
           campaign,
           customerId,
+          subscribe,
         }),
       }).then((r) => r.json());
 

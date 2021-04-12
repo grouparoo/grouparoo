@@ -47,9 +47,7 @@ export class TeamInitialize extends CLSAction {
 
     await teamMember.updatePassword(params.password);
 
-    if (params.subscribe) {
-      await GrouparooSubscription(teamMember);
-    }
+    await GrouparooSubscription(teamMember, params.subscribe);
 
     if (params.companyName) {
       const clusterNameSetting = await Setting.findOne({
