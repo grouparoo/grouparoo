@@ -4,10 +4,11 @@ import { plugin } from "../../modules/plugin";
 import path from "path";
 import os from "os";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { Telemetry } from "../../modules/telemetry";
 
 const telemetryPath = "/api/v1/telemetry";
 
-export class Telemetry extends CLSTask {
+export class TelemetryTask extends CLSTask {
   constructor() {
     super();
     this.name = "telemetry";
@@ -18,10 +19,10 @@ export class Telemetry extends CLSTask {
 
   async runWithinTransaction() {
     if (!config.telemetry.enabled) return;
-    const fullUrl = `${config.telemetry.url}${telemetryPath}`;
+    const fullUrl = `${config.telemetry.host}${telemetryPath}`;
 
     try {
-      const payload = await api.telemetry.build();
+      const payload = await Telemetry.build();
 
       const response = await fetch(fullUrl, {
         method: "POST",
