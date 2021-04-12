@@ -4,6 +4,7 @@ enableFetchMocks();
 import { helper } from "@grouparoo/spec-helper";
 import { plugin, Log } from "../../../src";
 import { api, specHelper, config } from "actionhero";
+import { Telemetry } from "../../../src/modules/telemetry";
 
 describe("tasks/telemetry", () => {
   helper.grouparooTestServer({
@@ -26,7 +27,7 @@ describe("tasks/telemetry", () => {
     });
 
     test("the telemetry object can be built", async () => {
-      const { name, id, license, metrics } = await api.telemetry.build();
+      const { name, id, license, metrics } = await Telemetry.build();
       expect(name).toBe("My Grouparoo Cluster");
       expect(id).toMatch(/^tcs_/);
       expect(license).toBe("");
@@ -106,12 +107,12 @@ describe("tasks/telemetry", () => {
 
       beforeAll(() => {
         config.telemetry.enabled = true;
-        originalImplementation = api.telemetry.build;
+        originalImplementation = Telemetry.build;
       });
 
       afterAll(() => {
         config.telemetry.enabled = false;
-        api.telemetry.build = originalImplementation;
+        Telemetry.build = originalImplementation;
       });
 
       test("we will try to send errors about telemetry to the telemetry server", async () => {
@@ -119,7 +120,7 @@ describe("tasks/telemetry", () => {
         mockTelemetry.mockImplementation(() => {
           throw new Error("OH NO");
         });
-        api.telemetry.build = mockTelemetry;
+        Telemetry.build = mockTelemetry;
 
         await expect(specHelper.runTask("telemetry", {})).rejects.toThrow(
           /OH NO/
