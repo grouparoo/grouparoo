@@ -6,6 +6,7 @@
  */
 
 const path = require("path");
+const fs = require("fs");
 const { Sequelize } = require("sequelize-typescript");
 const { Umzug, SequelizeStorage } = require("umzug");
 
@@ -14,6 +15,20 @@ const direction = args[0];
 const migrationName = args[1];
 
 function validateInputs() {
+  if (!process.env.INIT_CWD) process.env.INIT_CWD = process.env.PWD;
+  const relativeCorePath = path.join(
+    process.env.INIT_CWD,
+    "node_modules",
+    "@grouparoo",
+    "core"
+  );
+  if (fs.existsSync(relativeCorePath)) {
+    console.info(`running migrator in ${process.env.INIT_CWD}\r\n`);
+    process.chdir(relativeCorePath);
+  } else {
+    console.info(`running migrator in core\r\n`);
+  }
+
   if (!direction) return completeProcess(`direction is required (up or down)`);
   if (!["up", "down"].includes(direction))
     return completeProcess(`invalid direction ${direction}`);
