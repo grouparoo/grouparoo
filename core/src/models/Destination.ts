@@ -320,9 +320,6 @@ export class Destination extends LoggedModel<Destination> {
     } else if (supportedModes.length === 1) {
       // If destination only supports one sync mode, use it
       return supportedModes[0];
-    } else if (supportedModes.length === 0) {
-      // If destination does not support sync modes, let it create, update, and delete
-      return "sync";
     }
 
     return null;

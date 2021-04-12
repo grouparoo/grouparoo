@@ -1,6 +1,7 @@
 import {
   Destination,
   DestinationSyncModeData,
+  DestinationSyncOperations,
   SimpleDestinationOptions,
 } from "../../models/Destination";
 import { Profile } from "../../models/Profile";
@@ -533,7 +534,9 @@ export namespace DestinationOps {
     );
 
     const syncMode = await destination.getSyncMode();
-    const syncOperations = DestinationSyncModeData[syncMode].operations;
+    const syncOperations: DestinationSyncOperations = syncMode
+      ? DestinationSyncModeData[syncMode].operations
+      : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
 
     const options = await destination.getOptions();
     const app = await destination.$get("app");
