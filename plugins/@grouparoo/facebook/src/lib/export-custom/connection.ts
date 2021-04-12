@@ -2,8 +2,9 @@ import { exportProfiles } from "./exportProfiles";
 import { destinationOptions } from "./destinationOptions";
 import { destinationMappingOptions } from "./destinationMappingOptions";
 import { exportArrayProperties } from "./exportArrayProperties";
-import { PluginConnection } from "@grouparoo/core";
-import { supportedSyncModes } from "../../initializers/plugin";
+import { DestinationSyncMode, PluginConnection } from "@grouparoo/core";
+
+export const supportedSyncModes: DestinationSyncMode[] = ["sync", "additive"];
 
 export function buildConnection(): PluginConnection {
   return {

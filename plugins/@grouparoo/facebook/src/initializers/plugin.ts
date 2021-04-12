@@ -1,10 +1,13 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { DestinationSyncMode, plugin } from "@grouparoo/core";
+import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
 
-import { buildConnection as buildCustomConnection } from "../lib/export-custom/connection";
+import {
+  buildConnection as buildCustomConnection,
+  supportedSyncModes,
+} from "../lib/export-custom/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -12,7 +15,6 @@ const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
-export const supportedSyncModes: DestinationSyncMode[] = ["sync", "additive"];
 export class Plugins extends Initializer {
   constructor() {
     super();
