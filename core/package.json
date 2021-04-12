@@ -47,7 +47,7 @@
     "colors": "1.4.0",
     "compare-versions": "3.6.0",
     "csv-stringify": "5.6.2",
-    "date-fns": "2.19.0",
+    "date-fns": "2.20.1",
     "dotenv": "8.2.0",
     "faker": "5.5.2",
     "fs-extra": "9.1.0",
