@@ -1,8 +1,6 @@
-import { GroupSyncModeData } from "@grouparoo/app-templates/dist/destination/group";
 import {
   DestinationMappingOptionsResponseTypes,
   DestinationOptionsMethodResponse,
-  SimpleDestinationOptions,
 } from "@grouparoo/core";
 import { log } from "actionhero";
 import { FacebookModel, AudienceSubtype } from "./model";
@@ -118,9 +116,7 @@ export const getFieldList = (
 ): DestinationOptionsMethodResponse => {
   const out: DestinationOptionsMethodResponse = {};
   Object.assign(out, getPrimaryKeys(audienceType));
-  if (audienceType === "CUSTOM") {
-    Object.assign(out, getSyncModes());
-  }
+
   return out;
 };
 
@@ -139,19 +135,6 @@ function getPrimaryKeys(audienceType: AudienceSubtype) {
     }
     out.primaryKey.options.push(key);
     out.primaryKey.descriptions.push(obj.name);
-  }
-
-  return out;
-}
-
-function getSyncModes() {
-  const out: DestinationOptionsMethodResponse = {
-    syncMode: { type: "list", options: [], descriptions: [] },
-  };
-
-  for (const mode in GroupSyncModeData) {
-    out.syncMode.options.push(mode);
-    out.syncMode.descriptions.push(GroupSyncModeData[mode].description);
   }
 
   return out;

@@ -6,11 +6,11 @@ exports.default = async function buildConfig() {
       class: "destination",
       type: "{{{__pluginName}}}-export",
       appId: {{{appId}}}, // The ID of the App this Destination uses - e.g. `appId: "facebookApp"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo updateFacebook audiences? Options: "sync", "additive"
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
 
       options: {
         primaryKey: 'userId', // Which field should uniquely identify Facebook users?
-        syncMode: 'Sync', // How should Grouparoo update Facebook audiences? Users can often not be deleted from small audiences. Options: "Sync" and "Additive"
       },
 
       // Mappings are how you choose which properties to export to this destination.

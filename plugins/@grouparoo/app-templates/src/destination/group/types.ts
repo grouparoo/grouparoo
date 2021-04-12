@@ -5,27 +5,9 @@ import {
   Destination,
   SimpleDestinationOptions,
   ErrorWithProfileId,
+  DestinationSyncOperations,
 } from "@grouparoo/core";
 export { ExportedProfile } from "@grouparoo/core";
-
-export enum GroupSyncMode {
-  // these values actually used in destinationOptions settings
-  Sync = "Sync", // create, update, delete (default)
-  Additive = "Additive", // create or update (no delete)
-}
-
-export const GroupSyncModeData = {
-  [GroupSyncMode.Sync]: {
-    add: true,
-    remove: true,
-    description: "Sync all profiles (create, update, delete)",
-  },
-  [GroupSyncMode.Additive]: {
-    add: true,
-    remove: false,
-    description: "Sync all profiles, but do not delete (create, update)",
-  },
-};
 
 export enum GroupSizeMode {
   WithinGroup = "WithinGroup", // update group by group
@@ -38,7 +20,7 @@ export declare type GroupNameListMap = { [groupName: string]: GroupExport[] };
 export interface GroupConfig {
   batchSize: number; // max number to manipulate groups
   groupMode: GroupSizeMode;
-  syncMode: GroupSyncMode;
+  syncOperations: DestinationSyncOperations;
   foreignKey: string;
   connection?: any;
   app?: App;
