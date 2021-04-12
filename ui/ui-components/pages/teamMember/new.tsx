@@ -130,7 +130,7 @@ export default function Page(props) {
           <Form.Check
             type="checkbox"
             name="subscribe"
-            label={`Subscribe to the Grouparoo Newsletter and related updates`}
+            label={`Subscribe to the Grouparoo Newsletter`}
             defaultChecked
             ref={register}
             disabled={loading}
