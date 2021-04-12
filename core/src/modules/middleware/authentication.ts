@@ -1,4 +1,5 @@
 import { api, config, action, Connection, chatRoom } from "actionhero";
+import { CLS } from "../cls";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
@@ -27,11 +28,13 @@ export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   global: false,
   priority: 1000,
   preProcessor: async (data) => {
-    if (data.params.apiKey) {
-      return authenticateApiKey(data);
-    } else {
-      return authenticateTeamMember(data, false);
-    }
+    await CLS.wrap(async () => {
+      if (data.params.apiKey) {
+        return authenticateApiKey(data);
+      } else {
+        return authenticateTeamMember(data, false);
+      }
+    });
   },
 };
 
@@ -40,40 +43,42 @@ export const OptionallyAuthenticatedActionMiddleware: action.ActionMiddleware = 
   global: false,
   priority: 1000,
   preProcessor: async (data) => {
-    if (data.params.apiKey) {
-      return authenticateApiKey(data);
-    } else {
-      return authenticateTeamMember(data, true);
-    }
+    await CLS.wrap(async () => {
+      if (data.params.apiKey) {
+        return authenticateApiKey(data);
+      } else {
+        return authenticateTeamMember(data, true);
+      }
+    });
   },
 };
 
 export const ModelChatRoomMiddleware: chatRoom.ChatMiddleware = {
   name: "model chat room middleware",
   join: async (connection: Connection, room: string) => {
-    if (!room.match(/^model:/)) {
-      return;
-    }
+    await CLS.wrap(async () => {
+      if (!room.match(/^model:/)) return;
 
-    const topic = room.split(":")[1];
-    const mode = "read";
-    const session = await api.session.load(connection);
-    if (!session || !session.id) {
-      throw new AuthenticationError("Please log in to continue");
-    } else {
-      const teamMember = await TeamMember.findOne({
-        where: { id: session.teamMemberId },
-        include: [Team],
-      });
+      const topic = room.split(":")[1];
+      const mode = "read";
+      const session = await api.session.load(connection);
+      if (!session || !session.id) {
+        throw new AuthenticationError("Please log in to continue");
+      } else {
+        const teamMember = await TeamMember.findOne({
+          where: { id: session.teamMemberId },
+          include: [Team],
+        });
 
-      if (!teamMember) throw new AuthenticationError("Team member not found");
+        if (!teamMember) throw new AuthenticationError("Team member not found");
 
-      const team = await teamMember.$get("team");
-      const authorized = await team.authorizeAction(topic, "read");
-      if (!authorized) {
-        throw new AuthorizationError(mode, topic);
+        const team = await teamMember.$get("team");
+        const authorized = await team.authorizeAction(topic, "read");
+        if (!authorized) {
+          throw new AuthorizationError(mode, topic);
+        }
       }
-    }
+    });
   },
 };
 
