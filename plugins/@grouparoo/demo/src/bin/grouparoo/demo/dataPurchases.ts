@@ -17,7 +17,7 @@ export class Console extends CLI {
 
   async run({ params }) {
     const scale = parseInt(params.scale);
-    const { db, subDirs } = getConfig("events");
+    const { db, subDirs } = getConfig("purchases");
     if (scale > 1) log(`Using scale = ${params.scale}`);
 
     await init({ reset: true });
