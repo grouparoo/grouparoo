@@ -16,6 +16,8 @@ export async function writeConfigFiles(db: Connection, subDirs: string[]) {
 }
 
 export async function loadConfigFiles(db: Connection, subDirs: string[]) {
+  subDirs = [...new Set(subDirs)]; // unique
+
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
   await generateConfig(db, configDir, subDirs);
 
