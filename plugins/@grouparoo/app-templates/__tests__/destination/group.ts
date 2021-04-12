@@ -5,7 +5,6 @@ import { exportProfilesInGroups } from "../../src/destination/group/exportProfil
 import {
   GroupMethodAddToGroups,
   GroupSizeMode,
-  GroupSyncMode,
 } from "../../src/destination/group/types";
 
 const noOp = async () => {};
@@ -62,7 +61,7 @@ describe("app-templates/destination/group", () => {
       {
         batchSize,
         groupMode: GroupSizeMode.TotalMembers,
-        syncMode: GroupSyncMode.Sync,
+        syncOperations: { create: true, delete: true, update: true },
         foreignKey: "id",
       },
       {
@@ -96,7 +95,7 @@ describe("app-templates/destination/group", () => {
       {
         batchSize,
         groupMode: GroupSizeMode.TotalMembers,
-        syncMode: GroupSyncMode.Sync,
+        syncOperations: { create: true, delete: true, update: true },
         foreignKey: "id",
       },
       {
