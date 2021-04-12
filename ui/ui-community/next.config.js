@@ -21,6 +21,9 @@ module.exports = withSourceMaps({
   env: {
     GROUPAROO_UI_EDITION: "community",
   },
+  future: {
+    webpack5: true,
+  },
   webpack: (config, options) => {
     // There may be different version of these core packages in our dependency tree.  We need to pick only one version (our version).
     ["react", "react-dom", "next"].forEach((_package) => {
