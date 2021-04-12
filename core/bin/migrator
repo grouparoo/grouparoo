@@ -1,8 +1,8 @@
-#!node_modules/.bin/ts-node-script
+#!/usr/bin/env node
 
 /**
  * Run me as if I were a bash program eg: `./bin/migrator up [name]` or `./bin/migrator down <name>}`
- * I need to be run from the working directory of `grouparoo/core` (not within bin), as I'm using a relative shebang for ts_node
+ * I run the **compiled** migrations (eg: dist).  You may want to `npm run watch` for changes as you run me.
  */
 
 const path = require("path");
@@ -13,20 +13,24 @@ const args = process.argv.slice(2);
 const direction = args[0];
 const migrationName = args[1];
 
-if (!direction) completeProcess(`direction is required (up or down)`);
-if (!["up", "down"].includes(direction))
-  completeProcess(`invalid direction ${direction}`);
-if (direction === "down" && !migrationName)
-  completeProcess(`migrationName is required`);
+function validateInputs() {
+  if (!direction) return completeProcess(`direction is required (up or down)`);
+  if (!["up", "down"].includes(direction))
+    return completeProcess(`invalid direction ${direction}`);
+  if (direction === "down" && !migrationName)
+    return completeProcess(`migrationName is required`);
+}
 
 async function main() {
+  validateInputs();
+
   const env = process.env.NODE_ENV || "development";
   const configFile = path.resolve(
     __dirname,
     "..",
-    "src",
+    "dist",
     "config",
-    "sequelize.ts"
+    "sequelize.js"
   );
   const CONFIG = Object.assign({}, require(configFile)[env], {
     autoMigrate: false,
