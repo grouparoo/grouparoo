@@ -282,39 +282,39 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                 `source_${buildId(sourcePrefix)}`
               );
             });
+
+            properties.forEach((property) => {
+              const propertyPrefix = buildPrefix(property);
+
+              if (property.match(sourceMatcher)) {
+                test(`generate property ${property}`, async () => {
+                  const { exitCode, stderr } = await runCliCommand(
+                    `generate ${property} property_${buildId(
+                      propertyPrefix
+                    )} --parent source_${buildId(sourcePrefix)}`
+                  );
+                  expect(exitCode).toBe(0);
+                  expect(stderr).toBe("");
+                });
+              }
+            });
           }
+        });
 
-          properties.forEach((property) => {
-            const propertyPrefix = buildPrefix(property);
+        destinations.forEach((destination) => {
+          const destinationPrefix = buildPrefix(destination);
 
-            if (property.match(sourceMatcher)) {
-              test(`generate property ${property}`, async () => {
-                const { exitCode, stderr } = await runCliCommand(
-                  `generate ${property} property_${buildId(
-                    propertyPrefix
-                  )} --parent source_${buildId(sourcePrefix)}`
-                );
-                expect(exitCode).toBe(0);
-                expect(stderr).toBe("");
-              });
-            }
-          });
-
-          destinations.forEach((destination) => {
-            const destinationPrefix = buildPrefix(destination);
-
-            if (destination.match(appMatcher)) {
-              test(`generate destination ${destination}`, async () => {
-                const { exitCode, stderr } = await runCliCommand(
-                  `generate ${destination} destination_${buildId(
-                    destinationPrefix
-                  )} --parent app_${buildId(appPrefix)}`
-                );
-                expect(exitCode).toBe(0);
-                expect(stderr).toBe("");
-              });
-            }
-          });
+          if (destination.match(appMatcher)) {
+            test(`generate destination ${destination}`, async () => {
+              const { exitCode, stderr } = await runCliCommand(
+                `generate ${destination} destination_${buildId(
+                  destinationPrefix
+                )} --parent app_${buildId(appPrefix)}`
+              );
+              expect(exitCode).toBe(0);
+              expect(stderr).toBe("");
+            });
+          }
         });
       });
     });
@@ -332,7 +332,9 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
   }
 
   function buildPrefix(name: string) {
-    return `${name.split(":")[0]}`;
+    const parts = name.split(":");
+    parts.pop();
+    return parts.join(":");
   }
 
   function buildId(name: string) {

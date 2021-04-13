@@ -1,10 +1,13 @@
 import path from "path";
+import fs from "fs";
 import { CLISpecHelper } from "@grouparoo/spec-helper";
 
-const pluginName = "@grouparoo/google-sheets";
 const pluginPath = path.join(__dirname, "..", "..");
+const pluginName = JSON.parse(
+  fs.readFileSync(path.join(pluginPath, "package.json")).toString()
+).name;
 
-describe("google-sheets/CLI", () => {
+describe(`${pluginName} CLI`, () => {
   const {
     projectPath,
     runCliCommand,
