@@ -25,6 +25,8 @@ export class Plugins extends Initializer {
 
   async initialize() {
     const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/marketo/marketo.png",
@@ -35,7 +37,8 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "marketo",
           [path.join(templateRoot, "destination", "*.template")],
-          syncModes
+          syncModes,
+          defaultSyncMode
         ),
       ],
       apps: [
@@ -79,7 +82,7 @@ export class Plugins extends Initializer {
           description: "Export Profiles to a Marketo account.",
           app: "marketo",
           syncModes,
-          defaultSyncMode: "sync",
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfiles,
