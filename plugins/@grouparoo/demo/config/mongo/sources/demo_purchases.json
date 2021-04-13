@@ -2,7 +2,7 @@
   "id": "demo_purchases",
   "name": "Product Purchases",
   "class": "Source",
-  "type": "mongo-collection-import",
+  "type": "mongo-table-import",
   "appId": "demo_db",
   "options": {
     "table": "purchases"

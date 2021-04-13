@@ -3,7 +3,7 @@
     "id": "demo_users",
     "name": "Product Users",
     "class": "Source",
-    "type": "mongo-collection-import",
+    "type": "mongo-table-import",
     "appId": "demo_db",
     "options": {
       "table": "users"

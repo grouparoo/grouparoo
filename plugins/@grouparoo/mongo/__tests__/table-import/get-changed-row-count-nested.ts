@@ -38,7 +38,7 @@ describe("mongo/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mongo-collection-import",
+      type: "mongo-table-import",
     });
     await source.setOptions({
       table: locationsTableName,
