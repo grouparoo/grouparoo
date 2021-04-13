@@ -46,7 +46,7 @@ export class ImportAssociateProfile extends Task {
       );
     } catch (error) {
       if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
-      await _import.setError(error, this.name);
+      if (_import) await _import.setError(error, this.name);
     }
   }
 }

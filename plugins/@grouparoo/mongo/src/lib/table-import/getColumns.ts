@@ -10,26 +10,22 @@ import { getMostTrendingType, getFields } from "./util";
 export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
   tableName,
-  appOptions,
-  sourceOptions,
 }) => {
   const map: ColumnDefinitionMap = {};
-  if (sourceOptions) {
-    const fields = getFields(sourceOptions);
-    for (const field of fields) {
-      const name = String(field);
-      const { type, filterOperations } = await getTypeInfo(
-        connection,
-        tableName,
-        name
-      );
-      map[name] = {
-        name,
-        type,
-        filterOperations,
-        data: field,
-      };
-    }
+  const fields = await getFields(connection, tableName);
+  for (const field of fields) {
+    const name = String(field);
+    const { type, filterOperations } = await getTypeInfo(
+      connection,
+      tableName,
+      name
+    );
+    map[name] = {
+      name,
+      type,
+      filterOperations,
+      data: field,
+    };
   }
   return map;
 };
@@ -49,7 +45,9 @@ const getTypeInfo = async function (
     tableName,
     fieldName
   );
-
+  if (!fieldType) {
+    return { type, filterOperations: ops };
+  }
   switch (fieldType.toLowerCase()) {
     // https://docs.mongodb.com/manual/reference/operator/aggregation/type/
     // numeric

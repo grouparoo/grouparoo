@@ -6,18 +6,20 @@ import {
   loadConfigDirectory,
   getConfigDir,
 } from "@grouparoo/core/dist/modules/configLoaders";
-import { getAppOptions } from "./sample_data";
-import { prettier, log } from "./util/shared";
+import { prettier, log } from "./shared";
+import Connection from "./connection";
 
-export async function writeConfigFiles() {
+export async function writeConfigFiles(db: Connection, subDirs: string[]) {
   const configDir = getConfigDir();
-  await generateConfig(configDir);
+  await generateConfig(db, configDir, subDirs);
   await prettier(configDir);
 }
 
-export async function loadConfigFiles(subDir = null) {
+export async function loadConfigFiles(db: Connection, subDirs: string[]) {
+  subDirs = [...new Set(subDirs)]; // unique
+
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(configDir, subDir);
+  await generateConfig(db, configDir, subDirs);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -29,14 +31,14 @@ export async function loadConfigFiles(subDir = null) {
   await unlockAll();
 }
 
-async function generateConfig(configDir, subDir = null) {
+async function generateConfig(db: Connection, configDir, subDirs: string[]) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
 
-  copyDir(configDir, subDir);
-  if (!subDir || subDir === "purchases") {
-    updatePurchases(configDir);
+  for (const subDir of subDirs) {
+    copyDir(configDir, subDir);
   }
+  updateDatabase(db, configDir);
 }
 
 function deleteDir(configDir) {
@@ -45,22 +47,22 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, subDir = null) {
-  let dirPath = path.resolve(path.join(__dirname, "..", "config"));
-  if (subDir) {
-    dirPath = path.join(dirPath, subDir);
-    configDir = path.join(configDir, subDir);
-  }
+function copyDir(configDir, subDir: string) {
+  let dirPath = path.resolve(
+    path.join(__dirname, "..", "..", "config", subDir)
+  );
   fs.mkdirpSync(configDir);
   fs.copySync(dirPath, configDir);
 }
 
-function updatePurchases(configDir) {
-  const purchasesDir = path.join(configDir, "purchases");
-  const appPath = path.join(purchasesDir, "app.json");
-  const appOptions = getAppOptions();
+function updateDatabase(db: Connection, configDir) {
+  if (!db) {
+    return;
+  }
+  const appPath = path.join(configDir, "apps", "demo_db.json");
+  const appOptions = db.getAppOptions();
   const contents = fs.readJSONSync(appPath);
-  const app = contents.find((j) => j.class === "App");
+  const app = contents;
   app.options = appOptions;
   const out = JSON.stringify(contents);
   fs.writeFileSync(appPath, out);
@@ -78,7 +80,7 @@ async function unlockAll() {
     if (attributes.locked) {
       log(3, `Unlocking ${name}`);
       await Model.scope(null).update(
-        { locked: false },
+        { locked: null },
         {
           where: { locked: "config:code" },
           hooks: false,

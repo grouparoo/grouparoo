@@ -79,15 +79,13 @@ describe("mongo/table/profiles", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mongo-collection-import",
+      type: "mongo-table-import",
     });
 
     sourceMapping = { id: "userId" };
 
     await source.setOptions({
       table: usersTableName,
-      fields:
-        "id,email,first_name,last_name,gender,vip,android_app,ltv,date,stamp",
     });
     await source.setMapping(sourceMapping);
     await source.update({ state: "ready" });

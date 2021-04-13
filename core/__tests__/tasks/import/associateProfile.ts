@@ -17,6 +17,12 @@ describe("tasks/import:associateProfile", () => {
       expect(found[0].timestamp).toBeNull();
     });
 
+    test("does not throw if the import cannot be found", async () => {
+      await specHelper.runTask("import:associateProfile", {
+        importId: "missing",
+      });
+    });
+
     test("it will create a new profile from provided import data and update the run if present", async () => {
       const run = await helper.factories.run();
 

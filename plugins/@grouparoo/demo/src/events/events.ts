@@ -1,5 +1,5 @@
-import { MockSession, getApiKey } from "./util/MockSession";
-import { getPurchaseCategories, getPurchases } from "./sample_data";
+import { MockSession, getApiKey } from "../util/MockSession";
+import { getPurchaseCategories, getPurchases } from "./db";
 
 interface DataOptions {
   scale?: number;

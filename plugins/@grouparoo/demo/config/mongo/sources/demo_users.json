@@ -1,0 +1,34 @@
+[
+  {
+    "id": "demo_users",
+    "name": "Product Users",
+    "class": "Source",
+    "type": "mongo-table-import",
+    "appId": "demo_db",
+    "options": {
+      "table": "users"
+    },
+    "mapping": {
+      "id": "user_id"
+    },
+    "bootstrappedProperty": {
+      "name": "userId",
+      "type": "integer",
+      "id": "user_id",
+      "options": {
+        "column": "id"
+      }
+    }
+  },
+  {
+    "id": "demo_users_schedule",
+    "name": "Users Schedule",
+    "class": "Schedule",
+    "sourceId": "demo_users",
+    "recurring": true,
+    "recurringFrequency": 900000,
+    "options": {
+      "column": "updated_at"
+    }
+  }
+]

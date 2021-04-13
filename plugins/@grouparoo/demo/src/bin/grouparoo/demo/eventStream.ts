@@ -1,7 +1,7 @@
-import { log, CLI, config, api } from "actionhero";
+import { log, CLI, config } from "actionhero";
 import { MockSession, getApiKey } from "../../../util/MockSession";
-import { getPurchaseCategories } from "../../../sample_data";
-import { ApiKey, Property, App } from "@grouparoo/core";
+import { getPurchaseCategories } from "../../../events/db";
+import { ApiKey, App } from "@grouparoo/core";
 
 const sleep = 100;
 const parallelSessions = 1;

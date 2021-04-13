@@ -1,0 +1,15 @@
+{
+  "id": "deactivated",
+  "name": "Deactivated",
+  "class": "Property",
+  "type": "boolean",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_users",
+  "options": {
+    "column": "deactivated",
+    "aggregationMethod": "exact",
+    "sortColumn": null
+  },
+  "filters": []
+}

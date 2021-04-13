@@ -147,8 +147,8 @@ export default function TeamInitializePage(props) {
             <Form.Group>
               <Form.Check
                 type="checkbox"
-                name="subscribe"
-                label={`Subscribe to the Grouparoo Newsletter and related updates`}
+                name="subscribed"
+                label={`Subscribe to the Grouparoo Newsletter`}
                 disabled={loading}
                 defaultChecked
                 ref={register}

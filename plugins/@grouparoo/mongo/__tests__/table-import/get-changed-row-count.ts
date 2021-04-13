@@ -38,12 +38,10 @@ describe("mongo/table/scheduleOptions", () => {
 
     source = await helper.factories.source(app, {
       name: "Importer",
-      type: "mongo-collection-import",
+      type: "mongo-table-import",
     });
     await source.setOptions({
       table: usersTableName,
-      fields:
-        "id,email,first_name,last_name,gender,vip,android_app,ltv,date,stamp",
     });
     await source.setMapping({ id: "userId" });
     await source.update({ state: "ready" });

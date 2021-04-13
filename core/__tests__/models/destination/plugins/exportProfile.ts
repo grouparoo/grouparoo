@@ -709,7 +709,7 @@ describe("models/destination", () => {
       expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
 
       await _export.reload();
-      expect(_export.completedAt).toBeFalsy();
+      expect(_export.startedAt).not.toBeFalsy();
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();

@@ -1,0 +1,15 @@
+{
+  "id": "purchase_count",
+  "name": "purchaseCount",
+  "class": "Property",
+  "type": "integer",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_purchases",
+  "options": {
+    "column": "id",
+    "aggregationMethod": "count",
+    "sortColumn": null
+  },
+  "filters": [{ "key": "state", "op": "equals", "match": "successful" }]
+}

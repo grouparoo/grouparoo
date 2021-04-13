@@ -47,7 +47,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
       lastName: { required: true },
       password: { required: true },
       email: { required: true },
-      subscribe: { required: false, default: true },
+      subscribed: { required: false, default: true },
     };
   }
 
@@ -64,7 +64,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     await teamMember.save();
     await teamMember.updatePassword(params.password);
 
-    if (params.subscribe) await GrouparooSubscription(teamMember);
+    await GrouparooSubscription(teamMember, params.subscribed);
 
     return { teamMember: await teamMember.apiData() };
   }

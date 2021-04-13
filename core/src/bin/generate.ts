@@ -102,7 +102,9 @@ Commands:
       --with id,first_name,email,last_name \\
       --mapping 'id=user_id' \\
       --high-water-mark updated_at
-    `;
+
+  Learn more about the options for a specific template:
+    grouparoo generate postgres:app --describe`;
   }
 
   preInitialize = () => {

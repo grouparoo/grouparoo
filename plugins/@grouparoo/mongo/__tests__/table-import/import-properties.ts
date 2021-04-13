@@ -105,8 +105,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: usersTableName,
-        fields:
-          "id,email,first_name,last_name,gender,vip,android_app,ltv,date,stamp",
       };
     });
 
@@ -242,7 +240,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: purchasesTableName,
-        fields: "id,amount,date,id,profile_id,purchase,stamp",
       };
     });
 
@@ -342,7 +339,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: purchasesTableName,
-        fields: "id,amount,date,id,profile_id,purchase,stamp",
       };
     });
     describe("equals", () => {
@@ -791,8 +787,6 @@ describe("mongo/table/profileProperties", () => {
     beforeAll(() => {
       sourceOptions = {
         table: locationsTableName,
-        fields:
-          "id,type,properties.sig,properties.mag,properties.time,properties.updated,properties.gap,properties.type",
       };
     });
     describe("equals", () => {

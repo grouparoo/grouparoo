@@ -15,7 +15,8 @@ export class ScheduleRun extends RetryableTask {
   }
 
   async runWithinTransaction(params) {
-    const run = await Run.findById(params.runId);
+    const run = await Run.scope(null).findOne({ where: { id: params.runId } });
+    if (!run) return;
 
     const schedule = await Schedule.findOne({
       where: { id: run.creatorId },

@@ -106,6 +106,8 @@ export namespace ExportOps {
 
     _exports = await Export.findAll({
       where: {
+        completedAt: null,
+        errorMessage: null,
         startedAt: {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },

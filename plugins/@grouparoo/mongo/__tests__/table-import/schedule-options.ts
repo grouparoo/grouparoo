@@ -38,7 +38,6 @@ describe("mongo/table/scheduleOptions", () => {
   test("gets list of columns that can handle highwatermark", async () => {
     const sourceOptions = {
       table: purchasesTableName,
-      fields: "id,amount,date,id,profile_id,purchase,stamp",
     };
     const columns = await getColumns(sourceOptions);
     const columnNames = columns.map((r) => r.key).sort();
@@ -55,18 +54,24 @@ describe("mongo/table/scheduleOptions", () => {
   test("gets list of columns from location collection", async () => {
     const locationSourceOptions = {
       table: locationsTableName,
-      fields:
-        "id,type,properties.sig,properties.mag,properties.time,properties.updated",
     };
     const columns = await getColumns(locationSourceOptions);
     const columnNames = columns.map((r) => r.key).sort();
     expect(columnNames).toEqual([
       "id",
+      "properties.cdi",
+      "properties.dmin",
+      "properties.felt",
+      "properties.gap",
       "properties.mag",
+      "properties.mmi",
+      "properties.nst",
+      "properties.rms",
       "properties.sig",
       "properties.time",
+      "properties.tsunami",
       "properties.updated",
     ]); // leaves out
-    expect(columns.length).toBe(5);
+    expect(columns.length).toBe(13);
   });
 });

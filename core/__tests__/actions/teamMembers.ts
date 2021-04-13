@@ -64,7 +64,7 @@ describe("actions/teamMembers", () => {
         lastName: "Toadstool",
         email: "toad@example.com",
         password: "mush00ms",
-        subscribe: true,
+        // subscribed: true, // default=true
       };
       await specHelper.runAction("teamMember:create", connection);
       expect(
@@ -75,7 +75,8 @@ describe("actions/teamMembers", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "toad@example.com",
-        })
+        }),
+        true
       );
 
       GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
@@ -87,12 +88,20 @@ describe("actions/teamMembers", () => {
         lastName: "Yoshi",
         email: "yoshi@example.com",
         password: "apples",
-        subscribe: false,
+        subscribed: false,
       };
       await specHelper.runAction("teamMember:create", connection);
       expect(
         GrouparooSubscriptionModule.GrouparooSubscription
-      ).toHaveBeenCalledTimes(0);
+      ).toHaveBeenCalledTimes(1);
+      expect(
+        GrouparooSubscriptionModule.GrouparooSubscription
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: "yoshi@example.com",
+        }),
+        false
+      );
     });
 
     test("an administrator can view a team member", async () => {

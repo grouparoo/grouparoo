@@ -4,8 +4,11 @@ import { plugin } from "../../modules/plugin";
 import path from "path";
 import os from "os";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { Telemetry } from "../../modules/telemetry";
 
-export class Telemetry extends CLSTask {
+const telemetryPath = "/api/v1/telemetry";
+
+export class TelemetryTask extends CLSTask {
   constructor() {
     super();
     this.name = "telemetry";
@@ -16,11 +19,12 @@ export class Telemetry extends CLSTask {
 
   async runWithinTransaction() {
     if (!config.telemetry.enabled) return;
+    const fullUrl = `${config.telemetry.host}${telemetryPath}`;
 
     try {
-      const payload = await api.telemetry.build();
+      const payload = await Telemetry.build();
 
-      const response = await fetch(config.telemetry.url, {
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -31,7 +35,7 @@ export class Telemetry extends CLSTask {
       try {
         // If there's something wrong with our ability to gather telemetry,
         // we should try to report that error to the Telemetry service...
-        await fetch(config.telemetry.url, {
+        await fetch(fullUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(await this.generateErrorPayload(error)),

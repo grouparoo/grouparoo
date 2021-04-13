@@ -1,0 +1,13 @@
+{
+  "id": "demo_purchases",
+  "name": "Product Purchases",
+  "class": "Source",
+  "type": "mongo-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "purchases"
+  },
+  "mapping": {
+    "user_id": "user_id"
+  }
+}

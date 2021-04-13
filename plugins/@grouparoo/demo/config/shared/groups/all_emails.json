@@ -1,0 +1,12 @@
+{
+  "id": "all_emails",
+  "name": "All Emails",
+  "class": "Group",
+  "type": "calculated",
+  "rules": [
+    {
+      "propertyId": "email",
+      "operation": { "op": "exists" }
+    }
+  ]
+}

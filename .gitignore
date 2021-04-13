@@ -14,6 +14,7 @@ coverage
 *.sqlite-*
 apps/*/config/*
 apps/*/*.log
+.pnpm-debug.log
 
 # API
 log

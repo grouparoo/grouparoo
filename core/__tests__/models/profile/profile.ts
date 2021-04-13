@@ -984,7 +984,7 @@ describe("models/profile", () => {
         "profile:destroyEvents"
       );
       expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].id).toBe(profile.id);
+      expect(foundTasks[0].args[0].profileId).toBe(profile.id);
     });
   });
 

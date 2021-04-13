@@ -30,7 +30,8 @@ describe("actions/teams", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({
           email: "mario@example.com",
-        })
+        }),
+        true
       );
     });
 
