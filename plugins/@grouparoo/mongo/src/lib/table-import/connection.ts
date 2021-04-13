@@ -10,7 +10,7 @@ import { getChangedRowCount } from "./getChangedRowCount";
 export function getConnection() {
   return buildConnection({
     app: "mongo",
-    name: "mongo-collection-import",
+    name: "mongo-table-import",
     description:
       "Import or update Profiles from a Mongo DB database collection.",
     tableOptionDescription: "The table to scan",
