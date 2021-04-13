@@ -9,7 +9,7 @@ import {
 import { TeamMember } from "../index";
 import { Session } from "../models/Session";
 import {
-  ModelChatRoomMiddleware,
+  ChatRoomMiddleware,
   AuthenticatedActionMiddleware,
   OptionallyAuthenticatedActionMiddleware,
 } from "../modules/middleware/authentication";
@@ -81,7 +81,7 @@ export class SessionInitializer extends Initializer {
 
     action.addMiddleware(AuthenticatedActionMiddleware);
     action.addMiddleware(OptionallyAuthenticatedActionMiddleware);
-    chatRoom.addMiddleware(ModelChatRoomMiddleware);
+    chatRoom.addMiddleware(ChatRoomMiddleware);
 
     api.params.globalSafeParams.push("csrfToken");
     api.params.globalSafeParams.push("apiKey");
