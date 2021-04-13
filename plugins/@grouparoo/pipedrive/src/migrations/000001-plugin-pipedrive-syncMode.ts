@@ -9,6 +9,15 @@ export default {
   },
 
   down: async function (migration) {
-    // nothing to do
+    await migration.bulkUpdate(
+      "destinations",
+      {
+        syncMode: null,
+      },
+      {
+        type: "pipedrive-export",
+        locked: null,
+      }
+    );
   },
 };
