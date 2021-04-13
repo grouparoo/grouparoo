@@ -24,6 +24,8 @@ export class Plugins extends Initializer {
 
   async initialize() {
     const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/hubspot/hubspot.svg",
@@ -34,7 +36,8 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "hubspot",
           [path.join(templateRoot, "destination", "*.template")],
-          syncModes
+          syncModes,
+          defaultSyncMode
         ),
       ],
       apps: [
@@ -59,7 +62,7 @@ export class Plugins extends Initializer {
             "Export Profiles to Hubspot and add them to Contact Lists.",
           app: "hubspot",
           syncModes,
-          defaultSyncMode: "sync",
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
