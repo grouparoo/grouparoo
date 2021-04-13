@@ -1,10 +1,7 @@
 import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
-import {
-  deleteContactOrClearGroups,
-  updateProfile,
-} from "../shared/updateProfile";
+import { clearGroups, updateProfile } from "../shared/updateProfile";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -60,15 +57,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     } catch (error) {
       // Another user with the new email address (email_address) already exists,
       // so we need to delete the old one and let the updateProfile reuse the existing one.
-      await deleteContactOrClearGroups(
-        client,
-        listId,
-        oldMailchimpId,
-        oldGroups,
-        newGroups,
-        syncOperations,
-        true
-      );
+      await clearGroups(client, listId, oldMailchimpId, oldGroups, newGroups);
     }
   }
 

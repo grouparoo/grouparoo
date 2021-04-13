@@ -417,8 +417,6 @@ describe("mailchimp/exportProfile", () => {
         expect.objectContaining({ name: listOne.toLowerCase() }),
       ])
     );
-    const oldUser = await getUser(emails["email"]);
-    expect(oldUser).toBe(null);
   });
 
   test("cannot change email address if sync mode does not allow it", async () => {
@@ -466,9 +464,6 @@ describe("mailchimp/exportProfile", () => {
         expect.objectContaining({ name: listThree.toLowerCase() }),
       ])
     );
-
-    const oldUser = await getUser(emails["alternativeEmail"]);
-    expect(oldUser).toBe(null);
   });
 
   test("can not delete a user if sync mode does not allow it but should remove the tags", async () => {

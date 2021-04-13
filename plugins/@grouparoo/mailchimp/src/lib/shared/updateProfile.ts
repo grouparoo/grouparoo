@@ -191,19 +191,12 @@ export async function deleteContactOrClearGroups(
   doThrow: boolean = false
 ) {
   try {
-    let tagsToRemove = Array.from(new Set(oldGroups.concat(newGroups)));
-    await client.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
-      tags: tagsToRemove.map((g) => ({
-        name: normalizeGroupName(g),
-        status: "inactive",
-      })),
-    });
-
+    await clearGroups(client, listId, mailchimpId, oldGroups, newGroups);
     if (syncOperations.delete) {
       await client.delete(`/lists/${listId}/members/${mailchimpId}`);
     }
   } catch (error) {
-    if (error?.status !== 405) {
+    if (error?.status !== 405 && error?.status !== 404) {
       throw error;
     }
   }
@@ -212,5 +205,27 @@ export async function deleteContactOrClearGroups(
     throw new Errors.InfoError(
       "Destination sync mode does not allow removing profiles."
     );
+  }
+}
+
+export async function clearGroups(
+  client,
+  listId,
+  mailchimpId,
+  oldGroups,
+  newGroups
+) {
+  try {
+    let tagsToRemove = Array.from(new Set(oldGroups.concat(newGroups)));
+    await client.post(`/lists/${listId}/members/${mailchimpId}/tags`, {
+      tags: tagsToRemove.map((g) => ({
+        name: normalizeGroupName(g),
+        status: "inactive",
+      })),
+    });
+  } catch (error) {
+    if (error?.status !== 405 && error?.status !== 404) {
+      throw error;
+    }
   }
 }
