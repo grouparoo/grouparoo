@@ -11,9 +11,7 @@ describe("google-sheets/CLI", () => {
   );
 
   test("the plugin appears in the generate list", async () => {
-    const { stdout, exitCode } = await runCliCommand(
-      "generate --list".split(" ")
-    );
+    const { stdout, exitCode } = await runCliCommand("generate --list");
 
     expect(exitCode).toBe(0);
     expect(stdout).toContain("google-sheets:app");
@@ -22,16 +20,14 @@ describe("google-sheets/CLI", () => {
   });
 
   test("an app can be generated", async () => {
-    const { exitCode } = await runCliCommand(
-      "generate google-sheets:app app".split(" ")
-    );
+    const { exitCode } = await runCliCommand("generate google-sheets:app app");
 
     expect(exitCode).toBe(0);
   });
 
   test("a source can be generated", async () => {
     const { exitCode } = await runCliCommand(
-      "generate google-sheets:source source --parent app".split(" ")
+      "generate google-sheets:source source --parent app"
     );
 
     expect(exitCode).toBe(0);
@@ -40,18 +36,14 @@ describe("google-sheets/CLI", () => {
 
   test("a property can be generated", async () => {
     const { exitCode } = await runCliCommand(
-      "generate google-sheets:property property property --parent source".split(
-        " "
-      )
+      "generate google-sheets:property property property --parent source"
     );
 
     expect(exitCode).toBe(0);
   });
 
   test("the config files can be locally validated", async () => {
-    const { stdout, exitCode } = await runCliCommand(
-      "validate --local".split(" ")
-    );
+    const { stdout, exitCode } = await runCliCommand("validate --local");
 
     expect(exitCode).toBe(0);
     expect(stdout).toContain("Validation succeeded");

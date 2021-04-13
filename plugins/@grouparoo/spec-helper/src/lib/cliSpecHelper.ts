@@ -168,7 +168,9 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       writeEnvFile(projectPath);
     }, 1000 * 60);
 
-    async function runCliCommand(args: string[]) {
+    async function runCliCommand(args: string[] | string) {
+      if (!Array.isArray(args)) args = args.split(" ");
+
       const cliEnv = Object.assign({}, process.env, {
         GROUPAROO_PARENT_PATH: projectPath,
         JEST_WORKER_ID: jestId,
