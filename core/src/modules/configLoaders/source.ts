@@ -37,7 +37,7 @@ export async function loadSource(
     });
   }
 
-  await source.update({ name: configObject.name });
+  await source.update({ type: configObject.type, name: configObject.name });
 
   await source.setOptions(extractNonNullParts(configObject, "options"));
 

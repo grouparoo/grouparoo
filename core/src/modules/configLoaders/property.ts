@@ -37,6 +37,7 @@ export async function loadProperty(
   }
 
   await property.update({
+    type: configObject.type,
     key: configObject.key || configObject.name,
     unique: configObject.unique,
     isArray: configObject.isArray,

@@ -31,7 +31,7 @@ export async function loadApiKey(
     });
   }
 
-  await apiKey.update({ name: configObject.name }, {});
+  await apiKey.update({ type: configObject.type, name: configObject.name }, {});
 
   if (
     configObject.options?.permissionAllRead !== undefined &&

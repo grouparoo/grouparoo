@@ -33,7 +33,7 @@ export async function loadGroup(
     });
   }
 
-  await group.update({ name: configObject.name });
+  await group.update({ type: configObject.type, name: configObject.name });
 
   if (configObject.rules) {
     const rules = [...configObject.rules];
