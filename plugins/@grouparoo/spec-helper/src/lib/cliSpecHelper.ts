@@ -1,6 +1,6 @@
 import path from "path";
 import fs from "fs-extra";
-import { spawn } from "child_process";
+import { spawn, spawnSync } from "child_process";
 import os from "os";
 
 export namespace CLISpecHelper {
@@ -32,9 +32,28 @@ export namespace CLISpecHelper {
 
       spawnProcess.on("close", (code) => {
         if (code !== 0) return reject(new Error(stderr));
-        resolve({ stdout, stderr, exitCode: code });
+        return resolve({ stdout, stderr, exitCode: code });
       });
     });
+  }
+
+  export function spawnPromiseSync(
+    command: string,
+    args: Array<string> = [],
+    cwd: string = process.cwd(),
+    extraEnv = {}
+  ): { exitCode: number; stderr: string; stdout: string } {
+    const env = process.env;
+
+    const syncResponse = spawnSync(command, args, {
+      cwd,
+      env: Object.assign(extraEnv, env),
+    });
+    const stdout = syncResponse.stdout.toString();
+    const stderr = syncResponse.stderr.toString();
+
+    if (syncResponse.status) throw new Error(stderr);
+    return { stdout, stderr, exitCode: syncResponse.status };
   }
 
   export async function sleep(timeMs = 1000) {
@@ -168,16 +187,155 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       writeEnvFile(projectPath);
     }, 1000 * 60);
 
+    const cliEnv = Object.assign({}, process.env, {
+      GROUPAROO_LOGS_STDOUT_DISABLE_COLOR: "true",
+      GROUPAROO_PARENT_PATH: projectPath,
+      JEST_WORKER_ID: jestId,
+    });
+
     async function runCliCommand(args: string[] | string) {
       if (!Array.isArray(args)) args = args.split(" ");
-
-      const cliEnv = Object.assign({}, process.env, {
-        GROUPAROO_PARENT_PATH: projectPath,
-        JEST_WORKER_ID: jestId,
-      });
       return spawnPromise(cliBin, args, projectPath, cliEnv);
     }
 
-    return { cliBin, projectPath, runCliCommand, spawnPromise };
+    function runCliCommandSync(args: string[] | string) {
+      if (!Array.isArray(args)) args = args.split(" ");
+      return spawnPromiseSync(cliBin, args, projectPath, cliEnv);
+    }
+
+    return {
+      cliBin,
+      projectPath,
+      runCliCommand,
+      runCliCommandSync,
+      spawnPromise,
+    };
+  }
+
+  export function getGeneratorNames(
+    pluginName: string,
+    runCliCommandSync: Function
+  ) {
+    let generatorNames: string[] = [];
+    const pluginPrefix = pluginName.replace("@grouparoo/", "");
+
+    const { stdout, exitCode } = runCliCommandSync("generate --list", true);
+    expect(exitCode).toBe(0);
+
+    const output: string = stdout.split("Grouparoo: generate")[1];
+    output
+      .split(os.EOL)
+      .filter((line) => line.includes(pluginPrefix))
+      .filter((line) => line.includes(":"))
+      .map((line) => line.trim())
+      .forEach((line) => {
+        const words = line.split(" ");
+        generatorNames.push(words[0].trim());
+      });
+
+    return generatorNames;
+  }
+
+  export function testAllPluginGenerators(
+    generatorNames: string[],
+    projectPath: string,
+    runCliCommand: Function
+  ) {
+    const apps = generatorNames.filter((name) => name.match(/:app$/));
+    const sources = generatorNames.filter((name) => name.match(/:source$/));
+    const properties = generatorNames.filter((name) =>
+      name.match(/:property$/)
+    );
+    const destinations = generatorNames.filter((name) =>
+      name.match(/:destination$/)
+    );
+
+    apps.forEach((app) => {
+      const appPrefix = buildPrefix(app);
+      const appMatcher = new RegExp(appPrefix);
+
+      describe(`${app}`, () => {
+        test(`generate app ${app}`, async () => {
+          const { exitCode, stderr } = await runCliCommand(
+            `generate ${app} app_${buildId(appPrefix)}`
+          );
+          expect(exitCode).toBe(0);
+          expect(stderr).toBe("");
+        });
+
+        sources.forEach((source) => {
+          const sourcePrefix = buildPrefix(source);
+          const sourceMatcher = new RegExp(sourcePrefix);
+
+          if (source.match(appMatcher)) {
+            test(`generate source ${source}`, async () => {
+              const { exitCode, stderr } = await runCliCommand(
+                `generate ${source} source_${buildId(
+                  sourcePrefix
+                )} --parent app_${buildId(appPrefix)}`
+              );
+              expect(exitCode).toBe(0);
+              expect(stderr).toBe("");
+
+              CLISpecHelper.enableBootstrappedProperty(
+                projectPath,
+                `source_${buildId(sourcePrefix)}`
+              );
+            });
+          }
+
+          properties.forEach((property) => {
+            const propertyPrefix = buildPrefix(property);
+
+            if (property.match(sourceMatcher)) {
+              test(`generate property ${property}`, async () => {
+                const { exitCode, stderr } = await runCliCommand(
+                  `generate ${property} property_${buildId(
+                    propertyPrefix
+                  )} --parent source_${buildId(sourcePrefix)}`
+                );
+                expect(exitCode).toBe(0);
+                expect(stderr).toBe("");
+              });
+            }
+          });
+
+          destinations.forEach((destination) => {
+            const destinationPrefix = buildPrefix(destination);
+
+            if (destination.match(appMatcher)) {
+              test(`generate destination ${destination}`, async () => {
+                const { exitCode, stderr } = await runCliCommand(
+                  `generate ${destination} destination_${buildId(
+                    destinationPrefix
+                  )} --parent app_${buildId(appPrefix)}`
+                );
+                expect(exitCode).toBe(0);
+                expect(stderr).toBe("");
+              });
+            }
+          });
+        });
+      });
+    });
+
+    describe("validation", () => {
+      test("the generated config files can be locally validated", async () => {
+        const { stdout, stderr, exitCode } = await runCliCommand(
+          "validate --local"
+        );
+        expect(exitCode).toBe(0);
+        expect(stderr).toBe("");
+        expect(stdout).toContain("Validation succeeded");
+      });
+    });
+  }
+
+  function buildPrefix(name: string) {
+    return `${name.split(":")[0]}`;
+  }
+
+  function buildId(name: string) {
+    return name.replace(/:/g, "_").replace(/-/g, "_");
   }
 }
