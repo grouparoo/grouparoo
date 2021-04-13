@@ -105,9 +105,12 @@ async function authenticateTeamMember(
 
   if (error) {
     if (error["code"] === "AUTHENTICATION_ERROR") {
-      await CLS.wrap(async () => {
-        await api.session.destroy(data.connection);
-      });
+      await CLS.wrap(
+        async () => {
+          await api.session.destroy(data.connection);
+        },
+        { write: true, priority: true }
+      );
     }
 
     throw error;
