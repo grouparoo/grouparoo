@@ -27,7 +27,7 @@ describe("mongo/table/sourcePreview", () => {
   beforeAll(async () => {
     ({ client } = await beforeData());
   });
-  // afterAll(async () => await afterData());
+  afterAll(async () => await afterData());
 
   test("gets list of columns that can handle highwatermark", async () => {
     const sourceOptions = {
