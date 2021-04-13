@@ -60,6 +60,9 @@ const TYPES = {
           user_id: {
             bsonType: "int",
           },
+          item: {
+            bsonType: "int",
+          },
           category: {
             bsonType: "string",
           },
@@ -88,6 +91,47 @@ function findConfig() {
     database = "demo";
   }
   return { uri, database };
+}
+
+function castRow(
+  collectionName,
+  row
+): { [key: string]: string | number | Date } {
+  const keys = Object.keys(row);
+  for (const key of keys) {
+    row[key] = castValue(collectionName, key, row[key]);
+  }
+  return row;
+}
+
+function castValue(
+  collectionName,
+  field,
+  value
+): string | number | boolean | Date {
+  if (value === null || value === undefined) {
+    return null;
+  }
+  const type = TYPES[collectionName]?.validator?.$jsonSchema?.properties[field];
+  if (!type) {
+    return null;
+  }
+  switch (type.bsonType) {
+    case "string":
+      return value;
+    case "bool":
+      return value === "true";
+    case "int":
+      return parseInt(value);
+    case "double":
+      return parseFloat(value);
+    case "date":
+      return new Date(value);
+    case "timestamp":
+      return new Date(value).toISOString();
+    default:
+      return null;
+  }
 }
 
 export default class Mongo extends Connection {
@@ -149,7 +193,7 @@ export default class Mongo extends Connection {
   ) {
     const collectionName = tableName;
     const { db } = await this.connect();
-    const doc = row;
+    const doc = castRow(collectionName, row);
 
     log(1, `Inserting ${tableName}: ${JSON.stringify(doc)}`);
     await db.collection(collectionName).insertOne(doc);
