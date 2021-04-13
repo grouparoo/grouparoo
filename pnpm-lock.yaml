@@ -192,7 +192,7 @@ importers:
       ts-jest: 26.5.4
       ts-loader: 8.1.0
       typescript: 4.2.4
-      webpack: 5.31.2
+      webpack: 5.32.0
       webpack-cli: 4.6.0
     devDependencies:
       '@types/jest': 26.0.22
@@ -200,10 +200,10 @@ importers:
       jest-fetch-mock: 3.0.3
       prettier: 2.2.1
       ts-jest: 26.5.4_jest@26.6.3+typescript@4.2.4
-      ts-loader: 8.1.0_typescript@4.2.4+webpack@5.31.2
+      ts-loader: 8.1.0_typescript@4.2.4+webpack@5.32.0
       typescript: 4.2.4
-      webpack: 5.31.2_webpack-cli@4.6.0
-      webpack-cli: 4.6.0_webpack@5.31.2
+      webpack: 5.32.0_webpack-cli@4.6.0
+      webpack-cli: 4.6.0_webpack@5.32.0
 
   core:
     specifiers:
@@ -223,7 +223,7 @@ importers:
       compare-versions: 3.6.0
       csv-parse: 4.15.3
       csv-stringify: 5.6.2
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
@@ -272,7 +272,7 @@ importers:
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.2
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
@@ -296,7 +296,6 @@ importers:
       sequelize-typescript: 2.1.0_4a98edc2678f3d65b8f6cc9a32529f2c
       sqlite3: 5.0.2
       ts-node: 9.1.1_typescript@4.2.4
-      umzug: 3.0.0-beta.5
       uuid: 8.3.2
       validator: 13.5.2
       winston: 3.3.3
@@ -313,6 +312,7 @@ importers:
       type-fest: 1.0.1
       typedoc: 0.20.35_typescript@4.2.4
       typescript: 4.2.4
+      umzug: 3.0.0-beta.5
 
   plugins/@grouparoo/app-templates:
     specifiers:
@@ -571,14 +571,14 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 25.0.9
-      aws-sdk: 2.884.0
+      aws-sdk: 2.885.0
       fs-extra: 9.1.0
       jest: 26.6.3
       prettier: 2.2.1
       ts-jest: 26.5.4
       typescript: 4.2.4
     dependencies:
-      aws-sdk: 2.884.0
+      aws-sdk: 2.885.0
       fs-extra: 9.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -1340,7 +1340,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1366,14 +1366,14 @@ importers:
       swagger-ui-dist: 3.46.0
       ts-jest: 26.5.4
       typescript: 4.2.4
-      victory: 35.5.0
+      victory: 35.5.1
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ed0e1e64cc1bf90f46c775f566e579d3
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1384,7 +1384,7 @@ importers:
       react: 17.0.1
       react-bootstrap: 1.5.2_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.20.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.20.2+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.5_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.3+react@17.0.1
@@ -1392,7 +1392,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.1
       swagger-ui-dist: 3.46.0
-      victory: 35.5.0
+      victory: 35.5.1
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1422,7 +1422,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1449,7 +1449,7 @@ importers:
       ts-jest: 26.5.4
       type-fest: 1.0.1
       typescript: 4.2.4
-      victory: 35.5.0
+      victory: 35.5.1
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-solid-svg-icons': 5.15.3
@@ -1462,7 +1462,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_ed988ebff08079c40ff9e87e2acc78b3
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1479,7 +1479,7 @@ importers:
       react: 17.0.1
       react-bootstrap: 1.5.2_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.20.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.20.2+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.5_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.3+react@17.0.1
@@ -1489,7 +1489,7 @@ importers:
       ts-jest: 26.5.4_jest@26.6.3+typescript@4.2.4
       type-fest: 1.0.1
       typescript: 4.2.4
-      victory: 35.5.0
+      victory: 35.5.1
 
   ui/ui-enterprise:
     specifiers:
@@ -1505,7 +1505,7 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1531,14 +1531,14 @@ importers:
       swagger-ui-dist: 3.46.0
       ts-jest: 26.5.4
       typescript: 4.2.4
-      victory: 35.5.0
+      victory: 35.5.1
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ed0e1e64cc1bf90f46c775f566e579d3
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       dotenv: 8.2.0
       md5: 2.3.0
       moment: 2.29.1
@@ -1549,7 +1549,7 @@ importers:
       react: 17.0.1
       react-bootstrap: 1.5.2_react-dom@17.0.1+react@17.0.1
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.1+react@17.0.1
-      react-date-range: 1.1.3_date-fns@2.20.1+react@17.0.1
+      react-date-range: 1.1.3_date-fns@2.20.2+react@17.0.1
       react-dom: 17.0.1_react@17.0.1
       react-hook-form: 6.15.5_react@17.0.1
       react-markdown: 5.0.3_@types+react@17.0.3+react@17.0.1
@@ -1557,7 +1557,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.1
       swagger-ui-dist: 3.46.0
-      victory: 35.5.0
+      victory: 35.5.1
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -3727,14 +3727,14 @@ packages:
       '@xtuc/long': 4.2.2
     dev: true
 
-  /@webpack-cli/configtest/1.0.2_webpack-cli@4.6.0+webpack@5.31.2:
+  /@webpack-cli/configtest/1.0.2_webpack-cli@4.6.0+webpack@5.32.0:
     resolution: {integrity: sha512-3OBzV2fBGZ5TBfdW50cha1lHDVf9vlvRXnjpVbJBa20pSZQaSkMJZiwA8V2vD9ogyeXn8nU5s5A6mHyf5jhMzA==}
     peerDependencies:
       webpack: 4.x.x || 5.x.x
       webpack-cli: 4.x.x
     dependencies:
-      webpack: 5.31.2_webpack-cli@4.6.0
-      webpack-cli: 4.6.0_webpack@5.31.2
+      webpack: 5.32.0_webpack-cli@4.6.0
+      webpack-cli: 4.6.0_webpack@5.32.0
     dev: true
 
   /@webpack-cli/info/1.2.3_webpack-cli@4.6.0:
@@ -3743,7 +3743,7 @@ packages:
       webpack-cli: 4.x.x
     dependencies:
       envinfo: 7.8.1
-      webpack-cli: 4.6.0_webpack@5.31.2
+      webpack-cli: 4.6.0_webpack@5.32.0
     dev: true
 
   /@webpack-cli/serve/1.3.1_webpack-cli@4.6.0:
@@ -3755,7 +3755,7 @@ packages:
       webpack-dev-server:
         optional: true
     dependencies:
-      webpack-cli: 4.6.0_webpack@5.31.2
+      webpack-cli: 4.6.0_webpack@5.32.0
     dev: true
 
   /@wojtekmaj/enzyme-adapter-react-17/0.6.1_ed988ebff08079c40ff9e87e2acc78b3:
@@ -3985,7 +3985,6 @@ packages:
   /alpha-sort/3.1.0:
     resolution: {integrity: sha512-mRMFzTqMpyGsMUN/rytVErIFQ0nNtMQdyxop09082hTVYbfK2rts7E1XpTExaEyxKT5JZimdA7zGgVQMVgOfXA==}
     engines: {node: '>=8'}
-    dev: false
 
   /amdefine/1.0.1:
     resolution: {integrity: sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=}
@@ -4291,8 +4290,8 @@ packages:
     dependencies:
       array-filter: 1.0.0
 
-  /aws-sdk/2.884.0:
-    resolution: {integrity: sha512-+rhzq7zmntsj4VJRUf0v6ri9vw3dYroy9BbRtbxLHILdnSFPkoqMcodr/pwcUSO5kYEYbCG7mxr5/R2a+cfbxQ==}
+  /aws-sdk/2.885.0:
+    resolution: {integrity: sha512-V7fS53HkLYap+mt00frWB516HZV34C5pHNhBs/Het3Vgl7A0GbCpJs07G4FOIT9ioJ38+k9McscOzXG++1rWMQ==}
     engines: {node: '>= 0.8.0'}
     dependencies:
       buffer: 4.9.2
@@ -5712,8 +5711,8 @@ packages:
       whatwg-url: 8.5.0
     dev: true
 
-  /date-fns/2.20.1:
-    resolution: {integrity: sha512-8P5M8Kxbnovd0zfvOs7ipkiVJ3/zZQ0F/nrBW4x5E+I0uAZVZ80h6CKd24fSXQ5TLK5hXMtI4yb2O5rEZdUt2A==}
+  /date-fns/2.20.2:
+    resolution: {integrity: sha512-QS0Z8SD/ALhKFvhtU4Fhz+1crsI7fPzBquXmdWay33KJPEU7btro2hnmmErpQRmt2D624B1lbjXQKDUMLnQTmQ==}
     engines: {node: '>=0.11'}
 
   /dateformat/3.0.3:
@@ -6844,14 +6843,12 @@ packages:
     dependencies:
       minimatch: 3.0.4
       rimraf: 2.7.1
-    dev: false
 
   /fs-jetpack/3.2.0:
     resolution: {integrity: sha512-LMUQxf85b3y/IuQZM9gz7bPMH60Y+NpulmHdhv8nHvgu6daYd7DiSZJSgiHKk1h6vfv1VCOqpdJcR+ThO7sFVA==}
     dependencies:
       minimatch: 3.0.4
       rimraf: 2.7.1
-    dev: false
 
   /fs-minipass/1.2.7:
     resolution: {integrity: sha512-GWSSJGFy4e9GUeCcbIkED+bgAoFyj7XF1mV8rma3QW4NIqX9Kyx79N/PF61H5udOV3aY1IaMLs6pGbH71nlCTA==}
@@ -7428,7 +7425,6 @@ packages:
     dependencies:
       is-stream: 2.0.0
       type-fest: 0.8.1
-    dev: false
 
   /he/1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
@@ -12113,14 +12109,14 @@ packages:
       uncontrollable: 7.2.1_react@17.0.1
       warning: 4.0.3
 
-  /react-date-range/1.1.3_date-fns@2.20.1+react@17.0.1:
+  /react-date-range/1.1.3_date-fns@2.20.2+react@17.0.1:
     resolution: {integrity: sha512-Q0+80JaEw3O2J50Lf1dcwWfqkzu3SaCZUTgtVEG9kIHy1h1x8XTNrumX08hKz+M//wg7NOymaTzP1RPBYoLpmw==}
     peerDependencies:
       date-fns: 2.0.0-alpha.7 || >=2.0.0
       react: ^0.14 || ^15.0.0-rc || >=15.0
     dependencies:
       classnames: 2.3.1
-      date-fns: 2.20.1
+      date-fns: 2.20.2
       prop-types: 15.7.2
       react: 17.0.1
       react-list: 0.8.16_react@17.0.1
@@ -13383,7 +13379,6 @@ packages:
     dependencies:
       arrify: 2.0.1
       dot-prop: 5.3.0
-    dev: false
 
   /source-list-map/2.0.1:
     resolution: {integrity: sha512-qnQ7gVMxGNxsiL4lEuJwe/To8UnK7fAnmbGEEH8RpLouuKbeEm0lhbQVFIrNSuB+G7tVrAlVsZgETT5nljf+Iw==}
@@ -14010,7 +14005,7 @@ packages:
       supports-hyperlinks: 2.2.0
     dev: true
 
-  /terser-webpack-plugin/5.1.1_webpack@5.31.2:
+  /terser-webpack-plugin/5.1.1_webpack@5.32.0:
     resolution: {integrity: sha512-5XNNXZiR8YO6X6KhSGXfY0QrGrCRlSwAEjIIrlRQR4W8nP69TaJUlh3bkuac6zzgspiGPfKEHcY295MMVExl5Q==}
     engines: {node: '>= 10.13.0'}
     peerDependencies:
@@ -14022,7 +14017,7 @@ packages:
       serialize-javascript: 5.0.1
       source-map: 0.6.1
       terser: 5.6.1
-      webpack: 5.31.2_webpack-cli@4.6.0
+      webpack: 5.32.0_webpack-cli@4.6.0
     dev: true
 
   /terser/5.6.1:
@@ -14171,7 +14166,6 @@ packages:
       fs-jetpack: 3.2.0
       hasha: 5.2.2
       sort-on: 4.1.0
-    dev: false
 
   /touch/3.1.0:
     resolution: {integrity: sha512-WBx8Uy5TLtOSRtIq+M03/sKDrXCLHxwDcquSP2c43Le03/9serjQBIztjRz6FkJez9D/hleyAXTBGLwwZUw9lA==}
@@ -14248,7 +14242,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3_ts-node@9.1.1
+      jest: 26.6.3
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
@@ -14259,7 +14253,7 @@ packages:
       yargs-parser: 20.2.7
     dev: true
 
-  /ts-loader/8.1.0_typescript@4.2.4+webpack@5.31.2:
+  /ts-loader/8.1.0_typescript@4.2.4+webpack@5.32.0:
     resolution: {integrity: sha512-YiQipGGAFj2zBfqLhp28yUvPP9jUGqHxRzrGYuc82Z2wM27YIHbElXiaZDc93c3x0mz4zvBmS6q/DgExpdj37A==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -14272,7 +14266,7 @@ packages:
       micromatch: 4.0.2
       semver: 7.3.5
       typescript: 4.2.4
-      webpack: 5.31.2_webpack-cli@4.6.0
+      webpack: 5.32.0_webpack-cli@4.6.0
     dev: true
 
   /ts-node/9.1.1_typescript@4.2.4:
@@ -14437,7 +14431,6 @@ packages:
       p-each-series: 2.2.0
       p-map: 4.0.0
       tory: 0.4.4
-    dev: false
 
   /unbox-primitive/1.0.1:
     resolution: {integrity: sha512-tZU/3NqK3dA5gpE1KtyiJUrEB0lxnGkMFHptJ7q6ewdZ8s12QrODwNbhIJStmJkd1QDXa1NRA8aF2A1zk/Ypyw==}
@@ -14755,73 +14748,73 @@ packages:
       unist-util-stringify-position: 2.0.3
       vfile-message: 2.0.4
 
-  /victory-area/35.4.11:
-    resolution: {integrity: sha512-5HHJhSe8sRUfvfGIC6U9UsbL9mkWCtbCCBjLFLkCb0STmLcaVd2hsahX7TqEIxvsRKgflGwRfd6MPKi64LYJrg==}
+  /victory-area/35.5.1:
+    resolution: {integrity: sha512-pN/xPMgRIQLCgLml+sAIT2lfoG/VNM+nzIuILoBQ0vAguwQLaDxpACC0Hgn+R/13odvX7jNp6ASb0u528F/aMA==}
     dependencies:
       d3-shape: 1.3.7
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-axis/35.4.11:
-    resolution: {integrity: sha512-qrBWFXGCg3Nip0zZZxqjkPcrYSuIO44agXymNpLYey3XsNPSiQ/iwx6pcF6E34uENaB0wfDomQZgXIdGr8H6Qw==}
+  /victory-axis/35.5.1:
+    resolution: {integrity: sha512-VKEl4l0cLcqyR9VdMUntWiEhsfGDukQI+GPtji2Ng7QCuwhwZBhAY9+MkxDzYcTvtG7Cqi4+E5hZyPtHHxOUBw==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-bar/35.4.11:
-    resolution: {integrity: sha512-/btO14sBFJjhqqi2f+MJ2nol4U272QanRPT6yAd9NGtIEeNXsxbjo6pD6se/fzX3BLMjeTP8Euif1xS0bmMjUA==}
+  /victory-bar/35.5.1:
+    resolution: {integrity: sha512-JsfPCeeyUV1mLYcZTaeVKjT2Xt3L4aRt72yvbOy9IGyhuc/JtuFCcz9lSaBRKgZhHJ2px1rth1hO/dVdEx0dqg==}
     dependencies:
       d3-shape: 1.3.7
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-box-plot/35.4.11:
-    resolution: {integrity: sha512-k4fQH66A6I48ELoIk61c37+RhlhqU0OU5m6vvQ7VzTUJEQCYyA5v6FGMG4me2N+nIE11kNtE4Yoc2aWd5zHnIA==}
+  /victory-box-plot/35.5.1:
+    resolution: {integrity: sha512-gJyikBfrSQ4JlF3nUMPQJbqFFyLwSy5X5DUuAifHbS1IDxO2u96f3LPI8fvElIi+5g1PwaIo8/qN2tKfSk4kGg==}
     dependencies:
       d3-array: 1.2.4
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-brush-container/35.5.0:
-    resolution: {integrity: sha512-IcLaXzPJFlG0BTEI5Ru2rbd/HkbHlwEmm78cIEQvn5i/9AnrOdq2ST31YSi+p6PgjYVZVfYEvg2yNsa2xUTfxg==}
+  /victory-brush-container/35.5.1:
+    resolution: {integrity: sha512-SMWlZyEhqz+VAJ+n3yoyMEPyQtMB9voikXG43Zj6KdTnVmFzTGtAis6PB24CphLaYyuxD7ko5vD62nAs9IEPfA==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-brush-line/35.4.11:
-    resolution: {integrity: sha512-1jzHO1be2ciHnAg3BEg1GHxzAWwwHMFPvTwcygkeaGBKGo8WZdABRYa/6JVCK3mAKyx+E4ubsPcNhaCzrSlOFg==}
+  /victory-brush-line/35.5.1:
+    resolution: {integrity: sha512-rHJVY8znXU6UqmM9TUDn5RiOdG2Bnm6068LW/jGbfKTKOVVHrjvvAxquUOdumHugser57CmqnKuncDCn7mqxkA==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-candlestick/35.4.11:
-    resolution: {integrity: sha512-Xf1ICFFmBhlk8P/hV7KkYP0xi6+00PlqfWYu3eglW1FhkIB9smIIRgFDwOqDWauUVb+eTGgr+hWc8EgVDwO2pg==}
+  /victory-candlestick/35.5.1:
+    resolution: {integrity: sha512-WEoQNXZaCl6jaTv25g2VVQ9eBhV8MqLtMHl3YpEcasRf3s5R0oo9Ebmh1SsEgeKTHdqVMH8EgMRONg+dA4prWg==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-chart/35.4.11:
-    resolution: {integrity: sha512-LPdoVX8LVzmHjE6mQQMWNFfqy8WnuN5UnBiWiKhQB1HNiCwL2JPWsSqaDIdV8flGBKSZzKDgsLmMABxGjwfBcg==}
+  /victory-chart/35.5.1:
+    resolution: {integrity: sha512-LNsH4AKba64f3IXH2WTHpRcl52F9MK5wqxs8Vbwn+FuSCnMo3eIgPYSvBgw2QirXrxtxUnzlsnEXLKd0tNw/bQ==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-axis: 35.4.11
-      victory-core: 35.4.11
-      victory-polar-axis: 35.4.11
-      victory-shared-events: 35.4.11
+      victory-axis: 35.5.1
+      victory-core: 35.5.1
+      victory-polar-axis: 35.5.1
+      victory-shared-events: 35.5.1
 
-  /victory-core/35.4.11:
-    resolution: {integrity: sha512-vXcX9pgZqUN7FLFn1Z2SfzBBBu3PyyN46kfKaNjcJbVnhdxtnmN8MfYtXx3eJGIJlv0FsTrPY8fpBYQpYHho4w==}
+  /victory-core/35.5.1:
+    resolution: {integrity: sha512-uzuYD5vn8VH+Wp+EFrIwQ+TCt45Vn4D0+uBh2wwie3fKfamLSmF093AeZPAxt39xCmnNTVOjfZYjUNpiuJ8rnQ==}
     dependencies:
       d3-ease: 1.0.7
       d3-interpolate: 1.4.0
@@ -14832,174 +14825,174 @@ packages:
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
 
-  /victory-create-container/35.5.0:
-    resolution: {integrity: sha512-Pyb1lq99GPx13k3/UNLa6YUacSVD8oOntg4UsS+qkJY4xgy1t4o0woo02l793Voj6TZJgu57ULVrMkHxXQILAg==}
+  /victory-create-container/35.5.1:
+    resolution: {integrity: sha512-uzumsrtiPgZcIIzKSIBlD0PTCza2VmFbyed05C1l0p6MX+ehDLQv0JWCNxi1J3crxwcWPxSqYxDqICE4JfRbGQ==}
     dependencies:
       lodash: 4.17.21
-      victory-brush-container: 35.5.0
-      victory-core: 35.4.11
-      victory-cursor-container: 35.4.11
-      victory-selection-container: 35.4.11
-      victory-voronoi-container: 35.4.13
-      victory-zoom-container: 35.4.11
+      victory-brush-container: 35.5.1
+      victory-core: 35.5.1
+      victory-cursor-container: 35.5.1
+      victory-selection-container: 35.5.1
+      victory-voronoi-container: 35.5.1
+      victory-zoom-container: 35.5.1
 
-  /victory-cursor-container/35.4.11:
-    resolution: {integrity: sha512-UUKzKUUAaiSqMgVQbY5Z/X4vwRMi3m6WVIhT+1NIv8q9SrLBY5qXb21WcuF2u5rKeq1hcyioC7ZiGG3j9ZkgOQ==}
-    dependencies:
-      lodash: 4.17.21
-      prop-types: 15.7.2
-      victory-core: 35.4.11
-
-  /victory-errorbar/35.4.11:
-    resolution: {integrity: sha512-2QU1qVk4q73jHNw+a7MyjnWsnU7dhOhaBI/uMrlgd3cUY29xsKeLSlRw/yuHGQ7Ovn4WN7mMXBSULIWMcv76vg==}
+  /victory-cursor-container/35.5.1:
+    resolution: {integrity: sha512-vLjrSDrvKiD9EclZdqN4L9VAIPMZEA28rQaODzneWukf7e8vXO9hBKRrQAYFX+fR9vJpL1WNvGLl0pzYo+Ro2w==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-group/35.4.11:
-    resolution: {integrity: sha512-pqb4n77MvopvCrLY8twjoFk6ariJD8nFG08uTLA83Phqo28J2TfWZBGzGES4/uLL/FIms4h7gtGcq5qgwlaLTQ==}
+  /victory-errorbar/35.5.1:
+    resolution: {integrity: sha512-0PlXLVtfy9sz7CpMrUnlMoV71JDd7FhFqvWk0IKEiHiGxKinDd70yBSy7I5v7c819PQEFa05kn4qpx8FZXeHvQ==}
+    dependencies:
+      lodash: 4.17.21
+      prop-types: 15.7.2
+      victory-core: 35.5.1
+
+  /victory-group/35.5.1:
+    resolution: {integrity: sha512-6PPBt+7jMMCKFFxhTssxUvVGR4WxpuUWWwS2++xLE+a3/bSvFK/n5grec8/vSJAiUyozdMF5aZ+Ku1e9ucfGFw==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
-      victory-shared-events: 35.4.11
+      victory-core: 35.5.1
+      victory-shared-events: 35.5.1
 
-  /victory-histogram/35.4.11:
-    resolution: {integrity: sha512-y9vsUJfsQK3vvDNozXz39LCes59xYcyXZmExe6uB/pr+2lr0PtM8FAQAD2u0Vdc35h1ObTGuqqhdj7gXc9nezw==}
+  /victory-histogram/35.5.1:
+    resolution: {integrity: sha512-Z3dxcmB0+VCZFA2cp1L7RFv8s+nyHocALU/ZBl2be7mYvtVAgC+IN5xX1BqyAOyhyhLyjrdXY7p41I1XfTxC2A==}
     dependencies:
       d3-array: 2.12.1
       d3-scale: 1.0.7
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-bar: 35.4.11
-      victory-core: 35.4.11
+      victory-bar: 35.5.1
+      victory-core: 35.5.1
 
-  /victory-legend/35.4.11:
-    resolution: {integrity: sha512-3E5DKYrkrqtC1YeqNHixRpfXYHo9qumBjLnfaP6IF/06R5sn5o5LdYHT0yz8ATXDL0AxZqRM2q6Au9Mwvcq2xg==}
+  /victory-legend/35.5.1:
+    resolution: {integrity: sha512-iH3utGDQlA/4D2PbtGJ7PORgF+PU8rUmvbStG389efzoFCtEXfZc0N18a1gZ7BSTqZxU2Hl92ll6nTh/a6br0Q==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-line/35.4.11:
-    resolution: {integrity: sha512-LmkvY1wMvXhBYvnafaZbSS7JiOgGEJ0+qy3HuTtT66THOKBuxAo0T66BsURFTN7LpFvjBz2QRehrtJ/KWfOz9A==}
-    dependencies:
-      d3-shape: 1.3.7
-      lodash: 4.17.21
-      prop-types: 15.7.2
-      victory-core: 35.4.11
-
-  /victory-pie/35.4.11:
-    resolution: {integrity: sha512-AAfm3oUQRTOMfMMWQh5spMq0YdnY+DU9V8NbU/TBmBmgvVwWcZQOZqHlYb4rd21HL26VwcHeRe+EfXdLLV7vHg==}
+  /victory-line/35.5.1:
+    resolution: {integrity: sha512-KeiNvWfdtztsIFB7vbl2SEfNZhA91mru117hL0g1kehLGauBDUQzWvyGucPsf1Ve4vEmLTsoHu0UUTuhQ3akEQ==}
     dependencies:
       d3-shape: 1.3.7
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-polar-axis/35.4.11:
-    resolution: {integrity: sha512-yLrZ/PfcCRvw98zUBPB+LK9EoiYLBjellnILI3nAT5vCvKg1AnmBdF0lLuz0tM9jfcFdCL+1o2IO+r+OHKWTnw==}
+  /victory-pie/35.5.1:
+    resolution: {integrity: sha512-MY5DFr8xCc0UswzgugmTzd3a762iuG8WjhISz+iXCVKX3hjivLF66/BpC0FDjBXnIhlIuP8nB4zaIEVOCtz1KQ==}
+    dependencies:
+      d3-shape: 1.3.7
+      lodash: 4.17.21
+      prop-types: 15.7.2
+      victory-core: 35.5.1
+
+  /victory-polar-axis/35.5.1:
+    resolution: {integrity: sha512-Wg9xdGHWva3KRkhezwA4cqrrlaE5GyIXz/00bb6jESbL7G3/d/yhPV3G5LQFt7RsSDedQ+zDlAfsOJxpRIjI9Q==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-scatter/35.4.11:
-    resolution: {integrity: sha512-IKcYa9tYwO2OIn12AotySRzpQ+tWAy71i/sdckw3lh3FBWDk6Zq+PVlICYDgKLuTsV2bUDQixYZGDQ5lcNIcmw==}
+  /victory-scatter/35.5.1:
+    resolution: {integrity: sha512-eftpyucYPTPppYorwKFpKszxiJRwDClaq//4kyHxByLWkJEFZuGhUiEtHVw6+mU5lpyJ7b0Yn/+MWqTwqxADHg==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-selection-container/35.4.11:
-    resolution: {integrity: sha512-+yuUd+Clt+BFD+moFgPCuU1pbiJrHwzncovUEnfKO668HKgEr1HbR67sd2ZDLVULhfG1JRwGnbzWAYnQBcjEoA==}
+  /victory-selection-container/35.5.1:
+    resolution: {integrity: sha512-wLYlHlfR/si/IqhxJjLo+oKBsPaUMBVFONaOmnsogQ3X18aP1sAWMEgrwr05WKaSqEhRP2WWea7gVpnt82D6Sg==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-shared-events/35.4.11:
-    resolution: {integrity: sha512-OjoqLfIHX82iThVbZmytMDddzIKLTkIhfB2+qptGA7/2VKInmdQXi5IUjp904YJZls7oLLRMwXsGEwKKvZLLBw==}
+  /victory-shared-events/35.5.1:
+    resolution: {integrity: sha512-qTt1UGKqd3r1SYIVEz6v8P7gLUkIcWD3XQChWBe9hK7Ee9TL8mFmRTdFBN/inZdR2wLlV5K7zWrfJcRGEHsuBg==}
     dependencies:
       json-stringify-safe: 5.0.1
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-stack/35.4.11:
-    resolution: {integrity: sha512-NVVe1CI+BsKinJEFIfinOFex3cESI/NbeVG6lSJmxHkmh56B3ICYJvXbgLSTS5WKcExbSe6bkB3mMJrEZf1+eA==}
+  /victory-stack/35.5.1:
+    resolution: {integrity: sha512-8BmNGzCj18SEXDtFnRGgTFqdTWK4rxlkJJlVV0JZ2DbUzrlnYLx4dhzYzgQgZx0R3Ca6o9fQ5rxx8JUSCgn61A==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
-      victory-shared-events: 35.4.11
+      victory-core: 35.5.1
+      victory-shared-events: 35.5.1
 
-  /victory-tooltip/35.4.13:
-    resolution: {integrity: sha512-+CUTkVjvEQl6iBmOOA/2lsZNRvI9vocw5NHfQwVNnlAQAxe/B/PbggvaalsIanlvqHTGk0dqhF/efUU9ojRMIQ==}
+  /victory-tooltip/35.5.1:
+    resolution: {integrity: sha512-xcbVvOqls9PGPqS+2agUZShlreU6pGe3x/JKCbOTL/qIbU5dkcYaZ2BfqmRVq5zTSVPhgpe50Bn83cd5NfqIqg==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-voronoi-container/35.4.13:
-    resolution: {integrity: sha512-Z2wr2xGP8XVRV84K0Q7pLBjyw4zjv4H6czF40I3k/uE6fgg0m2zt2ifKcgEkHL8/TBrITFbGz4W0qLDz6/tvig==}
+  /victory-voronoi-container/35.5.1:
+    resolution: {integrity: sha512-BuOv4WQxC/eJvqU7y7ZzMVQo034I8OZX0kqimLEnoBPep+GsK9W0uKqRzeB01O5H/onUyEmdcXs+wVEvbAYfJQ==}
     dependencies:
       delaunay-find: 0.0.5
       lodash: 4.17.21
       prop-types: 15.7.2
       react-fast-compare: 2.0.4
-      victory-core: 35.4.11
-      victory-tooltip: 35.4.13
+      victory-core: 35.5.1
+      victory-tooltip: 35.5.1
 
-  /victory-voronoi/35.4.11:
-    resolution: {integrity: sha512-mPx8UcwPqGHaCDOIbTVD3/wOqBnelZqc6r6ssJfb3FT977t0kSJBrFC6a5NVopumvlPGONA4iZRCMVOu6aiirg==}
+  /victory-voronoi/35.5.1:
+    resolution: {integrity: sha512-MZDk+ZzYRaC/UDBSRoSI3Rks/D8bhh7jMjef4JFtio0m4eNt2Ft8Mrb4erl7UGCU7uOOb+OW3zPRWDvrbRlRfg==}
     dependencies:
       d3-voronoi: 1.1.4
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory-zoom-container/35.4.11:
-    resolution: {integrity: sha512-iCbBU2enQLAkFmOC2rqV1xh8voC+kgDoaxjlXsh39dkK7bjkzGHS7N4zFcIN31tJtulSzR1w3X/owjK3dTzHkQ==}
+  /victory-zoom-container/35.5.1:
+    resolution: {integrity: sha512-UuMhIqv/NzYKlibiY5l3hluCdKftw0GCHDiXAmPRfyfodc1qDolysPMSwxpUSBQ9RT+XzPHJAatZH2Nw8G5ZIQ==}
     dependencies:
       lodash: 4.17.21
       prop-types: 15.7.2
-      victory-core: 35.4.11
+      victory-core: 35.5.1
 
-  /victory/35.5.0:
-    resolution: {integrity: sha512-53ZPY7+G8CPlrX2UfQcImX5Xcl0l5ZlhPdeeXlIToSntRcxcBcaVbunV2+yqTuCwf07UUmDOjhYvAyTvjOkwwA==}
+  /victory/35.5.1:
+    resolution: {integrity: sha512-kjUl4gmvdFVQsuoo+gIm2A6tEHyPhrNYzF6RLA2hxQnWCuTnK2Jf0JV6rRE3D4Z68JbDCnnucnQ2BPT3nxeVLw==}
     dependencies:
-      victory-area: 35.4.11
-      victory-axis: 35.4.11
-      victory-bar: 35.4.11
-      victory-box-plot: 35.4.11
-      victory-brush-container: 35.5.0
-      victory-brush-line: 35.4.11
-      victory-candlestick: 35.4.11
-      victory-chart: 35.4.11
-      victory-core: 35.4.11
-      victory-create-container: 35.5.0
-      victory-cursor-container: 35.4.11
-      victory-errorbar: 35.4.11
-      victory-group: 35.4.11
-      victory-histogram: 35.4.11
-      victory-legend: 35.4.11
-      victory-line: 35.4.11
-      victory-pie: 35.4.11
-      victory-polar-axis: 35.4.11
-      victory-scatter: 35.4.11
-      victory-selection-container: 35.4.11
-      victory-shared-events: 35.4.11
-      victory-stack: 35.4.11
-      victory-tooltip: 35.4.13
-      victory-voronoi: 35.4.11
-      victory-voronoi-container: 35.4.13
-      victory-zoom-container: 35.4.11
+      victory-area: 35.5.1
+      victory-axis: 35.5.1
+      victory-bar: 35.5.1
+      victory-box-plot: 35.5.1
+      victory-brush-container: 35.5.1
+      victory-brush-line: 35.5.1
+      victory-candlestick: 35.5.1
+      victory-chart: 35.5.1
+      victory-core: 35.5.1
+      victory-create-container: 35.5.1
+      victory-cursor-container: 35.5.1
+      victory-errorbar: 35.5.1
+      victory-group: 35.5.1
+      victory-histogram: 35.5.1
+      victory-legend: 35.5.1
+      victory-line: 35.5.1
+      victory-pie: 35.5.1
+      victory-polar-axis: 35.5.1
+      victory-scatter: 35.5.1
+      victory-selection-container: 35.5.1
+      victory-shared-events: 35.5.1
+      victory-stack: 35.5.1
+      victory-tooltip: 35.5.1
+      victory-voronoi: 35.5.1
+      victory-voronoi-container: 35.5.1
+      victory-zoom-container: 35.5.1
 
   /vm-browserify/1.1.2:
     resolution: {integrity: sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==}
@@ -15057,7 +15050,7 @@ packages:
     engines: {node: '>=10.4'}
     dev: true
 
-  /webpack-cli/4.6.0_webpack@5.31.2:
+  /webpack-cli/4.6.0_webpack@5.32.0:
     resolution: {integrity: sha512-9YV+qTcGMjQFiY7Nb1kmnupvb1x40lfpj8pwdO/bom+sQiP4OBMKjHq29YQrlDWDPZO9r/qWaRRywKaRDKqBTA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -15078,7 +15071,7 @@ packages:
         optional: true
     dependencies:
       '@discoveryjs/json-ext': 0.5.2
-      '@webpack-cli/configtest': 1.0.2_webpack-cli@4.6.0+webpack@5.31.2
+      '@webpack-cli/configtest': 1.0.2_webpack-cli@4.6.0+webpack@5.32.0
       '@webpack-cli/info': 1.2.3_webpack-cli@4.6.0
       '@webpack-cli/serve': 1.3.1_webpack-cli@4.6.0
       colorette: 1.2.2
@@ -15090,7 +15083,7 @@ packages:
       interpret: 2.2.0
       rechoir: 0.7.0
       v8-compile-cache: 2.3.0
-      webpack: 5.31.2_webpack-cli@4.6.0
+      webpack: 5.32.0_webpack-cli@4.6.0
       webpack-merge: 5.7.3
     dev: true
 
@@ -15110,8 +15103,8 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /webpack/5.31.2_webpack-cli@4.6.0:
-    resolution: {integrity: sha512-0bCQe4ybo7T5Z0SC5axnIAH+1WuIdV4FwLYkaAlLtvfBhIx8bPS48WHTfiRZS1VM+pSiYt7e/rgLs3gLrH82lQ==}
+  /webpack/5.32.0_webpack-cli@4.6.0:
+    resolution: {integrity: sha512-jB9PrNMFnPRiZGnm/j3qfNqJmP3ViRzkuQMIf8za0dgOYvSLi/cgA+UEEGvik9EQHX1KYyGng5PgBTTzGrH9xg==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -15140,9 +15133,9 @@ packages:
       neo-async: 2.6.2
       schema-utils: 3.0.0
       tapable: 2.2.0
-      terser-webpack-plugin: 5.1.1_webpack@5.31.2
+      terser-webpack-plugin: 5.1.1_webpack@5.32.0
       watchpack: 2.1.1
-      webpack-cli: 4.6.0_webpack@5.31.2
+      webpack-cli: 4.6.0_webpack@5.32.0
       webpack-sources: 2.2.0
     dev: true
 
