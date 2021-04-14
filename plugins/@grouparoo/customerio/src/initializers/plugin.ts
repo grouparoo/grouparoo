@@ -36,7 +36,7 @@ export class Plugins extends Initializer {
       ],
       apps: [
         {
-          name: "customer.io",
+          name: "customerio",
           options: [
             {
               key: "siteId",
@@ -59,7 +59,7 @@ export class Plugins extends Initializer {
           name: "customerio-export",
           direction: "export",
           description: "Export profiles to customer.io as Customers",
-          app: "customer.io",
+          app: "customerio",
           options: [],
           methods: {
             exportProfile,
