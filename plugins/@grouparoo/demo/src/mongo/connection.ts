@@ -114,7 +114,9 @@ function castValue(
   }
   const type = TYPES[collectionName]?.validator?.$jsonSchema?.properties[field];
   if (!type) {
-    return null;
+    throw new Error(
+      `The jsonSchema is required for the proper data insertion.`
+    );
   }
   switch (type.bsonType) {
     case "string":
@@ -130,7 +132,7 @@ function castValue(
     case "timestamp":
       return new Date(value).toISOString();
     default:
-      return null;
+      throw new Error(`The type ${type.bsonType} is not supported.`);
   }
 }
 
