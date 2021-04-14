@@ -1,13 +1,10 @@
 import { plugin } from "../modules/plugin";
 
-import {
-  TelemetryMetric,
-  TelemetryReporters,
-} from "./../modules/telemetryReporters";
+import { StatusMetric, StatusReporters } from "./../modules/statusReporters";
 
 export namespace Telemetry {
   export async function build() {
-    const metrics: TelemetryMetric[] = [];
+    const metrics: StatusMetric[] = [];
 
     // load settings
     const clusterName = (await plugin.readSetting("core", "cluster-name"))
@@ -19,21 +16,22 @@ export namespace Telemetry {
     ).value;
 
     // information about how Grouparoo is being operated
-    metrics.push(await TelemetryReporters.Cluster.Workers.countWorkers());
-    metrics.push(await TelemetryReporters.Cluster.OS.exact());
-    metrics.push(await TelemetryReporters.Cluster.NODE_ENV.exact());
+    metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
+    metrics.push(await StatusReporters.Cluster.Workers.countErrors());
+    metrics.push(await StatusReporters.Cluster.OS.exact());
+    metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
 
     // versions of the plugins installed
-    metrics.push(...(await TelemetryReporters.Plugins.Versions()));
+    metrics.push(...(await StatusReporters.Plugins.Versions()));
 
     // usage counts
-    metrics.push(...(await TelemetryReporters.Totals.Models()));
+    metrics.push(...(await StatusReporters.Totals.Models()));
 
     // usage by source
-    metrics.push(...(await TelemetryReporters.Totals.SourceTotals()));
+    metrics.push(...(await StatusReporters.Totals.SourceTotals()));
 
     // usage by destination
-    metrics.push(...(await TelemetryReporters.Totals.DestinationTotals()));
+    metrics.push(...(await StatusReporters.Totals.DestinationTotals()));
 
     return {
       name: clusterName,

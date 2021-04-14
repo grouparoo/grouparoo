@@ -407,38 +407,6 @@ describe("actions/groups", () => {
       expect(groups.length).toBe(2);
     });
 
-    test("a reader can list all the groups by the newest group member", async () => {
-      const profileA = await helper.factories.profile();
-      const profileB = await helper.factories.profile();
-      const smallGroup = await helper.factories.group();
-      const bigGroup = await helper.factories.group();
-      await smallGroup.addProfile(profileA);
-      await bigGroup.addProfile(profileA);
-      await bigGroup.addProfile(profileB);
-
-      connection.params = {
-        csrfToken,
-      };
-      const { error, groups, newestMembersAdded } = await specHelper.runAction(
-        "groups:list:byNewestMember",
-        connection
-      );
-      expect(error).toBeUndefined();
-      expect(groups.length).toBe(2);
-      const groupIds = groups.map((g) => g.id);
-      expect(groupIds[0]).toBe(bigGroup.id);
-      expect(groupIds[1]).toBe(smallGroup.id);
-
-      expect(newestMembersAdded[bigGroup.id]).toBeGreaterThanOrEqual(
-        newestMembersAdded[smallGroup.id]
-      );
-
-      await profileA.destroy();
-      await profileB.destroy();
-      await smallGroup.destroy();
-      await bigGroup.destroy();
-    });
-
     test("a reader cannot edit a group", async () => {
       connection.params = {
         csrfToken,

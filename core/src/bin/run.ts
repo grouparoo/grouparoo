@@ -105,9 +105,6 @@ export class RunCLI extends CLI {
     for (const name in tasks) {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
-      GrouparooCLI.logger.log(
-        `Running task: ${task.name}, ${JSON.stringify(args)}`
-      );
       await task.run(args, {});
     }
   }

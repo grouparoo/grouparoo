@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useApi } from "../../hooks/useApi";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
+import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
 import { ButtonGroup, Button, Alert } from "react-bootstrap";
@@ -19,7 +19,7 @@ export default function LogsList(props) {
   const [total, setTotal] = useState(props.total);
 
   // websocket
-  useRealtimeModelStream("log", "list-list", handleMessage);
+  useRealtimeStream("model:log", "list-list", handleMessage);
   const [newLogs, setNewLogs] = useState<number>(0);
 
   // pagination

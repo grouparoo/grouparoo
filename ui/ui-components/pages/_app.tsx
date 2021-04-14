@@ -4,6 +4,7 @@ import { useApi } from "../hooks/useApi";
 import Injection from "../components/componentInjection";
 import Layout from "../components/layouts/main";
 import PageTransition from "../components/pageTransition";
+import StatusSubscription from "../components/statusSubscription";
 import "../components/icons";
 
 import { AxiosError } from "axios";
@@ -22,6 +23,7 @@ import { RunsHandler } from "../utils/runsHandler";
 import { ScheduleHandler } from "../utils/scheduleHandler";
 import { SessionHandler } from "../utils/sessionHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
+import { StatusHandler } from "../utils/statusHandler";
 import { SourceHandler } from "../utils/sourceHandler";
 import { TeamHandler } from "../utils/teamHandler";
 import { TeamMemberHandler } from "../utils/teamMembersHandler";
@@ -39,6 +41,7 @@ const runsHandler = new RunsHandler();
 const scheduleHandler = new ScheduleHandler();
 const sessionHandler = new SessionHandler();
 const setupStepHandler = new SetupStepHandler();
+const statusHandler = new StatusHandler();
 const sourceHandler = new SourceHandler();
 const teamHandler = new TeamHandler();
 const teamMemberHandler = new TeamMemberHandler();
@@ -64,6 +67,7 @@ export default function GrouparooWebApp(props) {
     scheduleHandler,
     sessionHandler,
     setupStepHandler,
+    statusHandler,
     sourceHandler,
     teamHandler,
     teamMemberHandler,
@@ -73,9 +77,14 @@ export default function GrouparooWebApp(props) {
   return (
     <Injection {...combinedProps}>
       <PageTransition />
+
       <Layout hydrationError={hydrationError} {...combinedProps}>
         <Component {...combinedProps} err={err} />
       </Layout>
+
+      {combinedProps.currentTeamMember.id ? (
+        <StatusSubscription {...combinedProps} />
+      ) : null}
     </Injection>
   );
 }

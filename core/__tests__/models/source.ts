@@ -8,7 +8,10 @@ import {
   Profile,
   Schedule,
   Option,
+  ProfileProperty,
 } from "../../src";
+import { Op } from "sequelize";
+import { SourceOps } from "../../src/modules/ops/source";
 
 describe("models/source", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -668,6 +671,49 @@ describe("models/source", () => {
       expect(parameterizedOptions.table).toBe(`1970-01-01 00:00:00`);
 
       await schedule.destroy();
+    });
+  });
+
+  describe("#pendingImportsBySource", () => {
+    let source: Source;
+
+    beforeAll(async () => {
+      source = await Source.create({
+        type: "test-plugin-import",
+        name: "test source",
+        appId: app.id,
+      });
+
+      await source.setOptions({ table: "test table" });
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+    });
+
+    afterAll(async () => {
+      await source.destroy();
+    });
+
+    test("pending imports can be listed", async () => {
+      const profile = await helper.factories.profile();
+      await profile.buildNullProperties();
+      const emailProperty = await Property.findOne({
+        where: { key: "email" },
+      });
+
+      await ProfileProperty.update(
+        { state: "pending" },
+        {
+          where: {
+            profileId: profile.id,
+            propertyId: { [Op.in]: [emailProperty.id] },
+          },
+        }
+      );
+
+      const { counts } = await SourceOps.pendingImportsBySource();
+
+      expect(Object.keys(counts).length).toBe(1);
+      expect(counts[emailProperty.sourceId]).toBe(1);
     });
   });
 });

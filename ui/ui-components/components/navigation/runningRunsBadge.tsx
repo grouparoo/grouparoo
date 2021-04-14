@@ -1,34 +1,33 @@
 import { Badge } from "react-bootstrap";
-import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
 import { useState, useEffect } from "react";
-import { Models } from "../../utils/apiData";
+import { StatusHandler } from "../../utils/statusHandler";
 
-export default function RunningRunsBadge({ execApi }) {
-  useRealtimeModelStream("run", "navigation-runs-badge", load);
-  const [runs, setRuns] = useState<Models.RunType[]>([]);
+export default function RunningRunsBadge({
+  statusHandler,
+}: {
+  statusHandler: StatusHandler;
+}) {
+  const [pendingRuns, setPendingRuns] = useState(0);
 
   useEffect(() => {
-    load();
+    statusHandler.subscribe("navigation-runs-badge", ({ metrics }) => {
+      const _pendingRuns =
+        metrics.find((m) => m.collection === "pending" && m.topic === "Run")
+          ?.count ?? -1;
+      setPendingRuns(_pendingRuns);
+    });
+
+    return () => {
+      statusHandler.unsubscribe("navigation-runs-badge");
+    };
   }, []);
 
-  async function load() {
-    const { runs } = await execApi(
-      "get",
-      `/runs`,
-      { state: "running" },
-      null,
-      null,
-      false
-    );
-    setRuns(runs);
-  }
-
-  if (runs.length === 0) return null;
+  if (pendingRuns < 1) return null;
 
   return (
     <span style={{ paddingLeft: 5 }}>
       <Badge pill variant="info">
-        {runs.length}
+        {pendingRuns}
       </Badge>
     </span>
   );

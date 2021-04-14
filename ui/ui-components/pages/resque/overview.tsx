@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useApi } from "../../hooks/useApi";
 import { Actions } from "../../utils/apiData";
+import Link from "next/link";
 import { Row, Col, Card, Table, Alert } from "react-bootstrap";
 import {
   GrouparooChart,
@@ -8,103 +8,90 @@ import {
 } from "../../components/visualizations/grouparooChart";
 import Head from "next/head";
 import ResqueTabs from "../../components/tabs/resque";
+import { StatusHandler } from "../../utils/statusHandler";
 
-const refreshInterval = 1000 * 2;
 const maxSampleLength = 30;
-const samples: ChartLinData = [];
 
 export default function ResqueOverview(props) {
-  const { errorHandler } = props;
-  const { execApi } = useApi(props, errorHandler);
+  const { statusHandler }: { statusHandler: StatusHandler } = props;
   const [queues, setQueues] = useState({});
   const [workers, setWorkers] = useState({});
   const [leader, setLeader] = useState("");
   const [failedCount, setFailedCount] = useState(0);
   const [stats, setStats] = useState({});
-
-  let loading = false;
-  let timer: NodeJS.Timeout;
+  const [chartData, setChartData] = useState<ChartLinData>([]);
 
   useEffect(() => {
-    load();
-    timer = setInterval(() => {
+    statusHandler.subscribe("resque-overview", () => {
       load();
-    }, refreshInterval);
+    });
 
     return () => {
-      clearInterval(timer);
+      statusHandler.unsubscribe("resque-overview");
     };
   }, []);
 
-  async function load() {
-    if (loading) return;
-    loading = true;
+  function load() {
+    const _chartData: ChartLinData = [];
+    const samples = statusHandler.samples;
 
     let _queues = {};
     let _workers = {};
     let _stats = {};
     let _leader = "";
+    let _failedCount = 0;
 
-    const detailsResponse: Actions.ResqueResqueDetails = await execApi(
-      "get",
-      `/resque/resqueDetails`,
-      {},
-      null,
-      null,
-      false
-    );
-    _queues = detailsResponse?.resqueDetails?.queues || {};
-    _workers = detailsResponse?.resqueDetails?.workers || {};
-    _stats = detailsResponse?.resqueDetails?.stats || {};
-    _leader = detailsResponse?.resqueDetails?.leader || "";
+    samples.forEach(({ metrics, timestamp }) => {
+      const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] = JSON.parse(
+        metrics.find(
+          (m) => m.collection === "cluster" && m.topic === "resqueDetails"
+        ).metadata
+      );
 
-    const failedResponse: Actions.ResqueFailedCount = await execApi(
-      "get",
-      `/resque/resqueFailedCount`,
-      {},
-      null,
-      null,
-      false
-    );
+      _queues = resqueDetails?.queues || _queues;
+      _workers = resqueDetails?.workers || _workers;
+      _stats = resqueDetails?.stats || _stats;
+      _leader = resqueDetails?.leader || _leader;
+      _failedCount = _queues["failed"] || _failedCount;
 
-    Object.keys(_workers).forEach((workerName) => {
-      const worker = _workers[workerName];
-      if (typeof worker === "string") {
-        _workers[workerName] = {
-          status: worker,
-          statusString: worker,
-        };
-      } else {
-        worker.delta = Math.round(
-          (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
-        );
-        worker.statusString =
-          "working on " +
-          worker.queue +
-          "#" +
-          worker.payload.class +
-          " for " +
-          worker.delta +
-          "s";
+      Object.keys(_workers).forEach((workerName) => {
+        const worker = _workers[workerName];
+        if (typeof worker === "string") {
+          _workers[workerName] = {
+            status: worker,
+            statusString: worker,
+          };
+        } else {
+          worker.delta = Math.round(
+            (new Date().getTime() - new Date(worker.run_at).getTime()) / 1000
+          );
+          worker.statusString =
+            "working on " +
+            worker.queue +
+            "#" +
+            worker.payload.class +
+            " for " +
+            worker.delta +
+            "s";
+        }
+      });
+
+      const queueNames = Object.keys(_queues);
+      for (const i in queueNames) {
+        if (!_chartData[i]) _chartData[i] = [];
+        _chartData[i].push({ x: timestamp, y: _queues[queueNames[i]].length });
+        if (_chartData[i].length > maxSampleLength) {
+          _chartData[i].shift();
+        }
       }
     });
-
-    const queueNames = Object.keys(_queues);
-    const now = new Date().getTime();
-    for (const i in queueNames) {
-      if (!samples[i]) samples[i] = [];
-      samples[i].push({ x: now, y: _queues[queueNames[i]].length });
-      if (samples[i].length > maxSampleLength) {
-        samples[i].shift();
-      }
-    }
 
     setWorkers(_workers);
     setStats(_stats);
     setQueues(_queues);
     setLeader(_leader);
-    setFailedCount(failedResponse?.failedCount);
-    loading = false;
+    setFailedCount(_failedCount);
+    setChartData(_chartData);
   }
 
   return (
@@ -121,7 +108,7 @@ export default function ResqueOverview(props) {
         <Col md={12}>
           <Card style={{ height: 450 }}>
             <GrouparooChart
-              data={samples}
+              data={chartData}
               keys={Object.keys(queues)}
               minPoints={maxSampleLength}
             />
@@ -175,14 +162,18 @@ export default function ResqueOverview(props) {
                 <tbody>
                   <tr className="table-warning">
                     <td>
-                      <a href="/resque/failed">
-                        <strong>failed</strong>
-                      </a>
+                      <Link href="/resque/failed">
+                        <a>
+                          <strong>failed</strong>
+                        </a>
+                      </Link>
                     </td>
                     <td>
-                      <a href="/resque/failed">
-                        <strong>{failedCount || 0}</strong>
-                      </a>
+                      <Link href="/resque/failed">
+                        <a>
+                          <strong>{failedCount || 0}</strong>
+                        </a>
+                      </Link>
                     </td>
                   </tr>
 
@@ -190,10 +181,14 @@ export default function ResqueOverview(props) {
                     return (
                       <tr key={q}>
                         <td>
-                          <a href={`/resque/queue/${q}`}>{q}</a>
+                          <Link href={`/resque/queue/${q}`}>
+                            <a>{q}</a>
+                          </Link>
                         </td>
                         <td>
-                          <a href={`/resque/queue/${q}`}>{queues[q].length}</a>
+                          <Link href={`/resque/queue/${q}`}>
+                            <a>{queues[q].length}</a>
+                          </Link>
                         </td>
                       </tr>
                     );

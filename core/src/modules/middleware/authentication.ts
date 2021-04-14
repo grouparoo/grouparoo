@@ -146,10 +146,14 @@ async function authenticateTeamMemberInRoom(
   connection: Connection,
   room: string
 ) {
-  if (!room.match(/^model:/)) return;
+  if (!room.match(/^model:/) && !room.match(/^system:/)) {
+    return;
+  }
 
-  const topic = room.split(":")[1];
+  const roomNameParts = room.split(":");
   const mode = "read";
+  const topic =
+    roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0];
 
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);
@@ -164,8 +168,10 @@ async function authenticateTeamMemberInRoom(
       if (!teamMember) throw new AuthenticationError("Team member not found");
 
       const team = await teamMember.$get("team");
-      const authorized = await team.authorizeAction(topic, "read");
-      if (!authorized) throw new AuthorizationError(mode, topic);
+      const authorized = await team.authorizeAction(topic, mode);
+      if (!authorized) {
+        throw new AuthorizationError(mode, topic);
+      }
     }
   });
 }

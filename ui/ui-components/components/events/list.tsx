@@ -3,7 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import { updateURLParams, useOffset } from "../../hooks/URLParams";
 import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
-import { useRealtimeModelStream } from "../../hooks/useRealtimeModelStream";
+import { useRealtimeStream } from "../../hooks/useRealtimeStream";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Form, Alert } from "react-bootstrap";
@@ -26,7 +26,7 @@ export default function EventsList(props) {
   );
 
   // websocket
-  useRealtimeModelStream("event", "events-list", handleMessage);
+  useRealtimeStream("model:event", "events-list", handleMessage);
   const [newEvents, setNewEvents] = useState<number>(0);
 
   const profileId = router.query.id?.toString();

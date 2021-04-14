@@ -142,7 +142,6 @@ import {
   GroupView,
   GroupsList,
   GroupsRuleOptions,
-  GroupsListByNewestMember,
 } from "@grouparoo/core/src/actions/groups";
 import {
   ImportsList,
@@ -229,7 +228,6 @@ import {
   SourceEdit,
   SourceView,
   SourcesList,
-  SourcesCountPending,
   sourceConnectionOptions,
   SourcePreview,
 } from "@grouparoo/core/src/actions/sources";
@@ -437,9 +435,6 @@ export namespace Actions {
   >;
   export type GroupsList = AsyncReturnType<
     typeof GroupsList.prototype.runWithinTransaction
-  >;
-  export type GroupsListByNewestMember = AsyncReturnType<
-    typeof GroupsListByNewestMember.prototype.runWithinTransaction
   >;
   export type GroupsRuleOptions = AsyncReturnType<
     typeof GroupsRuleOptions.prototype.runWithinTransaction
@@ -661,9 +656,6 @@ export namespace Actions {
   >;
   export type SourcesList = AsyncReturnType<
     typeof SourcesList.prototype.runWithinTransaction
-  >;
-  export type SourcesCountPending = AsyncReturnType<
-    typeof SourcesCountPending.prototype.runWithinTransaction
   >;
   export type sourceConnectionOptions = AsyncReturnType<
     typeof sourceConnectionOptions.prototype.runWithinTransaction

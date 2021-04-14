@@ -280,42 +280,5 @@ describe("actions/sources", () => {
       const count = await Source.count();
       expect(count).toBe(0);
     });
-
-    describe("with properties", () => {
-      beforeAll(async () => {
-        await helper.factories.properties();
-      });
-
-      test("an administrator can list the pending properties by source", async () => {
-        connection.params = { csrfToken };
-
-        const profile = await helper.factories.profile();
-        await profile.buildNullProperties();
-        const emailProperty = await Property.findOne({
-          where: { key: "email" },
-        });
-        const firstNameProperty = await Property.findOne({
-          where: { key: "firstName" },
-        });
-        await ProfileProperty.update(
-          { state: "pending" },
-          {
-            where: {
-              profileId: profile.id,
-              propertyId: {
-                [Op.in]: [emailProperty.id, firstNameProperty.id],
-              },
-            },
-          }
-        );
-
-        const { error, counts } = await specHelper.runAction(
-          "sources:countPending",
-          connection
-        );
-        expect(error).toBeUndefined();
-        expect(counts[emailProperty.sourceId]).toBe(1);
-      });
-    });
   });
 });
