@@ -89,7 +89,7 @@ describe("integration", () => {
   test(
     "I was taken to the settings page after creating the first team",
     async () => {
-      await helper.sleep(1 * 1000);
+      await helper.sleep(2 * 1000);
       const url = await browser.getCurrentUrl();
       expect(url).toMatch(/\/setup/);
       await browser.get(url);
