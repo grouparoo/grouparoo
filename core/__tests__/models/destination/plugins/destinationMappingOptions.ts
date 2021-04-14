@@ -362,6 +362,7 @@ describe("models/destination", () => {
             description: "a test app connection",
             app: "test-destinationMapping-app",
             direction: "export",
+            syncModes: ["sync", "additive", "enrich"],
             options: [],
             methods: {
               destinationMappingOptions: async () => {
@@ -405,6 +406,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test plugin destination",
         type: "destinationMapping-test-connection",
+        syncMode: "sync",
         appId: app.id,
       });
       await destination.update({ state: "ready" });

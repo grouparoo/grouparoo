@@ -7,6 +7,7 @@ const data = async (props = {}) => {
     name: `destination ${faker.company.companyName()} - ${Math.random()}`,
     type: "test-plugin-export",
     options: { table: "out table" },
+    syncMode: "sync",
     mapping: {},
 
     createdAt: new Date(),

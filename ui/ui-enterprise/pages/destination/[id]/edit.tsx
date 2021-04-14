@@ -155,6 +155,31 @@ export default function Page(props) {
                 </Form.Control.Feedback>
               </Form.Group>
 
+              {destination.syncModes.length > 0 ? (
+                <Form.Group controlId="syncMode">
+                  <Form.Label>Sync Mode</Form.Label>
+                  <Form.Control
+                    as="select"
+                    required={true}
+                    disabled={loading}
+                    defaultValue={destination.syncMode?.toString() || ""}
+                    onChange={(e) => update(e)}
+                  >
+                    <option value={""} disabled>
+                      Select an option
+                    </option>
+                    {destination.syncModes.map((mode) => (
+                      <option key={mode.key} value={mode.key}>
+                        {mode.displayName} | {mode.description}
+                      </option>
+                    ))}
+                  </Form.Control>
+                  <Form.Text className="text-muted">
+                    How should this destination sync profiles?
+                  </Form.Text>
+                </Form.Group>
+              ) : null}
+
               <p>
                 <strong>App</strong>:{" "}
                 <Link href="/app/[id]" as={`/app/${destination.app.id}`}>

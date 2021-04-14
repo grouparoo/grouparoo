@@ -84,6 +84,7 @@ describe("tasks/profile:export", () => {
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
+              syncModes: ["sync", "additive", "enrich"],
               options: [],
               methods: {
                 exportProfile: async () => {
@@ -123,6 +124,7 @@ describe("tasks/profile:export", () => {
         destination = await Destination.create({
           name: "test destination",
           type: "export-from-test-template-app",
+          syncMode: "sync",
           appId: app.id,
         });
         await destination.setMapping({

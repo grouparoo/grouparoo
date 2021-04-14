@@ -205,6 +205,7 @@ describe("models/option", () => {
               description: "a test app connection",
               app: "test-template-app",
               direction: "export",
+              syncModes: ["sync", "additive", "enrich"],
               options: [
                 {
                   key: "test_default_key",
@@ -254,6 +255,7 @@ describe("models/option", () => {
           connection = await Destination.create({
             name: "destination - default option values",
             type: "export-from-test-template-app",
+            syncMode: "sync",
             appId: appWithOptions.id,
           });
         });

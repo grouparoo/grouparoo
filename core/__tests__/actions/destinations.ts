@@ -49,6 +49,7 @@ describe("actions/destinations", () => {
         name: "test destination",
         type: "test-plugin-export",
         appId: app.id,
+        syncMode: "sync",
       };
       const { error, destination } = await specHelper.runAction(
         "destination:create",
@@ -58,6 +59,7 @@ describe("actions/destinations", () => {
       expect(destination.id).toBeTruthy();
       expect(destination.app.id).toBe(app.id);
       expect(destination.app.name).toBe("test app");
+      expect(destination.syncMode).toBe("sync");
 
       id = destination.id;
     });
@@ -68,6 +70,7 @@ describe("actions/destinations", () => {
         name: "test destination again",
         type: "test-plugin-export",
         appId: app.id,
+        syncMode: "sync",
       };
       const { error } = await specHelper.runAction(
         "destination:create",
@@ -139,6 +142,7 @@ describe("actions/destinations", () => {
       expect(error).toBeUndefined();
       expect(destination.id).toBeTruthy();
       expect(destination.name).toBe("test destination");
+      expect(destination.syncMode).toBe("sync");
       expect(destination.app.name).toBe("test app");
     });
 
@@ -263,6 +267,20 @@ describe("actions/destinations", () => {
       expect(error.message).toMatch(
         /purchases is an array profile property that .* cannot support/
       );
+    });
+
+    test("an administrator can set the sync mode", async () => {
+      connection.params = {
+        csrfToken,
+        id,
+        syncMode: "enrich",
+      };
+      const { destination, error } = await specHelper.runAction(
+        "destination:edit",
+        connection
+      );
+      expect(error).toBeFalsy();
+      expect(destination.syncMode).toBe("enrich");
     });
 
     describe("with group", () => {

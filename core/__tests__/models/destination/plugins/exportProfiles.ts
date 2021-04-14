@@ -60,6 +60,7 @@ describe("models/destination", () => {
             description: "a test app connection",
             app: "test-template-app",
             direction: "export",
+            syncModes: ["sync", "enrich", "additive"],
             options: [],
             methods: {
               destinationMappingOptions: async () => {
@@ -118,6 +119,7 @@ describe("models/destination", () => {
       destination = await Destination.create({
         name: "test plugin destination",
         type: "export-from-test-template-app",
+        syncMode: "sync",
         appId: app.id,
       });
       await destination.update({ state: "ready" });

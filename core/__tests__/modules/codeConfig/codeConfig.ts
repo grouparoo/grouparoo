@@ -195,6 +195,7 @@ describe("modules/codeConfig", () => {
       expect(destinations[0].id).toBe("test_destination");
       expect(destinations[0].appId).toBe("data_warehouse");
       expect(destinations[0].name).toBe("Test Destination");
+      expect(destinations[0].syncMode).toBe("additive");
       expect(destinations[0].state).toBe("ready");
       expect(destinations[0].locked).toBe("config:code");
       const options = await destinations[0].getOptions();
