@@ -8,7 +8,7 @@ import { OptionHelper } from "../optionHelper";
 
 // TODO:
 // because this is so dynamic the "providedIds" in getParentIds isn't right for properties, bootstrap, source, destination, schedule, etc
-// equilavent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable. is this important?
+// equivalent of validateConfigObjectKeys(Source, configObject); for this whole thing to freak out if not applicable. is this important?
 // Error: only one property can be identifying
 
 interface columnTypes {

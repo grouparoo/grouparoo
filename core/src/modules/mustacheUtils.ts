@@ -1,6 +1,7 @@
 import Mustache from "mustache";
+// import { Property } from "../models/Property"; // TODO: importing this causes a circular dependency loop; we'll use api.sequelize.models for now
 import { ConfigurationObject } from "../classes/codeConfig";
-import { Property } from "../models/Property";
+import { api } from "actionhero";
 
 export namespace MustacheUtils {
   export interface MustacheArgs {
@@ -46,7 +47,7 @@ export namespace MustacheUtils {
     configObjects: ConfigurationObject[] = []
   ) {
     const keys = getMustacheVariables(string);
-    const properties = await Property.findAll();
+    const properties = await api.sequelize.models.Property.findAll();
     const searchItems: Array<{ id: string; key: string }> = [].concat(
       properties.map((p) => {
         return { id: p.id, key: p.key };

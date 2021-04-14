@@ -229,22 +229,22 @@ export async function getParentIds(
   // special cases
   // - Bootstrapped property
   if (
-    configObject.class.toLowerCase() === "source" &&
+    configObject.class?.toLowerCase() === "source" &&
     configObject?.bootstrappedProperty?.id
   ) {
     providedIds.push(configObject.bootstrappedProperty.id);
   }
+
   // - query property with mustache dependency
   if (
-    configObject.class.toLowerCase() === "property" &&
+    configObject.class?.toLowerCase() === "property" &&
     configObject?.options?.query
   ) {
-    prerequisiteIds.push(
-      ...(await MustacheUtils.getMustacheVariablesAsPropertyIds(
-        configObject?.options?.query,
-        otherConfigObjects
-      ))
+    const mustachePrerequisiteIds = await MustacheUtils.getMustacheVariablesAsPropertyIds(
+      configObject?.options?.query,
+      otherConfigObjects
     );
+    prerequisiteIds.push(...mustachePrerequisiteIds);
   }
 
   // prerequisites

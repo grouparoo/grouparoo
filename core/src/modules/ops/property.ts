@@ -4,7 +4,6 @@ import { GroupRule } from "../../models/GroupRule";
 import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
 import { Op } from "sequelize";
-import { api } from "actionhero";
 import Mustache from "mustache";
 
 export namespace PropertyOps {
