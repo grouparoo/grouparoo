@@ -162,6 +162,64 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(file, updatedLines.join(os.EOL));
   }
 
+  export function setDestinationMappings(
+    projectPath: string,
+    destinationName: string,
+    groupName = "everyone"
+  ) {
+    const file = path.join(
+      projectPath,
+      "config",
+      "destinations",
+      `${destinationName}.js`
+    );
+    const contents = fs.readFileSync(file).toString();
+    const lines = contents.split(os.EOL);
+    const updatedLines: string[] = [];
+
+    let inMapping = false;
+    let inDestinationGroupMemberships = false;
+
+    for (const line of lines) {
+      if (line.includes('groupId: "..."')) {
+        updatedLines.push(
+          line.replace('groupId: "..."', `groupId: "${groupName}"`)
+        );
+      } else {
+        if (line.includes("mapping: {")) {
+          inMapping = true;
+          updatedLines.push(`      mapping: { user_id: 'user_id'`);
+        }
+        if (line.includes("destinationGroupMemberships: {")) {
+          inDestinationGroupMemberships = true;
+          updatedLines.push(`      destinationGroupMemberships: {`);
+        }
+        if (
+          (inMapping || inDestinationGroupMemberships) &&
+          line.trim() === "},"
+        ) {
+          inMapping = false;
+          inDestinationGroupMemberships = false;
+        }
+
+        if (!inMapping && !inDestinationGroupMemberships) {
+          updatedLines.push(line);
+        } else {
+          // skip existing mapping/membership lines
+        }
+      }
+    }
+
+    fs.writeFileSync(file, updatedLines.join(os.EOL));
+  }
+
+  export async function generateGroup(
+    runCliCommand: Function,
+    groupName = "everyone"
+  ) {
+    return runCliCommand(`generate group:manual ${groupName} --overwrite`);
+  }
+
   export function prepareForCLITest(
     pluginName: string,
     pluginPath: string,
@@ -301,11 +359,13 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
           }
         });
 
-        destinations.forEach((destination) => {
+        destinations.forEach((destination, idx) => {
           const destinationPrefix = buildPrefix(destination);
 
           if (destination.match(appMatcher)) {
             test(`generate destination ${destination}`, async () => {
+              if (idx === 0) await generateGroup(runCliCommand);
+
               const { exitCode, stderr } = await runCliCommand(
                 `generate ${destination} destination_${buildId(
                   destinationPrefix
@@ -313,6 +373,11 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
               );
               expect(exitCode).toBe(0);
               expect(stderr).toBe("");
+
+              CLISpecHelper.setDestinationMappings(
+                projectPath,
+                `destination_${buildId(destinationPrefix)}`
+              );
             });
           }
         });
