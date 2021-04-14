@@ -1,7 +1,5 @@
 import { CLI, api } from "actionhero";
 import Colors from "colors/safe";
-import { Op } from "sequelize";
-import { Run, Profile, Import, Export } from "..";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -59,50 +57,6 @@ export namespace GrouparooCLI {
   export function disableWebServer() {
     delete api.servers.servers.web;
     delete api.servers.servers.websocket;
-  }
-
-  /** Status */
-
-  export async function getPendingStatus(): Promise<LogStatus> {
-    const activeRuns = await Run.count({ where: { state: "running" } });
-    const pendingProfiles = await Profile.count({
-      where: { state: { [Op.ne]: "ready" } },
-    });
-    const totalProfiles = await Profile.count();
-    const pendingImports = await Import.count({
-      where: { exportedAt: null },
-    });
-    const pendingExports = await Export.count({
-      where: { completedAt: null, errorMessage: null },
-    });
-
-    return {
-      ActiveRuns: [activeRuns],
-      PendingProfiles: [pendingProfiles, totalProfiles],
-      PendingImports: [pendingImports],
-      PendingExports: [pendingExports],
-    };
-  }
-
-  export async function getRunsStatus(): Promise<LogStatus> {
-    const activeRuns = await Run.findAll({ where: { state: "running" } });
-
-    const status = {};
-    for (const i in activeRuns) {
-      const run = activeRuns[i];
-      const creatorName = await run.getCreatorName();
-      const percentComplete = run.percentComplete;
-      const highWaterMark = run.highWaterMark
-        ? Object.values(run.highWaterMark)[0]
-        : run.groupHighWaterMark;
-      status[creatorName] = [`${percentComplete}%`, highWaterMark];
-    }
-
-    if (activeRuns.length === 0) {
-      status["None"] = [null];
-    }
-
-    return status;
   }
 
   /** Logging */

@@ -34,6 +34,7 @@ export async function loadSchedule(
   }
 
   await schedule.update({
+    type: configObject.type,
     name: configObject.name,
     recurring: configObject.recurring,
     recurringFrequency: configObject.recurringFrequency,

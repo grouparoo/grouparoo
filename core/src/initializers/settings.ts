@@ -168,6 +168,14 @@ export class Plugins extends CLSInitializer {
           "Should Grouparoo display the Setup Steps to all Team Members?  You can always visit /setup to see your setup steps.",
         type: "boolean",
       },
+      {
+        key: "status-calculation-frequency-seconds",
+        title: "Status Calculation Frequency Seconds",
+        defaultValue: "10",
+        description:
+          "How often should Grouparoo calculate updated status and totals for the UI?  This includes information on the Dashboard, pending Runs, and Resque information.  For larger clusters, calculating this often may have adverse effects.",
+        type: "number",
+      },
     ];
 
     const telemetrySettings: SettingsListItem[] = [

@@ -46,6 +46,7 @@ export async function loadDestination(
 
   await destination.update({
     name: configObject.name,
+    type: configObject.type,
     syncMode: configObject.syncMode,
   });
 

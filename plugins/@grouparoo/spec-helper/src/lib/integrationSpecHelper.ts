@@ -45,7 +45,10 @@ export namespace IntegrationSpecHelper {
   }
 
   export async function shutdown(subProcess?) {
-    if (subProcess) await subProcess.kill();
+    if (subProcess) {
+      await subProcess.kill();
+      await sleep(3000);
+    }
   }
 
   export async function waitForAPI(url: string, count = 0) {
@@ -97,6 +100,7 @@ export namespace IntegrationSpecHelper {
       SERVER_TOKEN: serverToken,
       GROUPAROO_CONFIG_DIR: disableCodeConfig ? "/not/a/real/dir" : undefined,
       GROUPAROO_ENV_CONFIG_FILE: "/path/to/nothing",
+      GROUPAROO_LOG_LEVEL: "crit",
     });
 
     const subProcess = spawn("node", ["dist/grouparoo.js"], {

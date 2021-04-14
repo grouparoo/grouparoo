@@ -13,6 +13,7 @@ import { Actions } from "../utils/apiData";
 import { ErrorHandler } from "../utils/errorHandler";
 import { SetupStepHandler } from "../utils/setupStepsHandler";
 import { SessionHandler } from "../utils/sessionHandler";
+import { StatusHandler } from "../utils/statusHandler";
 import { truncate } from "../utils/truncate";
 
 export const navLiStyle = { marginTop: 20, marginBottom: 20 };
@@ -39,6 +40,7 @@ export default function Navigation(props) {
     errorHandler,
     setupStepHandler,
     sessionHandler,
+    statusHandler,
   }: {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
@@ -48,6 +50,7 @@ export default function Navigation(props) {
     errorHandler: ErrorHandler;
     setupStepHandler: SetupStepHandler;
     sessionHandler: SessionHandler;
+    statusHandler: StatusHandler;
   } = props;
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
@@ -105,41 +108,6 @@ export default function Navigation(props) {
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
   const uiPlugin = `@grouparoo/ui-${process.env.GROUPAROO_UI_EDITION}`;
-
-  // resque failure counts
-  const pollTimerSleep = 10 * 1000 + 1;
-  let pollTimer: NodeJS.Timeout;
-  const [resqueFailedCount, setResqueFailedCount] = useState(0);
-  const [unreadNotificationsCount, setUnreadNotificationsCount] = useState(0);
-
-  useEffect(() => {
-    load();
-    return () => {
-      clearTimeout(pollTimer);
-    };
-  }, [navigationMode]);
-
-  async function load() {
-    if (!navigationMode || navigationMode === "unauthenticated") return;
-
-    try {
-      const { failedCount }: Actions.ResqueFailedCount = await execApi(
-        "get",
-        `/resque/resqueFailedCount`
-      );
-      setResqueFailedCount(failedCount);
-      const { unreadCount }: Actions.NotificationsList = await execApi(
-        "get",
-        `/notifications`
-      );
-      setUnreadNotificationsCount(unreadCount);
-      pollTimer = setTimeout(() => {
-        load();
-      }, pollTimerSleep);
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   return (
     <div
@@ -225,7 +193,7 @@ export default function Navigation(props) {
                           {nav.title === "Runs" ? (
                             <>
                               {" "}
-                              <RunningRunsBadge execApi={execApi} />
+                              <RunningRunsBadge statusHandler={statusHandler} />
                             </>
                           ) : null}
                         </>
@@ -271,15 +239,13 @@ export default function Navigation(props) {
                           {!expandPlatformMenu ? (
                             <ResqueFailedCountBadge
                               navigationMode={navigationMode}
-                              resqueFailedCount={resqueFailedCount}
+                              statusHandler={statusHandler}
                             />
                           ) : null}
                           {!expandPlatformMenu ? (
                             <UnreadNotificationsBadge
                               navigationMode={navigationMode}
-                              unreadNotificationsCount={
-                                unreadNotificationsCount
-                              }
+                              statusHandler={statusHandler}
                             />
                           ) : null}
                         </span>
@@ -303,16 +269,14 @@ export default function Navigation(props) {
                                   nav.title === "Notifications" ? (
                                     <UnreadNotificationsBadge
                                       navigationMode={navigationMode}
-                                      unreadNotificationsCount={
-                                        unreadNotificationsCount
-                                      }
+                                      statusHandler={statusHandler}
                                     />
                                   ) : null}
                                   {expandPlatformMenu &&
                                   nav.title === "Resque" ? (
                                     <ResqueFailedCountBadge
                                       navigationMode={navigationMode}
-                                      resqueFailedCount={resqueFailedCount}
+                                      statusHandler={statusHandler}
                                     />
                                   ) : null}
                                 </p>

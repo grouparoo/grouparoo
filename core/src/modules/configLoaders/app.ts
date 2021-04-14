@@ -32,7 +32,7 @@ export async function loadApp(
     });
   }
 
-  await app.update({ name: configObject.name });
+  await app.update({ type: configObject.type, name: configObject.name });
   await app.setOptions(extractNonNullParts(configObject, "options"));
 
   if (externallyValidate) {

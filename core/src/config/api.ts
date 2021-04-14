@@ -71,11 +71,9 @@ export const DEFAULT = {
       },
 
       startingChatRooms: {
-        "model:run": {},
+        "system:status": {},
         "model:log": {},
         "model:event": {},
-        "model:profile": {},
-        "model:group": {},
       },
     };
   },

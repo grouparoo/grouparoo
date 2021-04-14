@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Log, Profile, Group, Import, GroupMember, Run } from "../../../src";
+import { GroupOps } from "../../../src/modules/ops/group";
 
 describe("models/group", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -221,6 +222,40 @@ describe("models/group", () => {
       // import#profileId is set directly
       expect(imports[0].profileId).toBe(profile.id);
       expect(imports[1].profileId).toBe(profile.id);
+    });
+
+    test("#newestGroupMembers", async () => {
+      const groupA = await helper.factories.group();
+      const groupB = await helper.factories.group();
+      const profile = await helper.factories.profile();
+      await GroupMember.create({
+        profileId: profile.id,
+        groupId: groupA.id,
+      });
+      await helper.sleep(100);
+      await GroupMember.create({
+        profileId: profile.id,
+        groupId: groupB.id,
+      });
+
+      const {
+        groups,
+        newestMembersAdded,
+      } = await GroupOps.newestGroupMembers();
+      expect(groups.length).toBeGreaterThan(0);
+      expect(newestMembersAdded[groupA.id]).toBeLessThanOrEqual(
+        new Date().getTime()
+      );
+      expect(newestMembersAdded[groupB.id]).toBeLessThanOrEqual(
+        new Date().getTime()
+      );
+      expect(newestMembersAdded[groupB.id]).toBeGreaterThan(
+        newestMembersAdded[groupA.id]
+      );
+
+      await profile.destroy();
+      await groupA.destroy();
+      await groupB.destroy();
     });
 
     test("a group with members cannot be deleted", async () => {

@@ -1,10 +1,11 @@
 import { Source, SimpleSourceOptions } from "../../models/Source";
+import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property, PropertyFiltersWithKey } from "../../models/Property";
 import { Profile } from "../../models/Profile";
 import { App } from "../../models/App";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
-import { log, utils } from "actionhero";
+import { log, utils, api } from "actionhero";
 import { LoggedModel } from "../../classes/loggedModel";
 
 export namespace SourceOps {
@@ -345,5 +346,32 @@ export namespace SourceOps {
         throw error;
       }
     }
+  }
+
+  export async function pendingImportsBySource() {
+    const countsBySource = await Property.findAll({
+      attributes: [
+        "sourceId",
+        [
+          api.sequelize.fn(
+            "COUNT",
+            api.sequelize.fn("DISTINCT", api.sequelize.col("profileId"))
+          ),
+          "count",
+        ],
+      ],
+      group: ["sourceId"],
+      include: [
+        { model: ProfileProperty, attributes: [], where: { state: "pending" } },
+      ],
+      raw: true,
+    });
+
+    const counts: { [sourceId: string]: number } = {};
+    countsBySource.forEach((record) => {
+      counts[record.sourceId] = record["count"];
+    });
+
+    return { counts };
   }
 }

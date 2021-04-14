@@ -1,12 +1,11 @@
 import { GrouparooCLI } from "../modules/cli";
 import { plugin } from "../modules/plugin";
-import { Profile } from "../models/Profile";
-import { Group } from "../models/Group";
 import { GroupOps } from "../modules/ops/group";
 import { env, CLI } from "actionhero";
 import { CLS } from "../modules/cls";
+import { Status } from "../modules/status";
 
-export class Status extends CLI {
+export class StatusCLI extends CLI {
   constructor() {
     super();
     this.name = "status";
@@ -29,8 +28,8 @@ export class Status extends CLI {
         "cluster-name"
       );
 
-      const totalProfiles = await Profile.count();
-      const totalGroups = await Group.count();
+      const samples = await Status.sample();
+
       const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
         100
       );
@@ -49,18 +48,38 @@ export class Status extends CLI {
 
       const overview = {
         ClusterName: [clusterName, env ? `${env}` : undefined],
-        TotalProfiles: [totalProfiles],
-        TotalGroups: [totalGroups],
+        TotalProfiles: [
+          samples.find(
+            (s) => s.collection === "totals" && s.topic === "Profile"
+          ).count,
+        ],
+        TotalGroups: [
+          samples.find((s) => s.collection === "totals" && s.topic === "Group")
+            .count,
+        ],
       };
 
-      const pendingStatus = await GrouparooCLI.getPendingStatus();
-      const runStatus = await GrouparooCLI.getRunsStatus();
+      const pendingItems = samples
+        .filter((s) => s.collection === "pending")
+        .map((s) => {
+          return { [s.topic]: [s.count] };
+        })
+        .reduce((s, arr) => Object.assign(s, arr), {});
+
+      const pendingRuns = samples
+        .filter((s) => s.topic === "Run" && s.collection === "percentComplete")
+        .map((s) => {
+          return {
+            [s.value]: [`${s.count}%${s.metadata ? ` (${s.metadata})` : ""}`],
+          };
+        })
+        .reduce((s, arr) => Object.assign(s, arr), {});
 
       const data = [
         { header: "Overview", status: overview },
         { header: "Groups", status: groupsStatus },
-        { header: "Active Runs", status: runStatus },
-        { header: "Pending Items", status: pendingStatus },
+        { header: "Pending Items", status: pendingItems },
+        { header: "Active Runs", status: pendingRuns },
       ];
 
       if (params.json) {
