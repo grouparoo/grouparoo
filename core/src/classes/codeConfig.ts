@@ -4,6 +4,7 @@ import { GroupRuleWithKey } from "../models/Group";
 import extractDuplicates from "../modules/validators/extractDuplicates";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
+import { MustacheUtils } from "../modules/mustacheUtils";
 
 export interface IdsByClass {
   app?: string[];
@@ -168,10 +169,10 @@ export function extractNonNullParts(
   return cleanedOptions;
 }
 
-export function sortConfigurationObjects(
+export async function sortConfigurationObjects(
   configObjects: ConfigurationObject[]
-): ConfigurationObject[] {
-  const configObjectsWithIds = getConfigObjectsWithIds(configObjects);
+): Promise<ConfigurationObject[]> {
+  const configObjectsWithIds = await getConfigObjectsWithIds(configObjects);
   const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
     configObjectsWithIds
   );
@@ -194,12 +195,17 @@ export function validateConfigObjects(
   return { configObjects, errors };
 }
 
-export function getConfigObjectsWithIds(configObjects: ConfigurationObject[]) {
+export async function getConfigObjectsWithIds(
+  configObjects: ConfigurationObject[]
+) {
   const configObjectsWithIds: ConfigObjectWithReferenceIDs[] = [];
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
-    const { providedIds, prerequisiteIds } = getParentIds(configObject);
+    const { providedIds, prerequisiteIds } = await getParentIds(
+      configObject,
+      configObjects
+    );
     configObjectsWithIds.push({
       configObject,
       providedIds,
@@ -210,7 +216,10 @@ export function getConfigObjectsWithIds(configObjects: ConfigurationObject[]) {
   return configObjectsWithIds;
 }
 
-export function getParentIds(configObject: ConfigurationObject) {
+export async function getParentIds(
+  configObject: ConfigurationObject,
+  otherConfigObjects: Array<ConfigurationObject> = []
+) {
   const keys = Object.keys(configObject);
   const prerequisiteIds: string[] = [];
   const providedIds: string[] = [];
@@ -219,8 +228,23 @@ export function getParentIds(configObject: ConfigurationObject) {
 
   // special cases
   // - Bootstrapped property
-  if (configObject?.bootstrappedProperty?.id) {
+  if (
+    configObject.class.toLowerCase() === "source" &&
+    configObject?.bootstrappedProperty?.id
+  ) {
     providedIds.push(configObject.bootstrappedProperty.id);
+  }
+  // - query property with mustache dependency
+  if (
+    configObject.class.toLowerCase() === "property" &&
+    configObject?.options?.query
+  ) {
+    prerequisiteIds.push(
+      ...(await MustacheUtils.getMustacheVariablesAsPropertyIds(
+        configObject?.options?.query,
+        otherConfigObjects
+      ))
+    );
   }
 
   // prerequisites

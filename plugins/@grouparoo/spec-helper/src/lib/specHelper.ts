@@ -256,7 +256,7 @@ export namespace helper {
         {
           name: "test-plugin-import",
           direction: "import",
-          description: "import or update profiles from an uploaded file",
+          description: "import or update profiles from a table",
           app: "test-plugin-app",
           options: [
             { key: "table", required: true },
