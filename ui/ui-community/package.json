@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/ui-community",
   "description": "The Grouparoo Community Web UI",
-  "version": "0.2.12-alpha.1",
+  "version": "0.2.12",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -56,9 +56,9 @@
     "victory": "35.5.1"
   },
   "devDependencies": {
-    "@grouparoo/core": "0.2.12-alpha.1",
-    "@grouparoo/spec-helper": "0.2.12-alpha.1",
-    "@grouparoo/ui-components": "0.2.12-alpha.1",
+    "@grouparoo/core": "0.2.12",
+    "@grouparoo/spec-helper": "0.2.12",
+    "@grouparoo/ui-components": "0.2.12",
     "@types/jest": "*",
     "@types/react": "*",
     "@types/react-dom": "*",
