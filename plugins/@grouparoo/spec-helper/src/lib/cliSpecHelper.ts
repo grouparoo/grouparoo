@@ -10,16 +10,15 @@ export namespace CLISpecHelper {
     command: string,
     args: Array<string> = [],
     cwd: string = process.cwd(),
-    extraEnv = {}
+    env = {}
   ): Promise<{ exitCode: number; stderr: string; stdout: string }> {
     return new Promise((resolve, reject) => {
-      const env = process.env;
       let stdout = "";
       let stderr = "";
 
       const spawnProcess = spawn(command, args, {
         cwd,
-        env: Object.assign(extraEnv, env),
+        env,
       });
 
       spawnProcess.stdout.on("data", (data) => {
@@ -41,13 +40,11 @@ export namespace CLISpecHelper {
     command: string,
     args: Array<string> = [],
     cwd: string = process.cwd(),
-    extraEnv = {}
+    env = {}
   ): { exitCode: number; stderr: string; stdout: string } {
-    const env = process.env;
-
     const syncResponse = spawnSync(command, args, {
       cwd,
-      env: Object.assign(extraEnv, env),
+      env,
     });
     const stdout = syncResponse.stdout.toString();
     const stderr = syncResponse.stderr.toString();
@@ -245,6 +242,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
     const cliEnv = Object.assign({}, process.env, {
       GROUPAROO_LOGS_STDOUT_DISABLE_COLOR: "true",
+      INIT_CWD: undefined,
       GROUPAROO_PARENT_PATH: projectPath,
       JEST_WORKER_ID: jestId,
     });
