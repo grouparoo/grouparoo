@@ -62,16 +62,16 @@ export namespace CLISpecHelper {
     });
   }
 
-  export async function clear(projectDir: string) {
+  export function clear(projectDir: string) {
     if (!fs.existsSync(projectDir)) fs.mkdirpSync(projectDir);
-    await fs.emptyDir(projectDir);
+    fs.emptyDirSync(projectDir);
   }
 
   export function corePath() {
     return path.join(require.resolve("@grouparoo/core"), "..", "..");
   }
 
-  export async function install(
+  export function install(
     pluginName: string,
     pluginPath: string,
     projectPath: string
@@ -238,12 +238,10 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     );
     const cliBin = path.join(cliRoot, "grouparoo.js");
 
-    beforeAll(async () => {
-      console.log(`testing ${pluginName} CLI @ ${projectPath}`);
-      await clear(projectPath);
-      await install(pluginName, pluginPath, projectPath);
-      writeEnvFile(projectPath);
-    }, 1000 * 60);
+    console.log(`testing ${pluginName} CLI @ ${projectPath}`);
+    clear(projectPath);
+    install(pluginName, pluginPath, projectPath);
+    writeEnvFile(projectPath);
 
     const cliEnv = Object.assign({}, process.env, {
       GROUPAROO_LOGS_STDOUT_DISABLE_COLOR: "true",
