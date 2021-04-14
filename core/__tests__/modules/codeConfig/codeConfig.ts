@@ -630,4 +630,54 @@ describe("modules/codeConfig", () => {
       });
     });
   });
+
+  describe("errors in a second run", () => {
+    beforeEach(async () => {
+      helper.truncate();
+    });
+
+    test("changing an app's type (missing) causes an error", async () => {
+      // initial load
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+      );
+
+      // changes
+      const { errors } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-changed-type-missing"
+        )
+      );
+
+      expect(errors.length).toBe(1);
+      expect(errors[0]).toMatch(/Cannot find a "foo" plugin/);
+    });
+
+    test("changing an app's type (valid) causes an error", async () => {
+      // initial load
+      await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+      );
+
+      // changes
+      const { errors } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "error-changed-type-duplicate"
+        )
+      );
+
+      expect(errors.length).toBe(1);
+      expect(errors[0]).toMatch(/fileId is not an option for a manual app/);
+    });
+  });
 });

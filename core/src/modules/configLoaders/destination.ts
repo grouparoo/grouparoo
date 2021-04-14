@@ -43,7 +43,10 @@ export async function loadDestination(
     group = await getParentByName(Group, configObject.groupId);
   }
 
-  await destination.update({ name: configObject.name });
+  await destination.update({
+    type: configObject.type,
+    name: configObject.name,
+  });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));
 
