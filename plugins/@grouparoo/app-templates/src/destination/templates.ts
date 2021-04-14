@@ -20,19 +20,19 @@ export class DestinationTemplate extends ConfigTemplate {
         required: true,
         description: `The id of the ${name} App to use for this Destination, e.g: \`--parent data_warehouse\``,
       },
-      syncMode: {
+    };
+
+    if (syncModes && syncModes.length > 0) {
+      this.inputs["syncMode"] = {
         required: false,
         default:
-          defaultSyncMode || (syncModes && syncModes.length === 1)
-            ? syncModes[0]
-            : "...",
+          defaultSyncMode || syncModes.length === 1 ? syncModes[0] : "...",
         description: `How should profiles sync to the destination? e.g. \`--sync-mode additive\`. ${
-          syncModes && syncModes.length > 0
-            ? "Options: " + syncModes.join(", ")
-            : ""
+          "Options: " + syncModes.join(", ")
         }`,
-      },
-    };
+      };
+    }
+
     this.files = files;
     this.destinationDir = "destinations";
     this.parentId = "appId";
