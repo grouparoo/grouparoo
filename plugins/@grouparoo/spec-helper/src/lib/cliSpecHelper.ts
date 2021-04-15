@@ -159,7 +159,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(file, updatedLines.join(os.EOL));
   }
 
-  export function setDestinationMappings(
+  export function prepareDestinationTemplate(
     projectPath: string,
     destinationName: string,
     groupName = "everyone"
@@ -182,12 +182,17 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
         updatedLines.push(
           line.replace('groupId: "..."', `groupId: "${groupName}"`)
         );
+      } else if (line.includes('syncMode: "..."')) {
+        updatedLines.push(line.replace('syncMode: "..."', `syncMode: "sync"`));
       } else {
-        if (line.includes("mapping: {")) {
+        if (line.includes("mapping: {") && !line.includes("}")) {
           inMapping = true;
           updatedLines.push(`      mapping: { user_id: 'user_id'`);
         }
-        if (line.includes("destinationGroupMemberships: {")) {
+        if (
+          line.includes("destinationGroupMemberships: {") &&
+          !line.includes("}")
+        ) {
           inDestinationGroupMemberships = true;
           updatedLines.push(`      destinationGroupMemberships: {`);
         }
@@ -393,7 +398,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
               expect(exitCode).toBe(0);
               testStdErr(projectPath, stdout, stderr);
 
-              CLISpecHelper.setDestinationMappings(
+              CLISpecHelper.prepareDestinationTemplate(
                 projectPath,
                 `destination_${buildId(destinationPrefix)}`
               );
@@ -445,7 +450,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     } catch (error) {
       console.log(`Error testing @ ${projectPath}`);
       console.log(
-        `Try locally with: cd ${projectPath} && GROUPAROO_PARENT_PATH="${projectPath}" roo validate`
+        `Try locally with: cd ${projectPath} && GROUPAROO_PARENT_PATH="${projectPath}" roo validate --local`
       );
       console.log(`--- STDOUT --- `);
       console.log(stdout);
