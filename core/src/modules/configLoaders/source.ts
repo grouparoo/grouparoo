@@ -86,7 +86,8 @@ export async function loadSource(
         property.key || property.name,
         property.type,
         mappedColumn,
-        await validateAndFormatId(Property, property.id)
+        await validateAndFormatId(Property, property.id),
+        validate
       );
       await setMapping();
     } else {

@@ -8,16 +8,16 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 const nockFile = path.join(__dirname, "../", "fixtures", "cli.js");
 
+import { helper } from "@grouparoo/spec-helper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import { SimpleAppOptions } from "@grouparoo/core";
+
 // these comments to use nock
 const newNock = false;
 require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
-
-import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions } from "@grouparoo/core";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -150,56 +150,47 @@ describe("snowflake cli tests", () => {
     fs.unlinkSync(file);
   });
 
-  /**
-   * This test is marked at TODO because nock isn't fully preventing access to snowflake.
-   * On CI, requests to snowflake are still getting made, even with the nockfile loaded in.
-   * The test runs just fine locally / when recording nockfiles.
-   */
+  test("a source can be generated with all of its properties", async () => {
+    api.codeConfig.allowLockedModelChanges = true;
 
-  test.todo(
-    "a source can be generated with all of its properties"
-    // async () => {
-    //   api.codeConfig.allowLockedModelChanges = true;
+    await new Apply().run({ params: {} });
 
-    //   await new Apply().run({ params: {} });
+    const command = new Generate();
+    await command.run({
+      params: {
+        template: "snowflake:table:source",
+        id: usersTableName,
+        parent: "snowflake_app",
+        from: usersTableName,
+        with: "*",
+        mapping: "id=user_id",
+        highWaterMark: "stamp",
+        overwrite: true,
+      },
+    });
 
-    //   const command = new Generate();
-    //   await command.run({
-    //     params: {
-    //       template: "snowflake:table:source",
-    //       id: usersTableName,
-    //       parent: "snowflake_app",
-    //       from: usersTableName,
-    //       with: "*",
-    //       mapping: "id=user_id",
-    //       highWaterMark: "stamp",
-    //       overwrite: true,
-    //     },
-    //   });
+    const file = `${
+      process.env.GROUPAROO_CONFIG_DIR
+    }/sources/${usersTableName.toLowerCase()}.js`;
+    const output = messages.join("\n");
+    expect(output).toContain(`wrote ${file}`);
 
-    //   const file = `${
-    //     process.env.GROUPAROO_CONFIG_DIR
-    //   }/sources/${usersTableName.toLowerCase()}.js`;
-    //   const output = messages.join("\n");
-    //   expect(output).toContain(`wrote ${file}`);
+    const contents = fs.readFileSync(file).toString();
+    expect(contents).toContain('class: "source"');
+    expect(contents).toContain(`id: "${usersTableName.toLowerCase()}"`);
+    expect(contents).toContain(`name: "${usersTableName.toLowerCase()}"`);
 
-    //   const contents = fs.readFileSync(file).toString();
-    //   expect(contents).toContain('class: "source"');
-    //   expect(contents).toContain(`id: "${usersTableName.toLowerCase()}"`);
-    //   expect(contents).toContain(`name: "${usersTableName.toLowerCase()}"`);
+    expect(contents).toContain(`id: "user_id",`); // mapping
+    expect(contents).toContain(`column: "id",`); // bootstrap
+    expect(contents).toContain(`column: "stamp",`); // schedule
 
-    //   expect(contents).toContain(`id: "user_id",`); // mapping
-    //   expect(contents).toContain(`column: "id",`); // bootstrap
-    //   expect(contents).toContain(`column: "stamp",`); // schedule
-
-    //   // properties
-    //   ["first_name", "last_name", "email", "date"].forEach((col) => {
-    //     expect(
-    //       fs.existsSync(
-    //         `${process.env.GROUPAROO_CONFIG_DIR}/properties/${col}.js`
-    //       )
-    //     ).toBe(true);
-    //   });
-    // }
-  );
+    // properties
+    ["first_name", "last_name", "email", "date"].forEach((col) => {
+      expect(
+        fs.existsSync(
+          `${process.env.GROUPAROO_CONFIG_DIR}/properties/${col}.js`
+        )
+      ).toBe(true);
+    });
+  });
 });
