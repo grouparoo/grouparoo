@@ -22,7 +22,7 @@
   },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
-    "test": "echo 'TODO'",
+    "test": "jest",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src",
     "watch": "tsc --watch"
