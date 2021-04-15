@@ -27,6 +27,9 @@
     "lint": "prettier --check src",
     "watch": "tsc --watch"
   },
+  "dependencies": {
+    "@grouparoo/app-templates": "^0.3.0-alpha.0"
+  },
   "devDependencies": {
     "@grouparoo/core": "0.3.0-alpha.1",
     "@grouparoo/spec-helper": "0.3.0-alpha.1",
