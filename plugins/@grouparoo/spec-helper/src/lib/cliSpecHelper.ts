@@ -222,17 +222,21 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     return runCliCommand(`generate group:manual ${groupName} --overwrite`);
   }
 
-  export async function generateUserIDProperty(
+  export async function generateUserSourceToPropertyProperty(
     runCliCommand: Function,
-    propertyName = "user_id"
+    propertyNames: string | string[] = "user_id"
   ) {
     await runCliCommand(`generate manual:app manual_app --overwrite`);
     await runCliCommand(
       `generate manual:source manual_source --parent manual_app --overwrite`
     );
-    await runCliCommand(
-      `generate manual:property ${propertyName} --parent manual_source --overwrite`
-    );
+
+    if (typeof propertyNames === "string") propertyNames = [propertyNames];
+    for (const propertyName of propertyNames) {
+      await runCliCommand(
+        `generate manual:property ${propertyName} --parent manual_source --overwrite`
+      );
+    }
   }
 
   export function prepareForCLITest(
@@ -387,7 +391,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
             test(`generate destination ${destination}`, async () => {
               if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
               if (idx === 0 && properties.length === 0) {
-                await generateUserIDProperty(runCliCommand); // if we have no properties, we will need at least one property
+                await generateUserSourceToPropertyProperty(runCliCommand); // if we have no properties, we will need at least one property
               }
 
               const { exitCode, stdout, stderr } = await runCliCommand(
