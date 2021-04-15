@@ -31,7 +31,7 @@ exports.default = async function buildConfig() {
        * CLI.
        */
       mapping: {
-        "id": "userId",
+        "id": "user_id",
       },
 
       /**

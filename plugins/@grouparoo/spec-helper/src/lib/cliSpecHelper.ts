@@ -235,7 +235,6 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     );
     const cliBin = path.join(cliRoot, "grouparoo.js");
 
-    console.log(`testing ${pluginName} CLI @ ${projectPath}`);
     clear(projectPath);
     install(pluginName, pluginPath, projectPath);
     writeEnvFile(projectPath);
@@ -295,13 +294,11 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     projectPath: string,
     runCliCommand: Function
   ) {
-    const apps = generatorNames.filter((name) => name.match(/:app$/));
-    const sources = generatorNames.filter((name) => name.match(/:source$/));
-    const properties = generatorNames.filter((name) =>
-      name.match(/:property$/)
-    );
+    const apps = generatorNames.filter((name) => name.match(/:app/));
+    const sources = generatorNames.filter((name) => name.match(/:source/));
+    const properties = generatorNames.filter((name) => name.match(/:property/));
     const destinations = generatorNames.filter((name) =>
-      name.match(/:destination$/)
+      name.match(/:destination/)
     );
 
     apps.forEach((app) => {
@@ -310,11 +307,11 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
       describe(`${app}`, () => {
         test(`generate app ${app}`, async () => {
-          const { exitCode, stderr } = await runCliCommand(
+          const { exitCode, stdout, stderr } = await runCliCommand(
             `generate ${app} app_${buildId(appPrefix)}`
           );
           expect(exitCode).toBe(0);
-          expect(stderr).toBe("");
+          testStdErr(projectPath, stdout, stderr);
         });
 
         sources.forEach((source) => {
@@ -323,13 +320,13 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (source.match(appMatcher)) {
             test(`generate source ${source}`, async () => {
-              const { exitCode, stderr } = await runCliCommand(
+              const { exitCode, stdout, stderr } = await runCliCommand(
                 `generate ${source} source_${buildId(
                   sourcePrefix
                 )} --parent app_${buildId(appPrefix)}`
               );
               expect(exitCode).toBe(0);
-              expect(stderr).toBe("");
+              testStdErr(projectPath, stdout, stderr);
 
               CLISpecHelper.enableBootstrappedProperty(
                 projectPath,
@@ -340,15 +337,20 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
             properties.forEach((property) => {
               const propertyPrefix = buildPrefix(property);
 
-              if (property.match(sourceMatcher)) {
+              if (
+                property.match(sourceMatcher) || // it's a property matching this source
+                property.split(":").length < 3 // it's a generic property for either source
+              ) {
                 test(`generate property ${property}`, async () => {
-                  const { exitCode, stderr } = await runCliCommand(
+                  const { exitCode, stdout, stderr } = await runCliCommand(
                     `generate ${property} property_${buildId(
-                      propertyPrefix
-                    )} --parent source_${buildId(sourcePrefix)}`
+                      sourcePrefix
+                    )}_${buildId(propertyPrefix)} --parent source_${buildId(
+                      sourcePrefix
+                    )}`
                   );
                   expect(exitCode).toBe(0);
-                  expect(stderr).toBe("");
+                  testStdErr(projectPath, stdout, stderr);
                 });
               }
             });
@@ -362,13 +364,13 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
             test(`generate destination ${destination}`, async () => {
               if (idx === 0) await generateGroup(runCliCommand);
 
-              const { exitCode, stderr } = await runCliCommand(
+              const { exitCode, stdout, stderr } = await runCliCommand(
                 `generate ${destination} destination_${buildId(
                   destinationPrefix
                 )} --parent app_${buildId(appPrefix)}`
               );
               expect(exitCode).toBe(0);
-              expect(stderr).toBe("");
+              testStdErr(projectPath, stdout, stderr);
 
               CLISpecHelper.setDestinationMappings(
                 projectPath,
@@ -386,19 +388,36 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
           "validate --local"
         );
         expect(exitCode).toBe(0);
-        expect(stderr).toBe("");
+        testStdErr(projectPath, stdout, stderr);
         expect(stdout).toContain("Validation succeeded");
       });
     });
   }
 
   function buildPrefix(name: string) {
-    const parts = name.split(":");
-    parts.pop();
-    return parts.join(":");
+    const parts = name
+      .split(":")
+      .filter((p) => p !== "app")
+      .filter((p) => p !== "source")
+      .filter((p) => p !== "property")
+      .filter((p) => p !== "destination");
+    return parts.join("_");
   }
 
   function buildId(name: string) {
     return name.replace(/:/g, "_").replace(/-/g, "_");
+  }
+
+  function testStdErr(projectPath: string, stdout: string, stderr: string) {
+    try {
+      expect(stderr).toBe("");
+    } catch (error) {
+      console.log(`Error testing @ ${projectPath}`);
+      console.log(`--- STDOUT --- `);
+      console.log(stdout);
+      console.log(`--- stderr --- `);
+      console.log(stderr);
+      throw error;
+    }
   }
 }
