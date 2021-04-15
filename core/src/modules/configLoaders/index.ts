@@ -121,12 +121,14 @@ export async function processConfigObjects(
       const extraSortingConfigObjectIds = extraSortingConfigObjects.map(
         (o) => o.id
       );
-      configObjects = sortConfigurationObjects(
-        [].concat(extraSortingConfigObjects, configObjects)
+      configObjects = (
+        await sortConfigurationObjects(
+          [].concat(extraSortingConfigObjects, configObjects)
+        )
       ).filter((o) => !extraSortingConfigObjectIds.includes(o.id));
     } else {
       // A normal collection of config objects
-      configObjects = sortConfigurationObjects(configObjects);
+      configObjects = await sortConfigurationObjects(configObjects);
     }
   } catch (error) {
     // If something we wrong while sorting, log the messages and return. We
