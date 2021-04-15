@@ -8,11 +8,13 @@ export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
   destinationOptions,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   return exportFacebookProfiles({
     appId,
     appOptions,
+    syncOperations,
     model: destinationModel(destinationOptions),
     exports: profilesToExport,
   });

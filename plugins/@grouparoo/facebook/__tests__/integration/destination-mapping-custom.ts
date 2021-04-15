@@ -3,7 +3,6 @@ import { destinationMappingOptions } from "../../src/lib/export-custom/destinati
 
 const destinationOptions = {
   primaryKey: "EMAIL",
-  syncMode: "Sync",
 };
 
 describe("facebook/audiences-custom/destinationMappingOptions", () => {

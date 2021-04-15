@@ -10,7 +10,6 @@ import {
   BatchMethodFindAndSetDestinationIds,
   BatchMethodRemoveFromGroups,
   BatchMethodUpdateByDestinationIds,
-  BatchSyncMode,
 } from "../../src/destination/batch/types";
 
 enum BatchTestAction {
@@ -78,7 +77,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -116,7 +115,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -154,7 +153,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -192,7 +191,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -232,7 +231,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -270,7 +269,7 @@ describe("app-templates/destination/batch", () => {
           batchSize,
           findSize,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "id",
         },
         {
@@ -328,7 +327,7 @@ describe("app-templates/destination/batch", () => {
           batchSize: 100,
           findSize: 100,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "email",
         },
         {
@@ -393,7 +392,7 @@ describe("app-templates/destination/batch", () => {
           batchSize: 100,
           findSize: 100,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "email",
         },
         {
@@ -458,7 +457,7 @@ describe("app-templates/destination/batch", () => {
           batchSize: 100,
           findSize: 100,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "email",
         },
         {
@@ -527,7 +526,7 @@ describe("app-templates/destination/batch", () => {
           batchSize: 100,
           findSize: 100,
           groupMode: BatchGroupMode.TotalMembers,
-          syncMode: BatchSyncMode.Sync,
+          syncOperations: { create: true, update: true, delete: true },
           foreignKey: "email",
         },
         {

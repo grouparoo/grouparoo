@@ -4,7 +4,10 @@ import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
 
-import { buildConnection as buildCustomConnection } from "../lib/export-custom/connection";
+import {
+  buildConnection as buildCustomConnection,
+  supportedSyncModes,
+} from "../lib/export-custom/connection";
 
 const packageJSON = require("./../../package.json");
 
@@ -26,9 +29,11 @@ export class Plugins extends Initializer {
         new AppTemplate("facebook", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("facebook", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "facebook",
+          [path.join(templateRoot, "destination", "*.template")],
+          supportedSyncModes
+        ),
       ],
       apps: [
         {

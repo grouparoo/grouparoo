@@ -8,7 +8,6 @@ import {
   GroupMethods,
   GroupNameListMap,
   GroupSizeMode,
-  GroupSyncModeData,
 } from "./types";
 
 export const exportProfilesInGroups: ProfileGroupProfilesPluginMethod = async (
@@ -177,8 +176,7 @@ async function updateGroups(
   methods: GroupMethods,
   config: GroupConfig
 ) {
-  const { syncMode } = config;
-  const mode = GroupSyncModeData[syncMode];
+  const { syncOperations } = config;
   let skipped = false;
 
   const removal: GroupNameListMap = {};
@@ -192,7 +190,7 @@ async function updateGroups(
     let skipMessage = null;
 
     // build up groups situation of group names to addition and removal
-    if (mode.remove) {
+    if (syncOperations.delete) {
       for (const list of user.removedGroups) {
         removal[list] = removal[list] || [];
         removal[list].push(user);
@@ -202,7 +200,7 @@ async function updateGroups(
       skipMessage = skipMessage ? `${skipMessage} ${message}` : message;
     }
 
-    if (mode.add) {
+    if (syncOperations.create) {
       for (const list of user.addedGroups) {
         addition[list] = addition[list] || [];
         addition[list].push(user);
