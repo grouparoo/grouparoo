@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
@@ -24,6 +24,7 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/salesforce/salesforce.png",
@@ -31,9 +32,11 @@ export class Plugins extends Initializer {
         new AppTemplate("salesforce", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("salesforce", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "salesforce",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes
+        ),
       ],
       apps: [
         {
@@ -69,13 +72,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles and Groups to Salesforce sales cloud objects.",
           app: "salesforce",
+          syncModes,
           options: [
-            {
-              key: "syncMode",
-              displayName: "Sync Mode",
-              required: true,
-              description: "How should Grouparoo modify Salesforce objects?",
-            },
             {
               key: "profileObject",
               displayName: "Profile Object",
