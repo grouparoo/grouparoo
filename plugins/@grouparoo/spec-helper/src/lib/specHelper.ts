@@ -256,7 +256,7 @@ export namespace helper {
         {
           name: "test-plugin-import",
           direction: "import",
-          description: "import or update profiles from an uploaded file",
+          description: "import or update profiles from a table",
           app: "test-plugin-app",
           options: [
             { key: "table", required: true },
@@ -349,6 +349,7 @@ export namespace helper {
           direction: "export",
           description: "export profiles to nowhere",
           app: "test-plugin-app",
+          syncModes: ["sync", "enrich", "additive"],
           options: [
             { key: "table", required: true },
             { key: "where", required: false },
@@ -398,6 +399,8 @@ export namespace helper {
           direction: "export",
           description: "export profiles to nowhere",
           app: "test-plugin-app",
+          syncModes: ["sync", "enrich", "additive"],
+          defaultSyncMode: "additive",
           options: [
             { key: "table", required: true },
             { key: "where", required: false },

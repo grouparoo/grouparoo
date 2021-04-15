@@ -1,5 +1,7 @@
 import {
   Destination,
+  DestinationSyncModeData,
+  DestinationSyncOperations,
   SimpleDestinationOptions,
 } from "../../models/Destination";
 import { Profile } from "../../models/Profile";
@@ -128,6 +130,17 @@ export namespace DestinationOps {
       properties: mappedProfileProperties,
       groupNames: mappedGroupNames,
     });
+  }
+
+  /**
+   * Get the Destination Connection's supported Sync Modes
+   */
+  export async function getSupportedSyncModes(destination: Destination) {
+    const { pluginConnection } = await destination.getPlugin();
+    return {
+      supportedModes: pluginConnection.syncModes || [],
+      defaultMode: pluginConnection.defaultSyncMode,
+    };
   }
 
   /**
@@ -417,6 +430,7 @@ export namespace DestinationOps {
       destination,
       destinationId,
       destinationOptions,
+      syncOperations,
       exports: _exports,
     }) {
       const outErrors: ErrorWithProfileId[] = [];
@@ -434,6 +448,7 @@ export namespace DestinationOps {
             destination,
             destinationId,
             destinationOptions,
+            syncOperations,
             export: _export,
           });
 
@@ -517,6 +532,11 @@ export namespace DestinationOps {
       destination
     );
 
+    const syncMode = await destination.getSyncMode();
+    const syncOperations: DestinationSyncOperations = syncMode
+      ? DestinationSyncModeData[syncMode].operations
+      : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
+
     const options = await destination.getOptions();
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
@@ -553,6 +573,7 @@ export namespace DestinationOps {
         destination,
         destinationId: destination.id,
         destinationOptions: options,
+        syncOperations,
         exports: exportedProfiles,
       });
 

@@ -1,4 +1,4 @@
-import { task, api } from "actionhero";
+import { task, api, log } from "actionhero";
 import {
   Table,
   Column,
@@ -42,6 +42,56 @@ export interface SimpleDestinationGroupMembership {
   groupName: string;
 }
 export interface SimpleDestinationOptions extends OptionHelper.SimpleOptions {}
+
+const SYNC_MODES = ["sync", "additive", "enrich"] as const;
+export type DestinationSyncMode = typeof SYNC_MODES[number];
+
+export interface DestinationSyncOperations {
+  create: boolean;
+  update: boolean;
+  delete: boolean;
+}
+
+export const DestinationSyncModeData: Record<
+  DestinationSyncMode,
+  {
+    key: DestinationSyncMode;
+    displayName: string;
+    description: string;
+    operations: DestinationSyncOperations;
+  }
+> = {
+  sync: {
+    key: "sync",
+    displayName: "Sync",
+    description: "Sync all profiles (create, update, delete)",
+    operations: {
+      create: true,
+      update: true,
+      delete: true,
+    },
+  },
+  additive: {
+    key: "additive",
+    displayName: "Additive",
+    description: "Sync all profiles, but do not delete (create, update)",
+    operations: {
+      create: true,
+      update: true,
+      delete: false,
+    },
+  },
+  enrich: {
+    key: "enrich",
+    displayName: "Enrich",
+    description: "Only update existing profiles (update)",
+    operations: {
+      create: false,
+      update: true,
+      delete: false,
+    },
+  },
+};
 
 const STATES = ["draft", "ready"] as const;
 const STATE_TRANSITIONS = [
@@ -110,6 +160,10 @@ export class Destination extends LoggedModel<Destination> {
   @HasMany(() => Export)
   exports: Export[];
 
+  @AllowNull(true)
+  @Column(DataType.ENUM(...SYNC_MODES))
+  syncMode: DestinationSyncMode;
+
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
@@ -124,12 +178,20 @@ export class Destination extends LoggedModel<Destination> {
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
 
+    const syncMode = await this.getSyncMode();
+    const { supportedModes } = await this.getSupportedSyncModes();
+    const syncModeData = supportedModes.map(
+      (mode) => DestinationSyncModeData[mode]
+    );
+
     return {
       id: this.id,
       name: this.name,
       type: this.type,
       state: this.state,
       locked: this.locked,
+      syncMode,
+      syncModes: syncModeData,
       app: app ? await app.apiData() : null,
       mapping,
       options,
@@ -238,6 +300,49 @@ export class Destination extends LoggedModel<Destination> {
 
   async unTrackGroup() {
     return DestinationOps.unTrackGroup(this);
+  }
+
+  async getSupportedSyncModes() {
+    return DestinationOps.getSupportedSyncModes(this);
+  }
+
+  async getSyncMode() {
+    if (this.syncMode) return this.syncMode;
+    const { supportedModes, defaultMode } = await this.getSupportedSyncModes();
+    if (supportedModes.length > 1 && defaultMode) {
+      // If destination has defined a default sync mode, use it but warn about its usage
+      log(
+        `Using default sync mode "${defaultMode}" for destination "${this.name}". You should explicitly set a sync mode for the destination to prevent unintended behavior.`,
+        "warning"
+      );
+
+      return defaultMode;
+    } else if (supportedModes.length === 1) {
+      // If destination only supports one sync mode, use it
+      return supportedModes[0];
+    }
+
+    return null;
+  }
+
+  async validateSyncMode() {
+    const { supportedModes, defaultMode } = await this.getSupportedSyncModes();
+
+    // Sync mode is not required for destinations that:
+    //    1. Have not implemented sync modes
+    //    2. Only support one sync mode (it'll always be used)
+    //    3. Have defined a default sync mode
+    const isRequired = supportedModes.length > 1 && !defaultMode;
+
+    if (isRequired && !this.syncMode) {
+      throw new Error(`Sync mode is required for destination ${this.name}`);
+    }
+
+    if (this.syncMode && !supportedModes.includes(this.syncMode)) {
+      throw new Error(
+        `${this.name} does not support sync mode "${this.syncMode}"`
+      );
+    }
   }
 
   async validateMappings(
@@ -438,6 +543,12 @@ export class Destination extends LoggedModel<Destination> {
         `a destination of type ${instance.type} cannot be created as there are no profile export methods`
       );
     }
+  }
+
+  @BeforeSave
+  static async validateSyncMode(instance: Destination) {
+    if (instance.state !== "ready") return;
+    await instance.validateSyncMode();
   }
 
   @BeforeSave

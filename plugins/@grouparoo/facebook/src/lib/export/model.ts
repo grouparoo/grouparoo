@@ -1,13 +1,8 @@
 import { SimpleDestinationOptions } from "@grouparoo/core";
-import {
-  GroupSyncMode,
-  GroupSyncModeData,
-} from "@grouparoo/app-templates/dist/destination/group";
 
 export type AudienceSubtype = "CUSTOM" | "LOOKALIKE";
 
 export interface FacebookModel {
-  syncMode: GroupSyncMode;
   primaryKey: string;
   audienceType: AudienceSubtype;
 }
@@ -17,7 +12,6 @@ export function getFacebookModel(
   defaults: { [key: string]: string }
 ): FacebookModel {
   const model: FacebookModel = {
-    syncMode: null,
     primaryKey: null,
     audienceType: null,
   };
@@ -36,11 +30,6 @@ export function getFacebookModel(
     if (requiredKeys.includes(key) && !model[key]) {
       throw new Error(`Missing Facebook model data: ${key}`);
     }
-  }
-
-  const foundMode = GroupSyncModeData[model.syncMode];
-  if (!foundMode) {
-    throw new Error(`Unknown sync mode: ${model.syncMode}`);
   }
 
   return model;

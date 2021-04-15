@@ -1,3 +1,4 @@
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 import { helper } from "@grouparoo/spec-helper";
 import { connect } from "../../src/lib/connect";
 import { exportProfile } from "../../src/lib/export-contacts/exportProfile";
@@ -79,6 +80,7 @@ export function setup(appOptions, destinationOptions, newNock) {
     oldGroups,
     newGroups,
     toDelete,
+    syncOperations = DestinationSyncModeData.sync.operations,
   }) {
     return exportProfile({
       appId,
@@ -88,6 +90,7 @@ export function setup(appOptions, destinationOptions, newNock) {
       app: null,
       destination: null,
       destinationId: null,
+      syncOperations,
       export: {
         profile: null,
         profileId: null,

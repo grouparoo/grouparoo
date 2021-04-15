@@ -147,6 +147,7 @@ describe("integration/runs/hubspot", () => {
       csrfToken,
       name: "test destination",
       type: "hubspot-export",
+      syncMode: "sync",
       appId: app.id,
       mapping: {
         email: "email",
@@ -162,6 +163,7 @@ describe("integration/runs/hubspot", () => {
     expect(buildDestinationResponse.error).toBeUndefined();
     expect(buildDestinationResponse.destination.id).toBeTruthy();
     expect(buildDestinationResponse.destination.name).toBe("test destination");
+    expect(buildDestinationResponse.destination.syncMode).toBe("sync");
     destination = buildDestinationResponse.destination;
   });
 

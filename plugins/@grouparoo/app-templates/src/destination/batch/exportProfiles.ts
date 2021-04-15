@@ -1,3 +1,4 @@
+import { Errors } from "@grouparoo/core";
 import { BatchSyncModeData } from "./types";
 import { setGroupNames, checkErrors } from "../shared/batch";
 import {
@@ -52,7 +53,12 @@ const exportOneBatch: ExportBatchProfilesPluginMethod = async (
     }
   }
 
-  await lookupDestinationIds(client, exports, methods, config);
+  // If oldFK != newFK, look them up by old FK first...
+  await lookupDestinationIds(client, exports, methods, config, "old");
+  // Then override the FK with newFK if it also exists in the destination...
+  // Note: If newFK does not exist, the oldFK will be used
+  await lookupDestinationIds(client, exports, methods, config, "new");
+
   assignActions(exports, config);
 
   await deleteExports(client, exports, methods, config);
@@ -378,10 +384,9 @@ async function deleteExports(
       continue;
     }
     if (!exportedProfile.destinationId) {
-      // should we try again for just this one or something and look them up?
-      // maybe it should make an error. if's a timing issue, we want to be sure to delete it.
+      // if trying to delete someone that doesn't exist, just inform the user
       try {
-        throw new Error(
+        throw new Errors.InfoError(
           `destinationId not found to delete: ${exportedProfile.foreignKeyValue}`
         );
       } catch (error) {
@@ -432,7 +437,8 @@ async function lookupDestinationIds(
   client: any,
   exports: BatchExport[],
   methods: BatchMethods,
-  config: BatchConfig
+  config: BatchConfig,
+  fkType: "old" | "new"
 ) {
   let currentFkMap: ForeignKeyMap = {};
   let currentUsers: BatchExport[] = [];
@@ -450,10 +456,21 @@ async function lookupDestinationIds(
       continue;
     }
 
-    const { foreignKeyValue, oldForeignKeyValue } = exportedProfile;
+    let foreignKeyValue: string;
+    switch (fkType) {
+      case "new":
+        foreignKeyValue = exportedProfile.foreignKeyValue;
+        break;
+      case "old":
+        foreignKeyValue = exportedProfile.oldForeignKeyValue;
+        break;
+      default:
+        throw new Error(`Unknown foreign key type: ${fkType}`);
+    }
 
-    const maxSize = oldForeignKeyValue ? config.findSize - 1 : config.findSize;
-    if (currentCount > maxSize) {
+    if (!foreignKeyValue) continue;
+
+    if (currentCount >= config.findSize) {
       batches.push({
         fkMap: currentFkMap,
         users: currentUsers,
@@ -469,11 +486,6 @@ async function lookupDestinationIds(
     setForeignKey(currentFkMap, foreignKeyValue, exportedProfile);
     currentForeignKeys.push(foreignKeyValue);
     currentCount++;
-    if (oldForeignKeyValue) {
-      setForeignKey(currentFkMap, oldForeignKeyValue, exportedProfile);
-      currentForeignKeys.push(oldForeignKeyValue);
-      currentCount++;
-    }
   }
 
   if (currentCount > 0) {
@@ -575,8 +587,13 @@ function assignActions(exports: BatchExport[], config: BatchConfig) {
 
 function assignAction(exportedProfile: BatchExport, config: BatchConfig) {
   const { toDelete, destinationId } = exportedProfile;
-  const { syncMode } = config;
-  const mode = BatchSyncModeData[syncMode];
+  const { syncMode, syncOperations } = config;
+
+  const mode = syncOperations || BatchSyncModeData[syncMode];
+  if (!mode) {
+    throw new Error("Unknown sync mode.");
+  }
+
   let skippedMessage = null;
 
   // all shouldX are falsy to start with

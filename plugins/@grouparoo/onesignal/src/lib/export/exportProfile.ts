@@ -1,15 +1,6 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
 import { HTTPError } from "onesignal-node";
 import { connect } from "../connect";
-
-class InfoError extends Error {
-  errorLevel: string;
-
-  constructor(message) {
-    super(message);
-    this.errorLevel = "info";
-  }
-}
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -77,7 +68,9 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   } catch (error) {
     if (error instanceof HTTPError && error.statusCode === 404) {
-      throw new InfoError("OneSignal destination does not create new devices.");
+      throw new Errors.InfoError(
+        "OneSignal destination does not create new devices."
+      );
     }
     throw error;
   }

@@ -2,7 +2,7 @@ import { Action, api, Connection } from "actionhero";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { CLSAction } from "../classes/actions/clsAction";
 import { TeamMember } from "../models/TeamMember";
-import { AuthenticationError } from "../modules/middleware/authentication";
+import { Errors } from "../modules/errors";
 
 export class SessionCreate extends CLSAction {
   constructor() {
@@ -27,10 +27,11 @@ export class SessionCreate extends CLSAction {
     const teamMember = await TeamMember.findOne({
       where: { email: params.email.toLocaleLowerCase() },
     });
-    if (!teamMember) throw new AuthenticationError("team member not found");
+    if (!teamMember)
+      throw new Errors.AuthenticationError("team member not found");
 
     const match = await teamMember.checkPassword(params.password);
-    if (!match) throw new AuthenticationError("password does not match");
+    if (!match) throw new Errors.AuthenticationError("password does not match");
 
     const session = await api.session.create(connection, teamMember);
 

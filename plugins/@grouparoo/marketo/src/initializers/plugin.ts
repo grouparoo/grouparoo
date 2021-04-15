@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
@@ -24,6 +24,9 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/marketo/marketo.png",
@@ -31,9 +34,12 @@ export class Plugins extends Initializer {
         new AppTemplate("marketo", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("marketo", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "marketo",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -75,6 +81,8 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export Profiles to a Marketo account.",
           app: "marketo",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfiles,

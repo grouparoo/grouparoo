@@ -4,25 +4,31 @@ import { helper } from "@grouparoo/spec-helper";
 
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
+import { DestinationSyncOperations } from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-skip.js"
+  "export-profile-no-delete.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-skip");
+require("./../fixtures/export-profile-no-delete");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
+const syncOperations: DestinationSyncOperations = {
+  create: true,
+  update: true,
+  delete: false,
+};
 const destinationOptions = {
   creationMode: "Lifecycle",
-  removalMode: "Skip",
+  removalMode: "Archive",
 };
 
 let userId = null;
@@ -36,7 +42,7 @@ const newEmail = `testother1b.${rand[9]}@demo.com`;
 const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
 
-describe("intercom/contacts/exportProfile/skip", () => {
+describe("intercom/contacts/exportProfile/no delete", () => {
   const {
     getUser,
     findEmail,
@@ -51,6 +57,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
     expect(userId).toBe(null);
 
     await runExport({
+      syncOperations,
       oldProfileProperties: {},
       newProfileProperties: { email, name: "A Lead" },
       oldGroups: [],
@@ -77,6 +84,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
     expect(userId2).toBe(null);
 
     await runExport({
+      syncOperations,
       oldProfileProperties: {},
       newProfileProperties: {
         email: email2,
@@ -106,6 +114,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
     let error = null;
     try {
       await runExport({
+        syncOperations,
         oldProfileProperties: {
           email: email2,
           external_id: externalId2,
@@ -145,6 +154,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
     let error = null;
     try {
       await runExport({
+        syncOperations,
         oldProfileProperties: {
           email: email,
           name: "A Lead",
@@ -180,6 +190,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
 
   test("can start syncing lead again", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {},
       newProfileProperties: {
         email: email,
@@ -199,6 +210,7 @@ describe("intercom/contacts/exportProfile/skip", () => {
 
   test("can start syncing contact again", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {},
       newProfileProperties: {
         email: email2,

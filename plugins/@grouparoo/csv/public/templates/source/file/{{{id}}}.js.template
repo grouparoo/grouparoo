@@ -9,7 +9,7 @@ exports.default = async function buildConfig() {
       class: "source",
       id: {{{id}}},
       name: {{{id}}},
-      type: "{{{__pluginName}}}-import",
+      type: "csv-file-import",
       appId: {{{appId}}}, // Set this value to the ID of the App this Source uses - e.g. `appId: "csv_app"`
       options: {
         fileId: "..." // The id of a File already uploaded to Grouparoo - e.g. `fileId: "fil_abc123"`

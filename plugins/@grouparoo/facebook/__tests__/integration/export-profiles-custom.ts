@@ -11,6 +11,7 @@ import {
 import { sha } from "../../src/lib/export/data";
 import { Client, connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(
   __dirname,
@@ -32,13 +33,10 @@ const appId = "app_a0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 const destinationId = "dst_b0bb05e8-0a4e-49b5-ad42-545f2e8662e6";
 const destinationOptions = {
   primaryKey: "EMAIL",
-  syncMode: "Sync",
 };
 
-const additiveDestinationOptions = {
-  primaryKey: "EMAIL",
-  syncMode: "Additive",
-};
+const syncOperations = DestinationSyncModeData.sync.operations;
+const additiveSyncOperations = DestinationSyncModeData.additive.operations;
 
 let client: Client;
 
@@ -144,6 +142,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -178,6 +177,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -228,6 +228,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -299,6 +300,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -383,6 +385,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -457,6 +460,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -494,6 +498,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -549,6 +554,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -603,6 +609,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
       appOptions,
       destinationId,
       destinationOptions,
+      syncOperations,
       connection: null,
       app: null,
       destination: null,
@@ -663,13 +670,14 @@ describe("facebook/audiences-custom/exportProfiles", () => {
   });
 
   describe("Additive destination sync Mode", () => {
-    const destinationOptions = additiveDestinationOptions;
+    const syncOperations = additiveSyncOperations;
     test("skips deleting", async () => {
       const { success, errors } = await exportProfiles({
         appId,
         appOptions,
         destinationId,
         destinationOptions,
+        syncOperations,
         connection: null,
         app: null,
         destination: null,
@@ -725,6 +733,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
         appOptions,
         destinationId,
         destinationOptions,
+        syncOperations,
         connection: null,
         app: null,
         destination: null,
@@ -775,6 +784,7 @@ describe("facebook/audiences-custom/exportProfiles", () => {
         appOptions,
         destinationId,
         destinationOptions,
+        syncOperations,
         connection: null,
         app: null,
         destination: null,

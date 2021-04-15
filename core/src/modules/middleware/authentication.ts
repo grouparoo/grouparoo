@@ -3,25 +3,7 @@ import { CLS } from "../cls";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
-
-export class AuthenticationError extends Error {
-  code: string;
-
-  constructor(message: string, code = "AUTHENTICATION_ERROR") {
-    super(message);
-    this.code = code;
-  }
-}
-
-export class AuthorizationError extends Error {
-  code: string;
-
-  constructor(mode: string, topic: string, code = "AUTHORIZATION_ERROR") {
-    const message = `Not authorized for mode "${mode}" on topic "${topic}"`;
-    super(message);
-    this.code = code;
-  }
-}
+import { Errors } from "../errors";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
@@ -67,7 +49,7 @@ async function authenticateTeamMember(
       const session = await api.session.load(data.connection);
       if (!session && optional) return;
       if (!session || !session.id) {
-        throw new AuthenticationError("Please log in to continue");
+        throw new Errors.AuthenticationError("Please log in to continue");
       } else if (
         (data.params.csrfToken && data.params.csrfToken !== session.id) ||
         (!data.params.csrfToken &&
@@ -75,14 +57,15 @@ async function authenticateTeamMember(
             "x-grouparoo-server-token"
           ] !== config.general.serverToken)
       ) {
-        throw new AuthenticationError("CSRF error");
+        throw new Errors.AuthenticationError("CSRF error");
       } else {
         const teamMember = await TeamMember.findOne({
           where: { id: session.teamMemberId },
           include: [Team],
         });
 
-        if (!teamMember) throw new AuthenticationError("Team member not found");
+        if (!teamMember)
+          throw new Errors.AuthenticationError("Team member not found");
 
         const team = await teamMember.$get("team");
         const authorized = await team.authorizeAction(
@@ -90,7 +73,7 @@ async function authenticateTeamMember(
           data.actionTemplate.permission.mode
         );
         if (!authorized) {
-          throw new AuthorizationError(
+          throw new Errors.AuthorizationError(
             data.actionTemplate.permission.mode,
             data.actionTemplate.permission.topic
           );
@@ -124,14 +107,14 @@ async function authenticateApiKey(data: { [key: string]: any }) {
       where: { apiKey: data.params.apiKey },
     });
 
-    if (!apiKey) throw new AuthenticationError("apiKey not found");
+    if (!apiKey) throw new Errors.AuthenticationError("apiKey not found");
 
     const authorized = await apiKey.authorizeAction(
       data.actionTemplate.permission.topic,
       data.actionTemplate.permission.mode
     );
     if (!authorized) {
-      throw new AuthorizationError(
+      throw new Errors.AuthorizationError(
         data.actionTemplate.permission.mode,
         data.actionTemplate.permission.topic
       );
@@ -158,19 +141,20 @@ async function authenticateTeamMemberInRoom(
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);
     if (!session || !session.id) {
-      throw new AuthenticationError("Please log in to continue");
+      throw new Errors.AuthenticationError("Please log in to continue");
     } else {
       const teamMember = await TeamMember.findOne({
         where: { id: session.teamMemberId },
         include: [Team],
       });
 
-      if (!teamMember) throw new AuthenticationError("Team member not found");
+      if (!teamMember)
+        throw new Errors.AuthenticationError("Team member not found");
 
       const team = await teamMember.$get("team");
       const authorized = await team.authorizeAction(topic, mode);
       if (!authorized) {
-        throw new AuthorizationError(mode, topic);
+        throw new Errors.AuthorizationError(mode, topic);
       }
     }
   });

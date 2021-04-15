@@ -5,25 +5,31 @@ import { helper } from "@grouparoo/spec-helper";
 import { getTagId } from "../../src/lib/export-contacts/listMethods";
 import { getRandomNumbers, loadAppOptions, updater } from "../utils/nockHelper";
 import { setup } from "../utils/shared";
+import { DestinationSyncOperations } from "@grouparoo/core";
 
 const nockFile = path.join(
   __dirname,
   "../",
   "fixtures",
-  "export-profile-enrich.js"
+  "export-profile-no-create.js"
 );
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile-enrich");
+require("./../fixtures/export-profile-no-create");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
 
 const appId = "app_a1bb05e8-0a4e-49c5-ad42-545f2e8662f9";
 const appOptions = loadAppOptions(newNock);
+const syncOperations: DestinationSyncOperations = {
+  create: false,
+  update: true,
+  delete: true,
+};
 const destinationOptions = {
-  creationMode: "Enrich",
+  creationMode: "Lifecycle",
   removalMode: "Archive",
 };
 
@@ -46,7 +52,7 @@ const email3 = `testuser3.${rand[3]}@demo.com`;
 const exampleEpoch = 1597870204;
 const exampleDate = new Date(exampleEpoch * 1000);
 
-describe("intercom/contacts/exportProfile/enrich", () => {
+describe("intercom/contacts/exportProfile/no create", () => {
   const {
     getUser,
     findId,
@@ -93,6 +99,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can add user variables", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: { email, external_id, name: "Brian" },
       newProfileProperties: {
         email,
@@ -125,6 +132,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can change user variables", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         email,
         external_id,
@@ -167,6 +175,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can clear user variables", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         email,
         external_id,
@@ -199,6 +208,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can add tags", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         external_id,
       },
@@ -216,6 +226,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can remove tags", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         external_id,
       },
@@ -240,6 +251,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
     await getClient().contacts.tag(userId, tagId);
 
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         external_id,
       },
@@ -257,6 +269,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("it does not change intercom-created tags when groups are removed", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         external_id,
       },
@@ -274,6 +287,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("it can change the external id", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         external_id,
       },
@@ -298,6 +312,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("it can sync a lead with no external id", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {},
       newProfileProperties: {
         email: email2,
@@ -324,6 +339,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("it can not add an external id to the lead", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: {
         email: email2,
         name: "Sally",
@@ -355,6 +371,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
     let error = null;
     try {
       await runExport({
+        syncOperations,
         oldProfileProperties: {},
         newProfileProperties: {
           email: email3,
@@ -380,6 +397,7 @@ describe("intercom/contacts/exportProfile/enrich", () => {
 
   test("can delete a user", async () => {
     await runExport({
+      syncOperations,
       oldProfileProperties: { email: email2 },
       newProfileProperties: { email: email2 },
       oldGroups: [],

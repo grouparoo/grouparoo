@@ -2,7 +2,6 @@ import {
   buildBatchExports,
   BatchExport,
   exportProfilesInBatch,
-  BatchSyncMode,
   BatchGroupMode,
   BatchMethodGetClient,
   BatchMethodFindAndSetDestinationIds,
@@ -265,7 +264,12 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appId, appOptions, exports }) {
+export async function exportBatch({
+  appId,
+  appOptions,
+  syncOperations,
+  exports,
+}) {
   const cacheData = { appId, appOptions };
   const batchSize = 300;
   const findSize = 300;
@@ -277,7 +281,7 @@ export async function exportBatch({ appId, appOptions, exports }) {
       findSize,
       batchSize,
       groupMode: BatchGroupMode.WithinGroup,
-      syncMode: BatchSyncMode.Sync,
+      syncOperations,
       appOptions,
       data,
       foreignKey: "email",
@@ -299,13 +303,14 @@ export async function exportBatch({ appId, appOptions, exports }) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
-  destinationOptions,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
     appId,
     appOptions,
+    syncOperations,
     exports: batchExports,
   });
 };

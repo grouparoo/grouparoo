@@ -3,6 +3,7 @@ import {
   App,
   SimpleAppOptions,
   Destination,
+  DestinationSyncOperations,
   SimpleDestinationOptions,
   ErrorWithProfileId,
 } from "@grouparoo/core";
@@ -65,7 +66,8 @@ export interface BatchConfig {
   batchSize: number; // max number to update, create, delete
   findSize: number; // max query parameters to send to findAndSetDestinationIds
   groupMode: BatchGroupMode;
-  syncMode: BatchSyncMode;
+  syncMode?: BatchSyncMode; // New plugins should pass syncOperations instead
+  syncOperations?: DestinationSyncOperations;
   foreignKey: string;
   connection?: any;
   app?: App;

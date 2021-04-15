@@ -1,4 +1,5 @@
 import path from "path";
+import { helper } from "@grouparoo/spec-helper";
 import { loadConfigObjects } from "../../src/modules/configLoaders";
 import {
   getParentIds,
@@ -9,6 +10,7 @@ import {
 
 describe("classes/codeConfig", () => {
   let configObjects: ConfigurationObject[];
+  helper.grouparooTestServer({ truncate: true });
 
   beforeAll(async () => {
     const dir = path.join(__dirname, "..", "fixtures", "codeConfig", "initial");
@@ -20,7 +22,7 @@ describe("classes/codeConfig", () => {
       const destination = configObjects.find(
         ({ id }) => id === "test_destination"
       );
-      const { providedIds } = getParentIds(destination);
+      const { providedIds } = await getParentIds(destination);
       expect(providedIds).toEqual(["test_destination"]);
     });
 
@@ -28,15 +30,55 @@ describe("classes/codeConfig", () => {
       const destination = configObjects.find(
         ({ id }) => id === "test_destination"
       );
-      const { prerequisiteIds } = getParentIds(destination);
+      const { prerequisiteIds } = await getParentIds(destination);
       expect(prerequisiteIds).toContain("user_id");
       expect(prerequisiteIds).toContain("email");
+    });
+
+    test("includes the value of bootstrapped properties", async () => {
+      const source = configObjects.find(({ id }) => id === "users_table");
+      const { prerequisiteIds, providedIds } = await getParentIds(source);
+      expect(prerequisiteIds).toEqual(["data_warehouse", "user_id"]);
+      expect(providedIds).toEqual(["users_table", "user_id"]);
+    });
+
+    describe("query source", () => {
+      const source = {
+        class: "source",
+        id: "query_source",
+        name: "query_source",
+        type: "postgres-query-import",
+        appId: "data_warehouse",
+      };
+      const property = {
+        id: "ltv",
+        name: "ltv",
+        class: "property",
+        sourceId: "query_source",
+        type: "float",
+        unique: false,
+        identifying: false,
+        isArray: false,
+        options: {
+          query: "SELECT SUM(price) from purchases where user_id = {{userId}}",
+        },
+      };
+
+      test("includes properties a query depends on from other code-config objects", async () => {
+        const { prerequisiteIds, providedIds } = await getParentIds(
+          property,
+          configObjects.concat([source, property])
+        );
+
+        expect(prerequisiteIds).toEqual(["user_id", "query_source"]);
+        expect(providedIds).toEqual(["ltv"]);
+      });
     });
   });
 
   describe("#getConfigObjectsWithIds", () => {
     test("it applies prerequisiteIds", async () => {
-      const objectsWithId = getConfigObjectsWithIds(configObjects);
+      const objectsWithId = await getConfigObjectsWithIds(configObjects);
       const destination = objectsWithId.find(
         ({ configObject }) => configObject.id === "test_destination"
       );
@@ -50,7 +92,7 @@ describe("classes/codeConfig", () => {
     });
 
     test("options are not included", async () => {
-      const objectsWithId = getConfigObjectsWithIds(configObjects);
+      const objectsWithId = await getConfigObjectsWithIds(configObjects);
       const app = objectsWithId.find(
         ({ configObject }) => configObject.id === "data_warehouse"
       );
@@ -65,7 +107,9 @@ describe("classes/codeConfig", () => {
       it(`works (attempt ${idx})`, async () => {
         const shuffledConfigObjects = [...configObjects];
         shuffleArray(shuffledConfigObjects);
-        const objectsWithId = getConfigObjectsWithIds(shuffledConfigObjects);
+        const objectsWithId = await getConfigObjectsWithIds(
+          shuffledConfigObjects
+        );
         const sortedObjects = sortConfigObjectsWithIds(objectsWithId);
 
         const teamPosition = sortedObjects.findIndex(

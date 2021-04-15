@@ -9,10 +9,8 @@ import {
   GroupSizeMode,
   GroupNameListMap,
   GroupExport,
-  GroupSyncModeData,
-  GroupSyncMode,
 } from "@grouparoo/app-templates/dist/destination/group";
-import { ExportProfilesPluginMethod, SimpleAppOptions } from "@grouparoo/core";
+import { DestinationSyncOperations, SimpleAppOptions } from "@grouparoo/core";
 import { connect, Client } from "../connect";
 import { getAudienceId, FacebookCacheData } from "./audienceMethods";
 import { userData } from "./data";
@@ -25,6 +23,7 @@ export interface ExportFacebookMethod {
     appId: string;
     appOptions: SimpleAppOptions;
     exports: ExportedProfile[];
+    syncOperations: DestinationSyncOperations;
     model: FacebookModel;
   }): Promise<{
     success: boolean;
@@ -292,6 +291,7 @@ export const exportFacebookProfiles: ExportFacebookMethod = async ({
   appId,
   appOptions,
   model,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   const cacheData = { appId, appOptions };
@@ -303,7 +303,7 @@ export const exportFacebookProfiles: ExportFacebookMethod = async ({
     {
       batchSize,
       groupMode: GroupSizeMode.WithinGroup,
-      syncMode: model.syncMode,
+      syncOperations,
       appOptions,
       data,
       foreignKey: model.primaryKey,

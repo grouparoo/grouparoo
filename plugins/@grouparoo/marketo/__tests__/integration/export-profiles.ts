@@ -7,6 +7,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { exportBatch } from "../../src/lib/export/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 
@@ -14,8 +15,8 @@ const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 const newNock = false;
 require("./../fixtures/export-profiles");
 // or these to make it true
-//const newNock = true;
-//helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const appId = "app_a0bb07d8-0a4e-49b5-ad42-545f2e8662e6";
@@ -143,6 +144,39 @@ describe("marketo/exportProfiles", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
+  test("will not create profile on Marketo if sync mode does not allow it", async () => {
+    userId1 = await findId(email1);
+    expect(userId1).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.enrich.operations,
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: {},
+          newProfileProperties: { email: email1, firstName: "Brian" },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
+
+    const foundId = await findId(email1);
+    expect(foundId).toBeNull();
+  });
+
   test("can create profile on Marketo", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
@@ -150,6 +184,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -173,6 +208,42 @@ describe("marketo/exportProfiles", () => {
     expect(user.lastName).toBe(null);
   });
 
+  test("will not change user variables if sync mode does not allow it", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: { create: true, update: false, delete: true },
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: { email: email1, firstName: "Brian" },
+          newProfileProperties: {
+            email: email1,
+            firstName: "John", // updated!
+            lastName: "Smith", // added!
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not updating");
+    expect(error.errorLevel).toEqual("info");
+
+    const user = await getUser(userId1);
+    expect(user.email).toBe(email1);
+    expect(user.firstName).toBe("Brian"); // not updated!
+    expect(user.lastName).toBe(null); // not added!
+  });
+
   test("can add/edit user variables and do multiple users", async () => {
     userId2 = await findId(email2);
     expect(userId2).toBe(null);
@@ -180,6 +251,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -227,6 +299,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -260,6 +333,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -293,6 +367,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -338,6 +413,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -375,6 +451,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -424,10 +501,58 @@ describe("marketo/exportProfiles", () => {
     expect(members.sort()).toEqual([userId1]);
   });
 
+  test("will not delete users if sync mode does not allow it, but will remove groups", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.additive.operations,
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: {
+            email: newEmail1,
+            firstName: "Brian",
+            lastName: "Test",
+          },
+          newProfileProperties: {
+            email: newEmail1,
+            firstName: "Brian",
+            lastName: "Test2", // changed here
+          },
+          oldGroups: [list1, list2],
+          newGroups: [list1, list2],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
+
+    const user = await getUser(userId1); // not null!
+    expect(user.email).toBe(newEmail1);
+    expect(user.firstName).toBe("Brian");
+    expect(user.lastName).toBe("Test"); // not changed!
+
+    let members;
+    members = await getListMemberIds(listId1);
+    expect(members).toHaveLength(0); // removed!
+
+    members = await getListMemberIds(listId2);
+    expect(members).toHaveLength(0); // removed!
+  });
+
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -441,7 +566,7 @@ describe("marketo/exportProfiles", () => {
             firstName: "Brian",
             lastName: "Test",
           },
-          oldGroups: [list1, list2],
+          oldGroups: [],
           newGroups: [list1],
           toDelete: false,
           profile: null,
@@ -485,6 +610,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -535,6 +661,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -582,6 +709,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -625,6 +753,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -668,6 +797,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -711,6 +841,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -754,6 +885,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -797,6 +929,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -843,6 +976,7 @@ describe("marketo/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,

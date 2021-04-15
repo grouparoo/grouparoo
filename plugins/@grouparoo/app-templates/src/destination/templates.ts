@@ -1,7 +1,12 @@
-import { ConfigTemplate } from "@grouparoo/core";
+import { ConfigTemplate, DestinationSyncMode } from "@grouparoo/core";
 
 export class DestinationTemplate extends ConfigTemplate {
-  constructor(name: string, files: string[]) {
+  constructor(
+    name: string,
+    files: string[],
+    syncModes?: DestinationSyncMode[],
+    defaultSyncMode?: DestinationSyncMode
+  ) {
     super();
     this.name = `${name}:destination`;
     this.description = `Config for a ${name} Destination`;
@@ -16,6 +21,18 @@ export class DestinationTemplate extends ConfigTemplate {
         description: `The id of the ${name} App to use for this Destination, e.g: \`--parent data_warehouse\``,
       },
     };
+
+    if (syncModes && syncModes.length > 0) {
+      this.inputs["syncMode"] = {
+        required: false,
+        default:
+          defaultSyncMode || syncModes.length === 1 ? syncModes[0] : "...",
+        description: `How should profiles sync to the destination? e.g. \`--sync-mode additive\`. ${
+          "Options: " + syncModes.join(", ")
+        }`,
+      };
+    }
+
     this.files = files;
     this.destinationDir = "destinations";
     this.parentId = "appId";

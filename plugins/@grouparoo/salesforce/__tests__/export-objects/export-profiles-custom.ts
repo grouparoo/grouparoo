@@ -6,6 +6,7 @@ import { destinationModel } from "../../src/lib/export-objects/model";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { getModelHelpers } from "../utils/modelHelper";
 import { helper } from "@grouparoo/spec-helper";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(
   __dirname,
@@ -24,8 +25,8 @@ require("./../fixtures/export-objects/export-profiles-custom");
 
 const appOptions = loadAppOptions(newNock);
 const appId = "app_e8bb07d8-0c4f-49b5-ad42-545f2e8662e8";
+const syncOperations = DestinationSyncModeData.sync.operations;
 const destinationOptions = {
-  syncMode: "Sync",
   profileObject: "Contact",
   profileMatchField: "Custom_External_ID__c",
   groupObject: "Topic",
@@ -95,6 +96,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -129,6 +131,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -183,6 +186,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -217,6 +221,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -279,6 +284,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -315,6 +321,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -370,6 +377,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -420,6 +428,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -452,6 +461,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,
@@ -499,6 +509,7 @@ describe("salesforce/sales-cloud/export-profiles/custom", () => {
       appId,
       appOptions,
       destinationOptions,
+      syncOperations,
       exports: [
         {
           profileId: id1,

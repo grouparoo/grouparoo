@@ -118,6 +118,7 @@ export class DestinationCreate extends AuthenticatedAction {
       appId: { required: true },
       options: { required: false },
       mapping: { required: false, default: {} },
+      syncMode: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }
@@ -127,6 +128,7 @@ export class DestinationCreate extends AuthenticatedAction {
       name: params.name,
       type: params.type,
       appId: params.appId,
+      syncMode: params.syncMode,
     });
     if (params.options) await destination.setOptions(params.options);
     if (params.mapping) {
@@ -155,6 +157,7 @@ export class DestinationEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
+      syncMode: { required: false },
       destinationGroupMemberships: { required: false },
     };
   }

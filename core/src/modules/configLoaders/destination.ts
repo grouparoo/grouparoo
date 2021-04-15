@@ -34,6 +34,7 @@ export async function loadDestination(
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
+      syncMode: configObject.syncMode,
       appId: app.id,
     });
   }
@@ -44,8 +45,9 @@ export async function loadDestination(
   }
 
   await destination.update({
-    type: configObject.type,
     name: configObject.name,
+    type: configObject.type,
+    syncMode: configObject.syncMode,
   });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));

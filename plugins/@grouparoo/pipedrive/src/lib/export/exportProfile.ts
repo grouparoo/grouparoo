@@ -1,4 +1,8 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import {
+  ExportProfilePluginMethod,
+  Errors,
+  DestinationSyncOperations,
+} from "@grouparoo/core";
 import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
@@ -7,9 +11,44 @@ import {
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
 
+const deletePersonOrClearGroups = async (
+  client: PipedriveClient,
+  cacheData: PipedriveCacheData,
+  personId: number,
+  syncOperations: DestinationSyncOperations,
+  oldGroups: string[]
+) => {
+  if (syncOperations.delete) {
+    await client.deletePerson(personId);
+  } else {
+    if (syncOperations.update) {
+      // clear groups
+      const newGroups = [];
+      const payload = await makePayload(
+        client,
+        cacheData,
+        {},
+        {},
+        oldGroups,
+        newGroups
+      );
+      await client.updatePerson(personId, payload);
+
+      throw new Errors.InfoError(
+        "Destination sync mode does not delete profiles. Only group membership has been cleared."
+      );
+    } else {
+      throw new Errors.InfoError(
+        "Destination sync mode does not delete profiles."
+      );
+    }
+  }
+};
+
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -38,10 +77,24 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const foundId = newFoundId || oldFoundId;
   if (toDelete) {
     if (foundId) {
-      await client.deletePerson(foundId);
+      await deletePersonOrClearGroups(
+        client,
+        cacheData,
+        foundId,
+        syncOperations,
+        oldGroups
+      );
     }
 
     return { success: true };
+  }
+
+  if (!newProfileProperties["Email"]) {
+    throw new Error(`newProfileProperties[Email] is a required mapping`);
+  }
+
+  if (!newProfileProperties["Name"]) {
+    throw new Error(`newProfileProperties[Name] is a required mapping`);
   }
 
   const payload = await makePayload(
@@ -55,8 +108,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (foundId) {
     // Update existing Person
+    if (!syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not update existing profiles."
+      );
+    }
+
     await client.updatePerson(foundId, payload);
   } else {
+    if (!syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not create new profiles."
+      );
+    }
     // Create new Person
     await client.createPerson(payload);
   }
@@ -76,14 +140,6 @@ async function makePayload(
   oldGroups: string[],
   newGroups: string[]
 ) {
-  if (!newProfileProperties["Email"]) {
-    throw new Error(`newProfileProperties[Email] is a required mapping`);
-  }
-
-  if (!newProfileProperties["Name"]) {
-    throw new Error(`newProfileProperties[Name] is a required mapping`);
-  }
-
   const payload: any = {};
 
   // set profile properties, including old ones
