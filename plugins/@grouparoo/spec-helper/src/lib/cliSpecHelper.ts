@@ -294,6 +294,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     projectPath: string,
     runCliCommand: Function
   ) {
+    const triedGenerators = [];
     const apps = generatorNames.filter((name) => name.match(/:app/));
     const sources = generatorNames.filter((name) => name.match(/:source/));
     const properties = generatorNames.filter((name) => name.match(/:property/));
@@ -312,6 +313,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
           );
           expect(exitCode).toBe(0);
           testStdErr(projectPath, stdout, stderr);
+          triedGenerators.push(app);
         });
 
         sources.forEach((source) => {
@@ -332,6 +334,8 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                 projectPath,
                 `source_${buildId(sourcePrefix)}`
               );
+
+              triedGenerators.push(source);
             });
 
             properties.forEach((property) => {
@@ -351,6 +355,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                   );
                   expect(exitCode).toBe(0);
                   testStdErr(projectPath, stdout, stderr);
+                  triedGenerators.push(property);
                 });
               }
             });
@@ -376,6 +381,8 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                 projectPath,
                 `destination_${buildId(destinationPrefix)}`
               );
+
+              triedGenerators.push(destination);
             });
           }
         });
@@ -392,6 +399,14 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
         expect(stdout).toContain("Validation succeeded");
       });
     });
+
+    describe("everything was tested", () => {
+      generatorNames.forEach((name) => {
+        test(`${name} was tested`, () => {
+          expect(triedGenerators).toContain(name);
+        });
+      });
+    });
   }
 
   function buildPrefix(name: string) {
@@ -401,7 +416,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       .filter((p) => p !== "source")
       .filter((p) => p !== "property")
       .filter((p) => p !== "destination");
-    return parts.join("_");
+    return parts.join(":");
   }
 
   function buildId(name: string) {
