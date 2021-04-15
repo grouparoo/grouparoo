@@ -447,7 +447,7 @@ describe("mailchimp/exportProfile", () => {
         PHONE: newPhoneNumber,
       },
       oldGroups: [listOne],
-      newGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree, listFour],
       toDelete: false,
     });
 
@@ -456,12 +456,13 @@ describe("mailchimp/exportProfile", () => {
     expect(user["email_address"]).toBe(emails["otherEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
     expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
-    expect(user["tags"].length).toEqual(3);
+    expect(user["tags"].length).toEqual(4);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: listOne.toLowerCase() }),
         expect.objectContaining({ name: listTwo.toLowerCase() }),
         expect.objectContaining({ name: listThree.toLowerCase() }),
+        expect.objectContaining({ name: listFour.toLowerCase() }),
       ])
     );
   });
@@ -476,7 +477,7 @@ describe("mailchimp/exportProfile", () => {
         newProfileProperties: {
           email_address: emails["otherEmail"],
         },
-        oldGroups: [listOne, listTwo, listThree],
+        oldGroups: [listOne, listTwo, listThree], // missing listFour to make sure that we're only removing the tags we know about;
         newGroups: [],
         toDelete: true,
       })
@@ -484,7 +485,12 @@ describe("mailchimp/exportProfile", () => {
     user = await getUser(emails["otherEmail"]);
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(0);
+    expect(user["tags"].length).toEqual(1);
+    expect(user["tags"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: listFour.toLowerCase() }),
+      ])
+    );
   });
 
   test("can delete and restore a user", async () => {
@@ -495,7 +501,7 @@ describe("mailchimp/exportProfile", () => {
       newProfileProperties: {
         email_address: emails["otherEmail"],
       },
-      oldGroups: [],
+      oldGroups: [listFour],
       newGroups: [],
       toDelete: true,
     });

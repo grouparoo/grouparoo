@@ -10,8 +10,6 @@ export interface UpdateProfileMethod {
     client: any;
     listId: string;
     mailchimpId: string;
-    noCreate: boolean;
-    noDelete: boolean;
     email_address: string;
     export: ExportedProfile;
   }): Promise<{
@@ -26,8 +24,6 @@ export const updateProfile: UpdateProfileMethod = async ({
   client,
   listId,
   mailchimpId,
-  noCreate,
-  noDelete,
   email_address,
   export: {
     toDelete,
@@ -41,9 +37,6 @@ export const updateProfile: UpdateProfileMethod = async ({
     throw new Error("mailchimpId is required");
   }
   if (toDelete) {
-    if (noDelete) {
-      return { success: true };
-    }
     await deleteContactOrClearGroups(
       client,
       listId,
@@ -81,24 +74,14 @@ export const updateProfile: UpdateProfileMethod = async ({
   }
 
   try {
-    const response = await client.get(
-      `/lists/${listId}/members/${mailchimpId}`
-    );
-    if (response["unique_email_id"] && response["status"] !== "archived") {
-      exists = true;
-    }
-
+    const userResponse = await getUser(client, listId, mailchimpId);
+    exists = userResponse && userResponse["status"] !== "archived";
     // mailchimp changes the case of tags...
-    existingTagNames = response.tags.map((t) => normalizeGroupName(t.name));
+    existingTagNames = userResponse.tags.map((t) => normalizeGroupName(t.name));
   } catch (error) {
     // TODO: just letting this go for now.
     // is there a specific error if the user doesn't exist?
     // looks like "The requested resource could not be found"
-  }
-
-  if (noCreate && !exists) {
-    // only doing updates
-    return { success: true };
   }
 
   // update merge_variables
@@ -129,7 +112,6 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   try {
     await client[method](route, payload);
-
     const tagPayload = [];
 
     // add new tags
@@ -227,5 +209,20 @@ export async function clearGroups(
     if (error?.status !== 405 && error?.status !== 404) {
       throw error;
     }
+  }
+}
+
+export async function getUser(client, listId, userId) {
+  try {
+    const response = await client.get(`/lists/${listId}/members/${userId}`);
+    if (response["unique_email_id"]) {
+      return response;
+    }
+    return null;
+  } catch (error) {
+    if (error?.status !== 404) {
+      throw error;
+    }
+    return null;
   }
 }

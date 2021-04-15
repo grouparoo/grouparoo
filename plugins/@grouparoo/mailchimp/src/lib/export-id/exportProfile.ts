@@ -29,8 +29,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     client,
     listId,
     mailchimpId,
-    noDelete: true,
-    noCreate: true,
     email_address: newProfileProperties["email_address"],
     export: profileToExport,
   });

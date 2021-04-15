@@ -7,11 +7,11 @@ import { parallelism } from "./../lib/parallelism";
 import { appOptions } from "../lib/appOptions";
 
 import {
-  emailDestination,
+  emailDestinationConnection,
   emailSupportedSyncModes,
 } from "../lib/export/connection";
 import {
-  idDestination,
+  idDestinationConnection,
   idSupportedSyncModes,
 } from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
@@ -65,7 +65,11 @@ export class Plugins extends Initializer {
           methods: { test, parallelism, appOptions },
         },
       ],
-      connections: [importSource, emailDestination, idDestination],
+      connections: [
+        importSource,
+        emailDestinationConnection,
+        idDestinationConnection,
+      ],
     });
   }
 

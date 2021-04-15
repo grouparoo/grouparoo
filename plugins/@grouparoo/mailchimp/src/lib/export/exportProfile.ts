@@ -1,7 +1,7 @@
 import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { generateMailchimpId } from "../shared/generateMailchimpId";
-import { clearGroups, updateProfile } from "../shared/updateProfile";
+import { clearGroups, getUser, updateProfile } from "../shared/updateProfile";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
@@ -35,14 +35,18 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const mailchimpId = generateMailchimpId(email_address);
   // consider if the the email address has changed
   if (
-    !toDelete &&
     oldProfileProperties["email_address"] &&
     email_address !== oldProfileProperties["email_address"]
   ) {
     const oldMailchimpId = generateMailchimpId(
       oldProfileProperties["email_address"]
     );
-    if (!syncOperations.update) {
+    const userResponse = await getUser(client, listId, mailchimpId);
+    if (!userResponse && !syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow creating new profiles."
+      );
+    } else if (userResponse && !syncOperations.update) {
       throw new Errors.InfoError(
         "Destination sync mode does not allow updating existing profiles."
       );
@@ -84,8 +88,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     listId,
     mailchimpId,
     email_address,
-    noDelete: false,
-    noCreate: false,
     export: profileToExport,
   });
 };

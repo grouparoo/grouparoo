@@ -5,15 +5,15 @@ import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
-export const supportedSyncModes: DestinationSyncMode[] = ["enrich"];
+export const idSupportedSyncModes: DestinationSyncMode[] = ["enrich"];
 
-const connection: PluginConnection = {
+export const idDestinationConnection: PluginConnection = {
   name: "mailchimp-export-id",
   direction: "export",
   description:
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
   app: "mailchimp",
-  syncModes: supportedSyncModes,
+  syncModes: idSupportedSyncModes,
   defaultSyncMode: "enrich",
   options: [
     {
@@ -29,5 +29,3 @@ const connection: PluginConnection = {
     exportArrayProperties,
   },
 };
-
-export default connection;

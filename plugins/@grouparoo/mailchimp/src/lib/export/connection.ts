@@ -5,18 +5,18 @@ import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
-export const supportedSyncModes: DestinationSyncMode[] = [
+export const emailSupportedSyncModes: DestinationSyncMode[] = [
   "sync",
   "additive",
   "enrich",
 ];
 
-const connection: PluginConnection = {
+export const emailDestinationConnection: PluginConnection = {
   name: "mailchimp-export",
   direction: "export",
   description: "Export Profiles to a Mailchimp list with MergeVars and Tags.",
   app: "mailchimp",
-  syncModes: supportedSyncModes,
+  syncModes: emailSupportedSyncModes,
   defaultSyncMode: "sync",
   options: [
     {
@@ -32,5 +32,3 @@ const connection: PluginConnection = {
     exportArrayProperties,
   },
 };
-
-export default connection;
