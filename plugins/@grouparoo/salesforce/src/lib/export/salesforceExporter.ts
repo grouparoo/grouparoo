@@ -2,6 +2,7 @@ import {
   ErrorWithProfileId,
   SimpleAppOptions,
   objectCache,
+  DestinationSyncOperations,
 } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getFieldMap, SalesforceCacheData } from "../objects";
@@ -668,6 +669,7 @@ export interface ExportSalesforceMethod {
   (argument: {
     appId: string;
     appOptions: SimpleAppOptions;
+    syncOperations: DestinationSyncOperations;
     exports: BatchExport[];
     model: SalesforceModel;
   }): Promise<{
@@ -679,6 +681,7 @@ export interface ExportSalesforceMethod {
 export const exportSalesforceBatch: ExportSalesforceMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   exports,
   model,
 }) => {
@@ -709,7 +712,7 @@ export const exportSalesforceBatch: ExportSalesforceMethod = async ({
       findSize,
       batchSize,
       groupMode: BatchGroupMode.TotalMembers,
-      syncMode: model.syncMode,
+      syncOperations,
       appOptions,
       connection,
       data,

@@ -35,14 +35,6 @@ const appId = "app_d2bb07d8-0c4f-49b5-ad42-545f2e8662e8";
 function expectPendingResult(result) {
   let option, options;
 
-  option = result.syncMode;
-  options = option.options;
-  expect(option.type).toEqual("list");
-  expect(options.length).toBe(3);
-  expect(options.indexOf("Sync")).toEqual(0);
-  expect(options.indexOf("Enrich")).toEqual(1);
-  expect(options.indexOf("Additive")).toEqual(2);
-
   option = result.profileObject;
   options = option.options;
   expect(option.type).toEqual("typeahead");
