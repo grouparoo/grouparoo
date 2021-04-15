@@ -39,7 +39,7 @@ const otherInvalidEmail = "foo@example.com";
 // or this to use the existing ones;
 const newEmails = false;
 
-const emailsFile = path.join(__dirname, "../", "data", "emails.txt");
+const emailsFile = path.join(__dirname, "../", "data", "emails.json");
 
 if (fs.existsSync(emailsFile) && !newEmails) {
   emails = JSON.parse(fs.readFileSync(emailsFile, "utf-8"));
@@ -49,11 +49,11 @@ if (fs.existsSync(emailsFile) && !newEmails) {
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profile");
+// const newNock = false;
+// require("./../fixtures/export-profile");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = loadDestinationOptions(newNock);

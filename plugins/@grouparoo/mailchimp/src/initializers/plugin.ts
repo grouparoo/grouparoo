@@ -6,8 +6,14 @@ import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
 import { appOptions } from "../lib/appOptions";
 
-import emailDestination from "../lib/export/connection";
-import idDestination from "../lib/export-id/connection";
+import {
+  emailDestination,
+  emailSupportedSyncModes,
+} from "../lib/export/connection";
+import {
+  idDestination,
+  idSupportedSyncModes,
+} from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
 
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
@@ -37,12 +43,12 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "mailchimp:email",
           [path.join(templateRoot, "destination", "email", "*.template")],
-          ["sync", "additive", "enrich"]
+          emailSupportedSyncModes
         ),
         new DestinationTemplate(
           "mailchimp:id",
           [path.join(templateRoot, "destination", "id", "*.template")],
-          ["enrich"]
+          idSupportedSyncModes
         ),
       ],
       apps: [

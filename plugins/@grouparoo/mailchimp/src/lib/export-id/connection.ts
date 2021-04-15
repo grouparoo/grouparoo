@@ -1,9 +1,11 @@
-import { PluginConnection } from "@grouparoo/core";
+import { PluginConnection, DestinationSyncMode } from "@grouparoo/core";
 import { exportProfile } from "./exportProfile";
 
 import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
+
+export const supportedSyncModes: DestinationSyncMode[] = ["enrich"];
 
 const connection: PluginConnection = {
   name: "mailchimp-export-id",
@@ -11,7 +13,7 @@ const connection: PluginConnection = {
   description:
     "Updates existing contacts in a Mailchimp list based on a known Mailchimp ID.",
   app: "mailchimp",
-  syncModes: ["enrich"],
+  syncModes: supportedSyncModes,
   defaultSyncMode: "enrich",
   options: [
     {

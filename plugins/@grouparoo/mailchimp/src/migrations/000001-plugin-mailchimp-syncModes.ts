@@ -3,12 +3,35 @@ export default {
     await migration.sequelize.transaction(async () => {
       // Set all existing instances to "sync" to maintain same behavior
       await migration.sequelize.query(
-        `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready' AND ("type"='mailchimp-export' OR "type"='mailchimp-export-id') AND "locked" IS NULL`
+        `UPDATE "destinations" SET "syncMode"='sync' WHERE "state"='ready' AND "type"='mailchimp-export' AND "locked" IS NULL`
+      );
+      await migration.sequelize.query(
+        `UPDATE "destinations" SET "syncMode"='enrich' WHERE "state"='ready' AND "type"='mailchimp-export-id' AND "locked" IS NULL`
       );
     });
   },
 
   down: async function (migration) {
-    // nothing to do
+    await migration.bulkUpdate(
+      "destinations",
+      {
+        syncMode: null,
+      },
+      {
+        type: "mailchimp-export-id",
+        locked: null,
+      }
+    );
+
+    await migration.bulkUpdate(
+      "destinations",
+      {
+        syncMode: null,
+      },
+      {
+        type: "mailchimp-export",
+        locked: null,
+      }
+    );
   },
 };

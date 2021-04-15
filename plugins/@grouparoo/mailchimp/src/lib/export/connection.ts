@@ -1,16 +1,22 @@
-import { PluginConnection } from "@grouparoo/core";
+import { PluginConnection, DestinationSyncMode } from "@grouparoo/core";
 import { exportProfile } from "./exportProfile";
 
 import { getDestinationOptions } from "../shared/connectionOptions";
 import { getDestinationMappingOptions } from "../shared/destinationMappingOptions";
 import { exportArrayProperties } from "../shared/exportArrayProperties";
 
+export const supportedSyncModes: DestinationSyncMode[] = [
+  "sync",
+  "additive",
+  "enrich",
+];
+
 const connection: PluginConnection = {
   name: "mailchimp-export",
   direction: "export",
   description: "Export Profiles to a Mailchimp list with MergeVars and Tags.",
   app: "mailchimp",
-  syncModes: ["sync", "additive", "enrich"],
+  syncModes: supportedSyncModes,
   defaultSyncMode: "sync",
   options: [
     {

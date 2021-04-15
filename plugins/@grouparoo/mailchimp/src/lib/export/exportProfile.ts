@@ -55,9 +55,26 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         merge_fields: { email_address },
       });
     } catch (error) {
-      // Another user with the new email address (email_address) already exists,
-      // so we need to delete the old one and let the updateProfile reuse the existing one.
-      await clearGroups(client, listId, oldMailchimpId, oldGroups, newGroups);
+      if (error.errors!.length > 0) {
+        for (const errorDetails of error.errors!) {
+          if (
+            errorDetails.message!.match(
+              /is already in this list with a status of "subscribed"/i
+            )
+          ) {
+            // Another user with the new email address (email_address) already exists,
+            // so we need to delete the old one and let the updateProfile reuse the existing one.
+            await clearGroups(
+              client,
+              listId,
+              oldMailchimpId,
+              oldGroups,
+              newGroups
+            );
+            break;
+          }
+        }
+      }
     }
   }
 

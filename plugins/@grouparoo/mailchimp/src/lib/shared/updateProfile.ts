@@ -167,7 +167,7 @@ export const updateProfile: UpdateProfileMethod = async ({
         .join(", ")}`;
 
       // just in case of one of the multiple errors message is the one related to the email strict validation.
-      if (error.message.includes("looks fake or invalid")) {
+      if (error.message!.includes("looks fake or invalid")) {
         error.errorLevel = "info";
       }
     }
