@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,9 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/hubspot/hubspot.svg",
@@ -30,9 +33,12 @@ export class Plugins extends Initializer {
         new AppTemplate("hubspot", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("hubspot", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "hubspot",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -55,6 +61,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles to Hubspot and add them to Contact Lists.",
           app: "hubspot",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,

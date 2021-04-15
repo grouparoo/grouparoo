@@ -1,10 +1,45 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import {
+  ExportProfilePluginMethod,
+  Errors,
+  SimpleAppOptions,
+  DestinationSyncOperations,
+} from "@grouparoo/core";
+import { HubspotClient } from "../client";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
+
+const deleteContactOrClearGroups = async (
+  client: HubspotClient,
+  appId: string,
+  appOptions: SimpleAppOptions,
+  syncOperations: DestinationSyncOperations,
+  contact: any,
+  groups: string[],
+  doThrow: boolean = false
+) => {
+  if (syncOperations.delete) {
+    await client.deleteContact(contact.vid);
+  } else {
+    if (syncOperations.update) {
+      // clear groups
+      const email = contact.properties.email.value;
+      for (const group of groups) {
+        await removeFromList(client, appId, appOptions, email, group);
+      }
+    }
+
+    if (doThrow) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not allow removing profiles."
+      );
+    }
+  }
+};
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   export: {
     toDelete,
     newProfileProperties,
@@ -36,7 +71,15 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        await client.deleteContact(contactToDelete["vid"]);
+        await deleteContactOrClearGroups(
+          client,
+          appId,
+          appOptions,
+          syncOperations,
+          contactToDelete,
+          oldGroups,
+          true
+        );
       }
       return { success: true };
     } else {
@@ -65,9 +108,28 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           sortedDataFields[v] = formattedDataFields[v];
         });
 
+      if (contact && !syncOperations.update) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow updating existing profiles."
+        );
+      }
+
+      if (!contact && !syncOperations.create) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow creating new profiles."
+        );
+      }
+
       // change email
       if (oldContact) {
-        await client.deleteContact(oldContact.vid);
+        await deleteContactOrClearGroups(
+          client,
+          appId,
+          appOptions,
+          syncOperations,
+          oldContact,
+          oldGroups
+        );
       }
 
       await client.createOrUpdateContact(sortedDataFields);
