@@ -75,7 +75,7 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   try {
     const userResponse = await getUser(client, listId, mailchimpId);
-    exists = userResponse && userResponse["status"] !== "archived";
+    exists = userResponse !== null;
     // mailchimp changes the case of tags...
     existingTagNames = userResponse.tags.map((t) => normalizeGroupName(t.name));
   } catch (error) {
@@ -215,7 +215,7 @@ export async function clearGroups(
 export async function getUser(client, listId, userId) {
   try {
     const response = await client.get(`/lists/${listId}/members/${userId}`);
-    if (response["unique_email_id"]) {
+    if (response["unique_email_id"] && response["status"] !== "archived") {
       return response;
     }
     return null;
