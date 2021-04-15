@@ -217,6 +217,19 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     return runCliCommand(`generate group:manual ${groupName} --overwrite`);
   }
 
+  export async function generateUserIDProperty(
+    runCliCommand: Function,
+    propertyName = "user_id"
+  ) {
+    await runCliCommand(`generate manual:app manual_app --overwrite`);
+    await runCliCommand(
+      `generate manual:source manual_source --parent manual_app --overwrite`
+    );
+    await runCliCommand(
+      `generate manual:property ${propertyName} --parent manual_source --overwrite`
+    );
+  }
+
   export function prepareForCLITest(
     pluginName: string,
     pluginPath: string,
@@ -367,7 +380,10 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (destination.match(appMatcher)) {
             test(`generate destination ${destination}`, async () => {
-              if (idx === 0) await generateGroup(runCliCommand);
+              if (idx === 0) await generateGroup(runCliCommand); // make a group to send to the destination
+              if (idx === 0 && properties.length === 0) {
+                await generateUserIDProperty(runCliCommand); // if we have no properties, we will need at least one property
+              }
 
               const { exitCode, stdout, stderr } = await runCliCommand(
                 `generate ${destination} destination_${buildId(
@@ -428,9 +444,12 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
       expect(stderr).toBe("");
     } catch (error) {
       console.log(`Error testing @ ${projectPath}`);
+      console.log(
+        `Try locally with: cd ${projectPath} && GROUPAROO_PARENT_PATH="${projectPath}" roo validate`
+      );
       console.log(`--- STDOUT --- `);
       console.log(stdout);
-      console.log(`--- stderr --- `);
+      console.log(`--- STDERR --- `);
       console.log(stderr);
       throw error;
     }
