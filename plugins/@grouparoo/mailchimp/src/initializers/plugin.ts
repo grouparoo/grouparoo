@@ -51,8 +51,7 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "mailchimp:id",
           [path.join(templateRoot, "destination", "id", "*.template")],
-          idSupportedSyncModes,
-          defaultSyncMode
+          idSupportedSyncModes
         ),
       ],
       apps: [

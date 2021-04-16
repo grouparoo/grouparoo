@@ -44,11 +44,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete && !oldUserResponse && !userResponse) {
       return { success: true };
     }
-    if (!userResponse && !syncOperations.create) {
+    const foundUser = userResponse || oldUserResponse;
+    if (!foundUser && !syncOperations.create) {
       throw new Errors.InfoError(
         "Destination sync mode does not allow creating new profiles."
       );
-    } else if (userResponse && !syncOperations.update) {
+    } else if (oldUserResponse && !syncOperations.update) {
       throw new Errors.InfoError(
         "Destination sync mode does not allow updating existing profiles."
       );
@@ -91,7 +92,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         toThrow = false;
       }
       if (toThrow) {
-        console.log(error);
         throw error;
       }
     }
