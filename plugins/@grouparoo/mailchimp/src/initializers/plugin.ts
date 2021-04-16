@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
@@ -33,6 +33,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const defaultSyncMode: DestinationSyncMode = "sync";
+
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/mailchimp/mailchimp.svg",
@@ -43,12 +45,14 @@ export class Plugins extends Initializer {
         new DestinationTemplate(
           "mailchimp:email",
           [path.join(templateRoot, "destination", "email", "*.template")],
-          emailSupportedSyncModes
+          emailSupportedSyncModes,
+          defaultSyncMode
         ),
         new DestinationTemplate(
           "mailchimp:id",
           [path.join(templateRoot, "destination", "id", "*.template")],
-          idSupportedSyncModes
+          idSupportedSyncModes,
+          defaultSyncMode
         ),
       ],
       apps: [

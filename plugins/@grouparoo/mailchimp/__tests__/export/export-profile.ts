@@ -29,6 +29,7 @@ const listThree = "List Three";
 const listFour = "List Four";
 const numberField = 15.5;
 const brandNewName = "Jake";
+const otherBrandNewName = "Carl";
 const invalidPhone = "000";
 const invalidNumber = "AAAAA";
 const invalidEmail = "AAAAA";
@@ -49,11 +50,11 @@ if (fs.existsSync(emailsFile) && !newEmails) {
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profile");
+// const newNock = false;
+// require("./../fixtures/export-profile");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = loadDestinationOptions(newNock);
@@ -593,6 +594,29 @@ describe("mailchimp/exportProfile", () => {
     );
   });
 
+  test("try to delete a user passing nonexistent email on the newProfileProperties and oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: brandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).toBe(null);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
   test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).toBe(null);
@@ -614,6 +638,54 @@ describe("mailchimp/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["brandNewEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(brandNewName);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
+  test("can change a user email and other variables passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).not.toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: otherBrandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["brandNewEmail"]);
+    expect(user["merge_fields"]["FNAME"]).toBe(otherBrandNewName);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
+  test("can change a user email and delete it passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).not.toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: brandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).toBe(null);
     nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
   });

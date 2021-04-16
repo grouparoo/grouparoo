@@ -23,9 +23,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   if (Object.keys(newProfileProperties).length === 0) {
     return { success: true };
   }
-
   const listId = destinationOptions.listId?.toString();
-
   const email_address = newProfileProperties["email_address"]; // this is a required key for mailchimp
   if (!email_address) {
     throw new Error(
@@ -41,7 +39,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     const oldMailchimpId = generateMailchimpId(
       oldProfileProperties["email_address"]
     );
+    const oldUserResponse = await getUser(client, listId, oldMailchimpId);
     const userResponse = await getUser(client, listId, mailchimpId);
+    if (toDelete && !oldUserResponse && !userResponse) {
+      return { success: true };
+    }
     if (!userResponse && !syncOperations.create) {
       throw new Errors.InfoError(
         "Destination sync mode does not allow creating new profiles."
@@ -59,7 +61,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         merge_fields: { email_address },
       });
     } catch (error) {
-      if (error.errors!.length > 0) {
+      let toThrow = true;
+      if (error.errors && error.errors.length > 0) {
         for (const errorDetails of error.errors!) {
           if (
             errorDetails.message!.match(
@@ -75,9 +78,21 @@ export const exportProfile: ExportProfilePluginMethod = async ({
               oldGroups,
               newGroups
             );
+            toThrow = false;
             break;
           }
         }
+      } else if (
+        error.message &&
+        error.message.match(
+          /is already a list member. Use PUT to insert or update list members./i
+        )
+      ) {
+        toThrow = false;
+      }
+      if (toThrow) {
+        console.log(error);
+        throw error;
       }
     }
   }

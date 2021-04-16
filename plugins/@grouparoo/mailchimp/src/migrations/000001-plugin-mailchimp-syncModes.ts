@@ -18,18 +18,7 @@ export default {
         syncMode: null,
       },
       {
-        type: "mailchimp-export-id",
-        locked: null,
-      }
-    );
-
-    await migration.bulkUpdate(
-      "destinations",
-      {
-        syncMode: null,
-      },
-      {
-        type: "mailchimp-export",
+        type: ["mailchimp-export-id", "mailchimp-export"],
         locked: null,
       }
     );
