@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "grouparoo",
   "description": "The Grouparoo CLI and Project Generator",
-  "version": "0.2.12",
+  "version": "0.3.0-alpha.1",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
