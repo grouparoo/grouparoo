@@ -6,6 +6,7 @@ import {
   getConfigObjectsWithIds,
   sortConfigObjectsWithIds,
   ConfigurationObject,
+  validateAndFormatId,
 } from "../../src/classes/codeConfig";
 
 describe("classes/codeConfig", () => {
@@ -151,6 +152,26 @@ describe("classes/codeConfig", () => {
     for (let i = 0; i < 10; i++) {
       testSortConfigObjectsWithIds(i);
     }
+  });
+
+  describe("#validateAndFormatId", () => {
+    test("validates ids", async () => {
+      expect(await validateAndFormatId(null, "foo")).toBeTruthy();
+      expect(await validateAndFormatId(null, "foo_underscore")).toBeTruthy();
+      expect(await validateAndFormatId(null, "foo-dash")).toBeTruthy();
+      expect(await validateAndFormatId(null, "fooUpperLower")).toBeTruthy();
+      expect(await validateAndFormatId(null, "foo-with-numb3r")).toBeTruthy();
+
+      await expect(validateAndFormatId(null, "foo w space")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo w %")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo w /")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo w \\")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo w !")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo w ~")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo,stuff")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo;stuff")).rejects.toThrow();
+      await expect(validateAndFormatId(null, "foo&stuff")).rejects.toThrow();
+    });
   });
 });
 

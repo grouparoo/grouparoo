@@ -92,7 +92,7 @@ export async function validateAndFormatId(model: any, id: string) {
 
   let failing = false;
   if (id.match(/\s/)) failing = true;
-  if (id.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)) failing = true;
+  if (id.match(/[~`!#$%\^&*+=\\[\]\\';,/{}|\\":<>\?]/)) failing = true;
   if (id.length > 40) failing = true;
 
   if (failing) {
