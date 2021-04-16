@@ -282,7 +282,8 @@ export namespace SourceOps {
     key: string,
     type: string,
     mappedColumn: string,
-    id?: string
+    id?: string,
+    local = false
   ) {
     const existingIdentifying = await Property.findOne({
       where: { identifying: true },
@@ -316,8 +317,9 @@ export namespace SourceOps {
       // build the default options
       const { pluginConnection } = await source.getPlugin();
       if (
+        !local &&
         typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
-        "function"
+          "function"
       ) {
         const app = await source.$get("app");
         const connection = await app.getConnection();

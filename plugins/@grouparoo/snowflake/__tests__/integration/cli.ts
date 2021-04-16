@@ -8,16 +8,16 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 
 const nockFile = path.join(__dirname, "../", "fixtures", "cli.js");
 
+import { helper } from "@grouparoo/spec-helper";
+import { loadAppOptions, updater } from "../utils/nockHelper";
+import { SimpleAppOptions } from "@grouparoo/core";
+
 // these comments to use nock
 const newNock = false;
 require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
-
-import { helper } from "@grouparoo/spec-helper";
-import { loadAppOptions, updater } from "../utils/nockHelper";
-import { SimpleAppOptions } from "@grouparoo/core";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -154,6 +154,8 @@ describe("snowflake cli tests", () => {
    * This test is marked at TODO because nock isn't fully preventing access to snowflake.
    * On CI, requests to snowflake are still getting made, even with the nockfile loaded in.
    * The test runs just fine locally / when recording nockfiles.
+   *
+   * The problem is related to app.test() in the CI server.  The way the nockfiles are updated is insufficient
    */
 
   test.todo(

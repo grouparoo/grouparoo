@@ -261,9 +261,17 @@ export class Source extends LoggedModel<Source> {
     key: string,
     type: string,
     mappedColumn: string,
-    id?: string
+    id?: string,
+    local = false
   ) {
-    return SourceOps.bootstrapUniqueProperty(this, key, type, mappedColumn, id);
+    return SourceOps.bootstrapUniqueProperty(
+      this,
+      key,
+      type,
+      mappedColumn,
+      id,
+      local
+    );
   }
 
   // --- Class Methods --- //
