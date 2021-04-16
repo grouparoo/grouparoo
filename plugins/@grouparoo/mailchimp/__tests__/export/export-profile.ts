@@ -50,11 +50,11 @@ if (fs.existsSync(emailsFile) && !newEmails) {
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/export-profile");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const destinationOptions = loadDestinationOptions(newNock);
