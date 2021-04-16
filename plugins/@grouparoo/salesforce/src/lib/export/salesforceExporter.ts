@@ -379,6 +379,7 @@ function processResult(result, identifier, type: ResultType) {
     id = "doesntmatter";
   }
   if (!success || errors.length > 0) {
+    // console.log("SDFC error:", JSON.stringify(errors));
     if (
       errors.length === 1 &&
       errors[0].statusCode === "CANNOT_UPDATE_CONVERTED_LEAD"

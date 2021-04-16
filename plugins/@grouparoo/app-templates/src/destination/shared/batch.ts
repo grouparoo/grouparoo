@@ -1,4 +1,5 @@
 import { ErrorWithProfileId } from "@grouparoo/core";
+import { log } from "actionhero";
 
 export interface MethodNormalizeGroupName {
   // mess with the names of groups (tags with no spaces, for example)
@@ -80,6 +81,7 @@ export function checkErrors(
       }
       error.profileId = exportedProfile.profileId;
       errors.push(error);
+      log(error?.stack || error, "error");
     } else if (skippedMessage) {
       errors = errors || [];
       const skip = <ErrorWithProfileId>new Error(skippedMessage);
