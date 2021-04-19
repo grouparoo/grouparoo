@@ -15,7 +15,7 @@
 {{{custom_steps}}}
       - run:
           name: test
-          command: cd {{{relative_path}}}/{{section}} && ./node_modules/.bin/jest __tests__/models __tests__/actions --ci --maxWorkers 2
+          command: cd {{{relative_path}}}/{{section}} && ./node_modules/.bin/jest __tests__/{{name}} --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
 {{{custom_test}}}
