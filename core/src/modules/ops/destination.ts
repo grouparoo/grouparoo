@@ -350,6 +350,16 @@ export namespace DestinationOps {
           )[0].remoteKey
       );
 
+    const syncMode = await destination.getSyncMode();
+    const canDelete = syncMode
+      ? DestinationSyncModeData[syncMode].operations.delete
+      : true;
+    if (toDelete && !canDelete) {
+      // If sync mode does not allow deleting, don't delete and just clear groups
+      newGroupNames = [];
+      toDelete = false;
+    }
+
     // determine if there are changes between this export and the previous one
     let hasChanges = true;
     if (
