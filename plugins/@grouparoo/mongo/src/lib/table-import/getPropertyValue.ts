@@ -48,7 +48,16 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       });
       break;
     case AggregationMethod.Sum:
-      aggSelect = MongoAggregationMethod.Sum;
+      aggPipeline.push({
+        $group: {
+          _id: null,
+          __result: {
+            $sum: {
+              $toDouble: `$${columnName}`,
+            },
+          },
+        },
+      });
       break;
     case AggregationMethod.Min:
       aggSelect = MongoAggregationMethod.Min;

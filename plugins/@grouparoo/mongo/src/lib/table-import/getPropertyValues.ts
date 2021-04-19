@@ -80,7 +80,21 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
       customAggValue = 1;
       break;
     case AggregationMethod.Sum:
-      aggSelect = MongoAggregationMethod.Sum;
+      if (groupByColumns.length > 0) {
+        for (const group of groupByColumns) {
+          aggPipeline.push({
+            $group: {
+              _id: `$${group}`,
+              __result: {
+                $sum: {
+                  $toDouble: `$${columnName}`,
+                },
+              },
+              __pk: { $first: `$${tablePrimaryKeyCol}` },
+            },
+          });
+        }
+      }
       break;
     case AggregationMethod.Min:
       aggSelect = MongoAggregationMethod.Min;
@@ -122,7 +136,7 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
         });
       }
     }
-  } else {
+  } else if (!aggSelect && !isUsingResultField) {
     aggPipeline.push({
       $addFields: {
         __pk: `$${tablePrimaryKeyCol}`,
