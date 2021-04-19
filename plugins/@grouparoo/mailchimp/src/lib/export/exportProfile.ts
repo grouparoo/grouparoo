@@ -63,10 +63,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       });
     } catch (error) {
       let toThrow = true;
-      if (error.errors && error.errors.length > 0) {
-        for (const errorDetails of error.errors!) {
+      if (error.errors?.length > 0) {
+        for (const errorDetails of error.errors) {
           if (
-            errorDetails.message!.match(
+            errorDetails.message?.match(
               /is already in this list with a status of "subscribed"/i
             )
           ) {
@@ -84,8 +84,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           }
         }
       } else if (
-        error.message &&
-        error.message.match(
+        error.message?.match(
           /is already a list member. Use PUT to insert or update list members./i
         )
       ) {

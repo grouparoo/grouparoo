@@ -137,7 +137,7 @@ export const updateProfile: UpdateProfileMethod = async ({
       tags: tagPayload,
     });
   } catch (error) {
-    const errorMessage = error?.response?.body?.detail || "";
+    const errorMessage = error.response?.body?.detail || "";
     // in case of strict validation cases the error must be set to info level.
     if (errorMessage.includes("looks fake or invalid")) {
       error.errorLevel = "info";
@@ -149,7 +149,7 @@ export const updateProfile: UpdateProfileMethod = async ({
         .join(", ")}`;
 
       // just in case of one of the multiple errors message is the one related to the email strict validation.
-      if (error.message!.includes("looks fake or invalid")) {
+      if (error.message?.includes("looks fake or invalid")) {
         error.errorLevel = "info";
       }
     }
