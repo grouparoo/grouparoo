@@ -52,7 +52,7 @@
     "fs-extra": "9.1.0",
     "glob": "7.1.6",
     "ioredis": "4.26.0",
-    "ioredis-mock": "5.4.1",
+    "ioredis-mock": "5.5.2",
     "isomorphic-fetch": "3.0.0",
     "json5": "2.2.0",
     "libphonenumber-js": "1.9.16",
