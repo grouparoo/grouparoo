@@ -23,7 +23,7 @@
   "main": "dist/index",
   "types": "dist/index",
   "dependencies": {
-    "js-yaml": "4.0.0"
+    "js-yaml": "4.1.0"
   },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
