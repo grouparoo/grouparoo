@@ -64,6 +64,19 @@ describe("mongo/table/scheduleOptions", () => {
       },
     });
     expect(rowCount).toBe(10);
+
+    const anotherRowCount = await getChangedRowCount({
+      connection: client,
+      appOptions,
+      appId: app.id,
+      tableName: usersTableName,
+      highWaterMarkCondition: {
+        columnName: "stamp",
+        value: new Date(),
+        filterOperation: FilterOperation.GreaterThan,
+      },
+    });
+    expect(anotherRowCount).toBe(0);
   });
 
   test("gets the percentage complete of a run", async () => {

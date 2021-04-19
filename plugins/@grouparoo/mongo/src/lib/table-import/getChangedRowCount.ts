@@ -24,5 +24,8 @@ export const getChangedRowCount: GetChangedRowCountMethod = async ({
     .collection(tableName)
     .aggregate(aggPipeline)
     .toArray();
-  return parseInt(rows[0]["__COUNT"]);
+  if (rows.length > 0) {
+    return parseInt(rows[0]["__COUNT"]);
+  }
+  return 0;
 };
