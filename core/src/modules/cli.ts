@@ -48,9 +48,7 @@ export namespace GrouparooCLI {
     if (announcePlugins) api.plugins.announcePlugins();
 
     GrouparooCLI.logger.log("");
-    GrouparooCLI.logger.log(
-      Colors.underline(Colors.bold(`🦘 Grouparoo: ${name}`))
-    );
+    GrouparooCLI.logger.log(logger.underlineBold(`🦘 Grouparoo: ${name}`));
     GrouparooCLI.logger.log("");
   }
 
@@ -75,15 +73,15 @@ export namespace GrouparooCLI {
     }
 
     export function blueBold(s: string) {
-      return Colors.blue(Colors.bold(s));
+      return colorEnabled() ? Colors.blue(Colors.bold(s)) : s;
     }
 
     export function blue(s: string) {
-      return Colors.blue(s);
+      return colorEnabled() ? Colors.blue(s) : s;
     }
 
     export function underlineBold(s: string) {
-      return Colors.underline(Colors.bold(s));
+      return colorEnabled() ? Colors.underline(Colors.bold(s)) : s;
     }
 
     export function deCamel(s: string) {
@@ -125,6 +123,13 @@ export namespace GrouparooCLI {
         blueBold("└" + "-".repeat(formattedTitle.length - 1))
       );
       GrouparooCLI.logger.log("");
+    }
+
+    function colorEnabled() {
+      return (
+        process.env.GROUPAROO_LOGS_STDOUT_DISABLE_COLOR?.toLowerCase() !==
+        "true"
+      );
     }
   }
 }

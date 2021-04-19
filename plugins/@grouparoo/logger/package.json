@@ -22,10 +22,13 @@
   },
   "scripts": {
     "prepare": "rm -rf dist && tsc --declaration",
-    "test": "echo 'TODO'",
+    "test": "jest",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src",
     "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "@grouparoo/app-templates": "^0.3.0-alpha.0"
   },
   "devDependencies": {
     "@grouparoo/core": "0.3.0-alpha.1",

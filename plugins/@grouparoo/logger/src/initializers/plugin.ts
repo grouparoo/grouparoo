@@ -1,3 +1,4 @@
+import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
@@ -7,6 +8,10 @@ import { exportProfiles } from "./../lib/export/exportProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
+import { AppTemplate } from "@grouparoo/app-templates/dist/app";
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 
@@ -20,6 +25,14 @@ export class Plugins extends Initializer {
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/logger/log.svg",
+      templates: [
+        new AppTemplate("logger", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
+        new DestinationTemplate("logger", [
+          path.join(templateRoot, "destination", "*.template"),
+        ]),
+      ],
       apps: [
         {
           name: "logger",
