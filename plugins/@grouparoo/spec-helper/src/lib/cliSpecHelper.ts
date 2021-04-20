@@ -6,6 +6,31 @@ import os from "os";
 export namespace CLISpecHelper {
   const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
 
+  /**
+   * For most plugins, this test method should be able to test all the generators and run the validate command
+   * Otherwise, it can be decomposed with the other methods in this file
+   */
+  export function validateGenerators(pluginName: string, pluginPath: string) {
+    describe(`${pluginName} CLI`, () => {
+      const {
+        projectPath,
+        runCliCommand,
+        runCliCommandSync,
+      } = CLISpecHelper.prepareForCLITest(pluginName, pluginPath);
+
+      const generatorNames = CLISpecHelper.getGeneratorNames(
+        pluginName,
+        runCliCommandSync
+      );
+
+      CLISpecHelper.testAllPluginGenerators(
+        generatorNames,
+        projectPath,
+        runCliCommand
+      );
+    });
+  }
+
   export async function spawnPromise(
     command: string,
     args: Array<string> = [],
@@ -426,6 +451,10 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     });
 
     describe("everything was tested", () => {
+      test("there were generators to test", () => {
+        expect(generatorNames.length).toBeGreaterThan(0);
+      });
+
       generatorNames.forEach((name) => {
         test(`${name} was tested`, () => {
           expect(triedGenerators).toContain(name);
