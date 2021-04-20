@@ -9,6 +9,7 @@ import {
   AfterDestroy,
   AfterBulkCreate,
   BeforeUpdate,
+  Length,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
@@ -26,6 +27,7 @@ export abstract class LoggedModel<T> extends Model {
    */
   abstract idPrefix(): string;
 
+  @Length({ min: 1, max: 40 })
   @Column({ primaryKey: true })
   id: string;
 
