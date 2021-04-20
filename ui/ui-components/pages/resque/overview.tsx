@@ -52,7 +52,11 @@ export default function ResqueOverview(props) {
       _workers = resqueDetails?.workers || _workers;
       _stats = resqueDetails?.stats || _stats;
       _leader = resqueDetails?.leader || _leader;
-      _failedCount = _queues["failed"] || _failedCount;
+
+      _failedCount =
+        metrics.find(
+          (m) => m.collection === "cluster" && m.topic === "resqueErrors"
+        )?.count ?? _failedCount;
 
       Object.keys(_workers).forEach((workerName) => {
         const worker = _workers[workerName];
