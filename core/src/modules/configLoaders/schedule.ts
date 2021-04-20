@@ -1,6 +1,5 @@
 import {
   ConfigurationObject,
-  validateAndFormatId,
   logModel,
   getParentByName,
   getCodeConfigLockKey,
@@ -17,17 +16,16 @@ export async function loadSchedule(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  const id = await validateAndFormatId(Schedule, configObject.id);
   validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   let schedule = await Schedule.scope(null).findOne({
-    where: { id, locked: getCodeConfigLockKey() },
+    where: { id: configObject.id, locked: getCodeConfigLockKey() },
   });
   if (!schedule) {
     isNew = true;
     schedule = await Schedule.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       sourceId: source.id,
     });

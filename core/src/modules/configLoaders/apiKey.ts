@@ -1,6 +1,5 @@
 import {
   ConfigurationObject,
-  validateAndFormatId,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
@@ -16,16 +15,15 @@ export async function loadApiKey(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  const id = await validateAndFormatId(ApiKey, configObject.id);
   validateConfigObjectKeys(ApiKey, configObject);
 
   let apiKey = await ApiKey.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), id },
+    where: { locked: getCodeConfigLockKey(), id: configObject.id },
   });
   if (!apiKey) {
     isNew = true;
     apiKey = await ApiKey.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
     });

@@ -1,6 +1,5 @@
 import {
   ConfigurationObject,
-  validateAndFormatId,
   getCodeConfigLockKey,
   logModel,
   validateConfigObjectKeys,
@@ -17,16 +16,15 @@ export async function loadGroup(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  const id = await validateAndFormatId(Group, configObject.id);
   validateConfigObjectKeys(Group, configObject);
 
   let group = await Group.scope(null).findOne({
-    where: { id, locked: getCodeConfigLockKey() },
+    where: { id: configObject.id, locked: getCodeConfigLockKey() },
   });
   if (!group) {
     isNew = true;
     group = await Group.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
@@ -39,11 +37,7 @@ export async function loadGroup(
     const rules = [...configObject.rules];
     for (const i in rules) {
       if (rules[i]["propertyId"]) {
-        const propertyId = await validateAndFormatId(
-          Property,
-          rules[i]["propertyId"]
-        );
-        const property = await Property.findById(propertyId);
+        const property = await Property.findById(rules[i]["propertyId"]);
         delete rules[i]["propertyId"];
         rules[i].key = property.key;
       }

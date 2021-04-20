@@ -4,7 +4,6 @@ import {
   getParentByName,
   IdsByClass,
   logModel,
-  validateAndFormatId,
   validateConfigObjectKeys,
 } from "../../classes/codeConfig";
 import { Team, TeamMember } from "../..";
@@ -19,16 +18,15 @@ export async function loadTeamMember(
 
   const team: Team = await getParentByName(Team, configObject.teamId);
 
-  const id = await validateAndFormatId(TeamMember, configObject.id);
   validateConfigObjectKeys(TeamMember, configObject);
 
   let teamMember = await TeamMember.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), id },
+    where: { locked: getCodeConfigLockKey(), id: configObject.id },
   });
   if (!teamMember) {
     isNew = true;
     teamMember = TeamMember.build({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       email: configObject.email,
       teamId: team.id,

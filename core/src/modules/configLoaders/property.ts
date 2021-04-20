@@ -4,7 +4,6 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatId,
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
@@ -19,16 +18,15 @@ export async function loadProperty(
   let isNew = false;
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
-  const id = await validateAndFormatId(Property, configObject.id);
   validateConfigObjectKeys(Property, configObject, ["name"]);
 
   let property = await Property.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), id },
+    where: { locked: getCodeConfigLockKey(), id: configObject.id },
   });
   if (!property) {
     isNew = true;
     property = await Property.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       key: configObject.key || configObject.name,
       type: configObject.type,

@@ -1,6 +1,5 @@
 import {
   ConfigurationObject,
-  validateAndFormatId,
   extractNonNullParts,
   getCodeConfigLockKey,
   logModel,
@@ -16,16 +15,15 @@ export async function loadApp(
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
-  const id = await validateAndFormatId(App, configObject.id);
   validateConfigObjectKeys(App, configObject);
 
   let app = await App.scope(null).findOne({
-    where: { id, locked: getCodeConfigLockKey() },
+    where: { id: configObject.id, locked: getCodeConfigLockKey() },
   });
   if (!app) {
     isNew = true;
     app = await App.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,

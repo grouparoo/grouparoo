@@ -48,6 +48,8 @@ export default function ResqueOverview(props) {
         ).metadata
       );
 
+      console.log(resqueDetails);
+
       _queues = resqueDetails?.queues || _queues;
       _workers = resqueDetails?.workers || _workers;
       _stats = resqueDetails?.stats || _stats;
