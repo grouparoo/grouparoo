@@ -14,8 +14,7 @@ const deleteContactOrClearGroups = async (
   appOptions: SimpleAppOptions,
   syncOperations: DestinationSyncOperations,
   contact: any,
-  groups: string[],
-  doThrow: boolean = false
+  groups: string[]
 ) => {
   if (syncOperations.delete) {
     await client.deleteContact(contact.vid);
@@ -26,12 +25,6 @@ const deleteContactOrClearGroups = async (
       for (const group of groups) {
         await removeFromList(client, appId, appOptions, email, group);
       }
-    }
-
-    if (doThrow) {
-      throw new Errors.InfoError(
-        "Destination sync mode does not allow removing profiles."
-      );
     }
   }
 };
@@ -69,17 +62,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       oldContact = await client.getContactByEmail(oldEmail);
     }
     if (toDelete) {
+      if (!syncOperations.delete) {
+        throw new Error(
+          "Destination sync mode does not allow removing profiles"
+        );
+      }
       const contactToDelete = contact || oldContact;
       if (contactToDelete) {
-        await deleteContactOrClearGroups(
-          client,
-          appId,
-          appOptions,
-          syncOperations,
-          contactToDelete,
-          oldGroups,
-          true
-        );
+        await client.deleteContact(contactToDelete.vid);
       }
       return { success: true };
     } else {
