@@ -166,10 +166,19 @@ export function validateConfigObjects(
   configObjects: ConfigurationObject[]
 ): { configObjects: ConfigurationObject[]; errors: string[] } {
   let errors = [];
+  configObjects
+    .filter((c) => !c.id || c.id === "")
+    .map((c) => {
+      errors.push(
+        (c.name ? `"${c.name}"` : c.key ? `"${c.key}"` : "A config object") +
+          " is missing an ID"
+      );
+    });
   const duplicates = extractDuplicates(configObjects, "id");
   if (duplicates.length > 0) {
     errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
   }
+
   return { configObjects, errors };
 }
 

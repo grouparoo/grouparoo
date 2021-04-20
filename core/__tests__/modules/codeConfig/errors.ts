@@ -47,6 +47,38 @@ describe("modules/codeConfig", () => {
       expect(errors).toContain("Duplicate ID values found: marketing_team");
     });
 
+    test("catches missing IDs ", async () => {
+      const objsEmptyString = [
+        {
+          id: "",
+          name: "Marketing Team",
+          class: "team",
+        },
+      ];
+
+      let response = validateConfigObjects(objsEmptyString);
+      expect(response.errors).toContain('"Marketing Team" is missing an ID');
+
+      const objsNoID = [
+        {
+          name: "Marketing Team",
+          class: "team",
+        },
+      ];
+
+      response = validateConfigObjects(objsNoID);
+      expect(response.errors).toContain('"Marketing Team" is missing an ID');
+
+      const objsNothing = [
+        {
+          class: "team",
+        },
+      ];
+
+      response = validateConfigObjects(objsNothing);
+      expect(response.errors).toContain("A config object is missing an ID");
+    });
+
     test("extraneous keys throw an error", async () => {
       const configObject = {
         id: "marketing_team",
