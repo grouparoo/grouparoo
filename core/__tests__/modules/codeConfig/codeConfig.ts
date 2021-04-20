@@ -530,7 +530,7 @@ describe("modules/codeConfig", () => {
         api.codeConfig.allowLockedModelChanges = true;
       });
 
-      test("missing plugin", async () => {
+      test("space in ID", async () => {
         const { errors } = await loadConfigDirectory(
           path.join(__dirname, "..", "..", "fixtures", "codeConfig", "error-id")
         );
