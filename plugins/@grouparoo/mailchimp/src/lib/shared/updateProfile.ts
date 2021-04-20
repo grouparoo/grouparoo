@@ -37,7 +37,7 @@ export const updateProfile: UpdateProfileMethod = async ({
     throw new Error("mailchimpId is required");
   }
   if (toDelete) {
-    await deleteContactOrClearGroups(
+    await deleteContact(
       client,
       listId,
       mailchimpId,
@@ -163,7 +163,7 @@ function normalizeGroupName(group: any) {
   return String(group).toLocaleLowerCase();
 }
 
-export async function deleteContactOrClearGroups(
+export async function deleteContact(
   client,
   listId,
   mailchimpId,
@@ -173,7 +173,6 @@ export async function deleteContactOrClearGroups(
   doThrow: boolean = false
 ) {
   try {
-    await clearGroups(client, listId, mailchimpId, oldGroups, newGroups);
     if (syncOperations.delete) {
       await client.delete(`/lists/${listId}/members/${mailchimpId}`);
     }

@@ -71,7 +71,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
             )
           ) {
             // Another user with the new email address (email_address) already exists,
-            // so we need to delete the old one and let the updateProfile reuse the existing one.
+            // so we need to clear groups of the old one and let the updateProfile reuse the existing one.
             await clearGroups(
               client,
               listId,
