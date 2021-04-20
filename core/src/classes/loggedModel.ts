@@ -8,7 +8,6 @@ import {
   AfterUpdate,
   AfterDestroy,
   AfterBulkCreate,
-  BeforeUpdate,
   Length,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
@@ -39,7 +38,6 @@ export abstract class LoggedModel<T> extends Model {
   }
 
   @BeforeCreate
-  @BeforeUpdate
   static validateId(instance) {
     const id: string = instance.id;
     let failing = false;
