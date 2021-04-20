@@ -163,7 +163,7 @@ function normalizeGroupName(group: any) {
   return String(group).toLocaleLowerCase();
 }
 
-export async function deleteContact(
+async function deleteContact(
   client,
   listId,
   mailchimpId,
