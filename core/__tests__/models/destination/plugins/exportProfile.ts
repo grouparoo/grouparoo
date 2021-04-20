@@ -438,6 +438,110 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
+    test("if profile is removed from destination's tracked group, toDelete is true", async () => {
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+      const groupB = await helper.factories.group();
+      const groupC = await helper.factories.group();
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[groupA.id] = groupA.name;
+      destinationGroupMemberships[groupB.id] = groupB.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await groupA.addProfile(profile);
+      await groupB.addProfile(profile);
+
+      const oldExport = await helper.factories.export(profile, destination, {
+        newProfileProperties: {},
+        newGroups: [groupA.name, groupB.name].sort(),
+        startedAt: new Date(),
+        completedAt: new Date(),
+        mostRecent: true,
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.trackGroup(groupC);
+      await destination.exportProfile(profile);
+
+      await specHelper.runTask("export:enqueue", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      expect(exportArgs.profile.id).toEqual(profile.id);
+      expect(exportArgs.oldGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort()
+      );
+      expect(exportArgs.newGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort()
+      );
+      expect(exportArgs.toDelete).toEqual(true);
+
+      await profile.destroy();
+    });
+
+    test("if profile is removed from destination's tracked group with a no-delete syncMode, toDelete is false and groups are cleared", async () => {
+      await destination.update({ syncMode: "additive" });
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+      const groupB = await helper.factories.group();
+      const groupC = await helper.factories.group();
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[groupA.id] = groupA.name;
+      destinationGroupMemberships[groupB.id] = groupB.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await groupA.addProfile(profile);
+      await groupB.addProfile(profile);
+
+      const oldExport = await helper.factories.export(profile, destination, {
+        newProfileProperties: {},
+        newGroups: [groupA.name, groupB.name].sort(),
+        startedAt: new Date(),
+        completedAt: new Date(),
+        mostRecent: true,
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.trackGroup(groupC);
+      await destination.exportProfile(profile);
+
+      await specHelper.runTask("export:enqueue", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundTasks[0].args[0]);
+
+      expect(exportArgs.profile.id).toEqual(profile.id);
+      expect(exportArgs.oldGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort()
+      );
+      expect(exportArgs.toDelete).toEqual(false); // toDelete false
+      expect(exportArgs.newGroups).toEqual([]); // Groups cleared
+
+      await profile.destroy();
+      await destination.update({ syncMode: "sync" });
+    });
+
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
@@ -553,7 +657,7 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
-    describe("sync modes", () => {
+    describe("sync mode operations", () => {
       let profile = null;
       let _export = null;
 

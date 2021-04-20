@@ -339,6 +339,130 @@ describe("models/destination", () => {
       expect(exportArgs.exports[0].toDelete).toEqual(true);
     });
 
+    test("if profile is removed from destination's tracked group, toDelete is true", async () => {
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+      const groupB = await helper.factories.group();
+      const groupC = await helper.factories.group();
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[groupA.id] = groupA.name;
+      destinationGroupMemberships[groupB.id] = groupB.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await groupA.addProfile(profile);
+      await groupB.addProfile(profile);
+
+      const oldExport = await helper.factories.export(profile, destination, {
+        newProfileProperties: {},
+        newGroups: [groupA.name, groupB.name].sort(),
+        startedAt: new Date(),
+        completedAt: new Date(),
+        mostRecent: true,
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.trackGroup(groupC);
+      await destination.exportProfile(profile);
+
+      // there should be no export:send tasks
+      let foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(0);
+
+      // there should be no export:sendBatch tasks until the run has completed
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(1);
+      expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
+      expect(exportArgs.exports[0].oldGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort()
+      );
+      expect(exportArgs.exports[0].newGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort() // no change in mapped groups
+      );
+      expect(exportArgs.exports[0].toDelete).toEqual(true); // delete
+
+      await profile.destroy();
+    });
+
+    test("if profile is removed from destination's tracked group with a no-delete syncMode, toDelete is false and groups are cleared", async () => {
+      await destination.update({ syncMode: "additive" });
+      await destination.setMapping({
+        uid: "userId",
+        customer_email: "email",
+      });
+
+      const groupA = await helper.factories.group();
+      const groupB = await helper.factories.group();
+      const groupC = await helper.factories.group();
+
+      const destinationGroupMemberships = {};
+      destinationGroupMemberships[groupA.id] = groupA.name;
+      destinationGroupMemberships[groupB.id] = groupB.name;
+      await destination.setDestinationGroupMemberships(
+        destinationGroupMemberships
+      );
+
+      const profile = await helper.factories.profile();
+      await groupA.addProfile(profile);
+      await groupB.addProfile(profile);
+
+      const oldExport = await helper.factories.export(profile, destination, {
+        newProfileProperties: {},
+        newGroups: [groupA.name, groupB.name].sort(),
+        startedAt: new Date(),
+        completedAt: new Date(),
+        mostRecent: true,
+      });
+      await specHelper.deleteEnqueuedTasks("exports:send", {
+        id: oldExport.id,
+      });
+
+      await destination.trackGroup(groupC);
+      await destination.exportProfile(profile);
+
+      // there should be no export:send tasks
+      let foundTasks = await specHelper.findEnqueuedTasks("export:send");
+      expect(foundTasks.length).toBe(0);
+
+      // there should be no export:sendBatch tasks until the run has completed
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(0);
+
+      await specHelper.runTask("export:enqueue", {});
+
+      foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(1);
+      await specHelper.runTask("export:sendBatch", foundTasks[0].args[0]);
+
+      expect(exportArgs.exports.length).toBe(1);
+      expect(exportArgs.exports[0].profile.id).toEqual(profile.id);
+      expect(exportArgs.exports[0].oldGroups).toEqual(
+        [groupA, groupB].map((g) => g.name).sort()
+      );
+      expect(exportArgs.exports[0].newGroups).toEqual([]); // groups cleared
+      expect(exportArgs.exports[0].toDelete).toEqual(false); // no delete
+
+      await profile.destroy();
+      await destination.update({ syncMode: "sync" });
+    });
+
     test("if an export has the same data as the previous export, and force=false, it will not be sent to the destination", async () => {
       const profile = await helper.factories.profile();
       const group = await helper.factories.group();
