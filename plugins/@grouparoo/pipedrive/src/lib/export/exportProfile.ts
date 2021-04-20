@@ -1,8 +1,4 @@
-import {
-  ExportProfilePluginMethod,
-  Errors,
-  DestinationSyncOperations,
-} from "@grouparoo/core";
+import { ExportProfilePluginMethod, Errors } from "@grouparoo/core";
 import { PipedriveClient } from "../client";
 import { connect } from "../connect";
 import {
@@ -10,40 +6,6 @@ import {
   getKnownPersonFieldMap,
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
-
-const deletePersonOrClearGroups = async (
-  client: PipedriveClient,
-  cacheData: PipedriveCacheData,
-  personId: number,
-  syncOperations: DestinationSyncOperations,
-  oldGroups: string[]
-) => {
-  if (syncOperations.delete) {
-    await client.deletePerson(personId);
-  } else {
-    if (syncOperations.update) {
-      // clear groups
-      const newGroups = [];
-      const payload = await makePayload(
-        client,
-        cacheData,
-        {},
-        {},
-        oldGroups,
-        newGroups
-      );
-      await client.updatePerson(personId, payload);
-
-      throw new Errors.InfoError(
-        "Destination sync mode does not delete profiles. Only group membership has been cleared."
-      );
-    } else {
-      throw new Errors.InfoError(
-        "Destination sync mode does not delete profiles."
-      );
-    }
-  }
-};
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appId,
@@ -76,14 +38,14 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const foundId = newFoundId || oldFoundId;
   if (toDelete) {
-    if (foundId) {
-      await deletePersonOrClearGroups(
-        client,
-        cacheData,
-        foundId,
-        syncOperations,
-        oldGroups
+    if (!syncOperations.delete) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not delete profiles."
       );
+    }
+
+    if (foundId) {
+      await client.deletePerson(foundId);
     }
 
     return { success: true };
