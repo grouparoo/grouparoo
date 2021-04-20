@@ -8,6 +8,7 @@ import {
 } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 let client: any;
 let userId = null;
@@ -24,11 +25,11 @@ const exampleDate = new Date(1597870204 * 1000);
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profile");
+// const newNock = false;
+// require("./../fixtures/export-profile");
 // or these to make it true
-//const newNock = true;
-//helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -75,6 +76,7 @@ async function deleteUsers(suppressErrors) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -89,6 +91,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -110,6 +113,22 @@ describe("zendesk/exportProfile", () => {
   afterAll(async () => {
     await deleteUsers(true);
   }, helper.setupTime);
+
+  test("cannot create profile on Zendesk if sync mode does not allow it", async () => {
+    userId = await findId();
+    expect(userId).toBe(null);
+
+    await expect(
+      runExport({
+        syncOperations: { create: false, update: true, delete: true },
+        oldProfileProperties: {},
+        newProfileProperties: { email, external_id, name },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow creating/);
+  });
 
   test("can create profile on Zendesk", async () => {
     userId = await findId();
@@ -146,6 +165,35 @@ describe("zendesk/exportProfile", () => {
       toDelete: false,
     });
 
+    const user = await getUser();
+    expect(user.id).toBe(userId);
+    expect(user.name).toBe(name);
+    expect(user.alias).toBe("BL");
+    expect(user.user_fields.date_field).toBe("2020-08-19T00:00:00+00:00");
+    expect(user.user_fields.text_field).toBe("testing here");
+    expect(user.user_fields.checkbox_field).toBe(false); // default
+  });
+
+  test("cannot update existing profile if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: true },
+        oldProfileProperties: { email, external_id, name },
+        newProfileProperties: {
+          email,
+          external_id,
+          name,
+          alias: "BL",
+          text_field: "testing here",
+          date_field: exampleDate,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow updating/);
+
+    // no change
     const user = await getUser();
     expect(user.id).toBe(userId);
     expect(user.name).toBe(name);

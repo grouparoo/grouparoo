@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const defaultSyncMode: DestinationSyncMode = "sync";
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/zendesk/zendesk.svg",
@@ -30,9 +32,12 @@ export class Plugins extends Initializer {
         new AppTemplate("zendesk", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("zendesk", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "zendesk",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -67,6 +72,8 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export Profiles to a Zendesk account.",
           app: "zendesk",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
