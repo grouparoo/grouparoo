@@ -451,6 +451,10 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     });
 
     describe("everything was tested", () => {
+      test("there were generators to test", () => {
+        expect(generatorNames.length).toBeGreaterThan(0);
+      });
+
       generatorNames.forEach((name) => {
         test(`${name} was tested`, () => {
           expect(triedGenerators).toContain(name);
