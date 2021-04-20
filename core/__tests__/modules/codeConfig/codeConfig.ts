@@ -525,6 +525,19 @@ describe("modules/codeConfig", () => {
       });
     });
 
+    describe("bad ID", () => {
+      beforeAll(async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+      });
+
+      test("space in ID", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "error-id")
+        );
+        expect(errors[0]).toMatch(/invalid id/);
+      });
+    });
+
     describe("app", () => {
       beforeAll(async () => {
         api.codeConfig.allowLockedModelChanges = true;

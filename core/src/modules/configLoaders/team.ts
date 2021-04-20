@@ -2,7 +2,6 @@ import {
   ConfigurationObject,
   logModel,
   getCodeConfigLockKey,
-  validateAndFormatId,
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
@@ -16,16 +15,15 @@ export async function loadTeam(
 ): Promise<IdsByClass> {
   let isNew = false;
 
-  const id = await validateAndFormatId(Team, configObject.id);
   validateConfigObjectKeys(Team, configObject);
 
   let team = await Team.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), id },
+    where: { locked: getCodeConfigLockKey(), id: configObject.id },
   });
   if (!team) {
     isNew = true;
     team = await Team.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
     });

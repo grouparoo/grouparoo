@@ -4,7 +4,6 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatId,
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
@@ -20,16 +19,19 @@ export async function loadSource(
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  const id = await validateAndFormatId(Source, configObject.id);
   validateConfigObjectKeys(Source, configObject);
 
   let source = await Source.scope(null).findOne({
-    where: { id, locked: getCodeConfigLockKey(), appId: app.id },
+    where: {
+      id: configObject.id,
+      locked: getCodeConfigLockKey(),
+      appId: app.id,
+    },
   });
   if (!source) {
     isNew = true;
     source = await Source.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
@@ -67,10 +69,7 @@ export async function loadSource(
     if (configObject.bootstrappedProperty) {
       bootstrappedProperty = await Property.findOne({
         where: {
-          id: await validateAndFormatId(
-            Property,
-            configObject.bootstrappedProperty.id
-          ),
+          id: configObject.bootstrappedProperty.id,
         },
       });
     }
@@ -86,7 +85,7 @@ export async function loadSource(
         property.key || property.name,
         property.type,
         mappedColumn,
-        await validateAndFormatId(Property, property.id),
+        property.id,
         validate
       );
       await setMapping();

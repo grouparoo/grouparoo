@@ -1,8 +1,4 @@
-import {
-  ConfigurationObject,
-  validateAndFormatId,
-  getParentByName,
-} from "../../classes/codeConfig";
+import { ConfigurationObject, getParentByName } from "../../classes/codeConfig";
 import { App } from "../..";
 import { OptionHelper } from "../optionHelper";
 
@@ -23,7 +19,6 @@ export async function expandSyncTable(
   const out: ConfigurationObject[] = [];
 
   const rootId = configObject.id;
-  await validateAndFormatId(App, rootId); // model actually not used
   const rootName = configObject.name || rootId;
 
   const source = configObject.source;

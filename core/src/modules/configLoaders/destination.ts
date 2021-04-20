@@ -4,7 +4,6 @@ import {
   logModel,
   getParentByName,
   getCodeConfigLockKey,
-  validateAndFormatId,
   validateConfigObjectKeys,
   IdsByClass,
 } from "../../classes/codeConfig";
@@ -21,16 +20,15 @@ export async function loadDestination(
 
   const app: App = await getParentByName(App, configObject.appId);
 
-  const id = await validateAndFormatId(Destination, configObject.id);
   validateConfigObjectKeys(Destination, configObject);
 
   let destination = await Destination.scope(null).findOne({
-    where: { id, appId: app.id },
+    where: { id: configObject.id, appId: app.id },
   });
   if (!destination) {
     isNew = true;
     destination = await Destination.create({
-      id,
+      id: configObject.id,
       locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,

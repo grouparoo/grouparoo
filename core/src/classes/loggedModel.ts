@@ -8,6 +8,7 @@ import {
   AfterUpdate,
   AfterDestroy,
   AfterBulkCreate,
+  Length,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
@@ -25,6 +26,7 @@ export abstract class LoggedModel<T> extends Model {
    */
   abstract idPrefix(): string;
 
+  @Length({ min: 1, max: 40 })
   @Column({ primaryKey: true })
   id: string;
 
@@ -32,6 +34,20 @@ export abstract class LoggedModel<T> extends Model {
   static generateId(instance) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
+    }
+  }
+
+  @BeforeCreate
+  static validateId(instance) {
+    const id: string = instance.id;
+    let failing = false;
+    if (id.length > 40) failing = true;
+    if (!/^[A-Za-z0-9-_]+$/.test(id)) failing = true; // only allow letters, numbers, hyphen and underscore
+
+    if (failing) {
+      throw new Error(
+        `invalid id: \`${id}\` - ids must be less than 40 characters and not contain spaces or special characters`
+      );
     }
   }
 

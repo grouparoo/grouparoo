@@ -73,35 +73,13 @@ export function getCodeConfigLockKey() {
 export async function getParentByName(model: any, parentId: string) {
   if (!parentId) throw new Error(`missing parent id to find a ${model.name}`);
 
-  const formattedId = await validateAndFormatId(model, parentId);
-  const instance = await model
-    .scope(null)
-    .findOne({ where: { id: formattedId } });
+  const instance = await model.scope(null).findOne({ where: { id: parentId } });
 
   if (!instance) {
     throw new Error(`cannot find ${model.name} with id "${parentId}"`);
   }
 
   return instance;
-}
-
-export async function validateAndFormatId(model: any, id: string) {
-  if (!id) {
-    throw new Error("id is required");
-  }
-
-  let failing = false;
-  if (id.match(/\s/)) failing = true;
-  if (id.match(/[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/)) failing = true;
-  if (id.length > 40) failing = true;
-
-  if (failing) {
-    throw new Error(
-      `invalid id: \`${id}\` - ids must be less than 40 characters and not contain spaces or special characters`
-    );
-  }
-
-  return id;
 }
 
 export function validateConfigObjectKeys(
@@ -188,10 +166,19 @@ export function validateConfigObjects(
   configObjects: ConfigurationObject[]
 ): { configObjects: ConfigurationObject[]; errors: string[] } {
   let errors = [];
+  configObjects
+    .filter((c) => !c.id || c.id === "")
+    .map((c) => {
+      errors.push(
+        (c.name ? `"${c.name}"` : c.key ? `"${c.key}"` : "A config object") +
+          " is missing an ID"
+      );
+    });
   const duplicates = extractDuplicates(configObjects, "id");
   if (duplicates.length > 0) {
     errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
   }
+
   return { configObjects, errors };
 }
 
