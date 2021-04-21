@@ -3,7 +3,10 @@ import { plugin } from "../modules/plugin";
 import { StatusMetric, StatusReporters } from "./../modules/statusReporters";
 
 export namespace Telemetry {
-  export async function build() {
+  const TELEMETRY_CALL_TRIGGERS = ["timer", "team", "cli_run"] as const;
+  export type TelemetryCallTrigger = typeof TELEMETRY_CALL_TRIGGERS[number];
+
+  export async function build(trigger: TelemetryCallTrigger) {
     const metrics: StatusMetric[] = [];
 
     // load settings
@@ -36,6 +39,7 @@ export namespace Telemetry {
     return {
       name: clusterName,
       id: customerId,
+      trigger,
       license: customerLicense,
       metrics: metrics,
     };

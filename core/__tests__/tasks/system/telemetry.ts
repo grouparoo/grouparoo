@@ -27,10 +27,14 @@ describe("tasks/telemetry", () => {
     });
 
     test("the telemetry object can be built", async () => {
-      const { name, id, license, metrics } = await Telemetry.build();
+      const { name, id, license, metrics, trigger } = await Telemetry.build(
+        "timer"
+      );
+
       expect(name).toBe("My Grouparoo Cluster");
       expect(id).toMatch(/^tcs_/);
       expect(license).toBe("");
+      expect(trigger).toBe("timer");
 
       expect(metrics[0]).toEqual(
         expect.objectContaining({
@@ -111,7 +115,7 @@ describe("tasks/telemetry", () => {
     });
 
     describe("with errors", () => {
-      let originalImplementation: () => Promise<any>;
+      let originalImplementation: typeof Telemetry.build;
 
       beforeAll(() => {
         config.telemetry.enabled = true;
@@ -130,9 +134,9 @@ describe("tasks/telemetry", () => {
         });
         Telemetry.build = mockTelemetry;
 
-        await expect(specHelper.runTask("telemetry", {})).rejects.toThrow(
-          /OH NO/
-        );
+        await expect(
+          specHelper.runTask("telemetry", { trigger: "timer" })
+        ).rejects.toThrow(/OH NO/);
 
         expect(fetch).toHaveBeenCalledTimes(1);
         const args = fetch.mock.calls[0];
@@ -141,11 +145,15 @@ describe("tasks/telemetry", () => {
         );
         const payload = JSON.parse(args[1].body.toString());
         expect(payload.name).toBe("My Grouparoo Cluster");
+        expect(payload.trigger).toBe("timer");
         expect(payload.metrics.length).toBe(1);
         expect(payload.metrics[0].topic).toBe("error");
         expect(payload.metrics[0].aggregation).toBe("exact");
         expect(payload.metrics[0].value).toMatch("Error: OH NO");
         expect(payload.metrics[0].value).toMatch(
+          "core/__tests__/tasks/system/telemetry.ts"
+        );
+        expect(payload.metrics[0].errors[0]).toMatch(
           "core/__tests__/tasks/system/telemetry.ts"
         );
       });

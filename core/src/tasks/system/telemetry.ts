@@ -15,14 +15,19 @@ export class TelemetryTask extends CLSTask {
     this.description = "send telemetry information about this cluster";
     this.frequency = 1000 * 60 * 60 * 24; // every 24 hours
     this.queue = "system";
+    this.inputs = {
+      trigger: { required: false, default: "timer" },
+    };
   }
 
-  async runWithinTransaction() {
+  async runWithinTransaction(params) {
     if (!config.telemetry.enabled) return;
+
+    const trigger: Telemetry.TelemetryCallTrigger = params.trigger;
     const fullUrl = `${config.telemetry.host}${telemetryPath}`;
 
     try {
-      const payload = await Telemetry.build();
+      const payload = await Telemetry.build(trigger);
 
       const response = await fetch(fullUrl, {
         method: "POST",
@@ -38,7 +43,7 @@ export class TelemetryTask extends CLSTask {
         await fetch(fullUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(await this.generateErrorPayload(error)),
+          body: JSON.stringify(await this.generateErrorPayload(error, trigger)),
         });
       } catch (newError) {}
 
@@ -46,7 +51,10 @@ export class TelemetryTask extends CLSTask {
     }
   }
 
-  async generateErrorPayload(error) {
+  async generateErrorPayload(
+    error: Error,
+    trigger: Telemetry.TelemetryCallTrigger
+  ) {
     const clusterName = (await plugin.readSetting("core", "cluster-name"))
       .value;
     const customerId = (await plugin.readSetting("telemetry", "customer-id"))
@@ -55,9 +63,12 @@ export class TelemetryTask extends CLSTask {
       await plugin.readSetting("telemetry", "customer-license")
     ).value;
 
+    const sanitizedError = this.sanitizeErrorPayload(error);
+
     const errorPayload = {
       name: clusterName,
       id: customerId,
+      trigger,
       license: customerLicense,
       metrics: [
         {
@@ -65,7 +76,8 @@ export class TelemetryTask extends CLSTask {
           topic: "error",
           aggregation: "exact",
           key: `${process.platform}/${os.release()}`,
-          value: this.sanitizeErrorPayload(error),
+          value: sanitizedError,
+          errors: [sanitizedError],
         },
       ],
     };
