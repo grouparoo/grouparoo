@@ -126,8 +126,8 @@ export namespace OptionHelper {
   }
 
   export function getPluginByType(type: string) {
-    const foundApps: Set<string> = new Set([]);
-    const foundConnections: Set<string> = new Set([]);
+    const foundApps: string[] = [];
+    const foundConnections: string[] = [];
     let match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
@@ -137,7 +137,7 @@ export namespace OptionHelper {
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.forEach((pluginApp) => {
-          foundApps.add(pluginApp.name);
+          foundApps.push(pluginApp.name);
           if (pluginApp.name === type) {
             match.plugin = plugin;
             match.pluginApp = pluginApp;
@@ -147,7 +147,7 @@ export namespace OptionHelper {
 
       if (plugin.connections) {
         plugin.connections.forEach((pluginConnection) => {
-          foundConnections.add(pluginConnection.name);
+          foundConnections.push(pluginConnection.name);
           if (pluginConnection.name === type) {
             match.plugin = plugin;
             match.pluginConnection = pluginConnection;
