@@ -55,7 +55,7 @@ async function main() {
   program.addHelpText(
     "after",
     `
-You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the \`grouparoo install\` command.  Learn more at https://www.grouparoo.com/docs.`
+You can add plugins to this project to connect to new Sources and Destinations and add additional commands with the \`grouparoo install\` command.  Learn more at https://www.grouparoo.com/docs.`
   );
 
   if (!didLoadLocalCommands) {
