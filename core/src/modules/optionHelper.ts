@@ -12,6 +12,7 @@ import { Property } from "../models/Property";
 import { App, AppOption } from "./../models/App";
 import { LoggedModel } from "../classes/loggedModel";
 import { LockableHelper } from "./lockableHelper";
+import { plural } from "pluralize";
 
 export const ObfuscatedPasswordString = "__ObfuscatedPassword";
 
@@ -125,6 +126,8 @@ export namespace OptionHelper {
   }
 
   export function getPluginByType(type: string) {
+    const foundApps: string[] = [];
+    const foundConnections: string[] = [];
     let match: {
       plugin: GrouparooPlugin;
       pluginConnection: PluginConnection;
@@ -134,6 +137,7 @@ export namespace OptionHelper {
     api.plugins.plugins.forEach((plugin: GrouparooPlugin) => {
       if (plugin.apps) {
         plugin.apps.forEach((pluginApp) => {
+          foundApps.push(pluginApp.name);
           if (pluginApp.name === type) {
             match.plugin = plugin;
             match.pluginApp = pluginApp;
@@ -143,6 +147,7 @@ export namespace OptionHelper {
 
       if (plugin.connections) {
         plugin.connections.forEach((pluginConnection) => {
+          foundConnections.push(pluginConnection.name);
           if (pluginConnection.name === type) {
             match.plugin = plugin;
             match.pluginConnection = pluginConnection;
@@ -152,7 +157,18 @@ export namespace OptionHelper {
     });
 
     if (!match.plugin) {
-      throw new Error(`Cannot find a "${type}" plugin.  Did you install it?`);
+      const missingType =
+        type.includes("-") || type.includes(":") ? "connection" : "app";
+      const collection = missingType === "app" ? foundApps : foundConnections;
+      throw new Error(
+        `Cannot find a "${type}" ${missingType} available within the installed plugins. Current ${plural(
+          missingType
+        )} installed are: ${[...collection]
+          .sort()
+          .join(
+            ", "
+          )}. Use \`grouparoo install\` to add new plugins if necessary.`
+      );
     }
 
     return match;

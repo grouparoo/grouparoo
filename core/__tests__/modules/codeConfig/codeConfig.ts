@@ -521,7 +521,9 @@ describe("modules/codeConfig", () => {
             "error-not-installed"
           )
         );
-        expect(errors[0]).toMatch(/Cannot find a "missing-plugin" plugin/);
+        expect(errors[0]).toMatch(
+          /Cannot find a \"missing-plugin\" connection available within the installed plugins. Current connections installed are:/
+        );
       });
     });
 
@@ -669,7 +671,9 @@ describe("modules/codeConfig", () => {
       );
 
       expect(errors.length).toBe(1);
-      expect(errors[0]).toMatch(/Cannot find a "foo" plugin/);
+      expect(errors[0]).toMatch(
+        /Cannot find a \"foo\" app available within the installed plugins. Current apps installed are/
+      );
     });
 
     test("changing an app's type (valid) causes an error", async () => {
