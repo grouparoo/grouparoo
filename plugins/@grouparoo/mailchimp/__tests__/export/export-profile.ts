@@ -468,7 +468,7 @@ describe("mailchimp/exportProfile", () => {
     );
   });
 
-  test("can not delete a user if sync mode does not allow it but should remove the tags", async () => {
+  test("cannot delete a user if sync mode does not allow it but should remove the tags", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
@@ -486,9 +486,12 @@ describe("mailchimp/exportProfile", () => {
     user = await getUser(emails["otherEmail"]);
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(1);
+    expect(user["tags"].length).toEqual(4);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+        expect.objectContaining({ name: listTwo.toLowerCase() }),
+        expect.objectContaining({ name: listThree.toLowerCase() }),
         expect.objectContaining({ name: listFour.toLowerCase() }),
       ])
     );
@@ -522,10 +525,13 @@ describe("mailchimp/exportProfile", () => {
     });
 
     user = await getUser(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(1);
+    expect(user["tags"].length).toEqual(4);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+        expect.objectContaining({ name: listTwo.toLowerCase() }),
         expect.objectContaining({ name: listThree.toLowerCase() }),
+        expect.objectContaining({ name: listFour.toLowerCase() }),
       ])
     );
     expect(user).not.toBe(null);
