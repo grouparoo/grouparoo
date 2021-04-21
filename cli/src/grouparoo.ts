@@ -19,7 +19,7 @@ async function main() {
   program.storeOptionsAsProperties(false);
   program.version(Package.version);
 
-  await loadLocalCommands(program);
+  const didLoadLocalCommands = await loadLocalCommands(program);
 
   program
     .command("init <path>")
@@ -55,8 +55,16 @@ async function main() {
   program.addHelpText(
     "after",
     `
-You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the \`grouparoo install\` command.  Learn more at www.grouparoo.com/docs`
+You can add plugins to to this project to connect to new Sources and Destinations and add additional commands with the \`grouparoo install\` command.  Learn more at https://www.grouparoo.com/docs.`
   );
+
+  if (!didLoadLocalCommands) {
+    program.addHelpText(
+      "after",
+      `
+Don't see the commands that you are looking for? Make sure that you are in a Grouparoo project directory and you have run \`grouparoo install\`.`
+    );
+  }
 
   program.parse(process.argv);
 }

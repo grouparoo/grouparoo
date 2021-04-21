@@ -5,21 +5,21 @@ import * as glob from "glob";
 import { readPackageJSON } from "./readPackageJSON";
 import { ensureNoTsHeaderFiles } from "./ensureNoTsHeaderFiles";
 
-export async function loadLocalCommands(program) {
+export async function loadLocalCommands(program): Promise<boolean> {
   // are we in a grouparoo project directory?
   const localPackageFile = path.join(process.env.INIT_CWD, "package.json");
-  if (!fs.existsSync(localPackageFile)) return;
+  if (!fs.existsSync(localPackageFile)) return false;
   const nodeModulesDir = path.join(process.env.INIT_CWD, "node_modules");
-  if (!fs.existsSync(nodeModulesDir)) return;
+  if (!fs.existsSync(nodeModulesDir)) return false;
   const pkgJSON = readPackageJSON(localPackageFile);
   if (!Object.keys(pkgJSON?.dependencies || {}).includes("@grouparoo/core")) {
-    return;
+    return false;
   }
+
+  let pathsLoaded: string[] = [];
 
   try {
     const { config } = getActionhero();
-
-    let pathsLoaded: string[] = [];
 
     // grouparoo core
     for (const i in config.general.paths.cli) {
@@ -46,6 +46,8 @@ export async function loadLocalCommands(program) {
   } finally {
     process.chdir(process.env.INIT_CWD);
   }
+
+  return pathsLoaded.length > 0;
 }
 
 // --- UTILS ---
