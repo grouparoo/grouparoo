@@ -11,7 +11,7 @@ printf "*** Starting Tests ***\r\n"
 
 OUTPUT_HELP=`$CLI --help`
 printf "help flag"
-if [[ "$OUTPUT_HELP" == *"Learn more at www.grouparoo.com/docs"*  ]]; then
+if [[ "$OUTPUT_HELP" == *"Learn more at https://www.grouparoo.com/docs"*  ]]; then
     printf " ✅\r\n"
 else
     printf " 🚫\r\n"
