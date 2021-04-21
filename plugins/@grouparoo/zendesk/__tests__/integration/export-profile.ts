@@ -25,11 +25,11 @@ const exampleDate = new Date(1597870204 * 1000);
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/export-profile");
+const newNock = false;
+require("./../fixtures/export-profile");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -472,6 +472,25 @@ describe("zendesk/exportProfile", () => {
       toDelete: false,
     });
 
+    const newUser = await getNewUser();
+    expect(newUser.id).toBe(newId);
+    expect(newUser.email).toBe("added@bleonard.com");
+    expect(newUser.active).toBe(true);
+  });
+
+  test("cannot delete a user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: false },
+        oldProfileProperties: { external_id },
+        newProfileProperties: { external_id },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not allow removing/);
+
+    // no changes to the user and properties
     const newUser = await getNewUser();
     expect(newUser.id).toBe(newId);
     expect(newUser.email).toBe("added@bleonard.com");

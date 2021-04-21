@@ -49,13 +49,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       if (user) {
         // this does a soft delete
-        await deleteContactOrClearGroups(
-          client,
-          syncOperations,
-          user,
-          [...newTags, ...oldTags],
-          true
-        );
+        await deleteContact(client, syncOperations, user, true);
 
         // TODO: should we fully delete it? (see test for how to set it up)
         // this might delete tickets
@@ -140,6 +134,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (email && updated.email !== email) {
       // have to make this the primary
       // https://developer.zendesk.com/rest_api/docs/support/users#email-address
+      if (!syncOperations.update) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow updating existing profiles."
+        );
+      }
       await makeEmailPrimary(client, updated.id, email);
     }
 
@@ -265,28 +264,15 @@ async function makeEmailPrimary(client, userId, newEmail) {
   }
 }
 
-const deleteContactOrClearGroups = async (
+const deleteContact = async (
   client: any,
   syncOperations: DestinationSyncOperations,
   user: any,
-  tags: string[],
   doThrow: boolean = false
 ) => {
   if (syncOperations.delete) {
     await client.users.delete(user.id);
   } else {
-    if (syncOperations.update) {
-      const payload: any = { verified: true };
-      const currentTags = user?.tags || [];
-      const untrackedTags = [];
-      for (const tagName of currentTags) {
-        if (!tags.includes(tagName)) {
-          untrackedTags.push(tagName);
-        }
-      }
-      payload.tags = untrackedTags;
-      await client.users.update(user.id, { user: payload });
-    }
     if (doThrow) {
       throw new Errors.InfoError(
         "Destination sync mode does not allow removing profiles."
