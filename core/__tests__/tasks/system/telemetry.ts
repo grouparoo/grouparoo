@@ -26,6 +26,18 @@ describe("tasks/telemetry", () => {
       expect(setting.value).toMatch(/^tcs_/);
     });
 
+    test("the telemetry task is recurring", async () => {
+      await specHelper.runFullTask("telemetry", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("telemetry");
+      expect(foundTasks.length).toBe(1);
+    });
+
+    test("the telemetry:adHoc task is not recurring", async () => {
+      await specHelper.runFullTask("telemetry:adHoc", {});
+      const foundTasks = await specHelper.findEnqueuedTasks("telemetry:adHoc");
+      expect(foundTasks.length).toBe(0);
+    });
+
     test("the telemetry object can be built", async () => {
       const { name, id, license, metrics, trigger } = await Telemetry.build(
         "timer"
