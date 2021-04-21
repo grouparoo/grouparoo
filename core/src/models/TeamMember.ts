@@ -9,12 +9,14 @@ import {
   IsLowercase,
   BeforeValidate,
   BeforeDestroy,
+  AfterCreate,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { Team } from "./Team";
 import { TeamMemberOps } from "../modules/ops/teamMember";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CLS } from "../modules/cls";
 
 @Table({ tableName: "teamMembers", paranoid: false })
 export class TeamMember extends LoggedModel<TeamMember> {
@@ -84,20 +86,25 @@ export class TeamMember extends LoggedModel<TeamMember> {
     return instance;
   }
 
-  @BeforeSave
-  static async ensureTeamExists(instance: TeamMember) {
-    const team = await instance.$get("team");
-    if (!team) throw new Error("team not found");
-  }
-
   @BeforeValidate
   static lowercaseEmail(instance: TeamMember) {
     if (instance.email) instance.email = instance.email.toLocaleLowerCase();
   }
 
   @BeforeSave
+  static async ensureTeamExists(instance: TeamMember) {
+    const team = await instance.$get("team");
+    if (!team) throw new Error("team not found");
+  }
+
+  @BeforeSave
   static async noUpdateIfLocked(instance) {
     await LockableHelper.beforeSave(instance, ["lastLoginAt"]);
+  }
+
+  @AfterCreate
+  static async sendTelemetry() {
+    await CLS.enqueueTask("telemetry:adHoc", { trigger: "team" });
   }
 
   @BeforeDestroy

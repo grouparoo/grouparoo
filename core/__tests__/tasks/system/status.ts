@@ -1,8 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Run } from "../../../src";
-import { api, task, specHelper } from "actionhero";
+import { api, task, config, specHelper } from "actionhero";
 import { StatusTask } from "../../../src/tasks/system/status";
 import { Status } from "../../../src/modules/status";
+
+import fetch, { enableFetchMocks } from "jest-fetch-mock";
+enableFetchMocks();
 
 describe("tasks/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -88,21 +91,55 @@ describe("tasks/status", () => {
       expect(samples.length).toBe(1);
     });
 
-    test("running the task will update the frequency for the next run", async () => {
-      await api.resque.queue.connection.redis.flushdb();
-      const startingFrequency = api.tasks.tasks["status"].frequency;
-      expect(startingFrequency).toBe(1000 * 5);
+    describe("telemetry", () => {
+      beforeEach(async () => {
+        await helper.truncate();
+        await api.resque.queue.connection.redis.flushdb();
+        config.telemetry.enabled = true;
+      });
 
-      await specHelper.runFullTask("status", {});
+      afterEach(() => {
+        config.telemetry.enabled = false;
+        fetch.resetMocks();
+      });
 
-      const endingFrequency = api.tasks.tasks["status"].frequency;
-      expect(endingFrequency).toBe(1000 * 10);
+      test("will send telemetry when running via the CLI", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:run";
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
 
-      const foundTasks = await specHelper.findEnqueuedTasks("status");
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].timestamp).toBeGreaterThan(
-        new Date().getTime() + startingFrequency
-      );
+        await specHelper.runFullTask("status", { toStop: false });
+        expect(fetch).toHaveBeenCalledTimes(1);
+        const args = fetch.mock.calls[0];
+        const payload = JSON.parse(args[1].body as string);
+        expect(payload.trigger).toBe("cli_run");
+        expect(payload.metrics.length).toBeGreaterThan(1);
+      });
+
+      test("will not send telemetry when running via another method", async () => {
+        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
+
+        await specHelper.runFullTask("status", { toStop: false });
+        expect(fetch).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("frequency", () => {
+      test("running the task will update the frequency for the next run", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        const startingFrequency = 1000 * 5;
+        api.tasks.tasks["status"].frequency = startingFrequency;
+
+        await specHelper.runFullTask("status", { toStop: false });
+
+        const endingFrequency = api.tasks.tasks["status"].frequency;
+        expect(endingFrequency).toBe(1000 * 10);
+
+        const foundTasks = await specHelper.findEnqueuedTasks("status");
+        expect(foundTasks.length).toBe(1);
+        expect(foundTasks[0].timestamp).toBeGreaterThan(
+          new Date().getTime() + startingFrequency
+        );
+      });
     });
   });
 });

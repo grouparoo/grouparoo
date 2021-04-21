@@ -1,4 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
+import { api, specHelper } from "actionhero";
 import { Team, TeamMember, Log } from "../../src";
 
 describe("models/teamMember", () => {
@@ -91,6 +92,23 @@ describe("models/teamMember", () => {
     expect(updateLog.message).toBe(
       'teamMember "luigi@example.com" updated: passwordHash -> ** filtered **'
     );
+  });
+
+  test("creating a team member enqueued a telemetry task", async () => {
+    await api.resque.queue.connection.redis.flushdb();
+
+    const teamMember = await TeamMember.create({
+      teamId: team.id,
+      firstName: "Toad",
+      lastName: "Toadstool",
+      email: "TOAD@example.com",
+    });
+
+    const foundTasks = await specHelper.findEnqueuedTasks("telemetry:adHoc");
+    expect(foundTasks.length).toBe(1);
+    expect(foundTasks[0].args[0]).toEqual({ trigger: "team" });
+
+    await teamMember.destroy();
   });
 
   test("deleting a team member creates a log entry", async () => {
