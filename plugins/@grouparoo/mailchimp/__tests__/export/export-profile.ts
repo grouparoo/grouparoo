@@ -468,7 +468,7 @@ describe("mailchimp/exportProfile", () => {
     );
   });
 
-  test("cannot delete a user if sync mode does not allow it but should remove the tags", async () => {
+  test("cannot delete a user if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
