@@ -80,7 +80,9 @@ describe("models/source", () => {
           name: "test source",
           appId: app.id,
         })
-      ).rejects.toThrow(/Cannot find a \"missing-source\" plugin./);
+      ).rejects.toThrow(
+        /Cannot find a \"missing-source\" connection available within the installed plugins. Current connections installed are:/
+      );
     });
 
     test("a new source will have a '' name", async () => {

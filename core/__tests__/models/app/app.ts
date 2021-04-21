@@ -194,7 +194,7 @@ describe("models/app", () => {
       });
 
       await expect(app.save()).rejects.toThrow(
-        /Cannot find a \"oh no\" plugin/
+        /Cannot find a \"oh no\" app available within the installed plugins. Current apps installed are:/
       );
     });
 

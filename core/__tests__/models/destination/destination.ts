@@ -273,6 +273,18 @@ describe("models/destination", () => {
     });
 
     describe("validations", () => {
+      test("a destination requires a plugin connection", async () => {
+        await expect(
+          Destination.create({
+            type: "missing-destination",
+            name: "test destination",
+            appId: app.id,
+          })
+        ).rejects.toThrow(
+          /Cannot find a \"missing-destination\" connection available within the installed plugins. Current connections installed are:/
+        );
+      });
+
       test("options must match the app options (extra options needed by connection)", async () => {
         destination = new Destination({
           name: "incoming destination - too many options",
