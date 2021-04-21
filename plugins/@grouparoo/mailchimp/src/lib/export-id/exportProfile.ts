@@ -6,6 +6,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
   destinationOptions,
   export: profileToExport,
+  syncOperations,
 }) => {
   const client = await connect(appOptions);
 
@@ -24,11 +25,10 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   return updateProfile({
+    syncOperations,
     client,
     listId,
     mailchimpId,
-    noDelete: true,
-    noCreate: true,
     email_address: newProfileProperties["email_address"],
     export: profileToExport,
   });

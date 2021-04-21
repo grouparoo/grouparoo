@@ -28,6 +28,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
+    "@grouparoo/app-templates": "0.3.0-alpha.1",
     "mailchimp-api-v3": "1.15.0"
   },
   "devDependencies": {

@@ -9,8 +9,8 @@ import {
   loadDestinationOptions,
 } from "../utils/nockHelper";
 import { generateMailchimpId } from "../../src/lib/shared/generateMailchimpId";
-import crypto from "crypto";
 import fs from "fs";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_ch1mp-dfsjklfdsklj90-01-3k";
 
@@ -29,6 +29,7 @@ const listThree = "List Three";
 const listFour = "List Four";
 const numberField = 15.5;
 const brandNewName = "Jake";
+const otherBrandNewName = "Carl";
 const invalidPhone = "000";
 const invalidNumber = "AAAAA";
 const invalidEmail = "AAAAA";
@@ -39,7 +40,7 @@ const otherInvalidEmail = "foo@example.com";
 // or this to use the existing ones;
 const newEmails = false;
 
-const emailsFile = path.join(__dirname, "../", "data", "emails.txt");
+const emailsFile = path.join(__dirname, "../", "data", "emails.json");
 
 if (fs.existsSync(emailsFile) && !newEmails) {
   emails = JSON.parse(fs.readFileSync(emailsFile, "utf-8"));
@@ -106,7 +107,7 @@ async function getUser(email) {
     const response = await apiClient.get(
       `/lists/${listId}/members/${mailchimpId}`
     );
-    if (!response.unique_email_id || response.status === "archived") {
+    if (!response["unique_email_id"] || response.status === "archived") {
       return null;
     }
     return response;
@@ -120,6 +121,7 @@ async function cleanUp(suppressErrors) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -134,6 +136,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -156,6 +159,25 @@ describe("mailchimp/exportProfile", () => {
     await cleanUp(true);
     await apiClient.end();
   }, helper.setupTime);
+
+  test("cannot create profile on Mailchimp if sync mode does not allow it", async () => {
+    user = await getUser(emails["email"]);
+    expect(user).toBe(null);
+
+    await expect(
+      runExport({
+        syncOperations: { create: false, update: true, delete: true },
+        oldProfileProperties: {},
+        newProfileProperties: {
+          email_address: emails["email"],
+          FNAME: first_name,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow creating/);
+  });
 
   test("can create profile on Mailchimp", async () => {
     user = await getUser(emails["email"]);
@@ -396,8 +418,23 @@ describe("mailchimp/exportProfile", () => {
         expect.objectContaining({ name: listOne.toLowerCase() }),
       ])
     );
-    const oldUser = await getUser(emails["email"]);
-    expect(oldUser).toBe(null);
+  });
+
+  test("cannot change email address if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: false, delete: true },
+        oldProfileProperties: {
+          email_address: emails["alternativeEmail"],
+        },
+        newProfileProperties: {
+          email_address: emails["email"],
+        },
+        oldGroups: [listOne],
+        newGroups: [listOne],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not allow updating/);
   });
 
   test("it can change the email address along other properties", async () => {
@@ -411,7 +448,7 @@ describe("mailchimp/exportProfile", () => {
         PHONE: newPhoneNumber,
       },
       oldGroups: [listOne],
-      newGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree, listFour],
       toDelete: false,
     });
 
@@ -420,17 +457,44 @@ describe("mailchimp/exportProfile", () => {
     expect(user["email_address"]).toBe(emails["otherEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(alternativeName);
     expect(user["merge_fields"]["PHONE"]).toBe(newPhoneNumber);
-    expect(user["tags"].length).toEqual(3);
+    expect(user["tags"].length).toEqual(4);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
         expect.objectContaining({ name: listOne.toLowerCase() }),
         expect.objectContaining({ name: listTwo.toLowerCase() }),
         expect.objectContaining({ name: listThree.toLowerCase() }),
+        expect.objectContaining({ name: listFour.toLowerCase() }),
       ])
     );
+  });
 
-    const oldUser = await getUser(emails["alternativeEmail"]);
-    expect(oldUser).toBe(null);
+  test("cannot delete a user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: { create: true, update: true, delete: false },
+        oldProfileProperties: {
+          email_address: emails["otherEmail"],
+        },
+        newProfileProperties: {
+          email_address: emails["otherEmail"],
+        },
+        oldGroups: [listOne, listTwo, listThree], // missing listFour to make sure that we're only removing the tags we know about;
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not allow removing/);
+    user = await getUser(emails["otherEmail"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["otherEmail"]);
+    expect(user["tags"].length).toEqual(4);
+    expect(user["tags"]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+        expect.objectContaining({ name: listTwo.toLowerCase() }),
+        expect.objectContaining({ name: listThree.toLowerCase() }),
+        expect.objectContaining({ name: listFour.toLowerCase() }),
+      ])
+    );
   });
 
   test("can delete and restore a user", async () => {
@@ -441,7 +505,7 @@ describe("mailchimp/exportProfile", () => {
       newProfileProperties: {
         email_address: emails["otherEmail"],
       },
-      oldGroups: [listOne, listTwo],
+      oldGroups: [listFour],
       newGroups: [],
       toDelete: true,
     });
@@ -456,15 +520,18 @@ describe("mailchimp/exportProfile", () => {
         FNAME: first_name,
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: [listThree],
       toDelete: false,
     });
 
     user = await getUser(emails["otherEmail"]);
-    expect(user["tags"].length).toEqual(1);
+    expect(user["tags"].length).toEqual(4);
     expect(user["tags"]).toEqual(
       expect.arrayContaining([
+        expect.objectContaining({ name: listOne.toLowerCase() }),
+        expect.objectContaining({ name: listTwo.toLowerCase() }),
         expect.objectContaining({ name: listThree.toLowerCase() }),
+        expect.objectContaining({ name: listFour.toLowerCase() }),
       ])
     );
     expect(user).not.toBe(null);
@@ -533,6 +600,29 @@ describe("mailchimp/exportProfile", () => {
     );
   });
 
+  test("try to delete a user passing nonexistent email on the newProfileProperties and oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: brandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).toBe(null);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
   test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
     let brandNewUser = await getUser(emails["brandNewEmail"]);
     expect(brandNewUser).toBe(null);
@@ -554,6 +644,54 @@ describe("mailchimp/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user["email_address"]).toBe(emails["brandNewEmail"]);
     expect(user["merge_fields"]["FNAME"]).toBe(brandNewName);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
+  test("can change a user email and other variables passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).not.toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: otherBrandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["brandNewEmail"]);
+    expect(user["merge_fields"]["FNAME"]).toBe(otherBrandNewName);
+    nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+  });
+
+  test("can change a user email and delete it passing a existing email on the newProfileProperties and nonexistent email on the oldProfileProperties", async () => {
+    let brandNewUser = await getUser(emails["brandNewEmail"]);
+    expect(brandNewUser).not.toBe(null);
+    let nonexistentUser = await getUser(emails["nonexistentEmail"]);
+    expect(nonexistentUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { email_address: emails["nonexistentEmail"] },
+      newProfileProperties: {
+        email_address: emails["brandNewEmail"],
+        FNAME: brandNewName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    user = await getUser(emails["brandNewEmail"]);
+    expect(user).toBe(null);
     nonexistentUser = await getUser(emails["nonexistentEmail"]);
     expect(nonexistentUser).toBe(null);
   });
