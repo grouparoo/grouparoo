@@ -551,33 +551,7 @@ describe("hubspot/exportProfile", () => {
     expect(oldUser).toBe(null);
   });
 
-  test("can not delete a user if sync mode does not allow it", async () => {
-    await expect(
-      runExport({
-        syncOperations: { create: true, update: false, delete: false },
-        oldProfileProperties: {
-          email: otherEmail,
-        },
-        newProfileProperties: {
-          email: otherEmail,
-        },
-        oldGroups: [listOne],
-        newGroups: [listOne],
-        toDelete: true,
-      })
-    ).rejects.toThrow(/sync mode does not allow removing/);
-
-    // no changes to the user and properties
-    const user = await apiClient.getContactByEmail(otherEmail);
-    expect(user["properties"]["email"]["value"]).toBe(otherEmail);
-    expect(user["properties"]["firstname"]["value"]).toBe(otherName);
-    expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
-
-    // groups can't be removed because syncOperations.update: false
-    expect(user["list-memberships"]).toHaveLength(1);
-  });
-
-  test("can not delete a user if sync mode does not allow it, but will remove them from groups", async () => {
+  test("cannot delete a user if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: { create: true, update: true, delete: false },
@@ -593,14 +567,12 @@ describe("hubspot/exportProfile", () => {
       })
     ).rejects.toThrow(/sync mode does not allow removing/);
 
-    // no changes to the user and properties
+    // no changes to the profile
     const user = await apiClient.getContactByEmail(otherEmail);
     expect(user["properties"]["email"]["value"]).toBe(otherEmail);
     expect(user["properties"]["firstname"]["value"]).toBe(otherName);
     expect(user["properties"]["mobilephone"]["value"]).toBe(otherPhoneNumber);
-
-    // but it should be removed from groups
-    expect(user["list-memberships"]).toHaveLength(0);
+    expect(user["list-memberships"]).toHaveLength(1);
   });
 
   test("can delete a user", async () => {

@@ -92,7 +92,7 @@ describe("intercom/contacts/exportProfile/no delete", () => {
         name: "A User",
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: ["another", "Test Group X"],
       toDelete: false,
     });
 
@@ -107,7 +107,7 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     expect(user.role).toBe("user"); // because lifecycle
 
     const tags = await getTags(userId2);
-    expect(tags).toEqual([]);
+    expect(tags).toEqual(["Test Group X", "another"]);
   });
 
   test("will not delete a user", async () => {
@@ -147,7 +147,7 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     expect(user.role).toBe("user");
 
     const tags = await getTags(userId2);
-    expect(tags).toEqual([]);
+    expect(tags).toEqual(["Test Group X", "another"]);
   });
 
   test("will not delete a lead", async () => {
@@ -185,7 +185,7 @@ describe("intercom/contacts/exportProfile/no delete", () => {
     expect(user.role).toBe("lead");
 
     const tags = await getTags(userId);
-    expect(tags).toEqual([]); // removed!
+    expect(tags).toEqual(["Test Group X", "another"]);
   });
 
   test("can start syncing lead again", async () => {

@@ -462,13 +462,13 @@ describe("pipedrive/exportProfile", () => {
     expect(data.email[0].value).toBe(email2);
   });
 
-  test("can not delete a Person if sync mode does not allow it", async () => {
+  test("cannot delete a Person if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: {
           create: true,
           delete: false,
-          update: false,
+          update: true,
         },
         oldProfileProperties: {
           Email: email2,
@@ -487,34 +487,6 @@ describe("pipedrive/exportProfile", () => {
     // no effect
     const data = await client.getPerson(personId);
     expect(data[groupOneKey]).toBeTruthy();
-    expect(data.name).toBe("Bobby Jones");
-  });
-
-  test("can clear groups if deleting and sync mode does not allow deletes but allows updates", async () => {
-    await expect(
-      runExport({
-        syncOperations: DestinationSyncModeData.additive.operations,
-        oldProfileProperties: {
-          Email: email2,
-          Name: "Bobby Jones",
-        },
-        newProfileProperties: {
-          Email: email2,
-          Name: "Bobby Jones",
-        },
-        oldGroups: [groupOne],
-        newGroups: [groupOne],
-        toDelete: true,
-      })
-    ).rejects.toThrow(
-      /sync mode does not delete profiles. Only group membership has been cleared/
-    );
-
-    // groups should be cleared
-    const data = await client.getPerson(personId);
-    expect(data[groupOneKey]).toBeFalsy();
-
-    // properties should not be cleared
     expect(data.name).toBe("Bobby Jones");
   });
 

@@ -279,14 +279,14 @@ async function deleteUser(
     return;
   }
 
+  if (!syncOperations.delete) {
+    throw new Errors.InfoError("Destination is not removing contacts.");
+  }
+
   // first remove from all groups
   oldGroups = Array.from(new Set(oldGroups.concat(newGroups)));
   newGroups = [];
   await updateTags(client, cacheData, user, oldGroups, newGroups);
-
-  if (!syncOperations.delete) {
-    throw new Errors.InfoError("Destination is not removing contacts.");
-  }
 
   const { removalMode } = destinationOptions;
   switch (removalMode) {
