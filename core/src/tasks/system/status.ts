@@ -4,6 +4,7 @@ import { CLS } from "../../modules/cls";
 import { Status } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
 import { plugin } from "../../modules/plugin";
+import { Telemetry } from "../../modules/telemetry";
 
 export class StatusTask extends Task {
   constructor() {
@@ -13,14 +14,22 @@ export class StatusTask extends Task {
       "Calculate and store status.  If we are running via the CLI, log it there too";
     this.frequency = 1000 * 5; // every 5 seconds by default, but will be modified by `updateTaskFrequency` after the first run
     this.queue = "system";
+    this.inputs = {
+      toStop: { required: false },
+    };
   }
 
-  async run() {
+  async run({ toStop }: { toStop: boolean }) {
     const runMode = process.env.GROUPAROO_RUN_MODE;
     const samples = await this.getSamples();
     if (runMode === "cli:run") this.logSamples(samples);
+
     const complete = await this.checkForComplete(samples);
-    if (runMode === "cli:run" && complete) await this.stopServer();
+    if (runMode === "cli:run" && complete) {
+      await this.sendTelemetry();
+      await this.stopServer(toStop);
+    }
+
     await this.updateTaskFrequency();
   }
 
@@ -33,8 +42,9 @@ export class StatusTask extends Task {
     return pendingItems > 0 ? false : true;
   }
 
-  async stopServer() {
+  async stopServer(toStop = true) {
     log("All Tasks Complete!", "notice");
+    if (!toStop) return false;
 
     // do not await so the promise can end so the server can shut down
     new Promise(async () => {
@@ -44,6 +54,10 @@ export class StatusTask extends Task {
       );
       process.nextTick(() => process.exit(0));
     });
+  }
+
+  async sendTelemetry() {
+    await Telemetry.send("cli_run");
   }
 
   async getSamples() {
