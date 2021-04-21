@@ -15,13 +15,12 @@ import {
   idSupportedSyncModes,
 } from "../lib/export-id/connection";
 import importSource from "../lib/import/connection";
-
+import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
 import {
   MailchimpAppTemplate,
   MailchimpSourceTemplate,
   MailchimpPropertyTemplate,
 } from "../lib/templates";
-import { DestinationTemplate } from "../../../app-templates/dist/destination/templates";
 
 const packageJSON = require("./../../package.json");
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
