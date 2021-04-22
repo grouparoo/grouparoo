@@ -12,10 +12,10 @@ export class Environment extends Initializer {
     // Are we missing any important environment variables?
     let errors: string[] = [];
     if (!env.DATABASE_URL && !env.DB_HOST) {
-      errors.push(`DATABASE_URL is not set`);
+      errors.push(`DATABASE_URL (or DATABASE_HOST etc) is not set`);
     }
     if (!env.REDIS_URL && !env.REDIS_HOST) {
-      errors.push(`REDIS_URL is not set`);
+      errors.push(`REDIS_URL (or REDIS_HOST etc) is not set`);
     }
     if (!env.PORT && env.WEB_SERVER) {
       errors.push(`PORT is not set and the web server is enabled`);
