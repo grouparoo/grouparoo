@@ -22,9 +22,10 @@ export class Environment extends Initializer {
     }
 
     if (errors.length > 0) {
-      errors.map((error) => log(`${error}`, "crit"));
       throw new Error(
-        "Grouparoo configuration error.  Please ensure that all the required environment variables are set in your .env file or environment.  Learn more at https://www.grouparoo.com/docs/support/environment"
+        `Grouparoo configuration error: ${errors.join(
+          ", "
+        )}.  Please ensure that all the required environment variables are set in your .env file or environment.  Learn more at https://www.grouparoo.com/docs/support/environment`
       );
     }
 
