@@ -14,6 +14,7 @@ interface columnTypes {
 export async function expandSyncTable(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
+  locallyValidateIds: Array<string> = [],
   validate: boolean = false
 ): Promise<ConfigurationObject[]> {
   const out: ConfigurationObject[] = [];
