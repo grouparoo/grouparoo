@@ -14,6 +14,7 @@ import { Op } from "sequelize";
 export async function loadDestination(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
+  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
@@ -56,7 +57,11 @@ export async function loadDestination(
     const property = await getParentByName(Property, sanitizedMappings[key]);
     mapping[key] = property.key;
   }
-  await destination.setMapping(mapping, externallyValidate, false);
+  await destination.setMapping(
+    mapping,
+    externallyValidate && !locallyValidateIds.includes(destination.id),
+    false
+  );
 
   let destinationGroupMemberships = {};
   const sanitizedDestinationGroupMemberships = extractNonNullParts(

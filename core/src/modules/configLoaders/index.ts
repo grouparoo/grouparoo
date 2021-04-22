@@ -90,6 +90,7 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
   externallyValidate: boolean,
+  locallyValidateIds: Array<string> = [],
   validate = false,
   extraSortingConfigObjects?: Array<ConfigurationObject>
 ): Promise<{ seenIds: IdsByClass; errors: string[] }> {
@@ -153,40 +154,82 @@ export async function processConfigObjects(
     try {
       switch (klass) {
         case "setting":
-          ids = await loadSetting(configObject, externallyValidate, validate);
+          ids = await loadSetting(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "app":
-          ids = await loadApp(configObject, externallyValidate, validate);
+          ids = await loadApp(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "source":
-          ids = await loadSource(configObject, externallyValidate, validate);
+          ids = await loadSource(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "property":
-          ids = await loadProperty(configObject, externallyValidate, validate);
+          ids = await loadProperty(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "group":
-          ids = await loadGroup(configObject, externallyValidate, validate);
+          ids = await loadGroup(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "schedule":
-          ids = await loadSchedule(configObject, externallyValidate, validate);
+          ids = await loadSchedule(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "destination":
           ids = await loadDestination(
             configObject,
             externallyValidate,
+            locallyValidateIds,
             validate
           );
           break;
         case "apikey":
-          ids = await loadApiKey(configObject, externallyValidate, validate);
+          ids = await loadApiKey(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "team":
-          ids = await loadTeam(configObject, externallyValidate, validate);
+          ids = await loadTeam(
+            configObject,
+            externallyValidate,
+            locallyValidateIds,
+            validate
+          );
           break;
         case "teammember":
           ids = await loadTeamMember(
             configObject,
             externallyValidate,
+            locallyValidateIds,
             validate
           );
           break;
@@ -194,11 +237,13 @@ export async function processConfigObjects(
           const many = await expandSyncTable(
             configObject,
             externallyValidate,
+            locallyValidateIds,
             validate
           );
           const expanded = await processConfigObjects(
             many,
             externallyValidate,
+            locallyValidateIds,
             validate,
             configObjects.filter((o) => o.id !== configObject.id)
           );

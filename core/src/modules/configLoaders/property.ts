@@ -13,6 +13,7 @@ import { Op } from "sequelize";
 export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
+  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
@@ -44,7 +45,10 @@ export async function loadProperty(
   await property.setOptions(extractNonNullParts(configObject, "options"), null);
 
   if (configObject.filters) {
-    await property.setFilters(configObject.filters, externallyValidate);
+    await property.setFilters(
+      configObject.filters,
+      externallyValidate && !locallyValidateIds.includes(property.id)
+    );
   }
 
   if (configObject.identifying === true) {
