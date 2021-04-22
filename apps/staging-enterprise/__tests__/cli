@@ -3,20 +3,36 @@
 set -e
 
 cd "`dirname "$0"`/.."
+PROJECT_PATH="`pwd`"
 source ./../../tools/shared/max_bg_procs
 
-CLI="../../cli/dist/grouparoo.js"
+CLI="$PROJECT_PATH/../../cli/dist/grouparoo.js"
 
 printf "*** Starting Tests ***\r\n"
 
 OUTPUT_HELP=`$CLI --help`
 printf "help flag"
-if [[ "$OUTPUT_HELP" == *"Learn more at www.grouparoo.com/docs"*  ]]; then
+if [[ "$OUTPUT_HELP" == *"Learn more at https://www.grouparoo.com/docs"* && \
+      "$OUTPUT_HELP" != *"Don't see the commands that you are looking for?"* ]]; then
     printf " ✅\r\n"
 else
     printf " 🚫\r\n"
     exit 1
 fi
+
+cd "../"
+
+OUTPUT_HELP=`$CLI --help`
+printf "help flag outside project dir"
+if [[ "$OUTPUT_HELP" == *"Learn more at https://www.grouparoo.com/docs"* && \
+      "$OUTPUT_HELP" == *"Don't see the commands that you are looking for?"* ]]; then
+    printf " ✅\r\n"
+else
+    printf " 🚫\r\n"
+    exit 1
+fi
+
+cd $PROJECT_PATH
 
 OUTPUT_VALIDATE=`$CLI validate`
 printf "validate"
