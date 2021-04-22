@@ -300,7 +300,7 @@ async function deleteUser(
 }
 
 function formatVar(value) {
-  if (!value) {
+  if (value === undefined) {
     return null;
   }
   if (value instanceof Date) {
