@@ -95,6 +95,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
         phone: "+16505551234",
         "custom_attributes.text_field": "testing here",
         "custom_attributes.date_field": exampleDate,
+        "custom_attributes.number_field": 13,
       },
       oldGroups: [],
       newGroups: [],
@@ -113,6 +114,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     expect(user.phone).toBe("+16505551234");
     expect(user.custom_attributes.date_field).toBe(exampleEpoch);
     expect(user.custom_attributes.text_field).toBe("testing here");
+    expect(user.custom_attributes.number_field).toBe(13);
     expect(user.custom_attributes.checkbox_field).toBe(undefined); // default
     expect(user.external_id).toBe(generatedExtId);
     expect(user.role).toBe("lead");
@@ -126,6 +128,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
         phone: "+16505551234",
         "custom_attributes.text_field": "testing here",
         "custom_attributes.date_field": exampleDate,
+        "custom_attributes.number_field": 13,
       },
       newProfileProperties: {
         email,
@@ -134,7 +137,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
         "custom_attributes.other_junk": "here", // note: also extra
         "custom_attributes.text_field": "testing here change",
         "custom_attributes.boolean_field": true,
-        "custom_attributes.number_field": 13,
+        "custom_attributes.number_field": 0,
         "custom_attributes.decimal_field": 3.14,
         "custom_attributes.date_field": null,
       },
@@ -151,7 +154,7 @@ describe("intercom/contacts/exportProfile/lead", () => {
     expect(user.custom_attributes.date_field).toBe(null);
     expect(user.custom_attributes.text_field).toBe("testing here change");
     expect(user.custom_attributes.boolean_field).toBe(true);
-    expect(user.custom_attributes.number_field).toBe(13);
+    expect(user.custom_attributes.number_field).toBe(0);
     expect(user.custom_attributes.decimal_field).toBe(3.14);
 
     expect(user.unknown_junk).toBeUndefined();
