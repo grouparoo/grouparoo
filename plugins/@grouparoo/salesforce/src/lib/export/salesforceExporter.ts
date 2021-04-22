@@ -339,7 +339,7 @@ function buildUserPayload(
 }
 
 function formatAndDefaultValue(value, field) {
-  if (!value) {
+  if (value === undefined || value === null) {
     if (field) {
       return field.defaultValue;
     }

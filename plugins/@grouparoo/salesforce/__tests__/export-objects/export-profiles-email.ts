@@ -117,6 +117,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: email1,
             LastName: "Smith",
             "Account.Name": account1,
+            number_field__c: 24,
           },
           oldGroups: [],
           newGroups: [],
@@ -134,6 +135,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toBe(email1);
     expect(user.LastName).toBe("Smith");
     expect(user.FirstName).toBe(null);
+    expect(user.number_field__c).toBe(24);
 
     accountId1 = await findReferenceId(account1);
     expect(accountId1).toBeTruthy();
@@ -163,12 +165,14 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             Email: email1,
             LastName: "Smith",
             "Account.Name": account1,
+            number_field__c: 24,
           },
           newProfileProperties: {
             Email: email1,
             FirstName: "John",
             LastName: "Jones",
             "Account.Name": account2,
+            number_field__c: 0,
           },
           oldGroups: [],
           newGroups: [],
@@ -201,6 +205,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.Email).toBe(email1);
     expect(user.FirstName).toBe("John");
     expect(user.LastName).toBe("Jones");
+    expect(user.number_field__c).toBe(0);
     expect(user.AccountId).toEqual(accountId2);
 
     expect(errors).toBeNull();
@@ -234,6 +239,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
             FirstName: "John",
             LastName: "Jones",
             "Account.Name": account2,
+            number_field__c: 0,
           },
           newProfileProperties: {
             Email: email1,
@@ -256,6 +262,7 @@ describe("salesforce/sales-cloud/export-profiles/email", () => {
     expect(user.FirstName).toBe(null);
     expect(user.LastName).toBe("Simpson");
     expect(user.AccountId).toEqual(null);
+    expect(user.number_field__c).toEqual(null);
 
     let referenced;
     referenced = await getReferencedUserIds(accountId2);
