@@ -2,6 +2,7 @@
 
 set -e
 
+cd "`dirname "$0"`/.."
 PROJECT_PATH="`pwd`"
 source ./../../tools/shared/max_bg_procs
 
