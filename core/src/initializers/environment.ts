@@ -8,6 +8,27 @@ export class Environment extends Initializer {
   }
 
   async initialize() {
+    const { env } = process;
+    // Are we missing any important environment variables?
+    let errors: string[] = [];
+    if (!env.DATABASE_URL && !env.DB_HOST) {
+      errors.push(`DATABASE_URL is not set`);
+    }
+    if (!env.REDIS_URL && !env.REDIS_HOST) {
+      errors.push(`REDIS_URL is not set`);
+    }
+    if (!env.PORT && env.WEB_SERVER) {
+      errors.push(`PORT is not set and the web server is enabled`);
+    }
+
+    if (errors.length > 0) {
+      errors.map((error) => log(`${error}`, "crit"));
+      throw new Error(
+        "Grouparoo configuration error.  Please ensure that all the required environment variables are set in your .env file or environment.  Learn more at https://www.grouparoo.com/docs/support/environment"
+      );
+    }
+
+    // The file was already load by config/environment, but we log the message here once the logger is configured
     if (process.env.GROUPAROO_ENV_CONFIG_FILE) {
       log(
         `Modified your runtime environment with ${process.env.GROUPAROO_ENV_CONFIG_FILE}`,
@@ -15,6 +36,7 @@ export class Environment extends Initializer {
       );
     }
 
+    // Special considerations for SQLite
     if (config.sequelize.dialect === "sqlite") {
       log(`Using SQLite database: ${config.sequelize.storage}`);
 
