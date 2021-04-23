@@ -4,7 +4,6 @@ import { join, isAbsolute } from "path";
 import { getParentPath, getPluginManifest } from "../utils/pluginDetails";
 import { log } from "actionhero";
 
-// import {CLS} from '../modules/cls'
 import cls from "cls-hooked";
 import Sequelize from "sequelize";
 
@@ -17,21 +16,14 @@ Sequelize.useCLS(namespace);
 // we want BIGINTs to be returned as JS integer types
 require("pg").defaults.parseInt8 = true;
 
-const databaseBaseName = "grouparoo";
-
 export const DEFAULT = {
   sequelize: (config) => {
-    let dialect = process.env.DB_DIALECT || "postgres";
     let storage: string; //only for sqlite
-    let host = process.env.DB_HOST || "127.0.0.1";
-    let port = process.env.DB_PORT || "5432";
-    let database =
-      process.env.DB_DATABASE ||
-      `${databaseBaseName}_${config.process.env}${
-        process.env.JEST_WORKER_ID ? "_" + process.env.JEST_WORKER_ID : ""
-      }`;
-    let username =
-      process.env.DB_USER || process.env.CI ? "postgres" : undefined;
+    let dialect = process.env.DB_DIALECT;
+    let host = process.env.DB_HOST;
+    let port = process.env.DB_PORT;
+    let database = process.env.DB_DATABASE;
+    let username = process.env.DB_USER;
     let password = process.env.DB_PASS || undefined;
     let ssl: boolean | { [key: string]: any } = false;
 

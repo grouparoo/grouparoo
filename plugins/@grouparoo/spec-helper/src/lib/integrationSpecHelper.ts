@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs-extra";
 import { spawn } from "child_process";
 import axios from "axios";
 
@@ -88,9 +89,15 @@ export namespace IntegrationSpecHelper {
       projectPath
     );
 
+    // clear the database
+    const db = path.join(projectPath, "grouparoo_test.sqlite");
+    if (fs.existsSync(db)) fs.unlinkSync(db);
+
     // start the api server
     const serverEnv = Object.assign(env, {
       INIT_CWD: projectPath,
+      REDIS_URL: "redis://mock",
+      DATABASE_URL: "sqlite://grouparoo_test.sqlite",
       ACTIONHERO_TYPESCRIPT_MODE: "false", // ensure that the test server doesn't run typescript files
       WEB_SERVER: true,
       PORT: port,

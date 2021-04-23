@@ -197,8 +197,8 @@ async function runCommand(instance, _arg1, _arg2, _arg3, _arg4) {
 
       toStop = await instance.run({ params });
     } catch (error) {
-      console.error(error.toString());
-      process.exit(1);
+      console.error(error.message || error.toString());
+      process.nextTick(() => process.exit(1));
     }
   }
 

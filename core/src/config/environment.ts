@@ -4,6 +4,11 @@ import { getParentPath } from "../utils/pluginDetails";
 
 const envFileAttempts: string[] = [];
 
+// suppress long stack traces for customer-facing errors
+if (!process.env.ACTIONHERO_FATAL_ERROR_STACK_DISPLAY) {
+  process.env.ACTIONHERO_FATAL_ERROR_STACK_DISPLAY = "false";
+}
+
 if (process.env.GROUPAROO_ENV_CONFIG_FILE) {
   envFileAttempts.unshift(process.env.GROUPAROO_ENV_CONFIG_FILE);
   envFileAttempts.unshift(
