@@ -53,10 +53,7 @@ export const getRequiredFields = (): Array<{
   key: string;
   type: DestinationMappingOptionsResponseTypes;
 }> => {
-  return [
-    { key: "external_id", type: "string" },
-    { key: "name", type: "string" },
-  ];
+  return [{ key: "external_id", type: "string" }];
 };
 export const getBuiltInFields = (): Array<{
   key: string;
@@ -64,6 +61,7 @@ export const getBuiltInFields = (): Array<{
   important?: boolean;
 }> => {
   return [
+    { key: "name", type: "string" },
     { key: "email", type: "email", important: true },
     { key: "notes", type: "string" },
     { key: "details", type: "string" },
