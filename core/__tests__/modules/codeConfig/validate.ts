@@ -69,7 +69,7 @@ describe("modules/codeConfig", () => {
           const { errors, seenIds } = await processConfigObjects(
             configObjects,
             true,
-            [],
+            null,
             true
           );
 
@@ -115,7 +115,7 @@ describe("modules/codeConfig", () => {
           const { errors } = await processConfigObjects(
             configObjects,
             true,
-            [],
+            null,
             true
           );
 
@@ -148,7 +148,7 @@ describe("modules/codeConfig", () => {
           const { errors } = await processConfigObjects(
             configObjects,
             false, // <-- here
-            [],
+            null,
             true
           );
 
