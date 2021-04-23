@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@master
         with:
           ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
       - name: Update PNPM lockfile
         run: |
           cd tools/merger && ./lockfile
@@ -23,4 +24,3 @@ jobs:
           commit_user_email: hello@grouparoo.com
           commit_author: Grouparoo Bot <hello@grouparoo.com>
           branch: ${{ github.head_ref }}
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
