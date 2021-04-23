@@ -49,7 +49,13 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     if (toDelete) {
       if (user) {
         // this does a soft delete
-        await deleteContact(client, syncOperations, user, true);
+        if (syncOperations.delete) {
+          await client.users.delete(user.id);
+        } else {
+          throw new Errors.InfoError(
+            "Destination sync mode does not allow removing profiles."
+          );
+        }
 
         // TODO: should we fully delete it? (see test for how to set it up)
         // this might delete tickets
@@ -263,20 +269,3 @@ async function makeEmailPrimary(client, userId, newEmail) {
     throw `identity email not found: ${userId} ${newEmail}`;
   }
 }
-
-const deleteContact = async (
-  client: any,
-  syncOperations: DestinationSyncOperations,
-  user: any,
-  doThrow: boolean = false
-) => {
-  if (syncOperations.delete) {
-    await client.users.delete(user.id);
-  } else {
-    if (doThrow) {
-      throw new Errors.InfoError(
-        "Destination sync mode does not allow removing profiles."
-      );
-    }
-  }
-};
