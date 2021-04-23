@@ -31,7 +31,7 @@ require("./../fixtures/mailchimp-export");
 // helper.recordNock(nockFile, updater);
 
 // change this when recording if you really want it to be a new user (recommended)
-const email1 = "test2@grouparoo.com";
+const email1 = "test3039@grouparoo.com";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
@@ -48,7 +48,7 @@ async function getUser(email) {
     const response = await client.get(
       `/lists/${listId}/members/${mailchimpId}`
     );
-    if (!response.unique_email_id) {
+    if (!response.unique_email_id || response.status === "archived") {
       return null;
     }
     return response;

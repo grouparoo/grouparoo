@@ -73,26 +73,23 @@ export const updateProfile: UpdateProfileMethod = async ({
     }
   }
 
-  try {
-    const userResponse = await getUser(client, listId, mailchimpId);
-    exists = userResponse !== null;
+  const userResponse = await getUser(client, listId, mailchimpId);
+  exists = userResponse !== null;
+  if (userResponse) {
     // mailchimp changes the case of tags...
     existingTagNames = userResponse.tags.map((t) => normalizeGroupName(t.name));
-  } catch (error) {
-    // TODO: just letting this go for now.
-    // is there a specific error if the user doesn't exist?
-    // looks like "The requested resource could not be found"
   }
 
   // update merge_variables
   const payload: any = {
-    status: "subscribed",
     merge_fields: mergeFields,
   };
   if (email_address) {
     payload.email_address = email_address;
   }
-
+  if (!exists) {
+    payload.status = "subscribed";
+  }
   const method = exists ? "put" : "post";
   const route = exists
     ? `/lists/${listId}/members/${mailchimpId}`

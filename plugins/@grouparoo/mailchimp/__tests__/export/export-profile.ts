@@ -21,6 +21,7 @@ const phone_number = "+5583999999999";
 const newPhoneNumber = "+5583999999998";
 const first_name = "Caio";
 const last_name = "Silveira";
+const intermediateName = "Samba";
 const alternativeName = "Evan";
 const newName = "Carlos";
 const listOne = "List One";
@@ -97,6 +98,30 @@ async function deleteUsers(suppressErrors) {
         throw err;
       }
     }
+  }
+}
+
+async function unsubscribeUser(email) {
+  const { listId } = destinationOptions;
+  const mailchimpId = generateMailchimpId(email);
+  try {
+    await apiClient.put(`/lists/${listId}/members/${mailchimpId}`, {
+      status: "unsubscribed",
+    });
+  } catch (err) {
+    return null;
+  }
+}
+
+async function subscribeUser(email) {
+  const { listId } = destinationOptions;
+  const mailchimpId = generateMailchimpId(email);
+  try {
+    await apiClient.put(`/lists/${listId}/members/${mailchimpId}`, {
+      status: "subscribed",
+    });
+  } catch (err) {
+    return null;
   }
 }
 
@@ -223,6 +248,39 @@ describe("mailchimp/exportProfile", () => {
     expect(user["merge_fields"]["FNAME"]).toBe(first_name);
     expect(user["merge_fields"]["LNAME"]).toBe(last_name);
     expect(user["merge_fields"]["PHONE"]).toBe(phone_number);
+  });
+
+  test("can unsubscribe a user and after change user variables the status is still unsubscribed", async () => {
+    // Phone must be valid.
+    await unsubscribeUser(emails["email"]);
+    user = await getUser(emails["email"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["email"]);
+    expect(user["status"]).toBe("unsubscribed");
+
+    await runExport({
+      oldProfileProperties: {
+        email_address: emails["email"],
+        FNAME: first_name,
+      },
+      newProfileProperties: {
+        email_address: emails["email"],
+        FNAME: intermediateName,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    user = await getUser(emails["email"]);
+    expect(user).not.toBe(null);
+    expect(user["email_address"]).toBe(emails["email"]);
+    expect(user["merge_fields"]["FNAME"]).toBe(intermediateName);
+    expect(user["status"]).toBe("unsubscribed");
+
+    //subscribe the user back to avoid interference on other tests.
+    await subscribeUser(emails["email"]);
+    user = await getUser(emails["email"]);
+    expect(user["status"]).toBe("subscribed");
   });
 
   test("can change user variables", async () => {
