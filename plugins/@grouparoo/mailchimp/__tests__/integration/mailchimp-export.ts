@@ -48,7 +48,7 @@ async function getUser(email) {
     const response = await client.get(
       `/lists/${listId}/members/${mailchimpId}`
     );
-    if (!response.unique_email_id) {
+    if (!response.unique_email_id || response.status === "archived") {
       return null;
     }
     return response;
