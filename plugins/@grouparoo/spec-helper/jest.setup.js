@@ -1,1 +1,1 @@
-require("@grouparoo/spec-helper/dist/lib/environment");
+require("./dist/lib/environment");
