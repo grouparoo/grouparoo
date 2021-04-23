@@ -1,3 +1,1 @@
-if (!process.env.SERVER_TOKEN) {
-  process.env.SERVER_TOKEN = "test-server-token";
-}
+require("@grouparoo/spec-helper/dist/lib/environment");
