@@ -19,8 +19,8 @@ const nockFile = path.join(
 const newNock = false;
 require("./../fixtures/destination-mapping-options");
 // or these to make it true
-//const newNock = true;
-//helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -53,12 +53,12 @@ describe("zendesk/destinationMappingOptions", () => {
     const { properties } = options;
     const { required, known } = properties;
 
-    expect(required.length).toBe(2);
+    expect(required.length).toBe(1);
     const external_id = required.find((f) => f.key === "external_id");
     expect(external_id.key).toBe("external_id");
     expect(external_id.type).toBe("string");
 
-    const name = required.find((f) => f.key === "name");
+    const name = known.find((f) => f.key === "name");
     expect(name.key).toBe("name");
     expect(name.type).toBe("string");
 
