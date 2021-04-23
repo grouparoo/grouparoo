@@ -33,7 +33,8 @@ function RealRedisConfig() {
     username:
       username?.length > 1 || process.env.REDIS_USER ? username : undefined,
     password,
-    db: parseInt(db),
+    // If we have a REDIS_URL, but no database, assume we mean db=0
+    db: parseInt(db || "0"),
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
     retryStrategy: (times) => {
       if (times === 1) {
