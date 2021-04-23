@@ -86,13 +86,14 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   // update merge_variables
   const payload: any = {
-    status: "subscribed",
     merge_fields: mergeFields,
   };
   if (email_address) {
     payload.email_address = email_address;
   }
-
+  if (!exists) {
+    payload.status = "subscribed";
+  }
   const method = exists ? "put" : "post";
   const route = exists
     ? `/lists/${listId}/members/${mailchimpId}`
