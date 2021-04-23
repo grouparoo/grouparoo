@@ -13,7 +13,6 @@ import { Op } from "sequelize";
 export async function loadSource(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
@@ -45,11 +44,7 @@ export async function loadSource(
   await source.setOptions(extractNonNullParts(configObject, "options"));
 
   // a form of testing the options
-  if (
-    externallyValidate &&
-    !locallyValidateIds.includes(source.id) &&
-    (await source.previewAvailable())
-  ) {
+  if (externallyValidate && (await source.previewAvailable())) {
     await source.sourcePreview();
   }
 

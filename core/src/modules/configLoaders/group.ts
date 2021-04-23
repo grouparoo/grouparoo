@@ -13,7 +13,6 @@ import { CLS } from "../../modules/cls";
 export async function loadGroup(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;

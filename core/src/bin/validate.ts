@@ -52,12 +52,16 @@ export class Validate extends CLI {
       )}...`
     );
 
+    const canExternallyValidate = params.local !== true;
+    const locallyValidateIds =
+      Array.isArray(params.local) && (new Set(params.local) as Set<string>);
+
     try {
       await api.sequelize.transaction(async () => {
         const { errors } = await processConfigObjects(
           configObjects,
-          params.local !== true,
-          params.local,
+          canExternallyValidate,
+          locallyValidateIds,
           true
         );
         if (errors.length > 0) {

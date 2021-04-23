@@ -11,7 +11,6 @@ import { Setting } from "../../models/Setting";
 export async function loadSetting(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   validateConfigObjectKeys(Setting, configObject);

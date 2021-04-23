@@ -12,7 +12,6 @@ import { Op } from "sequelize";
 export async function loadApp(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
-  locallyValidateIds: Array<string> = [],
   validate = false
 ): Promise<IdsByClass> {
   let isNew = false;
@@ -34,7 +33,7 @@ export async function loadApp(
   await app.update({ type: configObject.type, name: configObject.name });
   await app.setOptions(extractNonNullParts(configObject, "options"));
 
-  if (externallyValidate && !locallyValidateIds.includes(app.id)) {
+  if (externallyValidate) {
     const response = await app.test(
       extractNonNullParts(configObject, "options")
     );
