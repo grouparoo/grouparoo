@@ -75,8 +75,10 @@ export const updateProfile: UpdateProfileMethod = async ({
 
   const userResponse = await getUser(client, listId, mailchimpId);
   exists = userResponse !== null;
-  // mailchimp changes the case of tags...
-  existingTagNames = userResponse.tags.map((t) => normalizeGroupName(t.name));
+  if (userResponse) {
+    // mailchimp changes the case of tags...
+    existingTagNames = userResponse.tags.map((t) => normalizeGroupName(t.name));
+  }
 
   // update merge_variables
   const payload: any = {
