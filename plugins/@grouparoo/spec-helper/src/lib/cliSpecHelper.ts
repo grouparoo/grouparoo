@@ -288,9 +288,12 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
     const cliEnv = Object.assign({}, process.env, {
       GROUPAROO_LOGS_STDOUT_DISABLE_COLOR: "true",
-      INIT_CWD: undefined,
       GROUPAROO_PARENT_PATH: projectPath,
       JEST_WORKER_ID: jestId,
+      INIT_CWD: undefined,
+      DATABASE_URL: undefined,
+      REDIS_URL: undefined,
+      PORT: undefined,
     });
 
     async function runCliCommand(args: string[] | string) {
