@@ -4,6 +4,13 @@ set -e
 
 cd "`dirname "$0"`/.."
 
+# Set needed ENV
+export REDIS_URL="redis://mock"
+export DATABASE_URL="sqlite://grouparoo_test.sqlite"
+export SERVER_TOKEN="ABC123"
+export PORT="3000"
+export WEB_SERVER="true"
+
 printf "*** Starting Server ***\r\n"
 npm run start &
 
