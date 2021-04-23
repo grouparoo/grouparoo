@@ -4,12 +4,19 @@
 // ENV variables
 if (!process.env.SERVER_TOKEN) process.env.SERVER_TOKEN = "test-server-token";
 
-if (!process.env.DATABASE_URL)
-  process.env.DATABASE_URL = `postgresql://${
-    process.env.CI ? "postgres@" : ""
-  }127.0.0.1:5432/grouparoo_${process.env.NODE_ENV}${
-    process.env.JEST_WORKER_ID ? "_" + process.env.JEST_WORKER_ID : ""
-  }`;
+if (!process.env.DATABASE_URL) {
+  if (process.env.DB_DIALECT === "sqlite") {
+    process.env.DATABASE_URL = `sqlite://grouparoo_${process.env.NODE_ENV}${
+      process.env.JEST_WORKER_ID ? "_" + process.env.JEST_WORKER_ID : ""
+    }.sqlite`;
+  } else {
+    process.env.DATABASE_URL = `postgresql://${
+      process.env.CI ? "postgres@" : ""
+    }127.0.0.1:5432/grouparoo_${process.env.NODE_ENV}${
+      process.env.JEST_WORKER_ID ? "_" + process.env.JEST_WORKER_ID : ""
+    }`;
+  }
+}
 
 if (!process.env.REDIS_URL)
   process.env.REDIS_URL = `redis://r@127.0.0.1:6379/${process.env.JEST_WORKER_ID}`;
