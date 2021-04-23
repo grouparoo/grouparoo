@@ -374,7 +374,7 @@ describe("zendesk/exportProfile", () => {
   });
 
   test("it can migrate an email user to having a external_id", async () => {
-    // make a user
+    // make a user with email
     const created = await client.users.create({
       user: {
         verified: true,
