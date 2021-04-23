@@ -7,6 +7,7 @@ import {
   sortConfigurationObjects,
   validateConfigObjects,
   IdsByClass,
+  getParentIds,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -88,15 +89,23 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 }
 
 export async function shouldExternallyValidate(
-  objectId: string,
   canExternallyValidate: boolean,
-  locallyValidateIds?: Set<string>,
-  parentId?: string
+  configObject: ConfigurationObject,
+  configObjects: ConfigurationObject[],
+  locallyValidateIds: Set<string>
 ) {
   if (!canExternallyValidate) return false;
   if (!locallyValidateIds) return true;
 
-  if (parentId && locallyValidateIds.has(parentId)) {
+  const { prerequisiteIds: parentIds } = await getParentIds(
+    configObject,
+    configObjects
+  );
+
+  const objectId = configObject.id;
+
+  const localParents = parentIds.filter((pId) => locallyValidateIds.has(pId));
+  if (localParents.length > 0) {
     locallyValidateIds.add(objectId);
   }
 
@@ -171,66 +180,42 @@ export async function processConfigObjects(
     if (Object.keys(configObject).length === 0) continue;
     let klass = configObject?.class?.toLowerCase();
     let ids: IdsByClass;
-    let externallyValidate: boolean;
+
+    const externallyValidate = await shouldExternallyValidate(
+      canExternallyValidate,
+      configObject,
+      configObjects,
+      locallyValidateIds
+    );
+
+    if (!externallyValidate) {
+      log(
+        `[ config ] skipping external validation for ${configObject.class} \`${configObject.id}\``,
+        "notice"
+      );
+    }
+
     try {
       switch (klass) {
         case "setting":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadSetting(configObject, externallyValidate, validate);
           break;
         case "app":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds,
-            configObject.appId
-          );
           ids = await loadSource(configObject, externallyValidate, validate);
           break;
         case "property":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds,
-            configObject.sourceId
-          );
           ids = await loadProperty(configObject, externallyValidate, validate);
           break;
         case "group":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadGroup(configObject, externallyValidate, validate);
           break;
         case "schedule":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadSchedule(configObject, externallyValidate, validate);
           break;
         case "destination":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds,
-            configObject.appId
-          );
           ids = await loadDestination(
             configObject,
             externallyValidate,
@@ -238,28 +223,12 @@ export async function processConfigObjects(
           );
           break;
         case "apikey":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadApiKey(configObject, externallyValidate, validate);
           break;
         case "team":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           ids = await loadTeam(configObject, externallyValidate, validate);
           break;
         case "teammember":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds,
-            configObject.teamId
-          );
           ids = await loadTeamMember(
             configObject,
             externallyValidate,
@@ -267,11 +236,6 @@ export async function processConfigObjects(
           );
           break;
         case "synctable":
-          externallyValidate = await shouldExternallyValidate(
-            configObject.id,
-            canExternallyValidate,
-            locallyValidateIds
-          );
           const many = await expandSyncTable(
             configObject,
             externallyValidate,
