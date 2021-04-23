@@ -82,7 +82,7 @@ export default function GrouparooWebApp(props) {
         <Component {...combinedProps} err={err} />
       </Layout>
 
-      {combinedProps.currentTeamMember.id ? (
+      {combinedProps.currentTeamMember?.id ? (
         <StatusSubscription {...combinedProps} />
       ) : null}
     </Injection>
@@ -91,6 +91,10 @@ export default function GrouparooWebApp(props) {
 
 GrouparooWebApp.getInitialProps = async (appContext) => {
   const { execApi } = useApi(appContext.ctx);
+  let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
+    firstName: "",
+    id: null,
+  };
 
   try {
     const {
@@ -98,10 +102,7 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
       navigation,
       clusterName,
     }: Actions.NavigationList = await execApi("get", `/navigation`);
-    let currentTeamMember: Partial<Actions.SessionView["teamMember"]> = {
-      firstName: "",
-      id: null,
-    };
+
     if (navigationMode && navigationMode === "authenticated") {
       currentTeamMember = (await execApi("get", `/session`)).teamMember;
     }
