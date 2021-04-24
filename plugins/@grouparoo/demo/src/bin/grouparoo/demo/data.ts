@@ -39,7 +39,7 @@ export class Console extends CLI {
       await events({ scale });
     }
 
-    await loadConfigFiles(db, ["setup"].concat(subDirs));
+    await loadConfigFiles(db, subDirs);
     await finalize();
     return true;
   }
