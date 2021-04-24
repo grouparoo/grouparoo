@@ -197,7 +197,7 @@ export default class Mongo extends Connection {
     const { db } = await this.connect();
     const doc = castRow(collectionName, row);
 
-    log(1, `Inserting ${tableName}: ${JSON.stringify(doc)}`);
+    log(2, `Inserting ${tableName}: ${JSON.stringify(doc)}`);
     await db.collection(collectionName).insertOne(doc);
   }
 }

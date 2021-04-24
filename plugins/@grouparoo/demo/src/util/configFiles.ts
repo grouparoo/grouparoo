@@ -9,10 +9,17 @@ import {
 import { prettier, log } from "./shared";
 import Connection from "./connection";
 
+export async function deleteConfigDir() {
+  const configDir = getConfigDir();
+  deleteDir(configDir);
+}
+
 export async function writeConfigFiles(db: Connection, subDirs: string[]) {
   const configDir = getConfigDir();
   await generateConfig(db, configDir, subDirs);
-  await prettier(configDir);
+  if (subDirs.length > 0) {
+    await prettier(configDir);
+  }
 }
 
 export async function loadConfigFiles(db: Connection, subDirs: string[]) {

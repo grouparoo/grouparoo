@@ -1,30 +1,5 @@
-import { CLI } from "actionhero";
-import { writeConfigFiles } from "../../../util/configFiles";
-import Postgres from "../../../postgres/connection";
-import Mongo from "../../../mongo/connection";
-
-export class Console extends CLI {
-  constructor() {
-    super();
-    this.name = "demo-config [type]";
-    this.description = "Writes given postgres config to current app";
-    this.inputs = {};
-  }
-
-  async run({ params }) {
-    let type = params._arguments[0];
-    if (!type) {
-      type = "purchases";
-    }
-    console.log(`Using type: ${type}`);
-    const { db, subDirs } = getConfig(type);
-
-    const skip = ["setup"]; // don't need teams
-    const filtered = subDirs.filter((item) => !skip.includes(item));
-    await writeConfigFiles(db, filtered);
-    return true;
-  }
-}
+import Postgres from "../postgres/connection";
+import Mongo from "../mongo/connection";
 
 export function getConfig(type): { db: any; subDirs: string[] } {
   const subDirs: string[] = [];
