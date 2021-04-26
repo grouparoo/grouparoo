@@ -12,43 +12,50 @@ import { getConfig } from "../../../util/config";
 export class Console extends CLI {
   constructor() {
     super();
-    this.name = "demo [type]";
+    this.name = "demo [type] [type]";
     this.description =
       "Load eCommerce users and purchases into a source database and create properties including events.";
     this.inputs = {
       scale: { required: false, default: "1" },
       config: { required: false, letter: "c", flag: true },
+      force: { required: false, letter: "f", flag: true },
     };
   }
 
   async run({ params }) {
-    const scale = parseInt(params.scale);
+    console.log(JSON.stringify(params));
+    const scale = parseInt(params.scale) || 1;
     const config = !!params.config;
+    const force = !!params.force;
 
-    if (scale > 1) {
-      console.log(`Using scale = ${params.scale}`);
-    }
+    console.log(`Using scale = ${scale}`);
+
     if (config) {
       console.log("Writing config to app.");
     } else {
       console.log("Writing config to database.");
     }
 
-    let type = params._arguments[0];
-    if (!type) {
-      type = "purchases";
+    let types = params._arguments || [];
+    if (types.length === 0) {
+      types = ["purchases"];
     }
-    console.log(`Using type: ${type}`);
-    const { db, subDirs } = getConfig(type);
+    console.log(`Using types: ${types.join(", ")}`);
+    const { db, subDirs } = getConfig(types);
 
+    console.log(`Config directories: ${subDirs.join(",")}`);
+    console.log(`Using database: ${db ? db.constructor.name : "none"}`);
+
+    if (force) {
+      await deleteConfigDir();
+    }
     await init({ reset: true });
-    await deleteConfigDir();
 
-    if (["events", "mongo", "purchases"].includes(type)) {
+    if (hasDir(subDirs, ["events", "mongo", "purchases"])) {
       await users(db, { scale });
       await purchases(db, { scale });
     }
-    if (["events"].includes(type)) {
+    if (hasDir(subDirs, ["events"])) {
       await events({ scale });
     }
 
@@ -63,4 +70,13 @@ export class Console extends CLI {
 
     return true;
   }
+}
+
+function hasDir(given: string[], subDirs: string[]) {
+  for (const subDir of subDirs) {
+    if (given.includes(subDir)) {
+      return true;
+    }
+  }
+  return false;
 }

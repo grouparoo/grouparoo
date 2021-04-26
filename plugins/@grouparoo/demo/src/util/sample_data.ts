@@ -55,7 +55,7 @@ async function loadCsvTable(
   updatedAt: boolean,
   scale: number = 0
 ) {
-  if (scale < 1) {
+  if (!scale || scale < 1) {
     scale = 1;
   }
   log(1, `Adding ${tableName}`);
