@@ -108,7 +108,9 @@ function getActionhero() {
 
 function clearRequireCache() {
   for (const path in require.cache) {
-    if (path.endsWith(".js")) delete require.cache[path];
+    if (path.includes("actionhero/dist")) {
+      delete require.cache[path];
+    }
   }
 }
 
