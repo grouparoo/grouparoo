@@ -61,9 +61,14 @@ export class Console extends CLI {
     }
 
     if (config) {
-      const skip = ["setup"]; // don't need teams
-      const filtered = subDirs.filter((item) => !skip.includes(item));
-      await writeConfigFiles(db, filtered);
+      const skip = ["setup"]; // not all get config files, they load into db
+
+      const load = subDirs.filter((item) => skip.includes(item));
+      await loadConfigFiles(db, load);
+      await finalize();
+
+      const files = subDirs.filter((item) => !skip.includes(item));
+      await writeConfigFiles(db, files);
     } else {
       await loadConfigFiles(db, subDirs);
       await finalize();
