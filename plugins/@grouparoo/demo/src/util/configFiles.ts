@@ -8,6 +8,7 @@ import {
 } from "@grouparoo/core/dist/modules/configLoaders";
 import { prettier, log } from "./shared";
 import Connection from "./connection";
+import { updateEnvVariables } from "./env";
 
 export async function deleteConfigDir() {
   const configDir = getConfigDir();
@@ -46,6 +47,7 @@ async function generateConfig(db: Connection, configDir, subDirs: string[]) {
     copyDir(configDir, subDir);
   }
   updateDatabase(db, configDir);
+  await updateEnvVariables(configDir);
 }
 
 function deleteDir(configDir) {

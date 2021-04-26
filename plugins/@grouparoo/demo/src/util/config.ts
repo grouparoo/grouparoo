@@ -63,8 +63,10 @@ class Config {
 
     switch (type) {
       case "reset":
-        break;
       case "setup":
+        break;
+      case "mongo":
+        this.setDb("mongo");
         break;
       case "purchases":
         this.setDb("purchases");
@@ -73,8 +75,8 @@ class Config {
         this.setDb("purchases");
         this.addDir("events");
         break;
-      case "mongo":
-        this.setDb("mongo");
+      case "mailchimp":
+        this.addDir(type);
         break;
       default:
         throw new Error(`Unknown type: ${type}`);

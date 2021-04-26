@@ -474,23 +474,27 @@ importers:
       '@types/node': '*'
       actionhero: 25.0.11
       csv-parse: 4.15.4
+      dotenv: 8.2.0
       fs-extra: 9.1.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
       mongodb: 3.6.6
       pg: 8.6.0
       prettier: 2.2.1
+      replace-in-files: 3.0.0
       sequelize: 6.6.2
       ts-jest: 26.5.4
       typescript: 4.2.4
       uuid: 8.3.2
     dependencies:
       csv-parse: 4.15.4
+      dotenv: 8.2.0
       fs-extra: 9.1.0
       isomorphic-fetch: 3.0.0
       mongodb: 3.6.6
       pg: 8.6.0
       prettier: 2.2.1
+      replace-in-files: 3.0.0
       sequelize: 6.6.2_pg@8.6.0
       uuid: 8.3.2
     devDependencies:
@@ -6262,6 +6266,10 @@ packages:
     dependencies:
       es6-promise: 4.2.8
 
+  /es6-promisify/6.1.1:
+    resolution: {integrity: sha512-HBL8I3mIki5C1Cc9QjKUenHtnG0A5/xA8Q/AllRcfiwl2CZFXGK7ddBiCoRwAix4i2KxcQfjtIVcrVbB3vbmwg==}
+    dev: false
+
   /escalade/3.1.1:
     resolution: {integrity: sha512-k0er2gUkLf8O0zKJiAhmkTnJlTvINGv7ygDNPbeIsX/TJjGJZHuh9B2UxbsaEkmlEo9MfhrSzmhIlhRlI2GXnw==}
     engines: {node: '>=6'}
@@ -7925,6 +7933,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       binary-extensions: 2.2.0
+
+  /is-binary/0.1.0:
+    resolution: {integrity: sha1-jn0yenq5B6g4+BE+nOUWjf2786s=}
+    dev: false
 
   /is-boolean-object/1.1.0:
     resolution: {integrity: sha512-a7Uprx8UtD+HWdyYwnD1+ExtTgqQtD2k/1yJgtXP6wnMm8byhkoTZRl+95LLThpzNZJ5aEvi46cdH+ayMFRwmA==}
@@ -12539,6 +12551,17 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       is-finite: 1.1.0
+
+  /replace-in-files/3.0.0:
+    resolution: {integrity: sha512-f3lb8Fac0JZ56BrebGFoRaGvmSAF+M6Zcj0NZl3Qrd6L8HT2LA8/LObCjbTb4Sof/J/gg0tC9pUD/loW4X5u6w==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      co: 4.6.0
+      es6-promisify: 6.1.1
+      globby: 11.0.3
+      is-binary: 0.1.0
+      lodash: 4.17.21
+    dev: false
 
   /request-promise-core/1.1.1_request@2.88.2:
     resolution: {integrity: sha1-Pu4AssWqgyOc+wTFcA2jb4HNCLY=}
