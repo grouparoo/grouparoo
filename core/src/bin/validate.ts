@@ -16,7 +16,7 @@ export class Validate extends CLI {
     this.inputs = {
       local: {
         description:
-          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects.",
+          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
         letter: "l",
         variadic: true,
         placeholder: "object ids",
