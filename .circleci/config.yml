@@ -27,6 +27,7 @@ references:
 # Define Jobs to run
 jobs:
   build:
+    resource_class: "medium+"
     docker:
       - image: circleci/node:14
         auth:
