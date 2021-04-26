@@ -106,6 +106,12 @@ function getActionhero() {
   return actionheroPackage;
 }
 
+function clearRequireCache() {
+  for (const path in require.cache) {
+    if (path.endsWith(".js")) delete require.cache[path];
+  }
+}
+
 async function loadDirectory(
   program,
   dir: string,
@@ -182,6 +188,8 @@ async function runCommand(instance, _arg1, _arg2, _arg3, _arg4) {
       _arguments.push(arg);
     }
   });
+
+  clearRequireCache();
 
   params["_arguments"] = _arguments;
 
