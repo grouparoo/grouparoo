@@ -1,5 +1,5 @@
-import Postgres from "../postgres/connection";
-import Mongo from "../mongo/connection";
+import Postgres from "../connections/postgres";
+import Mongo from "../connections/mongo";
 
 class Config {
   subDirs: { [type: string]: boolean };

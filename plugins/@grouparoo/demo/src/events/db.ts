@@ -1,4 +1,4 @@
-import Postgres from "../postgres/connection";
+import Postgres from "../connections/postgres";
 import { readCsvTable } from "../util/sample_data";
 import { log } from "../util/shared";
 

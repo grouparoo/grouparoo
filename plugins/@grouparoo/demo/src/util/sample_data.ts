@@ -1,6 +1,4 @@
-import Postgres from "../postgres/connection";
 import { log, userCreatedAt, numberOfUsers } from "./shared";
-import { SimpleAppOptions } from "@grouparoo/core";
 import Connection from "./connection";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
