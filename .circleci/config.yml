@@ -141,6 +141,7 @@ jobs:
           paths:
             - core/dist
             - ui/ui-community/.next
+            - ui/ui-config/.next
             - ui/ui-enterprise/.next
   license-checker:
     docker:

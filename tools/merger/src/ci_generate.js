@@ -322,6 +322,7 @@ class Generator {
       "core/dist",
       "ui/ui-community/.next",
       "ui/ui-enterprise/.next",
+      "ui/ui-config/.next",
     ];
 
     cachePaths[cacheKey] = directories.sort();
