@@ -13,20 +13,6 @@ class Config {
     this.types = {};
   }
 
-  // reset() {
-  //   return {
-  //     db: null,
-  //     subDirs: [],
-  //   };
-  // }
-
-  // setup() {
-  //   return {
-  //     db: null,
-  //     subDirs: ["setup"],
-  //   };
-  // }
-
   setDb(type: string) {
     if (this.db) {
       throw new Error(
