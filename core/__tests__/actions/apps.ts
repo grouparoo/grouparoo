@@ -67,7 +67,7 @@ describe("actions/apps", () => {
       expect(pluginTestAppType.options).toEqual([
         { key: "fileId", required: true },
         { key: "password", required: false },
-        { key: "failRemoteValidation", required: false },
+        { key: "_failRemoteValidation", required: false },
       ]);
       expect(pluginTestAppType.plugin).toEqual({
         name: "@grouparoo/test-plugin",

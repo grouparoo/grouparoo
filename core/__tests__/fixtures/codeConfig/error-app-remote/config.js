@@ -15,7 +15,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-app",
       options: {
         fileId: "fileId",
-        failRemoteValidation: false, // this app is good
+        _failRemoteValidation: false, // this app is good
       },
     },
 
@@ -26,7 +26,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-app",
       options: {
         fileId: "fileId",
-        failRemoteValidation: true, // this app is bad
+        _failRemoteValidation: true, // this app is bad
       },
     },
 
@@ -37,7 +37,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-app",
       options: {
         fileId: "fileId2",
-        failRemoteValidation: true, // this app is also bad
+        _failRemoteValidation: true, // this app is also bad
       },
     },
   ];

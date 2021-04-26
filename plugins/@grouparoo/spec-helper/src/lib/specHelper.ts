@@ -239,13 +239,13 @@ export namespace helper {
               required: false,
             },
             {
-              key: "failRemoteValidation",
+              key: "_failRemoteValidation",
               required: false,
             },
           ],
           methods: {
             test: async ({ appOptions }) => {
-              if (appOptions.failRemoteValidation) {
+              if (appOptions._failRemoteValidation) {
                 throw new Error("Remote validation failed");
               }
 
@@ -361,7 +361,7 @@ export namespace helper {
           options: [
             { key: "table", required: true },
             { key: "where", required: false },
-            { key: "failRemoteValidation", required: false },
+            { key: "_failRemoteValidation", required: false },
           ],
           methods: {
             exportProfile: async () => {
@@ -380,7 +380,7 @@ export namespace helper {
             },
             exportArrayProperties: async () => [],
             destinationMappingOptions: async ({ destinationOptions }) => {
-              if (destinationOptions.failRemoteValidation) {
+              if (destinationOptions._failRemoteValidation) {
                 throw new Error("Remote validation failed");
               }
 
