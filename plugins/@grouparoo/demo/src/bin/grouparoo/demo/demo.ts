@@ -46,7 +46,8 @@ export class Console extends CLI {
     console.log(`Config directories: ${subDirs.join(",")}`);
     console.log(`Using database: ${db ? db.constructor.name : "none"}`);
 
-    if (force) {
+    if (force || config) {
+      console.log("Deleting current config directory.");
       await deleteConfigDir();
     }
     await init({ reset: true });
