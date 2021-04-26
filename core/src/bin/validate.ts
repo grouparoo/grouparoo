@@ -15,10 +15,11 @@ export class Validate extends CLI {
     this.description = "Validate your code config";
     this.inputs = {
       local: {
-        default: false,
-        description: "Disable external validation",
+        description:
+          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
         letter: "l",
-        flag: true,
+        variadic: true,
+        placeholder: "object ids",
       },
     };
 
@@ -51,11 +52,16 @@ export class Validate extends CLI {
       )}...`
     );
 
+    const canExternallyValidate = params.local !== true;
+    const locallyValidateIds =
+      Array.isArray(params.local) && (new Set(params.local) as Set<string>);
+
     try {
       await api.sequelize.transaction(async () => {
         const { errors } = await processConfigObjects(
           configObjects,
-          !params.local,
+          canExternallyValidate,
+          locallyValidateIds,
           true
         );
         if (errors.length > 0) {

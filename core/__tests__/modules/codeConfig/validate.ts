@@ -69,6 +69,7 @@ describe("modules/codeConfig", () => {
           const { errors, seenIds } = await processConfigObjects(
             configObjects,
             true,
+            null,
             true
           );
 
@@ -114,6 +115,7 @@ describe("modules/codeConfig", () => {
           const { errors } = await processConfigObjects(
             configObjects,
             true,
+            null,
             true
           );
 
@@ -146,6 +148,7 @@ describe("modules/codeConfig", () => {
           const { errors } = await processConfigObjects(
             configObjects,
             false, // <-- here
+            null,
             true
           );
 
@@ -153,6 +156,105 @@ describe("modules/codeConfig", () => {
           expect(errors[0]).toMatch(
             /Could not find object with ID: missing_profile_property/
           );
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
+    });
+
+    ensureNoSavedModels();
+
+    test("external validation is enabled by default", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-app-remote"
+      );
+
+      const configObjects = await loadConfigObjects(dir);
+
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            configObjects,
+            true,
+            null,
+            true
+          );
+
+          expect(errors.length).toBe(2);
+          expect(errors[0]).toMatch(
+            /\(other_data_warehouse\) - Remote validation failed/
+          );
+          expect(errors[1]).toMatch(
+            /\(some_other_data_warehouse\) - Remote validation failed/
+          );
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
+    });
+
+    ensureNoSavedModels();
+
+    test("external validation can be selectively turned off", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-app-remote"
+      );
+
+      const configObjects = await loadConfigObjects(dir);
+
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            configObjects,
+            true, // <- is validating externally
+            new Set(["other_data_warehouse"]), // <- is ignoring this id
+            true
+          );
+
+          expect(errors.length).toBe(1);
+          expect(errors[0]).toMatch(
+            /\(some_other_data_warehouse\) - Remote validation failed/
+          );
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
+    });
+
+    ensureNoSavedModels();
+
+    test("external validation is skipped if it has been disabled for a prerequisite", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-app-destination-remote"
+      );
+
+      const configObjects = await loadConfigObjects(dir);
+
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            configObjects,
+            true, // <- is validating externally
+            new Set(["data_warehouse"]), // <- is ignoring this id
+            true
+          );
+
+          expect(errors.length).toBe(0);
 
           throw new Error("test-rollback");
         })

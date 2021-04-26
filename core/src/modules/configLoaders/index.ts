@@ -7,6 +7,7 @@ import {
   sortConfigurationObjects,
   validateConfigObjects,
   IdsByClass,
+  getParentIds,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -87,9 +88,38 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
   return payload;
 }
 
+export async function shouldExternallyValidate(
+  canExternallyValidate: boolean,
+  configObject: ConfigurationObject,
+  configObjects: ConfigurationObject[],
+  locallyValidateIds: Set<string>
+) {
+  if (!canExternallyValidate) return false;
+  if (!locallyValidateIds) return true;
+
+  const { prerequisiteIds: parentIds } = await getParentIds(
+    configObject,
+    configObjects
+  );
+
+  const objectId = configObject.id;
+
+  const localParents = parentIds.filter((pId) => locallyValidateIds.has(pId));
+  if (localParents.length > 0) {
+    locallyValidateIds.add(objectId);
+  }
+
+  if (locallyValidateIds.has(objectId)) {
+    return false;
+  }
+
+  return true;
+}
+
 export async function processConfigObjects(
   configObjects: Array<ConfigurationObject>,
-  externallyValidate: boolean,
+  canExternallyValidate: boolean,
+  locallyValidateIds?: Set<string>,
   validate = false,
   extraSortingConfigObjects?: Array<ConfigurationObject>
 ): Promise<{ seenIds: IdsByClass; errors: string[] }> {
@@ -150,6 +180,21 @@ export async function processConfigObjects(
     if (Object.keys(configObject).length === 0) continue;
     let klass = configObject?.class?.toLowerCase();
     let ids: IdsByClass;
+
+    const externallyValidate = await shouldExternallyValidate(
+      canExternallyValidate,
+      configObject,
+      configObjects,
+      locallyValidateIds
+    );
+
+    if (!externallyValidate) {
+      log(
+        `[ config ] skipping external validation for ${configObject.class} \`${configObject.id}\``,
+        "notice"
+      );
+    }
+
     try {
       switch (klass) {
         case "setting":
@@ -198,7 +243,8 @@ export async function processConfigObjects(
           );
           const expanded = await processConfigObjects(
             many,
-            externallyValidate,
+            canExternallyValidate,
+            locallyValidateIds,
             validate,
             configObjects.filter((o) => o.id !== configObject.id)
           );
