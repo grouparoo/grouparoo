@@ -65,10 +65,12 @@ function copyDir(configDir, subDir: string) {
 }
 
 function updateDatabase(db: Connection, configDir) {
-  if (!db) {
+  const appPath = path.join(configDir, "apps", "demo_db.json");
+
+  if (!db || !fs.existsSync(appPath)) {
     return;
   }
-  const appPath = path.join(configDir, "apps", "demo_db.json");
+
   const appOptions = db.getAppOptions();
   const contents = fs.readJSONSync(appPath);
   const app = contents;
