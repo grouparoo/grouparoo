@@ -23,7 +23,10 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     let bottomMenuItems = [];
     let platformItems = [];
 
-    let navigationMode = "unauthenticated";
+    let navigationMode =
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+        ? "config"
+        : "unauthenticated";
     let showSystemLinks = false;
     if (teamMember) {
       navigationMode = "authenticated";
@@ -186,6 +189,10 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         title: "Sign Out",
         href: "/session/sign-out",
       });
+    }
+
+    if (navigationMode === "config") {
+      navigationItems = [{ type: "link", title: "Hello", href: "/" }];
     }
 
     const clusterNameSetting = await Setting.findOne({
