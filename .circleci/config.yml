@@ -53,6 +53,7 @@ jobs:
             - tools/merger/node_modules
             - ui/ui-community/node_modules
             - ui/ui-components/node_modules
+            - ui/ui-config/node_modules
             - ui/ui-enterprise/node_modules
       - save_cache:
           <<: *plugin-1-cache-options
