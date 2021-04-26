@@ -23,7 +23,8 @@ describe("integration", () => {
   beforeAll(async () => {
     env = await IntegrationSpecHelper.prepareForIntegrationTest(
       projectPath,
-      true
+      true,
+      { GROUPAROO_RUN_MODE: "cli:config" }
     );
   }, helper.setupTime);
 
@@ -36,7 +37,7 @@ describe("integration", () => {
     async () => {
       await browser.get(env.url);
       const header = await browser.findElement(by.tagName("h1")).getText();
-      expect(header).toContain("Grouparoo");
+      expect(header).toContain("Hello from @grouparoo/ui-config");
     },
     helper.mediumTime
   );
