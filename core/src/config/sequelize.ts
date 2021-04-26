@@ -76,6 +76,8 @@ export const DEFAULT = {
         storage = join(getParentPath(), `${database}.sqlite`);
       }
 
+      if (storage === "memory") storage = ":memory:";
+
       // without a starting "/" we assume relative locations are against project root
       if (storage !== ":memory:" && !isAbsolute(storage)) {
         storage = join(getParentPath(), storage);
