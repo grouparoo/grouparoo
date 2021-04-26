@@ -238,9 +238,17 @@ export namespace helper {
               key: "password",
               required: false,
             },
+            {
+              key: "failRemoteValidation",
+              required: false,
+            },
           ],
           methods: {
-            test: async () => {
+            test: async ({ appOptions }) => {
+              if (appOptions.failRemoteValidation) {
+                throw new Error("Remote validation failed");
+              }
+
               return { success: true, message: "OK" };
             },
             appOptions: async () => {
@@ -353,6 +361,7 @@ export namespace helper {
           options: [
             { key: "table", required: true },
             { key: "where", required: false },
+            { key: "failRemoteValidation", required: false },
           ],
           methods: {
             exportProfile: async () => {
@@ -370,7 +379,11 @@ export namespace helper {
               return response;
             },
             exportArrayProperties: async () => [],
-            destinationMappingOptions: async () => {
+            destinationMappingOptions: async ({ destinationOptions }) => {
+              if (destinationOptions.failRemoteValidation) {
+                throw new Error("Remote validation failed");
+              }
+
               return {
                 labels: {
                   group: {
