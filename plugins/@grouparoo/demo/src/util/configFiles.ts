@@ -8,11 +8,19 @@ import {
 } from "@grouparoo/core/dist/modules/configLoaders";
 import { prettier, log } from "./shared";
 import Connection from "./connection";
+import { updateEnvVariables } from "./env";
+
+export async function deleteConfigDir() {
+  const configDir = getConfigDir();
+  deleteDir(configDir);
+}
 
 export async function writeConfigFiles(db: Connection, subDirs: string[]) {
   const configDir = getConfigDir();
   await generateConfig(db, configDir, subDirs);
-  await prettier(configDir);
+  if (subDirs.length > 0) {
+    await prettier(configDir);
+  }
 }
 
 export async function loadConfigFiles(db: Connection, subDirs: string[]) {
@@ -39,6 +47,7 @@ async function generateConfig(db: Connection, configDir, subDirs: string[]) {
     copyDir(configDir, subDir);
   }
   updateDatabase(db, configDir);
+  await updateEnvVariables(configDir);
 }
 
 function deleteDir(configDir) {

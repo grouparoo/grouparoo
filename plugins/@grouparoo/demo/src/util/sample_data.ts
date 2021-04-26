@@ -1,6 +1,4 @@
-import Postgres from "../postgres/connection";
 import { log, userCreatedAt, numberOfUsers } from "./shared";
-import { SimpleAppOptions } from "@grouparoo/core";
 import Connection from "./connection";
 import parse from "csv-parse/lib/sync";
 import fs from "fs";
@@ -55,7 +53,7 @@ async function loadCsvTable(
   updatedAt: boolean,
   scale: number = 0
 ) {
-  if (scale < 1) {
+  if (!scale || scale < 1) {
     scale = 1;
   }
   log(1, `Adding ${tableName}`);

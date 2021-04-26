@@ -1,0 +1,21 @@
+{
+  "id": "mailchimp",
+  "name": "Mailchimp",
+  "class": "destination",
+  "type": "mailchimp-export",
+  "appId": "mailchimpapp",
+  "groupId": "nobody",
+  "syncMode": "sync",
+  "options": {
+    "listId": "MAILCHIMP_DESTINATION_LIST_ID"
+  },
+  "mapping": {
+    "email_address": "email",
+    "FNAME": "first_name",
+    "LNAME": "last_name"
+  },
+  "destinationGroupMemberships": {
+    "Spanish Speakers": "spanish_speakers",
+    "High Value": "high_value"
+  }
+}
