@@ -78,6 +78,7 @@
       "@grouparoo/snowflake",
       "@grouparoo/sqlite",
       "@grouparoo/ui-enterprise",
+      "@grouparoo/ui-config",
       "@grouparoo/zendesk"
     ]
   }
