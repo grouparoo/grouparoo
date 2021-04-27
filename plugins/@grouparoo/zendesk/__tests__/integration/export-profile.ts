@@ -22,7 +22,7 @@ const email = "brian@bleonard.com";
 const name = "Brian";
 const exampleDate = new Date(1597870204 * 1000);
 
-const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
+const nockFile = path.join(__dirname, "../", "fixtures", "zendesk-profile.js");
 
 // these comments to use nock
 const newNock = false;
