@@ -647,9 +647,9 @@ export class Destination extends LoggedModel<Destination> {
     oldGroups: Group[] = [],
     newGroups: Group[] = []
   ) {
-    const combinedgroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
+    const combinedGroupIds = [...oldGroups, ...newGroups].map((g) => g.id);
     const relevantDestinations = await Destination.findAll({
-      where: { groupId: { [Op.in]: combinedgroupIds } },
+      where: { groupId: { [Op.in]: combinedGroupIds } },
     });
 
     return relevantDestinations;
