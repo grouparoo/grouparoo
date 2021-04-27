@@ -156,11 +156,14 @@ export function getAutoBootstrappedProperty(
 
   const mappingValues = Object.values(sourceConfigObject["mapping"]);
   for (const value of mappingValues) {
+    // If this source id == its mapped property's sourceId, we should bootstrap the property
     const autoBootstrappedProperty = otherConfigObjects.filter(
       (o) =>
         o.class.toLowerCase() === "property" &&
         o.id === value &&
-        o.sourceId === sourceConfigObject.id
+        o.sourceId === sourceConfigObject.id &&
+        o.unique &&
+        !o.isArray
     );
     if (autoBootstrappedProperty.length > 0) {
       return autoBootstrappedProperty[0];
