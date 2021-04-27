@@ -24,11 +24,18 @@ const externalId3 = "notgrouparoo123";
 const email3 = "notgrouparoo@demo.com";
 const externalId4 = "maybegrouparoo123";
 const email4 = "maybegrouparoo@demo.com";
+const externalId5 = "maybegrouparoo123";
+const email5 = "almostgrouparoo@demo.com";
 const nonexistentExternalId = "fakegrouparoo123";
 const nonexistentEmail = "fakegrouparoo@demo.com";
+const migratedName = "Anakin";
+const migratedEmail = "skywalker@demo.com";
+const migratedExternalId = "skywalker123";
+
 const groupOne = "test_high_value";
 const groupTwo = "test_spanish_speaking";
 const groupThree = "test_recently_added";
+const outsideGroup = "outsider";
 const exampleDate = new Date(1597870204 * 1000);
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
@@ -45,7 +52,14 @@ const appId = "app_5090-0a4e-3039-ad42-545fasd324f16";
 
 async function cleanUp() {
   // Clear created users
-  for (let email of [email1, email2, email3, email4, nonexistentEmail]) {
+  for (let email of [
+    email1,
+    email2,
+    email3,
+    email4,
+    nonexistentEmail,
+    migratedEmail,
+  ]) {
     const response = await client.users.search({ query: email });
     for (const user of response) {
       await client.users.delete(user.id);
@@ -286,7 +300,7 @@ describe("zendesk/exportProfile", () => {
     expect(user.tags.sort()).toEqual([groupOne, groupTwo]);
   });
 
-  test("can remove group membership", async () => {
+  test("can remove tags", async () => {
     await runExport({
       oldProfileProperties: {
         email: email1,
@@ -305,6 +319,52 @@ describe("zendesk/exportProfile", () => {
     expect(user.tags.sort()).toEqual([groupOne]);
   });
 
+  test("it does not change zendesk-created tags", async () => {
+    let user = await searchForUser(client, { external_id: externalId1 });
+    expect(user).not.toBe(null);
+
+    await client.users.update(user.id, {
+      user: {
+        tags: [groupOne, outsideGroup],
+      },
+    });
+    await runExport({
+      oldProfileProperties: {
+        email: email1,
+        external_id: externalId1,
+      },
+      newProfileProperties: {
+        email: email1,
+        external_id: externalId1,
+      },
+      oldGroups: [groupOne],
+      newGroups: [groupOne, groupThree],
+      toDelete: false,
+    });
+
+    user = await searchForUser(client, { external_id: externalId1 });
+    expect(user.tags.sort()).toEqual([outsideGroup, groupOne, groupThree]);
+  });
+
+  test("it does not change zendesk-created tags when groups are removed", async () => {
+    await runExport({
+      oldProfileProperties: {
+        email: email1,
+        external_id: externalId1,
+      },
+      newProfileProperties: {
+        email: email1,
+        external_id: externalId1,
+      },
+      oldGroups: [groupOne, groupThree],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    const user = await searchForUser(client, { external_id: externalId1 });
+    expect(user.tags.sort()).toEqual([outsideGroup]);
+  });
+
   test("can change email", async () => {
     await runExport({
       oldProfileProperties: {
@@ -315,13 +375,79 @@ describe("zendesk/exportProfile", () => {
         email: email2,
         external_id: externalId1,
       },
-      oldGroups: [groupOne],
+      oldGroups: [groupOne, outsideGroup, groupThree],
       newGroups: [groupOne],
       toDelete: false,
     });
 
     const user = await searchForUser(client, { external_id: externalId1 });
     expect(user.email).toBe(email2);
+  });
+
+  // test("it can make one user with the original id and no email", async () => {
+  //   await runExport({
+  //     oldProfileProperties: {},
+  //     newProfileProperties: {
+  //       external_id,
+  //     },
+  //     oldGroups: [],
+  //     newGroups: [],
+  //     toDelete: false,
+  //   });
+  //
+  //   newId = await findId();
+  //   expect(newId).toBeTruthy();
+  //   expect(newId).not.toEqual(userId);
+  //
+  //   const newUser = await getNewUser();
+  //   expect(newUser.id).toBe(newId);
+  //   expect(newUser.external_id).toBe(external_id);
+  //   expect(newUser.email).toBe(null);
+  //   expect(newUser.name).toBe(external_id); // defaults to something
+  //
+  //   const user = await getUser();
+  //   expect(user.id).toBe(userId);
+  //   expect(user.external_id).toBe(newExternalId);
+  //   expect(user.email).toBe(email);
+  // });
+
+  test("it can migrate an email user to having a external_id", async () => {
+    // make a user with email
+    const created = await client.users.create({
+      user: {
+        verified: true,
+        name: migratedName,
+        alias: "MU",
+        email: migratedEmail,
+        user_fields: {
+          text_field: "my text",
+          checkbox_field: true,
+        },
+      },
+    });
+
+    // then sync a profile
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: migratedEmail,
+        name: migratedName,
+        external_id: migratedExternalId,
+        text_field: "change",
+      },
+      oldGroups: [],
+      newGroups: [groupThree],
+      toDelete: false,
+    });
+
+    const user = await client.users.show(created.id);
+    expect(user.external_id).toBe(migratedExternalId);
+    expect(user.email).toBe(migratedEmail);
+    expect(user.alias).toBe("MU");
+    expect(user.name).toBe(migratedName);
+    expect(user.user_fields.checkbox_field).toBe(true);
+    expect(user.user_fields.text_field).toBe("change");
+    expect(user.tags.sort()).toEqual([groupThree]);
   });
 
   test("can add an user passing a nonexistent email on the oldProfileProperties", async () => {
@@ -346,8 +472,8 @@ describe("zendesk/exportProfile", () => {
     let oldUser = await searchForUser(client, { external_id: externalId1 });
     expect(oldUser).not.toBe(null);
 
-    let user = await searchForUser(client, { external_id: externalId3 });
-    expect(user).not.toBe(null);
+    let newUser = await searchForUser(client, { external_id: externalId3 });
+    expect(newUser).not.toBe(null);
 
     await runExport({
       oldProfileProperties: {
@@ -367,10 +493,38 @@ describe("zendesk/exportProfile", () => {
     expect(oldUser.email).toBe(email2);
 
     // Update the new one
-    user = await searchForUser(client, { external_id: externalId3 });
+    const user = await searchForUser(client, { external_id: externalId3 });
     expect(user).not.toBe(null);
     expect(user.external_id).toBe(externalId3);
+    expect(user.id).toBe(newUser.id);
     expect(user.email).toBe(email3);
+  });
+
+  test("it can change the external id when the new external id does not exist", async () => {
+    const oldUser = await searchForUser(client, { external_id: externalId3 });
+    expect(oldUser).not.toBe(null);
+
+    const newUser = await searchForUser(client, { external_id: externalId5 });
+    expect(newUser).toBe(null);
+
+    await runExport({
+      oldProfileProperties: {
+        email: email3,
+        external_id: externalId3,
+      },
+      newProfileProperties: {
+        email: email5,
+        external_id: externalId5,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+
+    const user = await searchForUser(client, { external_id: externalId5 });
+    expect(user.id).toBe(oldUser.id);
+    expect(user.external_id).toBe(externalId5);
+    expect(user.email).toBe(email5);
   });
 
   test("cannot delete an user if sync mode does not allow it", async () => {
