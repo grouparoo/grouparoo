@@ -11,13 +11,16 @@ export namespace Telemetry {
 
   const telemetryPath = "/api/v1/telemetry";
 
-  export async function send(trigger: TelemetryCallTrigger) {
+  export async function send(
+    trigger: TelemetryCallTrigger,
+    errors: string[] = []
+  ) {
     if (!config.telemetry.enabled) return;
 
     const fullUrl = `${config.telemetry.host}${telemetryPath}`;
 
     try {
-      const payload = await Telemetry.build(trigger);
+      const payload = await Telemetry.build(trigger, errors);
 
       const response = await fetch(fullUrl, {
         method: "POST",
@@ -41,7 +44,10 @@ export namespace Telemetry {
     }
   }
 
-  export async function build(trigger: TelemetryCallTrigger) {
+  export async function build(
+    trigger: TelemetryCallTrigger,
+    errors: string[] = []
+  ) {
     const metrics: StatusMetric[] = [];
 
     // load settings
@@ -71,6 +77,19 @@ export namespace Telemetry {
     // usage by destination
     metrics.push(...(await StatusReporters.Totals.DestinationTotals()));
 
+    errors.forEach((e, idx) => {
+      if (e) {
+        metrics.push({
+          collection: "telemetry",
+          topic: "error",
+          aggregation: "exact",
+          count: idx,
+          key: `${process.platform}/${os.release()}`,
+          value: e,
+        });
+      }
+    });
+
     return {
       name: clusterName,
       id: customerId,
@@ -94,7 +113,13 @@ export namespace Telemetry {
 
     const sanitizedError = sanitizeErrorPayload(error);
 
-    const errorPayload = {
+    const errorPayload: {
+      name: string;
+      id: string;
+      trigger: string;
+      license: string;
+      metrics: StatusMetric[];
+    } = {
       name: clusterName,
       id: customerId,
       trigger,
@@ -106,7 +131,6 @@ export namespace Telemetry {
           aggregation: "exact",
           key: `${process.platform}/${os.release()}`,
           value: sanitizedError,
-          errors: [sanitizedError],
         },
       ],
     };

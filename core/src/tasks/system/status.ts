@@ -4,7 +4,6 @@ import { CLS } from "../../modules/cls";
 import { Status } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
 import { plugin } from "../../modules/plugin";
-import { Telemetry } from "../../modules/telemetry";
 
 export class StatusTask extends Task {
   constructor() {
@@ -25,10 +24,7 @@ export class StatusTask extends Task {
     if (runMode === "cli:run") this.logSamples(samples);
 
     const complete = await this.checkForComplete(samples);
-    if (runMode === "cli:run" && complete) {
-      await this.sendTelemetry();
-      await this.stopServer(toStop);
-    }
+    if (runMode === "cli:run" && complete) await this.stopServer(toStop);
 
     await this.updateTaskFrequency();
   }
@@ -54,10 +50,6 @@ export class StatusTask extends Task {
       );
       process.nextTick(() => process.exit(0));
     });
-  }
-
-  async sendTelemetry() {
-    await Telemetry.send("cli_run");
   }
 
   async getSamples() {

@@ -1,11 +1,8 @@
 import { helper } from "@grouparoo/spec-helper";
 import { Run } from "../../../src";
-import { api, task, config, specHelper } from "actionhero";
+import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../src/tasks/system/status";
 import { Status } from "../../../src/modules/status";
-
-import fetch, { enableFetchMocks } from "jest-fetch-mock";
-enableFetchMocks();
 
 describe("tasks/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -89,38 +86,6 @@ describe("tasks/status", () => {
 
       const samples = await Status.get();
       expect(samples.length).toBe(1);
-    });
-
-    describe("telemetry", () => {
-      beforeEach(async () => {
-        await helper.truncate();
-        await api.resque.queue.connection.redis.flushdb();
-        config.telemetry.enabled = true;
-      });
-
-      afterEach(() => {
-        config.telemetry.enabled = false;
-        fetch.resetMocks();
-      });
-
-      test("will send telemetry when running via the CLI", async () => {
-        process.env.GROUPAROO_RUN_MODE = "cli:run";
-        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
-
-        await specHelper.runFullTask("status", { toStop: false });
-        expect(fetch).toHaveBeenCalledTimes(1);
-        const args = fetch.mock.calls[0];
-        const payload = JSON.parse(args[1].body as string);
-        expect(payload.trigger).toBe("cli_run");
-        expect(payload.metrics.length).toBeGreaterThan(1);
-      });
-
-      test("will not send telemetry when running via another method", async () => {
-        fetch.mockResponseOnce(JSON.stringify({ response: "FROM TEST" }));
-
-        await specHelper.runFullTask("status", { toStop: false });
-        expect(fetch).not.toHaveBeenCalled();
-      });
     });
 
     describe("frequency", () => {
