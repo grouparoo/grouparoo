@@ -78,14 +78,16 @@ export namespace Telemetry {
     metrics.push(...(await StatusReporters.Totals.DestinationTotals()));
 
     errors.forEach((e, idx) => {
-      metrics.push({
-        collection: "telemetry",
-        topic: "error",
-        aggregation: "exact",
-        count: idx,
-        key: `${process.platform}/${os.release()}`,
-        value: e,
-      });
+      if (e) {
+        metrics.push({
+          collection: "telemetry",
+          topic: "error",
+          aggregation: "exact",
+          count: idx,
+          key: `${process.platform}/${os.release()}`,
+          value: e,
+        });
+      }
     });
 
     return {
