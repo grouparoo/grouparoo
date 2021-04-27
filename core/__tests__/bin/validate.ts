@@ -57,7 +57,7 @@ describe("bin/config-validate", () => {
 
       const output = messages.join(" ");
       expect(output).toContain(
-        "✅ Validation succeeded - 13 config objects OK!"
+        "✅ Validation succeeded - 14 config objects OK!"
       );
     });
 

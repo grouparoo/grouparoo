@@ -119,7 +119,9 @@ export async function loadSource(
 
   return {
     source: [source.id],
-    property: bootstrappedProperty ? [bootstrappedProperty.id] : [], // might have done this
+    property: configObject.bootstrappedProperty
+      ? [configObject.bootstrappedProperty.id]
+      : [], // might have done this
   };
 }
 

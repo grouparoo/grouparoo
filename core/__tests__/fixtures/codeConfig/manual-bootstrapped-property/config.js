@@ -12,7 +12,7 @@ module.exports = async function getConfig() {
       id: "data_warehouse", // id -> `data_warehouse`
       name: "Data Warehouse",
       class: "App",
-      type: "foo",
+      type: "test-plugin-app",
       options: {
         fileId: "test-file-path.db",
       },
@@ -40,6 +40,14 @@ module.exports = async function getConfig() {
       mapping: {
         id: "user_id",
       },
+      bootstrappedProperty: {
+        name: "userId",
+        type: "integer",
+        id: "user_id", // id -> `user_id`
+        options: {
+          column: "id",
+        },
+      },
     },
 
     {
@@ -52,21 +60,6 @@ module.exports = async function getConfig() {
       options: {
         maxColumn: "updated_at",
       },
-    },
-
-    {
-      id: "user_id", // id -> `user_id`
-      name: "userId",
-      class: "Property",
-      type: "integer",
-      identifying: true,
-      unique: true,
-      isArray: false,
-      sourceId: "users_table", // sourceId -> `users_table`
-      options: {
-        column: "id",
-      },
-      filters: [],
     },
 
     {
@@ -136,6 +129,7 @@ module.exports = async function getConfig() {
       type: "test-plugin-export",
       appId: "data_warehouse", // id -> data_warehouse
       groupId: "email_group", // id -> email_group
+      syncMode: "additive",
       options: {
         table: "output",
       },
