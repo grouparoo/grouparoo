@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Apply } from "../../src/bin/apply";
+import { api } from "actionhero";
 import { join } from "path";
+import { Apply } from "../../src/bin/apply";
 import {
   App,
   Source,
@@ -15,13 +16,6 @@ import {
   Mapping,
   Option,
 } from "../../src";
-import { api } from "actionhero";
-// let actionhero;
-
-const filename = join(
-  __dirname,
-  `../../log/test-server-${process.env.JEST_WORKER_ID}-test.log`
-);
 
 function ensureNoSavedModels() {
   return test("there should be no models created", async () => {
