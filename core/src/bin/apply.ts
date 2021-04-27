@@ -16,10 +16,11 @@ export class Apply extends CLI {
     this.description = "Apply changes from code config";
     this.inputs = {
       local: {
-        default: false,
-        description: "Disable external validation",
+        description:
+          "Disable external validation. You can optionally pass object IDs to only disable external validation for those specific config objects and their dependents.",
         letter: "l",
-        flag: true,
+        variadic: true,
+        placeholder: "object ids",
       },
     };
 
@@ -45,9 +46,14 @@ export class Apply extends CLI {
 
     await CLS.wrap(
       async () => {
+        const canExternallyValidate = params.local !== true;
+        const locallyValidateIds =
+          Array.isArray(params.local) && (new Set(params.local) as Set<string>);
+
         const { errors, seenIds } = await processConfigObjects(
           configObjects,
-          !params.local
+          canExternallyValidate,
+          locallyValidateIds
         );
 
         if (errors.length > 0) throw errors;
