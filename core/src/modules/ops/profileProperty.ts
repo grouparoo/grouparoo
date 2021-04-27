@@ -106,18 +106,18 @@ export namespace ProfilePropertyOps {
       limit,
     });
 
-    await ProfileProperty.update(
-      { startedAt: new Date() },
-      {
-        where: { id: { [Op.in]: pendingProfileProperties.map((i) => i.id) } },
-      }
-    );
-
-    const method = pluginConnection.methods.profileProperties
-      ? "ProfileProperties"
-      : "ProfileProperty";
-
     if (pendingProfileProperties.length > 0) {
+      await ProfileProperty.update(
+        { startedAt: new Date() },
+        {
+          where: { id: { [Op.in]: pendingProfileProperties.map((i) => i.id) } },
+        }
+      );
+
+      const method = pluginConnection.methods.profileProperties
+        ? "ProfileProperties"
+        : "ProfileProperty";
+
       if (method === "ProfileProperties") {
         await CLS.enqueueTask(`profileProperty:import${method}`, {
           propertyId: property.id,

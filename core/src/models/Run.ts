@@ -396,9 +396,7 @@ export class Run extends Model {
       limit,
     });
 
-    for (const i in runs) {
-      await runs[i].destroy();
-    }
+    for (const i in runs) await runs[i].destroy();
 
     return { count: runs.length, days };
   }
