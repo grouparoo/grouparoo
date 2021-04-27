@@ -13,7 +13,7 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, runsHandler, topic } = props;
+  const { errorHandler, topic } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -33,13 +33,6 @@ export default function RunsList(props) {
   useSecondaryEffect(() => {
     load();
   }, [limit, offset, stateFilter, errorFilter]);
-
-  useEffect(() => {
-    runsHandler.subscribe("runs-list", load);
-    return () => {
-      runsHandler.unsubscribe("runs-list");
-    };
-  }, []);
 
   async function load() {
     const params = { limit, offset, topic };
@@ -172,7 +165,7 @@ export default function RunsList(props) {
         </thead>
         <tbody>
           {runs
-            .sort((a, b) => b.updatedAt - a.updatedAt)
+            .sort((a, b) => b.updatedAt - a.updatedAt) // TODO: Why do we need to re-sort the array returned by the API?  The order changes based on getInitialProps or browser load
             .map((run) => {
               return (
                 <Fragment key={`profile-${run.id}`}>
