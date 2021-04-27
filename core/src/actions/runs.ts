@@ -2,7 +2,6 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Run } from "../models/Run";
 import { Op } from "sequelize";
 import { Schedule } from "../models/Schedule";
-import { Destination } from "../models/Destination";
 
 export class RunsList extends AuthenticatedAction {
   constructor() {
@@ -20,7 +19,7 @@ export class RunsList extends AuthenticatedAction {
       offset: { required: true, default: 0, formatter: parseInt },
       order: {
         required: false,
-        default: [["createdAt", "desc"]],
+        default: [["updatedAt", "desc"]],
       },
     };
   }
