@@ -138,4 +138,56 @@ describe("bin/config-apply", () => {
 
     ensureNoSavedModels();
   });
+
+  describe("remotely invalid config", () => {
+    beforeAll(async () => {
+      process.env.GROUPAROO_CONFIG_DIR = join(
+        __dirname,
+        "../fixtures/codeConfig/error-app-remote"
+      );
+      await helper.truncate();
+    });
+
+    ensureNoSavedModels();
+
+    test("the apply command can be run, but does not complete", async () => {
+      const command = new Apply();
+      const toStop = await command.run({ params: {} });
+      expect(toStop).toBe(true);
+
+      const output = messages.join(" ");
+      expect(output).toContain("Applying 4 objects...");
+      expect(output).not.toContain("✅ Config applied");
+    });
+
+    ensureNoSavedModels();
+
+    test("the apply command can be run and completes with --local", async () => {
+      const command = new Apply();
+      const toStop = await command.run({ params: { local: true } });
+      expect(toStop).toBe(true);
+
+      const output = messages.join(" ");
+      expect(output).toContain("Applying 4 objects...");
+      expect(output).toContain(
+        "✅ Config applied - 4 config objects up-to-date!"
+      );
+    });
+
+    test("models should be created", async () => {
+      expect(await App.count()).toBe(3);
+      expect(await Option.count()).toBe(6);
+
+      expect(await Source.count()).toBe(0);
+      expect(await Schedule.count()).toBe(0);
+      expect(await Destination.count()).toBe(0);
+      expect(await Group.count()).toBe(0);
+      expect(await GroupRule.count()).toBe(0);
+      expect(await Property.count()).toBe(0);
+      expect(await ApiKey.count()).toBe(0);
+      expect(await Team.count()).toBe(0);
+      expect(await TeamMember.count()).toBe(0);
+      expect(await Mapping.count()).toBe(0);
+    });
+  });
 });
