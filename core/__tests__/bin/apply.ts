@@ -15,7 +15,8 @@ import {
   Mapping,
   Option,
 } from "../../src";
-let actionhero;
+import { api } from "actionhero";
+// let actionhero;
 
 const filename = join(
   __dirname,
@@ -40,15 +41,18 @@ function ensureNoSavedModels() {
 }
 
 describe("bin/config-apply", () => {
-  beforeAll(async () => {
-    const { Process } = await import("actionhero");
-    actionhero = new Process();
-    await actionhero.initialize();
-    await helper.enableTestPlugin();
-  }, helper.setupTime);
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   let messages = [];
   let spies = [];
+
+  beforeAll(() => {
+    api.codeConfig.allowLockedModelChanges = true;
+  });
 
   beforeEach(() => {
     messages = [];
@@ -66,10 +70,6 @@ describe("bin/config-apply", () => {
 
   afterEach(() => {
     spies.map((s) => s.mockRestore());
-  });
-
-  afterAll(async () => {
-    await actionhero.stop();
   });
 
   describe("valid config", () => {
@@ -108,10 +108,6 @@ describe("bin/config-apply", () => {
       expect(await TeamMember.count()).toBe(1);
       expect(await Option.count()).toBe(9);
       expect(await Mapping.count()).toBe(3);
-    });
-
-    test("can boot after applying", async () => {
-      await actionhero.start();
     });
   });
 
