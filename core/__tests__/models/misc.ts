@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { ApiKey } from "../../src";
 import { Op } from "sequelize";
+import { Api } from "actionhero";
 
 describe("models/misc", () => {
   helper.grouparooTestServer({ truncate: true });
@@ -46,5 +47,13 @@ describe("models/misc", () => {
         { where: { id: { [Op.in]: undefined } } }
       )
     ).rejects.toThrow();
+  });
+
+  test("findAll always returns an array", async () => {
+    const found = await ApiKey.findAll();
+    expect(found.length).toBe(3);
+
+    const foundEmpty = await ApiKey.findAll({ where: { id: "x" } });
+    expect(foundEmpty).toEqual([]);
   });
 });
