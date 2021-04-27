@@ -116,6 +116,10 @@ describe("tasks/telemetry", () => {
         expect(ok).toBe(true);
 
         expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+          "https://telemetry.grouparoo.com/api/v1/telemetry",
+          expect.objectContaining({ method: "POST" })
+        );
       });
     });
 

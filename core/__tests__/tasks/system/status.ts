@@ -109,6 +109,11 @@ describe("tasks/status", () => {
 
         await specHelper.runFullTask("status", { toStop: false });
         expect(fetch).toHaveBeenCalledTimes(1);
+        expect(fetch).toHaveBeenCalledWith(
+          "https://telemetry.grouparoo.com/api/v1/telemetry",
+          expect.objectContaining({ method: "POST" })
+        );
+
         const args = fetch.mock.calls[0];
         const payload = JSON.parse(args[1].body as string);
         expect(payload.trigger).toBe("cli_run");
