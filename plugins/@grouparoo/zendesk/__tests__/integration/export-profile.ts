@@ -26,7 +26,7 @@ const nockFile = path.join(__dirname, "../", "fixtures", "zendesk-profile.js");
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/export-profile");
+require("./../fixtures/zendesk-profile");
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
