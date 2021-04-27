@@ -204,7 +204,12 @@ export async function processConfigObjects(
           ids = await loadApp(configObject, externallyValidate, validate);
           break;
         case "source":
-          ids = await loadSource(configObject, externallyValidate, validate);
+          ids = await loadSource(
+            configObject,
+            configObjects.filter((o) => o.id !== configObject.id),
+            externallyValidate,
+            validate
+          );
           break;
         case "property":
           ids = await loadProperty(configObject, externallyValidate, validate);

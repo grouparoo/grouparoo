@@ -6,12 +6,14 @@ import {
   getCodeConfigLockKey,
   validateConfigObjectKeys,
   IdsByClass,
+  getAutoBootstrappedProperty,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
 
 export async function loadSource(
   configObject: ConfigurationObject,
+  otherConfigObjects: ConfigurationObject[],
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -64,21 +66,25 @@ export async function loadSource(
     }
   }
 
+  const bootstrappedPropertyConfig =
+    configObject.bootstrappedProperty ||
+    getAutoBootstrappedProperty(configObject, otherConfigObjects);
+
   try {
     await setMapping();
-    if (configObject.bootstrappedProperty) {
+    if (bootstrappedPropertyConfig) {
       bootstrappedProperty = await Property.findOne({
         where: {
-          id: configObject.bootstrappedProperty.id,
+          id: bootstrappedPropertyConfig.id,
         },
       });
     }
   } catch (error) {
     if (
       error.toString().match(/cannot find Property/) &&
-      configObject.bootstrappedProperty
+      bootstrappedPropertyConfig
     ) {
-      const property = configObject.bootstrappedProperty;
+      const property = bootstrappedPropertyConfig;
       if (!property || !property.options) throw error;
       const mappedColumn = Object.values(property.options)[0];
       bootstrappedProperty = await source.bootstrapUniqueProperty(

@@ -147,6 +147,29 @@ export function extractNonNullParts(
   return cleanedOptions;
 }
 
+export function getAutoBootstrappedProperty(
+  sourceConfigObject: ConfigurationObject,
+  otherConfigObjects: ConfigurationObject[]
+) {
+  if (sourceConfigObject.class?.toLowerCase() !== "source") return null;
+  if (!sourceConfigObject.mapping) return null;
+
+  const mappingValues = Object.values(sourceConfigObject["mapping"]);
+  for (const value of mappingValues) {
+    const autoBootstrappedProperty = otherConfigObjects.filter(
+      (o) =>
+        o.class.toLowerCase() === "property" &&
+        o.id === value &&
+        o.sourceId === sourceConfigObject.id
+    );
+    if (autoBootstrappedProperty.length > 0) {
+      return autoBootstrappedProperty[0];
+    }
+  }
+
+  return null;
+}
+
 export async function sortConfigurationObjects(
   configObjects: ConfigurationObject[]
 ): Promise<ConfigurationObject[]> {
@@ -268,8 +291,14 @@ export async function getParentIds(
   });
 
   if (configObject["mapping"]) {
+    const autoBootstrappedProperty =
+      !configObject.bootstrappedProperty &&
+      getAutoBootstrappedProperty(configObject, otherConfigObjects);
     const mappingValues = Object.values(configObject["mapping"]);
-    mappingValues.forEach((v) => prerequisiteIds.push(v));
+    for (const value of mappingValues) {
+      if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
+        prerequisiteIds.push(value);
+    }
   }
 
   if (configObject["destinationGroupMemberships"]) {
