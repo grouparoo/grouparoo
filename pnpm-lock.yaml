@@ -238,7 +238,7 @@ importers:
       moment: 2.29.1
       mustache: 4.2.0
       nock: 13.0.11
-      node-resque: 8.2.6
+      node-resque: 8.2.7
       nodemon: 2.0.7
       pacote: 11.3.1
       pg: 8.6.0
@@ -284,7 +284,7 @@ importers:
       mime: 2.5.2
       moment: 2.29.1
       mustache: 4.2.0
-      node-resque: 8.2.6
+      node-resque: 8.2.7
       nodemon: 2.0.7
       pacote: 11.3.1
       pg: 8.6.0
@@ -7861,24 +7861,6 @@ packages:
       minimatch: 3.0.4
       standard-as-callback: 2.1.0
 
-  /ioredis/4.25.0:
-    resolution: {integrity: sha512-UoeqXpZB05aerGD3gB9NiigMsAyph+N+GWH8+3lX1+26caVV03GkL6JoLxS2HCxyvqCWbNsVSZTAp5W12qe23A==}
-    engines: {node: '>=6'}
-    dependencies:
-      cluster-key-slot: 1.1.0
-      debug: 4.3.1
-      denque: 1.5.0
-      lodash.defaults: 4.2.0
-      lodash.flatten: 4.4.0
-      p-map: 2.1.0
-      redis-commands: 1.7.0
-      redis-errors: 1.2.0
-      redis-parser: 3.0.0
-      standard-as-callback: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /ioredis/4.26.0:
     resolution: {integrity: sha512-nh39okWezWWZ35/RxXXzHksMFt4WCaev8SNO2kozRDeVdEAJj16EarqPP3JeHz8IEjEXN5CiVtbWMk62Z0eveQ==}
     engines: {node: '>=6'}
@@ -10673,15 +10655,6 @@ packages:
 
   /node-releases/1.1.71:
     resolution: {integrity: sha512-zR6HoT6LrLCRBwukmrVbHv0EpEQjksO6GmFcZQQuCAy139BEsoVKPYnf3jongYW83fAa1torLGYwxxky/p28sg==}
-
-  /node-resque/8.2.6:
-    resolution: {integrity: sha512-V6XTCVofHSLJS8gQzWH8pdYflInuQDpyFwzca2E/mSBTA1mKT9qc2HH9cVgdR/FYkZf5sHTKnhLwsl0bXNGcag==}
-    engines: {node: '>= 8'}
-    dependencies:
-      ioredis: 4.25.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /node-resque/8.2.7:
     resolution: {integrity: sha512-fG8QIRLl7OyZJ6126fm7P3h7kzWjMbhH4wOaAASFN1UHRmAXk9idXYDwEB1vcyV9KVZstZR53n3dH6zO/isxCA==}
