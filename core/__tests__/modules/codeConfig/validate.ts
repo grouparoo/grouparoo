@@ -200,6 +200,36 @@ describe("modules/codeConfig", () => {
 
     ensureNoSavedModels();
 
+    test("external validation can be entirely turned off", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-app-remote"
+      );
+
+      const configObjects = await loadConfigObjects(dir);
+
+      await expect(
+        api.sequelize.transaction(async () => {
+          const { errors } = await processConfigObjects(
+            configObjects,
+            false, // <- is not validating externally
+            null,
+            true
+          );
+
+          expect(errors.length).toBe(0);
+
+          throw new Error("test-rollback");
+        })
+      ).rejects.toThrow(/test-rollback/);
+    });
+
+    ensureNoSavedModels();
+
     test("external validation can be selectively turned off", async () => {
       const dir = path.join(
         __dirname,
