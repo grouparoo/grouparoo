@@ -13,7 +13,7 @@ import { Op } from "sequelize";
 
 export async function loadSource(
   configObject: ConfigurationObject,
-  otherConfigObjects: ConfigurationObject[],
+  configObjects: ConfigurationObject[],
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -68,7 +68,10 @@ export async function loadSource(
 
   const bootstrappedPropertyConfig =
     configObject.bootstrappedProperty ||
-    getAutoBootstrappedProperty(configObject, otherConfigObjects);
+    getAutoBootstrappedProperty(
+      configObject,
+      configObjects.filter((o) => o.id !== configObject.id)
+    );
 
   try {
     await setMapping();

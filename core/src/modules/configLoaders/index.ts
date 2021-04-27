@@ -206,7 +206,7 @@ export async function processConfigObjects(
         case "source":
           ids = await loadSource(
             configObject,
-            configObjects.filter((o) => o.id !== configObject.id),
+            configObjects,
             externallyValidate,
             validate
           );
