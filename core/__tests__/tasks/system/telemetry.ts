@@ -4,7 +4,6 @@ enableFetchMocks();
 import { helper } from "@grouparoo/spec-helper";
 import { plugin, Log } from "../../../src";
 import { api, specHelper, config } from "actionhero";
-import { Telemetry } from "../../../src/modules/telemetry";
 
 describe("tasks/telemetry", () => {
   helper.grouparooTestServer({
@@ -38,67 +37,6 @@ describe("tasks/telemetry", () => {
       expect(foundTasks.length).toBe(0);
     });
 
-    test("the telemetry object can be built", async () => {
-      const { name, id, license, metrics, trigger } = await Telemetry.build(
-        "timer"
-      );
-
-      expect(name).toBe("My Grouparoo Cluster");
-      expect(id).toMatch(/^tcs_/);
-      expect(license).toBe("");
-      expect(trigger).toBe("timer");
-
-      expect(metrics[0]).toEqual(
-        expect.objectContaining({
-          collection: "cluster",
-          topic: "workers",
-          aggregation: "count",
-        })
-      );
-
-      expect(metrics[1]).toEqual(
-        expect.objectContaining({
-          collection: "cluster",
-          topic: "resqueErrors",
-          count: 0, // we hope
-        })
-      );
-
-      expect(metrics[2]).toEqual(
-        expect.objectContaining({
-          collection: "cluster",
-          topic: "os",
-          aggregation: "exact",
-        })
-      );
-
-      expect(metrics[3]).toEqual(
-        expect.objectContaining({
-          collection: "cluster",
-          topic: "node_env",
-          aggregation: "exact",
-          value: "test",
-        })
-      );
-
-      expect(metrics[4]).toEqual(
-        expect.objectContaining({
-          collection: "cluster",
-          topic: "@grouparoo/core",
-          aggregation: "exact",
-          key: "version",
-        })
-      );
-
-      expect(metrics[5]).toEqual(
-        expect.objectContaining({
-          collection: "totals",
-          topic: "App",
-          aggregation: "count",
-        })
-      );
-    });
-
     describe("enabled telemetry", () => {
       beforeAll(() => {
         config.telemetry.enabled = true;
@@ -128,51 +66,6 @@ describe("tasks/telemetry", () => {
       const response = await specHelper.runTask("telemetry", {});
       expect(response).toBeUndefined();
       expect(fetch).not.toHaveBeenCalled();
-    });
-
-    describe("with errors", () => {
-      let originalImplementation: typeof Telemetry.build;
-
-      beforeAll(() => {
-        config.telemetry.enabled = true;
-        originalImplementation = Telemetry.build;
-      });
-
-      afterAll(() => {
-        config.telemetry.enabled = false;
-        Telemetry.build = originalImplementation;
-      });
-
-      test("we will try to send errors about telemetry to the telemetry server", async () => {
-        const mockTelemetry = jest.fn();
-        mockTelemetry.mockImplementation(() => {
-          throw new Error("OH NO");
-        });
-        Telemetry.build = mockTelemetry;
-
-        await expect(
-          specHelper.runTask("telemetry", { trigger: "timer" })
-        ).rejects.toThrow(/OH NO/);
-
-        expect(fetch).toHaveBeenCalledTimes(1);
-        const args = fetch.mock.calls[0];
-        expect(args[0]).toBe(
-          "https://telemetry.grouparoo.com/api/v1/telemetry"
-        );
-        const payload = JSON.parse(args[1].body.toString());
-        expect(payload.name).toBe("My Grouparoo Cluster");
-        expect(payload.trigger).toBe("timer");
-        expect(payload.metrics.length).toBe(1);
-        expect(payload.metrics[0].topic).toBe("error");
-        expect(payload.metrics[0].aggregation).toBe("exact");
-        expect(payload.metrics[0].value).toMatch("Error: OH NO");
-        expect(payload.metrics[0].value).toMatch(
-          "core/__tests__/tasks/system/telemetry.ts"
-        );
-        expect(payload.metrics[0].errors[0]).toMatch(
-          "core/__tests__/tasks/system/telemetry.ts"
-        );
-      });
     });
   });
 });
