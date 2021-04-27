@@ -495,17 +495,19 @@ export namespace ProfileOps {
       where: { directlyMapped: false },
     });
 
-    await ProfileProperty.update(
-      { state: "pending", startedAt: null },
-      {
-        where: {
-          profileId: profile.id,
-          propertyId: {
-            [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
+    if (nonDirectlyMappedRules.length > 0) {
+      await ProfileProperty.update(
+        { state: "pending", startedAt: null },
+        {
+          where: {
+            profileId: profile.id,
+            propertyId: {
+              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
+            },
           },
-        },
-      }
-    );
+        }
+      );
+    }
 
     await profile.update({ state: "pending" });
   }

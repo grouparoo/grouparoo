@@ -27,12 +27,14 @@ export namespace ImportOps {
       order: [["createdAt", "asc"]],
     });
 
-    await Import.update(
-      { startedAt: new Date() },
-      {
-        where: { id: { [Op.in]: imports.map((i) => i.id) } },
-      }
-    );
+    if (imports.length > 0) {
+      await Import.update(
+        { startedAt: new Date() },
+        {
+          where: { id: { [Op.in]: imports.map((i) => i.id) } },
+        }
+      );
+    }
 
     const runIds: string[] = [];
     for (const i in imports) {

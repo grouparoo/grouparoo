@@ -290,15 +290,17 @@ export namespace GroupOps {
       await buildProfileImport(profileId, "run", run.id, destinationId);
     }
 
-    await GroupMember.update(
-      { updatedAt: new Date(), removedAt: null },
-      {
-        where: {
-          profileId: { [Op.in]: profiles.map((p) => p.id) },
-          groupId: group.id,
-        },
-      }
-    );
+    if (profiles.length > 0) {
+      await GroupMember.update(
+        { updatedAt: new Date(), removedAt: null },
+        {
+          where: {
+            profileId: { [Op.in]: profiles.map((p) => p.id) },
+            groupId: group.id,
+          },
+        }
+      );
+    }
 
     await group.update({ calculatedAt: new Date() });
 
