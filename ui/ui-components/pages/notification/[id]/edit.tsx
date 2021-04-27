@@ -4,7 +4,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Button } from "react-bootstrap";
 import Moment from "react-moment";
 import { Models } from "../../../utils/apiData";
-import ReactMarkdown from "react-markdown/with-html";
+import Markdown from "react-markdown";
 
 export default function Page(props) {
   const { notification }: { notification: Models.NotificationType } = props;
@@ -28,7 +28,7 @@ export default function Page(props) {
       <hr />
 
       <p>
-        <ReactMarkdown source={notification.body} />
+        <Markdown>{notification.body}</Markdown>
       </p>
 
       {notification.cta && notification.ctaLink ? (
