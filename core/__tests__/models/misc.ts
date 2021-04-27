@@ -1,7 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { ApiKey } from "../../src";
 import { Op } from "sequelize";
-import { Api } from "actionhero";
 
 describe("models/misc", () => {
   helper.grouparooTestServer({ truncate: true });
