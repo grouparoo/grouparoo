@@ -2,7 +2,7 @@ import { Initializer, route, task, api, log } from "actionhero";
 
 let taskRecheckInterval: NodeJS.Timeout;
 
-export class Plugins extends Initializer {
+export class ResqueInitializer extends Initializer {
   constructor() {
     super();
     this.name = `@grouparoo/resque`;
