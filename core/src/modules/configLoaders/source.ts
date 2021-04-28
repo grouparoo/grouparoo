@@ -10,7 +10,7 @@ import {
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
-import { config } from "actionhero";
+import { log } from "actionhero";
 
 export async function loadSource(
   configObject: ConfigurationObject,
@@ -112,8 +112,12 @@ export async function loadSource(
 
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
   if (configObject.bootstrappedProperty) {
+    log(
+      `source.bootstrappedProperty is deprecated. You can generate the property by using \`grouparoo generate\` as usual and the bootstrapped property will be automatically determined. (${configObject.id})`,
+      "warning"
+    );
     logModel(
-      configObject.bootstrappedProperty,
+      bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
     );
   }
