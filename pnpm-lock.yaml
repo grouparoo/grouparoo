@@ -216,6 +216,7 @@ importers:
       '@types/fs-extra': '*'
       '@types/jest': '*'
       '@types/node': '*'
+      '@types/pacote': 11.1.0
       '@types/pluralize': 0.0.29
       '@types/validator': '*'
       actionhero: 25.0.14
@@ -231,6 +232,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
+      grouparoo: 0.3.0-alpha.3
       ioredis: 4.26.0
       ioredis-mock: 5.5.2
       isomorphic-fetch: 3.0.0
@@ -280,6 +282,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
+      grouparoo: link:../cli
       ioredis: 4.26.0
       ioredis-mock: 5.5.2_ioredis@4.26.0
       isomorphic-fetch: 3.0.0
@@ -307,6 +310,7 @@ importers:
     devDependencies:
       '@grouparoo/spec-helper': link:../plugins/@grouparoo/spec-helper
       '@types/jest': 26.0.22
+      '@types/pacote': 11.1.0
       '@types/pluralize': 0.0.29
       csv-parse: 4.15.4
       jest: 26.6.3_ts-node@9.1.1
@@ -3638,6 +3642,13 @@ packages:
       '@types/node': 14.14.37
     dev: true
 
+  /@types/node-fetch/2.5.10:
+    resolution: {integrity: sha512-IpkX0AasN44hgEad0gEF/V6EgR5n69VEqPEgnmoM8GsIGro3PowbWs4tR6IhxUTyPLpOn+fiGG6nrQhcmoCuIQ==}
+    dependencies:
+      '@types/node': 14.14.37
+      form-data: 3.0.1
+    dev: true
+
   /@types/node/13.13.48:
     resolution: {integrity: sha512-z8wvSsgWQzkr4sVuMEEOvwMdOQjiRY2Y/ZW4fDfjfe3+TfQrZqFKOthBgk2RnVEmtOKrkwdZ7uTvsxTBLjKGDQ==}
     dev: false
@@ -3647,6 +3658,33 @@ packages:
 
   /@types/normalize-package-data/2.4.0:
     resolution: {integrity: sha512-f5j5b/Gf71L+dbqxIpQ4Z2WlmI/mPJ0fOkGGmFgtb6sAu97EPczzbS3/tJKxmcYDj55OX6ssqwDAWOHIYDRDGA==}
+    dev: true
+
+  /@types/npm-package-arg/6.1.0:
+    resolution: {integrity: sha512-vbt5fb0y1svMhu++1lwtKmZL76d0uPChFlw7kEzyUmTwfmpHRcFb8i0R8ElT69q/L+QLgK2hgECivIAvaEDwag==}
+    dev: true
+
+  /@types/npm-registry-fetch/8.0.0:
+    resolution: {integrity: sha512-3dtNw1VMy1gnaklK0746/cOkJYMvdY/3FNuRDR5ih+WUWIbgTR6JvKq6hmhW4G1/o6lPdjHECPaWcowXgWZDyg==}
+    dependencies:
+      '@types/node': 14.14.37
+      '@types/node-fetch': 2.5.10
+      '@types/npm-package-arg': 6.1.0
+      '@types/npmlog': 4.1.2
+      '@types/ssri': 7.1.0
+    dev: true
+
+  /@types/npmlog/4.1.2:
+    resolution: {integrity: sha512-4QQmOF5KlwfxJ5IGXFIudkeLCdMABz03RcUXu+LCb24zmln8QW6aDjuGl4d4XPVLf2j+FnjelHTP7dvceAFbhA==}
+    dev: true
+
+  /@types/pacote/11.1.0:
+    resolution: {integrity: sha512-ULeeKzbZ3e5GRlqbVDUDgi0L0RYg4OJXLSrtOoyTmGJTAN7JdR0IyZ0kXCCjGzkZwh4ABM7TKISwyDkJqnbAgw==}
+    dependencies:
+      '@types/node': 14.14.37
+      '@types/npm-registry-fetch': 8.0.0
+      '@types/npmlog': 4.1.2
+      '@types/ssri': 7.1.0
     dev: true
 
   /@types/parse-json/4.0.0:
@@ -3698,6 +3736,12 @@ packages:
     dependencies:
       '@types/node': 14.14.37
     dev: false
+
+  /@types/ssri/7.1.0:
+    resolution: {integrity: sha512-CJR8I0rHwuhpS6YBq1q+StUlQBuxoyfVVZ3O1FDiXH1HJtNm90lErBsZpr2zBMF2x5d9khvq105CQ03EXkZzAQ==}
+    dependencies:
+      '@types/node': 14.14.37
+    dev: true
 
   /@types/stack-utils/2.0.0:
     resolution: {integrity: sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==}
@@ -6911,6 +6955,15 @@ packages:
       asynckit: 0.4.0
       combined-stream: 1.0.8
       mime-types: 2.1.30
+
+  /form-data/3.0.1:
+    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.30
+    dev: true
 
   /form-data/4.0.0:
     resolution: {integrity: sha512-ETEklSGi5t0QMZuiXoA/Q6vcnxcLQP5vdugSpuAyi6SVGi2clPPp+xgEhuMaHC+zGgn31Kd235W35f7Hykkaww==}

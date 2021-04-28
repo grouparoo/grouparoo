@@ -1,6 +1,5 @@
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
-import Loader from "@grouparoo/ui-components/components/loader";
 
 export default function IndexPage() {
   return (
@@ -15,7 +14,6 @@ export default function IndexPage() {
             <h1>
               Hello from <code>@grouparoo/ui-config</code>
             </h1>
-            <Loader />
           </Col>
         </Row>
       </div>

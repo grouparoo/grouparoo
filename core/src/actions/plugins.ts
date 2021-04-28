@@ -1,5 +1,5 @@
 import { CLSAction } from "../classes/actions/clsAction";
-import { pluginVersions } from "../modules/pluginVersions";
+import { Plugins } from "../modules/plugins";
 
 export class PluginsList extends CLSAction {
   constructor() {
@@ -12,7 +12,7 @@ export class PluginsList extends CLSAction {
   }
 
   async runWithinTransaction() {
-    const plugins = await pluginVersions();
+    const plugins = await Plugins.installedPluginVersions();
     return { plugins };
   }
 }
