@@ -10,6 +10,7 @@ import {
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
+import { config } from "actionhero";
 
 export async function loadSource(
   configObject: ConfigurationObject,
@@ -110,9 +111,9 @@ export async function loadSource(
   }
 
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
-  if (bootstrappedProperty) {
+  if (configObject.bootstrappedProperty) {
     logModel(
-      bootstrappedProperty,
+      configObject.bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
     );
   }
