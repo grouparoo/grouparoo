@@ -152,7 +152,10 @@ import {
   NotificationView,
 } from "@grouparoo/core/src/actions/notifications";
 import { NavigationList } from "@grouparoo/core/src/actions/navigation";
-import { PluginsList } from "@grouparoo/core/src/actions/plugins";
+import {
+  PluginsInstalledList,
+  PluginsAvailableList,
+} from "@grouparoo/core/src/actions/plugins";
 import {
   PropertyCreate,
   PropertyDestroy,
@@ -461,8 +464,11 @@ export namespace Actions {
     typeof NavigationList.prototype.runWithinTransaction
   >;
 
-  export type PluginsList = AsyncReturnType<
-    typeof PluginsList.prototype.runWithinTransaction
+  export type PluginsInstalledList = AsyncReturnType<
+    typeof PluginsInstalledList.prototype.runWithinTransaction
+  >;
+  export type PluginsAvailableList = AsyncReturnType<
+    typeof PluginsAvailableList.prototype.runWithinTransaction
   >;
 
   export type PropertyCreate = AsyncReturnType<
