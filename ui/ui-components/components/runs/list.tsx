@@ -13,7 +13,7 @@ import RunDurationChart from "../visualizations/runDurations";
 import { Models, Actions } from "../../utils/apiData";
 
 export default function RunsList(props) {
-  const { errorHandler, runsHandler, topic } = props;
+  const { errorHandler, topic } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -33,13 +33,6 @@ export default function RunsList(props) {
   useSecondaryEffect(() => {
     load();
   }, [limit, offset, stateFilter, errorFilter]);
-
-  useEffect(() => {
-    runsHandler.subscribe("runs-list", load);
-    return () => {
-      runsHandler.unsubscribe("runs-list");
-    };
-  }, []);
 
   async function load() {
     const params = { limit, offset, topic };
@@ -171,109 +164,111 @@ export default function RunsList(props) {
           </tr>
         </thead>
         <tbody>
-          {runs.map((run) => {
-            return (
-              <Fragment key={`profile-${run.id}`}>
-                <tr>
-                  <td>
-                    id:{" "}
-                    <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
-                      <a>{run.id}</a>
-                    </Link>
-                  </td>
-                  <td>
-                    Created: <Moment fromNow>{run.createdAt}</Moment>
-                    {run.completedAt ? (
-                      <>
-                        <br />
-                        Completed: <Moment fromNow>{run.completedAt}</Moment>
-                        <br />
-                        <small>
-                          Duration:{" "}
-                          <Moment
-                            duration={run.createdAt}
-                            date={run.completedAt}
-                          />
-                        </small>
-                      </>
-                    ) : null}
-                  </td>
-                  <td>
-                    <EnterpriseLink
-                      prefetch={false}
-                      href={`/object/${run.creatorId}`}
-                    >
-                      <a>
-                        {run.creatorType}: {run.creatorName}
-                      </a>
-                    </EnterpriseLink>
-                  </td>
-                  <td>
-                    {run.state} <br />
-                    {run.percentComplete}%
-                  </td>
-                  <td>
-                    {/* <code>{JSON.stringify(run.filter)}</code> */}
-                    <>
-                      {run.creatorType === "group" ? (
-                        <>
-                          groupMemberLimit: {run.groupMemberLimit} <br />
-                        </>
-                      ) : null}
-                      {run.creatorType === "group" ? (
-                        <>
-                          groupMemberOffset: {run.groupMemberOffset} <br />
-                        </>
-                      ) : null}
-                      {run.creatorType === "group" ? (
-                        <>
-                          groupHighWaterMark: {run.groupHighWaterMark} <br />
-                        </>
-                      ) : null}
-                      {run.creatorType !== "group" ? (
-                        <>
-                          sourceOffset: {run.sourceOffset} <br />
-                        </>
-                      ) : null}
-                      force: {run.force.toString()}
-                    </>
-                    {run.highWaterMark &&
-                    Object.keys(run.highWaterMark).length > 0 ? (
-                      <>
-                        <br />
-                        {Object.keys(run.highWaterMark)[0]}:{" "}
-                        {Object.values(run.highWaterMark)[0]}
-                      </>
-                    ) : null}
-                  </td>
-                  <td>
-                    <Link href="/imports/[id]" as={`/imports/${run.id}`}>
-                      <a>Imports Created: {run.importsCreated}</a>
-                    </Link>
-                    <br />
-                    Profiles Created: {run.profilesCreated}
-                    <br />
-                    Profiles Imported: {run.profilesImported}
-                  </td>
-                </tr>
-
-                {run.error ? (
+          {runs
+            .sort((a, b) => b.updatedAt - a.updatedAt) // TODO: Why do we need to re-sort the array returned by the API?  The order changes based on getInitialProps or browser load
+            .map((run) => {
+              return (
+                <Fragment key={`profile-${run.id}`}>
                   <tr>
-                    <td colSpan={7} style={{ border: 0 }}>
-                      <Alert variant="danger">
-                        {run.error.split("\n").map((err, errIdx) => (
-                          <Fragment key={`err-${run.id}-${errIdx}`}>
-                            {err}
-                            <br />
-                          </Fragment>
-                        ))}
-                      </Alert>
+                    <td>
+                      id:{" "}
+                      <Link href="/run/[id]/edit" as={`/run/${run.id}/edit`}>
+                        <a>{run.id}</a>
+                      </Link>
+                    </td>
+                    <td>
+                      Created: <Moment fromNow>{run.createdAt}</Moment>
+                      {run.completedAt ? (
+                        <>
+                          <br />
+                          Completed: <Moment fromNow>{run.completedAt}</Moment>
+                          <br />
+                          <small>
+                            Duration:{" "}
+                            <Moment
+                              duration={run.createdAt}
+                              date={run.completedAt}
+                            />
+                          </small>
+                        </>
+                      ) : null}
+                    </td>
+                    <td>
+                      <EnterpriseLink
+                        prefetch={false}
+                        href={`/object/${run.creatorId}`}
+                      >
+                        <a>
+                          {run.creatorType}: {run.creatorName}
+                        </a>
+                      </EnterpriseLink>
+                    </td>
+                    <td>
+                      {run.state} <br />
+                      {run.percentComplete}%
+                    </td>
+                    <td>
+                      {/* <code>{JSON.stringify(run.filter)}</code> */}
+                      <>
+                        {run.creatorType === "group" ? (
+                          <>
+                            groupMemberLimit: {run.groupMemberLimit} <br />
+                          </>
+                        ) : null}
+                        {run.creatorType === "group" ? (
+                          <>
+                            groupMemberOffset: {run.groupMemberOffset} <br />
+                          </>
+                        ) : null}
+                        {run.creatorType === "group" ? (
+                          <>
+                            groupHighWaterMark: {run.groupHighWaterMark} <br />
+                          </>
+                        ) : null}
+                        {run.creatorType !== "group" ? (
+                          <>
+                            sourceOffset: {run.sourceOffset} <br />
+                          </>
+                        ) : null}
+                        force: {run.force.toString()}
+                      </>
+                      {run.highWaterMark &&
+                      Object.keys(run.highWaterMark).length > 0 ? (
+                        <>
+                          <br />
+                          {Object.keys(run.highWaterMark)[0]}:{" "}
+                          {Object.values(run.highWaterMark)[0]}
+                        </>
+                      ) : null}
+                    </td>
+                    <td>
+                      <Link href="/imports/[id]" as={`/imports/${run.id}`}>
+                        <a>Imports Created: {run.importsCreated}</a>
+                      </Link>
+                      <br />
+                      Profiles Created: {run.profilesCreated}
+                      <br />
+                      Profiles Imported: {run.profilesImported}
                     </td>
                   </tr>
-                ) : null}
-              </Fragment>
-            );
-          })}
+
+                  {run.error ? (
+                    <tr>
+                      <td colSpan={7} style={{ border: 0 }}>
+                        <Alert variant="danger">
+                          {run.error.split("\n").map((err, errIdx) => (
+                            <Fragment key={`err-${run.id}-${errIdx}`}>
+                              {err}
+                              <br />
+                            </Fragment>
+                          ))}
+                        </Alert>
+                      </td>
+                    </tr>
+                  ) : null}
+                </Fragment>
+              );
+            })}
         </tbody>
       </LoadingTable>
       <Pagination

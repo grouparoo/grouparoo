@@ -5,8 +5,6 @@ import {
   AllowNull,
   Default,
   ForeignKey,
-  AfterSave,
-  AfterDestroy,
   BelongsTo,
   BeforeSave,
   DataType,

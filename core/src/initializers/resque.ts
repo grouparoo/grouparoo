@@ -1,6 +1,8 @@
-import { Initializer, route } from "actionhero";
+import { Initializer, route, task, api, log } from "actionhero";
 
-export class Plugins extends Initializer {
+let taskRecheckInterval: NodeJS.Timeout;
+
+export class ResqueInitializer extends Initializer {
   constructor() {
     super();
     this.name = `@grouparoo/resque`;
@@ -85,5 +87,27 @@ export class Plugins extends Initializer {
       "/v:apiVersion/resque/delLock",
       "resque:delLock"
     );
+  }
+
+  async start() {
+    const delay = 1000 * 60 * 60 * 1; // 1 hour
+    taskRecheckInterval = setInterval(this.recheckPeriodicTasks, delay);
+  }
+
+  async stop() {
+    clearInterval(taskRecheckInterval);
+  }
+
+  async recheckPeriodicTasks() {
+    if (api?.resque?.scheduler?.leader) {
+      const taskNames = await task.enqueueAllRecurrentTasks();
+      log(
+        `Ensuring periodic tasks are enqueued.  ${
+          taskNames.length > 0
+            ? `Added missing: ${taskNames.join(", ")}.`
+            : "None missing."
+        }`
+      );
+    }
   }
 }

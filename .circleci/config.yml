@@ -357,6 +357,50 @@ jobs:
       - run:
           name: test
           command: cd core && ./node_modules/.bin/jest __tests__/classes --ci --maxWorkers 2
+  test-core-initializers:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd core && ./node_modules/.bin/jest __tests__/initializers --ci --maxWorkers 2
   test-core-integration:
     docker:
       - image: circleci/node:14
@@ -2511,6 +2555,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-initializers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-core-integration:
           filters:
             <<: *ignored-branches
@@ -2756,6 +2805,7 @@ workflows:
             - test-core-actions
             - test-core-bin
             - test-core-classes
+            - test-core-initializers
             - test-core-integration
             - test-core-models
             - test-core-modules
@@ -2854,6 +2904,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-initializers:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-core-integration:
           filters:
             <<: *ignored-branches
@@ -3099,6 +3154,7 @@ workflows:
             - test-core-actions
             - test-core-bin
             - test-core-classes
+            - test-core-initializers
             - test-core-integration
             - test-core-models
             - test-core-modules
