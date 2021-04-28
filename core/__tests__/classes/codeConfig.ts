@@ -45,7 +45,7 @@ describe("classes/codeConfig", () => {
       expect(providedIds).toEqual(["users_table"]);
     });
 
-    describe("with manually bootstrapped properties", async () => {
+    describe("with manually bootstrapped properties", () => {
       let manualConfigObjects: ConfigurationObject[];
 
       beforeAll(async () => {
