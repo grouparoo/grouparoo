@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.3.0-alpha.3",
-    "node-marketo-rest": "grouparoo/node-marketo#restler_upgrade"
+    "@grouparoo/node-marketo-rest": "0.7.10"
   },
   "devDependencies": {
     "@grouparoo/core": "0.3.0-alpha.3",

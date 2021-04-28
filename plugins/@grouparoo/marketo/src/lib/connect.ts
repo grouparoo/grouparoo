@@ -1,5 +1,5 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import Marketo from "node-marketo-rest";
+import Marketo from "@grouparoo/node-marketo-rest";
 
 // TODO: Warning: Promise.defer is deprecated and will be removed in a future version.
 //       Use new Promise instead.
