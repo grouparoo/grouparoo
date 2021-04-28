@@ -99,16 +99,6 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       }
       params["__mappingKey"] = JSON.stringify(parts[0]);
       params["__mappingValue"] = JSON.stringify(parts[1]);
-
-      // are we bootstrapping?
-      const columns = columnsMap.map((o) => o.column);
-      if (columns.includes(parts[0])) {
-        const bootstrappedCol = columnsMap.find((o) => o.column === parts[0]);
-        params["__bootstrappedId"] = JSON.stringify(parts[1]);
-        params["__bootstrappedColumn"] = JSON.stringify(bootstrappedCol.column);
-        params["__bootstrappedType"] = JSON.stringify(bootstrappedCol.type);
-        columnsMap = columnsMap.filter((o) => o.column !== parts[0]);
-      }
     }
 
     // write the source + schedule
