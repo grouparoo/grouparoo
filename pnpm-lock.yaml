@@ -788,7 +788,7 @@ importers:
     specifiers:
       '@grouparoo/app-templates': 0.3.0-alpha.3
       '@grouparoo/core': 0.3.0-alpha.3
-      '@grouparoo/node-marketo-rest': 0.7.9
+      '@grouparoo/node-marketo-rest': 0.7.10
       '@grouparoo/spec-helper': 0.3.0-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
@@ -802,7 +802,7 @@ importers:
       typescript: 4.2.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      '@grouparoo/node-marketo-rest': 0.7.9
+      '@grouparoo/node-marketo-rest': 0.7.10
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1997,8 +1997,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@grouparoo/node-marketo-rest/0.7.9:
-    resolution: {integrity: sha512-uayaIqIkIV2lpmi8uP5hImnm0XK6+WDkkOJa4yYh2iRBNYTINZKZ777u3D5gV0tq2hkSUFvT6USAaNm9bOS0bg==}
+  /@grouparoo/node-marketo-rest/0.7.10:
+    resolution: {integrity: sha512-mNuixOFLk8JoN2BvaA9U/oCHbg5sNit3/zkAPQ5wTat87xlHi3XRs3EJF4xq3YXIZBoh6UJrqDK5/KGfY14nAg==}
     engines: {node: '>=4.8.5'}
     dependencies:
       backoff: 2.4.1
@@ -14299,7 +14299,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@9.1.1
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
