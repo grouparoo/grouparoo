@@ -100,8 +100,14 @@ export class Plugins extends Initializer {
 
   async recheckPeriodicTasks() {
     if (api?.resque?.scheduler?.leader) {
-      log("ensuring periodic tasks are enqueued");
-      task.enqueueAllRecurrentTasks();
+      const taskNames = await task.enqueueAllRecurrentTasks();
+      log(
+        `Ensuring periodic tasks are enqueued.  ${
+          taskNames.length > 0
+            ? `Added missing: ${taskNames.join(", ")}.`
+            : "None missing."
+        }`
+      );
     }
   }
 }
