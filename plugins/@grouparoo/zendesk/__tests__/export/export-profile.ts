@@ -384,33 +384,6 @@ describe("zendesk/exportProfile", () => {
     expect(user.email).toBe(email2);
   });
 
-  // test("it can make one user with the original id and no email", async () => {
-  //   await runExport({
-  //     oldProfileProperties: {},
-  //     newProfileProperties: {
-  //       external_id,
-  //     },
-  //     oldGroups: [],
-  //     newGroups: [],
-  //     toDelete: false,
-  //   });
-  //
-  //   newId = await findId();
-  //   expect(newId).toBeTruthy();
-  //   expect(newId).not.toEqual(userId);
-  //
-  //   const newUser = await getNewUser();
-  //   expect(newUser.id).toBe(newId);
-  //   expect(newUser.external_id).toBe(external_id);
-  //   expect(newUser.email).toBe(null);
-  //   expect(newUser.name).toBe(external_id); // defaults to something
-  //
-  //   const user = await getUser();
-  //   expect(user.id).toBe(userId);
-  //   expect(user.external_id).toBe(newExternalId);
-  //   expect(user.email).toBe(email);
-  // });
-
   test("it can migrate an email user to having a external_id", async () => {
     // make a user with email
     const created = await client.users.create({
