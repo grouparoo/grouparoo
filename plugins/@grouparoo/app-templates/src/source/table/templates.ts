@@ -11,6 +11,7 @@ import {
 import { TableSpeculation } from "./tableSpeculation";
 
 interface ConfigTemplateColumn {
+  id?: string;
   column: string;
   type: typeof PropertyTypes[number];
   unique: boolean;
@@ -99,6 +100,13 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       }
       params["__mappingKey"] = JSON.stringify(parts[0]);
       params["__mappingValue"] = JSON.stringify(parts[1]);
+
+      // are we bootstrapping?
+      const columns = columnsMap.map((o) => o.column);
+      if (columns.includes(parts[0])) {
+        const bootstrappedCol = columnsMap.find((o) => o.column === parts[0]);
+        bootstrappedCol.id = parts[1];
+      }
     }
 
     // write the source + schedule
@@ -119,7 +127,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     const propertyResponses = await Promise.all(
       columnsMap.map(async (col) => {
         const propertyParams = Object.assign({}, params);
-        propertyParams.id = JSON.stringify(col.column);
+        propertyParams.id = JSON.stringify(col.id || col.column);
         propertyParams.column = JSON.stringify(col.column);
         propertyParams.type = JSON.stringify(col.type);
         propertyParams.unique = JSON.stringify(col.unique);
