@@ -788,6 +788,7 @@ importers:
     specifiers:
       '@grouparoo/app-templates': 0.3.0-alpha.3
       '@grouparoo/core': 0.3.0-alpha.3
+      '@grouparoo/node-marketo-rest': 0.7.9
       '@grouparoo/spec-helper': 0.3.0-alpha.3
       '@types/jest': '*'
       '@types/node': '*'
@@ -796,13 +797,12 @@ importers:
       fs-extra: 9.1.0
       jest: 26.6.3
       nock: 13.0.11
-      node-marketo-rest: grouparoo/node-marketo#restler_upgrade
       prettier: 2.2.1
       ts-jest: 26.5.4
       typescript: 4.2.4
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      node-marketo-rest: github.com/grouparoo/node-marketo/01019570eac0de5f05107ddf815de86ccf536792
+      '@grouparoo/node-marketo-rest': 0.7.9
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1995,6 +1995,19 @@ packages:
   /@google-cloud/promisify/2.0.3:
     resolution: {integrity: sha512-d4VSA86eL/AFTe5xtyZX+ePUjE8dIFu2T8zmdeNBSa5/kNgXPCx/o/wbFNHAGLJdGnk1vddRuMESD9HbOC8irw==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@grouparoo/node-marketo-rest/0.7.9:
+    resolution: {integrity: sha512-uayaIqIkIV2lpmi8uP5hImnm0XK6+WDkkOJa4yYh2iRBNYTINZKZ777u3D5gV0tq2hkSUFvT6USAaNm9bOS0bg==}
+    engines: {node: '>=4.8.5'}
+    dependencies:
+      backoff: 2.4.1
+      bluebird: 2.3.11
+      bunyan: 1.0.1
+      iconv-lite: 0.2.11
+      lodash: 4.17.15
+      moment: 2.24.0
+      qs: 6.9.6
     dev: false
 
   /@grpc/grpc-js/1.2.12:
@@ -15594,18 +15607,3 @@ packages:
       spdx-satisfies: 4.0.1
       treeify: 1.1.0
     dev: true
-
-  github.com/grouparoo/node-marketo/01019570eac0de5f05107ddf815de86ccf536792:
-    resolution: {tarball: https://codeload.github.com/grouparoo/node-marketo/tar.gz/01019570eac0de5f05107ddf815de86ccf536792}
-    name: node-marketo-rest
-    version: 0.7.8
-    engines: {node: '>=4.8.5'}
-    dependencies:
-      backoff: 2.4.1
-      bluebird: 2.3.11
-      bunyan: 1.0.1
-      iconv-lite: 0.2.11
-      lodash: 4.17.15
-      moment: 2.24.0
-      qs: 6.9.6
-    dev: false
