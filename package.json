@@ -28,7 +28,7 @@
     "version-stable": "lerna version patch --exact --force-publish --yes",
     "lint": "pnpm run --stream -r lint --workspace-concurrency=2 --filter !'@grouparoo/grouparoo'",
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
-    "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf clients/*/*/dist && rm -rf plugins/*/*/dist",
+    "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf clients/*/*/dist && rm -rf cli/dist && rm -rf plugins/*/*/dist",
     "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install",
     "heroku-prebuild": "npm install -g pnpm",
     "heroku-postbuild": "pnpm install"
