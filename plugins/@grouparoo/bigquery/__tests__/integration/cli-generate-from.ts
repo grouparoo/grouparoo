@@ -180,16 +180,22 @@ describe("bigquery cli tests", () => {
     expect(contents).toContain(`name: "${usersTableName}"`);
 
     expect(contents).toContain(`id: "user_id",`); // mapping
-    expect(contents).toContain(`column: "id",`); // bootstrap
     expect(contents).toContain(`column: "stamp",`); // schedule
 
     // properties
-    ["first_name", "last_name", "email", "date"].forEach((col) => {
-      expect(
-        fs.existsSync(
-          `${process.env.GROUPAROO_CONFIG_DIR}/properties/${col}.js`
-        )
-      ).toBe(true);
+    [
+      { id: "user_id", col: "id" },
+      { id: "first_name", col: "first_name" },
+      { id: "last_name", col: "last_name" },
+      { id: "email", col: "email" },
+      { id: "date", col: "date" },
+    ].forEach(({ id, col }) => {
+      const propertyFile = `${process.env.GROUPAROO_CONFIG_DIR}/properties/${id}.js`;
+      expect(fs.existsSync(propertyFile)).toBe(true);
+
+      const propertyContents = fs.readFileSync(propertyFile).toString();
+      expect(propertyContents).toContain(`id: "${id}"`);
+      expect(propertyContents).toContain(`column: "${col}"`);
     });
   });
 });

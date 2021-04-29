@@ -6,11 +6,19 @@ import os from "os";
 export namespace CLISpecHelper {
   const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
 
+  interface CLIValidationOptions {
+    bootstrappedPropertyOptions: any;
+  }
+
   /**
    * For most plugins, this test method should be able to test all the generators and run the validate command
    * Otherwise, it can be decomposed with the other methods in this file
    */
-  export function validateGenerators(pluginName: string, pluginPath: string) {
+  export function validateGenerators(
+    pluginName: string,
+    pluginPath: string,
+    options?: CLIValidationOptions
+  ) {
     describe(`${pluginName} CLI`, () => {
       const {
         projectPath,
@@ -26,7 +34,8 @@ export namespace CLISpecHelper {
       CLISpecHelper.testAllPluginGenerators(
         generatorNames,
         projectPath,
-        runCliCommand
+        runCliCommand,
+        options
       );
     });
   }
@@ -155,35 +164,6 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(path.join(projectPath, ".env"), template);
   }
 
-  export function enableBootstrappedProperty(
-    projectPath: string,
-    sourceName: string
-  ) {
-    const file = path.join(
-      projectPath,
-      "config",
-      "sources",
-      `${sourceName}.js`
-    );
-    const contents = fs.readFileSync(file).toString();
-    const lines = contents.split(os.EOL);
-    const updatedLines: string[] = [];
-
-    let inBootstrap = false;
-    for (const line of lines) {
-      if (line.includes("bootstrappedProperty: {")) inBootstrap = true;
-      if (inBootstrap && line === "") inBootstrap = false;
-
-      if (!inBootstrap) {
-        updatedLines.push(line);
-      } else {
-        updatedLines.push(line.replace("// ", ""));
-      }
-    }
-
-    fs.writeFileSync(file, updatedLines.join(os.EOL));
-  }
-
   export function prepareDestinationTemplate(
     projectPath: string,
     destinationName: string,
@@ -245,6 +225,50 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     groupName = "everyone"
   ) {
     return runCliCommand(`generate group:manual ${groupName} --overwrite`);
+  }
+
+  export async function generatePropertyToBootstrap(
+    runCliCommand: Function,
+    projectPath: string,
+    propertyName: string,
+    sourceId: string,
+    options?: CLIValidationOptions
+  ) {
+    await runCliCommand(
+      `generate manual:property ${propertyName} --parent ${sourceId}`
+    );
+
+    const file = path.join(
+      projectPath,
+      "config",
+      "properties",
+      `${propertyName}.js`
+    );
+    const contents = fs.readFileSync(file).toString();
+    const lines = contents.split(os.EOL);
+    const updatedLines: string[] = [];
+
+    for (const line of lines) {
+      if (line.includes("unique: false")) {
+        updatedLines.push(line.replace("unique: false", "unique: true"));
+      } else if (line.includes("isArray: true")) {
+        updatedLines.push(line.replace("isArray: true", "isArray: false"));
+      } else if (line.trim() === "},") {
+        const propertyOptions = {
+          column: "id",
+        };
+        if (options && options.bootstrappedPropertyOptions) {
+          Object.assign(propertyOptions, options.bootstrappedPropertyOptions);
+        }
+
+        updatedLines.push(`      options: ${JSON.stringify(propertyOptions)},`);
+        updatedLines.push(line);
+      } else {
+        updatedLines.push(line);
+      }
+    }
+
+    fs.writeFileSync(file, updatedLines.join(os.EOL));
   }
 
   export async function generateUserSourceToPropertyProperty(
@@ -342,7 +366,8 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
   export function testAllPluginGenerators(
     generatorNames: string[],
     projectPath: string,
-    runCliCommand: Function
+    runCliCommand: Function,
+    options?: CLIValidationOptions
   ) {
     const triedGenerators = [];
     const apps = generatorNames.filter((name) => name.match(/:app/));
@@ -372,18 +397,25 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (source.match(appMatcher)) {
             test(`generate source ${source}`, async () => {
+              const sourceId = `source_${buildId(sourcePrefix)}`;
               const { exitCode, stdout, stderr } = await runCliCommand(
-                `generate ${source} source_${buildId(
-                  sourcePrefix
-                )} --parent app_${buildId(appPrefix)}`
+                `generate ${source} ${sourceId} --parent app_${buildId(
+                  appPrefix
+                )}`
               );
               expect(exitCode).toBe(0);
               testStdErr(projectPath, stdout, stderr);
 
-              CLISpecHelper.enableBootstrappedProperty(
-                projectPath,
-                `source_${buildId(sourcePrefix)}`
-              );
+              // Generate the bootstrapped property
+              if (!source.match(/:query:/)) {
+                await CLISpecHelper.generatePropertyToBootstrap(
+                  runCliCommand,
+                  projectPath,
+                  "user_id",
+                  sourceId,
+                  options
+                );
+              }
 
               triedGenerators.push(source);
             });

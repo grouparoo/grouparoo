@@ -3,5 +3,10 @@ import { CLISpecHelper } from "@grouparoo/spec-helper";
 
 CLISpecHelper.validateGenerators(
   "@grouparoo/snowflake",
-  join(__dirname, "..", "..")
+  join(__dirname, "..", ".."),
+  {
+    bootstrappedPropertyOptions: {
+      aggregationMethod: "exact",
+    },
+  }
 );
