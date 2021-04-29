@@ -232,6 +232,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
+      grouparoo: 0.3.0-alpha.3
       ioredis: 4.26.0
       ioredis-mock: 5.5.2
       isomorphic-fetch: 3.0.0
@@ -281,6 +282,7 @@ importers:
       dotenv: 8.2.0
       fs-extra: 9.1.0
       glob: 7.1.6
+      grouparoo: link:../cli
       ioredis: 4.26.0
       ioredis-mock: 5.5.2_ioredis@4.26.0
       isomorphic-fetch: 3.0.0
