@@ -81,8 +81,8 @@ export const DEFAULT = {
 
       post: [
         { path: "/v:apiVersion/session", action: "session:create" },
-        { path: "/v:apiVersion/plugin/install", action: "plugins:install" },
-        { path: "/v:apiVersion/plugin/uninstall", action: "plugins:uninstall" },
+        { path: "/v:apiVersion/plugin/install", action: "plugin:install" },
+        { path: "/v:apiVersion/plugin/uninstall", action: "plugin:uninstall" },
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },

@@ -3,14 +3,55 @@ import { Row, Col } from "react-bootstrap";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { Table, Alert, Button } from "react-bootstrap";
+import { useState } from "react";
 
 export default function PluginsPage(props) {
-  const installedPlugins: Actions.PluginsInstalledList["plugins"] =
-    props.installedPlugins;
+  const { successHandler, errorHandler } = props;
+  const [installedPlugins, setInstalledPlugins] = useState<
+    Actions.PluginsInstalledList["plugins"]
+  >(props.installedPlugins);
   const availablePlugins: Actions.PluginsAvailableList["plugins"] =
     props.availablePlugins;
+  const { execApi } = useApi(props, errorHandler);
+  const [loading, setLoading] = useState(false);
 
-  async function installPlugin(name: string) {}
+  async function installPlugin(name: string) {
+    setLoading(true);
+    const response: Actions.PluginInstall = await execApi(
+      "post",
+      `/plugin/install`,
+      { plugin: name }
+    );
+    setLoading(false);
+    if (response.success) {
+      successHandler.set({ message: "Plugin Installed" });
+      loadInstalledPlugins();
+    }
+  }
+
+  async function uninstallPlugin(name: string) {
+    setLoading(true);
+    const response: Actions.PluginInstall = await execApi(
+      "post",
+      `/plugin/uninstall`,
+      { plugin: name }
+    );
+    setLoading(false);
+    if (response.success) {
+      successHandler.set({ message: "Plugin Uninstalled" });
+      loadInstalledPlugins();
+    }
+  }
+
+  async function loadInstalledPlugins() {
+    setLoading(true);
+    const response: Actions.PluginsInstalledList = await execApi(
+      "get",
+      `/plugins/installed`
+    );
+    setLoading(false);
+    if (response.plugins) setInstalledPlugins(response.plugins);
+  }
 
   return (
     <>
@@ -53,7 +94,10 @@ export default function PluginsPage(props) {
                       {installedPlugin.currentVersion}
                     </Alert>
                   ) : (
-                    <Button onClick={() => installPlugin(plugin.name)}>
+                    <Button
+                      disabled={loading}
+                      onClick={() => installPlugin(plugin.name)}
+                    >
                       Install v{plugin.version}
                     </Button>
                   )}

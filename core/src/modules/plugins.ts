@@ -2,6 +2,7 @@ import PluginDetails from "../utils/pluginDetails";
 import pacote from "pacote";
 import { log } from "actionhero";
 import compareVersions from "compare-versions";
+import { spawnPromise } from "./spawnPromise";
 import "isomorphic-fetch";
 
 export namespace Plugins {
@@ -111,15 +112,17 @@ export namespace Plugins {
   }
 
   export async function install(pluginName: string) {
-    const response = { success: false, stdout: "", stderr: "" };
-
-    return response;
+    return spawnPromise("./node_modules/.bin/grouparoo", [
+      "install",
+      pluginName,
+    ]);
   }
 
   export async function uninstall(pluginName: string) {
-    const response = { success: false, stdout: "", stderr: "" };
-
-    return response;
+    return spawnPromise("./node_modules/.bin/grouparoo", [
+      "uninstall",
+      pluginName,
+    ]);
   }
 
   async function getLatestNPMVersion(

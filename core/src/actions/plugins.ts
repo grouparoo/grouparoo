@@ -47,7 +47,7 @@ export class PluginInstall extends CLSAction {
 
   async runWithinTransaction({ params }) {
     const response = await Plugins.install(params.plugin);
-    return { success: response };
+    return response;
   }
 }
 
@@ -65,6 +65,6 @@ export class PluginUninstall extends CLSAction {
 
   async runWithinTransaction({ params }) {
     const response = await Plugins.uninstall(params.plugin);
-    return { success: response };
+    return response;
   }
 }

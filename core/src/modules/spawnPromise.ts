@@ -37,5 +37,5 @@ export async function spawnPromise(
     }
   );
 
-  return { exitCode, stdout, stderr };
+  return { exitCode, stdout, stderr, success: exitCode === 0 };
 }
