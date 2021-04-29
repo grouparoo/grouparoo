@@ -24,7 +24,7 @@
     "directory": "cli"
   },
   "scripts": {
-    "prepare": "rm -rf dist && tsc --declaration && chmod 0766 dist/grouparoo.js || true",
+    "prepare": "rm -rf dist && tsc --declaration && if test -f dist/grouparoo.js; then chmod 0766 dist/grouparoo.js; fi",
     "test": "./__tests__/test.sh",
     "pretest": "npm run lint && npm run prepare",
     "lint": "prettier --check src",
