@@ -1,4 +1,8 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import {
+  DestinationSyncOperations,
+  Errors,
+  ExportProfilePluginMethod,
+} from "@grouparoo/core";
 import { connect } from "../connect";
 import {
   getBuiltInFields,
@@ -7,6 +11,7 @@ import {
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     toDelete,
     newProfileProperties,
@@ -37,10 +42,20 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       oldProfileProperties
     );
 
+    // tags need to be formatted
+    const newTags = newGroups.map((groupName) => makeTagName(groupName));
+    const oldTags = oldGroups.map((groupName) => makeTagName(groupName));
+
     if (toDelete) {
       if (user) {
         // this does a soft delete
-        await client.users.delete(user.id);
+        if (syncOperations.delete) {
+          await client.users.delete(user.id);
+        } else {
+          throw new Errors.InfoError(
+            "Destination sync mode does not allow removing profiles."
+          );
+        }
 
         // TODO: should we fully delete it? (see test for how to set it up)
         // this might delete tickets
@@ -74,9 +89,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       }
     }
 
-    // tags need to be formatted
-    const newTags = newGroups.map((groupName) => makeTagName(groupName));
-    const oldTags = oldGroups.map((groupName) => makeTagName(groupName));
     const removedTags = oldTags.filter((k) => !newTags.includes(k));
     // get the current tags if there was a user
     const currentTags = user?.tags || [];
@@ -108,17 +120,31 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         payload.name = getDefaultName(payload);
       }
     }
-
     let updated;
     if (user) {
+      if (!syncOperations.update) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow updating existing profiles."
+        );
+      }
       updated = await client.users.update(user.id, { user: payload });
     } else {
+      if (!syncOperations.create) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow creating new profiles."
+        );
+      }
       updated = await client.users.createOrUpdate({ user: payload });
     }
 
     if (email && updated.email !== email) {
       // have to make this the primary
       // https://developer.zendesk.com/rest_api/docs/support/users#email-address
+      if (!syncOperations.update) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not allow updating existing profiles."
+        );
+      }
       await makeEmailPrimary(client, updated.id, email);
     }
 
