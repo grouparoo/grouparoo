@@ -111,11 +111,15 @@ export namespace Plugins {
   }
 
   export async function install(pluginName: string) {
-    return true;
+    const response = { success: false, stdout: "", stderr: "" };
+
+    return response;
   }
 
   export async function uninstall(pluginName: string) {
-    return true;
+    const response = { success: false, stdout: "", stderr: "" };
+
+    return response;
   }
 
   async function getLatestNPMVersion(
