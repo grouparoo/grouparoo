@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
+import Link from "next/link";
 
 export default function IndexPage() {
   return (
@@ -8,15 +9,22 @@ export default function IndexPage() {
         <title>Grouparoo</title>
       </Head>
 
-      <div style={{ width: "100%", height: "100%" }}>
-        <Row>
-          <Col style={{ textAlign: "center" }}>
-            <h1>
-              Hello from <code>@grouparoo/ui-config</code>
-            </h1>
-          </Col>
-        </Row>
-      </div>
+      <Row>
+        <Col style={{ textAlign: "center" }}>
+          <h1>
+            Hello from <code>@grouparoo/ui-config</code>
+          </h1>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ul>
+            <Link href="/plugins">
+              <a>Plugins</a>
+            </Link>
+          </ul>
+        </Col>
+      </Row>
     </>
   );
 }

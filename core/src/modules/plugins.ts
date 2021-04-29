@@ -110,6 +110,14 @@ export namespace Plugins {
     return packages;
   }
 
+  export async function install(pluginName: string) {
+    return true;
+  }
+
+  export async function uninstall(pluginName: string) {
+    return true;
+  }
+
   async function getLatestNPMVersion(
     plugin: PluginWithVersion,
     tag = "latest"

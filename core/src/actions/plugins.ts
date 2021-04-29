@@ -32,3 +32,39 @@ export class PluginsAvailableList extends CLSAction {
     return { plugins };
   }
 }
+
+export class PluginInstall extends CLSAction {
+  constructor() {
+    super();
+    this.name = "plugin:install";
+    this.description = "I install a Grouparoo plugin";
+    this.permission = { topic: "system", mode: "write" };
+    this.inputs = {
+      plugin: { required: true },
+    };
+    this.outputExample = {};
+  }
+
+  async runWithinTransaction({ params }) {
+    const response = await Plugins.install(params.plugin);
+    return { success: response };
+  }
+}
+
+export class PluginUninstall extends CLSAction {
+  constructor() {
+    super();
+    this.name = "plugin:uninstall";
+    this.description = "I uninstall a Grouparoo plugin";
+    this.permission = { topic: "system", mode: "write" };
+    this.inputs = {
+      plugin: { required: true },
+    };
+    this.outputExample = {};
+  }
+
+  async runWithinTransaction({ params }) {
+    const response = await Plugins.uninstall(params.plugin);
+    return { success: response };
+  }
+}

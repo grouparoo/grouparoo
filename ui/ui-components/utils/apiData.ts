@@ -155,6 +155,8 @@ import { NavigationList } from "@grouparoo/core/src/actions/navigation";
 import {
   PluginsInstalledList,
   PluginsAvailableList,
+  PluginInstall,
+  PluginUninstall,
 } from "@grouparoo/core/src/actions/plugins";
 import {
   PropertyCreate,
@@ -469,6 +471,12 @@ export namespace Actions {
   >;
   export type PluginsAvailableList = AsyncReturnType<
     typeof PluginsAvailableList.prototype.runWithinTransaction
+  >;
+  export type PluginInstall = AsyncReturnType<
+    typeof PluginInstall.prototype.runWithinTransaction
+  >;
+  export type PluginUninstall = AsyncReturnType<
+    typeof PluginUninstall.prototype.runWithinTransaction
   >;
 
   export type PropertyCreate = AsyncReturnType<
