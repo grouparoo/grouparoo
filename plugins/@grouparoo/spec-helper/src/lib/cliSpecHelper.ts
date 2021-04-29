@@ -253,15 +253,13 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
         updatedLines.push(line.replace("unique: false", "unique: true"));
       } else if (line.includes("isArray: true")) {
         updatedLines.push(line.replace("isArray: true", "isArray: false"));
-      } else if (line.trim() === "},") {
-        const propertyOptions = {
-          column: "id",
-        };
-        if (options && options.bootstrappedPropertyOptions) {
-          Object.assign(propertyOptions, options.bootstrappedPropertyOptions);
-        }
-
-        updatedLines.push(`      options: ${JSON.stringify(propertyOptions)},`);
+      } else if (
+        line.trim() === "}," &&
+        options &&
+        options.bootstrappedPropertyOptions
+      ) {
+        const jsonOptions = JSON.stringify(options.bootstrappedPropertyOptions);
+        updatedLines.push(`      options: ${jsonOptions},`);
         updatedLines.push(line);
       } else {
         updatedLines.push(line);

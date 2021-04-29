@@ -6,6 +6,7 @@ CLISpecHelper.validateGenerators(
   join(__dirname, "..", ".."),
   {
     bootstrappedPropertyOptions: {
+      column: "id",
       aggregationMethod: "exact",
     },
   }
