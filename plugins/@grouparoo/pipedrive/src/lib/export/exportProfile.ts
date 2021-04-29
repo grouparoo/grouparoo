@@ -7,7 +7,20 @@ import {
 } from "./destinationMappingOptions";
 import { getGroupFieldKey } from "./listMethods";
 
-export const exportProfile: ExportProfilePluginMethod = async ({
+export const exportProfile: ExportProfilePluginMethod = async (args) => {
+  try {
+    return await handleProfileChanges(args);
+  } catch (error) {
+    // look for the rate limit exceeded status code.
+    if (error?.response?.status === 429) {
+      const retryIn = Math.floor(Math.random() * 10) + 1;
+      return { error, success: false, retryDelay: 1000 * retryIn };
+    }
+    throw error;
+  }
+};
+
+const handleProfileChanges: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
   syncOperations,
