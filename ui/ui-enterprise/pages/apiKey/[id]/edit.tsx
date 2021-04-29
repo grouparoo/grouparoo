@@ -125,7 +125,7 @@ export default function Page(props) {
           <p>
             Try this API Key in the browser{" "}
             <a
-              href={`/examples/events.html?apiKey=${apiKey.apiKey}`}
+              href={`/public/@grouparoo/examples/events.html?apiKey=${apiKey.apiKey}`}
               target="_new"
             >
               here
