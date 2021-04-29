@@ -67,7 +67,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       with: {
         required: false,
         description:
-          "The names of the columns to create properties from, e.g: `--with users,id,first_name,last_name`. Defaults to '*'",
+          'The names of the columns to create properties from. Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
       },
       "high-water-mark": {
         required: false,
