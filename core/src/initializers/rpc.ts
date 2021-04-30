@@ -7,10 +7,6 @@ export class GrouparooRPC extends Initializer {
     this.name = "grouparooRPC";
   }
 
-  async sleep(delay = 100) {
-    await utils.sleep(delay);
-  }
-
   async initialize() {
     /**
      * Here is where we list methods which will be invoked by `api.doCluster`
@@ -23,9 +19,9 @@ export class GrouparooRPC extends Initializer {
      * Signal that all Apps in the cluster should disconnect form persistent connections.
      * All handlers need start with a sleep() to decouple from mock redis' callback/transaction chain (there's no delay)
      */
-    api.rpc.app.disconnect = async () => {
-      await this.sleep();
-      await App.disconnect();
+    api.rpc.app.disconnect = async (appId: string) => {
+      await utils.sleep(100);
+      await App.disconnect(appId);
     };
   }
 }
