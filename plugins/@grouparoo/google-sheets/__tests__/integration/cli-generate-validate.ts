@@ -3,10 +3,5 @@ import { CLISpecHelper } from "@grouparoo/spec-helper";
 
 CLISpecHelper.validateGenerators(
   "@grouparoo/google-sheets",
-  join(__dirname, "..", ".."),
-  {
-    bootstrappedPropertyOptions: {
-      column: "id",
-    },
-  }
+  join(__dirname, "..", "..")
 );

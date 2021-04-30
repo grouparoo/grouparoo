@@ -3,11 +3,5 @@ import { CLISpecHelper } from "@grouparoo/spec-helper";
 
 CLISpecHelper.validateGenerators(
   "@grouparoo/redshift",
-  join(__dirname, "..", ".."),
-  {
-    bootstrappedPropertyOptions: {
-      column: "id",
-      aggregationMethod: "exact",
-    },
-  }
+  join(__dirname, "..", "..")
 );

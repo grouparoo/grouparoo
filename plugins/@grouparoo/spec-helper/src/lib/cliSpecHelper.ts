@@ -6,19 +6,11 @@ import os from "os";
 export namespace CLISpecHelper {
   const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
 
-  interface CLIValidationOptions {
-    bootstrappedPropertyOptions: any;
-  }
-
   /**
    * For most plugins, this test method should be able to test all the generators and run the validate command
    * Otherwise, it can be decomposed with the other methods in this file
    */
-  export function validateGenerators(
-    pluginName: string,
-    pluginPath: string,
-    options?: CLIValidationOptions
-  ) {
+  export function validateGenerators(pluginName: string, pluginPath: string) {
     describe(`${pluginName} CLI`, () => {
       const {
         projectPath,
@@ -34,8 +26,7 @@ export namespace CLISpecHelper {
       CLISpecHelper.testAllPluginGenerators(
         generatorNames,
         projectPath,
-        runCliCommand,
-        options
+        runCliCommand
       );
     });
   }
@@ -232,10 +223,25 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     projectPath: string,
     propertyName: string,
     sourceId: string,
-    options?: CLIValidationOptions
+    sourceGenerator: string,
+    properties: string[]
   ) {
+    // determine the right property to generate
+    const prefix = buildPrefix(sourceGenerator);
+    let propertyGenerator = `${prefix}:property`;
+
+    if (!properties.includes(propertyGenerator)) {
+      // try second pattern
+      propertyGenerator = `${prefix.split(":")[0]}:property`;
+      if (!properties.includes(propertyGenerator)) {
+        throw new Error(
+          `Could not determine appropriate property to generate for source ${sourceGenerator}`
+        );
+      }
+    }
+
     await runCliCommand(
-      `generate manual:property ${propertyName} --parent ${sourceId}`
+      `generate ${propertyGenerator} ${propertyName} --parent ${sourceId}`
     );
 
     const file = path.join(
@@ -248,19 +254,12 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     const lines = contents.split(os.EOL);
     const updatedLines: string[] = [];
 
+    // make sure that the property is unique and not an array
     for (const line of lines) {
       if (line.includes("unique: false")) {
         updatedLines.push(line.replace("unique: false", "unique: true"));
       } else if (line.includes("isArray: true")) {
         updatedLines.push(line.replace("isArray: true", "isArray: false"));
-      } else if (
-        line.trim() === "}," &&
-        options &&
-        options.bootstrappedPropertyOptions
-      ) {
-        const jsonOptions = JSON.stringify(options.bootstrappedPropertyOptions);
-        updatedLines.push(`      options: ${jsonOptions},`);
-        updatedLines.push(line);
       } else {
         updatedLines.push(line);
       }
@@ -364,8 +363,7 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
   export function testAllPluginGenerators(
     generatorNames: string[],
     projectPath: string,
-    runCliCommand: Function,
-    options?: CLIValidationOptions
+    runCliCommand: Function
   ) {
     const triedGenerators = [];
     const apps = generatorNames.filter((name) => name.match(/:app/));
@@ -411,7 +409,8 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
                   projectPath,
                   "user_id",
                   sourceId,
-                  options
+                  source,
+                  properties
                 );
               }
 
