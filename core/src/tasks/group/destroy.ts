@@ -45,11 +45,6 @@ export class GroupDestroy extends CLSTask {
         state: "running",
       });
       await group.update({ state: "deleted" });
-
-      log(
-        `[ run ] starting run ${run.id} for group ${group.name} (${group.id})`,
-        "notice"
-      );
     }
 
     if (run.state === "stopped") return;

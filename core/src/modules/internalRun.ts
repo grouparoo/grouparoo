@@ -25,12 +25,5 @@ export async function internalRun(creatorType: string, creatorId: string) {
     groupMethod: "internalRun",
   });
 
-  log(
-    `[ run ] starting run ${
-      run.id
-    } for ${creatorType} ${await run.getCreatorName()} (${creatorId})`,
-    "notice"
-  );
-
   return run;
 }

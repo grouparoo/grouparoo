@@ -29,11 +29,6 @@ export namespace GroupOps {
       force,
     });
 
-    log(
-      `[ run ] starting run ${run.id} for group ${group.name} (${group.id})`,
-      "notice"
-    );
-
     return run;
   }
 
