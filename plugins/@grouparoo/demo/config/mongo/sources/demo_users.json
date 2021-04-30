@@ -10,14 +10,6 @@
     },
     "mapping": {
       "id": "user_id"
-    },
-    "bootstrappedProperty": {
-      "name": "userId",
-      "type": "integer",
-      "id": "user_id",
-      "options": {
-        "column": "id"
-      }
     }
   },
   {
