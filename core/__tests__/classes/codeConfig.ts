@@ -35,11 +35,41 @@ describe("classes/codeConfig", () => {
       expect(prerequisiteIds).toContain("email");
     });
 
-    test("includes the value of bootstrapped properties", async () => {
+    test("does not include the value of bootstrapped properties as prerequisite", async () => {
       const source = configObjects.find(({ id }) => id === "users_table");
-      const { prerequisiteIds, providedIds } = await getParentIds(source);
-      expect(prerequisiteIds).toEqual(["data_warehouse", "user_id"]);
-      expect(providedIds).toEqual(["users_table", "user_id"]);
+      const { prerequisiteIds, providedIds } = await getParentIds(
+        source,
+        configObjects.filter((c) => c.id !== source.id)
+      );
+      expect(prerequisiteIds).toEqual(["data_warehouse"]);
+      expect(providedIds).toEqual(["users_table"]);
+    });
+
+    describe("with bootstrapped property included in source", () => {
+      let manualConfigObjects: ConfigurationObject[];
+
+      beforeAll(async () => {
+        const dir = path.join(
+          __dirname,
+          "..",
+          "fixtures",
+          "codeConfig",
+          "bootstrapped-property-in-source"
+        );
+        manualConfigObjects = await loadConfigObjects(dir);
+      });
+
+      test("includes the value of bootstrapped properties included in source", async () => {
+        const source = manualConfigObjects.find(
+          ({ id }) => id === "users_table"
+        );
+        const { prerequisiteIds, providedIds } = await getParentIds(
+          source,
+          manualConfigObjects.filter((c) => c.id !== source.id)
+        );
+        expect(prerequisiteIds).toEqual(["data_warehouse", "user_id"]);
+        expect(providedIds).toEqual(["users_table", "user_id"]);
+      });
     });
 
     describe("query source", () => {

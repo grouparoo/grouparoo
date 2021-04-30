@@ -11,6 +11,7 @@ import {
 import { TableSpeculation } from "./tableSpeculation";
 
 interface ConfigTemplateColumn {
+  id?: string;
   column: string;
   type: typeof PropertyTypes[number];
   unique: boolean;
@@ -66,7 +67,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       with: {
         required: false,
         description:
-          "The names of the columns to create properties from, e.g: `--with users,id,first_name,last_name`. Defaults to '*'",
+          'The names of the columns to create properties from. Use commas to separate names (--with "id,first_name,last_name") or "*" for all (`--with "*"`). Default is ``',
       },
       "high-water-mark": {
         required: false,
@@ -104,10 +105,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
       const columns = columnsMap.map((o) => o.column);
       if (columns.includes(parts[0])) {
         const bootstrappedCol = columnsMap.find((o) => o.column === parts[0]);
-        params["__bootstrappedId"] = JSON.stringify(parts[1]);
-        params["__bootstrappedColumn"] = JSON.stringify(bootstrappedCol.column);
-        params["__bootstrappedType"] = JSON.stringify(bootstrappedCol.type);
-        columnsMap = columnsMap.filter((o) => o.column !== parts[0]);
+        bootstrappedCol.id = parts[1];
       }
     }
 
@@ -129,7 +127,7 @@ export class TableSourceTemplate extends ConfigTemplateWithGetters {
     const propertyResponses = await Promise.all(
       columnsMap.map(async (col) => {
         const propertyParams = Object.assign({}, params);
-        propertyParams.id = JSON.stringify(col.column);
+        propertyParams.id = JSON.stringify(col.id || col.column);
         propertyParams.column = JSON.stringify(col.column);
         propertyParams.type = JSON.stringify(col.type);
         propertyParams.unique = JSON.stringify(col.unique);

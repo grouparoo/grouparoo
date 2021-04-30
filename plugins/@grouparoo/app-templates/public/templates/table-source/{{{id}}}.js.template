@@ -24,40 +24,10 @@ exports.default = async function buildConfig() {
        * `user_id` property in this Grouparoo source, your mapping would look like:
        *
        *     mapping: { id: "user_id" }
-       *
-       * If this is the first Source in Grouparoo, you'll want to create a property in the
-       * bootstrappedProperty section below. Otherwise, you can create properties with the Grouparoo
-       * CLI.
        */
       mapping: {
         {{#__mappingKey}}{{{__mappingKey}}}: {{{__mappingValue}}}{{/__mappingKey}}{{^__mappingKey}}"...": "user_id"{{/__mappingKey}},
       },
-
-      /**
-       * If this is the first Source in Grouparoo, you must bootstrap it with an initial property.
-       * To do so, uncomment the lines below and fill in the appropriate values. Otherwise, you can
-       * create properties with the Grouparoo CLI.
-       */
-      {{#__bootstrappedId}}
-      bootstrappedProperty: {
-        id: {{{__bootstrappedId}}},
-        name: {{{__bootstrappedId}}},
-        type: {{{__bootstrappedType}}},
-        options: {
-          column: {{{__bootstrappedColumn}}}
-        }
-      },
-      {{/__bootstrappedId}}
-      {{^__bootstrappedId}}
-      // bootstrappedProperty: {
-      //   id: "user_id",
-      //   name: "User Id",
-      //   type: "integer",
-      //   options: {
-      //     column: "id",
-      //   },
-      // },
-      {{/__bootstrappedId}}
     },
 
     /**

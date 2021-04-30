@@ -6,12 +6,15 @@ import {
   getCodeConfigLockKey,
   validateConfigObjectKeys,
   IdsByClass,
+  getAutoBootstrappedProperty,
 } from "../../classes/codeConfig";
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
+import { log } from "actionhero";
 
 export async function loadSource(
   configObject: ConfigurationObject,
+  configObjects: ConfigurationObject[],
   externallyValidate: boolean,
   validate = false
 ): Promise<IdsByClass> {
@@ -64,21 +67,28 @@ export async function loadSource(
     }
   }
 
+  const bootstrappedPropertyConfig =
+    configObject.bootstrappedProperty ||
+    getAutoBootstrappedProperty(
+      configObject,
+      configObjects.filter((o) => o.id !== configObject.id)
+    );
+
   try {
     await setMapping();
-    if (configObject.bootstrappedProperty) {
+    if (bootstrappedPropertyConfig) {
       bootstrappedProperty = await Property.findOne({
         where: {
-          id: configObject.bootstrappedProperty.id,
+          id: bootstrappedPropertyConfig.id,
         },
       });
     }
   } catch (error) {
     if (
       error.toString().match(/cannot find Property/) &&
-      configObject.bootstrappedProperty
+      bootstrappedPropertyConfig
     ) {
-      const property = configObject.bootstrappedProperty;
+      const property = bootstrappedPropertyConfig;
       if (!property || !property.options) throw error;
       const mappedColumn = Object.values(property.options)[0];
       bootstrappedProperty = await source.bootstrapUniqueProperty(
@@ -101,7 +111,11 @@ export async function loadSource(
   }
 
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
-  if (bootstrappedProperty) {
+  if (configObject.bootstrappedProperty) {
+    log(
+      `source.bootstrappedProperty is deprecated. Please generate a config file for the Property by using \`grouparoo generate\`. (${configObject.id})`,
+      "warning"
+    );
     logModel(
       bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
@@ -110,7 +124,9 @@ export async function loadSource(
 
   return {
     source: [source.id],
-    property: bootstrappedProperty ? [bootstrappedProperty.id] : [], // might have done this
+    property: configObject.bootstrappedProperty
+      ? [configObject.bootstrappedProperty.id]
+      : [], // might have done this
   };
 }
 

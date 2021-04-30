@@ -155,35 +155,6 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     fs.writeFileSync(path.join(projectPath, ".env"), template);
   }
 
-  export function enableBootstrappedProperty(
-    projectPath: string,
-    sourceName: string
-  ) {
-    const file = path.join(
-      projectPath,
-      "config",
-      "sources",
-      `${sourceName}.js`
-    );
-    const contents = fs.readFileSync(file).toString();
-    const lines = contents.split(os.EOL);
-    const updatedLines: string[] = [];
-
-    let inBootstrap = false;
-    for (const line of lines) {
-      if (line.includes("bootstrappedProperty: {")) inBootstrap = true;
-      if (inBootstrap && line === "") inBootstrap = false;
-
-      if (!inBootstrap) {
-        updatedLines.push(line);
-      } else {
-        updatedLines.push(line.replace("// ", ""));
-      }
-    }
-
-    fs.writeFileSync(file, updatedLines.join(os.EOL));
-  }
-
   export function prepareDestinationTemplate(
     projectPath: string,
     destinationName: string,
@@ -245,6 +216,56 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
     groupName = "everyone"
   ) {
     return runCliCommand(`generate group:manual ${groupName} --overwrite`);
+  }
+
+  export async function generatePropertyToBootstrap(
+    runCliCommand: Function,
+    projectPath: string,
+    propertyName: string,
+    sourceId: string,
+    sourceGenerator: string,
+    properties: string[]
+  ) {
+    // determine the right property to generate
+    const prefix = buildPrefix(sourceGenerator);
+    let propertyGenerator = `${prefix}:property`;
+
+    if (!properties.includes(propertyGenerator)) {
+      // try second pattern
+      propertyGenerator = `${prefix.split(":")[0]}:property`;
+      if (!properties.includes(propertyGenerator)) {
+        throw new Error(
+          `Could not determine appropriate property to generate for source ${sourceGenerator}`
+        );
+      }
+    }
+
+    await runCliCommand(
+      `generate ${propertyGenerator} ${propertyName} --parent ${sourceId}`
+    );
+
+    const file = path.join(
+      projectPath,
+      "config",
+      "properties",
+      `${propertyName}.js`
+    );
+    const contents = fs.readFileSync(file).toString();
+    const lines = contents.split(os.EOL);
+    const updatedLines: string[] = [];
+
+    // make sure that the property is unique and not an array
+    for (const line of lines) {
+      if (line.includes("unique: false")) {
+        updatedLines.push(line.replace("unique: false", "unique: true"));
+      } else if (line.includes("isArray: true")) {
+        updatedLines.push(line.replace("isArray: true", "isArray: false"));
+      } else {
+        updatedLines.push(line);
+      }
+    }
+
+    fs.writeFileSync(file, updatedLines.join(os.EOL));
   }
 
   export async function generateUserSourceToPropertyProperty(
@@ -372,18 +393,26 @@ DATABASE_URL="sqlite://grouparoo_test.sqlite"
 
           if (source.match(appMatcher)) {
             test(`generate source ${source}`, async () => {
+              const sourceId = `source_${buildId(sourcePrefix)}`;
               const { exitCode, stdout, stderr } = await runCliCommand(
-                `generate ${source} source_${buildId(
-                  sourcePrefix
-                )} --parent app_${buildId(appPrefix)}`
+                `generate ${source} ${sourceId} --parent app_${buildId(
+                  appPrefix
+                )}`
               );
               expect(exitCode).toBe(0);
               testStdErr(projectPath, stdout, stderr);
 
-              CLISpecHelper.enableBootstrappedProperty(
-                projectPath,
-                `source_${buildId(sourcePrefix)}`
-              );
+              // Generate the bootstrapped property
+              if (!source.match(/:query:/)) {
+                await CLISpecHelper.generatePropertyToBootstrap(
+                  runCliCommand,
+                  projectPath,
+                  "user_id",
+                  sourceId,
+                  source,
+                  properties
+                );
+              }
 
               triedGenerators.push(source);
             });

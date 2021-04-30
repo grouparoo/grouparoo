@@ -40,14 +40,6 @@ module.exports = async function getConfig() {
       mapping: {
         id: "user_id",
       },
-      bootstrappedProperty: {
-        name: "userId",
-        type: "integer",
-        id: "user_id", // id -> `user_id`
-        options: {
-          column: "id",
-        },
-      },
     },
 
     {
@@ -60,6 +52,21 @@ module.exports = async function getConfig() {
       options: {
         maxColumn: "updated_at",
       },
+    },
+
+    {
+      id: "user_id", // id -> `user_id`
+      name: "userId",
+      class: "Property",
+      type: "integer",
+      identifying: true,
+      unique: true,
+      isArray: false,
+      sourceId: "users_table", // sourceId -> `users_table`
+      options: {
+        column: "id",
+      },
+      filters: [],
     },
 
     {
