@@ -18,12 +18,10 @@ export class GrouparooRPC extends Initializer {
     /**
      * Signal that all Apps in the cluster should disconnect form persistent connections.
      * All handlers need start with a sleep() to decouple from mock redis' callback/transaction chain (there's no delay)
-     * We also need to wait a little while for connections to actually close.
      */
     api.rpc.app.disconnect = async (appId: string) => {
       await utils.sleep(100);
       await App.disconnect(appId);
-      await utils.sleep(500);
     };
   }
 }
