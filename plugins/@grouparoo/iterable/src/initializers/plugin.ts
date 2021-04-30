@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -9,10 +9,10 @@ import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
-
-const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
+
+const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 
 const packageJSON = require("./../../package.json");
 
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/iterable/iterable.png",
@@ -32,6 +34,8 @@ export class Plugins extends Initializer {
         ]),
         new DestinationTemplate("iterable", [
           path.join(templateRoot, "destination", "*.template"),
+          syncModes,
+          defaultSyncMode,
         ]),
       ],
       apps: [
@@ -56,6 +60,8 @@ export class Plugins extends Initializer {
           description:
             "Export profiles to Iterable as Users and put them in static Lists.",
           app: "iterable",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
