@@ -1,4 +1,5 @@
 import { EventDispatcher } from "./eventDispatcher";
+import { Actions } from "../utils/apiData";
 
 export class StatusHandler extends EventDispatcher {
   maxSamples: 50;
@@ -25,7 +26,11 @@ export class StatusHandler extends EventDispatcher {
   }
 
   async getSamples(execApi) {
-    const { metrics } = await execApi("get", `/status/private`);
+    const { metrics }: Actions.PrivateStatus = await execApi(
+      "get",
+      `/status/private`
+    );
+    if (!metrics) return;
     if (metrics.length === 0) return;
     const mostRecent = metrics.shift();
     this.samples.push(...metrics.reverse());

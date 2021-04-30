@@ -3,6 +3,7 @@ import { Models } from "../../utils/apiData";
 import { ProgressBar } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Actions } from "../../utils/apiData";
 
 export default function SetupStepsNavProgressBar({
   execApi,
@@ -30,9 +31,15 @@ export default function SetupStepsNavProgressBar({
   }, []);
 
   async function getSetupSteps() {
-    const { setupSteps, toDisplay } = await execApi("get", `/setupSteps`);
-    setShouldDisplay(toDisplay);
-    setSteps(setupSteps);
+    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
+      "get",
+      `/setupSteps`
+    );
+
+    if (setupSteps) {
+      setShouldDisplay(toDisplay);
+      setSteps(setupSteps);
+    }
   }
 
   const activeStep = steps.find((step) => !step.complete && !step.skipped);
