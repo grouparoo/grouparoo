@@ -113,7 +113,7 @@ export async function loadSource(
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
   if (configObject.bootstrappedProperty) {
     log(
-      `source.bootstrappedProperty is deprecated. You can generate the property by using \`grouparoo generate\` as usual and the bootstrapped property will be automatically determined. (${configObject.id})`,
+      `source.bootstrappedProperty is deprecated. Please generate a config file for the Property by using \`grouparoo generate\`. (${configObject.id})`,
       "warning"
     );
     logModel(
