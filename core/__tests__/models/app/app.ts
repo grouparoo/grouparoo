@@ -440,10 +440,16 @@ describe("models/app", () => {
       jest.spyOn(App, "disconnect");
     });
 
-    test("api.rpc.app.disconnect", async () => {
+    test("api.rpc.app.disconnect calls App.disconnect", async () => {
       await redis.doCluster("api.rpc.app.disconnect");
       await utils.sleep(1000);
-      expect(App.disconnect).toHaveBeenCalled();
+      expect(App.disconnect).toHaveBeenCalledWith(undefined);
+    });
+
+    test("api.rpc.app.disconnect can be called with an App id", async () => {
+      await redis.doCluster("api.rpc.app.disconnect", ["some_app_id"]);
+      await utils.sleep(1000);
+      expect(App.disconnect).toHaveBeenCalledWith("some_app_id");
     });
   });
 });

@@ -97,7 +97,7 @@ export class App extends LoggedModel<App> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) await redis.doCluster("api.rpc.app.disconnect");
+    if (hasChanges) await redis.doCluster("api.rpc.app.disconnect", [this.id]);
   }
 
   async validateOptions(options?: SimpleAppOptions) {
@@ -219,9 +219,12 @@ export class App extends LoggedModel<App> {
   }
 
   // Disconnect all Apps from their persistent connections
-  static async disconnect() {
-    const apps = await App.findAll();
-    for (const i in apps) await apps[i].disconnect();
+  static async disconnect(id?: string) {
+    const apps = id
+      ? await App.scope(null).findAll({ where: { id } })
+      : await App.scope(null).findAll();
+
+    for (const app of apps) await app.disconnect();
   }
 
   @BeforeCreate
