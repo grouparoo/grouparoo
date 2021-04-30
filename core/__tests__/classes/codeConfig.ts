@@ -45,7 +45,7 @@ describe("classes/codeConfig", () => {
       expect(providedIds).toEqual(["users_table"]);
     });
 
-    describe("with manually bootstrapped properties", () => {
+    describe("with bootstrapped property included in source", () => {
       let manualConfigObjects: ConfigurationObject[];
 
       beforeAll(async () => {
@@ -54,12 +54,12 @@ describe("classes/codeConfig", () => {
           "..",
           "fixtures",
           "codeConfig",
-          "manual-bootstrapped-property"
+          "bootstrapped-property-in-source"
         );
         manualConfigObjects = await loadConfigObjects(dir);
       });
 
-      test("includes the value of manually bootstrapped properties", async () => {
+      test("includes the value of bootstrapped properties included in source", async () => {
         const source = manualConfigObjects.find(
           ({ id }) => id === "users_table"
         );

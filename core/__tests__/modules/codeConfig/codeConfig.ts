@@ -25,8 +25,8 @@ describe("modules/codeConfig", () => {
     resetSettings: true,
   });
 
-  // test with both auto bootstrapped property and manually bootstrapped property
-  describe.each(["initial", "manual-bootstrapped-property"])(
+  // test with both auto bootstrapped property and bootstrapped property included in source
+  describe.each(["initial", "bootstrapped-property-in-source"])(
     "%p config",
     (configDir) => {
       beforeAll(async () => {
