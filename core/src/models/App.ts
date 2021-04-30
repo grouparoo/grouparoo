@@ -220,10 +220,7 @@ export class App extends LoggedModel<App> {
 
   // Disconnect all Apps from their persistent connections
   static async disconnect(id?: string) {
-    const apps = id
-      ? await App.scope(null).findAll({ where: { id } })
-      : await App.scope(null).findAll();
-
+    const apps = id ? [await App.findById(id)] : await App.findAll();
     for (const app of apps) await app.disconnect();
   }
 
