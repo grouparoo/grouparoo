@@ -454,6 +454,22 @@ describe("models/source", () => {
       expect(options).toEqual({ column: "__default_column" }); // from the plugin; see specHelper.ts
     });
 
+    test("provided property options will override defaults from uniquePropertyBootstrapOptions", async () => {
+      const property = await source.bootstrapUniqueProperty(
+        "uniqueId",
+        "integer",
+        "id",
+        undefined,
+        false,
+        { column: "my_column" }
+      );
+
+      const options = await property.getOptions();
+      expect(options).toEqual({ column: "my_column" });
+
+      await property.destroy();
+    });
+
     test("bootstrapUniqueProperty will fail if the property cannot be created", async () => {
       await expect(
         source.bootstrapUniqueProperty("userId", "integer", "id")

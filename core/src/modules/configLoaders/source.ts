@@ -96,7 +96,8 @@ export async function loadSource(
         property.type,
         mappedColumn,
         property.id,
-        validate
+        validate,
+        property.options
       );
       await setMapping();
     } else {
