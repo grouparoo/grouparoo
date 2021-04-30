@@ -32,11 +32,12 @@ export class Plugins extends Initializer {
         new AppTemplate("iterable", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("iterable", [
-          path.join(templateRoot, "destination", "*.template"),
+        new DestinationTemplate(
+          "iterable",
+          [path.join(templateRoot, "destination", "*.template")],
           syncModes,
-          defaultSyncMode,
-        ]),
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
