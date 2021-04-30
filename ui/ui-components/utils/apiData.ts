@@ -159,6 +159,11 @@ import {
   PluginUninstall,
 } from "@grouparoo/core/src/actions/plugins";
 import {
+  ConfigValidate,
+  ConfigApply,
+  ConfigGenerate,
+} from "@grouparoo/core/src/actions/config";
+import {
   PropertyCreate,
   PropertyDestroy,
   PropertyEdit,
@@ -477,6 +482,16 @@ export namespace Actions {
   >;
   export type PluginUninstall = AsyncReturnType<
     typeof PluginUninstall.prototype.runWithinTransaction
+  >;
+
+  export type ConfigValidate = AsyncReturnType<
+    typeof ConfigValidate.prototype.runWithinTransaction
+  >;
+  export type ConfigApply = AsyncReturnType<
+    typeof ConfigApply.prototype.runWithinTransaction
+  >;
+  export type ConfigGenerate = AsyncReturnType<
+    typeof ConfigGenerate.prototype.runWithinTransaction
   >;
 
   export type PropertyCreate = AsyncReturnType<

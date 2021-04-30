@@ -23,6 +23,11 @@ export default function IndexPage() {
               <a>Plugins</a>
             </Link>
           </ul>
+          <ul>
+            <Link href="/validate">
+              <a>Validate</a>
+            </Link>
+          </ul>
         </Col>
       </Row>
     </>

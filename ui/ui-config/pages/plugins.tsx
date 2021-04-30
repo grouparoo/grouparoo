@@ -1,9 +1,10 @@
 import Head from "next/head";
+import { useState } from "react";
 import { Row, Col } from "react-bootstrap";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { Table, Alert, Button } from "react-bootstrap";
-import { useState } from "react";
+import { CLIStream } from "../components/cliStream";
 
 export default function PluginsPage(props) {
   const { successHandler, errorHandler } = props;
@@ -107,6 +108,10 @@ export default function PluginsPage(props) {
           })}
         </tbody>
       </Table>
+
+      <hr />
+
+      <CLIStream />
     </>
   );
 }

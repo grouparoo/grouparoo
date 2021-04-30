@@ -1,7 +1,7 @@
-import { CLSAction } from "../classes/actions/clsAction";
+import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Plugins } from "../modules/plugins";
 
-export class PluginsInstalledList extends CLSAction {
+export class PluginsInstalledList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "plugins:installed:list";
@@ -17,7 +17,7 @@ export class PluginsInstalledList extends CLSAction {
   }
 }
 
-export class PluginsAvailableList extends CLSAction {
+export class PluginsAvailableList extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "plugins:available:list";
@@ -33,7 +33,7 @@ export class PluginsAvailableList extends CLSAction {
   }
 }
 
-export class PluginInstall extends CLSAction {
+export class PluginInstall extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "plugin:install";
@@ -51,7 +51,7 @@ export class PluginInstall extends CLSAction {
   }
 }
 
-export class PluginUninstall extends CLSAction {
+export class PluginUninstall extends AuthenticatedAction {
   constructor() {
     super();
     this.name = "plugin:uninstall";

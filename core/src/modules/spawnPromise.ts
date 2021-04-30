@@ -1,11 +1,12 @@
 import { spawn } from "child_process";
+import { chatRoom } from "actionhero";
+import os from "os";
 
 export async function spawnPromise(
   command: string,
   args: Array<string> = [],
   cwd: string = process.cwd(),
-  extraEnv = {},
-  logger?: any
+  extraEnv = {}
 ) {
   const {
     exitCode,
@@ -16,19 +17,48 @@ export async function spawnPromise(
       let stdout = "";
       let stderr = "";
 
+      chatRoom.broadcast({}, "system:cli", {
+        type: "stdout",
+        message:
+          "$ " +
+          command.replace("./node_modules/.bin/", "") +
+          " " +
+          args.join(" "),
+        timestamp: new Date().getTime(),
+      });
+
+      chatRoom.broadcast({}, "system:cli", {
+        type: "stdout",
+        message: "",
+      });
+
       const spawnProcess = spawn(command, args, {
         cwd,
         env: Object.assign(extraEnv, process.env),
       });
 
-      spawnProcess.stdout.on("data", (data) => {
+      spawnProcess.stdout.on("data", async (data) => {
         stdout += String(data);
-        if (logger) logger.text = String(data);
+        const lines = String(data).split(os.EOL);
+        for (const line of lines) {
+          await chatRoom.broadcast({}, "system:cli", {
+            type: "stdout",
+            message: line,
+            timestamp: new Date().getTime(),
+          });
+        }
       });
 
-      spawnProcess.stderr.on("data", (data) => {
-        stderr += String(data);
-        if (logger) logger.text = String(data);
+      spawnProcess.stderr.on("data", async (data) => {
+        stdout += String(data);
+        const lines = String(data).split(os.EOL);
+        for (const line of lines) {
+          await chatRoom.broadcast({}, "system:cli", {
+            type: "stderr",
+            message: line,
+            timestamp: new Date().getTime(),
+          });
+        }
       });
 
       spawnProcess.on("close", (exitCode) => {
