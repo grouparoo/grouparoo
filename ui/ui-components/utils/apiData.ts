@@ -231,6 +231,10 @@ import {
   sourceConnectionOptions,
   SourcePreview,
 } from "@grouparoo/core/src/actions/sources";
+import {
+  PublicStatus,
+  PrivateStatus,
+} from "@grouparoo/core/src/actions/status";
 import { Swagger } from "@grouparoo/core/src/actions/swagger";
 import {
   TeamMemberCreate,
@@ -662,6 +666,13 @@ export namespace Actions {
   >;
   export type SourcePreview = AsyncReturnType<
     typeof SourcePreview.prototype.runWithinTransaction
+  >;
+
+  export type PublicStatus = AsyncReturnType<
+    typeof PublicStatus.prototype.runWithinTransaction
+  >;
+  export type PrivateStatus = AsyncReturnType<
+    typeof PrivateStatus.prototype.runWithinTransaction
   >;
 
   export type Swagger = AsyncReturnType<typeof Swagger.prototype.run>;
