@@ -72,10 +72,6 @@ export class GroupDestroy extends CLSTask {
         limit,
       });
     } else {
-      log(
-        `[ run ] completed run ${run.id} for group ${group.name} (${group.id})`,
-        "notice"
-      );
       await run.afterBatch("complete");
       await group.destroy();
     }
