@@ -32,6 +32,7 @@ export class RunGroup extends CLSTask {
       where: { id: run.creatorId },
     });
     if (!group) return;
+    if (group.state === "deleted") return;
 
     const force = run.force || false;
     const destinationId = run.destinationId;
