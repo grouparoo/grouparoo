@@ -262,7 +262,8 @@ export class Source extends LoggedModel<Source> {
     type: string,
     mappedColumn: string,
     id?: string,
-    local = false
+    local = false,
+    options?: { [key: string]: any }
   ) {
     return SourceOps.bootstrapUniqueProperty(
       this,
@@ -270,7 +271,8 @@ export class Source extends LoggedModel<Source> {
       type,
       mappedColumn,
       id,
-      local
+      local,
+      options
     );
   }
 

@@ -283,7 +283,8 @@ export namespace SourceOps {
     type: string,
     mappedColumn: string,
     id?: string,
-    local = false
+    local = false,
+    propertyOptions?: { [key: string]: any }
   ) {
     const existingIdentifying = await Property.findOne({
       where: { identifying: true },
@@ -316,27 +317,36 @@ export namespace SourceOps {
 
       // build the default options
       const { pluginConnection } = await source.getPlugin();
-      if (
-        !local &&
-        typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
+      if (!local) {
+        let ruleOptions = {};
+
+        if (
+          typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
           "function"
-      ) {
-        const app = await source.$get("app");
-        const connection = await app.getConnection();
-        const appOptions = await app.getOptions(true);
-        const options = await source.getOptions(true);
-        const ruleOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
-          {
-            app,
-            appId: app.id,
-            connection,
-            appOptions,
-            source,
-            sourceId: source.id,
-            sourceOptions: options,
-            mappedColumn,
-          }
-        );
+        ) {
+          const app = await source.$get("app");
+          const connection = await app.getConnection();
+          const appOptions = await app.getOptions(true);
+          const options = await source.getOptions(true);
+          const defaultOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
+            {
+              app,
+              appId: app.id,
+              connection,
+              appOptions,
+              source,
+              sourceId: source.id,
+              sourceOptions: options,
+              mappedColumn,
+            }
+          );
+
+          ruleOptions = defaultOptions;
+        }
+
+        if (propertyOptions) {
+          Object.assign(ruleOptions, propertyOptions);
+        }
 
         await property.setOptions(ruleOptions, false);
       }
