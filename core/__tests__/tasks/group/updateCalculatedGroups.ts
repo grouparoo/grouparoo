@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import { plugin, Group, Run } from "../../../src";
+import { Op } from "sequelize";
 
 let group: Group;
 
@@ -52,12 +53,37 @@ describe("tasks/group:updateCalculatedGroups", () => {
       expect(runs.length).toBe(0);
     });
 
-    test("groups already calculating will not be calculated again", async () => {
-      await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
+    test("groups already calculating will not be calculated again if they have been checked recently", async () => {
+      await group.update({ state: "updating", calculatedAt: new Date() }); // now
       await specHelper.runTask("group:updateCalculatedGroups", {});
 
       const runs = await Run.findAll({ where: { creatorId: group.id } });
       expect(runs.length).toBe(0);
+    });
+
+    test("groups already calculating will not be calculated again if it is time but they have a running run", async () => {
+      await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
+      const runningRun = await Run.create({
+        creatorId: group.id,
+        creatorType: "group",
+        state: "running",
+      });
+      await specHelper.runTask("group:updateCalculatedGroups", {});
+
+      const runs = await Run.findAll({
+        where: { creatorId: group.id, id: { [Op.ne]: runningRun.id } },
+      });
+      expect(runs.length).toBe(0);
+    });
+
+    test("groups already calculating will be calculated again if it is time and they don't have a related run", async () => {
+      await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
+      await specHelper.runTask("group:updateCalculatedGroups", {});
+
+      const runs = await Run.findAll({
+        where: { creatorId: group.id },
+      });
+      expect(runs.length).toBe(1);
     });
   });
 });
