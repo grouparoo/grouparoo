@@ -1,6 +1,6 @@
 import path from "path";
 import os from "os";
-import { config } from "actionhero";
+import { config, log } from "actionhero";
 import "isomorphic-fetch";
 import { plugin } from "../modules/plugin";
 import { StatusMetric, StatusReporters } from "./../modules/statusReporters";
@@ -40,7 +40,7 @@ export namespace Telemetry {
         });
       } catch (newError) {}
 
-      throw error;
+      log(`[ telemetry ] ${error}`, "error");
     }
   }
 
