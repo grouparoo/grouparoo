@@ -15,9 +15,11 @@ function RealRedisConfig() {
   let db = process.env.REDIS_DB;
   let username = process.env.REDIS_USER;
   let password = process.env.REDIS_PASS;
+  let protocol = "redis";
 
   if (process.env.REDIS_URL) {
     const parsed = new URL(process.env.REDIS_URL);
+    if (parsed.protocol) protocol = parsed.protocol.split(":")[0];
     if (parsed.username) username = parsed.username;
     if (parsed.password) password = parsed.password;
     if (parsed.hostname) host = parsed.hostname;
@@ -35,6 +37,8 @@ function RealRedisConfig() {
     password,
     // If we have a REDIS_URL, but no database, assume we mean db=0
     db: parseInt(db || "0"),
+    // ssl options
+    tls: protocol === "rediss" ? { rejectUnauthorized: false } : undefined,
     // you can learn more about retryStrategy @ https://github.com/luin/ioredis#auto-reconnect
     retryStrategy: (times) => {
       if (times === 1) {
