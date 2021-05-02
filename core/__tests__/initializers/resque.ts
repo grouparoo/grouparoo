@@ -33,7 +33,6 @@ describe("initializers/resque", () => {
   });
 
   test("it will check for missing periodic tasks if the resque leader", async () => {
-    console.log(api.resque);
     api.resque.scheduler.leader = true;
 
     await api.resque.queue.connection.redis.flushdb();
