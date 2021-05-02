@@ -144,9 +144,10 @@ export namespace RunOps {
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
-        100 *
-          (membersAlreadyUpdated /
-            (totalGroupMembers > 0 ? totalGroupMembers : 1))
+        membersAlreadyUpdated === 0
+          ? 1
+          : membersAlreadyUpdated /
+              (totalGroupMembers > 0 ? totalGroupMembers : 1)
       );
       if (!run.groupMethod.match(/remove/i)) {
         percentComplete = Math.floor(percentComplete / 2);
