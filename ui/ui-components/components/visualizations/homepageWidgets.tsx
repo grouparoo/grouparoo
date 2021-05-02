@@ -124,7 +124,7 @@ export function GroupsByNewestMember({
                   </td>
                   <td>{group.profilesCount}</td>
                   <td>
-                    {parseInt(group.newestMembersAdded) !== NaN ? (
+                    {!isNaN(parseInt(group.newestMembersAdded)) ? (
                       <Moment fromNow>
                         {parseInt(group.newestMembersAdded)}
                       </Moment>
