@@ -46,7 +46,11 @@ export namespace DestinationOps {
   /**
    * Track a Group
    */
-  export async function trackGroup(destination: Destination, group: Group) {
+  export async function trackGroup(
+    destination: Destination,
+    group: Group,
+    force = true
+  ) {
     const oldGroupId = destination.groupId;
     await destination.update({ groupId: group.id });
 
@@ -55,20 +59,20 @@ export namespace DestinationOps {
         const oldGroup = await Group.findById(oldGroupId);
         await oldGroup.run(true, destination.id);
       }
-      return group.run(true, destination.id);
+      return group.run(force, destination.id);
     }
   }
 
   /**
    * Un-track a Group
    */
-  export async function unTrackGroup(destination: Destination) {
+  export async function unTrackGroup(destination: Destination, force = false) {
     const oldGroupId = destination.groupId;
     await destination.update({ groupId: null });
 
     if (oldGroupId) {
       const oldGroup = await Group.findById(oldGroupId);
-      return oldGroup.run(true, destination.id);
+      return oldGroup.run(force, destination.id);
     }
   }
 

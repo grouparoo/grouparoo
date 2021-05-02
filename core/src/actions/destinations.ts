@@ -263,13 +263,15 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     this.inputs = {
       id: { required: true },
       groupId: { required: true },
+      force: { required: false, default: "false" },
     };
   }
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
     const group = await Group.findById(params.groupId);
-    await destination.trackGroup(group);
+    const force = params.force?.toLowerCase() === "true";
+    await destination.trackGroup(group, force);
     return { destination: await destination.apiData() };
   }
 }
@@ -283,12 +285,14 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
     this.permission = { topic: "destination", mode: "write" };
     this.inputs = {
       id: { required: true },
+      force: { required: false, default: "false" },
     };
   }
 
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
-    await destination.unTrackGroup();
+    const force = params.force?.toLowerCase() === "true";
+    await destination.unTrackGroup(force);
     return { destination: await destination.apiData() };
   }
 }

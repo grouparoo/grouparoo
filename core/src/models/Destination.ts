@@ -294,12 +294,12 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.exportGroupMembers(this, force);
   }
 
-  async trackGroup(group: Group) {
-    return DestinationOps.trackGroup(this, group);
+  async trackGroup(group: Group, force = false) {
+    return DestinationOps.trackGroup(this, group, force);
   }
 
-  async unTrackGroup() {
-    return DestinationOps.unTrackGroup(this);
+  async unTrackGroup(force = false) {
+    return DestinationOps.unTrackGroup(this, force);
   }
 
   async getSupportedSyncModes() {

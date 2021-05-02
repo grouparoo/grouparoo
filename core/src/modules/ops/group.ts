@@ -51,10 +51,11 @@ export namespace GroupOps {
   /**
    * Given a Profile, create an import to recalculate its Group Membership
    */
-  export async function buildProfileImport(
+  export async function updateProfile(
     profileId: string,
     creatorType: string,
     creatorId: string,
+    force: boolean,
     destinationId?: string
   ) {
     const profile = await Profile.findOne({
@@ -80,7 +81,13 @@ export namespace GroupOps {
       oldGroupIds,
     });
 
-    await profile.markPending();
+    if (force) {
+      // re-import the whole profile (relies on profileProperty:enqueue)
+      await profile.markPending();
+    } else {
+      // just calculate the groups and export (relies on profile:checkReady)
+      await profile.update({ state: "pending" });
+    }
 
     return _import;
   }
@@ -276,13 +283,14 @@ export namespace GroupOps {
     const existingGroupMemberProfileIds = groupMembers.map(
       (member) => member.profileId
     );
-    const profilesNeedingGroupMembership = force
-      ? profiles
-      : profiles.filter((p) => !existingGroupMemberProfileIds.includes(p.id));
+    const profilesNeedingGroupMembership =
+      force || destinationId
+        ? profiles
+        : profiles.filter((p) => !existingGroupMemberProfileIds.includes(p.id));
 
     for (const i in profilesNeedingGroupMembership) {
       const profileId = profilesNeedingGroupMembership[i].id;
-      await buildProfileImport(profileId, "run", run.id, destinationId);
+      await updateProfile(profileId, "run", run.id, force, destinationId);
     }
 
     if (profiles.length > 0) {
@@ -332,7 +340,13 @@ export namespace GroupOps {
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
 
-      await buildProfileImport(member.profileId, "run", run.id, destinationId);
+      await updateProfile(
+        member.profileId,
+        "run",
+        run.id,
+        false,
+        destinationId
+      );
 
       member.removedAt = new Date();
       await member.save();
@@ -366,7 +380,7 @@ export namespace GroupOps {
     for (const i in groupMembersToRemove) {
       const member = groupMembersToRemove[i];
 
-      await buildProfileImport(member.profileId, "run", run.id);
+      await updateProfile(member.profileId, "run", run.id, false);
 
       member.removedAt = new Date();
       await member.save();
