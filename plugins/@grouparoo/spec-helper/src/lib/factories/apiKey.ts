@@ -3,7 +3,7 @@ import faker from "faker";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: faker.name.jobDescriptor(),
+    name: `ApiKey ${faker.name.jobDescriptor()} - ${Math.random()}`,
 
     createdAt: new Date(),
     updatedAt: new Date(),
