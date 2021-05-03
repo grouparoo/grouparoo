@@ -7,7 +7,7 @@ import {
   sortConfigurationObjects,
   validateConfigObjects,
   IdsByClass,
-  getParentIds,
+  getDirectParentId,
 } from "../../classes/codeConfig";
 import { GrouparooErrorSerializer } from "../../config/errors";
 import { loadApp, deleteApps } from "./app";
@@ -91,21 +91,15 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 export async function shouldExternallyValidate(
   canExternallyValidate: boolean,
   configObject: ConfigurationObject,
-  configObjects: ConfigurationObject[],
   locallyValidateIds: Set<string>
 ) {
   if (!canExternallyValidate) return false;
   if (!locallyValidateIds) return true;
 
-  const { prerequisiteIds: parentIds } = await getParentIds(
-    configObject,
-    configObjects
-  );
-
   const objectId = configObject.id;
 
-  const localParents = parentIds.filter((pId) => locallyValidateIds.has(pId));
-  if (localParents.length > 0) {
+  const parentId = await getDirectParentId(configObject);
+  if (parentId && locallyValidateIds.has(parentId)) {
     locallyValidateIds.add(objectId);
   }
 
@@ -184,7 +178,6 @@ export async function processConfigObjects(
     const externallyValidate = await shouldExternallyValidate(
       canExternallyValidate,
       configObject,
-      configObjects,
       locallyValidateIds
     );
 

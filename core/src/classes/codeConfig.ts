@@ -229,6 +229,24 @@ export async function getConfigObjectsWithIds(
   return configObjectsWithIds;
 }
 
+export async function getDirectParentId(configObject: ConfigurationObject) {
+  const parentKeys = {
+    destination: "appId",
+    source: "appId",
+    property: "sourceId",
+    teammember: "teamId",
+  };
+
+  const objectClass = configObject.class?.toLowerCase();
+  const parentKey = parentKeys[objectClass];
+  if (!parentKey) return null;
+
+  const parentId = configObject[parentKey];
+  if (!parentId) return null;
+
+  return parentId as string;
+}
+
 export async function getParentIds(
   configObject: ConfigurationObject,
   otherConfigObjects: Array<ConfigurationObject> = []
