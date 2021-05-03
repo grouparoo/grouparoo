@@ -61,6 +61,7 @@ describe("zendesk/destinationMappingOptions", () => {
     const name = known.find((f) => f.key === "name");
     expect(name.key).toBe("name");
     expect(name.type).toBe("string");
+    expect(name.important).toBe(true);
 
     const text = known.find((f) => f.key === "text_field");
     expect(text.type).toBe("string");
