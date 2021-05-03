@@ -7,6 +7,7 @@ import {
   sortConfigObjectsWithIds,
   ConfigurationObject,
   getDirectParentId,
+  getAutoBootstrappedProperty,
 } from "../../src/classes/codeConfig";
 
 describe("classes/codeConfig", () => {
@@ -216,6 +217,66 @@ describe("classes/codeConfig", () => {
     for (let i = 0; i < 10; i++) {
       testSortConfigObjectsWithIds(i);
     }
+  });
+
+  describe("#getAutoBootstrappedProperty", () => {
+    test("it can automatically determine which property to bootstrap", () => {
+      const source = configObjects.find((o) => o.id === "users_table");
+      const bootstrappedProperty = getAutoBootstrappedProperty(
+        source,
+        configObjects
+      );
+      expect(bootstrappedProperty.id).toBe("user_id");
+    });
+
+    test("it returns null if the source's mapping should not be bootstrapped", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "multiple-sources"
+      );
+      const _configObjects = await loadConfigObjects(dir);
+      const source = _configObjects.find((o) => o.id === "purchases_table");
+      const bootstrappedProperty = getAutoBootstrappedProperty(
+        source,
+        _configObjects
+      );
+      expect(bootstrappedProperty).toBeNull();
+    });
+
+    test("it throws an error if the bootstrapped property is not unique", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-bootstrap-not-unique"
+      );
+      const _configObjects = await loadConfigObjects(dir);
+      const source = _configObjects.find((o) => o.id === "users_table");
+
+      expect(() => {
+        getAutoBootstrappedProperty(source, _configObjects);
+      }).toThrow(/"user_id" needs to be set as "unique: true"/);
+    });
+
+    test("it throws an error if the bootstrapped property is an array", async () => {
+      const dir = path.join(
+        __dirname,
+        "..",
+        "fixtures",
+        "codeConfig",
+        "error-bootstrap-is-array"
+      );
+      const _configObjects = await loadConfigObjects(dir);
+      const source = _configObjects.find((o) => o.id === "users_table");
+
+      expect(() => {
+        getAutoBootstrappedProperty(source, _configObjects);
+      }).toThrow(/"user_id" cannot be an array/);
+    });
   });
 });
 
