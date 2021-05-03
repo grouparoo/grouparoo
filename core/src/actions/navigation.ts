@@ -195,6 +195,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return {
       navigationMode,
       clusterName: clusterNameSetting?.value || "",
+      teamMember,
       navigation: {
         navigationItems,
         platformItems,
