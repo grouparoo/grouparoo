@@ -85,6 +85,31 @@ describe("models/setting", () => {
     );
   });
 
+  test("updating a setting without changes does not bump the updated-at", async () => {
+    await plugin.registerSetting(
+      "testPlugin",
+      "key",
+      "new title",
+      100,
+      "this is a better description of the setting",
+      "number"
+    );
+
+    const { updatedAt } = await plugin.readSetting("testPlugin", "key");
+
+    await plugin.registerSetting(
+      "testPlugin",
+      "key",
+      "new title",
+      100,
+      "this is a better description of the setting",
+      "number"
+    );
+
+    const setting = await plugin.readSetting("testPlugin", "key");
+    expect(setting.updatedAt).toEqual(updatedAt);
+  });
+
   test("deleting a setting creates a log entry", async () => {
     const setting = await Setting.findOne({
       where: {
