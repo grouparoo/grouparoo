@@ -14,7 +14,7 @@ export namespace Telemetry {
   export async function send(
     trigger: TelemetryCallTrigger,
     errors: string[] = [],
-    toThrow = false
+    toThrowOnError = false
   ) {
     if (!config.telemetry.enabled) return;
 
@@ -41,7 +41,7 @@ export namespace Telemetry {
         });
       } catch (newError) {}
 
-      if (toThrow) {
+      if (toThrowOnError) {
         throw error;
       } else {
         log(`[ telemetry ] ${error}`, "error");
