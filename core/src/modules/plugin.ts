@@ -110,7 +110,7 @@ export namespace plugin {
     if (setting) {
       return setting.update({
         title,
-        defaultValue,
+        defaultValue: defaultValue.toString(),
         description,
         type,
         variant,
@@ -135,7 +135,7 @@ export namespace plugin {
         `error registering setting: ${JSON.stringify({
           pluginName,
           key,
-          defaultValue,
+          defaultValue: defaultValue.toString(),
           description,
           type,
         })}: ${error}`
