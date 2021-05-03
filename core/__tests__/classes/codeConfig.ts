@@ -6,6 +6,7 @@ import {
   getConfigObjectsWithIds,
   sortConfigObjectsWithIds,
   ConfigurationObject,
+  getDirectParentId,
 } from "../../src/classes/codeConfig";
 
 describe("classes/codeConfig", () => {
@@ -103,6 +104,40 @@ describe("classes/codeConfig", () => {
         expect(prerequisiteIds).toEqual(["user_id", "query_source"]);
         expect(providedIds).toEqual(["ltv"]);
       });
+    });
+  });
+
+  describe("#getDirectParentId", () => {
+    test("gets correct parentId for destinations (appId)", async () => {
+      const destination = configObjects.find(
+        ({ id }) => id === "test_destination"
+      );
+      const parentId = await getDirectParentId(destination);
+      expect(parentId).toBe("data_warehouse");
+    });
+
+    test("gets correct parentId for sources (appId)", async () => {
+      const source = configObjects.find(({ id }) => id === "users_table");
+      const parentId = await getDirectParentId(source);
+      expect(parentId).toBe("data_warehouse");
+    });
+
+    test("gets correct parentId for properties (sourceId)", async () => {
+      const property = configObjects.find(({ id }) => id === "email");
+      const parentId = await getDirectParentId(property);
+      expect(parentId).toBe("users_table");
+    });
+
+    test("gets correct parentId for teamMembers (teamId)", async () => {
+      const teamMember = configObjects.find(({ id }) => id === "demo");
+      const parentId = await getDirectParentId(teamMember);
+      expect(parentId).toBe("admin_team");
+    });
+
+    test("returns null for objects without a parentId", async () => {
+      const team = configObjects.find(({ id }) => id === "admin_team");
+      const parentId = await getDirectParentId(team);
+      expect(parentId).toBeNull();
     });
   });
 
