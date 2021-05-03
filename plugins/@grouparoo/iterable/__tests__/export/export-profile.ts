@@ -447,6 +447,36 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.emailListIds).not.toContain(listFourId);
   });
 
+  test("cannot change the email address if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: true,
+          delete: true,
+        },
+        oldProfileProperties: {
+          email,
+          userId,
+        },
+        newProfileProperties: {
+          email: alternativeEmail,
+          userId,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    // no change.
+    const user = await getUser(alternativeEmail);
+    expect(user).toBe(null);
+
+    const oldUser = await getUser(email);
+    expect(oldUser).not.toBe(null);
+  });
+
   test("it can change the email address (Old FK exists in destination)", async () => {
     await runExport({
       oldProfileProperties: {

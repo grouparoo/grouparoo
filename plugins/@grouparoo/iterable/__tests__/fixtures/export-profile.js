@@ -5,102 +5,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:05:21 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "7",
-    "Server",
-    "iterable-ingress 6d38",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/lucas.nogueira@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:05:22 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "15",
-    "Server",
-    "iterable-ingress b48a",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:05:22 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "6",
-    "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/carlos.solimoes@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:05:22 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "25",
-    "Server",
-    "iterable-ingress aaf8",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/jake.jill@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:05:22 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "7",
-    "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/sebastian@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:05:22 GMT",
+    "Mon, 03 May 2021 13:38:17 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -112,7 +17,102 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "9",
     "Server",
-    "iterable-ingress b886",
+    "iterable-ingress 6d38",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/lucas.nogueira@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:38:17 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "7",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:38:17 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "40",
+    "Server",
+    "iterable-ingress b48a",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/carlos.solimoes@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:38:18 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress b48a",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/jake.jill@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:38:18 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "7",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/sebastian@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:38:18 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "4",
+    "Server",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
@@ -203,7 +203,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:05:22 GMT",
+      "Mon, 03 May 2021 13:38:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -215,7 +215,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "7",
       "Server",
-      "iterable-ingress 8e97",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -307,7 +307,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:05:22 GMT",
+      "Mon, 03 May 2021 13:38:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -317,7 +317,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "12",
+      "6",
       "Server",
       "iterable-ingress aaa7",
     ]
@@ -411,7 +411,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:05:23 GMT",
+      "Mon, 03 May 2021 13:38:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -421,9 +421,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "9",
+      "14",
       "Server",
-      "iterable-ingress aaf8",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -515,7 +515,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:05:23 GMT",
+      "Mon, 03 May 2021 13:38:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -527,7 +527,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "11",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress b886",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -535,45 +535,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:06:03 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "5",
-    "Server",
-    "iterable-ingress 6d38",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:06:04 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "5",
-    "Server",
-    "iterable-ingress 6d38",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:06:04 GMT",
+    "Mon, 03 May 2021 13:38:59 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -585,7 +547,45 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "7",
     "Server",
-    "iterable-ingress b48a",
+    "iterable-ingress 8e97",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:38:59 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "25",
+    "Server",
+    "iterable-ingress 6d38",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:39:00 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "7",
+    "Server",
+    "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -595,7 +595,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:06:04 GMT",
+    "Mon, 03 May 2021 13:39:00 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -605,9 +605,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "10",
+    "12",
     "Server",
-    "iterable-ingress b48a",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/caio.silveira@mailinator.com")
@@ -620,20 +620,20 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Caio",
           email: "caio.silveira@mailinator.com",
-          signupDate: "2021-04-30 03:06:05 +00:00",
-          profileUpdatedAt: "2021-04-30 03:06:04 +00:00",
+          signupDate: "2021-05-03 13:39:00 +00:00",
+          profileUpdatedAt: "2021-05-03 13:39:00 +00:00",
           signupSource: "API",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:06:05 +00:00",
+            documentUpdatedAt: "2021-05-03 13:39:00 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
       },
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:06:34 GMT",
+      "Mon, 03 May 2021 13:39:30 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -643,7 +643,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "4",
+      "6",
       "Server",
       "iterable-ingress aaa7",
     ]
@@ -653,7 +653,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:06:35 GMT",
+    "Mon, 03 May 2021 13:39:30 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -663,16 +663,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "14",
+    "11",
     "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/sebastian@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:06:35 GMT",
+    "Mon, 03 May 2021 13:39:31 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -682,9 +682,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "9",
+    "7",
     "Server",
-    "iterable-ingress aaa7",
+    "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -698,7 +698,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:06:35 GMT",
+    "Mon, 03 May 2021 13:39:31 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -708,9 +708,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "13",
+    "10",
     "Server",
-    "iterable-ingress aaa7",
+    "iterable-ingress 6d38",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/sebastian@mailinator.com")
@@ -724,15 +724,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           name: "sebastian",
           phoneNumber: "+5583999999939",
           email: "sebastian@mailinator.com",
-          signupDate: "2021-04-30 03:06:35 +00:00",
-          profileUpdatedAt: "2021-04-30 03:06:35 +00:00",
+          signupDate: "2021-05-03 13:39:31 +00:00",
+          profileUpdatedAt: "2021-05-03 13:39:31 +00:00",
           signupSource: "API",
           userId: "sebastian3039",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:06:35 +00:00",
+            documentUpdatedAt: "2021-05-03 13:39:31 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:35 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:31 +00:00",
           },
         },
         userId: "sebastian3039",
@@ -740,7 +740,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:07:05 GMT",
+      "Mon, 03 May 2021 13:40:01 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -750,9 +750,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "6",
+      "5",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -766,20 +766,20 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Caio",
           email: "caio.silveira@mailinator.com",
-          signupDate: "2021-04-30 03:06:05 +00:00",
-          profileUpdatedAt: "2021-04-30 03:06:04 +00:00",
+          signupDate: "2021-05-03 13:39:00 +00:00",
+          profileUpdatedAt: "2021-05-03 13:39:00 +00:00",
           signupSource: "API",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:06:05 +00:00",
+            documentUpdatedAt: "2021-05-03 13:39:00 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
       },
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:07:06 GMT",
+      "Mon, 03 May 2021 13:40:01 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -789,9 +789,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "7",
+      "5",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -808,7 +808,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:07:06 GMT",
+    "Mon, 03 May 2021 13:40:02 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -818,9 +818,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "8",
+    "11",
     "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/caio.silveira@mailinator.com")
@@ -836,14 +836,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
           signupDate: "2020-08-19 20:50:04 +00:00",
-          profileUpdatedAt: "2021-04-30 03:07:06 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:02 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:06 +00:00",
+            documentUpdatedAt: "2021-05-03 13:40:02 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -851,7 +851,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:07:36 GMT",
+      "Mon, 03 May 2021 13:40:32 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -863,7 +863,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "6",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -880,14 +880,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
           signupDate: "2020-08-19 20:50:04 +00:00",
-          profileUpdatedAt: "2021-04-30 03:07:06 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:02 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:06 +00:00",
+            documentUpdatedAt: "2021-05-03 13:40:02 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -895,51 +895,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:07:37 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "501",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "4",
-      "Server",
-      "iterable-ingress 8e97",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          name: "Caio",
-          phoneNumber: "+5583999999999",
-          email: "caio.silveira@mailinator.com",
-          customField: "testCustomField",
-          signupDate: "2020-08-19 20:50:04 +00:00",
-          profileUpdatedAt: "2021-04-30 03:07:06 +00:00",
-          signupSource: "API",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:06 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:07:37 GMT",
+      "Mon, 03 May 2021 13:40:32 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -968,14 +924,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
           signupDate: "2020-08-19 20:50:04 +00:00",
-          profileUpdatedAt: "2021-04-30 03:07:06 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:02 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:06 +00:00",
+            documentUpdatedAt: "2021-05-03 13:40:02 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -983,7 +939,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:07:37 GMT",
+      "Mon, 03 May 2021 13:40:32 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -993,9 +949,53 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "7",
+      "5",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 8e97",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          name: "Caio",
+          phoneNumber: "+5583999999999",
+          email: "caio.silveira@mailinator.com",
+          customField: "testCustomField",
+          signupDate: "2020-08-19 20:50:04 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:02 +00:00",
+          signupSource: "API",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:40:02 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:40:33 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "501",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -1011,7 +1011,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:07:38 GMT",
+    "Mon, 03 May 2021 13:40:33 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -1023,7 +1023,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "10",
     "Server",
-    "iterable-ingress b48a",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/caio.silveira@mailinator.com")
@@ -1038,14 +1038,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           phoneNumber: "+5583999999998",
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
-          profileUpdatedAt: "2021-04-30 03:07:38 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:33 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:40 +00:00",
+            documentUpdatedAt: "2021-05-03 13:40:34 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -1053,7 +1053,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:08:08 GMT",
+      "Mon, 03 May 2021 13:41:03 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1065,7 +1065,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "6",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress aaa7",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -1081,14 +1081,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           phoneNumber: "+5583999999998",
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
-          profileUpdatedAt: "2021-04-30 03:07:38 +00:00",
+          profileUpdatedAt: "2021-05-03 13:40:33 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:07:40 +00:00",
+            documentUpdatedAt: "2021-05-03 13:40:34 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -1096,7 +1096,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:08:08 GMT",
+      "Mon, 03 May 2021 13:41:04 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1106,9 +1106,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "6",
+      "5",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress aaf8",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -1124,7 +1124,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:08:09 GMT",
+    "Mon, 03 May 2021 13:41:04 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -1134,9 +1134,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "7",
+    "10",
     "Server",
-    "iterable-ingress aaa7",
+    "iterable-ingress 6d38",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/caio.silveira@mailinator.com")
@@ -1149,14 +1149,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
-          profileUpdatedAt: "2021-04-30 03:08:08 +00:00",
+          profileUpdatedAt: "2021-05-03 13:41:04 +00:00",
           signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:08:10 +00:00",
+            documentUpdatedAt: "2021-05-03 13:41:04 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
         },
         userId: "testuser123",
@@ -1164,437 +1164,11 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:08:39 GMT",
+      "Mon, 03 May 2021 13:41:34 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
       "414",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
-      "Server",
-      "iterable-ingress 6d38",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          email: "caio.silveira@mailinator.com",
-          customField: "testCustomField",
-          profileUpdatedAt: "2021-04-30 03:08:08 +00:00",
-          signupSource: "API",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:08:10 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:39 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "414",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
-      "Server",
-      "iterable-ingress b48a",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/users/update", {
-    email: "caio.silveira@mailinator.com",
-    dataFields: { userId: "testuser123" },
-  })
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:08:39 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "12",
-    "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:39 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1183",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "11",
-      "Server",
-      "iterable-ingress aaf8",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:40 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1183",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "45",
-      "Server",
-      "iterable-ingress 6d38",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists", { name: "List One" })
-  .once()
-  .reply(200, { listId: 977929 }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:08:40 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "17",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "15",
-    "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/subscribe", {
-    listId: 977929,
-    subscribers: [{ email: "caio.silveira@mailinator.com" }],
-  })
-  .once()
-  .reply(
-    200,
-    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:40 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "20",
-      "Server",
-      "iterable-ingress b886",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:40 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1263",
       "Connection",
       "keep-alive",
       "Vary",
@@ -1602,162 +1176,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "7",
       "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:40 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1263",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "11",
-      "Server",
-      "iterable-ingress aaf8",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists", { name: "List Two" })
-  .once()
-  .reply(200, { listId: 977930 }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:08:40 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "17",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "15",
-    "Server",
-    "iterable-ingress aaa7",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/subscribe", {
-    listId: 977930,
-    subscribers: [{ email: "caio.silveira@mailinator.com" }],
-  })
-  .once()
-  .reply(
-    200,
-    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:08:40 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "14",
-      "Server",
-      "iterable-ingress b886",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -1769,32 +1188,28 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       user: {
         email: "caio.silveira@mailinator.com",
         dataFields: {
+          email: "caio.silveira@mailinator.com",
           customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930],
-          profileUpdatedAt: "2021-04-30 03:08:40 +00:00",
+          profileUpdatedAt: "2021-05-03 13:41:04 +00:00",
+          signupSource: "API",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:08:42 +00:00",
+            documentUpdatedAt: "2021-05-03 13:41:04 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
-          email: "caio.silveira@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
         },
         userId: "testuser123",
       },
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:11 GMT",
+      "Mon, 03 May 2021 13:41:35 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "535",
+      "414",
       "Connection",
       "keep-alive",
       "Vary",
@@ -1802,284 +1217,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "4",
       "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:11 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1343",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "10",
-      "Server",
-      "iterable-ingress 8e97",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:11 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1343",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "9",
-      "Server",
       "iterable-ingress b886",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930],
-          profileUpdatedAt: "2021-04-30 03:08:40 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:08:42 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-          email: "caio.silveira@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:11 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "535",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "7",
-      "Server",
-      "iterable-ingress aaa7",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -2090,7 +1228,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:09:12 GMT",
+    "Mon, 03 May 2021 13:41:35 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -2102,7 +1240,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "9",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
@@ -2111,18 +1249,6 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     200,
     {
       lists: [
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
         {
           id: 954281,
           name: "People without emails",
@@ -2205,24 +1331,147 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:12 GMT",
+      "Mon, 03 May 2021 13:41:35 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1343",
+      "1183",
       "Connection",
       "keep-alive",
       "Vary",
       "Origin",
       "Request-Time",
-      "12",
+      "13",
       "Server",
       "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:41:35 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1183",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "10",
+      "Server",
+      "iterable-ingress 8e97",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists", { name: "List One" })
+  .once()
+  .reply(200, { listId: 980091 }, [
+    "Date",
+    "Mon, 03 May 2021 13:41:35 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "17",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "15",
+    "Server",
+    "iterable-ingress 8e97",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/lists/subscribe", {
-    listId: 977929,
+    listId: 980091,
     subscribers: [{ email: "caio.silveira@mailinator.com" }],
   })
   .once()
@@ -2231,7 +1480,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:12 GMT",
+      "Mon, 03 May 2021 13:41:35 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -2241,9 +1490,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "11",
+      "13",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -2254,15 +1503,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -2347,7 +1590,323 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:12 GMT",
+      "Mon, 03 May 2021 13:41:36 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1263",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "10",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:41:36 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1263",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "11",
+      "Server",
+      "iterable-ingress aaa7",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists", { name: "List Two" })
+  .once()
+  .reply(200, { listId: 980092 }, [
+    "Date",
+    "Mon, 03 May 2021 13:41:36 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "17",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "21",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists/subscribe", {
+    listId: 980092,
+    subscribers: [{ email: "caio.silveira@mailinator.com" }],
+  })
+  .once()
+  .reply(
+    200,
+    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:41:36 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "15",
+      "Server",
+      "iterable-ingress 8e97",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092],
+          profileUpdatedAt: "2021-05-03 13:41:36 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:41:37 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:06 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "535",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress b886",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:06 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -2357,149 +1916,11 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "11",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/unsubscribe", {
-    listId: 977930,
-    subscribers: [{ email: "caio.silveira@mailinator.com" }],
-  })
-  .once()
-  .reply(
-    200,
-    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:12 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "14",
-      "Server",
-      "iterable-ingress aaf8",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929],
-          profileUpdatedAt: "2021-04-30 03:09:12 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:09:14 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-          email: "caio.silveira@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:42 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "528",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "4",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929],
-          profileUpdatedAt: "2021-04-30 03:09:12 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:09:14 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-          email: "caio.silveira@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:43 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "528",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "7",
+      "8",
       "Server",
       "iterable-ingress b886",
     ]
   );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/users/update", {
-    email: "caio.silveira@mailinator.com",
-    dataFields: { userId: "testuser123" },
-  })
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:09:43 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "14",
-    "Server",
-    "iterable-ingress b48a",
-  ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
   .once()
@@ -2508,15 +1929,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977930,
+          id: 980092,
           name: "List Two",
-          createdAt: 1619752120838,
+          createdAt: 1620049296325,
           listType: "Standard",
         },
         {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -2601,7 +2022,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:43 GMT",
+      "Mon, 03 May 2021 13:42:06 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -2613,277 +2034,67 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "10",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/subscribe", {
-    listId: 977930,
-    subscribers: [{ email: "caio.silveira@mailinator.com" }],
-  })
-  .once()
-  .reply(
-    200,
-    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:43 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "7",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
+  .get("/api/users/caio.silveira@mailinator.com")
   .once()
   .reply(
     200,
     {
-      lists: [
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092],
+          profileUpdatedAt: "2021-05-03 13:41:36 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:41:37 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
         },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
+        userId: "testuser123",
+      },
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:09:43 GMT",
+      "Mon, 03 May 2021 13:42:07 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1343",
+      "535",
       "Connection",
       "keep-alive",
       "Vary",
       "Origin",
       "Request-Time",
-      "14",
+      "6",
       "Server",
       "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
+  .post("/api/users/update", {
+    email: "caio.silveira@mailinator.com",
+    dataFields: { userId: "testuser123" },
+  })
   .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:43 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1343",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "9",
-      "Server",
-      "iterable-ingress 8e97",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists", { name: "List Three" })
-  .once()
-  .reply(200, { listId: 977931 }, [
+  .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:09:44 GMT",
+    "Mon, 03 May 2021 13:42:07 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
-    "17",
+    "41",
     "Connection",
     "keep-alive",
     "Vary",
@@ -2891,79 +2102,8 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "13",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress 6d38",
   ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/subscribe", {
-    listId: 977931,
-    subscribers: [{ email: "caio.silveira@mailinator.com" }],
-  })
-  .once()
-  .reply(
-    200,
-    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:09:44 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "71",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "12",
-      "Server",
-      "iterable-ingress b886",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/caio.silveira@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "caio.silveira@mailinator.com",
-        dataFields: {
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          profileUpdatedAt: "2021-04-30 03:09:44 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:09:44 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
-          },
-          email: "caio.silveira@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:10:14 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "542",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "2",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
   .once()
@@ -2972,21 +2112,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977931,
-          name: "List Three",
-          createdAt: 1619752184044,
-          listType: "Standard",
-        },
-        {
-          id: 977930,
+          id: 980092,
           name: "List Two",
-          createdAt: 1619752120838,
+          createdAt: 1620049296325,
           listType: "Standard",
         },
         {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -3071,19 +2205,187 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:14 GMT",
+      "Mon, 03 May 2021 13:42:07 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1425",
+      "1343",
       "Connection",
       "keep-alive",
       "Vary",
       "Origin",
       "Request-Time",
-      "10",
+      "13",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists/subscribe", {
+    listId: 980091,
+    subscribers: [{ email: "caio.silveira@mailinator.com" }],
+  })
+  .once()
+  .reply(
+    200,
+    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:07 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "14",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1343",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "11",
+      "Server",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists/unsubscribe", {
+    listId: 980092,
+    subscribers: [{ email: "caio.silveira@mailinator.com" }],
+  })
+  .once()
+  .reply(
+    200,
+    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "13",
+      "Server",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -3097,14 +2399,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          profileUpdatedAt: "2021-04-30 03:09:44 +00:00",
+          emailListIds: [980091],
+          profileUpdatedAt: "2021-05-03 13:42:08 +00:00",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:09:44 +00:00",
+            documentUpdatedAt: "2021-05-03 13:42:08 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
           email: "caio.silveira@mailinator.com",
           unsubscribedChannelIds: [],
@@ -3116,11 +2418,56 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:15 GMT",
+      "Mon, 03 May 2021 13:42:38 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "542",
+      "528",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091],
+          profileUpdatedAt: "2021-05-03 13:42:08 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:42:08 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:38 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "528",
       "Connection",
       "keep-alive",
       "Vary",
@@ -3139,7 +2486,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:10:15 GMT",
+    "Mon, 03 May 2021 13:42:39 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3149,9 +2496,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "6",
+    "15",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
@@ -3161,21 +2508,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977931,
-          name: "List Three",
-          createdAt: 1619752184044,
-          listType: "Standard",
-        },
-        {
-          id: 977930,
+          id: 980092,
           name: "List Two",
-          createdAt: 1619752120838,
+          createdAt: 1620049296325,
           listType: "Standard",
         },
         {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -3260,165 +2601,24 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:15 GMT",
+      "Mon, 03 May 2021 13:42:39 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1425",
+      "1343",
       "Connection",
       "keep-alive",
       "Vary",
       "Origin",
       "Request-Time",
-      "9",
+      "11",
       "Server",
-      "iterable-ingress 6d38",
+      "iterable-ingress aaa7",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/lists")
-  .once()
-  .reply(
-    200,
-    {
-      lists: [
-        {
-          id: 977931,
-          name: "List Three",
-          createdAt: 1619752184044,
-          listType: "Standard",
-        },
-        {
-          id: 977930,
-          name: "List Two",
-          createdAt: 1619752120838,
-          listType: "Standard",
-        },
-        {
-          id: 977929,
-          name: "List One",
-          createdAt: 1619752120264,
-          listType: "Standard",
-        },
-        {
-          id: 954281,
-          name: "People without emails",
-          createdAt: 1618248887848,
-          listType: "Standard",
-        },
-        {
-          id: 954280,
-          name: "Everyone with an email",
-          createdAt: 1618248887703,
-          listType: "Standard",
-        },
-        {
-          id: 952927,
-          name: "One Person",
-          createdAt: 1618074314757,
-          listType: "Standard",
-        },
-        {
-          id: 952753,
-          name: "Mix of email and no email",
-          createdAt: 1618012591060,
-          listType: "Standard",
-        },
-        {
-          id: 952743,
-          name: "small group",
-          createdAt: 1618011863427,
-          listType: "Standard",
-        },
-        {
-          id: 881919,
-          name: "High LTV Spanish speakers",
-          createdAt: 1614982084143,
-          listType: "Standard",
-        },
-        {
-          id: 861897,
-          name: "People who bought red shells",
-          createdAt: 1613625317732,
-          listType: "Standard",
-        },
-        {
-          id: 856682,
-          name: "All Emails",
-          createdAt: 1613157191050,
-          listType: "Standard",
-        },
-        {
-          id: 847675,
-          name: "People",
-          createdAt: 1612484718408,
-          listType: "Standard",
-        },
-        {
-          id: 847669,
-          name: "One person",
-          createdAt: 1612484024629,
-          listType: "Standard",
-        },
-        {
-          id: 845307,
-          name: "Spanish Speakers",
-          createdAt: 1612375373495,
-          listType: "Standard",
-        },
-        {
-          id: 845306,
-          name: "High Value with Recent Automotive Purchase",
-          createdAt: 1612375372851,
-          listType: "Standard",
-        },
-        {
-          id: 845305,
-          name: "High Value",
-          createdAt: 1612375372540,
-          listType: "Standard",
-        },
-      ],
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:10:15 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "1425",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "9",
-      "Server",
-      "iterable-ingress 6d38",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists", { name: "List Four" })
-  .once()
-  .reply(200, { listId: 977932 }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:10:15 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "17",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "39",
-    "Server",
-    "iterable-ingress aaf8",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/lists/unsubscribe", {
-    listId: 977932,
+  .post("/api/lists/subscribe", {
+    listId: 980092,
     subscribers: [{ email: "caio.silveira@mailinator.com" }],
   })
   .once()
@@ -3427,7 +2627,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:15 GMT",
+      "Mon, 03 May 2021 13:42:39 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3437,9 +2637,286 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "4",
+      "13",
+      "Server",
+      "iterable-ingress b886",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:39 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1343",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "10",
       "Server",
       "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:39 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1343",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "10",
+      "Server",
+      "iterable-ingress aaa7",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists", { name: "List Three" })
+  .once()
+  .reply(200, { listId: 980093 }, [
+    "Date",
+    "Mon, 03 May 2021 13:42:39 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "17",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "9",
+    "Server",
+    "iterable-ingress 6d38",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists/subscribe", {
+    listId: 980093,
+    subscribers: [{ email: "caio.silveira@mailinator.com" }],
+  })
+  .once()
+  .reply(
+    200,
+    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:42:39 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "12",
+      "Server",
+      "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -3453,14 +2930,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          profileUpdatedAt: "2021-04-30 03:10:15 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:42:39 +00:00",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:10:16 +00:00",
+            documentUpdatedAt: "2021-05-03 13:42:40 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
           email: "caio.silveira@mailinator.com",
           unsubscribedChannelIds: [],
@@ -3472,7 +2949,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:45 GMT",
+      "Mon, 03 May 2021 13:43:09 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3482,9 +2959,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "6",
+      "3",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -3495,27 +2972,21 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977932,
-          name: "List Four",
-          createdAt: 1619752215594,
-          listType: "Standard",
-        },
-        {
-          id: 977931,
+          id: 980093,
           name: "List Three",
-          createdAt: 1619752184044,
+          createdAt: 1620049359674,
           listType: "Standard",
         },
         {
-          id: 977930,
+          id: 980092,
           name: "List Two",
-          createdAt: 1619752120838,
+          createdAt: 1620049296325,
           listType: "Standard",
         },
         {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -3600,7 +3071,536 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:46 GMT",
+      "Mon, 03 May 2021 13:43:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1425",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "9",
+      "Server",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:42:39 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:42:40 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "542",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "5",
+      "Server",
+      "iterable-ingress aaf8",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/users/update", {
+    email: "caio.silveira@mailinator.com",
+    dataFields: { userId: "testuser123" },
+  })
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:43:10 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress b886",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980093,
+          name: "List Three",
+          createdAt: 1620049359674,
+          listType: "Standard",
+        },
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1425",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "116",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980093,
+          name: "List Three",
+          createdAt: 1620049359674,
+          listType: "Standard",
+        },
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:11 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1425",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "11",
+      "Server",
+      "iterable-ingress 8e97",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists", { name: "List Four" })
+  .once()
+  .reply(200, { listId: 980094 }, [
+    "Date",
+    "Mon, 03 May 2021 13:43:11 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "17",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "9",
+    "Server",
+    "iterable-ingress aaf8",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/lists/unsubscribe", {
+    listId: 980094,
+    subscribers: [{ email: "caio.silveira@mailinator.com" }],
+  })
+  .once()
+  .reply(
+    200,
+    { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:11 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "71",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "11",
+      "Server",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:43:11 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:43:12 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:41 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "542",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "5",
+      "Server",
+      "iterable-ingress aaf8",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/lists")
+  .once()
+  .reply(
+    200,
+    {
+      lists: [
+        {
+          id: 980094,
+          name: "List Four",
+          createdAt: 1620049391280,
+          listType: "Standard",
+        },
+        {
+          id: 980093,
+          name: "List Three",
+          createdAt: 1620049359674,
+          listType: "Standard",
+        },
+        {
+          id: 980092,
+          name: "List Two",
+          createdAt: 1620049296325,
+          listType: "Standard",
+        },
+        {
+          id: 980091,
+          name: "List One",
+          createdAt: 1620049295722,
+          listType: "Standard",
+        },
+        {
+          id: 954281,
+          name: "People without emails",
+          createdAt: 1618248887848,
+          listType: "Standard",
+        },
+        {
+          id: 954280,
+          name: "Everyone with an email",
+          createdAt: 1618248887703,
+          listType: "Standard",
+        },
+        {
+          id: 952927,
+          name: "One Person",
+          createdAt: 1618074314757,
+          listType: "Standard",
+        },
+        {
+          id: 952753,
+          name: "Mix of email and no email",
+          createdAt: 1618012591060,
+          listType: "Standard",
+        },
+        {
+          id: 952743,
+          name: "small group",
+          createdAt: 1618011863427,
+          listType: "Standard",
+        },
+        {
+          id: 881919,
+          name: "High LTV Spanish speakers",
+          createdAt: 1614982084143,
+          listType: "Standard",
+        },
+        {
+          id: 861897,
+          name: "People who bought red shells",
+          createdAt: 1613625317732,
+          listType: "Standard",
+        },
+        {
+          id: 856682,
+          name: "All Emails",
+          createdAt: 1613157191050,
+          listType: "Standard",
+        },
+        {
+          id: 847675,
+          name: "People",
+          createdAt: 1612484718408,
+          listType: "Standard",
+        },
+        {
+          id: 847669,
+          name: "One person",
+          createdAt: 1612484024629,
+          listType: "Standard",
+        },
+        {
+          id: 845307,
+          name: "Spanish Speakers",
+          createdAt: 1612375373495,
+          listType: "Standard",
+        },
+        {
+          id: 845306,
+          name: "High Value with Recent Automotive Purchase",
+          createdAt: 1612375372851,
+          listType: "Standard",
+        },
+        {
+          id: 845305,
+          name: "High Value",
+          createdAt: 1612375372540,
+          listType: "Standard",
+        },
+      ],
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3610,7 +3610,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "12",
+      "10",
       "Server",
       "iterable-ingress b886",
     ]
@@ -3620,7 +3620,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:10:46 GMT",
+    "Mon, 03 May 2021 13:43:42 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3645,14 +3645,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          profileUpdatedAt: "2021-04-30 03:10:15 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:43:11 +00:00",
           userId: "testuser123",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:10:16 +00:00",
+            documentUpdatedAt: "2021-05-03 13:43:12 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:06:05 +00:00",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
           },
           email: "caio.silveira@mailinator.com",
           unsubscribedChannelIds: [],
@@ -3664,7 +3664,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:10:46 GMT",
+      "Mon, 03 May 2021 13:43:42 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3674,9 +3674,137 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "6",
+      "3",
       "Server",
       "iterable-ingress aaf8",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/lucas.nogueira@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:43:42 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress b48a",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:43:11 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:43:12 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:42 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "542",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "1",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/lucas.nogueira@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:43:43 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "7",
+    "Server",
+    "iterable-ingress 8e97",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/caio.silveira@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "caio.silveira@mailinator.com",
+        dataFields: {
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          profileUpdatedAt: "2021-05-03 13:43:11 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:43:12 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:39:00 +00:00",
+          },
+          email: "caio.silveira@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:43:43 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "542",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "0",
+      "Server",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -3688,7 +3816,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:10:47 GMT",
+    "Mon, 03 May 2021 13:43:43 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3698,7 +3826,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "216",
+    "28",
     "Server",
     "iterable-ingress 6d38",
   ]);
@@ -3710,7 +3838,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:10:47 GMT",
+    "Mon, 03 May 2021 13:43:43 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3720,9 +3848,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "13",
+    "10",
     "Server",
-    "iterable-ingress 6d38",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/lucas.nogueira@mailinator.com")
@@ -3735,14 +3863,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:10:47 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:43:43 +00:00",
           userId: "testuser123",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:10:47 +00:00",
+            documentUpdatedAt: "2021-05-03 13:43:44 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:10:47 +00:00",
+            documentCreatedAt: "2021-05-03 13:43:43 +00:00",
           },
           email: "lucas.nogueira@mailinator.com",
           unsubscribedChannelIds: [],
@@ -3754,7 +3882,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:11:17 GMT",
+      "Mon, 03 May 2021 13:44:13 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3774,7 +3902,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:11:17 GMT",
+    "Mon, 03 May 2021 13:44:13 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3784,16 +3912,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "8",
+    "7",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/sandro.arturo@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:11:17 GMT",
+    "Mon, 03 May 2021 13:44:14 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3803,9 +3931,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "9",
+    "10",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/lucas.nogueira@mailinator.com")
@@ -3818,14 +3946,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:10:47 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:43:43 +00:00",
           userId: "testuser123",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:10:47 +00:00",
+            documentUpdatedAt: "2021-05-03 13:43:44 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:10:47 +00:00",
+            documentCreatedAt: "2021-05-03 13:43:43 +00:00",
           },
           email: "lucas.nogueira@mailinator.com",
           unsubscribedChannelIds: [],
@@ -3837,7 +3965,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:11:18 GMT",
+      "Mon, 03 May 2021 13:44:14 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -3847,9 +3975,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "5",
+      "9",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -3861,7 +3989,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:11:18 GMT",
+    "Mon, 03 May 2021 13:44:15 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3871,9 +3999,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "155",
+    "1028",
     "Server",
-    "iterable-ingress b48a",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -3887,7 +4015,144 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:11:18 GMT",
+    "Mon, 03 May 2021 13:44:15 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "3",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "sandro.arturo@mailinator.com",
+        dataFields: {
+          name: "Lucas",
+          phoneNumber: "+5583999999997",
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:15 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:44:17 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
+          },
+          email: "sandro.arturo@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:44:46 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "630",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/lucas.nogueira@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:44:46 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "sandro.arturo@mailinator.com",
+        dataFields: {
+          name: "Lucas",
+          phoneNumber: "+5583999999997",
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:15 +00:00",
+          userId: "testuser123",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:44:17 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
+          },
+          email: "sandro.arturo@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser123",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:44:46 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "630",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress 6d38",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .post("/api/users/update", {
+    email: "sandro.arturo@mailinator.com",
+    dataFields: { userId: "testuser345" },
+  })
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:44:46 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -3914,152 +4179,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           phoneNumber: "+5583999999997",
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:18 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:18 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
-          },
-          email: "sandro.arturo@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:11:48 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "630",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "8",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/lucas.nogueira@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:11:48 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "20",
-    "Server",
-    "iterable-ingress b48a",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "sandro.arturo@mailinator.com",
-        dataFields: {
-          name: "Lucas",
-          phoneNumber: "+5583999999997",
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:18 +00:00",
-          userId: "testuser123",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:18 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
-          },
-          email: "sandro.arturo@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser123",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:11:49 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "630",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "8",
-      "Server",
-      "iterable-ingress b48a",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .post("/api/users/update", {
-    email: "sandro.arturo@mailinator.com",
-    dataFields: { userId: "testuser345" },
-  })
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:11:49 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "11",
-    "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "sandro.arturo@mailinator.com",
-        dataFields: {
-          name: "Lucas",
-          phoneNumber: "+5583999999997",
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:49 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:46 +00:00",
           userId: "testuser345",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:49 +00:00",
+            documentUpdatedAt: "2021-05-03 13:44:47 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
           },
           email: "sandro.arturo@mailinator.com",
           unsubscribedChannelIds: [],
@@ -4071,7 +4199,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:12:19 GMT",
+      "Mon, 03 May 2021 13:45:16 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4081,55 +4209,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "7",
-      "Server",
-      "iterable-ingress 6d38",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "sandro.arturo@mailinator.com",
-        dataFields: {
-          name: "Lucas",
-          phoneNumber: "+5583999999997",
-          customField: "testCustomField",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:49 +00:00",
-          userId: "testuser345",
-          itblInternal: {
-            regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:49 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
-          },
-          email: "sandro.arturo@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser345",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:12:20 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "630",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
+      "8",
       "Server",
       "iterable-ingress aaf8",
     ]
@@ -4147,15 +4227,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           phoneNumber: "+5583999999997",
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:49 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:46 +00:00",
           userId: "testuser345",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:49 +00:00",
+            documentUpdatedAt: "2021-05-03 13:44:47 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
           },
           email: "sandro.arturo@mailinator.com",
           unsubscribedChannelIds: [],
@@ -4167,7 +4247,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:12:20 GMT",
+      "Mon, 03 May 2021 13:45:17 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4177,9 +4257,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "64",
+      "5",
       "Server",
-      "iterable-ingress 8e97",
+      "iterable-ingress aaf8",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4195,15 +4275,15 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
           phoneNumber: "+5583999999997",
           customField: "testCustomField",
           subscribedMessageTypeIds: [],
-          emailListIds: [977929, 977930, 977931],
-          signupDate: "2021-04-30 03:10:47 +00:00",
-          profileUpdatedAt: "2021-04-30 03:11:49 +00:00",
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:46 +00:00",
           userId: "testuser345",
           itblInternal: {
             regionCode: "BR",
-            documentUpdatedAt: "2021-04-30 03:11:49 +00:00",
+            documentUpdatedAt: "2021-05-03 13:44:47 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:11:18 +00:00",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
           },
           email: "sandro.arturo@mailinator.com",
           unsubscribedChannelIds: [],
@@ -4215,7 +4295,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:12:21 GMT",
+      "Mon, 03 May 2021 13:45:17 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4225,9 +4305,57 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "5",
+      "6",
       "Server",
-      "iterable-ingress 6d38",
+      "iterable-ingress b886",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "sandro.arturo@mailinator.com",
+        dataFields: {
+          name: "Lucas",
+          phoneNumber: "+5583999999997",
+          customField: "testCustomField",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980091, 980092, 980093],
+          signupDate: "2021-05-03 13:43:43 +00:00",
+          profileUpdatedAt: "2021-05-03 13:44:46 +00:00",
+          userId: "testuser345",
+          itblInternal: {
+            regionCode: "BR",
+            documentUpdatedAt: "2021-05-03 13:44:47 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:44:16 +00:00",
+          },
+          email: "sandro.arturo@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser345",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:45:18 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "630",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "4",
+      "Server",
+      "iterable-ingress b886",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4235,11 +4363,87 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:12:21 GMT",
+    "Mon, 03 May 2021 13:45:18 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
     "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "9",
+    "Server",
+    "iterable-ingress b886",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:45:48 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "29",
+    "Server",
+    "iterable-ingress aaf8",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:45:48 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "21",
+    "Server",
+    "iterable-ingress aaf8",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:45:49 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "6",
+    "Server",
+    "iterable-ingress b48a",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/sandro.arturo@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:46:19 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
     "Connection",
     "keep-alive",
     "Vary",
@@ -4250,11 +4454,11 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
+  .get("/api/users/carlos.solimoes@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:12:51 GMT",
+    "Mon, 03 May 2021 13:46:19 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4264,64 +4468,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "8",
-    "Server",
-    "iterable-ingress b886",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:12:51 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "7",
-    "Server",
-    "iterable-ingress b886",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:12:52 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "8",
-    "Server",
-    "iterable-ingress aaf8",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/sandro.arturo@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:13:22 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "5",
+    "9",
     "Server",
     "iterable-ingress b48a",
   ]);
@@ -4330,7 +4477,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:22 GMT",
+    "Mon, 03 May 2021 13:46:20 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4340,28 +4487,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "66",
+    "9",
     "Server",
-    "iterable-ingress 8e97",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/carlos.solimoes@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:13:23 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "7",
-    "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -4371,7 +4499,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:23 GMT",
+    "Mon, 03 May 2021 13:46:20 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4381,9 +4509,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "17",
+    "14",
     "Server",
-    "iterable-ingress 6d38",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/lists")
@@ -4393,27 +4521,27 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     {
       lists: [
         {
-          id: 977932,
+          id: 980094,
           name: "List Four",
-          createdAt: 1619752215594,
+          createdAt: 1620049391280,
           listType: "Standard",
         },
         {
-          id: 977931,
+          id: 980093,
           name: "List Three",
-          createdAt: 1619752184044,
+          createdAt: 1620049359674,
           listType: "Standard",
         },
         {
-          id: 977930,
+          id: 980092,
           name: "List Two",
-          createdAt: 1619752120838,
+          createdAt: 1620049296325,
           listType: "Standard",
         },
         {
-          id: 977929,
+          id: 980091,
           name: "List One",
-          createdAt: 1619752120264,
+          createdAt: 1620049295722,
           listType: "Standard",
         },
         {
@@ -4498,7 +4626,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:13:23 GMT",
+      "Mon, 03 May 2021 13:46:20 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4508,14 +4636,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "11",
+      "10",
       "Server",
-      "iterable-ingress b48a",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/lists/subscribe", {
-    listId: 977932,
+    listId: 980094,
     subscribers: [{ email: "carlos.solimoes@mailinator.com" }],
   })
   .once()
@@ -4524,7 +4652,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     { successCount: 1, failCount: 0, invalidEmails: [], invalidUserIds: [] },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:13:23 GMT",
+      "Mon, 03 May 2021 13:46:20 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4534,9 +4662,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "8",
+      "5",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress b886",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4550,14 +4678,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Carlos",
           subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
           userId: "testuser456",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
           },
           email: "carlos.solimoes@mailinator.com",
           unsubscribedChannelIds: [],
@@ -4569,7 +4697,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:13:53 GMT",
+      "Mon, 03 May 2021 13:46:50 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4581,7 +4709,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Request-Time",
       "5",
       "Server",
-      "iterable-ingress 8e97",
+      "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4589,7 +4717,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:53 GMT",
+    "Mon, 03 May 2021 13:46:50 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4599,16 +4727,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "8",
+    "9",
     "Server",
-    "iterable-ingress b48a",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/pilo.paz@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:53 GMT",
+    "Mon, 03 May 2021 13:46:50 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4618,16 +4746,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "6",
+    "13",
     "Server",
-    "iterable-ingress 6d38",
+    "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/jake.jill@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:54 GMT",
+    "Mon, 03 May 2021 13:46:51 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4637,16 +4765,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "7",
+    "11",
     "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/pilo.paz@mailinator.com")
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:54 GMT",
+    "Mon, 03 May 2021 13:46:51 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4656,9 +4784,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "20",
+    "18",
     "Server",
-    "iterable-ingress aaa7",
+    "iterable-ingress b48a",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -4668,7 +4796,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:13:54 GMT",
+    "Mon, 03 May 2021 13:46:51 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4693,14 +4821,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Jake",
           email: "jake.jill@mailinator.com",
-          signupDate: "2021-04-30 03:13:54 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:54 +00:00",
+          signupDate: "2021-05-03 13:46:52 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:51 +00:00",
           signupSource: "API",
           userId: "jake.jill",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:54 +00:00",
+            documentUpdatedAt: "2021-05-03 13:46:52 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:54 +00:00",
+            documentCreatedAt: "2021-05-03 13:46:52 +00:00",
           },
         },
         userId: "jake.jill",
@@ -4708,7 +4836,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:14:24 GMT",
+      "Mon, 03 May 2021 13:47:21 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4718,7 +4846,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "0",
+      "6",
       "Server",
       "iterable-ingress aaa7",
     ]
@@ -4734,14 +4862,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Jake",
           email: "jake.jill@mailinator.com",
-          signupDate: "2021-04-30 03:13:54 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:54 +00:00",
+          signupDate: "2021-05-03 13:46:52 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:51 +00:00",
           signupSource: "API",
           userId: "jake.jill",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:54 +00:00",
+            documentUpdatedAt: "2021-05-03 13:46:52 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:54 +00:00",
+            documentCreatedAt: "2021-05-03 13:46:52 +00:00",
           },
         },
         userId: "jake.jill",
@@ -4749,7 +4877,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:14:25 GMT",
+      "Mon, 03 May 2021 13:47:22 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4759,9 +4887,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "5",
+      "6",
       "Server",
-      "iterable-ingress 8e97",
+      "iterable-ingress aaa7",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4775,14 +4903,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Carlos",
           subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
           userId: "testuser456",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
           },
           email: "carlos.solimoes@mailinator.com",
           unsubscribedChannelIds: [],
@@ -4794,7 +4922,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:14:25 GMT",
+      "Mon, 03 May 2021 13:47:22 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4804,9 +4932,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "4",
+      "5",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress aaf8",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -4817,7 +4945,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:14:25 GMT",
+    "Mon, 03 May 2021 13:47:22 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4827,262 +4955,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "9",
-    "Server",
-    "iterable-ingress 6d38",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/carlos.solimoes@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "carlos.solimoes@mailinator.com",
-        dataFields: {
-          name: "Carlos",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
-          userId: "testuser456",
-          itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
-          },
-          email: "carlos.solimoes@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser456",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:14:55 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "540",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
-      "Server",
-      "iterable-ingress aaa7",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/jake.jill@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "jake.jill@mailinator.com",
-        dataFields: {
-          name: "Lucas",
-          email: "jake.jill@mailinator.com",
-          signupDate: "2021-04-30 03:13:54 +00:00",
-          profileUpdatedAt: "2021-04-30 03:14:25 +00:00",
-          signupSource: "API",
-          userId: "jake.jill",
-          itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:14:26 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:54 +00:00",
-          },
-        },
-        userId: "jake.jill",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:14:55 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "409",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
-      "Server",
-      "iterable-ingress b48a",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/jake.jill@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "jake.jill@mailinator.com",
-        dataFields: {
-          name: "Lucas",
-          email: "jake.jill@mailinator.com",
-          signupDate: "2021-04-30 03:13:54 +00:00",
-          profileUpdatedAt: "2021-04-30 03:14:25 +00:00",
-          signupSource: "API",
-          userId: "jake.jill",
-          itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:14:26 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:54 +00:00",
-          },
-        },
-        userId: "jake.jill",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:14:56 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "409",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "2",
-      "Server",
-      "iterable-ingress 8e97",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/carlos.solimoes@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "carlos.solimoes@mailinator.com",
-        dataFields: {
-          name: "Carlos",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
-          userId: "testuser456",
-          itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
-          },
-          email: "carlos.solimoes@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser456",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:14:56 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "540",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "6",
-      "Server",
-      "iterable-ingress b48a",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/jake.jill@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:14:56 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "10",
-    "Server",
-    "iterable-ingress aaf8",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/carlos.solimoes@mailinator.com")
-  .once()
-  .reply(
-    200,
-    {
-      user: {
-        email: "carlos.solimoes@mailinator.com",
-        dataFields: {
-          name: "Carlos",
-          subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
-          userId: "testuser456",
-          itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
-            emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
-          },
-          email: "carlos.solimoes@mailinator.com",
-          unsubscribedChannelIds: [],
-          signupSource: "API",
-          unsubscribedMessageTypeIds: [],
-        },
-        userId: "testuser456",
-      },
-    },
-    [
-      "Date",
-      "Fri, 30 Apr 2021 03:15:26 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "540",
-      "Connection",
-      "keep-alive",
-      "Vary",
-      "Origin",
-      "Request-Time",
-      "3",
-      "Server",
-      "iterable-ingress 8e97",
-    ]
-  );
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .get("/api/users/jake.jill@mailinator.com")
-  .once()
-  .reply(200, {}, [
-    "Date",
-    "Fri, 30 Apr 2021 03:15:26 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "2",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "8",
+    "14",
     "Server",
     "iterable-ingress aaa7",
   ]);
@@ -5097,14 +4970,14 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
         dataFields: {
           name: "Carlos",
           subscribedMessageTypeIds: [],
-          emailListIds: [977932],
-          signupDate: "2021-04-30 03:13:23 +00:00",
-          profileUpdatedAt: "2021-04-30 03:13:23 +00:00",
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
           userId: "testuser456",
           itblInternal: {
-            documentUpdatedAt: "2021-04-30 03:13:23 +00:00",
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
             emailDomain: "mailinator.com",
-            documentCreatedAt: "2021-04-30 03:13:23 +00:00",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
           },
           email: "carlos.solimoes@mailinator.com",
           unsubscribedChannelIds: [],
@@ -5116,7 +4989,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:15:27 GMT",
+      "Mon, 03 May 2021 13:47:52 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5132,11 +5005,138 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/carlos.solimoes@mailinator.com")
+  .get("/api/users/jake.jill@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "jake.jill@mailinator.com",
+        dataFields: {
+          name: "Lucas",
+          email: "jake.jill@mailinator.com",
+          signupDate: "2021-05-03 13:46:52 +00:00",
+          profileUpdatedAt: "2021-05-03 13:47:22 +00:00",
+          signupSource: "API",
+          userId: "jake.jill",
+          itblInternal: {
+            documentUpdatedAt: "2021-05-03 13:47:23 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:46:52 +00:00",
+          },
+        },
+        userId: "jake.jill",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:47:52 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "409",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress aaa7",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/jake.jill@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "jake.jill@mailinator.com",
+        dataFields: {
+          name: "Lucas",
+          email: "jake.jill@mailinator.com",
+          signupDate: "2021-05-03 13:46:52 +00:00",
+          profileUpdatedAt: "2021-05-03 13:47:22 +00:00",
+          signupSource: "API",
+          userId: "jake.jill",
+          itblInternal: {
+            documentUpdatedAt: "2021-05-03 13:47:23 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:46:52 +00:00",
+          },
+        },
+        userId: "jake.jill",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:47:53 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "409",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "5",
+      "Server",
+      "iterable-ingress b48a",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/carlos.solimoes@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "carlos.solimoes@mailinator.com",
+        dataFields: {
+          name: "Carlos",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
+          userId: "testuser456",
+          itblInternal: {
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
+          },
+          email: "carlos.solimoes@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser456",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:47:53 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "540",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "13",
+      "Server",
+      "iterable-ingress aaf8",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/jake.jill@mailinator.com")
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:27 GMT",
+    "Mon, 03 May 2021 13:47:53 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5146,16 +5146,61 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "21",
+    "10",
     "Server",
     "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/carlos.solimoes@mailinator.com")
   .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "carlos.solimoes@mailinator.com",
+        dataFields: {
+          name: "Carlos",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
+          userId: "testuser456",
+          itblInternal: {
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
+          },
+          email: "carlos.solimoes@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser456",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:48:23 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "540",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "7",
+      "Server",
+      "iterable-ingress b886",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/jake.jill@mailinator.com")
+  .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:57 GMT",
+    "Mon, 03 May 2021 13:48:24 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5167,7 +5212,90 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "6",
     "Server",
-    "iterable-ingress b886",
+    "iterable-ingress aaf8",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/carlos.solimoes@mailinator.com")
+  .once()
+  .reply(
+    200,
+    {
+      user: {
+        email: "carlos.solimoes@mailinator.com",
+        dataFields: {
+          name: "Carlos",
+          subscribedMessageTypeIds: [],
+          emailListIds: [980094],
+          signupDate: "2021-05-03 13:46:20 +00:00",
+          profileUpdatedAt: "2021-05-03 13:46:20 +00:00",
+          userId: "testuser456",
+          itblInternal: {
+            documentUpdatedAt: "2021-05-03 13:46:20 +00:00",
+            emailDomain: "mailinator.com",
+            documentCreatedAt: "2021-05-03 13:46:20 +00:00",
+          },
+          email: "carlos.solimoes@mailinator.com",
+          unsubscribedChannelIds: [],
+          signupSource: "API",
+          unsubscribedMessageTypeIds: [],
+        },
+        userId: "testuser456",
+      },
+    },
+    [
+      "Date",
+      "Mon, 03 May 2021 13:48:24 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "540",
+      "Connection",
+      "keep-alive",
+      "Vary",
+      "Origin",
+      "Request-Time",
+      "6",
+      "Server",
+      "iterable-ingress aaa7",
+    ]
+  );
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/users/carlos.solimoes@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:48:24 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "10",
+    "Server",
+    "iterable-ingress b48a",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .get("/api/users/carlos.solimoes@mailinator.com")
+  .once()
+  .reply(200, {}, [
+    "Date",
+    "Mon, 03 May 2021 13:48:54 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "2",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress b48a",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .get("/api/users/000")
@@ -5181,7 +5309,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:15:58 GMT",
+      "Mon, 03 May 2021 13:48:55 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5191,9 +5319,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "5",
+      "0",
       "Server",
-      "iterable-ingress aaf8",
+      "iterable-ingress b886",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -5201,7 +5329,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, {}, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:58 GMT",
+    "Mon, 03 May 2021 13:48:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5211,9 +5339,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "7",
+    "44",
     "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress 8e97",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .post("/api/users/update", {
@@ -5241,7 +5369,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:15:59 GMT",
+      "Mon, 03 May 2021 13:48:56 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5251,9 +5379,9 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "2",
+      "12",
       "Server",
-      "iterable-ingress aaf8",
+      "iterable-ingress b886",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
@@ -5261,7 +5389,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
+    "Mon, 03 May 2021 13:48:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5271,16 +5399,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "6",
+    "7",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .delete("/api/users/lucas.nogueira@mailinator.com")
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
+    "Mon, 03 May 2021 13:48:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5290,16 +5418,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "8",
+    "9",
     "Server",
-    "iterable-ingress b886",
+    "iterable-ingress aaa7",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .delete("/api/users/sandro.arturo@mailinator.com")
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
+    "Mon, 03 May 2021 13:48:58 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5309,16 +5437,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "1",
+    "1992",
     "Server",
-    "iterable-ingress b886",
+    "iterable-ingress 6d38",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .delete("/api/users/carlos.solimoes@mailinator.com")
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
+    "Mon, 03 May 2021 13:48:58 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5328,35 +5456,16 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Vary",
     "Origin",
     "Request-Time",
-    "3",
+    "16",
     "Server",
-    "iterable-ingress 8e97",
+    "iterable-ingress b886",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .delete("/api/users/jake.jill@mailinator.com")
   .once()
   .reply(200, { msg: "", code: "Success", params: null }, [
     "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "41",
-    "Connection",
-    "keep-alive",
-    "Vary",
-    "Origin",
-    "Request-Time",
-    "5",
-    "Server",
-    "iterable-ingress aaa7",
-  ]);
-nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/users/sebastian@mailinator.com")
-  .once()
-  .reply(200, { msg: "", code: "Success", params: null }, [
-    "Date",
-    "Fri, 30 Apr 2021 03:15:59 GMT",
+    "Mon, 03 May 2021 13:48:58 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5368,21 +5477,40 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
     "Request-Time",
     "10",
     "Server",
-    "iterable-ingress aaf8",
+    "iterable-ingress 6d38",
   ]);
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/lists/977929")
+  .delete("/api/users/sebastian@mailinator.com")
+  .once()
+  .reply(200, { msg: "", code: "Success", params: null }, [
+    "Date",
+    "Mon, 03 May 2021 13:48:59 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "41",
+    "Connection",
+    "keep-alive",
+    "Vary",
+    "Origin",
+    "Request-Time",
+    "8",
+    "Server",
+    "iterable-ingress aaa7",
+  ]);
+nock("https://api.iterable.com:443", { encodedQueryParams: true })
+  .delete("/api/lists/980091")
   .once()
   .reply(
     200,
     {
-      msg: "List 977929 in Project 10216 was successfully deleted.",
+      msg: "List 980091 in Project 10216 was successfully deleted.",
       code: "Success",
       params: null,
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:16:01 GMT",
+      "Mon, 03 May 2021 13:49:00 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5392,24 +5520,24 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "1024",
+      "1454",
       "Server",
-      "iterable-ingress aaa7",
+      "iterable-ingress 8e97",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/lists/977930")
+  .delete("/api/lists/980092")
   .once()
   .reply(
     200,
     {
-      msg: "List 977930 in Project 10216 was successfully deleted.",
+      msg: "List 980092 in Project 10216 was successfully deleted.",
       code: "Success",
       params: null,
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:16:02 GMT",
+      "Mon, 03 May 2021 13:49:01 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5419,24 +5547,24 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "944",
+      "867",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress b48a",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/lists/977931")
+  .delete("/api/lists/980093")
   .once()
   .reply(
     200,
     {
-      msg: "List 977931 in Project 10216 was successfully deleted.",
+      msg: "List 980093 in Project 10216 was successfully deleted.",
       code: "Success",
       params: null,
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:16:03 GMT",
+      "Mon, 03 May 2021 13:49:02 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5446,24 +5574,24 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "894",
+      "914",
       "Server",
-      "iterable-ingress b886",
+      "iterable-ingress 6d38",
     ]
   );
 nock("https://api.iterable.com:443", { encodedQueryParams: true })
-  .delete("/api/lists/977932")
+  .delete("/api/lists/980094")
   .once()
   .reply(
     200,
     {
-      msg: "List 977932 in Project 10216 was successfully deleted.",
+      msg: "List 980094 in Project 10216 was successfully deleted.",
       code: "Success",
       params: null,
     },
     [
       "Date",
-      "Fri, 30 Apr 2021 03:16:04 GMT",
+      "Mon, 03 May 2021 13:49:03 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5473,7 +5601,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
       "Vary",
       "Origin",
       "Request-Time",
-      "860",
+      "1076",
       "Server",
       "iterable-ingress b48a",
     ]
