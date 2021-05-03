@@ -97,14 +97,13 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
   };
 
   try {
-    const {
-      navigationMode,
-      navigation,
-      clusterName,
-    }: Actions.NavigationList = await execApi("get", `/navigation`);
+    const navigationResponse: Actions.NavigationList = await execApi(
+      "get",
+      `/navigation`
+    );
 
-    if (navigationMode && navigationMode === "authenticated") {
-      currentTeamMember = (await execApi("get", `/session`)).teamMember;
+    if (navigationResponse.teamMember) {
+      currentTeamMember = navigationResponse.teamMember;
     }
 
     // render page-specific getInitialProps
@@ -113,18 +112,28 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
     try {
       appProps = await App.getInitialProps(appContext);
     } catch (_error) {
-      hydrationError = JSON.stringify(
-        _error,
-        Object.getOwnPropertyNames(_error)
-      );
+      try {
+        const { formattedErrorMessage, formattedErrorObject } = renderError(
+          _error
+        );
+        hydrationError = JSON.stringify({
+          message: formattedErrorMessage,
+          data: formattedErrorObject,
+        });
+      } catch {
+        hydrationError = JSON.stringify(
+          _error,
+          Object.getOwnPropertyNames(_error)
+        );
+      }
     }
 
     return {
       ...appProps,
       currentTeamMember,
-      navigationMode,
-      navigation,
-      clusterName,
+      navigationMode: navigationResponse.navigationMode,
+      navigation: navigationResponse.navigation,
+      clusterName: navigationResponse.clusterName,
       hydrationError,
     };
   } catch (_error) {
@@ -144,8 +153,22 @@ function renderError(error: AxiosError) {
     url: error?.config?.url,
     method: error?.config?.method,
     data: error?.config?.data,
-    headers: error?.config?.headers,
+    headers: sanitizeHeaders(error?.config?.headers),
   };
   console.error(formattedErrorMessage, formattedErrorObject);
   return { formattedErrorMessage, formattedErrorObject };
+}
+
+function sanitizeHeaders(headers: { [k: string]: any } = {}) {
+  const matcher = new RegExp(process.env.SERVER_TOKEN, "g");
+  const replacement = "[REDACTED]";
+
+  const cleanedHeaders: { [k: string]: any } = {};
+  for (const k in headers) {
+    let value: string = headers[k].toString();
+    value = value.replace(matcher, replacement);
+    cleanedHeaders[k] = value;
+  }
+
+  return cleanedHeaders;
 }

@@ -195,7 +195,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     return {
       navigationMode,
       clusterName: clusterNameSetting?.value || "",
-      teamMember,
+      teamMember: teamMember ? await teamMember.apiData() : undefined,
       navigation: {
         navigationItems,
         platformItems,
