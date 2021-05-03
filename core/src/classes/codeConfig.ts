@@ -157,16 +157,26 @@ export function getAutoBootstrappedProperty(
   const mappingValues = Object.values(sourceConfigObject["mapping"]);
   for (const value of mappingValues) {
     // If this source id == its mapped property's sourceId, we should bootstrap the property
-    const autoBootstrappedProperty = otherConfigObjects.filter(
+    const autoBootstrappedProperty = otherConfigObjects.find(
       (o) =>
         o.class.toLowerCase() === "property" &&
         o.id === value &&
-        o.sourceId === sourceConfigObject.id &&
-        o.unique &&
-        !o.isArray
+        o.sourceId === sourceConfigObject.id
     );
-    if (autoBootstrappedProperty.length > 0) {
-      return autoBootstrappedProperty[0];
+    if (autoBootstrappedProperty) {
+      if (!autoBootstrappedProperty.unique) {
+        throw new Error(
+          `The property "${autoBootstrappedProperty.id}" needs to be set as "unique: true" to be used as the mapping for the source "${sourceConfigObject.id}"`
+        );
+      }
+
+      if (autoBootstrappedProperty.isArray) {
+        throw new Error(
+          `The property "${autoBootstrappedProperty.id}" cannot be an array to be used as the mapping for the source "${sourceConfigObject.id}"`
+        );
+      }
+
+      return autoBootstrappedProperty;
     }
   }
 
