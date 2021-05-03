@@ -169,15 +169,17 @@ export async function processConfigObjects(
     return { seenIds: {}, errors };
   }
 
-  const configObjectIds = configObjects.map((o) => o.id);
-  locallyValidateIds.forEach(
-    (id) =>
-      !configObjectIds.includes(id) &&
-      log(
-        `[ config ] tried to locally validate \`${id}\`, but an object with that ID does not exist`,
-        "warning"
-      )
-  );
+  if (locallyValidateIds) {
+    const configObjectIds = configObjects.map((o) => o.id);
+    locallyValidateIds.forEach(
+      (id) =>
+        !configObjectIds.includes(id) &&
+        log(
+          `[ config ] tried to locally validate \`${id}\`, but an object with that ID does not exist`,
+          "warning"
+        )
+    );
+  }
 
   for (const i in configObjects) {
     const configObject = configObjects[i];
