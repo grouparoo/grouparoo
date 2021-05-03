@@ -13,7 +13,8 @@ export namespace Telemetry {
 
   export async function send(
     trigger: TelemetryCallTrigger,
-    errors: string[] = []
+    errors: string[] = [],
+    toThrow = false
   ) {
     if (!config.telemetry.enabled) return;
 
@@ -40,7 +41,11 @@ export namespace Telemetry {
         });
       } catch (newError) {}
 
-      log(`[ telemetry ] ${error}`, "error");
+      if (toThrow) {
+        throw error;
+      } else {
+        log(`[ telemetry ] ${error}`, "error");
+      }
     }
   }
 
