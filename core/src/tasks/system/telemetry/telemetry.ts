@@ -1,7 +1,7 @@
-import { CLSTask } from "../../../classes/tasks/clsTask";
+import { RetryableTask } from "../../../classes/tasks/retryableTask";
 import { Telemetry } from "../../../modules/telemetry";
 
-export class TelemetryTask extends CLSTask {
+export class TelemetryTask extends RetryableTask {
   constructor() {
     super();
     this.name = "telemetry";
@@ -20,6 +20,6 @@ export class TelemetryTask extends CLSTask {
   }: {
     trigger: Telemetry.TelemetryCallTrigger;
   }) {
-    return Telemetry.send(trigger);
+    return Telemetry.send(trigger, [], true);
   }
 }

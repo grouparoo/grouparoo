@@ -100,6 +100,11 @@ describe("modules/status", () => {
       beforeAll(() => {
         config.telemetry.enabled = true;
         originalImplementation = Telemetry.build;
+        const mockTelemetry = jest.fn();
+        mockTelemetry.mockImplementation(() => {
+          throw new Error("OH NO");
+        });
+        Telemetry.build = mockTelemetry;
       });
 
       afterAll(() => {
@@ -107,14 +112,14 @@ describe("modules/status", () => {
         Telemetry.build = originalImplementation;
       });
 
-      test("we will try to send errors about telemetry to the telemetry server", async () => {
-        const mockTelemetry = jest.fn();
-        mockTelemetry.mockImplementation(() => {
-          throw new Error("OH NO");
-        });
-        Telemetry.build = mockTelemetry;
+      test("by default, errors are not thrown", async () => {
+        await Telemetry.send("timer"); // does not throw
+      });
 
-        await expect(Telemetry.send("timer")).rejects.toThrow(/OH NO/);
+      test("we will try to send errors about telemetry to the telemetry server if the send throws", async () => {
+        await expect(Telemetry.send("timer", [], true)).rejects.toThrow(
+          /OH NO/
+        );
 
         expect(fetch).toHaveBeenCalledTimes(1);
         const args = fetch.mock.calls[0];

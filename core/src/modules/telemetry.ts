@@ -1,6 +1,6 @@
 import path from "path";
 import os from "os";
-import { config } from "actionhero";
+import { config, log } from "actionhero";
 import "isomorphic-fetch";
 import { plugin } from "../modules/plugin";
 import { StatusMetric, StatusReporters } from "./../modules/statusReporters";
@@ -13,7 +13,8 @@ export namespace Telemetry {
 
   export async function send(
     trigger: TelemetryCallTrigger,
-    errors: string[] = []
+    errors: string[] = [],
+    toThrowOnError = false
   ) {
     if (!config.telemetry.enabled) return;
 
@@ -40,7 +41,11 @@ export namespace Telemetry {
         });
       } catch (newError) {}
 
-      throw error;
+      if (toThrowOnError) {
+        throw error;
+      } else {
+        log(`[ telemetry ] ${error}`, "error");
+      }
     }
   }
 
