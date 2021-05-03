@@ -6,6 +6,8 @@ import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
+import { indexUsers } from "../../../pipedrive/__tests__/utils/shared";
 
 const appId = "app_7815696ecbf1c96e6894b779456d330e";
 
@@ -17,6 +19,10 @@ const otherPhoneNumber = "+5583999999997";
 const userId = "testuser123";
 const alternativeUserId = "testuser345";
 const email = "caio.silveira@mailinator.com";
+const secondEmail = "sebastian@mailinator.com";
+const secondName = "sebastian";
+const secondUserID = "sebastian3039";
+const secondPhoneNumber = "+5583999999939";
 const alternativeEmail = "lucas.nogueira@mailinator.com";
 const otherEmail = "sandro.arturo@mailinator.com";
 const name = "Caio";
@@ -75,34 +81,36 @@ async function getListId(listName): Promise<any> {
 }
 
 async function deleteUsers(suppressErrors) {
-  try {
-    for (const emailToDelete of [
-      email,
-      alternativeEmail,
-      otherEmail,
-      emailTwo,
-      emailThree,
-    ]) {
+  for (const emailToDelete of [
+    email,
+    alternativeEmail,
+    otherEmail,
+    emailTwo,
+    emailThree,
+    secondEmail,
+  ]) {
+    try {
       await apiClient.users.delete(emailToDelete);
-    }
-  } catch (err) {
-    if (!suppressErrors) {
-      throw err;
+    } catch (err) {
+      if (!suppressErrors) {
+        console.log(err);
+        throw err;
+      }
     }
   }
 }
 
 async function deleteLists(suppressErrors) {
-  try {
-    for (const groupToDelete of [listOne, listTwo, listThree, listFour]) {
-      const listId = await getListId(groupToDelete);
-      if (listId) {
+  for (const groupToDelete of [listOne, listTwo, listThree, listFour]) {
+    const listId = await getListId(groupToDelete);
+    if (listId) {
+      try {
         await apiClient.lists.delete({ listId });
+      } catch (err) {
+        if (!suppressErrors) {
+          throw err;
+        }
       }
-    }
-  } catch (err) {
-    if (!suppressErrors) {
-      throw err;
     }
   }
 }
@@ -110,10 +118,11 @@ async function deleteLists(suppressErrors) {
 async function cleanUp(suppressErrors) {
   await deleteUsers(suppressErrors);
   await deleteLists(suppressErrors);
-  await indexContacts(newNock, 30 * 1000);
+  await indexContacts(newNock, 40 * 1000);
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -128,6 +137,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -153,6 +163,19 @@ describe("iterable/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
+  test("can not create a Person if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: DestinationSyncModeData.enrich.operations,
+        oldProfileProperties: {},
+        newProfileProperties: { email, name },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not create/);
+  });
+
   test("can create profile on Iterable", async () => {
     user = await getUser(email);
     expect(user).toBe(null);
@@ -170,6 +193,31 @@ describe("iterable/exportProfile", () => {
     expect(user).not.toBe(null);
     expect(user.email).toBe(email);
     expect(user.dataFields.name).toBe(name);
+  });
+
+  test("can create profile on Iterable along with properties", async () => {
+    let user = await getUser(secondEmail);
+    expect(user).toBe(null);
+
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: secondEmail,
+        name: secondName,
+        userId: secondUserID,
+        phoneNumber: secondPhoneNumber,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: false,
+    });
+    await indexContacts(newNock);
+    user = await getUser(secondEmail);
+    expect(user).not.toBe(null);
+    expect(user.email).toBe(secondEmail);
+    expect(user.userId).toBe(secondUserID);
+    expect(user.dataFields.name).toBe(secondName);
+    expect(user.dataFields.phoneNumber).toBe(secondPhoneNumber);
   });
 
   test("can add user variables", async () => {
@@ -197,7 +245,44 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
   });
 
-  test("can change user variables", async () => {
+  test("can not update a Person if sync mode does not allow it", async () => {
+    const newPhoneNumber = "+5583999999998";
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: true,
+          delete: true,
+        },
+        oldProfileProperties: {
+          email,
+          userId,
+          name,
+          phoneNumber,
+          signupDate: exampleDate,
+        },
+        newProfileProperties: {
+          email,
+          userId,
+          name: alternativeName,
+          phoneNumber: newPhoneNumber,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    // no changes
+    const user = await getUser(email);
+    expect(user.userId).toBe(userId);
+    expect(user.dataFields.name).toBe(name);
+    expect(user.dataFields.phoneNumber).toBe(phoneNumber);
+    expect(user.dataFields.customField).toBe(customField);
+    expect(user.dataFields.signupDate).toBe("2020-08-19 20:50:04 +00:00");
+  });
+
+  test("can change user variables (New FK exists in destination)", async () => {
     // Phone must be valid.
     const newPhoneNumber = "+5583999999998";
 
@@ -362,7 +447,37 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.emailListIds).not.toContain(listFourId);
   });
 
-  test("it can change the email address", async () => {
+  test("cannot change the email address if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: true,
+          delete: true,
+        },
+        oldProfileProperties: {
+          email,
+          userId,
+        },
+        newProfileProperties: {
+          email: alternativeEmail,
+          userId,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    // no change.
+    const user = await getUser(alternativeEmail);
+    expect(user).toBe(null);
+
+    const oldUser = await getUser(email);
+    expect(oldUser).not.toBe(null);
+  });
+
+  test("it can change the email address (Old FK exists in destination)", async () => {
     await runExport({
       oldProfileProperties: {
         email,
@@ -406,6 +521,7 @@ describe("iterable/exportProfile", () => {
     await indexContacts(newNock);
 
     const user = await getUser(otherEmail);
+    expect(user).not.toBe(null);
     expect(user.email).toBe(otherEmail);
     expect(user.dataFields.name).toBe(otherName);
     expect(user.dataFields.phoneNumber).toBe(otherPhoneNumber);
@@ -432,6 +548,36 @@ describe("iterable/exportProfile", () => {
 
     const user = await getUser(otherEmail);
     expect(user.userId).toBe(alternativeUserId);
+  });
+
+  test("cannot delete an user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          create: true,
+          delete: false,
+          update: true,
+        },
+        oldProfileProperties: {
+          email: otherEmail,
+          userId,
+        },
+        newProfileProperties: {
+          email: otherEmail,
+          userId,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
+
+    // no effect
+    const user = await getUser(otherEmail);
+    expect(user).not.toBe(null);
+    expect(user.userId).toBe(alternativeUserId);
+    expect(user.dataFields.name).toBe(otherName);
+    expect(user.dataFields.phoneNumber).toBe(otherPhoneNumber);
   });
 
   test("can delete a user", async () => {
@@ -504,7 +650,7 @@ describe("iterable/exportProfile", () => {
     expect(user.dataFields.emailListIds).toContain(listFourId);
   });
 
-  test("can add a user passing a nonexistent email on the oldProfileProperties", async () => {
+  test("can add a user passing a nonexistent email on the oldProfileProperties (Neither FK exist in destination)", async () => {
     let brandNewUser = await getUser(emailThree);
     expect(brandNewUser).toBe(null);
     const nonexistentUser = await getUser(nonexistentEmail);
@@ -523,13 +669,14 @@ describe("iterable/exportProfile", () => {
     });
     await indexContacts(newNock);
 
+    // a new user with the new email is created.
     brandNewUser = await getUser(emailThree);
     expect(brandNewUser).not.toBe(null);
     expect(brandNewUser.userId).toBe(userIdThree);
     expect(brandNewUser.dataFields.name).toBe(nameThree);
   });
 
-  test("can update the new user on email change if both emails exist", async () => {
+  test("can update the new user on email change if both emails exist (Old AND new FK exist in destination)", async () => {
     await runExport({
       oldProfileProperties: {
         email: emailTwo,
@@ -585,6 +732,23 @@ describe("iterable/exportProfile", () => {
 
     // Update the new one
     user = await getUser(emailThree);
+    expect(user).toBe(null);
+  });
+
+  test("can delete an user when syncing for the first time", async () => {
+    await runExport({
+      oldProfileProperties: {},
+      newProfileProperties: {
+        email: emailTwo,
+        userId: userIdTwo,
+        name: nameTwo,
+      },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+    await indexContacts(newNock);
+    user = await getUser(emailTwo);
     expect(user).toBe(null);
   });
 

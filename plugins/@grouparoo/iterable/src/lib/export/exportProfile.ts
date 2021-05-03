@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { addToList, removeFromList } from "./listMethods";
 
@@ -17,6 +17,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 export const sendProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   export: {
     toDelete,
     newProfileProperties,
@@ -46,6 +47,11 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (toDelete) {
     const userToDelete = newUser || oldUser;
     if (userToDelete) {
+      if (!syncOperations.delete) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not delete profiles."
+        );
+      }
       await client.users.delete({ email: userToDelete.email });
     }
     return { success: true };
@@ -81,6 +87,11 @@ export const sendProfile: ExportProfilePluginMethod = async ({
         emailPayload["currentUserId"] = newProfileProperties.userId;
       }
       try {
+        if (!syncOperations.update) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not update existing profiles."
+          );
+        }
         await client.users.updateEmail(emailPayload);
       } catch (err) {
         const message = err?.response?.data?.msg || "";
@@ -90,13 +101,22 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       }
     }
 
+    if (!newUser && !syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not create new profiles."
+      );
+    } else if (newUser && !syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not update existing profiles."
+      );
+    }
+
     await client.users.update(payload);
 
     // add to lists
     for (const groupToAdd of newGroups) {
       await addToList(client, appId, appOptions, email, groupToAdd);
     }
-
     // remove from lists
     for (const group of oldGroups) {
       if (!newGroups.includes(group))
