@@ -61,7 +61,7 @@ describe("tasks/group:updateCalculatedGroups", () => {
       expect(runs.length).toBe(0);
     });
 
-    test("groups already calculating will not be calculated again if it is time but they have a running run", async () => {
+    test("groups already calculating will not be calculated again if it is time but they have a running run (old)", async () => {
       await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
       const runningRun = await Run.create({
         creatorId: group.id,
@@ -76,8 +76,33 @@ describe("tasks/group:updateCalculatedGroups", () => {
       expect(runs.length).toBe(0);
     });
 
-    test("groups already calculating will be calculated again if it is time and they don't have a related run", async () => {
+    test("groups already calculating will not be calculated again if it is time but they have a running run (null)", async () => {
+      await group.update({ state: "updating", calculatedAt: null }); // ~1970 or so
+      const runningRun = await Run.create({
+        creatorId: group.id,
+        creatorType: "group",
+        state: "running",
+      });
+      await specHelper.runTask("group:updateCalculatedGroups", {});
+
+      const runs = await Run.findAll({
+        where: { creatorId: group.id, id: { [Op.ne]: runningRun.id } },
+      });
+      expect(runs.length).toBe(0);
+    });
+
+    test("groups already calculating will be calculated again if it is time and they don't have a related run (old)", async () => {
       await group.update({ state: "updating", calculatedAt: new Date(0) }); // ~1970 or so
+      await specHelper.runTask("group:updateCalculatedGroups", {});
+
+      const runs = await Run.findAll({
+        where: { creatorId: group.id },
+      });
+      expect(runs.length).toBe(1);
+    });
+
+    test("groups already calculating will be calculated again if it is time and they don't have a related run (null)", async () => {
+      await group.update({ state: "updating", calculatedAt: null }); // null
       await specHelper.runTask("group:updateCalculatedGroups", {});
 
       const runs = await Run.findAll({

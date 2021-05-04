@@ -29,26 +29,18 @@ export class GroupsUpdateCalculatedGroups extends CLSTask {
     });
 
     for (const group of calculatedGroups) {
-      if (group.state === "ready" && !group.calculatedAt) {
-        // the group has never been calculated
-        groupsToRun.push(group);
-      } else if (
-        // the group hasn't been calculated recently
-        group.state === "ready" &&
-        group.calculatedAt.getTime() < lastCheckTime.getTime()
-      ) {
-        groupsToRun.push(group);
-      } else if (
-        group.state === "updating" &&
-        group.calculatedAt.getTime() < lastCheckTime.getTime()
-      ) {
-        // the group is stuck in "updating" and has no run working it
-        const runningRun = await Run.findOne({
-          where: { creatorId: group.id, state: "running" },
-        });
-        if (!runningRun) groupsToRun.push(group);
-      } else {
-        // the group is up-to-date
+      const calculatedAt = group.calculatedAt?.getTime() || 0;
+
+      if (calculatedAt < lastCheckTime.getTime()) {
+        if (group.state === "ready") {
+          groupsToRun.push(group);
+        } else if (group.state === "updating") {
+          const runningRun = await Run.findOne({
+            where: { creatorId: group.id, state: "running" },
+          });
+          // the group is stuck in "updating" and has no run working it
+          if (!runningRun) groupsToRun.push(group);
+        }
       }
     }
 
