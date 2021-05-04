@@ -57,7 +57,7 @@ export namespace DestinationOps {
     if (oldGroupId !== group.id) {
       if (oldGroupId) {
         const oldGroup = await Group.findById(oldGroupId);
-        await oldGroup.run(true, destination.id);
+        await oldGroup.run(false, destination.id);
       }
       return group.run(force, destination.id);
     }

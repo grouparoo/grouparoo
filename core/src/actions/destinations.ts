@@ -263,7 +263,7 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     this.inputs = {
       id: { required: true },
       groupId: { required: true },
-      force: { required: false, default: "false" },
+      force: { required: false, default: "true" },
     };
   }
 

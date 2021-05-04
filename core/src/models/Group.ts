@@ -357,7 +357,7 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.stopPreviousRuns(this);
   }
 
-  async addProfile(profile: Profile, force = false) {
+  async addProfile(profile: Profile, force = true) {
     await GroupOps.updateProfile(profile.id, "group", this.id, force);
 
     await GroupMember.create({

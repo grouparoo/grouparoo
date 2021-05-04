@@ -294,7 +294,7 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.exportGroupMembers(this, force);
   }
 
-  async trackGroup(group: Group, force = false) {
+  async trackGroup(group: Group, force = true) {
     return DestinationOps.trackGroup(this, group, force);
   }
 

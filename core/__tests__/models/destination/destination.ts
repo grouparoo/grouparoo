@@ -679,7 +679,7 @@ describe("models/destination", () => {
           expect(runA.state).toBe("running");
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
-          expect(runB.force).toBe(false);
+          expect(runB.force).toBe(true);
 
           await otherGroup.destroy();
         });
