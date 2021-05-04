@@ -312,8 +312,10 @@ export default function Navigation(props) {
           style={{ color: "white" }}
           href="https://www.grouparoo.com/chat"
           target="_blank"
+          className="p-1 pr-2"
         >
-          <FontAwesomeIcon icon="slack" size="sm" /> Join us on Slack
+          <Image src="./public/images/slack-logo.svg" width={30} height={30} />{" "}
+          Join our Slack!
         </Button>
       </div>
       <div

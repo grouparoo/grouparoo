@@ -56,7 +56,6 @@
     "victory": "35.5.1"
   },
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.15.3",
     "@grouparoo/core": "0.3.0-alpha.4",
     "@grouparoo/spec-helper": "0.3.0-alpha.4",
     "@grouparoo/ui-components": "0.3.0-alpha.4",
