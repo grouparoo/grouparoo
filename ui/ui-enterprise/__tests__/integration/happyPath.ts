@@ -145,7 +145,7 @@ describe("integration", () => {
       await button.click();
 
       await browser.get(`${env.url}/dashboard`);
-      await helper.sleep(2 * 1000); // sleep to let the navigation load
+      await helper.sleep(3 * 1000); // sleep to let the navigation load
 
       const greeting = await browser
         .findElement(by.id("navigation-greeting"))
