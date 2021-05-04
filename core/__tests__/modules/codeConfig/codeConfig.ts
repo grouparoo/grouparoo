@@ -12,6 +12,8 @@ import {
   Team,
   TeamMember,
   Setting,
+  Option,
+  Profile,
 } from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
@@ -158,6 +160,14 @@ describe("modules/codeConfig", () => {
           "config:code",
           "config:code",
           "config:code",
+        ]);
+
+        const options = await Promise.all(rules.map((r) => r.getOptions()));
+        expect(options.map((o) => o.column).sort()).toEqual([
+          "email",
+          "first_name",
+          "id",
+          "last_name",
         ]);
       });
 
@@ -317,6 +327,39 @@ describe("modules/codeConfig", () => {
         "config:code",
         "config:code",
       ]);
+
+      const options = await Promise.all(rules.map((r) => r.getOptions()));
+      expect(options.map((o) => o.column).sort()).toEqual([
+        "email",
+        "id",
+        "last_name",
+        "other_first_name",
+      ]);
+    });
+
+    test("property options will be updated before validating", async () => {
+      const profile = await Profile.create(); // validations only happen if there's a pofile
+
+      const nameProperty = await Property.findById("first_name");
+      let options = await nameProperty.getOptions();
+      expect(options).toEqual({ column: "other_first_name" });
+
+      // clear option
+      await Option.destroy({ where: { ownerId: "first_name", key: "column" } });
+      options = await nameProperty.getOptions();
+      expect(options).toEqual({});
+
+      // load config again
+      const { errors } = await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "changes")
+      );
+      expect(errors.length).toBe(0);
+
+      // option should be set
+      options = await nameProperty.getOptions();
+      expect(options).toEqual({ column: "other_first_name" });
+
+      await profile.destroy();
     });
 
     test("groups can have changed names and rules", async () => {
