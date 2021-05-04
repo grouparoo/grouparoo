@@ -38,7 +38,7 @@ export default function Page(props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [currentlyTrackedGroupId, setCurrentlyTrackedGroupId] = useState(
-    props.trackedGroupId || "_none"
+    props.trackedGroupId
   );
   const [trackedGroupId, settrackedGroupId] = useState(
     props.trackedGroupId || "_none"
