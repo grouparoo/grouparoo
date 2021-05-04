@@ -44,7 +44,7 @@ export namespace Telemetry {
       if (toThrowOnError) {
         throw error;
       } else {
-        log(`[ telemetry ] ${error}`, "error");
+        log(`[ telemetry ] ${error}`, "debug");
       }
     }
   }
