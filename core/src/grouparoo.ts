@@ -1,6 +1,6 @@
 import { getCoreVersion, getNodeVersion } from "./utils/pluginDetails";
 
-async function main() {
+export async function main() {
   const { Process, log, api } = await import("actionhero");
 
   log(
@@ -21,4 +21,8 @@ async function main() {
   await app.start();
 }
 
-main();
+function isEntryPoint() {
+  return require.main === module;
+}
+
+if (isEntryPoint()) main();

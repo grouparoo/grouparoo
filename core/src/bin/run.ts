@@ -63,7 +63,8 @@ export class RunCLI extends CLI {
       params.export.toString().toLowerCase() !== "true"
     );
 
-    await import("../grouparoo"); // run the server
+    const { main } = await import("../grouparoo");
+    await main();
 
     await this.runPausedTasks(params);
 
