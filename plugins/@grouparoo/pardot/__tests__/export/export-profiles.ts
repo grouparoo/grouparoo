@@ -547,7 +547,7 @@ describe("pardot/exportProfiles", () => {
             lastName: "Test2", // changed here
           },
           oldGroups: [list1, list2],
-          newGroups: [list1, list2],
+          newGroups: [],
           toDelete: true,
           profile: null,
         },
@@ -566,13 +566,6 @@ describe("pardot/exportProfiles", () => {
     expect(user.email).toBe(newEmail1);
     expect(user.first_name).toBe("John");
     expect(user.last_name).toBe("Test"); // not changed!
-
-    let members; // TODO: not removing groups.
-    members = await getListMemberIds(listId1);
-    // expect(members).toHaveLength(0); // removed!
-
-    members = await getListMemberIds(listId2);
-    // expect(members).toHaveLength(0); // removed!
   });
 
   test("can delete a user", async () => {
