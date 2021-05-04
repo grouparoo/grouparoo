@@ -303,21 +303,15 @@ describe("actions/destinations", () => {
           id,
           groupId: group.id,
         };
-        const { error } = await specHelper.runAction(
+        const { error, destination, run } = await specHelper.runAction(
           "destination:trackGroup",
           connection
         );
         expect(error).toBeUndefined();
-
-        connection.params = {
-          csrfToken,
-          id,
-        };
-        const { destination } = await specHelper.runAction(
-          "destination:view",
-          connection
-        );
         expect(destination.destinationGroup.id).toBe(group.id);
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(true);
+        expect(run.state).toBe("running");
       });
 
       test("an administrator can set the destination group memberships", async () => {
@@ -474,11 +468,14 @@ describe("actions/destinations", () => {
           id,
           groupId: destination.destinationGroup.id,
         };
-        const { error } = await specHelper.runAction(
+        const { error, run } = await specHelper.runAction(
           "destination:unTrackGroup",
           connection
         );
         expect(error).toBeUndefined();
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(false);
+        expect(run.state).toBe("running");
       });
 
       test("an administrator can export the members of a destination with a forced group run", async () => {

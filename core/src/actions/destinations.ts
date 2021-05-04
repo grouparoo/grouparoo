@@ -271,8 +271,11 @@ export class DestinationTrackGroup extends AuthenticatedAction {
     const destination = await Destination.findById(params.id);
     const group = await Group.findById(params.groupId);
     const force = params.force?.toLowerCase() === "true";
-    await destination.trackGroup(group, force);
-    return { destination: await destination.apiData() };
+    const run = await destination.trackGroup(group, force);
+    return {
+      destination: await destination.apiData(),
+      run: await run.apiData(),
+    };
   }
 }
 
@@ -292,8 +295,11 @@ export class DestinationUnTrackGroup extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const destination = await Destination.findById(params.id);
     const force = params.force?.toLowerCase() === "true";
-    await destination.unTrackGroup(force);
-    return { destination: await destination.apiData() };
+    const run = await destination.unTrackGroup(force);
+    return {
+      destination: await destination.apiData(),
+      run: await run.apiData(),
+    };
   }
 }
 
