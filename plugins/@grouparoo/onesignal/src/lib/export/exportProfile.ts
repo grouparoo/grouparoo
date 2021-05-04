@@ -4,6 +4,7 @@ import { connect } from "../connect";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -64,6 +65,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   try {
+    if (!syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not update existing devices."
+      );
+    }
     await client.editTagsWithExternalUserIdDevice(extUserId, payload);
     return { success: true };
   } catch (error) {

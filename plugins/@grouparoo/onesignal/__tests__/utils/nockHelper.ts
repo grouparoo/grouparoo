@@ -29,13 +29,13 @@ export const updater = {
     const realEnv = readEnv(realPath);
     const nockEnv = readEnv(nockPath);
 
-    nockCall = nockCall.replaceAll(
-      realEnv.ONESIGNAL_API_KEY,
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.ONESIGNAL_API_KEY, "gi"),
       nockEnv.ONESIGNAL_API_KEY
     );
 
-    nockCall = nockCall.replaceAll(
-      realEnv.ONESIGNAL_APP_ID,
+    nockCall = nockCall.replace(
+      new RegExp(realEnv.ONESIGNAL_APP_ID, "gi"),
       nockEnv.ONESIGNAL_APP_ID
     );
 
