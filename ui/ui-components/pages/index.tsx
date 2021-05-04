@@ -53,6 +53,7 @@ export default function Page(props) {
               <Button
                 variant="primary"
                 size="lg"
+                id="sign-in"
                 onClick={() => {
                   CTATarget
                     ? window.open(CTALink, CTATarget)

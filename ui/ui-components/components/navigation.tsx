@@ -315,7 +315,7 @@ export default function Navigation(props) {
           className="p-1 pr-2"
         >
           <Image
-            src="./public/images/slack-logo.svg"
+            src="/public/images/slack-logo.svg"
             width={30}
             height={30}
             className="pb-1 mx-0 px-0"

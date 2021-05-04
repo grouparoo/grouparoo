@@ -80,7 +80,7 @@ describe("integration", () => {
       await browser.findElement(by.name("email")).sendKeys(email);
       await browser.findElement(by.name("password")).sendKeys(password);
 
-      const button = await browser.findElement(by.className("btn-primary"));
+      const button = await browser.findElement(by.id("create-team"));
       await button.click();
     },
     helper.mediumTime
@@ -118,7 +118,7 @@ describe("integration", () => {
       await browser.findElement(by.name("email")).sendKeys(email);
       await browser.findElement(by.name("password")).sendKeys(password);
 
-      const button = await browser.findElement(by.className("btn-primary"));
+      const button = await browser.findElement(by.id("sign-in"));
       await button.click();
 
       await browser.wait(
@@ -141,7 +141,7 @@ describe("integration", () => {
       await browser.findElement(by.id("firstName")).clear();
       await browser.findElement(by.id("firstName")).sendKeys("Super Mario");
 
-      const button = await browser.findElement(by.className("btn-primary"));
+      const button = await browser.findElement(by.id("update"));
       await button.click();
 
       await browser.get(`${env.url}/dashboard`);

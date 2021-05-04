@@ -88,7 +88,12 @@ export default function SignInForm(props) {
         </Form.Control.Feedback>
       </Form.Group>
 
-      <LoadingButton disabled={loading} variant="primary" type="submit">
+      <LoadingButton
+        disabled={loading}
+        variant="primary"
+        id="sign-in"
+        type="submit"
+      >
         Sign In
       </LoadingButton>
     </Form>

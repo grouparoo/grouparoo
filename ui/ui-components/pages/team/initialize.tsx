@@ -159,7 +159,12 @@ export default function TeamInitializePage(props) {
 
         <br />
 
-        <LoadingButton variant="primary" type="submit" disabled={loading}>
+        <LoadingButton
+          variant="primary"
+          type="submit"
+          id="create-team"
+          disabled={loading}
+        >
           Submit
         </LoadingButton>
       </Form>
