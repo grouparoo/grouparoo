@@ -1,7 +1,7 @@
+import Sentry from "@sentry/node";
+import Tracing from "@sentry/tracing";
 import { Initializer, api, env, action, task } from "actionhero";
-import { plugin } from "@grouparoo/core";
-import * as Sentry from "@sentry/node";
-import * as Tracing from "@sentry/tracing";
+import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
 const packageJSON = require("./../../package.json");
 
 export class SentryInitializer extends Initializer {
@@ -35,7 +35,7 @@ export class SentryInitializer extends Initializer {
       tracesSampleRate: parseFloat(process.env.SENTRY_TRACE_SAMPLE_RATE),
       release: packageJSON.version,
       integrations: [
-        new Sentry.Integrations.Http(),
+        new Sentry.Integrations.Http({ tracing: true }),
         new Tracing.Integrations.Postgres(),
       ],
       beforeSend: beforeSend,
@@ -50,13 +50,31 @@ export class SentryInitializer extends Initializer {
         const transaction = Sentry.startTransaction({
           op: "action",
           name: data.actionTemplate.name,
+          tags: { action: data.actionTemplate.name },
         });
-        Sentry.setTag("action", data.actionTemplate.name);
+
         Sentry.configureScope((scope) => scope.setSpan(transaction));
         data.sentryTransaction = transaction;
       },
       postProcessor: (data) => {
-        data?.sentryTransaction.finish();
+        const transaction = data?.sentryTransaction;
+        if (!transaction) return;
+
+        Sentry.configureScope(function (scope) {
+          if (data.session.teamMember) {
+            const teamMember: TeamMember = data.session.teamMember;
+            scope.setUser({ id: teamMember.id, email: teamMember.email });
+          } else if (data.session.apiKey) {
+            const apiKey: ApiKey = data.session.apiKey;
+            scope.setUser({ id: apiKey.id });
+          }
+        });
+
+        transaction.setHttpStatus(
+          data.connection.rawConnection?.responseHttpCode
+        );
+
+        transaction.finish();
       },
     });
 
@@ -67,19 +85,21 @@ export class SentryInitializer extends Initializer {
       priority: 1,
       preProcessor: function () {
         const worker = this.worker;
-        Sentry.setTag("task", worker.job.class);
 
         const transaction = Sentry.startTransaction({
           op: "task",
           name: worker.job.class,
+          tags: { action: worker.job.class },
         });
-        Sentry.setTag("task", worker.job.class);
+
         Sentry.configureScope((scope) => scope.setSpan(transaction));
+
         worker.sentryTransaction = transaction;
       },
       postProcessor: function () {
         const worker = this.worker;
-        worker?.sentryTransaction.finish();
+        const transaction = worker?.sentryTransaction;
+        transaction.finish();
       },
     });
 
