@@ -297,7 +297,32 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-
+      <div
+        id="bottomNavigationCTA"
+        style={{
+          alignSelf: "flex-end",
+          justifyContent: "normal",
+          width: "100%",
+          margin: 20,
+          paddingLeft: 40,
+          paddingRight: 20,
+        }}
+      >
+        <Button
+          style={{ color: "white" }}
+          href="https://www.grouparoo.com/chat"
+          target="_blank"
+          className="p-1 pr-2"
+        >
+          <Image
+            src="./public/images/slack-logo.svg"
+            width={30}
+            height={30}
+            className="pb-1 mx-0 px-0"
+          />{" "}
+          Join our Slack!
+        </Button>
+      </div>
       <div
         id="bottomNavigationMenu"
         style={{
