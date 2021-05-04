@@ -1,29 +1,57 @@
 import { helper } from "@grouparoo/spec-helper";
 import { RunCLI } from "../../src/bin/run";
+import { Schedule } from "../../src/models/Schedule";
 
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   beforeAll(async () => await helper.factories.properties());
 
   let messages = [];
-  let spy;
+  let spies = [];
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await helper.factories.schedule();
     messages = [];
-    spy = jest
-      .spyOn(console, "log")
-      .mockImplementation((message) => messages.push(message));
+    spies.push(
+      jest
+        .spyOn(console, "log")
+        .mockImplementation((message) => messages.push(message))
+    );
+    spies.push(
+      jest
+        .spyOn(console, "error")
+        .mockImplementation((message) => messages.push(message))
+    );
   });
 
-  afterEach(() => {
-    spy.mockRestore();
+  afterEach(async () => {
+    await Schedule.destroy({ where: {}, truncate: true });
+    spies.map((s) => s.mockRestore());
   });
 
   test("workers are required", async () => {
     process.env.WORKERS = "0";
 
     const command = new RunCLI();
-    await expect(command.run({ params: {} })).rejects.toThrow();
+    const toStop = await command.run({ params: {} });
+    expect(messages.join(" ")).toContain(
+      "❌ The Task Scheduler is not enabled"
+    );
+    expect(messages.join(" ")).toContain("❌ No Task Workers are enabled");
+    expect(toStop).toBe(true);
+  });
+
+  test("at least one schedule is required", async () => {
+    await Schedule.destroy({ where: {}, truncate: true });
+    let scheduleCount = await Schedule.count();
+    expect(scheduleCount).toEqual(0);
+
+    const command = new RunCLI();
+    const toStop = await command.run({ params: {} });
+    expect(messages.join(" ")).toContain(
+      "❌ No schedules found. The run command uses schedules to know what profiles to import."
+    );
+    expect(toStop).toBe(true);
   });
 
   describe("with instance", () => {

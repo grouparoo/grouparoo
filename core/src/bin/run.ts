@@ -58,18 +58,16 @@ export class RunCLI extends CLI {
 
     const scheduleCount = await Schedule.count();
     if (scheduleCount === 0) {
-      log(
-        `No schedules found. The run command uses schedules to know what profiles to import.\nSee this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule\nIf you have a schedule and are seeing this message, try \`grouparoo apply\` first.`,
-        "error"
+      GrouparooCLI.logger.fatal(
+        `No schedules found. The run command uses schedules to know what profiles to import.\nSee this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule\nIf you have a schedule and are seeing this message, try \`grouparoo apply\` first.`
       );
-      process.exit(1);
     }
 
     if (!params.web) GrouparooCLI.disableWebServer();
     if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
-      params.export.toString().toLowerCase() !== "true"
+      params.export?.toString()?.toLowerCase() !== "true"
     );
 
     const { main } = await import("../grouparoo");
@@ -79,14 +77,14 @@ export class RunCLI extends CLI {
 
     if (params.runAllSchedules) await this.runNonRecurringSchedules();
 
-    return false;
+    return true;
   }
 
   checkWorkers() {
     if (!config.tasks.scheduler)
-      throw new Error(`The Task Scheduler is not enabled`);
+      GrouparooCLI.logger.fatal(`The Task Scheduler is not enabled`);
     if (config.tasks.minTaskProcessors < 1)
-      throw new Error(`No Task Workers are enabled`);
+      GrouparooCLI.logger.fatal(`No Task Workers are enabled`);
   }
 
   async runPausedTasks(params) {
