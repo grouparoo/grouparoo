@@ -118,7 +118,7 @@ describe("integration", () => {
       await browser.findElement(by.name("email")).sendKeys(email);
       await browser.findElement(by.name("password")).sendKeys(password);
 
-      const button = await browser.findElement(by.id("sign-in"));
+      const button = await browser.findElement(by.className("signIn"));
       await button.click();
 
       await browser.wait(

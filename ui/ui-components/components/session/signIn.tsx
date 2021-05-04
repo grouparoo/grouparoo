@@ -91,7 +91,7 @@ export default function SignInForm(props) {
       <LoadingButton
         disabled={loading}
         variant="primary"
-        id="sign-in"
+        className="signIn"
         type="submit"
       >
         Sign In
