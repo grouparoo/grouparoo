@@ -64,11 +64,6 @@ export class UpdateSchedules extends CLSTask {
           creatorType: "schedule",
           state: "running",
         });
-
-        log(
-          `[ run ] starting run ${run.id} for schedule ${schedule.name} (${schedule.id})`,
-          "notice"
-        );
       }
     }
   }

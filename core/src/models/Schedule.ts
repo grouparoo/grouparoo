@@ -171,11 +171,6 @@ export class Schedule extends LoggedModel<Schedule> {
       state: "running",
     });
 
-    log(
-      `[ run ] starting run ${run.id} for schedule ${this.name} (${this.id})`,
-      "notice"
-    );
-
     await CLS.enqueueTask(
       "schedule:run",
       { scheduleId: this.id, runId: run.id },
