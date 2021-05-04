@@ -34,14 +34,14 @@ export async function loadProperty(
     });
   }
 
+  await property.setOptions(extractNonNullParts(configObject, "options"), null);
+
   await property.update({
     type: configObject.type,
     key: configObject.key || configObject.name,
     unique: configObject.unique,
     isArray: configObject.isArray,
   });
-
-  await property.setOptions(extractNonNullParts(configObject, "options"), null);
 
   if (configObject.filters) {
     await property.setFilters(configObject.filters, externallyValidate);
