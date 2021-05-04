@@ -37,6 +37,9 @@ export default function Page(props) {
   const { execApi } = useApi(props, errorHandler);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [currentlyTrackedGroupId, setCurrentlyTrackedGroupId] = useState(
+    props.trackedGroupId || "_none"
+  );
   const [trackedGroupId, settrackedGroupId] = useState(
     props.trackedGroupId || "_none"
   );
@@ -77,7 +80,7 @@ export default function Page(props) {
 
     // update group being tracked after the edit
     if (
-      trackedGroupId !== props.trackedGroupId &&
+      trackedGroupId !== currentlyTrackedGroupId &&
       trackedGroupId !== "_none" &&
       trackedGroupId !== null &&
       trackedGroupId !== ""
@@ -86,7 +89,7 @@ export default function Page(props) {
         groupId: trackedGroupId,
       });
     } else if (
-      trackedGroupId !== props.trackedGroupId &&
+      trackedGroupId !== currentlyTrackedGroupId &&
       trackedGroupId === "_none"
     ) {
       await execApi("post", `/destination/${id}/untrack`);
@@ -95,6 +98,7 @@ export default function Page(props) {
       await execApi("post", `/destination/${id}/export`, { force: true });
     }
 
+    setCurrentlyTrackedGroupId(trackedGroupId);
     setLoading(false);
     successHandler.set({
       message: "Destination Updated and Profiles Exporting...",
