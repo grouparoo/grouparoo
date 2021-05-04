@@ -35,10 +35,6 @@ describe("bin/run", () => {
       instance = new RunCLI();
     });
 
-    test("we can tell if the app has booted", async () => {
-      await instance.waitForReady(); // does not time out
-    });
-
     test("paused tasks can be run", async () => {
       await instance.runPausedTasks({}); // does not throw
     });

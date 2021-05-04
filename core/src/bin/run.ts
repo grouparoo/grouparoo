@@ -4,8 +4,6 @@ import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
 import { Reset } from "../modules/reset";
 
-const CHECK_TIMEOUT = 1000 * 10;
-
 export class RunCLI extends CLI {
   constructor() {
     super();
@@ -67,7 +65,6 @@ export class RunCLI extends CLI {
 
     await import("../grouparoo"); // run the server
 
-    await this.waitForReady();
     await this.runPausedTasks(params);
 
     if (params.runAllSchedules) await this.runNonRecurringSchedules();
@@ -80,17 +77,6 @@ export class RunCLI extends CLI {
       throw new Error(`The Task Scheduler is not enabled`);
     if (config.tasks.minTaskProcessors < 1)
       throw new Error(`No Task Workers are enabled`);
-  }
-
-  async waitForReady() {
-    return new Promise(async (resolve) => {
-      async function check() {
-        if (api.process.started) return resolve(null);
-        setTimeout(() => check(), CHECK_TIMEOUT / 2);
-      }
-
-      await check();
-    });
   }
 
   async runPausedTasks(params) {
