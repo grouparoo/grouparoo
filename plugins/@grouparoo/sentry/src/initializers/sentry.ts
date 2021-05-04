@@ -1,5 +1,5 @@
-import Sentry from "@sentry/node";
-import Tracing from "@sentry/tracing";
+import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 import { Initializer, api, env, action, task } from "actionhero";
 import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
 const packageJSON = require("./../../package.json");
