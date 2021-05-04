@@ -317,33 +317,4 @@ describe("OneSignal/exportProfile", () => {
     expect(player.tags.first_name).toBe("John"); // no change.
     expect(player.tags[weirdTagNormalized]).toBe("test"); // no change.
   });
-
-  test("can clear tags when deleting a user", async () => {
-    await runExport({
-      oldProfileProperties: {
-        external_user_id: extUserId1,
-        first_name: "John",
-        [weirdTag]: "test",
-      },
-      newProfileProperties: {
-        external_user_id: extUserId1,
-        first_name: "John",
-        [weirdTag]: "test",
-        some_new_tag: "but he's being deleted!",
-      },
-      oldGroups: [groupOne, weirdGroup],
-      newGroups: [groupOne, weirdGroup],
-      toDelete: true,
-    });
-
-    await indexDevices(newNock);
-
-    const { body: player } = await client.viewDevice(playerId1);
-    expect(player.external_user_id).toBe(extUserId1);
-    expect(player.tags.first_name).toBeUndefined();
-    expect(player.tags.some_new_tag).toBeUndefined();
-    expect(player.tags[weirdTagNormalized]).toBeUndefined();
-    expect(player.tags[`in_${weirdGroupNormalized}`]).toBeUndefined();
-    expect(player.tags[`in_${groupOne}`]).toBeUndefined();
-  });
 });

@@ -34,14 +34,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   if (toDelete) {
-    if (!syncOperations.delete) {
-      throw new Errors.InfoError(
-        "Destination sync mode does not delete existing device tags."
-      );
-    }
-    // When deleting, we just clear the old tags. No real deletion occurs.
-    newProfileProperties = {};
-    newGroups = [];
+    throw new Errors.InfoError("Destination sync mode does not delete.");
   }
 
   for (const key of allKeys) {
