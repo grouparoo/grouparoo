@@ -26,11 +26,11 @@ const weirdGroupNormalized = "__high_value____";
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profile.js");
 
 // these comments to use nock
-const newNock = false;
-require("./../fixtures/export-profile");
+// const newNock = false;
+// require("./../fixtures/export-profile");
 // or these to make it true
-// const newNock = true;
-// helper.recordNock(nockFile, updater);
+const newNock = true;
+helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 
@@ -283,6 +283,39 @@ describe("OneSignal/exportProfile", () => {
     expect(player.external_user_id).toBe(extUserId1);
     expect(player.tags[weirdTagNormalized]).toBe("test");
     expect(player.tags[`in_${weirdGroupNormalized}`]).toBeTruthy();
+  });
+
+  test("cannot clean tags when deleting a contact if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: true,
+          create: false,
+          delete: false,
+        },
+        oldProfileProperties: {
+          external_user_id: extUserId1,
+          first_name: "John",
+          [weirdTag]: "test",
+        },
+        newProfileProperties: {
+          external_user_id: extUserId1,
+          first_name: "John",
+          [weirdTag]: "test",
+          some_new_tag: "but he's being deleted!",
+        },
+        oldGroups: [groupOne, weirdGroup],
+        newGroups: [groupOne, weirdGroup],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
+
+    await indexDevices(newNock);
+
+    const { body: player } = await client.viewDevice(playerId1);
+    expect(player.external_user_id).toBe(extUserId1);
+    expect(player.tags.first_name).toBe("John"); // no change.
+    expect(player.tags[weirdTagNormalized]).toBe("test"); // no change.
   });
 
   test("can clear tags when deleting a user", async () => {
