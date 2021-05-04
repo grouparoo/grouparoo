@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config } from "actionhero";
+import { CLI, Task, api, config, log } from "actionhero";
 import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
 import { Reset } from "../modules/reset";
@@ -55,6 +55,15 @@ export class RunCLI extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name, false);
     this.checkWorkers();
+
+    const scheduleCount = await Schedule.count();
+    if (scheduleCount === 0) {
+      log(
+        `No schedules found. The run command uses schedules to know what profiles to import.\nSee this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule\nIf you have a schedule and are seeing this message, try \`grouparoo apply\` first.`,
+        "error"
+      );
+      process.exit(1);
+    }
 
     if (!params.web) GrouparooCLI.disableWebServer();
     if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
