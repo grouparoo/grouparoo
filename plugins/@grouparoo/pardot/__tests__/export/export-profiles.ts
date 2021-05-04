@@ -4,6 +4,7 @@ import { exportBatch } from "../../src/lib/export/exportProfiles";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import PardotClient from "../../src/lib/client";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(__dirname, "../", "fixtures", "export-profiles.js");
 
@@ -167,6 +168,39 @@ describe("pardot/exportProfiles", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
+  test("will not create profile if sync mode does not allow it", async () => {
+    userId1 = await findId(email1);
+    expect(userId1).toBe(null);
+
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.enrich.operations,
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: {},
+          newProfileProperties: { email: email1, first_name: "John" },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not creating");
+    expect(error.errorLevel).toEqual("info");
+
+    const foundId = await findId(email1);
+    expect(foundId).toBeNull();
+  });
+
   test("can create profile", async () => {
     userId1 = await findId(email1);
     expect(userId1).toBe(null);
@@ -174,6 +208,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -199,6 +234,42 @@ describe("pardot/exportProfiles", () => {
     expect(user.last_name).toBe(null);
   });
 
+  test("will not change user variables if sync mode does not allow it", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: { create: true, update: false, delete: true },
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: { email: email1, firstName: "John" },
+          newProfileProperties: {
+            email: email1,
+            firstName: "Brian", // updated!
+            lastName: "Doe", // added!
+          },
+          oldGroups: [],
+          newGroups: [],
+          toDelete: false,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not updating");
+    expect(error.errorLevel).toEqual("info");
+
+    const user = await client.getProspectById(userId1);
+    expect(user.email).toBe(email1);
+    expect(user.first_name).toBe("John"); // not updated!
+    expect(user.last_name).toBe(null); // not added!
+  });
+
   test("can add/edit user variables and do multiple users", async () => {
     userId2 = await findId(email2);
     expect(userId2).toBe(null);
@@ -206,6 +277,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -253,6 +325,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -287,6 +360,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -317,6 +391,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -363,6 +438,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -400,6 +476,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -444,15 +521,65 @@ describe("pardot/exportProfiles", () => {
     let members;
     members = await getListMemberIds(listId1);
     expect(members.sort()).toEqual([userId1].sort());
+    expect(members).toHaveLength(1);
 
     members = await getListMemberIds(listId2);
     expect(members.sort()).toEqual([userId1]);
+    expect(members).toHaveLength(1);
+  });
+
+  test("will not delete users if sync mode does not allow it, but will remove groups", async () => {
+    const { success, errors } = await exportBatch({
+      appId,
+      appOptions,
+      syncOperations: DestinationSyncModeData.additive.operations,
+      exports: [
+        {
+          profileId: id1,
+          oldProfileProperties: {
+            email: newEmail1,
+            firstName: "John",
+            lastName: "Test",
+          },
+          newProfileProperties: {
+            email: newEmail1,
+            firstName: "John",
+            lastName: "Test2", // changed here
+          },
+          oldGroups: [list1, list2],
+          newGroups: [list1, list2],
+          toDelete: true,
+          profile: null,
+        },
+      ],
+    });
+
+    expect(errors).not.toBeNull();
+    expect(success).toBe(true);
+    expect(errors.length).toEqual(1);
+    const error = errors[0];
+    expect(error.profileId).toEqual(id1);
+    expect(error.message).toContain("not deleting");
+    expect(error.errorLevel).toEqual("info");
+
+    const user = await client.getProspectById(userId1); // not null!
+    expect(user.email).toBe(newEmail1);
+    expect(user.first_name).toBe("John");
+    expect(user.last_name).toBe("Test"); // not changed!
+
+    let members; // TODO: not removing groups.
+    members = await getListMemberIds(listId1);
+    // expect(members).toHaveLength(0); // removed!
+
+    members = await getListMemberIds(listId2);
+    // expect(members).toHaveLength(0); // removed!
   });
 
   test("can delete a user", async () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -509,6 +636,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -555,6 +683,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -598,6 +727,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -638,6 +768,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -693,6 +824,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id2,
@@ -734,6 +866,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id1,
@@ -809,6 +942,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id4,
@@ -841,6 +975,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id4,
@@ -875,6 +1010,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports: [
         {
           profileId: id4,
@@ -912,6 +1048,7 @@ describe("pardot/exportProfiles", () => {
     const { success, errors } = await exportBatch({
       appId,
       appOptions,
+      syncOperations: DestinationSyncModeData.sync.operations,
       exports,
     });
 

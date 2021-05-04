@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
@@ -24,6 +24,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/pardot/pardot.png",
@@ -31,9 +33,12 @@ export class Plugins extends Initializer {
         new AppTemplate("pardot", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("pardot", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "pardot",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -89,6 +94,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles and Groups to Pardot as Prospects and Lists",
           app: "pardot",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfiles,

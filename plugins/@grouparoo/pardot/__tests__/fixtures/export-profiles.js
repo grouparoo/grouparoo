@@ -8,14 +8,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:50 GMT",
+      "Tue, 04 May 2021 03:51:28 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=MfhtLYHaEeuq1cNq_9pbow; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:52:50 GMT; Max-Age=31536000",
+      "BrowserId=AS2ACayMEeu_bOOX7n-kzQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:28 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -38,9 +38,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:51 GMT",
+      "Tue, 04 May 2021 03:51:28 GMT",
       "Set-Cookie",
-      "pardot=jl2rkopgt2ehoibq5gb75bjh20; path=/",
+      "pardot=p16lt2sn33p8mg99rpgtd73qfr; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -48,7 +48,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -62,7 +62,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -77,9 +77,87 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:51 GMT",
+      "Tue, 04 May 2021 03:51:29 GMT",
       "Set-Cookie",
-      "pardot=a0un0gmfc3s1u1995nka4vf5g2; path=/",
+      "pardot=t0b2rdhtsqcn22n349hqu08ahh; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo3%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:30 GMT",
+      "Set-Cookie",
+      "pardot=0f2433h5iut8kemec4rs5ckc1a; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:30 GMT",
+      "Set-Cookie",
+      "pardot=c3sotmq6m57qhjste1q7jav7q1; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -101,85 +179,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo3%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:52:51 GMT",
-      "Set-Cookie",
-      "pardot=0adccs4udp91mablrqveq0mtld; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:52:51 GMT",
-      "Set-Cookie",
-      "pardot=90vmsns56i81g02qvokss6g3ap; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -194,9 +194,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:52 GMT",
+      "Tue, 04 May 2021 03:51:31 GMT",
       "Set-Cookie",
-      "pardot=8p0jjool0je3ab6fc379r85ao1; path=/",
+      "pardot=akju9nvn7cuie0lvgd6j3fqemk; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -218,7 +218,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -230,9 +230,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:52 GMT",
+      "Tue, 04 May 2021 03:51:31 GMT",
       "Set-Cookie",
-      "pardot=o7odp630jcbnfe7u94rcueaudp; path=/",
+      "pardot=cfvcdcg50cvndo5cc3tuj41136; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -240,7 +240,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -254,7 +254,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -266,9 +266,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:52 GMT",
+      "Tue, 04 May 2021 03:51:31 GMT",
       "Set-Cookie",
-      "pardot=a9g9qiop634jhbnr41npqpfv7m; path=/",
+      "pardot=dpfj9o9j906o232c61li4kpsd4; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -276,7 +276,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -290,7 +290,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -305,9 +305,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:53 GMT",
+      "Tue, 04 May 2021 03:51:32 GMT",
       "Set-Cookie",
-      "pardot=loj6pv3d0cq10sbrfc9lg7egv5; path=/",
+      "pardot=vp75ghkcagp13fnfioc4oobi02; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -315,7 +315,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -329,7 +329,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
@@ -340,14 +340,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:53 GMT",
+      "Tue, 04 May 2021 03:51:32 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=M6z7OIHaEeuxXJdgfWuZ4A; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:52:53 GMT; Max-Age=31536000",
+      "BrowserId=BCAMMayMEeuquUMZt3xwYQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:32 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -370,9 +370,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:53 GMT",
+      "Tue, 04 May 2021 03:51:33 GMT",
       "Set-Cookie",
-      "pardot=g73mp3s32aokknu3vh492bfma9; path=/",
+      "pardot=apdqrsak8hqjfepmdiqt6bba5k; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -394,7 +394,150 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:33 GMT",
+      "Set-Cookie",
+      "pardot=ojirb64kje6g2p6orr5tg9gpu5; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:34 GMT",
+      "Set-Cookie",
+      "pardot=v26c4678cu0hh0f9apcof21put; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:34 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=BU9kpqyMEeuquUMZt3xwYQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:34 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:35 GMT",
+      "Set-Cookie",
+      "pardot=vugugj93e5iq4vp7dq23aqpta7; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -406,9 +549,672 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .once()
   .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:52:54 GMT",
+    "Tue, 04 May 2021 03:51:35 GMT",
     "Set-Cookie",
-    "pardot=8ifpcn5hn4p5vafvulllm4acqi; path=/",
+    "pardot=12k549ooevsmeolo821o81sffs; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/81/66",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:36 GMT",
+      "Set-Cookie",
+      "pardot=ifl80ee43gt2o0m0pq5tesuuo9; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:37 GMT",
+      "Set-Cookie",
+      "pardot=7tob76phquoo6il6hgsfjhvjg6; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:37 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=Bu3SFayMEeuIEvHkSP2wCQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:37 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:38 GMT",
+      "Set-Cookie",
+      "pardot=e2tiatn7fcgtfpfskecgi8lti5; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:38 GMT",
+      "Set-Cookie",
+      "pardot=l0ucv6r6khk2c5727p7i9phaiu; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:39 GMT",
+      "Set-Cookie",
+      "pardot=sfi4jvojatf9vkem0ovuknvkoi; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:39 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=CDca-KyMEeu9Wr8Lb4f5RA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:39 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:40 GMT",
+      "Set-Cookie",
+      "pardot=hea1rqdbto4smcujdofveo3vms; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:40 GMT",
+      "Set-Cookie",
+      "pardot=mss08cp03q97hq56j26307rdmf; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","last_name":"Doe"}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:51:41 GMT",
+    "Set-Cookie",
+    "pardot=sjfgfi9jtfn1skev211k86uvva; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -428,10 +1234,43 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","first_name":"Pete"}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:51:41 GMT",
+    "Set-Cookie",
+    "pardot=kfqfnomqc4eqopfrdk5ratluag; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/78/160",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
   .query({ format: "json" })
   .once()
   .reply(
@@ -439,11 +1278,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "John",
-        last_name: null,
+        last_name: "Doe",
         email: "grouparoo@demo.com",
         password: null,
         company: null,
@@ -482,8 +1321,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:54",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:41",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -503,148 +1342,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:54 GMT",
+      "Tue, 04 May 2021 03:51:42 GMT",
       "Set-Cookie",
-      "pardot=4upoihfr6ob7r5s7hkm1182cg8; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1323",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: null,
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:54",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:52:54 GMT",
-      "Set-Cookie",
-      "pardot=dhm8v6qtvlem04qtd82dmsl7mh; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1323",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:52:54 GMT",
-      "Set-Cookie",
-      "pardot=k3gt3dvr3mm9tkbqv7jmkr25fv; path=/",
+      "pardot=5nqtngtb605m8gs0pauipfva50; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -658,7 +1358,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "95",
+      "1325",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -666,7 +1366,207 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Pete",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:51:42",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:43 GMT",
+      "Set-Cookie",
+      "pardot=4n6blbth3aa3btbf3p26h5faij; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671378")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Pete",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:51:42",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:43 GMT",
+      "Set-Cookie",
+      "pardot=36785rq4qv170oo58ftvv0l29g; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
@@ -677,14 +1577,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:55 GMT",
+      "Tue, 04 May 2021 03:51:44 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=NMLXVoHaEeu5Qt0YDuDdNw; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:52:55 GMT; Max-Age=31536000",
+      "BrowserId=CsbtRqyMEeuVgeG89K8-GQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:44 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -704,7 +1604,140 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: "Doe",
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:41",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:44 GMT",
+      "Set-Cookie",
+      "pardot=b4q9hej39ne7g5ofa7gtl1t37v; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","last_name":""}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:51:45 GMT",
+    "Set-Cookie",
+    "pardot=74bu0b55d0os7vpmp7b6bp39gb; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/78/160",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "John",
@@ -747,8 +1780,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:54",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:45",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -768,9 +1801,45 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:55 GMT",
+      "Tue, 04 May 2021 03:51:45 GMT",
       "Set-Cookie",
-      "pardot=sjpq1qjeoqe24ijipu7804794q; path=/",
+      "pardot=sgus4hebqva9pshbrf9kvrmosc; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:46 GMT",
+      "Set-Cookie",
+      "pardot=3usue088cc5omn2ljb0eh32fl2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -784,7 +1853,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1323",
+      "70",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -792,24 +1861,330 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:46 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=DFuW9qyMEeuavDknJb6-4g; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:46 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
   .query({ format: "json" })
   .once()
   .reply(
-    400,
+    200,
     {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:45",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:55 GMT",
+      "Tue, 04 May 2021 03:51:47 GMT",
       "Set-Cookie",
-      "pardot=i7negarspqe13jnplc6r5jpf0g; path=/",
+      "pardot=2niqi6qvohbtdr0i6qfk1jgjio; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1324",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:47 GMT",
+      "Set-Cookie",
+      "pardot=1gktjjgar4evrmb1fadk2s42uc; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "70",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post("/api/list/version/4/do/create", {})
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      list: {
+        id: 221836,
+        name: "(test) High Value",
+        is_public: false,
+        is_dynamic: false,
+        title: null,
+        description: null,
+        is_crm_visible: false,
+        created_at: "2021-05-03 20:51:48",
+        updated_at: "2021-05-03 20:51:48",
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:48 GMT",
+      "Set-Cookie",
+      "pardot=on3mpg4r3eftvg37mqfpdr025v; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "251",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","list_221836":1}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:51:48 GMT",
+    "Set-Cookie",
+    "pardot=jfr3h8tbes65ml6jocaie07k7b; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/81/66",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:49 GMT",
+      "Set-Cookie",
+      "pardot=skjhjfbpvhqtcsb3o9mmhtgn5t; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615638,
+          list_id: 221836,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:49 GMT",
+      "Set-Cookie",
+      "pardot=55nsussbpmslf3bi12qg4vheca; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -823,7 +2198,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "95",
+      "232",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -831,21 +2206,491 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:50 GMT",
+      "Set-Cookie",
+      "pardot=lq0r7lgsp2of3d25l0r39l8tip; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "70",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:50 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=DsVrgKyMEeuIJ49Qsg_ktw; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:50 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:48",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615638,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:51 GMT",
+      "Set-Cookie",
+      "pardot=qds4fhr7i57dc8safaf2rm2vsh; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1676",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Pete",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:51:42",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:51 GMT",
+      "Set-Cookie",
+      "pardot=dr61hos1lv3qkojqgn50qe884p; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:52 GMT",
+      "Set-Cookie",
+      "pardot=unq4n3h1r8ehi7712npfin3i17; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:52 GMT",
+      "Set-Cookie",
+      "pardot=grs7bj8g6lu553f58a9nd2rfbv; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "70",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post("/api/list/version/4/do/create", {})
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      list: {
+        id: 221838,
+        name: "(test) Churned",
+        is_public: false,
+        is_dynamic: false,
+        title: null,
+        description: null,
+        is_crm_visible: false,
+        created_at: "2021-05-03 20:51:53",
+        updated_at: "2021-05-03 20:51:53",
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:53 GMT",
+      "Set-Cookie",
+      "pardot=367d9l6vuek7ul4rdltd82vdgf; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "248",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:53 GMT",
+      "Set-Cookie",
+      "pardot=mu543d10ncb3c9dojbgne3vtjc; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","last_name":"Doe"}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","list_221836":1,"list_221838":1},{"email":"grouparoo2@demo.com","id":22671378,"first_name":"Sally","list_221836":1}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
   .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:52:56 GMT",
+    "Tue, 04 May 2021 03:51:54 GMT",
     "Set-Cookie",
-    "pardot=einevs3c8iegtkdgg9hmftr918; path=/",
+    "pardot=md845jrevjfi8uegrcl7l5d8i5; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -865,20 +2710,791 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221838,
+          name: "(test) Churned",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:54 GMT",
+      "Set-Cookie",
+      "pardot=taq121vf7s6vl48gpftf9mirgp; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "277",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 2,
+        list_membership: [
+          {
+            id: 28615638,
+            list_id: 221836,
+            prospect_id: 22671376,
+            opted_out: false,
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
+          },
+          {
+            id: 28615642,
+            list_id: 221836,
+            prospect_id: 22671378,
+            opted_out: false,
+            created_at: "2021-05-03 20:51:54",
+            updated_at: "2021-05-03 20:51:54",
+          },
+        ],
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:55 GMT",
+      "Set-Cookie",
+      "pardot=ksb7qt4r6igk8nqmq9qi87q11t; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "378",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221838" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615640,
+          list_id: 221838,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:54",
+          updated_at: "2021-05-03 20:51:54",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:55 GMT",
+      "Set-Cookie",
+      "pardot=lbmpl28c1nh0aa4su3j6jiesa9; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671378")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Sally",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:51:54",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615642,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:54",
+            updated_at: "2021-05-03 20:51:54",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:56 GMT",
+      "Set-Cookie",
+      "pardot=dcp0hid6jbgtpvv77i9f5pnj01; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1678",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:56 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=El9bSayMEeuIJZXeHytoVw; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:51:56 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: null,
+        email: "grouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:51:54",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: [
+            {
+              id: 28615638,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+              list: {
+                id: 221836,
+                name: "(test) High Value",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:48",
+                updated_at: "2021-05-03 20:51:48",
+              },
+            },
+            {
+              id: 28615640,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:54",
+              updated_at: "2021-05-03 20:51:54",
+              list: {
+                id: 221838,
+                name: "(test) Churned",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:53",
+                updated_at: "2021-05-03 20:51:53",
+              },
+            },
+          ],
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:57 GMT",
+      "Set-Cookie",
+      "pardot=707mf6vbvfcui8ml1234bnr1vj; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "2010",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Sally",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:51:54",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615642,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:54",
+            updated_at: "2021-05-03 20:51:54",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:58 GMT",
+      "Set-Cookie",
+      "pardot=v9i840lujjfstnb84fhqtou11o; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1678",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:58 GMT",
+      "Set-Cookie",
+      "pardot=ch81jtk07jau290d7cb40fn6m9; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221838,
+          name: "(test) Churned",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:59 GMT",
+      "Set-Cookie",
+      "pardot=nqnnrq9bte42tdnb6u9pkurfg7; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "277",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:51:59 GMT",
+      "Set-Cookie",
+      "pardot=vjnbg5ko7rqqtqghjaieoimfgt; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221838,
+          name: "(test) Churned",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:00 GMT",
+      "Set-Cookie",
+      "pardot=dt88ah0adekidl7sfv9bjm7gjr; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "277",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","first_name":"Pete"}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","list_221836":1,"list_221838":0},{"email":"grouparoo2@demo.com","id":22671378,"first_name":"Sally","list_221836":1,"list_221838":0}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
-  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:52:56 GMT",
+    "Tue, 04 May 2021 03:52:00 GMT",
     "Set-Cookie",
-    "pardot=fek0anaa8ida2ljufgf9q5p8ol; path=/",
+    "pardot=uruj1e7bj8ggotc5ifuuu64nh7; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -898,184 +3514,43 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
-  .query({ format: "json" })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
   .once()
   .reply(
     200,
     {
       "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: "Doe",
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:56",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
+      result: {
+        total_results: 2,
+        list_membership: [
+          {
+            id: 28615638,
+            list_id: 221836,
+            prospect_id: 22671376,
+            opted_out: false,
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
+          },
+          {
+            id: 28615642,
+            list_id: 221836,
+            prospect_id: 22671378,
+            opted_out: false,
+            created_at: "2021-05-03 20:51:54",
+            updated_at: "2021-05-03 20:51:54",
+          },
+        ],
       },
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:56 GMT",
+      "Tue, 04 May 2021 03:52:01 GMT",
       "Set-Cookie",
-      "pardot=m72n9o0g04hehjjoqk3o855dph; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1324",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Pete",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:52:56",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:52:57 GMT",
-      "Set-Cookie",
-      "pardot=d9kr2t5ua49naqnnscbfcsn9jm; path=/",
+      "pardot=bg3ideqh9dufgot1fjaqoq15ru; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1089,7 +3564,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1324",
+      "378",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1097,85 +3572,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151681")
-  .query({ format: "json" })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221838" })
   .once()
   .reply(
     200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Pete",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:52:56",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:57 GMT",
+      "Tue, 04 May 2021 03:52:01 GMT",
       "Set-Cookie",
-      "pardot=517d2muc5kiaja8qamdcfkla4o; path=/",
+      "pardot=e46edmhuh4vlqaa21hi7rup03j; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1183,13 +3594,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1324",
+      "70",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1197,7 +3608,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
@@ -1208,14 +3619,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:57 GMT",
+      "Tue, 04 May 2021 03:52:02 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=NlB8r4HaEeuQw2e3lngqdQ; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:52:57 GMT; Max-Age=31536000",
+      "BrowserId=FbBavayMEeukBhVtzcRiew; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:02 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -1235,11 +3646,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "John",
-        last_name: "Doe",
+        last_name: null,
         email: "grouparoo@demo.com",
         password: null,
         company: null,
@@ -1278,8 +3689,652 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:56",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:00",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615638,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:02 GMT",
+      "Set-Cookie",
+      "pardot=erffg6445bivh0lo7fr8mp84oa; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1676",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:03 GMT",
+      "Set-Cookie",
+      "pardot=558ucctokaqs2hp2g4fj700svf; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Sally",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:52:00",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615642,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:54",
+            updated_at: "2021-05-03 20:51:54",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:03 GMT",
+      "Set-Cookie",
+      "pardot=mi250dun5g0f3hfmkag14a8meg; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1678",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:04 GMT",
+      "Set-Cookie",
+      "pardot=a1aamfvqhnb16k4ekghps134qf; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221838,
+          name: "(test) Churned",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:04 GMT",
+      "Set-Cookie",
+      "pardot=ftp4uf6i8fjdq792fe9o56qtii; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "277",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:05 GMT",
+      "Set-Cookie",
+      "pardot=5mt86af4j4kkgaa29s8t9110od; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"notgrouparoo@demo.com","id":22671376,"first_name":"John","last_name":"Test","list_221836":1,"list_221838":1},{"email":"grouparoo2@demo.com","id":22671378,"first_name":"Evan","list_221836":0}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:52:05 GMT",
+    "Set-Cookie",
+    "pardot=uqik3vjr5q6n223ibfe5miuujm; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/15/252",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: "Test",
+        email: "notgrouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:05",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: [
+            {
+              id: 28615638,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+              list: {
+                id: 221836,
+                name: "(test) High Value",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:48",
+                updated_at: "2021-05-03 20:51:48",
+              },
+            },
+            {
+              id: 28615640,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:54",
+              updated_at: "2021-05-03 20:52:05",
+              list: {
+                id: 221838,
+                name: "(test) Churned",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:53",
+                updated_at: "2021-05-03 20:51:53",
+              },
+            },
+          ],
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:06 GMT",
+      "Set-Cookie",
+      "pardot=9nc4pqg3scv4a7fc88pmv47maa; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "2015",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:06 GMT",
+      "Set-Cookie",
+      "pardot=4cplc241icur9jnvu2gk3vf5la; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671378")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Evan",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:52:05",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -1299,9 +4354,411 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:58 GMT",
+      "Tue, 04 May 2021 03:52:07 GMT",
       "Set-Cookie",
-      "pardot=1vdf9t2bh3u84a4nuujjsjmgjg; path=/",
+      "pardot=tgt36p95e83vsn93186f2ihn6n; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615638,
+          list_id: 221836,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:07 GMT",
+      "Set-Cookie",
+      "pardot=c7c0589iddtq6clp2qhpsj42vi; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221838" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615640,
+          list_id: 221838,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:54",
+          updated_at: "2021-05-03 20:52:05",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:08 GMT",
+      "Set-Cookie",
+      "pardot=tbv3qebl4onq89l0n81i691abj; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:08 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=GY1uUKyMEeu_bOOX7n-kzQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:08 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: "Test",
+        email: "notgrouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:05",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: [
+            {
+              id: 28615638,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+              list: {
+                id: 221836,
+                name: "(test) High Value",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:48",
+                updated_at: "2021-05-03 20:51:48",
+              },
+            },
+            {
+              id: 28615640,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:54",
+              updated_at: "2021-05-03 20:52:05",
+              list: {
+                id: 221838,
+                name: "(test) Churned",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:53",
+                updated_at: "2021-05-03 20:51:53",
+              },
+            },
+          ],
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:09 GMT",
+      "Set-Cookie",
+      "pardot=kb42kdrdou33u6k2prd318oruc; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "2015",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671376")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: "Test",
+        email: "notgrouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:05",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: [
+            {
+              id: 28615638,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+              list: {
+                id: 221836,
+                name: "(test) High Value",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:48",
+                updated_at: "2021-05-03 20:51:48",
+              },
+            },
+            {
+              id: 28615640,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:54",
+              updated_at: "2021-05-03 20:52:05",
+              list: {
+                id: 221838,
+                name: "(test) Churned",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:53",
+                updated_at: "2021-05-03 20:51:53",
+              },
+            },
+          ],
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:09 GMT",
+      "Set-Cookie",
+      "pardot=icu04ip6bvr39bpp6l1gbjpbpj; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1315,7 +4772,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1324",
+      "2015",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1323,21 +4780,554 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615638,
+          list_id: 221836,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:10 GMT",
+      "Set-Cookie",
+      "pardot=7sf0173e401cnkq9041u837e0o; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221838" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615640,
+          list_id: 221838,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:54",
+          updated_at: "2021-05-03 20:52:05",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:10 GMT",
+      "Set-Cookie",
+      "pardot=qecit1dok3vaq08tgc724s8cir; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:11 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=Gxp3B6yMEeu5oYe15qWORA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:11 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671376,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "John",
+        last_name: "Test",
+        email: "notgrouparoo@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:05",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: [
+            {
+              id: 28615638,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+              list: {
+                id: 221836,
+                name: "(test) High Value",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:48",
+                updated_at: "2021-05-03 20:51:48",
+              },
+            },
+            {
+              id: 28615640,
+              did_opt_in: false,
+              did_opt_out: false,
+              created_at: "2021-05-03 20:51:54",
+              updated_at: "2021-05-03 20:52:05",
+              list: {
+                id: 221838,
+                name: "(test) Churned",
+                is_public: false,
+                is_dynamic: false,
+                title: null,
+                description: null,
+                is_crm_visible: false,
+                created_at: "2021-05-03 20:51:53",
+                updated_at: "2021-05-03 20:51:53",
+              },
+            },
+          ],
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:12 GMT",
+      "Set-Cookie",
+      "pardot=gk05hm1hr0po0d7id3hji415nl; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "2015",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:12 GMT",
+      "Set-Cookie",
+      "pardot=tj1hvuetpc4uhffvlhs6hokjum; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671378,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Evan",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:51:41",
+        updated_at: "2021-05-03 20:52:05",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:13 GMT",
+      "Set-Cookie",
+      "pardot=0bostojcmdhgnkgdk48nh1v2ns; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1325",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post("/api/prospect/version/4/do/delete/id/22671378")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 04 May 2021 03:52:13 GMT",
+    "Set-Cookie",
+    "pardot=05n2ppsfqemhgjp0nhno5oeno1; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "P3p",
+    'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Type",
+    "text/html; charset=utf-8",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20High%20Value" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221836,
+          name: "(test) High Value",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:14 GMT",
+      "Set-Cookie",
+      "pardot=br6sutr45241omrss3ttq1t2ed; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "280",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/list/version/4/do/query")
+  .query({ format: "json", name: "%28test%29%20Churned" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list: {
+          id: 221838,
+          name: "(test) Churned",
+          is_public: false,
+          is_dynamic: false,
+          title: null,
+          description: null,
+          is_crm_visible: false,
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:14 GMT",
+      "Set-Cookie",
+      "pardot=95n4n7kom1rrqm0hgm050sul5e; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "277",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","last_name":""}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"John","last_name":"Test","list_221836":1,"list_221838":0}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
   .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:52:58 GMT",
+    "Tue, 04 May 2021 03:52:15 GMT",
     "Set-Cookie",
-    "pardot=hg8q6euqk38bc6fedrau079c27; path=/",
+    "pardot=uje63444l0pjn2tu1k9810m0pp; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -1357,10 +5347,10 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
+  .get("/api/prospect/version/4/do/read/id/22671376")
   .query({ format: "json" })
   .once()
   .reply(
@@ -1368,11 +5358,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "John",
-        last_name: null,
+        last_name: "Test",
         email: "grouparoo@demo.com",
         password: null,
         company: null,
@@ -1411,8 +5401,821 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:58",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:15",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: {
+          list_subscription: {
+            id: 28615638,
+            did_opt_in: false,
+            did_opt_out: false,
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
+            list: {
+              id: 221836,
+              name: "(test) High Value",
+              is_public: false,
+              is_dynamic: false,
+              title: null,
+              description: null,
+              is_crm_visible: false,
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
+            },
+          },
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:15 GMT",
+      "Set-Cookie",
+      "pardot=2nkg24kijqm3d0huldifj2qpdo; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1678",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:16 GMT",
+      "Set-Cookie",
+      "pardot=u8gcd7t32vqoefdh1siu46rrsn; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:16 GMT",
+      "Set-Cookie",
+      "pardot=3vnd1gc2r2cb6ali4m24v2qlnh; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/query")
+  .query({
+    format: "json",
+    output: "mobile",
+    deleted: "true",
+    id_greater_than: "22671377",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        prospect: {
+          id: 22671378,
+          first_name: "Evan",
+          last_name: null,
+          email: "grouparoo2@demo.com",
+          company: null,
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:17 GMT",
+      "Set-Cookie",
+      "pardot=vbbgjbljlce2v1qaagcg4jeq85; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "179",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221836" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        list_membership: {
+          id: 28615638,
+          list_id: 221836,
+          prospect_id: 22671376,
+          opted_out: false,
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:17 GMT",
+      "Set-Cookie",
+      "pardot=1tj3a2jbs02e9iub38qo7sb099; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "232",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/listMembership/version/4/do/query")
+  .query({ format: "json", output: "mobile", list_id: "221838" })
+  .once()
+  .reply(
+    200,
+    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:18 GMT",
+      "Set-Cookie",
+      "pardot=dabqe0sib5cigm5ja2ug1q7ohb; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "70",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:18 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=H1hHiqyMEeu8sNFsE6IkaA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:18 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:19 GMT",
+      "Set-Cookie",
+      "pardot=470jvq3rrp306sh722cpvi3hvb; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","first_name":"Evan","grouparoo_custom_textarea":"text is here","grouparoo_custom_text":"text is also here","grouparoo_custom_number":5,"grouparoo_custom_hidden":"some hidden value","grouparoo_custom_date":"2020-08-30T05:49:48.000Z","grouparoo_custom_dropdown":"dropdown value","grouparoo_custom_radio_button":"radio value"}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:52:19 GMT",
+    "Set-Cookie",
+    "pardot=mpnv19bqf2jhf4n7k6ejshsbtc; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/70/31",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Evan",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:20",
+        campaign: { id: 8245, name: "Website Tracking" },
+        grouparoo_custom_date: "2020-08-30",
+        grouparoo_custom_dropdown: "dropdown value",
+        grouparoo_custom_hidden: "some hidden value",
+        grouparoo_custom_number: 5,
+        grouparoo_custom_radio_button: "radio value",
+        grouparoo_custom_text: "text is also here",
+        grouparoo_custom_textarea: "text is here",
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:20 GMT",
+      "Set-Cookie",
+      "pardot=ul3r2mbv92jtk44kok34otqjrv; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1614",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671380")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Evan",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:20",
+        campaign: { id: 8245, name: "Website Tracking" },
+        grouparoo_custom_date: "2020-08-30",
+        grouparoo_custom_dropdown: "dropdown value",
+        grouparoo_custom_hidden: "some hidden value",
+        grouparoo_custom_number: 5,
+        grouparoo_custom_radio_button: "radio value",
+        grouparoo_custom_text: "text is also here",
+        grouparoo_custom_textarea: "text is here",
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:20 GMT",
+      "Set-Cookie",
+      "pardot=c8f22uqsadbjnhjfdnc3u98q7r; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1614",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:21 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=IRLv1ayMEeuy2p1etXO9Uw; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:21 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Evan",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:20",
+        campaign: { id: 8245, name: "Website Tracking" },
+        grouparoo_custom_date: "2020-08-30",
+        grouparoo_custom_dropdown: "dropdown value",
+        grouparoo_custom_hidden: "some hidden value",
+        grouparoo_custom_number: 5,
+        grouparoo_custom_radio_button: "radio value",
+        grouparoo_custom_text: "text is also here",
+        grouparoo_custom_textarea: "text is here",
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:22 GMT",
+      "Set-Cookie",
+      "pardot=njm8i5l6u4q9r327co6853f5d4; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1614",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","id":22671380,"first_name":"Maria","grouparoo_custom_textarea":"","grouparoo_custom_text":"","grouparoo_custom_number":"","grouparoo_custom_hidden":"","grouparoo_custom_date":"","grouparoo_custom_dropdown":"","grouparoo_custom_radio_button":""}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:52:22 GMT",
+    "Set-Cookie",
+    "pardot=mvu6r4dr646cie3r9284vljoq9; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/81/66",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "81ef3179da45557cd28f9ba13d8805bd",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671380")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Maria",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:22",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -1432,9 +6235,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:58 GMT",
+      "Tue, 04 May 2021 03:52:23 GMT",
       "Set-Cookie",
-      "pardot=itkj7j2075pms7bv1tjvqdqlif; path=/",
+      "pardot=14poo30rfl9ea536662t1mtccg; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1448,7 +6251,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1323",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1456,21 +6259,111 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
   .once()
   .reply(
     200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:59 GMT",
+      "Tue, 04 May 2021 03:52:23 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "pardot=fd1rffo06e7uvfqngso3ltim7j; path=/",
+      "BrowserId=InmEZKyMEeuLgu3b5YIeKA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:23 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Maria",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:22",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:24 GMT",
+      "Set-Cookie",
+      "pardot=h4jsrpd481oe6fois0fepj3pun; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1478,13 +6371,318 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "70",
+      "1326",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/notanemail")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:24 GMT",
+      "Set-Cookie",
+      "pardot=vbpk1nbm63rspabtdcu6s5640k; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"notanemail","id":22671380,"first_name":"Maria"}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "fail", version: 1 },
+      errors: { 0: "Invalid prospect email address" },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:25 GMT",
+      "Set-Cookie",
+      "pardot=jumenjvf16qphbvhv0p66mf2o3; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "91",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671380")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Maria",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:22",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:25 GMT",
+      "Set-Cookie",
+      "pardot=897dbe2f0i8i4hilv7h14vtsk7; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1326",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:26 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=JAXKHqyMEeupobttt2PmmA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:26 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671380")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Maria",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:22",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:28 GMT",
+      "Set-Cookie",
+      "pardot=6o7b93n7ph9a7upc3cai929f8q; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1503,14 +6701,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:59 GMT",
+      "Tue, 04 May 2021 03:52:29 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=N0PczoHaEeu76tdSvqlNYw; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:52:59 GMT; Max-Age=31536000",
+      "BrowserId=JacdoayMEeuDz6Ey_Aiw4g; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:29 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -1522,7 +6720,7 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
   .query({ format: "json" })
   .once()
   .reply(
@@ -1530,12 +6728,12 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671380,
         campaign_id: 8245,
         salutation: null,
-        first_name: "John",
+        first_name: "Maria",
         last_name: null,
-        email: "grouparoo@demo.com",
+        email: "grouparoo2@demo.com",
         password: null,
         company: null,
         website: null,
@@ -1573,8 +6771,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:52:58",
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:22",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -1594,9 +6792,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:52:59 GMT",
+      "Tue, 04 May 2021 03:52:30 GMT",
       "Set-Cookie",
-      "pardot=212mesd778fl5tlpoujmhp6917; path=/",
+      "pardot=ifobdrg09q11qmsm5r88md3irs; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -1604,13 +6802,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1323",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -1618,106 +6816,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:00 GMT",
-      "Set-Cookie",
-      "pardot=3aguquijbtidqr6i3gp137fem0; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "70",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/list/version/4/do/create", {})
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      list: {
-        id: 14037,
-        name: "(test) High Value",
-        is_public: false,
-        is_dynamic: false,
-        title: null,
-        description: null,
-        is_crm_visible: false,
-        created_at: "2021-03-10 11:53:00",
-        updated_at: "2021-03-10 11:53:00",
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:00 GMT",
-      "Set-Cookie",
-      "pardot=fj45rsob4g8ub8v9hcjusjg7rc; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "250",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","list_14037":1}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","id":22671380,"first_name":"Maria","grouparoo_custom_date":"notadate","grouparoo_custom_number":"notanumber"}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
   .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:53:00 GMT",
+    "Tue, 04 May 2021 03:52:31 GMT",
     "Set-Cookie",
-    "pardot=7solghahvrl3352di9kgl1irtt; path=/",
+    "pardot=9gejefkjell9u7oqmoni7ehqvp; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -1740,170 +6853,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "01f6d1eb96c2e46c10f3ecf450ddabd0",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:00 GMT",
-      "Set-Cookie",
-      "pardot=vu3kffsiaftn0vau2574d4nuda; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14037" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list_membership: {
-          id: 1534001,
-          list_id: 14037,
-          prospect_id: 1151679,
-          opted_out: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:01 GMT",
-      "Set-Cookie",
-      "pardot=6ita76i4dof2jbh98gp0gasg41; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "229",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:01 GMT",
-      "Set-Cookie",
-      "pardot=c91a4kuhvgaadaanolq2grvo2q; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "70",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:01 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=OKQwL4HaEeuyxAMOaV-HKA; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:01 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
+  .get("/api/prospect/version/4/do/read/id/22671380")
   .query({ format: "json" })
   .once()
   .reply(
@@ -1911,3496 +6861,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: null,
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:00",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534001,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:02 GMT",
-      "Set-Cookie",
-      "pardot=2m2s9blm8stg10s0cvkofr8mdc; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1673",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Pete",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:52:56",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:03 GMT",
-      "Set-Cookie",
-      "pardot=08tktq02oa1lf2jlck0p68cdbq; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1324",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:03 GMT",
-      "Set-Cookie",
-      "pardot=sik953m5nsvhqnh0rrmf0r34sh; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:03 GMT",
-      "Set-Cookie",
-      "pardot=aej1mj2bdto48rn4ja0v75c598; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "70",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/list/version/4/do/create", {})
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      list: {
-        id: 14039,
-        name: "(test) Churned",
-        is_public: false,
-        is_dynamic: false,
-        title: null,
-        description: null,
-        is_crm_visible: false,
-        created_at: "2021-03-10 11:53:03",
-        updated_at: "2021-03-10 11:53:03",
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:03 GMT",
-      "Set-Cookie",
-      "pardot=1e3fcrhk5f5svevhc0bk7uffit; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "247",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:04 GMT",
-      "Set-Cookie",
-      "pardot=4fkbmjo7u1jpqi6qpovc8h8ms6; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","list_14037":1,"list_14039":1},{"email":"grouparoo2@demo.com","id":1151681,"first_name":"Sally","list_14037":1}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:04 GMT",
-    "Set-Cookie",
-    "pardot=irtjqu29cbtji0ts8h6g6ta4h4; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/15/252",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14039,
-          name: "(test) Churned",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:04 GMT",
-      "Set-Cookie",
-      "pardot=3tct7n5i0145qpvfbm8pmmais2; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "276",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14037" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 2,
-        list_membership: [
-          {
-            id: 1534001,
-            list_id: 14037,
-            prospect_id: 1151679,
-            opted_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
-          },
-          {
-            id: 1534005,
-            list_id: 14037,
-            prospect_id: 1151681,
-            opted_out: false,
-            created_at: "2021-03-10 11:53:04",
-            updated_at: "2021-03-10 11:53:04",
-          },
-        ],
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:05 GMT",
-      "Set-Cookie",
-      "pardot=007f9kevne1egv4g5ds30o1etb; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "372",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14039" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list_membership: {
-          id: 1534003,
-          list_id: 14039,
-          prospect_id: 1151679,
-          opted_out: false,
-          created_at: "2021-03-10 11:53:04",
-          updated_at: "2021-03-10 11:53:04",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:05 GMT",
-      "Set-Cookie",
-      "pardot=8h5mvedpbh7cikmn2e2b7sje8j; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "229",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151681")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Sally",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:53:04",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534005,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:04",
-            updated_at: "2021-03-10 11:53:04",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:05 GMT",
-      "Set-Cookie",
-      "pardot=jpsut107b67hes0m044noihh0k; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1675",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:05 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=OxyDLYHaEeusmOcNsJCbIg; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:05 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: null,
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:04",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: [
-            {
-              id: 1534001,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-              list: {
-                id: 14037,
-                name: "(test) High Value",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:00",
-                updated_at: "2021-03-10 11:53:00",
-              },
-            },
-            {
-              id: 1534003,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:04",
-              updated_at: "2021-03-10 11:53:04",
-              list: {
-                id: 14039,
-                name: "(test) Churned",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:03",
-                updated_at: "2021-03-10 11:53:03",
-              },
-            },
-          ],
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:06 GMT",
-      "Set-Cookie",
-      "pardot=vd6hhkhss1rucki8dqtdeq369b; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "2005",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Sally",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:53:04",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534005,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:04",
-            updated_at: "2021-03-10 11:53:04",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:06 GMT",
-      "Set-Cookie",
-      "pardot=59urhm8s8kumvggm1lb2icv30t; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1675",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:06 GMT",
-      "Set-Cookie",
-      "pardot=h98uflqb7l0h8h0fbqqaghl9a7; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14039,
-          name: "(test) Churned",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:07 GMT",
-      "Set-Cookie",
-      "pardot=79ntpl8l816jb3tqh63qe14bm5; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "276",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:07 GMT",
-      "Set-Cookie",
-      "pardot=cnkbtd1suf55sa3opnjbcslrn7; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14039,
-          name: "(test) Churned",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:07 GMT",
-      "Set-Cookie",
-      "pardot=b7dlg44s70iholeu825nml9sru; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "276",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","list_14037":1,"list_14039":0},{"email":"grouparoo2@demo.com","id":1151681,"first_name":"Sally","list_14037":1,"list_14039":0}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:07 GMT",
-    "Set-Cookie",
-    "pardot=5docn1ucu9horvhr10nqpd9vlh; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/13/203",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14037" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 2,
-        list_membership: [
-          {
-            id: 1534001,
-            list_id: 14037,
-            prospect_id: 1151679,
-            opted_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
-          },
-          {
-            id: 1534005,
-            list_id: 14037,
-            prospect_id: 1151681,
-            opted_out: false,
-            created_at: "2021-03-10 11:53:04",
-            updated_at: "2021-03-10 11:53:04",
-          },
-        ],
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:08 GMT",
-      "Set-Cookie",
-      "pardot=g2r0otflmcdp4g7d0qinlnb7af; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "372",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14039" })
-  .once()
-  .reply(
-    200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:08 GMT",
-      "Set-Cookie",
-      "pardot=ol34aacc0nvd899e0rgo8csm61; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "70",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:08 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=PLoHJYHaEeuMiy_HiphhMQ; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:08 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:08 GMT",
-      "Set-Cookie",
-      "pardot=b8vgl6an8u9ilvkhaioct3hepm; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: null,
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:07",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534001,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:09 GMT",
-      "Set-Cookie",
-      "pardot=pt7p74k6lafvm1s7of9r612r0j; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1673",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Sally",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:53:07",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534005,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:04",
-            updated_at: "2021-03-10 11:53:04",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:09 GMT",
-      "Set-Cookie",
-      "pardot=b4n87426bkie1l927oaou5le5c; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1675",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:09 GMT",
-      "Set-Cookie",
-      "pardot=gfjnshhp5veorb8agadro1i5cl; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14039,
-          name: "(test) Churned",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:10 GMT",
-      "Set-Cookie",
-      "pardot=t3rn7b3gov6gpghtif1b5g25e7; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "276",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:10 GMT",
-      "Set-Cookie",
-      "pardot=og5dl0asm7ngcoc68rhi2la62g; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"notgrouparoo@demo.com","id":1151679,"first_name":"John","last_name":"Test","list_14037":1,"list_14039":1},{"email":"grouparoo2@demo.com","id":1151681,"first_name":"Evan","list_14037":0}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:11 GMT",
-    "Set-Cookie",
-    "pardot=v5imtrva2rmhug2e2i8fi0pttj; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/13/203",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: "Test",
-        email: "notgrouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:11",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: [
-            {
-              id: 1534001,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-              list: {
-                id: 14037,
-                name: "(test) High Value",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:00",
-                updated_at: "2021-03-10 11:53:00",
-              },
-            },
-            {
-              id: 1534003,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:04",
-              updated_at: "2021-03-10 11:53:11",
-              list: {
-                id: 14039,
-                name: "(test) Churned",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:03",
-                updated_at: "2021-03-10 11:53:03",
-              },
-            },
-          ],
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:11 GMT",
-      "Set-Cookie",
-      "pardot=91iv2h7tl6l3tdhqio9tdr3ahf; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "2010",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:12 GMT",
-      "Set-Cookie",
-      "pardot=9tvmoor5duatd6brbkk6d3n75h; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151681")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Evan",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:53:11",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:12 GMT",
-      "Set-Cookie",
-      "pardot=4ce5hb8jt805f03m5kcu8v511m; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1324",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14037" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list_membership: {
-          id: 1534001,
-          list_id: 14037,
-          prospect_id: 1151679,
-          opted_out: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:13 GMT",
-      "Set-Cookie",
-      "pardot=0rnobh5etp4r0uetk4sflkr9v9; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "229",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14039" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list_membership: {
-          id: 1534003,
-          list_id: 14039,
-          prospect_id: 1151679,
-          opted_out: false,
-          created_at: "2021-03-10 11:53:04",
-          updated_at: "2021-03-10 11:53:11",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:13 GMT",
-      "Set-Cookie",
-      "pardot=iaods4bnqkoj14vlab76nalcpd; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "229",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:14 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=P_7Rd4HaEeuhil85NDg-fw; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:14 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:14 GMT",
-      "Set-Cookie",
-      "pardot=cd7g6ndnqjhdphuba366ou6m4l; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: "Test",
-        email: "notgrouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:11",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: [
-            {
-              id: 1534001,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-              list: {
-                id: 14037,
-                name: "(test) High Value",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:00",
-                updated_at: "2021-03-10 11:53:00",
-              },
-            },
-            {
-              id: 1534003,
-              did_opt_in: false,
-              did_opt_out: false,
-              created_at: "2021-03-10 11:53:04",
-              updated_at: "2021-03-10 11:53:11",
-              list: {
-                id: 14039,
-                name: "(test) Churned",
-                is_public: false,
-                is_dynamic: false,
-                title: null,
-                description: null,
-                is_crm_visible: false,
-                created_at: "2021-03-10 11:53:03",
-                updated_at: "2021-03-10 11:53:03",
-              },
-            },
-          ],
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:14 GMT",
-      "Set-Cookie",
-      "pardot=16gdja8n4lp6dopfm8j6ljih5u; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "2010",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151681,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Evan",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:56",
-        updated_at: "2021-03-10 11:53:11",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:14 GMT",
-      "Set-Cookie",
-      "pardot=r6a418ordrvo6io3j3vak3se7o; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1324",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151681")
-  .once()
-  .reply(204, "", [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:15 GMT",
-    "Set-Cookie",
-    "pardot=gsck0lru6r6n5eck9sbk1ngumf; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "P3p",
-    'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Type",
-    "text/html; charset=utf-8",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20High%20Value" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14037,
-          name: "(test) High Value",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:15 GMT",
-      "Set-Cookie",
-      "pardot=6eu3nd29r1st6nlk0k35llrmj2; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "279",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/list/version/4/do/query")
-  .query({ format: "json", name: "%28test%29%20Churned" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list: {
-          id: 14039,
-          name: "(test) Churned",
-          is_public: false,
-          is_dynamic: false,
-          title: null,
-          description: null,
-          is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:15 GMT",
-      "Set-Cookie",
-      "pardot=a5asutr2c12jehn8ft80ql97rt; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "276",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"John","last_name":"Test","list_14037":1,"list_14039":0}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:16 GMT",
-    "Set-Cookie",
-    "pardot=fufjol979u15ibtnubk5hoa77a; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/15/252",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151679,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "John",
-        last_name: "Test",
-        email: "grouparoo@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:16",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: {
-          list_subscription: {
-            id: 1534001,
-            did_opt_in: false,
-            did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
-            list: {
-              id: 14037,
-              name: "(test) High Value",
-              is_public: false,
-              is_dynamic: false,
-              title: null,
-              description: null,
-              is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
-            },
-          },
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:16 GMT",
-      "Set-Cookie",
-      "pardot=kv76b2jpmsj6u8oij8fkh405r3; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1675",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/notgrouparoo%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:16 GMT",
-      "Set-Cookie",
-      "pardot=9t6fvbvof8s62oicst32t2m6r4; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:16 GMT",
-      "Set-Cookie",
-      "pardot=r1o6s0sjua5709v36gumbcg58p; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/query")
-  .query({
-    format: "json",
-    output: "mobile",
-    deleted: "true",
-    id_greater_than: "1151680",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        prospect: {
-          id: 1151681,
-          first_name: "Evan",
-          last_name: null,
-          email: "grouparoo2@demo.com",
-          company: null,
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:17 GMT",
-      "Set-Cookie",
-      "pardot=7h8s6e5rcfla22jj33i3ssn9en; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "178",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14037" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        list_membership: {
-          id: 1534001,
-          list_id: 14037,
-          prospect_id: 1151679,
-          opted_out: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:17 GMT",
-      "Set-Cookie",
-      "pardot=h8kumfma13sndgjlub5imhq01k; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "229",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/listMembership/version/4/do/query")
-  .query({ format: "json", output: "mobile", list_id: "14039" })
-  .once()
-  .reply(
-    200,
-    { "@attributes": { stat: "ok", version: 1 }, result: { total_results: 0 } },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:17 GMT",
-      "Set-Cookie",
-      "pardot=peavmnmkoap7vi6m935rqrqudv; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "70",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:18 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=QlnYZoHaEeumuJv3boxNLg; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:18 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:18 GMT",
-      "Set-Cookie",
-      "pardot=oonbkpct5nas1h0bi0eth4d6pl; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","first_name":"Evan","grouparoo_custom_textarea":"text is here","grouparoo_custom_text":"text is also here","grouparoo_custom_number":5,"grouparoo_custom_hidden":"some hidden value","grouparoo_custom_date":"2020-08-30T05:49:48.000Z","grouparoo_custom_dropdown":"dropdown value","grouparoo_custom_radio_button":"radio value"}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:18 GMT",
-    "Set-Cookie",
-    "pardot=o8vh8356pvcst7u13qsgnt0n9n; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/15/252",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Evan",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:18",
-        campaign: { id: 8245, name: "Website Tracking" },
-        grouparoo_custom_date: "2020-08-30",
-        grouparoo_custom_dropdown: "dropdown value",
-        grouparoo_custom_hidden: "some hidden value",
-        grouparoo_custom_number: 5,
-        grouparoo_custom_radio_button: "radio value",
-        grouparoo_custom_text: "text is also here",
-        grouparoo_custom_textarea: "text is here",
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:19 GMT",
-      "Set-Cookie",
-      "pardot=5729kufd878umoov2928di6mlf; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1613",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Evan",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:18",
-        campaign: { id: 8245, name: "Website Tracking" },
-        grouparoo_custom_date: "2020-08-30",
-        grouparoo_custom_dropdown: "dropdown value",
-        grouparoo_custom_hidden: "some hidden value",
-        grouparoo_custom_number: 5,
-        grouparoo_custom_radio_button: "radio value",
-        grouparoo_custom_text: "text is also here",
-        grouparoo_custom_textarea: "text is here",
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:19 GMT",
-      "Set-Cookie",
-      "pardot=tugsd54cf55i1ff33a5paeqmpa; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1613",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:19 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=Q05LDoHaEeugeRXmuL4DqA; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:19 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Evan",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:18",
-        campaign: { id: 8245, name: "Website Tracking" },
-        grouparoo_custom_date: "2020-08-30",
-        grouparoo_custom_dropdown: "dropdown value",
-        grouparoo_custom_hidden: "some hidden value",
-        grouparoo_custom_number: 5,
-        grouparoo_custom_radio_button: "radio value",
-        grouparoo_custom_text: "text is also here",
-        grouparoo_custom_textarea: "text is here",
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:19 GMT",
-      "Set-Cookie",
-      "pardot=lsooep4fltcgmfttehh5ov35mm; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1613",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","id":1151683,"first_name":"Maria","grouparoo_custom_textarea":"","grouparoo_custom_text":"","grouparoo_custom_number":"","grouparoo_custom_hidden":"","grouparoo_custom_date":"","grouparoo_custom_dropdown":"","grouparoo_custom_radio_button":""}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:20 GMT",
-    "Set-Cookie",
-    "pardot=dl80ncjgm3g06qonmcbg61l7fl; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/15/252",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
+        id: 22671380,
         campaign_id: 8245,
         salutation: null,
         first_name: "Maria",
@@ -5443,8 +6904,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:20",
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:31",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -5464,9 +6925,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:20 GMT",
+      "Tue, 04 May 2021 03:52:32 GMT",
       "Set-Cookie",
-      "pardot=8l0hpqiaglu06pq4bif8a0vpu8; path=/",
+      "pardot=dbc5d2pcfpllc1fd4l1aecf14v; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -5474,703 +6935,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1325",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:20 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=RAuAC4HaEeuzgMGNlPx7Ng; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:20 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/notanemail")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:21 GMT",
-      "Set-Cookie",
-      "pardot=m5775qhek6r30rggv63a9tk24s; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:20",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:21 GMT",
-      "Set-Cookie",
-      "pardot=vunucq8n23ujpicepudgkdtu72; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"notanemail","id":1151683,"first_name":"Maria"}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "fail", version: 1 },
-      errors: { 0: "Invalid prospect email address" },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:21 GMT",
-      "Set-Cookie",
-      "pardot=ti7gt1t6vgug9f84q6utcjapd4; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "91",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:20",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:21 GMT",
-      "Set-Cookie",
-      "pardot=5efb4iju3m1rh33m4sqtm3lefg; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:22 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=ROKmjoHaEeu6J4cs0OlCEg; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:22 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:20",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:22 GMT",
-      "Set-Cookie",
-      "pardot=au30me65f4kstrdhekh3vrkcq0; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:23 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=RU12SoHaEeu2E6loHdU3eA; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:23 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:20",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:23 GMT",
-      "Set-Cookie",
-      "pardot=ps2bb93lqqtfvmugtbumkcqmku; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo2@demo.com","id":1151683,"first_name":"Maria","grouparoo_custom_date":"notadate","grouparoo_custom_number":"notanumber"}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:23 GMT",
-    "Set-Cookie",
-    "pardot=3k7p4akl8etogputcqg8r74f8k; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/81/66",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:23",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:23 GMT",
-      "Set-Cookie",
-      "pardot=8qu6ficuuuqqih90s1rd0kjaa7; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -6193,9 +6964,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:24 GMT",
+      "Tue, 04 May 2021 03:52:32 GMT",
       "Set-Cookie",
-      "pardot=eesn5fvrvetnso04puitoe2tkj; path=/",
+      "pardot=9bf5g8qkrekcgse0glmq7fo8rg; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6203,7 +6974,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -6228,14 +6999,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:24 GMT",
+      "Tue, 04 May 2021 03:52:33 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=RjadOoHaEeuyxAMOaV-HKA; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:24 GMT; Max-Age=31536000",
+      "BrowserId=KCeG7KyMEeu8sNFsE6IkaA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:33 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -6247,6 +7018,106 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671380,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Maria",
+        last_name: null,
+        email: "grouparoo2@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:31",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:33 GMT",
+      "Set-Cookie",
+      "pardot=jn5pvetvat0kep7obsa486cl6k; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1326",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/grouparoo%40demo.com")
   .query({ format: "json" })
   .once()
@@ -6255,7 +7126,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "John",
@@ -6298,8 +7169,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:16",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:15",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -6316,21 +7187,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         visitor_activities: null,
         lists: {
           list_subscription: {
-            id: 1534001,
+            id: 28615638,
             did_opt_in: false,
             did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
             list: {
-              id: 14037,
+              id: 221836,
               name: "(test) High Value",
               is_public: false,
               is_dynamic: false,
               title: null,
               description: null,
               is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
             },
           },
         },
@@ -6338,9 +7209,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:24 GMT",
+      "Tue, 04 May 2021 03:52:34 GMT",
       "Set-Cookie",
-      "pardot=a96v5vq310d5pug1p9k3tijgke; path=/",
+      "pardot=7llt965rbb7vmluhjpqhs5nr5m; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6348,13 +7219,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1675",
+      "1678",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -6377,9 +7248,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:25 GMT",
+      "Tue, 04 May 2021 03:52:35 GMT",
       "Set-Cookie",
-      "pardot=gpecjiut7lcv82urvei97i9me9; path=/",
+      "pardot=ql2angruc8d0fhq3l6577s6qs2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6387,113 +7258,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
       "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151683,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Maria",
-        last_name: null,
-        email: "grouparoo2@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:23",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:25 GMT",
-      "Set-Cookie",
-      "pardot=m0btj7j4av8vkr4lm0emjik887; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1325",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -6516,9 +7287,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:25 GMT",
+      "Tue, 04 May 2021 03:52:35 GMT",
       "Set-Cookie",
-      "pardot=m43ld7nkjin7716apl6j9eggn9; path=/",
+      "pardot=ud2sb6o05ok8r8pbsh7asdbp3l; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6526,7 +7297,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -6546,7 +7317,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":1151679,"first_name":"Sam","last_name":"Test"},{"email":"bademail","id":1151683,"first_name":"William"}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo@demo.com","id":22671376,"first_name":"Sam","last_name":"Test"},{"email":"bademail","id":22671380,"first_name":"William"}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
@@ -6558,9 +7329,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:26 GMT",
+      "Tue, 04 May 2021 03:52:35 GMT",
       "Set-Cookie",
-      "pardot=6esqmaff721jaivrcn99sbv1sf; path=/",
+      "pardot=nulabdesbm1o06hstbiot2onm0; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6568,7 +7339,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
@@ -6592,9 +7363,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .once()
   .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:53:26 GMT",
+    "Tue, 04 May 2021 03:52:36 GMT",
     "Set-Cookie",
-    "pardot=tv4d8q2k0avcodqdev7idb7n5l; path=/",
+    "pardot=jgo1fq3luc7md1uibolgudurq8; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -6602,7 +7373,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Pragma",
     "no-cache",
     "X-Pardot-Rsp",
-    "25/15/252",
+    "25/78/160",
     "Vary",
     "Accept-Encoding,User-Agent",
     "Content-Length",
@@ -6617,7 +7388,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "01f6d1eb96c2e46c10f3ecf450ddabd0",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151679")
+  .get("/api/prospect/version/4/do/read/id/22671376")
   .query({ format: "json" })
   .once()
   .reply(
@@ -6625,7 +7396,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "Sam",
@@ -6668,8 +7439,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:26",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:36",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -6686,21 +7457,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         visitor_activities: null,
         lists: {
           list_subscription: {
-            id: 1534001,
+            id: 28615638,
             did_opt_in: false,
             did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
             list: {
-              id: 14037,
+              id: 221836,
               name: "(test) High Value",
               is_public: false,
               is_dynamic: false,
               title: null,
               description: null,
               is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
             },
           },
         },
@@ -6708,9 +7479,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:26 GMT",
+      "Tue, 04 May 2021 03:52:37 GMT",
       "Set-Cookie",
-      "pardot=5jht9aolodi1t25vkv5sbmpc04; path=/",
+      "pardot=pvlec57hu8j1gn1ql7o0h4qs85; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6724,7 +7495,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1674",
+      "1677",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -6736,7 +7507,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151683")
+  .get("/api/prospect/version/4/do/read/id/22671380")
   .query({ format: "json" })
   .once()
   .reply(
@@ -6744,7 +7515,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151683,
+        id: 22671380,
         campaign_id: 8245,
         salutation: null,
         first_name: "Maria",
@@ -6787,8 +7558,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:23",
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:31",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -6808,9 +7579,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:27 GMT",
+      "Tue, 04 May 2021 03:52:37 GMT",
       "Set-Cookie",
-      "pardot=2n0sk6pkcsn1een4m61e78jvp4; path=/",
+      "pardot=9iqi2in076vfr4sld0lbu54272; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6818,13 +7589,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1325",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -6844,7 +7615,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151685,
+        id: 22671382,
         campaign_id: 8245,
         salutation: null,
         first_name: "Liz",
@@ -6887,8 +7658,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:26",
-        updated_at: "2021-03-10 11:53:26",
+        created_at: "2021-05-03 20:52:36",
+        updated_at: "2021-05-03 20:52:36",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_text: "some text",
         profile: {
@@ -6909,9 +7680,110 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:27 GMT",
+      "Tue, 04 May 2021 03:52:38 GMT",
       "Set-Cookie",
-      "pardot=rb24rb5fi35unph656dntnan85; path=/",
+      "pardot=nl1p3aob9kgplpitn5v2au4nst; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1360",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671382")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671382,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Liz",
+        last_name: null,
+        email: "grouparoo3@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:36",
+        updated_at: "2021-05-03 20:52:36",
+        campaign: { id: 8245, name: "Website Tracking" },
+        grouparoo_custom_text: "some text",
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:38 GMT",
+      "Set-Cookie",
+      "pardot=qhqvt43cbu3h2d7f5lt56o3qg9; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -6925,108 +7797,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1359",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151685")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151685,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Liz",
-        last_name: null,
-        email: "grouparoo3@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:26",
-        updated_at: "2021-03-10 11:53:26",
-        campaign: { id: 8245, name: "Website Tracking" },
-        grouparoo_custom_text: "some text",
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:27 GMT",
-      "Set-Cookie",
-      "pardot=i7kddm231qs1iv9pldcsdppnel; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1359",
+      "1360",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -7045,14 +7816,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:27 GMT",
+      "Tue, 04 May 2021 03:52:39 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=SDqDtIHaEeuypHmD_ZZaLA; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:27 GMT; Max-Age=31536000",
+      "BrowserId=K7qZIqyMEeuGEW8py_3vvA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:39 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -7075,9 +7846,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:28 GMT",
+      "Tue, 04 May 2021 03:52:39 GMT",
       "Set-Cookie",
-      "pardot=5a5qav7gft1f5k7o5dc3urrq16; path=/",
+      "pardot=od336jph71c8c1lokev9a97kp0; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -7085,7 +7856,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -7111,368 +7882,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .once()
   .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:53:28 GMT",
+    "Tue, 04 May 2021 03:52:40 GMT",
     "Set-Cookie",
-    "pardot=82bb3cfeo2dtdrjnlfbjeg7f69; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "X-Pardot-Rsp",
-    "25/70/31",
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Length",
-    "53",
-    "Content-Type",
-    "application/json",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151687,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Special",
-        last_name: null,
-        email: "grouparoo+test@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:28",
-        updated_at: "2021-03-10 11:53:28",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:28 GMT",
-      "Set-Cookie",
-      "pardot=ot1tjtrm607vsves5b9ev3a8hd; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1331",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151687")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151687,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Special",
-        last_name: null,
-        email: "grouparoo+test@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:28",
-        updated_at: "2021-03-10 11:53:28",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:29 GMT",
-      "Set-Cookie",
-      "pardot=grbtuu0j02rgu8i2ut3fluo5ht; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1331",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:29 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=SSMPhoHaEeuRiofP3d0Y_A; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:29 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      prospect: {
-        id: 1151687,
-        campaign_id: 8245,
-        salutation: null,
-        first_name: "Special",
-        last_name: null,
-        email: "grouparoo+test@demo.com",
-        password: null,
-        company: null,
-        website: null,
-        job_title: null,
-        department: null,
-        country: null,
-        address_one: null,
-        address_two: null,
-        city: null,
-        state: null,
-        territory: null,
-        zip: null,
-        phone: null,
-        fax: null,
-        source: null,
-        annual_revenue: null,
-        employees: null,
-        industry: null,
-        years_in_business: null,
-        comments: null,
-        notes: null,
-        score: 0,
-        grade: null,
-        last_activity_at: null,
-        recent_interaction: "Never active.",
-        crm_lead_fid: null,
-        crm_contact_fid: null,
-        crm_owner_fid: null,
-        crm_account_fid: null,
-        salesforce_fid: null,
-        crm_last_sync: null,
-        crm_url: null,
-        is_do_not_email: null,
-        is_do_not_call: null,
-        opted_out: null,
-        is_reviewed: null,
-        is_starred: null,
-        created_at: "2021-03-10 11:53:28",
-        updated_at: "2021-03-10 11:53:28",
-        campaign: { id: 8245, name: "Website Tracking" },
-        profile: {
-          id: 1009,
-          name: "Default",
-          profile_criteria: [
-            { id: 5063, name: "Company Size", matches: "Unknown" },
-            { id: 5065, name: "Industry", matches: "Unknown" },
-            { id: 5067, name: "Location", matches: "Unknown" },
-            { id: 5069, name: "Job Title", matches: "Unknown" },
-            { id: 5071, name: "Department", matches: "Unknown" },
-          ],
-        },
-        visitors: null,
-        visitor_activities: null,
-        lists: null,
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:29 GMT",
-      "Set-Cookie",
-      "pardot=4qm6a31kpvdmfmur12tsjbd5ep; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1331",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post(
-    "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo+test@demo.com","id":1151687,"first_name":"Special","last_name":"User"}]}\r\n--NOCKBOUNDARY--\r\n'
-  )
-  .query({ format: "json" })
-  .once()
-  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:30 GMT",
-    "Set-Cookie",
-    "pardot=ps6er6lajbq3k2pa7p6es2d1mm; path=/",
+    "pardot=r4cb8btk06nrajncbieniut7d1; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -7492,10 +7904,10 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "81ef3179da45557cd28f9ba13d8805bd",
+    "01f6d1eb96c2e46c10f3ecf450ddabd0",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/id/1151687")
+  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
   .query({ format: "json" })
   .once()
   .reply(
@@ -7503,11 +7915,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151687,
+        id: 22671384,
         campaign_id: 8245,
         salutation: null,
         first_name: "Special",
-        last_name: "User",
+        last_name: null,
         email: "grouparoo+test@demo.com",
         password: null,
         company: null,
@@ -7546,8 +7958,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:28",
-        updated_at: "2021-03-10 11:53:30",
+        created_at: "2021-05-03 20:52:40",
+        updated_at: "2021-05-03 20:52:40",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -7567,9 +7979,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:30 GMT",
+      "Tue, 04 May 2021 03:52:41 GMT",
       "Set-Cookie",
-      "pardot=io2n5pe8t4osueqs7f0vucoe0f; path=/",
+      "pardot=ej4qv7idtner4ae59j95m4ftgm; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -7577,13 +7989,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1333",
+      "1332",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -7591,37 +8003,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://login.salesforce.com:443", { encodedQueryParams: true })
-  .post(
-    "/services/Soap/u/42.0",
-    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
-  )
-  .once()
-  .reply(
-    200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:30 GMT",
-      "Cache-Control",
-      "no-cache,must-revalidate,max-age=0,no-store,private",
-      "Set-Cookie",
-      "BrowserId=Seb7c4HaEeup5y8HljTaQg; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:30 GMT; Max-Age=31536000",
-      "Content-Type",
-      "text/xml; charset=utf-8",
-      "Vary",
-      "Accept-Encoding",
-      "Content-Length",
-      "1849",
-      "Connection",
-      "close",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
+  .get("/api/prospect/version/4/do/read/id/22671384")
   .query({ format: "json" })
   .once()
   .reply(
@@ -7629,11 +8015,11 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151687,
+        id: 22671384,
         campaign_id: 8245,
         salutation: null,
         first_name: "Special",
-        last_name: "User",
+        last_name: null,
         email: "grouparoo+test@demo.com",
         password: null,
         company: null,
@@ -7672,8 +8058,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:28",
-        updated_at: "2021-03-10 11:53:30",
+        created_at: "2021-05-03 20:52:40",
+        updated_at: "2021-05-03 20:52:40",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -7693,128 +8079,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:31 GMT",
+      "Tue, 04 May 2021 03:52:41 GMT",
       "Set-Cookie",
-      "pardot=kosjnk80dhn7gn705k716hst11; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "1333",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151687")
-  .once()
-  .reply(204, "", [
-    "Date",
-    "Wed, 10 Mar 2021 19:53:31 GMT",
-    "Set-Cookie",
-    "pardot=0omul1pa1qs276rdf80gb2ifh6; path=/",
-    "Expires",
-    "Thu, 19 Nov 1981 08:52:00 GMT",
-    "Cache-Control",
-    "no-store, no-cache, must-revalidate",
-    "Pragma",
-    "no-cache",
-    "P3p",
-    'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-    "Vary",
-    "Accept-Encoding,User-Agent",
-    "Content-Type",
-    "text/html; charset=utf-8",
-    "X-Pardot-Route",
-    "4fa993bd92d83a19a78f84f1ddd264ce",
-    "Server",
-    "PardotServer",
-    "X-Pardot-LB",
-    "81ef3179da45557cd28f9ba13d8805bd",
-  ]);
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:31 GMT",
-      "Set-Cookie",
-      "pardot=sqc8oeisbveogk7jts6iq98f0h; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/query")
-  .query({
-    format: "json",
-    output: "mobile",
-    deleted: "true",
-    id_greater_than: "1151686",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      "@attributes": { stat: "ok", version: 1 },
-      result: {
-        total_results: 1,
-        prospect: {
-          id: 1151687,
-          first_name: "Special",
-          last_name: "User",
-          email: "grouparoo+test@demo.com",
-          company: null,
-        },
-      },
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:32 GMT",
-      "Set-Cookie",
-      "pardot=tjf38g39vn0vboloeoqcmkddmh; path=/",
+      "pardot=h3bh4p5pb37jqjbb02leqm2o8m; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -7828,7 +8095,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "187",
+      "1332",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -7836,7 +8103,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://login.salesforce.com:443", { encodedQueryParams: true })
@@ -7847,14 +8114,14 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
   .once()
   .reply(
     200,
-    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQBC2Yf283M4VtrycAy2lUUhpcKZwtotDPZpTX8R7gy9GVmhFNOYu5XYyJDPguCpaXXpyL4RCqDES9agLtxu5DAcJEPgI</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:32 GMT",
+      "Tue, 04 May 2021 03:52:42 GMT",
       "Cache-Control",
       "no-cache,must-revalidate,max-age=0,no-store,private",
       "Set-Cookie",
-      "BrowserId=SvXTVYHaEeuFRhWEd7pc6A; domain=.salesforce.com; path=/; expires=Thu, 10-Mar-2022 19:53:32 GMT; Max-Age=31536000",
+      "BrowserId=LV75oayMEeuw879DdXPklQ; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:42 GMT; Max-Age=31536000",
       "Content-Type",
       "text/xml; charset=utf-8",
       "Vary",
@@ -7866,410 +8133,81 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user0%40demo.com")
+  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
   .query({ format: "json" })
   .once()
   .reply(
-    400,
+    200,
     {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671384,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Special",
+        last_name: null,
+        email: "grouparoo+test@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:40",
+        updated_at: "2021-05-03 20:52:40",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:32 GMT",
+      "Tue, 04 May 2021 03:52:42 GMT",
       "Set-Cookie",
-      "pardot=t02jv94vv6hk327b6qnk2va8c1; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user1%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:33 GMT",
-      "Set-Cookie",
-      "pardot=pod9ff3qullbn6rhj9ojn3eutc; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user2%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:33 GMT",
-      "Set-Cookie",
-      "pardot=a4vfeopq9acrrbugg6kih2fi9e; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user3%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:33 GMT",
-      "Set-Cookie",
-      "pardot=tde991bceskijvfr7394karskc; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user4%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:33 GMT",
-      "Set-Cookie",
-      "pardot=nte6ht2kvjnihvbi9iklm9sc0f; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user5%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:34 GMT",
-      "Set-Cookie",
-      "pardot=j7uij4sekpj1aapiqpo7m9lst6; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user6%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:34 GMT",
-      "Set-Cookie",
-      "pardot=e36ns63f7fc4t6seq98p031rhg; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user7%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:34 GMT",
-      "Set-Cookie",
-      "pardot=tf4dpsfep0h14q4kinbunh8lcu; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user8%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:35 GMT",
-      "Set-Cookie",
-      "pardot=b5gggnrf8huumk1bb5njrgl9r1; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user9%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:35 GMT",
-      "Set-Cookie",
-      "pardot=q0eguisurm9n8fd72hb88e6ujo; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user10%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:35 GMT",
-      "Set-Cookie",
-      "pardot=8pjqk4oqfmqhm5u29fj20r31be; path=/",
+      "pardot=8v0993q5aav6hfbcfm6anv908c; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -8283,7 +8221,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "95",
+      "1332",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -8291,1542 +8229,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user11%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:35 GMT",
-      "Set-Cookie",
-      "pardot=gva3uq0n0telto6ks0u6e7ijfk; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user12%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:36 GMT",
-      "Set-Cookie",
-      "pardot=d9oj5rdvhmhv667gct230o28le; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user13%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:36 GMT",
-      "Set-Cookie",
-      "pardot=jq1putjb9c5ui9d9comccdc0br; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user14%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:36 GMT",
-      "Set-Cookie",
-      "pardot=9n4qu44o6jbqb84hjkq0dgh9tp; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user15%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:36 GMT",
-      "Set-Cookie",
-      "pardot=1erj8ci17dpqgbrrn3722fa3t8; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user16%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:37 GMT",
-      "Set-Cookie",
-      "pardot=cqeh8prpa165i59lal38l8vlg3; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user17%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:37 GMT",
-      "Set-Cookie",
-      "pardot=f39jlqp9c237of47novks84a5p; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user18%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:37 GMT",
-      "Set-Cookie",
-      "pardot=ga2k3sdfh5563rbjcd90901ss0; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user19%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:37 GMT",
-      "Set-Cookie",
-      "pardot=7mbakgh9uegvl2mori8i0flv0i; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user20%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:38 GMT",
-      "Set-Cookie",
-      "pardot=bclrcq0i7gl769l30pvs820l5n; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user21%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:38 GMT",
-      "Set-Cookie",
-      "pardot=svcdb6ot9g892l5vbo13hoq9tm; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user22%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:38 GMT",
-      "Set-Cookie",
-      "pardot=n1h060vd82r1ou5qui9pphq4j7; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user23%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:38 GMT",
-      "Set-Cookie",
-      "pardot=ptmg8npfij63lm36kt8al2hvb3; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user24%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:39 GMT",
-      "Set-Cookie",
-      "pardot=7p22v09ojpdetc8ov2p3vogo4h; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user25%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:39 GMT",
-      "Set-Cookie",
-      "pardot=ikm2jss77c4no3n3jv70l1dm7f; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user26%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:39 GMT",
-      "Set-Cookie",
-      "pardot=hmr93fh709eb9a0dte4d61k2at; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user27%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:39 GMT",
-      "Set-Cookie",
-      "pardot=k4948vj41ar8tejsl0h110f19t; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user28%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:40 GMT",
-      "Set-Cookie",
-      "pardot=js5bnemb6er2m0slkq2p4ir5l8; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user29%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:40 GMT",
-      "Set-Cookie",
-      "pardot=96q7til6b9h68nbudc0epgriih; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user30%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:40 GMT",
-      "Set-Cookie",
-      "pardot=9cir0e2124f9ohhbuksei2ghqh; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user31%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:40 GMT",
-      "Set-Cookie",
-      "pardot=e1pft87dvkfkdafgj7gabfrtsc; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user32%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:41 GMT",
-      "Set-Cookie",
-      "pardot=fcvau1erbptoslsskcq3ne0es9; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user33%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:41 GMT",
-      "Set-Cookie",
-      "pardot=7e0p1ood28ulojnu63fc0716ll; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user34%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:41 GMT",
-      "Set-Cookie",
-      "pardot=ivf8272lam5c9kurc146sgi7rm; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user35%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:41 GMT",
-      "Set-Cookie",
-      "pardot=98e8604s4ejaccbrt7omaq2mhd; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user36%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:42 GMT",
-      "Set-Cookie",
-      "pardot=ajrtfvv4r9t65ifeiurorrshs6; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user37%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:42 GMT",
-      "Set-Cookie",
-      "pardot=h13rarc6d5tg68h2minpi88blt; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user38%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:42 GMT",
-      "Set-Cookie",
-      "pardot=gu5jtosktqk9hn4l603slm2ciq; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user39%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:42 GMT",
-      "Set-Cookie",
-      "pardot=g1t5j7ruhrq7mc5a9de1nhohcq; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user40%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:43 GMT",
-      "Set-Cookie",
-      "pardot=2p7b1fghca82cc84j7nv1olg7m; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user41%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:43 GMT",
-      "Set-Cookie",
-      "pardot=2d0mnbb0vjcrgviljbgkr7f66h; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user42%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:43 GMT",
-      "Set-Cookie",
-      "pardot=oaoid5b4u5e3iul8h0mt08ijbr; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user43%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:43 GMT",
-      "Set-Cookie",
-      "pardot=2l2lbhf4uk92lk0rb80877366l; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user44%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:44 GMT",
-      "Set-Cookie",
-      "pardot=6qve4ut1i6s1namibg4b98t0mu; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/15/252",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user45%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:44 GMT",
-      "Set-Cookie",
-      "pardot=05ip2047sj50h3kibhjsvbthqi; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user46%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:44 GMT",
-      "Set-Cookie",
-      "pardot=q3ekch8hq5qss11d3rg04f1r10; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/70/31",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user47%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:44 GMT",
-      "Set-Cookie",
-      "pardot=pmf05aje8epi5espss9doqtebj; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/13/203",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user48%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:45 GMT",
-      "Set-Cookie",
-      "pardot=4s6fpk6ja628brt0v4r8oeqtib; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/78/160",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
-    ]
-  );
-nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .get("/api/prospect/version/4/do/read/email/user49%40demo.com")
-  .query({ format: "json" })
-  .once()
-  .reply(
-    400,
-    {
-      "@attributes": { stat: "fail", version: 1, err_code: 4 },
-      err: "Invalid prospect email address",
-    },
-    [
-      "Date",
-      "Wed, 10 Mar 2021 19:53:45 GMT",
-      "Set-Cookie",
-      "pardot=6om39gsdiccq2rql4dkh2e28gg; path=/",
-      "Expires",
-      "Thu, 19 Nov 1981 08:52:00 GMT",
-      "Cache-Control",
-      "no-store, no-cache, must-revalidate",
-      "Pragma",
-      "no-cache",
-      "X-Pardot-Rsp",
-      "25/81/66",
-      "P3p",
-      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
-      "Vary",
-      "Accept-Encoding,User-Agent",
-      "Content-Length",
-      "95",
-      "Content-Type",
-      "application/json",
-      "X-Pardot-Route",
-      "4fa993bd92d83a19a78f84f1ddd264ce",
-      "Server",
-      "PardotServer",
-      "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .post(
     "/api/prospect/version/4/do/batchUpsert",
-    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"user0@demo.com","first_name":"User 0","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user1@demo.com","first_name":"User 1","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user2@demo.com","first_name":"User 2","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user3@demo.com","first_name":"User 3","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user4@demo.com","first_name":"User 4","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user5@demo.com","first_name":"User 5","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user6@demo.com","first_name":"User 6","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user7@demo.com","first_name":"User 7","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user8@demo.com","first_name":"User 8","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user9@demo.com","first_name":"User 9","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user10@demo.com","first_name":"User 10","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user11@demo.com","first_name":"User 11","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user12@demo.com","first_name":"User 12","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user13@demo.com","first_name":"User 13","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user14@demo.com","first_name":"User 14","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user15@demo.com","first_name":"User 15","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user16@demo.com","first_name":"User 16","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user17@demo.com","first_name":"User 17","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user18@demo.com","first_name":"User 18","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user19@demo.com","first_name":"User 19","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user20@demo.com","first_name":"User 20","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user21@demo.com","first_name":"User 21","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user22@demo.com","first_name":"User 22","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user23@demo.com","first_name":"User 23","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user24@demo.com","first_name":"User 24","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user25@demo.com","first_name":"User 25","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user26@demo.com","first_name":"User 26","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user27@demo.com","first_name":"User 27","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user28@demo.com","first_name":"User 28","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user29@demo.com","first_name":"User 29","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user30@demo.com","first_name":"User 30","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user31@demo.com","first_name":"User 31","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user32@demo.com","first_name":"User 32","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user33@demo.com","first_name":"User 33","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user34@demo.com","first_name":"User 34","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user35@demo.com","first_name":"User 35","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user36@demo.com","first_name":"User 36","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user37@demo.com","first_name":"User 37","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user38@demo.com","first_name":"User 38","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user39@demo.com","first_name":"User 39","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user40@demo.com","first_name":"User 40","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user41@demo.com","first_name":"User 41","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user42@demo.com","first_name":"User 42","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user43@demo.com","first_name":"User 43","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user44@demo.com","first_name":"User 44","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user45@demo.com","first_name":"User 45","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user46@demo.com","first_name":"User 46","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user47@demo.com","first_name":"User 47","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user48@demo.com","first_name":"User 48","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user49@demo.com","first_name":"User 49","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."}]}\r\n--NOCKBOUNDARY--\r\n'
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"grouparoo+test@demo.com","id":22671384,"first_name":"Special","last_name":"User"}]}\r\n--NOCKBOUNDARY--\r\n'
   )
   .query({ format: "json" })
   .once()
-  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+  .reply(200, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
     "Date",
-    "Wed, 10 Mar 2021 19:53:45 GMT",
+    "Tue, 04 May 2021 03:52:43 GMT",
     "Set-Cookie",
-    "pardot=tscs54t5nklgct6st6fcp3g6gl; path=/",
+    "pardot=c0uc6ufpa1fu3v6706evc8ltic; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -9834,7 +8251,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Pragma",
     "no-cache",
     "X-Pardot-Rsp",
-    "25/81/66",
+    "25/13/203",
     "Vary",
     "Accept-Encoding,User-Agent",
     "Content-Length",
@@ -9846,7 +8263,2361 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "81ef3179da45557cd28f9ba13d8805bd",
+    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/id/22671384")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671384,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Special",
+        last_name: "User",
+        email: "grouparoo+test@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:40",
+        updated_at: "2021-05-03 20:52:43",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:43 GMT",
+      "Set-Cookie",
+      "pardot=75mbbralmb26u4l7cje51s8mah; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1334",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:44 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=LrjkjKyMEeu9Wr8Lb4f5RA; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:44 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      prospect: {
+        id: 22671384,
+        campaign_id: 8245,
+        salutation: null,
+        first_name: "Special",
+        last_name: "User",
+        email: "grouparoo+test@demo.com",
+        password: null,
+        company: null,
+        website: null,
+        job_title: null,
+        department: null,
+        country: null,
+        address_one: null,
+        address_two: null,
+        city: null,
+        state: null,
+        territory: null,
+        zip: null,
+        phone: null,
+        fax: null,
+        source: null,
+        annual_revenue: null,
+        employees: null,
+        industry: null,
+        years_in_business: null,
+        comments: null,
+        notes: null,
+        score: 0,
+        grade: null,
+        last_activity_at: null,
+        recent_interaction: "Never active.",
+        crm_lead_fid: null,
+        crm_contact_fid: null,
+        crm_owner_fid: null,
+        crm_account_fid: null,
+        salesforce_fid: null,
+        crm_last_sync: null,
+        crm_url: null,
+        is_do_not_email: null,
+        is_do_not_call: null,
+        opted_out: null,
+        is_reviewed: null,
+        is_starred: null,
+        created_at: "2021-05-03 20:52:40",
+        updated_at: "2021-05-03 20:52:43",
+        campaign: { id: 8245, name: "Website Tracking" },
+        profile: {
+          id: 1009,
+          name: "Default",
+          profile_criteria: [
+            { id: 5063, name: "Company Size", matches: "Unknown" },
+            { id: 5065, name: "Industry", matches: "Unknown" },
+            { id: 5067, name: "Location", matches: "Unknown" },
+            { id: 5069, name: "Job Title", matches: "Unknown" },
+            { id: 5071, name: "Department", matches: "Unknown" },
+          ],
+        },
+        visitors: null,
+        visitor_activities: null,
+        lists: null,
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:44 GMT",
+      "Set-Cookie",
+      "pardot=haqbts7cm7oi8n51oaiob7oeni; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "1334",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post("/api/prospect/version/4/do/delete/id/22671384")
+  .once()
+  .reply(204, "", [
+    "Date",
+    "Tue, 04 May 2021 03:52:45 GMT",
+    "Set-Cookie",
+    "pardot=dfv1mlhuj90osgvlmge3cajqr8; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "P3p",
+    'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Type",
+    "text/html; charset=utf-8",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+  ]);
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:46 GMT",
+      "Set-Cookie",
+      "pardot=vog82pf1cdj7f9jkmmfudn8i9c; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/query")
+  .query({
+    format: "json",
+    output: "mobile",
+    deleted: "true",
+    id_greater_than: "22671383",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      "@attributes": { stat: "ok", version: 1 },
+      result: {
+        total_results: 1,
+        prospect: {
+          id: 22671384,
+          first_name: "Special",
+          last_name: "User",
+          email: "grouparoo+test@demo.com",
+          company: null,
+        },
+      },
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:46 GMT",
+      "Set-Cookie",
+      "pardot=pmh2c9lijf722f2c6b588ngf16; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "188",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://login.salesforce.com:443", { encodedQueryParams: true })
+  .post(
+    "/services/Soap/u/42.0",
+    '<se:Envelope xmlns:se="http://schemas.xmlsoap.org/soap/envelope/"><se:Header/><se:Body><login xmlns="urn:partner.soap.sforce.com"><username>demo@grouparoo.com</username><password>jhfd!kjdgd43h986273e87a3d9725fe3755c</password></login></se:Body></se:Envelope>'
+  )
+  .once()
+  .reply(
+    200,
+    '<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:partner.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><loginResponse><result><metadataServerUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/m/42.0/00D4x000006u2Lv</metadataServerUrl><passwordExpired>false</passwordExpired><sandbox>false</sandbox><serverUrl>https://grouparoo-dev-ed.my.salesforce.com/services/Soap/u/42.0/00D4x000006u2Lv</serverUrl><sessionId>00D4x000006u2Lv!AQcAQC1oSHA.u6g0DUaQTLYtUfhOQILIz39tiggCYyLfbPOfJB44N6maUWxP3iwBgDfN3Xk1TZQAMKHg_Zz53EfK5hwyZled</sessionId><userId>0054x000003vteIAAQ</userId><userInfo><accessibilityMode>false</accessibilityMode><chatterExternal>false</chatterExternal><currencySymbol>$</currencySymbol><orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit><orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode><orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale><orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments><orgHasPersonAccounts>false</orgHasPersonAccounts><organizationId>00D4x000006u2LvEAI</organizationId><organizationMultiCurrency>false</organizationMultiCurrency><organizationName>Grouparoo</organizationName><profileId>00e4x000002VT9eAAG</profileId><roleId>00E4x000001pDfoEAE</roleId><sessionSecondsValid>7200</sessionSecondsValid><userDefaultCurrencyIsoCode xsi:nil="true"/><userEmail>demo@grouparoo.com</userEmail><userFullName>Dev Engineer</userFullName><userId>0054x000003vteIAAQ</userId><userLanguage>en_US</userLanguage><userLocale>en_US</userLocale><userName>demo@grouparoo.com</userName><userTimeZone>America/Los_Angeles</userTimeZone><userType>Standard</userType><userUiSkin>Theme3</userUiSkin></userInfo></result></loginResponse></soapenv:Body></soapenv:Envelope>',
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:47 GMT",
+      "Cache-Control",
+      "no-cache,must-revalidate,max-age=0,no-store,private",
+      "Set-Cookie",
+      "BrowserId=MHFCyayMEeu5D0MG728Q6A; domain=.salesforce.com; path=/; expires=Wed, 04-May-2022 03:52:47 GMT; Max-Age=31536000",
+      "Content-Type",
+      "text/xml; charset=utf-8",
+      "Vary",
+      "Accept-Encoding",
+      "Content-Length",
+      "1849",
+      "Connection",
+      "close",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user0%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:47 GMT",
+      "Set-Cookie",
+      "pardot=5kl4mbntqt8g8gmu64jqlnc9eg; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user1%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:48 GMT",
+      "Set-Cookie",
+      "pardot=d72qp578kadcl9e0aqohlvdr9l; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user2%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:48 GMT",
+      "Set-Cookie",
+      "pardot=q802ucedqfka32pjeoog9rciog; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user3%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:49 GMT",
+      "Set-Cookie",
+      "pardot=q2gesf925ieo01qmrnntf3snkv; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user4%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:49 GMT",
+      "Set-Cookie",
+      "pardot=9f68vb7fkcebmi2et1rf0jffnt; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user5%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:50 GMT",
+      "Set-Cookie",
+      "pardot=ri42jkdi6f7rk2h5hvbao241en; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user6%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:50 GMT",
+      "Set-Cookie",
+      "pardot=c112gfhk52olm8606hlmvsdku2; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user7%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:51 GMT",
+      "Set-Cookie",
+      "pardot=sv8hvlukcf7juneqfncublhmrt; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user8%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:51 GMT",
+      "Set-Cookie",
+      "pardot=p12lkrujjoiok39j1moejiqog5; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user9%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:52 GMT",
+      "Set-Cookie",
+      "pardot=o9ldkfe0i4aunu0ipfpno5bj8e; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user10%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:52 GMT",
+      "Set-Cookie",
+      "pardot=p6q7pp38uudr6cecu8qckav9hd; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user11%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:53 GMT",
+      "Set-Cookie",
+      "pardot=m0fn4uvm7eo8dr8a6omm13j0tp; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user12%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:53 GMT",
+      "Set-Cookie",
+      "pardot=u8c137ucvqu1fgj72korbmeg1n; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user13%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:54 GMT",
+      "Set-Cookie",
+      "pardot=503d0hudfd44k2il2r5d9fc2lv; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user14%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:54 GMT",
+      "Set-Cookie",
+      "pardot=n78gibjrt9tuao9r2lf4gr8jrt; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user15%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:55 GMT",
+      "Set-Cookie",
+      "pardot=gch4b138b5ignpn9bvc17udkq3; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user16%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:56 GMT",
+      "Set-Cookie",
+      "pardot=913hratkf8379b9b6o4b4n6g3t; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user17%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:57 GMT",
+      "Set-Cookie",
+      "pardot=g80gdbbp1enddffobef2huu6i6; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "81ef3179da45557cd28f9ba13d8805bd",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user18%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:57 GMT",
+      "Set-Cookie",
+      "pardot=9ca9kfq2cvlv0mb1v9m46ia56f; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user19%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:58 GMT",
+      "Set-Cookie",
+      "pardot=tkh4pr9qvjvgoj7mr9fvad25k5; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user20%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:58 GMT",
+      "Set-Cookie",
+      "pardot=hnn51dpiq06pmruhmvg40qfj3h; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user21%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:59 GMT",
+      "Set-Cookie",
+      "pardot=iprg74um385cn5l6nnmn6m8q87; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user22%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:52:59 GMT",
+      "Set-Cookie",
+      "pardot=ffdeq15ukhhuofudosj9cm6599; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user23%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:00 GMT",
+      "Set-Cookie",
+      "pardot=if8fckegn2sdgkk20afuqfasfk; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user24%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:00 GMT",
+      "Set-Cookie",
+      "pardot=l3na24j6o8h8gc9pc0uktnb22n; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user25%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:01 GMT",
+      "Set-Cookie",
+      "pardot=lhijl0i6jdsg8k3eh1a8g26f5b; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user26%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:01 GMT",
+      "Set-Cookie",
+      "pardot=n7iad32kfbk3kgh0od9ml81p2h; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user27%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:02 GMT",
+      "Set-Cookie",
+      "pardot=omchbtvbi63q7t62tnarff54k4; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user28%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:02 GMT",
+      "Set-Cookie",
+      "pardot=oj5rdejrt647mbjfuqt446dvfr; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user29%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:03 GMT",
+      "Set-Cookie",
+      "pardot=2oc56bjlj5r2loktjauf6veomo; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user30%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:03 GMT",
+      "Set-Cookie",
+      "pardot=3hnvf1v3m39m48oq7mcrts5o11; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user31%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:04 GMT",
+      "Set-Cookie",
+      "pardot=i39blskac49f88mlsvrhc8b5fq; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user32%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:04 GMT",
+      "Set-Cookie",
+      "pardot=0l2kupo6uvivs4d5oql06bblvn; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user33%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:05 GMT",
+      "Set-Cookie",
+      "pardot=qr0inuaqacdih4s5irv5p8n5rm; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user34%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:05 GMT",
+      "Set-Cookie",
+      "pardot=ombs7rbdnknlloe9sm1u2mm9cj; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user35%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:06 GMT",
+      "Set-Cookie",
+      "pardot=qdgl05p02nqnqi5kspmv869pvf; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user36%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:06 GMT",
+      "Set-Cookie",
+      "pardot=mgbrept0hkq6lo4e2m6sboqm93; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user37%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:07 GMT",
+      "Set-Cookie",
+      "pardot=gbbqnlq7lrti8alj0qcndb6cma; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user38%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:07 GMT",
+      "Set-Cookie",
+      "pardot=84k28053haqikr8s0oj12ck2lv; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user39%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:08 GMT",
+      "Set-Cookie",
+      "pardot=h3erl6141hms1m876b3sm3bo7u; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user40%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:08 GMT",
+      "Set-Cookie",
+      "pardot=cp55kkrsr51bp4qutqjmen1i1v; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user41%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:09 GMT",
+      "Set-Cookie",
+      "pardot=5rt6hmk96cvmu0s4lbj9c5cv35; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/81/66",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user42%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:09 GMT",
+      "Set-Cookie",
+      "pardot=de8f103gep1sb73fs94aerq93e; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user43%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:10 GMT",
+      "Set-Cookie",
+      "pardot=viupr99kuemfm483d8p5se94pr; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/15/252",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user44%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:10 GMT",
+      "Set-Cookie",
+      "pardot=p0fi4clovo8ja42ljrr7ks3fs1; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user45%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:11 GMT",
+      "Set-Cookie",
+      "pardot=dfset5t0n1q154nnhl9l6j6nrk; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user46%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:11 GMT",
+      "Set-Cookie",
+      "pardot=37ikebvesqtolbuhup0drvcs01; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/13/203",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user47%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:12 GMT",
+      "Set-Cookie",
+      "pardot=5ha7m8dgbp2qa85sh38o4o2q1v; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/70/31",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user48%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:12 GMT",
+      "Set-Cookie",
+      "pardot=q2iv998jer5k1lipb4b7rpph4u; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .get("/api/prospect/version/4/do/read/email/user49%40demo.com")
+  .query({ format: "json" })
+  .once()
+  .reply(
+    400,
+    {
+      "@attributes": { stat: "fail", version: 1, err_code: 4 },
+      err: "Invalid prospect email address",
+    },
+    [
+      "Date",
+      "Tue, 04 May 2021 03:53:13 GMT",
+      "Set-Cookie",
+      "pardot=evqr3tf8i668oc2ru5cqkjh3tl; path=/",
+      "Expires",
+      "Thu, 19 Nov 1981 08:52:00 GMT",
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate",
+      "Pragma",
+      "no-cache",
+      "X-Pardot-Rsp",
+      "25/78/160",
+      "P3p",
+      'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
+      "Vary",
+      "Accept-Encoding,User-Agent",
+      "Content-Length",
+      "95",
+      "Content-Type",
+      "application/json",
+      "X-Pardot-Route",
+      "4fa993bd92d83a19a78f84f1ddd264ce",
+      "Server",
+      "PardotServer",
+      "X-Pardot-LB",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    ]
+  );
+nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
+  .post(
+    "/api/prospect/version/4/do/batchUpsert",
+    '--NOCKBOUNDARY\r\nContent-Disposition: form-data; name="prospects"\r\n\r\n{"prospects":[{"email":"user0@demo.com","first_name":"User 0","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user1@demo.com","first_name":"User 1","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user2@demo.com","first_name":"User 2","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user3@demo.com","first_name":"User 3","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user4@demo.com","first_name":"User 4","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user5@demo.com","first_name":"User 5","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user6@demo.com","first_name":"User 6","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user7@demo.com","first_name":"User 7","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user8@demo.com","first_name":"User 8","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user9@demo.com","first_name":"User 9","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user10@demo.com","first_name":"User 10","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user11@demo.com","first_name":"User 11","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user12@demo.com","first_name":"User 12","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user13@demo.com","first_name":"User 13","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user14@demo.com","first_name":"User 14","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user15@demo.com","first_name":"User 15","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user16@demo.com","first_name":"User 16","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user17@demo.com","first_name":"User 17","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user18@demo.com","first_name":"User 18","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user19@demo.com","first_name":"User 19","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user20@demo.com","first_name":"User 20","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user21@demo.com","first_name":"User 21","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user22@demo.com","first_name":"User 22","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user23@demo.com","first_name":"User 23","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user24@demo.com","first_name":"User 24","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user25@demo.com","first_name":"User 25","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user26@demo.com","first_name":"User 26","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user27@demo.com","first_name":"User 27","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user28@demo.com","first_name":"User 28","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user29@demo.com","first_name":"User 29","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user30@demo.com","first_name":"User 30","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user31@demo.com","first_name":"User 31","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user32@demo.com","first_name":"User 32","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user33@demo.com","first_name":"User 33","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user34@demo.com","first_name":"User 34","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user35@demo.com","first_name":"User 35","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user36@demo.com","first_name":"User 36","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user37@demo.com","first_name":"User 37","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user38@demo.com","first_name":"User 38","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user39@demo.com","first_name":"User 39","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user40@demo.com","first_name":"User 40","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user41@demo.com","first_name":"User 41","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user42@demo.com","first_name":"User 42","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user43@demo.com","first_name":"User 43","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user44@demo.com","first_name":"User 44","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user45@demo.com","first_name":"User 45","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user46@demo.com","first_name":"User 46","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user47@demo.com","first_name":"User 47","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user48@demo.com","first_name":"User 48","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."},{"email":"user49@demo.com","first_name":"User 49","last_name":"LastName","grouparoo_custom_textarea":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."}]}\r\n--NOCKBOUNDARY--\r\n'
+  )
+  .query({ format: "json" })
+  .once()
+  .reply(201, { "@attributes": { stat: "ok", version: 1 }, errors: {} }, [
+    "Date",
+    "Tue, 04 May 2021 03:53:13 GMT",
+    "Set-Cookie",
+    "pardot=5mc2b2uvcfgva2msp8rv4ivvga; path=/",
+    "Expires",
+    "Thu, 19 Nov 1981 08:52:00 GMT",
+    "Cache-Control",
+    "no-store, no-cache, must-revalidate",
+    "Pragma",
+    "no-cache",
+    "X-Pardot-Rsp",
+    "25/13/203",
+    "Vary",
+    "Accept-Encoding,User-Agent",
+    "Content-Length",
+    "53",
+    "Content-Type",
+    "application/json",
+    "X-Pardot-Route",
+    "4fa993bd92d83a19a78f84f1ddd264ce",
+    "Server",
+    "PardotServer",
+    "X-Pardot-LB",
+    "01f6d1eb96c2e46c10f3ecf450ddabd0",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user0%40demo.com")
@@ -9857,7 +10628,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151689,
+        id: 22671386,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 0",
@@ -9900,8 +10671,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:45",
-        updated_at: "2021-03-10 11:53:45",
+        created_at: "2021-05-03 20:53:13",
+        updated_at: "2021-05-03 20:53:13",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -9923,9 +10694,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:51 GMT",
+      "Tue, 04 May 2021 03:53:22 GMT",
       "Set-Cookie",
-      "pardot=i9a2j85qnh3p58pm8nu7bs0l13; path=/",
+      "pardot=i722qoji1qjd4c292usm6i7m7n; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -9933,13 +10704,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -9947,7 +10718,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -9959,7 +10730,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151691,
+        id: 22671388,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 1",
@@ -10002,8 +10773,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:45",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:13",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10025,9 +10796,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:52 GMT",
+      "Tue, 04 May 2021 03:53:23 GMT",
       "Set-Cookie",
-      "pardot=1g19j1vjbfa8i0a4mll2qat0dv; path=/",
+      "pardot=l25avlb5ti0n0k3uuipfqptded; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10035,13 +10806,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10049,7 +10820,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10061,7 +10832,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151693,
+        id: 22671390,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 2",
@@ -10104,8 +10875,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10127,9 +10898,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:52 GMT",
+      "Tue, 04 May 2021 03:53:23 GMT",
       "Set-Cookie",
-      "pardot=78hv06ee2j927vhn41q7fm9gr3; path=/",
+      "pardot=lotm5rjbbnutg1qldmgrto09nc; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10137,13 +10908,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10151,7 +10922,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10163,7 +10934,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151695,
+        id: 22671392,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 3",
@@ -10206,8 +10977,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10229,9 +11000,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:52 GMT",
+      "Tue, 04 May 2021 03:53:24 GMT",
       "Set-Cookie",
-      "pardot=rh15njv6vjn4jn28aifuvem498; path=/",
+      "pardot=4e02hj6e9s35t7he6c1s0bde4a; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10239,13 +11010,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10253,7 +11024,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10265,7 +11036,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151697,
+        id: 22671394,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 4",
@@ -10308,8 +11079,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10331,9 +11102,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:52 GMT",
+      "Tue, 04 May 2021 03:53:25 GMT",
       "Set-Cookie",
-      "pardot=9m7m6h79gur87vs5sol9568b7j; path=/",
+      "pardot=sp1s814frq0no2775drl0daus5; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10341,13 +11112,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10355,7 +11126,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10367,7 +11138,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151699,
+        id: 22671396,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 5",
@@ -10410,8 +11181,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10433,9 +11204,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:53 GMT",
+      "Tue, 04 May 2021 03:53:25 GMT",
       "Set-Cookie",
-      "pardot=q1kdi7n5bihrsfbe5nllq5d5m2; path=/",
+      "pardot=2hk3h496495ncnpolkfrd5j97g; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10443,13 +11214,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10457,7 +11228,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10469,7 +11240,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151701,
+        id: 22671398,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 6",
@@ -10512,8 +11283,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10535,9 +11306,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:53 GMT",
+      "Tue, 04 May 2021 03:53:26 GMT",
       "Set-Cookie",
-      "pardot=g4astk7jmdt3308kufmok5ats6; path=/",
+      "pardot=ofsai8ojffkmfbj6ekl0f75rrl; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10545,13 +11316,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10559,7 +11330,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "81ef3179da45557cd28f9ba13d8805bd",
+      "01f6d1eb96c2e46c10f3ecf450ddabd0",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -10571,7 +11342,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151703,
+        id: 22671400,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 7",
@@ -10614,8 +11385,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10637,9 +11408,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:53 GMT",
+      "Tue, 04 May 2021 03:53:26 GMT",
       "Set-Cookie",
-      "pardot=jlg6quksafrospueb6p4vit2jl; path=/",
+      "pardot=m74gl3blu4khqbkl8jdq0v7oap; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10653,7 +11424,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10673,7 +11444,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151705,
+        id: 22671402,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 8",
@@ -10716,8 +11487,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10739,9 +11510,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:54 GMT",
+      "Tue, 04 May 2021 03:53:27 GMT",
       "Set-Cookie",
-      "pardot=lmi4shpri25uof901sa7b30is7; path=/",
+      "pardot=c4vjog9ab0nlhgl5drcn15rff7; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10755,7 +11526,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10775,7 +11546,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151707,
+        id: 22671404,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 9",
@@ -10818,8 +11589,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10841,9 +11612,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:54 GMT",
+      "Tue, 04 May 2021 03:53:27 GMT",
       "Set-Cookie",
-      "pardot=5rasfeu2qgbnakbpkalf27j9i1; path=/",
+      "pardot=kich15gk9cuoij01jci666f7db; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10851,13 +11622,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10877,7 +11648,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151709,
+        id: 22671406,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 10",
@@ -10920,8 +11691,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -10943,9 +11714,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:54 GMT",
+      "Tue, 04 May 2021 03:53:28 GMT",
       "Set-Cookie",
-      "pardot=2o5an90bt86gv4pfjj2sno5muf; path=/",
+      "pardot=7vu5dudcdtqhlj4nhddqaomdjb; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -10953,13 +11724,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -10979,7 +11750,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151711,
+        id: 22671408,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 11",
@@ -11022,8 +11793,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11045,9 +11816,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:54 GMT",
+      "Tue, 04 May 2021 03:53:28 GMT",
       "Set-Cookie",
-      "pardot=495pncoopfevv3k82219iq9l0h; path=/",
+      "pardot=g8mimn7f3053r228t63in8nk5m; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11055,13 +11826,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11081,7 +11852,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151713,
+        id: 22671410,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 12",
@@ -11124,8 +11895,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11147,9 +11918,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:55 GMT",
+      "Tue, 04 May 2021 03:53:29 GMT",
       "Set-Cookie",
-      "pardot=andk2t13lt07ijht3up7elqaan; path=/",
+      "pardot=gsghe2quib4kbs6f8se34sr8o4; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11157,13 +11928,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11183,7 +11954,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151715,
+        id: 22671412,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 13",
@@ -11226,8 +11997,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11249,9 +12020,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:55 GMT",
+      "Tue, 04 May 2021 03:53:29 GMT",
       "Set-Cookie",
-      "pardot=jjmsqmp14qeqpfrnafit3dhtpo; path=/",
+      "pardot=og0nqvhp7jmo8380o5kchpuavf; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11259,13 +12030,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11285,7 +12056,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151717,
+        id: 22671414,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 14",
@@ -11328,8 +12099,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11351,9 +12122,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:55 GMT",
+      "Tue, 04 May 2021 03:53:30 GMT",
       "Set-Cookie",
-      "pardot=pqe69u7gnj0ltltbbtuiikv9fa; path=/",
+      "pardot=v3c5lt1k63g37r8p8v5db5krt3; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11361,13 +12132,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11387,7 +12158,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151719,
+        id: 22671416,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 15",
@@ -11430,8 +12201,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11453,9 +12224,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:55 GMT",
+      "Tue, 04 May 2021 03:53:30 GMT",
       "Set-Cookie",
-      "pardot=3cil7iuhfr92dhks0uk5dmf6mn; path=/",
+      "pardot=5v26f20sqfejrojl7hftlfnm3r; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11469,7 +12240,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11489,7 +12260,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151721,
+        id: 22671418,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 16",
@@ -11532,8 +12303,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11555,9 +12326,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:56 GMT",
+      "Tue, 04 May 2021 03:53:31 GMT",
       "Set-Cookie",
-      "pardot=emb8jnla7sp31hdkh83c7digcm; path=/",
+      "pardot=lv1iee9jioasrpas9rrd1bgrfg; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11565,13 +12336,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11591,7 +12362,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151723,
+        id: 22671420,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 17",
@@ -11634,8 +12405,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11657,9 +12428,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:56 GMT",
+      "Tue, 04 May 2021 03:53:31 GMT",
       "Set-Cookie",
-      "pardot=0lbrg0r00cvee6h25u9u5r7o2q; path=/",
+      "pardot=d241g1m8ttn0tt6sf17g300rpr; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11667,13 +12438,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11693,7 +12464,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151725,
+        id: 22671422,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 18",
@@ -11736,8 +12507,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11759,9 +12530,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:56 GMT",
+      "Tue, 04 May 2021 03:53:32 GMT",
       "Set-Cookie",
-      "pardot=0j1ppsbkktkq0nieie280qb8sp; path=/",
+      "pardot=v269gb76fnk5a870ejeqb07d68; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11769,13 +12540,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11795,7 +12566,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151727,
+        id: 22671424,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 19",
@@ -11838,8 +12609,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11861,9 +12632,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:57 GMT",
+      "Tue, 04 May 2021 03:53:32 GMT",
       "Set-Cookie",
-      "pardot=rg59sjeps44fg8p2ft2reornkg; path=/",
+      "pardot=4td20qgnt9c2m8g1b3f57lg8i2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11871,13 +12642,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11897,7 +12668,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151729,
+        id: 22671426,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 20",
@@ -11940,8 +12711,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -11963,9 +12734,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:57 GMT",
+      "Tue, 04 May 2021 03:53:33 GMT",
       "Set-Cookie",
-      "pardot=jn72rtuaktd4qfs7vn5sdudq92; path=/",
+      "pardot=i7or62ofh1i7utrmrpe165ug1j; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -11973,13 +12744,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -11999,7 +12770,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151731,
+        id: 22671428,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 21",
@@ -12042,8 +12813,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12065,9 +12836,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:57 GMT",
+      "Tue, 04 May 2021 03:53:34 GMT",
       "Set-Cookie",
-      "pardot=vb0f571uqtl6tr1u7qsq9kptkg; path=/",
+      "pardot=po3kejl7vpdk0bgu5cin2apcqs; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12075,13 +12846,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12101,7 +12872,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151733,
+        id: 22671430,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 22",
@@ -12144,8 +12915,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12167,9 +12938,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:57 GMT",
+      "Tue, 04 May 2021 03:53:34 GMT",
       "Set-Cookie",
-      "pardot=cpln62svf2fa4fmsqspml5bf06; path=/",
+      "pardot=vb8lqi4h34kr670pc85jn4qugu; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12177,13 +12948,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12203,7 +12974,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151735,
+        id: 22671432,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 23",
@@ -12246,8 +13017,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12269,9 +13040,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:58 GMT",
+      "Tue, 04 May 2021 03:53:35 GMT",
       "Set-Cookie",
-      "pardot=139ui4t75o9oa63e3gqs637j1j; path=/",
+      "pardot=enckh7bp03vlhdgtkd7fj0nbd7; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12279,13 +13050,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12305,7 +13076,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151737,
+        id: 22671434,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 24",
@@ -12348,8 +13119,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12371,9 +13142,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:58 GMT",
+      "Tue, 04 May 2021 03:53:35 GMT",
       "Set-Cookie",
-      "pardot=ms6bv60b2avue2ukrlaieqc93e; path=/",
+      "pardot=5c4dsuv4qcdudk65o8ndoi9pkn; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12381,13 +13152,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12407,7 +13178,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151739,
+        id: 22671436,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 25",
@@ -12450,8 +13221,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12473,9 +13244,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:58 GMT",
+      "Tue, 04 May 2021 03:53:36 GMT",
       "Set-Cookie",
-      "pardot=6tmoghd4nga7j67sccdfp8vl34; path=/",
+      "pardot=2oqmla1ql5m0bghscuhtr0m2qn; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12483,13 +13254,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12509,7 +13280,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151741,
+        id: 22671438,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 26",
@@ -12552,8 +13323,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12575,9 +13346,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:59 GMT",
+      "Tue, 04 May 2021 03:53:36 GMT",
       "Set-Cookie",
-      "pardot=8rog76u41toj71tdj40d35i7ip; path=/",
+      "pardot=c07m6g93vs94v26kgeuf31g3ve; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12585,13 +13356,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12611,7 +13382,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151743,
+        id: 22671440,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 27",
@@ -12654,8 +13425,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12677,9 +13448,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:59 GMT",
+      "Tue, 04 May 2021 03:53:37 GMT",
       "Set-Cookie",
-      "pardot=6le9dib1mc4fjrc8ulb4dtgl3r; path=/",
+      "pardot=g3n0ch9smc2pme4innkrm3rfss; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12687,13 +13458,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12713,7 +13484,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151745,
+        id: 22671442,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 28",
@@ -12756,8 +13527,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12779,9 +13550,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:59 GMT",
+      "Tue, 04 May 2021 03:53:37 GMT",
       "Set-Cookie",
-      "pardot=dqbet02asvdsltkohn5vknnrjf; path=/",
+      "pardot=unc3nl53bjrmp9h94u07kt8ouu; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12789,13 +13560,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12815,7 +13586,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151747,
+        id: 22671444,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 29",
@@ -12858,8 +13629,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12881,9 +13652,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:53:59 GMT",
+      "Tue, 04 May 2021 03:53:38 GMT",
       "Set-Cookie",
-      "pardot=n0iib9e1ke8bjr9q15g37ql875; path=/",
+      "pardot=sgc3f6c0o0k2c395tlj4j0sqk4; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12897,7 +13668,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -12917,7 +13688,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151749,
+        id: 22671446,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 30",
@@ -12960,8 +13731,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -12983,9 +13754,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:00 GMT",
+      "Tue, 04 May 2021 03:53:38 GMT",
       "Set-Cookie",
-      "pardot=t66lnm169bb04i7099f4epqbr9; path=/",
+      "pardot=4c5h4d175pucqf9muuh6p299q7; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -12993,13 +13764,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13019,7 +13790,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151751,
+        id: 22671448,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 31",
@@ -13062,8 +13833,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13085,9 +13856,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:00 GMT",
+      "Tue, 04 May 2021 03:53:39 GMT",
       "Set-Cookie",
-      "pardot=ts4hp8hkn6vaq44k6vu71q38la; path=/",
+      "pardot=itli540bq6jk9ma2u3dl5si466; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13095,13 +13866,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13121,7 +13892,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151753,
+        id: 22671450,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 32",
@@ -13164,8 +13935,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13187,9 +13958,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:00 GMT",
+      "Tue, 04 May 2021 03:53:39 GMT",
       "Set-Cookie",
-      "pardot=pon90u9br0k40b23fhpok4t622; path=/",
+      "pardot=7bfheu0adipo626627mlk1o87u; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13197,13 +13968,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13223,7 +13994,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151755,
+        id: 22671452,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 33",
@@ -13266,8 +14037,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13289,9 +14060,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:01 GMT",
+      "Tue, 04 May 2021 03:53:40 GMT",
       "Set-Cookie",
-      "pardot=7d39k7mamuqn4jriji9p8sumpg; path=/",
+      "pardot=en5h1npdnq87n58kmktd1t15s6; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13299,13 +14070,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13325,7 +14096,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151757,
+        id: 22671454,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 34",
@@ -13368,8 +14139,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13391,9 +14162,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:01 GMT",
+      "Tue, 04 May 2021 03:53:40 GMT",
       "Set-Cookie",
-      "pardot=c8lm332rped42dfg83sp48g5p6; path=/",
+      "pardot=6kn7v6vllb25drupsnqshd5e1t; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13401,13 +14172,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13427,7 +14198,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151759,
+        id: 22671456,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 35",
@@ -13470,8 +14241,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13493,9 +14264,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:01 GMT",
+      "Tue, 04 May 2021 03:53:41 GMT",
       "Set-Cookie",
-      "pardot=hakjuc3qr70opod4aad969kda4; path=/",
+      "pardot=7b56jbgpqvu5r5o971igok3elb; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13509,7 +14280,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13529,7 +14300,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151761,
+        id: 22671458,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 36",
@@ -13572,8 +14343,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13595,9 +14366,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:01 GMT",
+      "Tue, 04 May 2021 03:53:41 GMT",
       "Set-Cookie",
-      "pardot=drp8bv7jmfu4jlu4ju4p81b66g; path=/",
+      "pardot=et1cmr0fd919ghosmui15cup81; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13605,13 +14376,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13631,7 +14402,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151763,
+        id: 22671460,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 37",
@@ -13674,8 +14445,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13697,9 +14468,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:02 GMT",
+      "Tue, 04 May 2021 03:53:42 GMT",
       "Set-Cookie",
-      "pardot=bqmnqtefs27l6037a6qi32k3mt; path=/",
+      "pardot=p47ar9mhk3qkvljdsckcolagfb; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13707,13 +14478,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13733,7 +14504,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151765,
+        id: 22671462,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 38",
@@ -13776,8 +14547,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13799,9 +14570,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:02 GMT",
+      "Tue, 04 May 2021 03:53:42 GMT",
       "Set-Cookie",
-      "pardot=1uvas0i7fso84ub64bk7fo2jcd; path=/",
+      "pardot=ohd0f4lgjreiovjha5rvou4c4m; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13809,13 +14580,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13835,7 +14606,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151767,
+        id: 22671464,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 39",
@@ -13878,8 +14649,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -13901,9 +14672,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:02 GMT",
+      "Tue, 04 May 2021 03:53:43 GMT",
       "Set-Cookie",
-      "pardot=8c4h6v4krnpm78ngoch9c06pd8; path=/",
+      "pardot=u8u0ebbfitrv0suujb4dh5hi2p; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -13911,13 +14682,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -13937,7 +14708,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151769,
+        id: 22671466,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 40",
@@ -13980,8 +14751,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14003,9 +14774,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:02 GMT",
+      "Tue, 04 May 2021 03:53:43 GMT",
       "Set-Cookie",
-      "pardot=i11td81i76soacegef5cvu6hk8; path=/",
+      "pardot=ae2csdn5tj0r68q6n5tlh5se6j; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14019,7 +14790,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14039,7 +14810,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151771,
+        id: 22671468,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 41",
@@ -14082,8 +14853,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14105,9 +14876,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:03 GMT",
+      "Tue, 04 May 2021 03:53:44 GMT",
       "Set-Cookie",
-      "pardot=mio9iskjnjiseb21nspbbhv4q8; path=/",
+      "pardot=u9l3ggte3dtndeirhirvn3v6hq; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14115,13 +14886,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14141,7 +14912,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151773,
+        id: 22671470,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 42",
@@ -14184,8 +14955,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14207,9 +14978,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:03 GMT",
+      "Tue, 04 May 2021 03:53:44 GMT",
       "Set-Cookie",
-      "pardot=6bvul7c6oruj83evikv9ms0ecm; path=/",
+      "pardot=us65bkg0mcj896278m2rdhidfs; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14223,7 +14994,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14243,7 +15014,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151775,
+        id: 22671472,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 43",
@@ -14286,8 +15057,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14309,9 +15080,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:03 GMT",
+      "Tue, 04 May 2021 03:53:45 GMT",
       "Set-Cookie",
-      "pardot=uemfgos5s82ircod81sdqf3aff; path=/",
+      "pardot=pv09n8mcalcanjcfaen24ceb67; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14319,13 +15090,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14345,7 +15116,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151777,
+        id: 22671474,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 44",
@@ -14388,8 +15159,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14411,9 +15182,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:04 GMT",
+      "Tue, 04 May 2021 03:53:45 GMT",
       "Set-Cookie",
-      "pardot=kb39aem8btsgpuvrqi5qc3sfto; path=/",
+      "pardot=hoj3jdsqntttgqhac52p4i0i0o; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14421,13 +15192,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14447,7 +15218,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151779,
+        id: 22671476,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 45",
@@ -14490,8 +15261,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14513,9 +15284,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:04 GMT",
+      "Tue, 04 May 2021 03:53:46 GMT",
       "Set-Cookie",
-      "pardot=r4amd5g48sj3t366c8asrf77i6; path=/",
+      "pardot=l5l115upt1f0etn315smj4ubl6; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14523,13 +15294,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14549,7 +15320,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151781,
+        id: 22671478,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 46",
@@ -14592,8 +15363,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14615,9 +15386,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:04 GMT",
+      "Tue, 04 May 2021 03:53:46 GMT",
       "Set-Cookie",
-      "pardot=sccqlaaapjd4bdhonanb24lbqr; path=/",
+      "pardot=b0gb4j9241g75c5qalm86fj5fs; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14631,7 +15402,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14651,7 +15422,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151783,
+        id: 22671480,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 47",
@@ -14694,8 +15465,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14717,9 +15488,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:05 GMT",
+      "Tue, 04 May 2021 03:53:47 GMT",
       "Set-Cookie",
-      "pardot=fslkjibj0hluhmmea5do12rfej; path=/",
+      "pardot=gh2iqk2b0fcqigo34pm0j3go9t; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14727,13 +15498,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14753,7 +15524,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151785,
+        id: 22671482,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 48",
@@ -14796,8 +15567,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14819,9 +15590,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:05 GMT",
+      "Tue, 04 May 2021 03:53:47 GMT",
       "Set-Cookie",
-      "pardot=jghsoobh324n19oo2dopkf56n2; path=/",
+      "pardot=tm646cscpjcu4bc454tlgqcnpl; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14829,13 +15600,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14855,7 +15626,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151787,
+        id: 22671484,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 49",
@@ -14898,8 +15669,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -14921,9 +15692,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:05 GMT",
+      "Tue, 04 May 2021 03:53:48 GMT",
       "Set-Cookie",
-      "pardot=f27vn3uq0q6qumbkm70qbs5sb5; path=/",
+      "pardot=q1tbih2dch6gi9j2usd1g741dl; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -14931,13 +15702,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -14957,7 +15728,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151689,
+        id: 22671386,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 0",
@@ -15000,8 +15771,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:45",
-        updated_at: "2021-03-10 11:53:45",
+        created_at: "2021-05-03 20:53:13",
+        updated_at: "2021-05-03 20:53:13",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15023,9 +15794,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:05 GMT",
+      "Tue, 04 May 2021 03:53:48 GMT",
       "Set-Cookie",
-      "pardot=33c1ma5q1pqvg08vl4s3oc7jnr; path=/",
+      "pardot=4cfa6p4o4g9b9u33rav33u5ckm; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15033,13 +15804,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15051,13 +15822,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151689")
+  .post("/api/prospect/version/4/do/delete/id/22671386")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:06 GMT",
+    "Tue, 04 May 2021 03:53:49 GMT",
     "Set-Cookie",
-    "pardot=37pp5qdqfb6nqmec7npmb9g96b; path=/",
+    "pardot=7qfjja3gfcml19n9f7h90n8qd3; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15086,7 +15857,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151691,
+        id: 22671388,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 1",
@@ -15129,8 +15900,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:45",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:13",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15152,9 +15923,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:06 GMT",
+      "Tue, 04 May 2021 03:53:49 GMT",
       "Set-Cookie",
-      "pardot=3o0fr2n4klpgoftv2942k59ki4; path=/",
+      "pardot=0n9r1agmnm13jgomoeeqp6jmd9; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15162,13 +15933,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15180,13 +15951,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151691")
+  .post("/api/prospect/version/4/do/delete/id/22671388")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:06 GMT",
+    "Tue, 04 May 2021 03:53:50 GMT",
     "Set-Cookie",
-    "pardot=f20uu3c76g7f281h0hgv41mlqf; path=/",
+    "pardot=hdm7fu3iiol1cvomkamu3tbnjc; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15215,7 +15986,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151693,
+        id: 22671390,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 2",
@@ -15258,8 +16029,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15281,9 +16052,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:07 GMT",
+      "Tue, 04 May 2021 03:53:51 GMT",
       "Set-Cookie",
-      "pardot=h9pppia8shgl26a62p906645k0; path=/",
+      "pardot=fhft83e9s9g491lcldg0l9a9rr; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15291,13 +16062,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15309,13 +16080,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151693")
+  .post("/api/prospect/version/4/do/delete/id/22671390")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:07 GMT",
+    "Tue, 04 May 2021 03:53:51 GMT",
     "Set-Cookie",
-    "pardot=0kordlmbv9kgb79ccaeaavkkgn; path=/",
+    "pardot=h75qbfn48mu6lm7819fopon9a9; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15344,7 +16115,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151695,
+        id: 22671392,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 3",
@@ -15387,8 +16158,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15410,9 +16181,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:08 GMT",
+      "Tue, 04 May 2021 03:53:53 GMT",
       "Set-Cookie",
-      "pardot=ef9gfut982juv5ue1ppv21i6ql; path=/",
+      "pardot=gauc1rsk74t1s7dahmf9t6a657; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15420,13 +16191,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15438,13 +16209,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151695")
+  .post("/api/prospect/version/4/do/delete/id/22671392")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:08 GMT",
+    "Tue, 04 May 2021 03:53:54 GMT",
     "Set-Cookie",
-    "pardot=ll8t0lruq5u3i7hhvkdt3j5p5g; path=/",
+    "pardot=e31uauu723pmi0qbu47tvdvpl0; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15473,7 +16244,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151697,
+        id: 22671394,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 4",
@@ -15516,8 +16287,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15539,9 +16310,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:08 GMT",
+      "Tue, 04 May 2021 03:53:54 GMT",
       "Set-Cookie",
-      "pardot=40k6rsbub2ssqm8r84p3162tcv; path=/",
+      "pardot=f18n89vfsj14c4mppg6h7dnlnu; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15549,13 +16320,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15567,13 +16338,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151697")
+  .post("/api/prospect/version/4/do/delete/id/22671394")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:09 GMT",
+    "Tue, 04 May 2021 03:53:55 GMT",
     "Set-Cookie",
-    "pardot=74ejpjuca2l75rf3v75jejcr55; path=/",
+    "pardot=9ckadgh387hv86idd2icbbie7j; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15602,7 +16373,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151699,
+        id: 22671396,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 5",
@@ -15645,8 +16416,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15668,9 +16439,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:09 GMT",
+      "Tue, 04 May 2021 03:53:55 GMT",
       "Set-Cookie",
-      "pardot=cvbv0qs2kcdr9f4cm4og9d5pm5; path=/",
+      "pardot=n91609vn887v24f87dbddeeda0; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15678,13 +16449,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15692,17 +16463,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151699")
+  .post("/api/prospect/version/4/do/delete/id/22671396")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:09 GMT",
+    "Tue, 04 May 2021 03:53:56 GMT",
     "Set-Cookie",
-    "pardot=ubh5t31p3p0n030akns8b9pa7f; path=/",
+    "pardot=1gn7d3okgcbru392r4sru66d5e; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15720,7 +16491,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user6%40demo.com")
@@ -15731,7 +16502,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151701,
+        id: 22671398,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 6",
@@ -15774,8 +16545,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:14",
+        updated_at: "2021-05-03 20:53:14",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15797,9 +16568,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:10 GMT",
+      "Tue, 04 May 2021 03:54:02 GMT",
       "Set-Cookie",
-      "pardot=d0e8f96rs5fm6tlte54bm170sk; path=/",
+      "pardot=uu04k8vbo6om6qv6pc7plpus1e; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15807,13 +16578,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15821,17 +16592,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151701")
+  .post("/api/prospect/version/4/do/delete/id/22671398")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:10 GMT",
+    "Tue, 04 May 2021 03:54:02 GMT",
     "Set-Cookie",
-    "pardot=7ogilvpp1gtcemr9t742vqatk2; path=/",
+    "pardot=o2a2ir246ohekhptakr2u95274; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15849,7 +16620,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user7%40demo.com")
@@ -15860,7 +16631,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151703,
+        id: 22671400,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 7",
@@ -15903,8 +16674,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -15926,9 +16697,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:11 GMT",
+      "Tue, 04 May 2021 03:54:03 GMT",
       "Set-Cookie",
-      "pardot=d8bt8hp5kigl9mjdk6r2l93jm4; path=/",
+      "pardot=haglvnqgvark11cdou8o9gj528; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -15936,13 +16707,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -15950,17 +16721,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151703")
+  .post("/api/prospect/version/4/do/delete/id/22671400")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:11 GMT",
+    "Tue, 04 May 2021 03:54:03 GMT",
     "Set-Cookie",
-    "pardot=om3bur9bl8d9gfdt6d4grijs9u; path=/",
+    "pardot=p9nlpn5162q7eb1ebp4ajqeh4v; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -15978,7 +16749,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user8%40demo.com")
@@ -15989,7 +16760,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151705,
+        id: 22671402,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 8",
@@ -16032,8 +16803,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16055,9 +16826,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:11 GMT",
+      "Tue, 04 May 2021 03:54:04 GMT",
       "Set-Cookie",
-      "pardot=qfnaeo3vp9or4midhv82u26ikb; path=/",
+      "pardot=7b0jo9n34e89i5pvpa45c58del; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16071,7 +16842,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16079,17 +16850,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151705")
+  .post("/api/prospect/version/4/do/delete/id/22671402")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:12 GMT",
+    "Tue, 04 May 2021 03:54:04 GMT",
     "Set-Cookie",
-    "pardot=sip3i66qsm33pd8oq3k0k0h1oh; path=/",
+    "pardot=sd9pt5o764e0v13dfcp7ef737s; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16107,7 +16878,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user9%40demo.com")
@@ -16118,7 +16889,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151707,
+        id: 22671404,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 9",
@@ -16161,8 +16932,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:46",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16184,9 +16955,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:12 GMT",
+      "Tue, 04 May 2021 03:54:05 GMT",
       "Set-Cookie",
-      "pardot=v6n2m3u8nsdtp5kr9jdmsld25g; path=/",
+      "pardot=7vtficq7hjvk7bmdao6i4eeh2o; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16200,7 +16971,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1692",
+      "1693",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16208,17 +16979,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151707")
+  .post("/api/prospect/version/4/do/delete/id/22671404")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:13 GMT",
+    "Tue, 04 May 2021 03:54:06 GMT",
     "Set-Cookie",
-    "pardot=9nsq2be3e1hja0pakjpnqo8e21; path=/",
+    "pardot=qvi8pj2rpdeegsgsr6447eq3am; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16236,7 +17007,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user10%40demo.com")
@@ -16247,7 +17018,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151709,
+        id: 22671406,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 10",
@@ -16290,8 +17061,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:46",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16313,9 +17084,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:13 GMT",
+      "Tue, 04 May 2021 03:54:07 GMT",
       "Set-Cookie",
-      "pardot=32pfu4qp94bjj9uq7u3paemsjm; path=/",
+      "pardot=a2bgi7c450hll0eo4gfjlioqnm; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16329,7 +17100,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16337,17 +17108,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151709")
+  .post("/api/prospect/version/4/do/delete/id/22671406")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:13 GMT",
+    "Tue, 04 May 2021 03:54:07 GMT",
     "Set-Cookie",
-    "pardot=qn3h0v0ef7kd0id9hju17cnfi4; path=/",
+    "pardot=cl6gorn3ovuo8th7bja2s8h7rt; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16365,7 +17136,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user11%40demo.com")
@@ -16376,7 +17147,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151711,
+        id: 22671408,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 11",
@@ -16419,8 +17190,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:15",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16442,9 +17213,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:14 GMT",
+      "Tue, 04 May 2021 03:54:08 GMT",
       "Set-Cookie",
-      "pardot=3un8f7j976e95su9q8a0i64gq3; path=/",
+      "pardot=njh53f62pbk1lg5jf35hi2rfaa; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16452,13 +17223,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16466,17 +17237,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151711")
+  .post("/api/prospect/version/4/do/delete/id/22671408")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:14 GMT",
+    "Tue, 04 May 2021 03:54:08 GMT",
     "Set-Cookie",
-    "pardot=f7n2hq9h30rr9k4eetb8oerhsf; path=/",
+    "pardot=cs969le1i7s4ntm75sm0mnoft8; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16494,7 +17265,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user12%40demo.com")
@@ -16505,7 +17276,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151713,
+        id: 22671410,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 12",
@@ -16548,8 +17319,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:15",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16571,9 +17342,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:15 GMT",
+      "Tue, 04 May 2021 03:54:09 GMT",
       "Set-Cookie",
-      "pardot=m87t338lpsiafr8ja1qs3nmrh0; path=/",
+      "pardot=s883plkeredqme2mv04fseesgv; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16581,13 +17352,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16595,17 +17366,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151713")
+  .post("/api/prospect/version/4/do/delete/id/22671410")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:15 GMT",
+    "Tue, 04 May 2021 03:54:09 GMT",
     "Set-Cookie",
-    "pardot=d6g6li70jr43fgga3ldsjq7pkk; path=/",
+    "pardot=mih2hp3gvs69vef41ia8nukr7c; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16623,7 +17394,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user13%40demo.com")
@@ -16634,7 +17405,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151715,
+        id: 22671412,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 13",
@@ -16677,8 +17448,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16700,9 +17471,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:15 GMT",
+      "Tue, 04 May 2021 03:54:10 GMT",
       "Set-Cookie",
-      "pardot=4ganireglkqidbsi6u0sq2ho4d; path=/",
+      "pardot=u1l2fehcif9j7r6eq75fp0lrbn; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16716,7 +17487,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16724,17 +17495,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151715")
+  .post("/api/prospect/version/4/do/delete/id/22671412")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:16 GMT",
+    "Tue, 04 May 2021 03:54:11 GMT",
     "Set-Cookie",
-    "pardot=bds3at7b99tqd9c7fdi3ac5j9a; path=/",
+    "pardot=vf9lmhtknlsl4vaj0c91ej8khc; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16752,7 +17523,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user14%40demo.com")
@@ -16763,7 +17534,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151717,
+        id: 22671414,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 14",
@@ -16806,8 +17577,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16829,9 +17600,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:16 GMT",
+      "Tue, 04 May 2021 03:54:11 GMT",
       "Set-Cookie",
-      "pardot=so26horov06veidamuot62ldm1; path=/",
+      "pardot=1biabh1vt09dun3bviqc2bv9nv; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16839,13 +17610,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16853,17 +17624,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151717")
+  .post("/api/prospect/version/4/do/delete/id/22671414")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:16 GMT",
+    "Tue, 04 May 2021 03:54:12 GMT",
     "Set-Cookie",
-    "pardot=rhj408jit7339rh40uajg7ccn2; path=/",
+    "pardot=2mg4drt37g5cah7bvb2pug6tq4; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -16881,7 +17652,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user15%40demo.com")
@@ -16892,7 +17663,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151719,
+        id: 22671416,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 15",
@@ -16935,8 +17706,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -16958,9 +17729,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:17 GMT",
+      "Tue, 04 May 2021 03:54:12 GMT",
       "Set-Cookie",
-      "pardot=fkstdno0lf08fdgmbpki9a1d4n; path=/",
+      "pardot=odvun6maev604jk5vol9mq7lgu; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -16968,13 +17739,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -16982,17 +17753,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151719")
+  .post("/api/prospect/version/4/do/delete/id/22671416")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:17 GMT",
+    "Tue, 04 May 2021 03:54:13 GMT",
     "Set-Cookie",
-    "pardot=hh9jg1vcofkvqipqht4i7tujmn; path=/",
+    "pardot=h2rms50gh5m8rkk29mjnijplp9; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17010,7 +17781,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user16%40demo.com")
@@ -17021,7 +17792,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151721,
+        id: 22671418,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 16",
@@ -17064,8 +17835,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:16",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17087,9 +17858,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:18 GMT",
+      "Tue, 04 May 2021 03:54:14 GMT",
       "Set-Cookie",
-      "pardot=ng7paio3lm174r7l5o5dlth0hq; path=/",
+      "pardot=ee8amvsq3cklb87eud12hiongh; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17103,7 +17874,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17111,17 +17882,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151721")
+  .post("/api/prospect/version/4/do/delete/id/22671418")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:18 GMT",
+    "Tue, 04 May 2021 03:54:14 GMT",
     "Set-Cookie",
-    "pardot=ibc2btkv8gm0q1epfol2s5koni; path=/",
+    "pardot=p9h7muh4m7aj41n06cqtfdt3da; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17139,7 +17910,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user17%40demo.com")
@@ -17150,7 +17921,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151723,
+        id: 22671420,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 17",
@@ -17193,8 +17964,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:16",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17216,9 +17987,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:18 GMT",
+      "Tue, 04 May 2021 03:54:15 GMT",
       "Set-Cookie",
-      "pardot=ttr00q601soth97fnjq3k3i0ti; path=/",
+      "pardot=ajq3tnm2iuabi85t8rs7n5vgg1; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17226,13 +17997,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17240,17 +18011,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151723")
+  .post("/api/prospect/version/4/do/delete/id/22671420")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:19 GMT",
+    "Tue, 04 May 2021 03:54:15 GMT",
     "Set-Cookie",
-    "pardot=oc01s2prqeukjnvusq3fp9bh07; path=/",
+    "pardot=qaellmafm7lcd0rqeqep9ip8vk; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17268,7 +18039,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user18%40demo.com")
@@ -17279,7 +18050,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151725,
+        id: 22671422,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 18",
@@ -17322,8 +18093,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:47",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17345,9 +18116,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:19 GMT",
+      "Tue, 04 May 2021 03:54:16 GMT",
       "Set-Cookie",
-      "pardot=38n6lqtindfhd7h2t3nm0udltv; path=/",
+      "pardot=82gcl91a44bt0r4hpsjlbc5s20; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17355,13 +18126,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17369,17 +18140,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151725")
+  .post("/api/prospect/version/4/do/delete/id/22671422")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:20 GMT",
+    "Tue, 04 May 2021 03:54:17 GMT",
     "Set-Cookie",
-    "pardot=mtmb268vadfcp5l76l8atsaj8h; path=/",
+    "pardot=vs8sssmi7tj2ps5ilpm0jd8boe; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17397,7 +18168,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user19%40demo.com")
@@ -17408,7 +18179,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151727,
+        id: 22671424,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 19",
@@ -17451,8 +18222,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:47",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17474,9 +18245,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:20 GMT",
+      "Tue, 04 May 2021 03:54:17 GMT",
       "Set-Cookie",
-      "pardot=mdeqfjck875l2ocuipnf7o7vtc; path=/",
+      "pardot=e7nho3qvro3ii99mngd029q6q8; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17484,13 +18255,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17498,17 +18269,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151727")
+  .post("/api/prospect/version/4/do/delete/id/22671424")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:20 GMT",
+    "Tue, 04 May 2021 03:54:18 GMT",
     "Set-Cookie",
-    "pardot=d8504tmqmr9g7a7jdfqsmbpu6v; path=/",
+    "pardot=a92tc49ueticfco3k3fonrdhod; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17526,7 +18297,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user20%40demo.com")
@@ -17537,7 +18308,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151729,
+        id: 22671426,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 20",
@@ -17580,8 +18351,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17603,9 +18374,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:21 GMT",
+      "Tue, 04 May 2021 03:54:18 GMT",
       "Set-Cookie",
-      "pardot=jub6lrvgq5l67raikp36fe6io5; path=/",
+      "pardot=6ar2gqkg6suhktodipuos0k9af; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17613,13 +18384,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17627,17 +18398,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151729")
+  .post("/api/prospect/version/4/do/delete/id/22671426")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:21 GMT",
+    "Tue, 04 May 2021 03:54:19 GMT",
     "Set-Cookie",
-    "pardot=6b2tmf4rj7nv9u2rqdtfjlb72n; path=/",
+    "pardot=47dit3ngks0at95lj5mfukln80; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17655,7 +18426,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user21%40demo.com")
@@ -17666,7 +18437,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151731,
+        id: 22671428,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 21",
@@ -17709,8 +18480,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17732,9 +18503,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:21 GMT",
+      "Tue, 04 May 2021 03:54:20 GMT",
       "Set-Cookie",
-      "pardot=93lt4jes706intggj0vnees8cp; path=/",
+      "pardot=mln2n7uenhldafpbqu9hcqlaho; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17742,13 +18513,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17756,17 +18527,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151731")
+  .post("/api/prospect/version/4/do/delete/id/22671428")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:22 GMT",
+    "Tue, 04 May 2021 03:54:20 GMT",
     "Set-Cookie",
-    "pardot=o0mskp6s3j6noiena8kpb6riom; path=/",
+    "pardot=ubbnv5p6nj4jlqeegid8e5spjc; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17784,7 +18555,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user22%40demo.com")
@@ -17795,7 +18566,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151733,
+        id: 22671430,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 22",
@@ -17838,8 +18609,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:17",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17861,9 +18632,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:22 GMT",
+      "Tue, 04 May 2021 03:54:21 GMT",
       "Set-Cookie",
-      "pardot=qnm3cgh9rrp1muae1rjbf0pnjd; path=/",
+      "pardot=djlh33ktboluhl2ga98ssf1h9g; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -17871,13 +18642,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -17885,17 +18656,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151733")
+  .post("/api/prospect/version/4/do/delete/id/22671430")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:22 GMT",
+    "Tue, 04 May 2021 03:54:21 GMT",
     "Set-Cookie",
-    "pardot=vt5ggi8cjmrd4ld606rlhci2lc; path=/",
+    "pardot=h1j721mcm410ouvf68j2i2ru41; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -17913,7 +18684,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user23%40demo.com")
@@ -17924,7 +18695,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151735,
+        id: 22671432,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 23",
@@ -17967,8 +18738,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:17",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -17990,9 +18761,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:23 GMT",
+      "Tue, 04 May 2021 03:54:22 GMT",
       "Set-Cookie",
-      "pardot=rv0b38ge74rkg1dtv4q2ts3kvl; path=/",
+      "pardot=ufntl064j73oe9anbr10imcjtg; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18000,13 +18771,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18014,17 +18785,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151735")
+  .post("/api/prospect/version/4/do/delete/id/22671432")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:23 GMT",
+    "Tue, 04 May 2021 03:54:22 GMT",
     "Set-Cookie",
-    "pardot=h4oh67458uv2jcg7f1dge5cv2e; path=/",
+    "pardot=1kucfkkft9tm5hdpi16uun9km7; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18042,7 +18813,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user24%40demo.com")
@@ -18053,7 +18824,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151737,
+        id: 22671434,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 24",
@@ -18096,8 +18867,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18119,9 +18890,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:24 GMT",
+      "Tue, 04 May 2021 03:54:23 GMT",
       "Set-Cookie",
-      "pardot=r98085p6ls6htp4lddsvec5m36; path=/",
+      "pardot=v3vc870k8tam0hu299hql3biak; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18129,13 +18900,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18143,17 +18914,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151737")
+  .post("/api/prospect/version/4/do/delete/id/22671434")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:24 GMT",
+    "Tue, 04 May 2021 03:54:23 GMT",
     "Set-Cookie",
-    "pardot=bcuea92v10s2fk1e8odn4tn9n0; path=/",
+    "pardot=6h6m404e7j2oc8m55jd64paj5k; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18171,7 +18942,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user25%40demo.com")
@@ -18182,7 +18953,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151739,
+        id: 22671436,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 25",
@@ -18225,8 +18996,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18248,9 +19019,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:24 GMT",
+      "Tue, 04 May 2021 03:54:24 GMT",
       "Set-Cookie",
-      "pardot=4q9p9663ij1o8anfk835btg76c; path=/",
+      "pardot=ktg3249icj024d74k2i7kdo2v9; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18258,13 +19029,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18272,17 +19043,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151739")
+  .post("/api/prospect/version/4/do/delete/id/22671436")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:25 GMT",
+    "Tue, 04 May 2021 03:54:24 GMT",
     "Set-Cookie",
-    "pardot=rpu3dfnld857se7qnsjlup4bmt; path=/",
+    "pardot=dim9l80g75p0eqm0smqnn472uu; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18300,7 +19071,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/user26%40demo.com")
@@ -18311,7 +19082,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151741,
+        id: 22671438,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 26",
@@ -18354,8 +19125,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18377,9 +19148,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:25 GMT",
+      "Tue, 04 May 2021 03:54:25 GMT",
       "Set-Cookie",
-      "pardot=pu0haqp1dqa931mlgi698au1mr; path=/",
+      "pardot=v5bb7pc3mgvl2f2pi6ktfcfnit; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18393,7 +19164,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18405,13 +19176,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151741")
+  .post("/api/prospect/version/4/do/delete/id/22671438")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:25 GMT",
+    "Tue, 04 May 2021 03:54:26 GMT",
     "Set-Cookie",
-    "pardot=2pr7oe2khes17e21pekesosbgj; path=/",
+    "pardot=r6pvhk98nn8gtpuq46r5loc1ud; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18440,7 +19211,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151743,
+        id: 22671440,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 27",
@@ -18483,8 +19254,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:48",
-        updated_at: "2021-03-10 11:53:48",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:18",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18506,9 +19277,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:26 GMT",
+      "Tue, 04 May 2021 03:54:26 GMT",
       "Set-Cookie",
-      "pardot=s6fnk9211j26cpmb9hv37a18ob; path=/",
+      "pardot=he9nhirpqhbc4f0uk5jd9j692s; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18522,7 +19293,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18534,13 +19305,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151743")
+  .post("/api/prospect/version/4/do/delete/id/22671440")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:26 GMT",
+    "Tue, 04 May 2021 03:54:27 GMT",
     "Set-Cookie",
-    "pardot=e2t2r05bu3gueddgjukp2g3vgc; path=/",
+    "pardot=dcm5tpna6m531i2e3ulktesjg3; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18569,7 +19340,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151745,
+        id: 22671442,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 28",
@@ -18612,8 +19383,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:18",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18635,9 +19406,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:27 GMT",
+      "Tue, 04 May 2021 03:54:28 GMT",
       "Set-Cookie",
-      "pardot=moagad4t3ve5i2721il9omn25o; path=/",
+      "pardot=632438ml1dnasrvfqtpl6fbhl1; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18645,13 +19416,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18663,13 +19434,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151745")
+  .post("/api/prospect/version/4/do/delete/id/22671442")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:27 GMT",
+    "Tue, 04 May 2021 03:54:28 GMT",
     "Set-Cookie",
-    "pardot=p7iejdbaa57nogkpd0jdi5jbo0; path=/",
+    "pardot=ndpt0s00hlqh77ngehvu2cj9bn; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18698,7 +19469,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151747,
+        id: 22671444,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 29",
@@ -18741,8 +19512,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18764,9 +19535,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:27 GMT",
+      "Tue, 04 May 2021 03:54:29 GMT",
       "Set-Cookie",
-      "pardot=5kfgpcuhokmiqgcvo27lun1857; path=/",
+      "pardot=co8jgtb97se8aun2c66f097849; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18774,13 +19545,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18792,13 +19563,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151747")
+  .post("/api/prospect/version/4/do/delete/id/22671444")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:28 GMT",
+    "Tue, 04 May 2021 03:54:29 GMT",
     "Set-Cookie",
-    "pardot=fve78mlmir451kujvqf7f2bslv; path=/",
+    "pardot=aauv7bid1iosabkn60baqhthju; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18827,7 +19598,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151749,
+        id: 22671446,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 30",
@@ -18870,8 +19641,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -18893,9 +19664,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:28 GMT",
+      "Tue, 04 May 2021 03:54:30 GMT",
       "Set-Cookie",
-      "pardot=hqem701cvbb861qh6je40db4cq; path=/",
+      "pardot=ab790shi1q5antd64io61qno88; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -18903,13 +19674,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -18921,13 +19692,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151749")
+  .post("/api/prospect/version/4/do/delete/id/22671446")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:28 GMT",
+    "Tue, 04 May 2021 03:54:30 GMT",
     "Set-Cookie",
-    "pardot=us7d9ios7i8to6gt8s6snv9fhs; path=/",
+    "pardot=95g86d6b4v31rdv6cookg9kavp; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -18956,7 +19727,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151751,
+        id: 22671448,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 31",
@@ -18999,8 +19770,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19022,9 +19793,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:29 GMT",
+      "Tue, 04 May 2021 03:54:31 GMT",
       "Set-Cookie",
-      "pardot=2tpv751s8tovvo35h35pglrmvm; path=/",
+      "pardot=aipsqvsqb5ngsk2ep15b45glls; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19032,13 +19803,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19050,13 +19821,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151751")
+  .post("/api/prospect/version/4/do/delete/id/22671448")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:29 GMT",
+    "Tue, 04 May 2021 03:54:32 GMT",
     "Set-Cookie",
-    "pardot=5v3siv54d6imaf1vgd8kun48qg; path=/",
+    "pardot=qb0d0g87n0esc6vj3sdm0dk21r; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19085,7 +19856,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151753,
+        id: 22671450,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 32",
@@ -19128,8 +19899,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19151,9 +19922,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:29 GMT",
+      "Tue, 04 May 2021 03:54:32 GMT",
       "Set-Cookie",
-      "pardot=spssfbit1d9qq867oo3a88tgol; path=/",
+      "pardot=jsaaddp0555tnk04ag4vl62n2l; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19167,7 +19938,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19179,13 +19950,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151753")
+  .post("/api/prospect/version/4/do/delete/id/22671450")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:30 GMT",
+    "Tue, 04 May 2021 03:54:33 GMT",
     "Set-Cookie",
-    "pardot=m9miooj62jjh29gvf68ga02ovk; path=/",
+    "pardot=lar62hhmkrmipbknl0duo5orm1; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19214,7 +19985,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151755,
+        id: 22671452,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 33",
@@ -19257,8 +20028,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19280,9 +20051,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:30 GMT",
+      "Tue, 04 May 2021 03:54:33 GMT",
       "Set-Cookie",
-      "pardot=og724illrpcslhtloi2asmf90c; path=/",
+      "pardot=tdem5c55k9hs5hrqutgd78d5dk; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19296,7 +20067,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19308,13 +20079,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151755")
+  .post("/api/prospect/version/4/do/delete/id/22671452")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:30 GMT",
+    "Tue, 04 May 2021 03:54:34 GMT",
     "Set-Cookie",
-    "pardot=cgp1lgga2thtf16o5172argngq; path=/",
+    "pardot=et37ebaq812pd2vqpcsulnpl06; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19343,7 +20114,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151757,
+        id: 22671454,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 34",
@@ -19386,8 +20157,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:19",
+        updated_at: "2021-05-03 20:53:19",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19409,9 +20180,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:31 GMT",
+      "Tue, 04 May 2021 03:54:35 GMT",
       "Set-Cookie",
-      "pardot=c4kl7n5koa6rmn7p8fuu578omr; path=/",
+      "pardot=bu4aa96rl0gl9kt8sp24qa0br6; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19419,13 +20190,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19437,13 +20208,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151757")
+  .post("/api/prospect/version/4/do/delete/id/22671454")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:31 GMT",
+    "Tue, 04 May 2021 03:54:35 GMT",
     "Set-Cookie",
-    "pardot=6qpt7054i9u5500pevjbrgocl2; path=/",
+    "pardot=h9rd5g3lmqdtdnu4dq3uif0emv; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19472,7 +20243,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151759,
+        id: 22671456,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 35",
@@ -19515,8 +20286,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19538,9 +20309,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:32 GMT",
+      "Tue, 04 May 2021 03:54:36 GMT",
       "Set-Cookie",
-      "pardot=bglv8nb1p5b5jrvabv0ad2vf04; path=/",
+      "pardot=eqba5r2q8hk16coq267b5hu381; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19548,13 +20319,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19566,13 +20337,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151759")
+  .post("/api/prospect/version/4/do/delete/id/22671456")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:32 GMT",
+    "Tue, 04 May 2021 03:54:36 GMT",
     "Set-Cookie",
-    "pardot=2612601ulv5dndirbjv4qt7946; path=/",
+    "pardot=og9cou8g5n515igtm1759a1erg; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19601,7 +20372,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151761,
+        id: 22671458,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 36",
@@ -19644,8 +20415,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:49",
-        updated_at: "2021-03-10 11:53:49",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19667,9 +20438,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:32 GMT",
+      "Tue, 04 May 2021 03:54:37 GMT",
       "Set-Cookie",
-      "pardot=mmp443qstltlpdvlir92uifgl2; path=/",
+      "pardot=pp5mrnansdqml4mprrg1d0r2h4; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19677,13 +20448,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19695,13 +20466,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151761")
+  .post("/api/prospect/version/4/do/delete/id/22671458")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:33 GMT",
+    "Tue, 04 May 2021 03:54:37 GMT",
     "Set-Cookie",
-    "pardot=elhg8nssgimnbplc3q6of1jfm4; path=/",
+    "pardot=iu2fr818mj4a38q9jpb9183p26; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19730,7 +20501,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151763,
+        id: 22671460,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 37",
@@ -19773,8 +20544,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19796,9 +20567,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:33 GMT",
+      "Tue, 04 May 2021 03:54:38 GMT",
       "Set-Cookie",
-      "pardot=0o4eqtrqnfn6h1nak1ma1i36vb; path=/",
+      "pardot=enk1fp6iql6o81i5s1fne8bqd8; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19806,13 +20577,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19824,13 +20595,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151763")
+  .post("/api/prospect/version/4/do/delete/id/22671460")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:34 GMT",
+    "Tue, 04 May 2021 03:54:39 GMT",
     "Set-Cookie",
-    "pardot=n3eh1igspi01fesdn4beq8o2dd; path=/",
+    "pardot=gskim3tqj829p4ibh8h4p00ta7; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19859,7 +20630,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151765,
+        id: 22671462,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 38",
@@ -19902,8 +20673,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -19925,9 +20696,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:34 GMT",
+      "Tue, 04 May 2021 03:54:39 GMT",
       "Set-Cookie",
-      "pardot=s9gao6il0jlgvl05j0f58hu4tr; path=/",
+      "pardot=0umb2su51j2d5ftr6e66k03f8d; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -19935,13 +20706,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -19953,13 +20724,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151765")
+  .post("/api/prospect/version/4/do/delete/id/22671462")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:34 GMT",
+    "Tue, 04 May 2021 03:54:40 GMT",
     "Set-Cookie",
-    "pardot=6aricblmv23c7m7m80u98ib290; path=/",
+    "pardot=tag2lftq1caqk51i9ef0o8hkp8; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -19988,7 +20759,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151767,
+        id: 22671464,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 39",
@@ -20031,8 +20802,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20054,9 +20825,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:35 GMT",
+      "Tue, 04 May 2021 03:54:40 GMT",
       "Set-Cookie",
-      "pardot=hk2jofv0i6flueidv999lrdc0m; path=/",
+      "pardot=h1deuha7idq251uk9qp3iahsom; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20064,13 +20835,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20082,13 +20853,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151767")
+  .post("/api/prospect/version/4/do/delete/id/22671464")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:35 GMT",
+    "Tue, 04 May 2021 03:54:41 GMT",
     "Set-Cookie",
-    "pardot=8lj3ftji1te3antk4bpoe479kf; path=/",
+    "pardot=o611pol61chor8nu46o9omjdt7; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20117,7 +20888,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151769,
+        id: 22671466,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 40",
@@ -20160,8 +20931,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:20",
+        updated_at: "2021-05-03 20:53:20",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20183,9 +20954,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:36 GMT",
+      "Tue, 04 May 2021 03:54:41 GMT",
       "Set-Cookie",
-      "pardot=olvcbafop79tsvckfqjtabc8qc; path=/",
+      "pardot=g33qlbgq0o44b3hohs64bu4629; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20199,7 +20970,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20211,13 +20982,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151769")
+  .post("/api/prospect/version/4/do/delete/id/22671466")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:36 GMT",
+    "Tue, 04 May 2021 03:54:42 GMT",
     "Set-Cookie",
-    "pardot=919r8q5f7t0j5ii7ld6v6hji4j; path=/",
+    "pardot=aitj4ddmephsri6m3373gkdk5o; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20246,7 +21017,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151771,
+        id: 22671468,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 41",
@@ -20289,8 +21060,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20312,9 +21083,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:37 GMT",
+      "Tue, 04 May 2021 03:54:43 GMT",
       "Set-Cookie",
-      "pardot=jdldlmc17bkcklnbvstd1ua9df; path=/",
+      "pardot=m0p16pin772au4tgbulv81ehr7; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20322,13 +21093,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20340,13 +21111,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151771")
+  .post("/api/prospect/version/4/do/delete/id/22671468")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:37 GMT",
+    "Tue, 04 May 2021 03:54:43 GMT",
     "Set-Cookie",
-    "pardot=82pqnruegd6upusmv45d9pbi9f; path=/",
+    "pardot=m1tvka2t8a56a5jnsc8qa32k0r; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20375,7 +21146,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151773,
+        id: 22671470,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 42",
@@ -20418,8 +21189,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20441,9 +21212,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:37 GMT",
+      "Tue, 04 May 2021 03:54:44 GMT",
       "Set-Cookie",
-      "pardot=ceo172pu8vjalk79i8n0pdcumc; path=/",
+      "pardot=e1muperpg1b9fmq83dnc8i9hmf; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20451,13 +21222,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20469,13 +21240,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151773")
+  .post("/api/prospect/version/4/do/delete/id/22671470")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:38 GMT",
+    "Tue, 04 May 2021 03:54:44 GMT",
     "Set-Cookie",
-    "pardot=f5jktvtqlqi10dg8vincsregfa; path=/",
+    "pardot=0eni03lnu2t4ld65mqbrkarmve; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20504,7 +21275,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151775,
+        id: 22671472,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 43",
@@ -20547,8 +21318,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20570,9 +21341,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:38 GMT",
+      "Tue, 04 May 2021 03:54:45 GMT",
       "Set-Cookie",
-      "pardot=k9njriqkhro0h4nqk2ujg4ko3r; path=/",
+      "pardot=ae8see8mdl7s30sqerr477g9sj; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20586,7 +21357,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20598,13 +21369,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151775")
+  .post("/api/prospect/version/4/do/delete/id/22671472")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:38 GMT",
+    "Tue, 04 May 2021 03:54:46 GMT",
     "Set-Cookie",
-    "pardot=avv1g4bmvp4ve9ikvducs01vng; path=/",
+    "pardot=7chqip15u9fdtfmel5uvdsammq; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20633,7 +21404,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151777,
+        id: 22671474,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 44",
@@ -20676,8 +21447,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:50",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20699,9 +21470,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:39 GMT",
+      "Tue, 04 May 2021 03:54:46 GMT",
       "Set-Cookie",
-      "pardot=4d9ur6v1mlh0vt1bu1pfkdasvk; path=/",
+      "pardot=d42a6lkakvfscke43jitj1r2ht; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20709,13 +21480,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20727,13 +21498,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151777")
+  .post("/api/prospect/version/4/do/delete/id/22671474")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:39 GMT",
+    "Tue, 04 May 2021 03:54:47 GMT",
     "Set-Cookie",
-    "pardot=hbd73gdv29kvfbh4q7uvduqc4n; path=/",
+    "pardot=jac9gopgkkd3alamd4tbi3d2b4; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20762,7 +21533,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151779,
+        id: 22671476,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 45",
@@ -20805,8 +21576,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:50",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20828,9 +21599,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:39 GMT",
+      "Tue, 04 May 2021 03:54:47 GMT",
       "Set-Cookie",
-      "pardot=o4tuhvevvgkrlhudvfgrrdtt6r; path=/",
+      "pardot=2et3ppv0up37hbn0b3g7svd8bm; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20844,7 +21615,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20856,13 +21627,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151779")
+  .post("/api/prospect/version/4/do/delete/id/22671476")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:40 GMT",
+    "Tue, 04 May 2021 03:54:48 GMT",
     "Set-Cookie",
-    "pardot=4dsjomepn0cbvbfu5ekvv9esj9; path=/",
+    "pardot=a75sf8nmjnf17s5m420pgjboca; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -20891,7 +21662,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151781,
+        id: 22671478,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 46",
@@ -20934,8 +21705,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:21",
+        updated_at: "2021-05-03 20:53:21",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -20957,9 +21728,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:40 GMT",
+      "Tue, 04 May 2021 03:54:48 GMT",
       "Set-Cookie",
-      "pardot=3vdt307rf0o9h21lvdicc76pg6; path=/",
+      "pardot=ghoio6h9hl66rko3v78gh9ias2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -20973,7 +21744,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -20985,13 +21756,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151781")
+  .post("/api/prospect/version/4/do/delete/id/22671478")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:40 GMT",
+    "Tue, 04 May 2021 03:54:49 GMT",
     "Set-Cookie",
-    "pardot=dn17oat00jgdgo6f75mpcr3um7; path=/",
+    "pardot=r7t4mst51dnmvhoj3amjb7kpjo; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21020,7 +21791,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151783,
+        id: 22671480,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 47",
@@ -21063,8 +21834,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -21086,9 +21857,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:41 GMT",
+      "Tue, 04 May 2021 03:54:50 GMT",
       "Set-Cookie",
-      "pardot=o478e304bc9gvinio480olps8r; path=/",
+      "pardot=3j15iul791u3bbfalqjn9r0e3c; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21096,13 +21867,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/78/160",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21114,13 +21885,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151783")
+  .post("/api/prospect/version/4/do/delete/id/22671480")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:41 GMT",
+    "Tue, 04 May 2021 03:54:50 GMT",
     "Set-Cookie",
-    "pardot=ociukaklh60v8a6gp14tt723kj; path=/",
+    "pardot=4p0r6uictk3q1oi20fougnp0oh; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21149,7 +21920,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151785,
+        id: 22671482,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 48",
@@ -21192,8 +21963,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -21215,9 +21986,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:42 GMT",
+      "Tue, 04 May 2021 03:54:51 GMT",
       "Set-Cookie",
-      "pardot=tc628liak98m8c04vjl1ugj3j9; path=/",
+      "pardot=7d4ink79j1im0fkirjveme5e9b; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21231,7 +22002,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21243,13 +22014,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151785")
+  .post("/api/prospect/version/4/do/delete/id/22671482")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:42 GMT",
+    "Tue, 04 May 2021 03:54:51 GMT",
     "Set-Cookie",
-    "pardot=14acmlto041rjgsn84vfpadav2; path=/",
+    "pardot=oadu9to1oduklm738fc97m46kk; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21278,7 +22049,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151787,
+        id: 22671484,
         campaign_id: 8245,
         salutation: null,
         first_name: "User 49",
@@ -21321,8 +22092,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:51",
-        updated_at: "2021-03-10 11:53:51",
+        created_at: "2021-05-03 20:53:22",
+        updated_at: "2021-05-03 20:53:22",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_textarea:
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
@@ -21344,9 +22115,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:42 GMT",
+      "Tue, 04 May 2021 03:54:52 GMT",
       "Set-Cookie",
-      "pardot=tgb53qd23ar6cmnp5almqir5vp; path=/",
+      "pardot=ch6v22uahik4pjvrsdtfde8nfj; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21354,13 +22125,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/13/203",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1694",
+      "1695",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21372,13 +22143,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151787")
+  .post("/api/prospect/version/4/do/delete/id/22671484")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:43 GMT",
+    "Tue, 04 May 2021 03:54:52 GMT",
     "Set-Cookie",
-    "pardot=g8mb8ua52ajc2ivokv97rtbtlq; path=/",
+    "pardot=34v1du8rvc0r2pnpno7d3valjv; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21407,7 +22178,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151679,
+        id: 22671376,
         campaign_id: 8245,
         salutation: null,
         first_name: "Sam",
@@ -21450,8 +22221,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:52:54",
-        updated_at: "2021-03-10 11:53:26",
+        created_at: "2021-05-03 20:51:36",
+        updated_at: "2021-05-03 20:52:36",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -21468,21 +22239,21 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         visitor_activities: null,
         lists: {
           list_subscription: {
-            id: 1534001,
+            id: 28615638,
             did_opt_in: false,
             did_opt_out: false,
-            created_at: "2021-03-10 11:53:00",
-            updated_at: "2021-03-10 11:53:00",
+            created_at: "2021-05-03 20:51:48",
+            updated_at: "2021-05-03 20:51:48",
             list: {
-              id: 14037,
+              id: 221836,
               name: "(test) High Value",
               is_public: false,
               is_dynamic: false,
               title: null,
               description: null,
               is_crm_visible: false,
-              created_at: "2021-03-10 11:53:00",
-              updated_at: "2021-03-10 11:53:00",
+              created_at: "2021-05-03 20:51:48",
+              updated_at: "2021-05-03 20:51:48",
             },
           },
         },
@@ -21490,9 +22261,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:43 GMT",
+      "Tue, 04 May 2021 03:54:53 GMT",
       "Set-Cookie",
-      "pardot=jbhitt9eki7sa4hue8vduhcp29; path=/",
+      "pardot=d530sb3duc3gh1453jrtrv02va; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21500,13 +22271,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1674",
+      "1677",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21518,13 +22289,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151679")
+  .post("/api/prospect/version/4/do/delete/id/22671376")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:43 GMT",
+    "Tue, 04 May 2021 03:54:54 GMT",
     "Set-Cookie",
-    "pardot=vedpno7e43na825n4b8cu568mo; path=/",
+    "pardot=j1dfntiiggno5stmvv1rlcb7im; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21553,7 +22324,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151683,
+        id: 22671380,
         campaign_id: 8245,
         salutation: null,
         first_name: "Maria",
@@ -21596,8 +22367,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:18",
-        updated_at: "2021-03-10 11:53:23",
+        created_at: "2021-05-03 20:52:19",
+        updated_at: "2021-05-03 20:52:31",
         campaign: { id: 8245, name: "Website Tracking" },
         profile: {
           id: 1009,
@@ -21617,9 +22388,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:44 GMT",
+      "Tue, 04 May 2021 03:54:54 GMT",
       "Set-Cookie",
-      "pardot=kep28k2vmii11al9vefvuitg9i; path=/",
+      "pardot=06kmocoir3uoq9ccpo2fnadc3s; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21627,13 +22398,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/70/31",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1325",
+      "1326",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21645,13 +22416,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151683")
+  .post("/api/prospect/version/4/do/delete/id/22671380")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:44 GMT",
+    "Tue, 04 May 2021 03:54:55 GMT",
     "Set-Cookie",
-    "pardot=1g0jsdjunrmo450qhbtgoftfh4; path=/",
+    "pardot=97g0s82nsqe6itpoh7q6cmqiti; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21669,7 +22440,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/grouparoo3%40demo.com")
@@ -21680,7 +22451,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     {
       "@attributes": { stat: "ok", version: 1 },
       prospect: {
-        id: 1151685,
+        id: 22671382,
         campaign_id: 8245,
         salutation: null,
         first_name: "Liz",
@@ -21723,8 +22494,8 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
         opted_out: null,
         is_reviewed: null,
         is_starred: null,
-        created_at: "2021-03-10 11:53:26",
-        updated_at: "2021-03-10 11:53:26",
+        created_at: "2021-05-03 20:52:36",
+        updated_at: "2021-05-03 20:52:36",
         campaign: { id: 8245, name: "Website Tracking" },
         grouparoo_custom_text: "some text",
         profile: {
@@ -21745,9 +22516,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:45 GMT",
+      "Tue, 04 May 2021 03:54:56 GMT",
       "Set-Cookie",
-      "pardot=1pmulo2m2mg8is890jsn65nm7f; path=/",
+      "pardot=7erhu2ofc42sov3h41qemf6cdu; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21755,13 +22526,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/15/252",
+      "25/81/66",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "1359",
+      "1360",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21769,17 +22540,17 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/prospect/version/4/do/delete/id/1151685")
+  .post("/api/prospect/version/4/do/delete/id/22671382")
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:45 GMT",
+    "Tue, 04 May 2021 03:54:56 GMT",
     "Set-Cookie",
-    "pardot=n2pqfbv5ec954043fakjjmlab6; path=/",
+    "pardot=lb9on4pdhp8vcblsp26opoqor1; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21797,7 +22568,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/prospect/version/4/do/read/email/grouparoo%2Btest%40demo.com")
@@ -21811,9 +22582,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:46 GMT",
+      "Tue, 04 May 2021 03:54:57 GMT",
       "Set-Cookie",
-      "pardot=a729i8j8iailoq9rke94btjq94; path=/",
+      "pardot=4tdhaeh1nfdrtahl6ukvg2sasm; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21821,7 +22592,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/81/66",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -21835,7 +22606,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -21850,9 +22621,9 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:46 GMT",
+      "Tue, 04 May 2021 03:54:57 GMT",
       "Set-Cookie",
-      "pardot=vigh6utkkeg1tcvvbklpoopbsd; path=/",
+      "pardot=s0c828o5l9asr385ni1oiqggp2; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21860,7 +22631,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/70/31",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
@@ -21874,7 +22645,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
@@ -21888,23 +22659,23 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       result: {
         total_results: 1,
         list: {
-          id: 14037,
+          id: 221836,
           name: "(test) High Value",
           is_public: false,
           is_dynamic: false,
           title: null,
           description: null,
           is_crm_visible: false,
-          created_at: "2021-03-10 11:53:00",
-          updated_at: "2021-03-10 11:53:00",
+          created_at: "2021-05-03 20:51:48",
+          updated_at: "2021-05-03 20:51:48",
         },
       },
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:46 GMT",
+      "Tue, 04 May 2021 03:54:58 GMT",
       "Set-Cookie",
-      "pardot=cublo2kk48q1tk5fhu4hqssd9k; path=/",
+      "pardot=c5tlvh1erh9lfq6mrit72reb0u; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21912,13 +22683,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/15/252",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "279",
+      "280",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -21926,18 +22697,18 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/list/version/4/do/delete/id/14037")
+  .post("/api/list/version/4/do/delete/id/221836")
   .query({ format: "json" })
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:46 GMT",
+    "Tue, 04 May 2021 03:54:58 GMT",
     "Set-Cookie",
-    "pardot=hh8dldib2qdak936rmgbrg6lpm; path=/",
+    "pardot=uksbrstf8fnc75t737k15krac7; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -21955,7 +22726,7 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
   .get("/api/list/version/4/do/query")
@@ -21968,23 +22739,23 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       result: {
         total_results: 1,
         list: {
-          id: 14039,
+          id: 221838,
           name: "(test) Churned",
           is_public: false,
           is_dynamic: false,
           title: null,
           description: null,
           is_crm_visible: false,
-          created_at: "2021-03-10 11:53:03",
-          updated_at: "2021-03-10 11:53:03",
+          created_at: "2021-05-03 20:51:53",
+          updated_at: "2021-05-03 20:51:53",
         },
       },
     },
     [
       "Date",
-      "Wed, 10 Mar 2021 19:54:47 GMT",
+      "Tue, 04 May 2021 03:54:59 GMT",
       "Set-Cookie",
-      "pardot=np48r1mgv859f7nkshkvs9q23o; path=/",
+      "pardot=gquqo4qupqk1n5qm05nfd75foc; path=/",
       "Expires",
       "Thu, 19 Nov 1981 08:52:00 GMT",
       "Cache-Control",
@@ -21992,13 +22763,13 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Pragma",
       "no-cache",
       "X-Pardot-Rsp",
-      "25/78/160",
+      "25/13/203",
       "P3p",
       'CP="NOI DSP COR CURa ADMa DEVa TAIa OUR BUS IND UNI COM NAV INT", policyref="/w3c/p3p.xml"',
       "Vary",
       "Accept-Encoding,User-Agent",
       "Content-Length",
-      "276",
+      "277",
       "Content-Type",
       "application/json",
       "X-Pardot-Route",
@@ -22006,18 +22777,18 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
       "Server",
       "PardotServer",
       "X-Pardot-LB",
-      "01f6d1eb96c2e46c10f3ecf450ddabd0",
+      "81ef3179da45557cd28f9ba13d8805bd",
     ]
   );
 nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
-  .post("/api/list/version/4/do/delete/id/14039")
+  .post("/api/list/version/4/do/delete/id/221838")
   .query({ format: "json" })
   .once()
   .reply(204, "", [
     "Date",
-    "Wed, 10 Mar 2021 19:54:47 GMT",
+    "Tue, 04 May 2021 03:54:59 GMT",
     "Set-Cookie",
-    "pardot=da8j44b7p033b84jlbmun3q80h; path=/",
+    "pardot=lntsb24qmp7fhq8mi699571ckm; path=/",
     "Expires",
     "Thu, 19 Nov 1981 08:52:00 GMT",
     "Cache-Control",
@@ -22035,5 +22806,5 @@ nock("https://pi.demo.pardot.com:443", { encodedQueryParams: true })
     "Server",
     "PardotServer",
     "X-Pardot-LB",
-    "01f6d1eb96c2e46c10f3ecf450ddabd0",
+    "81ef3179da45557cd28f9ba13d8805bd",
   ]);

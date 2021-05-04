@@ -203,7 +203,12 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appId, appOptions, exports }) {
+export async function exportBatch({
+  appId,
+  appOptions,
+  syncOperations,
+  exports,
+}) {
   const batchSize = 50;
   const findSize = 200;
 
@@ -217,6 +222,7 @@ export async function exportBatch({ appId, appOptions, exports }) {
       batchSize,
       groupMode: BatchGroupMode.TotalMembers,
       syncMode: BatchSyncMode.Sync,
+      syncOperations,
       appOptions,
       data,
       foreignKey: "email",
@@ -238,12 +244,14 @@ export async function exportBatch({ appId, appOptions, exports }) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
     appId,
     appOptions,
+    syncOperations,
     exports: batchExports,
   });
 };
