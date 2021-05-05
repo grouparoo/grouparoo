@@ -1,33 +1,38 @@
-import { log } from "actionhero";
 import { Schedule } from "../../models/Schedule";
 import { Run } from "../../models/Run";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class UpdateSchedules extends CLSTask {
+export class ScheduleEnqueueRuns extends CLSTask {
   constructor() {
     super();
-    this.name = "schedule:updateSchedules";
+    this.name = "schedules:enqueueRuns";
     this.description = "check all schedules and run them if it is time";
     this.frequency =
       process.env.GROUPAROO_RUN_MODE === "cli:run" ? 0 : 1000 * 60 * 5; // Run every 5 minutes
     this.queue = "schedules";
     this.inputs = {
-      checkDeltas: { required: false, default: true },
+      ignoreDeltas: { required: false, default: false },
+      runIfNotRecurring: { required: false, default: false },
     };
   }
 
   async runWithinTransaction(params) {
-    const checkDeltas =
-      params.checkDeltas === undefined ? true : params.checkDeltas;
-    const schedules = await Schedule.findAll({
-      where: { recurring: true, state: "ready" },
+    const ignoreDeltas: boolean =
+      params.ignoreDeltas === undefined ? false : params.ignoreDeltas;
+    const runIfNotRecurring: boolean =
+      params.runIfNotRecurring === undefined ? false : params.runIfNotRecurring;
+
+    const schedules = await Schedule.scope(null).findAll({
+      where: { state: "ready" },
     });
 
-    for (const i in schedules) {
-      const schedule = schedules[i];
-
-      if (!schedule.recurringFrequency || schedule.recurringFrequency < 1) {
-        continue;
+    for (const schedule of schedules) {
+      if (
+        !schedule.recurring ||
+        !schedule.recurringFrequency ||
+        schedule.recurringFrequency < 1
+      ) {
+        if (!runIfNotRecurring) continue;
       }
 
       const runningRuns = await Run.count({
@@ -56,7 +61,7 @@ export class UpdateSchedules extends CLSTask {
 
       if (
         !lastCompleteRun ||
-        !checkDeltas ||
+        ignoreDeltas ||
         delta > schedule.recurringFrequency
       ) {
         const run = await Run.create({
