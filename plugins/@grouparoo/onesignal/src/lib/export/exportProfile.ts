@@ -4,6 +4,7 @@ import { connect } from "../connect";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -33,9 +34,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   const allKeys = new Set([...newKeys, ...oldKeys]);
 
   if (toDelete) {
-    // When deleting, we just clear the old tags. No real deletion occurs.
-    newProfileProperties = {};
-    newGroups = [];
+    throw new Errors.InfoError("Destination sync mode does not delete.");
   }
 
   for (const key of allKeys) {
@@ -64,6 +63,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
 
   try {
+    if (!syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not update existing devices."
+      );
+    }
     await client.editTagsWithExternalUserIdDevice(extUserId, payload);
     return { success: true };
   } catch (error) {
