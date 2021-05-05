@@ -784,11 +784,9 @@ export default function Page(props) {
                   >
                     Save Destination Data
                   </LoadingButton>
-
-                  <br />
-                  <br />
-
+                  &nbsp;
                   <LoadingButton
+                    style={{ marginTop: 5 }}
                     variant="outline-secondary"
                     size="sm"
                     disabled={loading}
