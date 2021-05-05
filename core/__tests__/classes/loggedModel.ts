@@ -30,6 +30,7 @@ describe("classes/loggedModel", () => {
         "foo-dash",
         "fooUpperLower",
         "foo-with-numb3r",
+        "foo-that-is-oh-so-much-longer-than-40-characters",
       ].forEach((id) => {
         const app = new App();
         app.id = id;
@@ -48,6 +49,7 @@ describe("classes/loggedModel", () => {
         "foo:stuff",
         "foo;stuff",
         "foo$stuff",
+        "foo-is-long-really-long-really-really-long-really-really-really-long-really-really-really-really-long-really-really-really-really-really-long-really-really-really-long-like-192-characters-long",
       ].forEach((id) => {
         const app = new App();
         app.id = id;
