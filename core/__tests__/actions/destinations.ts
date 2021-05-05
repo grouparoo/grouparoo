@@ -481,7 +481,11 @@ describe("actions/destinations", () => {
           id,
           trackedGroupId: group.id,
         };
-        await specHelper.runAction("destination:edit", connection);
+        const { destination: _destination } = await specHelper.runAction(
+          "destination:edit",
+          connection
+        );
+        expect(_destination.destinationGroup.id).toBe(group.id);
 
         connection.params = {
           csrfToken,
@@ -518,7 +522,11 @@ describe("actions/destinations", () => {
           id,
           trackedGroupId: "_none",
         };
-        await specHelper.runAction("destination:edit", connection);
+        const { destination: __destination } = await specHelper.runAction(
+          "destination:edit",
+          connection
+        );
+        expect(__destination.destinationGroup).toBe(null);
       });
     });
 
