@@ -51,9 +51,5 @@ describe("bin/run", () => {
       expect(messages.join(" ")).not.toContain("❌ No schedules found.");
       await schedule.destroy();
     });
-
-    test("paused tasks can be run", async () => {
-      await instance.runPausedTasks({}); // does not throw
-    });
   });
 });
