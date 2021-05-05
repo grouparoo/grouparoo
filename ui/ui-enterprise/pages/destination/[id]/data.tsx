@@ -77,11 +77,20 @@ export default function Page(props) {
       destinationGroupMemberships: destinationGroupMembershipsObject,
     });
 
-    // TODO await execApi("post", `/destination/${id}/export`, { force: true });
+    setLoading(false);
+    successHandler.set({
+      message: "Destination updated",
+    });
+  };
+
+  const forceExport = async () => {
+    setLoading(true);
+
+    await execApi("post", `/destination/${id}/export`, { force: true });
 
     setLoading(false);
     successHandler.set({
-      message: "Destination Updated and Profiles Exporting...",
+      message: "Exporting Profiles...",
     });
   };
 
@@ -774,6 +783,18 @@ export default function Page(props) {
                     disabled={loading}
                   >
                     Save Destination Data
+                  </LoadingButton>
+
+                  <br />
+                  <br />
+
+                  <LoadingButton
+                    variant="outline-secondary"
+                    size="sm"
+                    disabled={loading}
+                    onClick={forceExport}
+                  >
+                    Force Export Group Members
                   </LoadingButton>
                 </Col>
               </Row>
