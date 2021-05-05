@@ -1,5 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
-import { CLI, Task, api, config } from "actionhero";
+import { CLI, Task, api, config, log } from "actionhero";
 import { Schedule, Run } from "..";
 import { CLS } from "../modules/cls";
 import { Reset } from "../modules/reset";
@@ -60,24 +60,32 @@ export class RunCLI extends CLI {
     if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
-      params.export.toString().toLowerCase() !== "true"
+      params.export?.toString()?.toLowerCase() !== "true"
     );
 
     const { main } = await import("../grouparoo");
     await main();
 
+    await this.checkSchedules();
     await this.runPausedTasks(params);
-
     if (params.runAllSchedules) await this.runNonRecurringSchedules();
 
     return false;
   }
 
   checkWorkers() {
-    if (!config.tasks.scheduler)
-      throw new Error(`The Task Scheduler is not enabled`);
-    if (config.tasks.minTaskProcessors < 1)
-      throw new Error(`No Task Workers are enabled`);
+    if (config.tasks.minTaskProcessors < 1) {
+      return GrouparooCLI.logger.fatal(`No Task Workers are enabled`);
+    }
+  }
+
+  async checkSchedules() {
+    const scheduleCount = await Schedule.count();
+    if (scheduleCount === 0) {
+      return GrouparooCLI.logger.fatal(`No schedules found.
+The run command uses schedules to know what profiles to import.
+See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`);
+    }
   }
 
   async runPausedTasks(params) {

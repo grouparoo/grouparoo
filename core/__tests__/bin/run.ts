@@ -6,24 +6,24 @@ describe("bin/run", () => {
   beforeAll(async () => await helper.factories.properties());
 
   let messages = [];
-  let spy;
+  let spies = [];
 
-  beforeEach(() => {
+  beforeEach(async () => {
     messages = [];
-    spy = jest
-      .spyOn(console, "log")
-      .mockImplementation((message) => messages.push(message));
+    spies.push(
+      jest
+        .spyOn(console, "log")
+        .mockImplementation((message) => messages.push(message))
+    );
+    spies.push(
+      jest
+        .spyOn(console, "error")
+        .mockImplementation((message) => messages.push(message))
+    );
   });
 
-  afterEach(() => {
-    spy.mockRestore();
-  });
-
-  test("workers are required", async () => {
-    process.env.WORKERS = "0";
-
-    const command = new RunCLI();
-    await expect(command.run({ params: {} })).rejects.toThrow();
+  afterEach(async () => {
+    spies.map((s) => s.mockRestore());
   });
 
   describe("with instance", () => {
@@ -33,6 +33,23 @@ describe("bin/run", () => {
     let instance: RunCLI;
     beforeAll(() => {
       instance = new RunCLI();
+    });
+
+    test("requires workers to be enabled", async () => {
+      instance.checkWorkers();
+      expect(messages.join(" ")).toContain("❌ No Task Workers are enabled");
+    });
+
+    test("fails with no schedules", async () => {
+      await instance.checkSchedules();
+      expect(messages.join(" ")).toContain("❌ No schedules found.");
+    });
+
+    test("will run if there is a schedule present", async () => {
+      const schedule = await helper.factories.schedule();
+      await instance.checkSchedules();
+      expect(messages.join(" ")).not.toContain("❌ No schedules found.");
+      await schedule.destroy();
     });
 
     test("paused tasks can be run", async () => {

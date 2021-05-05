@@ -23,7 +23,6 @@ export class Console extends CLI {
   }
 
   async run({ params }) {
-    console.log(JSON.stringify(params));
     const scale = parseInt(params.scale) || 1;
     const config = !!params.config;
     const force = !!params.force;
