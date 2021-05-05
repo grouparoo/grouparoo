@@ -70,34 +70,27 @@ export default function Page(props) {
     destination.destinationGroupMemberships.forEach(
       (dgm) => (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
     );
+
     await execApi("put", `/destination/${id}`, {
       mapping: filteredMapping,
+      trackedGroupId: trackedGroupId || "_none",
       destinationGroupMemberships: destinationGroupMembershipsObject,
     });
 
-    // update group being tracked after the edit
-    if (
-      trackedGroupId !== props.trackedGroupId &&
-      trackedGroupId !== "_none" &&
-      trackedGroupId !== null &&
-      trackedGroupId !== ""
-    ) {
-      await execApi("post", `/destination/${id}/track`, {
-        groupId: trackedGroupId,
-      });
-    } else if (
-      trackedGroupId !== props.trackedGroupId &&
-      trackedGroupId === "_none"
-    ) {
-      await execApi("post", `/destination/${id}/untrack`);
-    } else {
-      // trigger a full export
-      await execApi("post", `/destination/${id}/export`, { force: true });
-    }
+    setLoading(false);
+    successHandler.set({
+      message: "Destination updated",
+    });
+  };
+
+  const forceExport = async () => {
+    setLoading(true);
+
+    await execApi("post", `/destination/${id}/export`, { force: true });
 
     setLoading(false);
     successHandler.set({
-      message: "Destination Updated and Profiles Exporting...",
+      message: "Exporting Profiles...",
     });
   };
 
@@ -790,6 +783,16 @@ export default function Page(props) {
                     disabled={loading}
                   >
                     Save Destination Data
+                  </LoadingButton>
+                  &nbsp;
+                  <LoadingButton
+                    style={{ marginTop: 5 }}
+                    variant="outline-secondary"
+                    size="sm"
+                    disabled={loading}
+                    onClick={forceExport}
+                  >
+                    Force Export Group Members
                   </LoadingButton>
                 </Col>
               </Row>

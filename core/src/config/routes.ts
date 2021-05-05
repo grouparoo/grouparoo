@@ -96,8 +96,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/schedule", action: "schedule:create" },
         { path: "/v:apiVersion/schedule/:id/run", action: "schedule:run" },
         { path: "/v:apiVersion/destination", action: "destination:create" },
-        { path: "/v:apiVersion/destination/:id/track", action: "destination:trackGroup" },
-        { path: "/v:apiVersion/destination/:id/unTrack", action: "destination:unTrackGroup" },
         { path: "/v:apiVersion/destination/:id/export", action: "destination:export" },
         { path: "/v:apiVersion/file", action: "file:create" },
         { path: "/v:apiVersion/import", action: "import:create" }
