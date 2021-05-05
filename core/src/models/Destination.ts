@@ -603,10 +603,7 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeDestroy
   static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
-      where: {
-        completedAt: { [Op.eq]: null },
-        errorMessage: { [Op.eq]: null },
-      },
+      where: { state: "pending" },
     });
     if (pendingExportCount > 0) {
       throw new Error(

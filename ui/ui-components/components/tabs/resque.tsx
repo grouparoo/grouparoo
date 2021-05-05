@@ -1,5 +1,6 @@
 import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
 import { useRouter } from "next/router";
+import { capitalize } from "../../utils/languageHelper";
 
 export default function ResqueTabs() {
   const router = useRouter();
@@ -18,10 +19,6 @@ export default function ResqueTabs() {
   const parts = router.asPath.split("/");
   const key = parts[2].split("?")[0];
   const subKey = parts[3]?.split("?")[0];
-
-  function capitalize(s: string) {
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
 
   return (
     <>

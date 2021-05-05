@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useApi } from "../../hooks/useApi";
 import { Tabs, Tab, Row, Col } from "react-bootstrap";
-import { capitalize } from "../../components/tabs";
+import { capitalize } from "../../utils/languageHelper";
 import { useRouter } from "next/router";
 import { Models, Actions } from "../../utils/apiData";
 import SettingCard from "../../components/settings/settingCard";

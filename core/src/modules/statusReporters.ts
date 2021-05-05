@@ -301,7 +301,7 @@ export namespace StatusReporters {
         topic: "Export",
         aggregation: "count",
         count: await Export.count({
-          where: { completedAt: null, errorMessage: null },
+          where: { state: "pending" },
         }),
       };
     }
@@ -318,7 +318,7 @@ export namespace StatusReporters {
           aggregation: "count",
           key: apiData.id,
           value: apiData.name,
-          count: apiData.exportTotals.created + apiData.exportTotals.started,
+          count: apiData.exportTotals.pending,
         });
       }
 

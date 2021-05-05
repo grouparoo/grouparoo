@@ -21,6 +21,8 @@ import Moment from "moment";
 import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
+import { StateMachine } from "../modules/stateMachine";
+import { config } from "actionhero";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -38,6 +40,30 @@ export interface ExportProfilePropertiesWithType {
 
 const ERROR_LEVELS = ["error", "info"] as const;
 export type ExportErrorLevel = typeof ERROR_LEVELS[number];
+
+export const ExportStates = [
+  "draft", // not ready to send, needs manual review
+  "pending", // ready to send
+  "processing", // have been sent, waiting on the destination's OK
+  "canceled", // manually canceled
+  "failed", // something went wrong and we won't try again
+  "complete", // OK!
+] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "pending", checks: [] },
+  { from: "draft", to: "canceled", checks: [] },
+  { from: "pending", to: "processing", checks: [] },
+  { from: "pending", to: "canceled", checks: [] },
+  { from: "pending", to: "failed", checks: [] },
+  { from: "pending", to: "complete", checks: [] },
+  { from: "processing", to: "canceled", checks: [] },
+  { from: "processing", to: "failed", checks: [] },
+  { from: "processing", to: "complete", checks: [] },
+  { from: "processing", to: "pending", checks: [] },
+];
+
+const MaxExportAttempts = 3; // TODO: Be a Setting
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model {
@@ -65,12 +91,24 @@ export class Export extends Model {
   profileId: string;
 
   @AllowNull(false)
+  @Default("pending")
+  @Column(DataType.ENUM(...ExportStates))
+  state: typeof ExportStates[number];
+
+  @AllowNull(false)
   @Default(false)
   @Column
   force: boolean;
 
   @Column
   startedAt: Date;
+
+  @Column
+  sendAt: Date;
+
+  @Default(0)
+  @Column
+  retryCount: number;
 
   @Column
   completedAt: Date;
@@ -140,41 +178,34 @@ export class Export extends Model {
   @Column
   hasChanges: boolean;
 
-  @Default(false)
-  @AllowNull(false)
-  @Column
-  mostRecent: boolean;
-
   @BelongsTo(() => Destination)
   destination: Destination;
 
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async setError(error: Error) {
+  async setError(error: Error, retryDelay: number = config.tasks.timeout) {
     this.errorMessage = error.message || error.toString();
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
-    await this.save();
+
+    this.retryCount++;
+    if (this.retryCount >= MaxExportAttempts) {
+      this.state = "failed";
+      this.sendAt = null;
+    } else {
+      this.sendAt = Moment().add(retryDelay, "ms").toDate();
+      this.startedAt = null;
+    }
+
+    return this.save();
   }
 
-  async completeAndMarkMostRecent() {
-    const [count] = await Export.update(
-      { mostRecent: false },
-      {
-        where: {
-          profileId: this.profileId,
-          destinationId: this.destinationId,
-          id: { [Op.not]: this.id },
-        },
-      }
-    );
-
-    // QUESTION: should this clear the error and level?
+  async complete() {
+    this.errorMessage = null;
+    this.errorLevel = null;
     this.completedAt = new Date();
-    this.mostRecent = true;
+    this.state = "complete";
     await this.save();
-
-    return count;
   }
 
   async apiData(includeDestination = true) {
@@ -190,17 +221,19 @@ export class Export extends Model {
           : null,
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
+      state: this.state,
       force: this.force,
       createdAt: APIData.formatDate(this.createdAt),
+      sendAt: APIData.formatDate(this.sendAt),
       startedAt: APIData.formatDate(this.startedAt),
       completedAt: APIData.formatDate(this.completedAt),
+      retryCount: this.retryCount,
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
       oldGroups: this.oldGroups,
       newGroups: this.newGroups,
       toDelete: this.toDelete,
       hasChanges: this.hasChanges,
-      mostRecent: this.mostRecent,
       errorMessage: this.errorMessage,
       errorLevel: this.errorLevel,
     };
@@ -212,6 +245,11 @@ export class Export extends Model {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Profile) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeCreate
@@ -236,7 +274,6 @@ export class Export extends Model {
 
     const _exports = await Export.findAll({
       where: {
-        mostRecent: false,
         createdAt: {
           [Op.lt]: Moment().subtract(days, "days").toDate(),
         },
