@@ -61,7 +61,7 @@ export const getBuiltInFields = (): Array<{
   important?: boolean;
 }> => {
   return [
-    { key: "name", type: "string" },
+    { key: "name", type: "string", important: true },
     { key: "email", type: "email", important: true },
     { key: "notes", type: "string" },
     { key: "details", type: "string" },
