@@ -159,6 +159,7 @@ export class DestinationEdit extends AuthenticatedAction {
       mapping: { required: false },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
+      trackedGroupId: { required: false },
     };
   }
 
@@ -175,6 +176,20 @@ export class DestinationEdit extends AuthenticatedAction {
     }
 
     await destination.update(params);
+
+    if (
+      params.trackedGroupId &&
+      params.trackedGroupId !== "_none" &&
+      params.trackedGroupId !== destination.groupId
+    ) {
+      const group = await Group.findById(params.trackedGroupId);
+      await destination.trackGroup(group);
+    } else if (
+      (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
+      destination.groupId
+    ) {
+      await destination.unTrackGroup();
+    }
 
     return { destination: await destination.apiData() };
   }
@@ -250,46 +265,6 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
     };
-  }
-}
-
-export class DestinationTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:trackGroup";
-    this.description = "add a group to a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      groupId: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    const group = await Group.findById(params.groupId);
-    await destination.trackGroup(group);
-    return { destination: await destination.apiData() };
-  }
-}
-
-export class DestinationUnTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:unTrackGroup";
-    this.description = "remove a group from a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    await destination.unTrackGroup();
-    return { destination: await destination.apiData() };
   }
 }
 

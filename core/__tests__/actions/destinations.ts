@@ -301,22 +301,14 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          groupId: group.id,
+          trackedGroupId: group.id,
         };
-        const { error } = await specHelper.runAction(
-          "destination:trackGroup",
-          connection
-        );
-        expect(error).toBeUndefined();
 
-        connection.params = {
-          csrfToken,
-          id,
-        };
-        const { destination } = await specHelper.runAction(
-          "destination:view",
+        const { destination, error } = await specHelper.runAction(
+          "destination:edit",
           connection
         );
+        expect(error).toBeFalsy();
         expect(destination.destinationGroup.id).toBe(group.id);
       });
 
@@ -334,6 +326,7 @@ describe("actions/destinations", () => {
           connection
         );
         expect(error).toBeFalsy();
+        expect(destination.destinationGroup.id).toBe(group.id);
         expect(destination.destinationGroupMemberships).toEqual([
           {
             groupId: group.id,
@@ -472,17 +465,23 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          groupId: destination.destinationGroup.id,
+          trackedGroupId: null,
         };
-        const { error } = await specHelper.runAction(
-          "destination:unTrackGroup",
-          connection
-        );
-        expect(error).toBeUndefined();
+        const {
+          destination: updatedDestination,
+          error,
+        } = await specHelper.runAction("destination:edit", connection);
+        expect(error).toBeFalsy();
+        expect(updatedDestination.destinationGroup).toBe(null);
       });
 
       test("an administrator can export the members of a destination with a forced group run", async () => {
-        await specHelper.runAction("destination:trackGroup", connection);
+        connection.params = {
+          csrfToken,
+          id,
+          trackedGroupId: group.id,
+        };
+        await specHelper.runAction("destination:edit", connection);
 
         connection.params = {
           csrfToken,
@@ -514,7 +513,12 @@ describe("actions/destinations", () => {
           })
         );
 
-        await specHelper.runAction("destination:unTrackGroup", connection);
+        connection.params = {
+          csrfToken,
+          id,
+          trackedGroupId: "_none",
+        };
+        await specHelper.runAction("destination:edit", connection);
       });
     });
 
