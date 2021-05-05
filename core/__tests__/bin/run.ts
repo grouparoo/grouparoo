@@ -1,6 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
 import { RunCLI } from "../../src/bin/run";
-import { Schedule } from "../../src/models/Schedule";
 
 describe("bin/run", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -10,7 +9,6 @@ describe("bin/run", () => {
   let spies = [];
 
   beforeEach(async () => {
-    await helper.factories.schedule();
     messages = [];
     spies.push(
       jest
@@ -25,33 +23,7 @@ describe("bin/run", () => {
   });
 
   afterEach(async () => {
-    await Schedule.destroy({ where: {}, truncate: true });
     spies.map((s) => s.mockRestore());
-  });
-
-  test("workers are required", async () => {
-    process.env.WORKERS = "0";
-
-    const command = new RunCLI();
-    const toStop = await command.run({ params: {} });
-    expect(messages.join(" ")).toContain(
-      "❌ The Task Scheduler is not enabled"
-    );
-    expect(messages.join(" ")).toContain("❌ No Task Workers are enabled");
-    expect(toStop).toBe(true);
-  });
-
-  test("at least one schedule is required", async () => {
-    await Schedule.destroy({ where: {}, truncate: true });
-    let scheduleCount = await Schedule.count();
-    expect(scheduleCount).toEqual(0);
-
-    const command = new RunCLI();
-    const toStop = await command.run({ params: {} });
-    expect(messages.join(" ")).toContain(
-      "❌ No schedules found. The run command uses schedules to know what profiles to import."
-    );
-    expect(toStop).toBe(true);
   });
 
   describe("with instance", () => {
@@ -61,6 +33,23 @@ describe("bin/run", () => {
     let instance: RunCLI;
     beforeAll(() => {
       instance = new RunCLI();
+    });
+
+    test("requires workers to be enabled", async () => {
+      instance.checkWorkers();
+      expect(messages.join(" ")).toContain("❌ No Task Workers are enabled");
+    });
+
+    test("fails with no schedules", async () => {
+      await instance.checkSchedules();
+      expect(messages.join(" ")).toContain("❌ No schedules found.");
+    });
+
+    test("will run if there is a schedule present", async () => {
+      const schedule = await helper.factories.schedule();
+      await instance.checkSchedules();
+      expect(messages.join(" ")).not.toContain("❌ No schedules found.");
+      await schedule.destroy();
     });
 
     test("paused tasks can be run", async () => {

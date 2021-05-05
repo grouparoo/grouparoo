@@ -66,7 +66,7 @@ export class Validate extends CLI {
         );
         if (errors.length > 0) {
           GrouparooCLI.logger.log("");
-          GrouparooCLI.logger.fatal(
+          return GrouparooCLI.logger.fatal(
             `Validation failed - ${errors.length} validation ${pluralize(
               "errors",
               errors.length
@@ -85,7 +85,9 @@ export class Validate extends CLI {
       });
     } catch (error) {
       if (error.message !== "validate-rollback") {
-        GrouparooCLI.logger.fatal(`Validation failed - ${error.message}`);
+        return GrouparooCLI.logger.fatal(
+          `Validation failed - ${error.message}`
+        );
       }
     }
 
