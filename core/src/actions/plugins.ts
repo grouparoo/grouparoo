@@ -1,7 +1,8 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { Plugins } from "../modules/plugins";
 
-export class PluginsInstalledList extends AuthenticatedAction {
+export class PluginsInstalledList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
     this.name = "plugins:installed:list";
@@ -17,7 +18,7 @@ export class PluginsInstalledList extends AuthenticatedAction {
   }
 }
 
-export class PluginsAvailableList extends AuthenticatedAction {
+export class PluginsAvailableList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
     this.name = "plugins:available:list";
