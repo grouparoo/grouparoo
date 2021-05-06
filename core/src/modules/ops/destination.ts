@@ -564,10 +564,16 @@ export namespace DestinationOps {
     if (!parallelismOk) {
       const error = new Error(`parallelism limit reached for ${app.type}`);
       if (synchronous) throw error;
+
+      const outRetryDelay = config.tasks.timeout + 1;
+      for (const _export of _exports) {
+        await _export.retry(outRetryDelay);
+      }
+
       return {
         success: false,
         error,
-        retryDelay: config.tasks.timeout + 1,
+        retryDelay: outRetryDelay,
         retryexportIds: _exports.map((e) => e.id),
       };
     }

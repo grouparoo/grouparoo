@@ -8,6 +8,7 @@ const data = async (props = {}) => {
     newProfileProperties: {},
     oldGroups: [],
     newGroups: [],
+    state: "pending",
 
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -192,10 +192,10 @@ describe("models/destination", () => {
         newProfileProperties: {
           customer_email: { type: "email", rawValue: "oldmail@example.com" },
         },
+        state: "complete",
         newGroups: [],
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -246,7 +246,6 @@ describe("models/destination", () => {
       expect(_exports[1].newGroups).toEqual(
         [groupA, groupB].map((g) => `${g.name}+`).sort()
       );
-      expect(_exports[1].mostRecent).toBe(true);
 
       await profile.destroy();
     });
@@ -276,14 +275,14 @@ describe("models/destination", () => {
         oldProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile);
 
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.length).toBe(1);
       for (const i in foundTasks) {
         await specHelper.runTask("export:send", foundTasks[i].args[0]);
       }
@@ -320,7 +319,7 @@ describe("models/destination", () => {
         oldProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       const destinationGroupMemberships = {};
@@ -333,7 +332,7 @@ describe("models/destination", () => {
 
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.length).toBe(1);
       for (const i in foundTasks) {
         await specHelper.runTask("export:send", foundTasks[i].args[0]);
       }
@@ -370,7 +369,7 @@ describe("models/destination", () => {
         oldProfileProperties: {},
         oldGroups: [group.name],
         newGroups: [group.name],
-        mostRecent: true,
+        state: "complete",
       });
 
       const _import = await helper.factories.import();
@@ -381,7 +380,7 @@ describe("models/destination", () => {
 
       await specHelper.runTask("export:enqueue", {});
       const foundTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundTasks.length).toBe(2);
+      expect(foundTasks.length).toBe(1);
       for (const i in foundTasks) {
         await specHelper.runTask("export:send", foundTasks[i].args[0]);
       }
@@ -415,7 +414,7 @@ describe("models/destination", () => {
         newGroups: [groupA.name, groupB.name].sort(),
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
+        state: "complete",
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -466,7 +465,7 @@ describe("models/destination", () => {
         newGroups: [groupA.name, groupB.name].sort(),
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
+        state: "complete",
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -521,7 +520,7 @@ describe("models/destination", () => {
           newGroups: [groupA.name, groupB.name].sort(),
           startedAt: new Date(),
           completedAt: new Date(),
-          mostRecent: true,
+          state: "complete",
         });
         await specHelper.deleteEnqueuedTasks("exports:send", {
           id: oldExport.id,
@@ -563,7 +562,7 @@ describe("models/destination", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile);
@@ -602,7 +601,7 @@ describe("models/destination", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile, false, true);
@@ -728,7 +727,8 @@ describe("models/destination", () => {
       });
     });
 
-    test("exportProfile can return that it is rate limited and the export:send task will be re-enqueued", async () => {
+    test("exportProfile can return that it is rate limited and the export will have a sendAt in the future", async () => {
+      // when the parallelism is not OK
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
@@ -749,21 +749,28 @@ describe("models/destination", () => {
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
+
       await _export.reload();
+      expect(_export.state).toBe("pending");
       expect(_export.completedAt).toBeFalsy();
+      expect(_export.errorMessage).toBeFalsy();
+      expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
+
+      await _export.update({ sendAt: new Date() });
 
       // when the parallelism is back to OK...
       parallelismResponse = Infinity;
+      await api.resque.queue.connection.redis.flushdb();
 
-      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+      await specHelper.runTask("export:enqueue", {});
       foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
+      expect(foundSendTasks.length).toBe(1);
+      await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
+
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+      expect(_export.state).toBe("complete");
 
       await profile.destroy();
     });
@@ -1081,7 +1088,7 @@ describe("models/destination", () => {
           newProfileProperties: {},
           oldGroups: [],
           newGroups: [],
-          mostRecent: true,
+          state: "complete",
         });
 
         await expect(destination.destroy()).rejects.toThrow(
@@ -1130,7 +1137,7 @@ describe("models/destination", () => {
           newGroups: [group.name],
           startedAt: new Date(),
           completedAt: new Date(),
-          mostRecent: true,
+          state: "complete",
         });
         await specHelper.deleteEnqueuedTasks("exports:send", {
           id: oldExport.id,
@@ -1176,7 +1183,7 @@ describe("models/destination", () => {
           newGroups: [group.name],
           startedAt: new Date(),
           completedAt: new Date(),
-          mostRecent: true,
+          state: "complete",
         });
         await specHelper.deleteEnqueuedTasks("exports:send", {
           id: oldExport.id,
