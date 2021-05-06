@@ -44,7 +44,12 @@ async function authenticateTeamMember(
   data: { [key: string]: any },
   optional: boolean
 ) {
-  if (process.env.GROUPAROO_RUN_MODE === "cli:config") return; // everything is valid
+  if (
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    process.env.NODE_ENV === "development"
+  ) {
+    return; // TODO: What's the log in story for `grouparoo config`
+  }
 
   const error: Error = await CLS.wrap(
     async () => {

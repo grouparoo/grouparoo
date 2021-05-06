@@ -29,7 +29,9 @@ export class Apply extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name, false);
 
-    await import("../grouparoo"); // run the server
+    const { main } = await import("../grouparoo"); // run the server
+    await main();
+
     return false;
   }
 }

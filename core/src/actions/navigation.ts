@@ -2,7 +2,6 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
-import { api } from "actionhero";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -192,7 +191,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     }
 
     if (navigationMode === "config") {
-      navigationItems = [{ type: "link", title: "Hello", href: "/" }];
+      navigationItems = [
+        { type: "link", title: "Hello", href: "/" },
+        { type: "link", title: "Plugins", href: "/plugins" },
+        { type: "link", title: "Validate", href: "/validate" },
+      ];
     }
 
     const clusterNameSetting = await Setting.findOne({
