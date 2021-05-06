@@ -20,7 +20,7 @@ function formatUrl(s = "unknown", label: string) {
 export default function Page({
   plugins,
 }: {
-  plugins: Actions.PluginsList["plugins"];
+  plugins: Actions.PluginsInstalledList["plugins"];
 }) {
   const hasOutOfDatePlugin = plugins.find((p) => !p.upToDate) ? true : false;
 
@@ -105,6 +105,6 @@ export default function Page({
 
 Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { plugins } = await execApi("get", `/plugins`);
+  const { plugins } = await execApi("get", `/plugins/installed`);
   return { plugins };
 };

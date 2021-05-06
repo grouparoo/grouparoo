@@ -1,5 +1,5 @@
 import { Notifier, NotifierMessagePayload } from "../classes/notifier";
-import { pluginVersions } from "../modules/pluginVersions";
+import { Plugins } from "../modules/plugins";
 
 export class NewVersionNotifier extends Notifier {
   constructor() {
@@ -9,7 +9,7 @@ export class NewVersionNotifier extends Notifier {
   }
 
   async buildNotification() {
-    const plugins = await pluginVersions();
+    const plugins = await Plugins.installedPluginVersions();
     const core = plugins.find((p) => p.name === "@grouparoo/core");
     const otherPluginsWithUpdates = plugins
       .filter((p) => p.name !== "@grouparoo/core")

@@ -5,14 +5,7 @@ import { getPluginManifest } from "../utils/pluginDetails";
 
 export const DEFAULT = {
   next: () => {
-    let nextRootPath: string;
-    const pluginManifest = getPluginManifest();
-    const uiPlugin = pluginManifest.plugins.find(
-      (p) =>
-        p.name === "@grouparoo/ui-community" ||
-        p.name === "@grouparoo/ui-enterprise"
-    );
-    if (uiPlugin) nextRootPath = uiPlugin.path;
+    const nextRootPath = getNextRootPath();
 
     return {
       enabled:
@@ -27,3 +20,22 @@ export const DEFAULT = {
     };
   },
 };
+
+function getNextRootPath() {
+  let nextRootPath: string;
+
+  const pluginManifest = getPluginManifest();
+  const uiPlugin =
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    pluginManifest.plugins.find((p) => p.name === "@grouparoo/ui-config")
+      ? pluginManifest.plugins.find((p) => p.name === "@grouparoo/ui-config")
+      : pluginManifest.plugins.find(
+          (p) =>
+            p.name === "@grouparoo/ui-community" ||
+            p.name === "@grouparoo/ui-enterprise"
+        );
+
+  if (uiPlugin) nextRootPath = uiPlugin.path;
+
+  return nextRootPath;
+}

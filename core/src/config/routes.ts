@@ -6,7 +6,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/status/public", action: "status:public" },
         { path: "/v:apiVersion/status/private", action: "status:private" },
         { path: "/v:apiVersion/swagger", action: "swagger" },
-        { path: "/v:apiVersion/plugins", action: "plugins:list" },
+        { path: "/v:apiVersion/plugins/installed", action: "plugins:installed:list" },
+        { path: "/v:apiVersion/plugins/available", action: "plugins:available:list" },
         { path: "/v:apiVersion/session", action: "session:view" },
         { path: "/v:apiVersion/setupSteps", action: "setupSteps:list" },
         { path: "/v:apiVersion/totals", action: "totals" },
@@ -80,6 +81,11 @@ export const DEFAULT = {
 
       post: [
         { path: "/v:apiVersion/session", action: "session:create" },
+        { path: "/v:apiVersion/plugin/install", action: "plugin:install" },
+        { path: "/v:apiVersion/plugin/uninstall", action: "plugin:uninstall" },
+        { path: "/v:apiVersion/config/validate", action: "config:validate" },
+        { path: "/v:apiVersion/config/apply", action: "config:apply" },
+        { path: "/v:apiVersion/config/generate", action: "config:generate" },
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },
@@ -96,8 +102,6 @@ export const DEFAULT = {
         { path: "/v:apiVersion/schedule", action: "schedule:create" },
         { path: "/v:apiVersion/schedule/:id/run", action: "schedule:run" },
         { path: "/v:apiVersion/destination", action: "destination:create" },
-        { path: "/v:apiVersion/destination/:id/track", action: "destination:trackGroup" },
-        { path: "/v:apiVersion/destination/:id/unTrack", action: "destination:unTrackGroup" },
         { path: "/v:apiVersion/destination/:id/export", action: "destination:export" },
         { path: "/v:apiVersion/file", action: "file:create" },
         { path: "/v:apiVersion/import", action: "import:create" }

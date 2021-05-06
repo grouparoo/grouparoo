@@ -24,17 +24,39 @@ describe("actions/plugins", () => {
 
   helper.grouparooTestServer({ truncate: true });
 
-  test("can list plugins", async () => {
+  test("can list installed plugins", async () => {
     // cannot actually test this without injecting some plugins at the package.json level...
-    const { plugins } = await specHelper.runAction("plugins:list");
+    const { plugins, error } = await specHelper.runAction(
+      "plugins:installed:list"
+    );
+    expect(error).toBeFalsy();
     expect(plugins.length).toBeGreaterThanOrEqual(1);
     expect(plugins[0]).toEqual({
       name: "@grouparoo/core",
       currentVersion: coreVersion,
-      latestVersion: "0.1.17", // from nock recording
+      latestVersion: "0.2.12", // from nock recording
       upToDate: true,
       license: "MPL-2.0",
       url: "https://github.com/grouparoo/grouparoo",
     });
+  });
+
+  test("can list available plugins", async () => {
+    // cannot actually test this without injecting some plugins at the package.json level...
+    const { plugins, error } = await specHelper.runAction(
+      "plugins:available:list"
+    );
+    expect(error).toBeFalsy();
+    expect(plugins.length).toBeGreaterThanOrEqual(1);
+    const postgresPlugin = plugins.find(
+      (p) => p.name === "@grouparoo/postgres"
+    );
+
+    expect(postgresPlugin).toEqual(
+      expect.objectContaining({
+        name: "@grouparoo/postgres",
+        version: "0.2.12", // from nock recording
+      })
+    );
   });
 });

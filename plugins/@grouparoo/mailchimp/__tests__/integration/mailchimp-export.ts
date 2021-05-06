@@ -246,16 +246,7 @@ describe("integration/runs/mailchimp-export", () => {
     await group.update({ state: "ready" });
   });
 
-  test("track the test group with the destination", async () => {
-    session.params = {
-      csrfToken,
-      id: destination.id,
-      groupId: group.id,
-    };
-    await specHelper.runAction("destination:trackGroup", session);
-  });
-
-  test(`the destination group membership can be set`, async () => {
+  test(`the destination group membership can be set and test group can be tracked`, async () => {
     const destinationGroupMemberships = {};
     destinationGroupMemberships[group.id] = group.name;
 
@@ -263,12 +254,14 @@ describe("integration/runs/mailchimp-export", () => {
       csrfToken,
       id: destination.id,
       destinationGroupMemberships,
+      trackedGroupId: group.id,
     };
     const { error, destination: _destination } = await specHelper.runAction(
       "destination:edit",
       session
     );
     expect(error).toBeUndefined();
+    expect(_destination.destinationGroup.id).toBe(group.id);
     expect(_destination.destinationGroupMemberships).toEqual([
       {
         groupId: group.id,

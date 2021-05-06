@@ -2,35 +2,37 @@ import { helper } from "@grouparoo/spec-helper";
 import { NewVersionNotifier } from "../../src/notifiers/newVersionNotifier";
 import { Notification } from "../../src";
 
-jest.mock("../../src/modules/pluginVersions", () => ({
+jest.mock("../../src/modules/plugins", () => ({
   __esModule: true,
-  pluginVersions: async () => {
-    return [
-      {
-        name: "@grouparoo/core",
-        currentVersion: "1.2.3",
-        latestVersion: "99.0.1",
-        upToDate: false,
-        license: "MPL-2.0",
-        url: "https://github.com/grouparoo/grouparoo",
-      },
-      {
-        name: "@grouparoo/postgres",
-        currentVersion: "1.2.3",
-        latestVersion: "99.0.1",
-        upToDate: false,
-        license: "MPL-2.0",
-        url: "https://github.com/grouparoo/grouparoo",
-      },
-      {
-        name: "@grouparoo/mysql",
-        currentVersion: "1.2.3",
-        latestVersion: "99.0.1",
-        upToDate: false,
-        license: "MPL-2.0",
-        url: "https://github.com/grouparoo/grouparoo",
-      },
-    ];
+  Plugins: {
+    installedPluginVersions: async () => {
+      return [
+        {
+          name: "@grouparoo/core",
+          currentVersion: "1.2.3",
+          latestVersion: "99.0.1",
+          upToDate: false,
+          license: "MPL-2.0",
+          url: "https://github.com/grouparoo/grouparoo",
+        },
+        {
+          name: "@grouparoo/postgres",
+          currentVersion: "1.2.3",
+          latestVersion: "99.0.1",
+          upToDate: false,
+          license: "MPL-2.0",
+          url: "https://github.com/grouparoo/grouparoo",
+        },
+        {
+          name: "@grouparoo/mysql",
+          currentVersion: "1.2.3",
+          latestVersion: "99.0.1",
+          upToDate: false,
+          license: "MPL-2.0",
+          url: "https://github.com/grouparoo/grouparoo",
+        },
+      ];
+    },
   },
 }));
 

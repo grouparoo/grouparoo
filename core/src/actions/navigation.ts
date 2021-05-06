@@ -2,7 +2,6 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
-import { api } from "actionhero";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -23,7 +22,10 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     let bottomMenuItems = [];
     let platformItems = [];
 
-    let navigationMode = "unauthenticated";
+    let navigationMode =
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+        ? "config"
+        : "unauthenticated";
     let showSystemLinks = false;
     if (teamMember) {
       navigationMode = "authenticated";
@@ -186,6 +188,15 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         title: "Sign Out",
         href: "/session/sign-out",
       });
+    }
+
+    if (navigationMode === "config") {
+      navigationItems = [
+        { type: "link", title: "Hello", href: "/" },
+        { type: "link", title: "Apps", href: "/apps" },
+        { type: "link", title: "Plugins", href: "/plugins" },
+        { type: "link", title: "Validate", href: "/validate" },
+      ];
     }
 
     const clusterNameSetting = await Setting.findOne({

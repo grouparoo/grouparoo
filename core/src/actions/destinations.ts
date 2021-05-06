@@ -159,6 +159,8 @@ export class DestinationEdit extends AuthenticatedAction {
       mapping: { required: false },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
+      trackedGroupId: { required: false },
+      triggerExport: { required: false },
     };
   }
 
@@ -175,6 +177,22 @@ export class DestinationEdit extends AuthenticatedAction {
     }
 
     await destination.update(params);
+
+    if (
+      params.trackedGroupId &&
+      params.trackedGroupId !== "_none" &&
+      params.trackedGroupId !== destination.groupId
+    ) {
+      const group = await Group.findById(params.trackedGroupId);
+      await destination.trackGroup(group);
+    } else if (
+      (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
+      destination.groupId
+    ) {
+      await destination.unTrackGroup();
+    } else if (params.triggerExport) {
+      await destination.exportGroupMembers(true);
+    }
 
     return { destination: await destination.apiData() };
   }
@@ -249,56 +267,6 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     const destination = await Destination.findById(params.id);
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
-    };
-  }
-}
-
-export class DestinationTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:trackGroup";
-    this.description = "add a group to a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      groupId: { required: true },
-      force: { required: false, default: "true" },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    const group = await Group.findById(params.groupId);
-    const force = params.force?.toLowerCase() === "true";
-    const run = await destination.trackGroup(group, force);
-    return {
-      destination: await destination.apiData(),
-      run: await run.apiData(),
-    };
-  }
-}
-
-export class DestinationUnTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:unTrackGroup";
-    this.description = "remove a group from a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      force: { required: false, default: "false" },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    const force = params.force?.toLowerCase() === "true";
-    const run = await destination.unTrackGroup(force);
-    return {
-      destination: await destination.apiData(),
-      run: await run.apiData(),
     };
   }
 }
