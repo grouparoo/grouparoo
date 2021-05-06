@@ -456,7 +456,7 @@ describe("sendgrid/exportProfile", () => {
   });
 
   test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
-    // hubspot requires deleting the old user on FK change
+    // sendgrid requires deleting the old user on FK change
     await runExport({
       syncOperations: { create: true, update: true, delete: false },
       oldProfileProperties: {
