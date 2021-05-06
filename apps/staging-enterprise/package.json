@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@grouparoo/spec-helper": "0.3.0",
+    "@grouparoo/ui-config": "0.3.0",
     "jest": "26.6.3"
   },
   "scripts": {
@@ -77,6 +78,7 @@
       "@grouparoo/snowflake",
       "@grouparoo/sqlite",
       "@grouparoo/ui-enterprise",
+      "@grouparoo/ui-config",
       "@grouparoo/zendesk"
     ]
   }

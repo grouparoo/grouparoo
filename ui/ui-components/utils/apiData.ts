@@ -152,7 +152,17 @@ import {
   NotificationView,
 } from "@grouparoo/core/src/actions/notifications";
 import { NavigationList } from "@grouparoo/core/src/actions/navigation";
-import { PluginsList } from "@grouparoo/core/src/actions/plugins";
+import {
+  PluginsInstalledList,
+  PluginsAvailableList,
+  PluginInstall,
+  PluginUninstall,
+} from "@grouparoo/core/src/actions/plugins";
+import {
+  ConfigValidate,
+  ConfigApply,
+  ConfigGenerate,
+} from "@grouparoo/core/src/actions/config";
 import {
   PropertyCreate,
   PropertyDestroy,
@@ -461,8 +471,27 @@ export namespace Actions {
     typeof NavigationList.prototype.runWithinTransaction
   >;
 
-  export type PluginsList = AsyncReturnType<
-    typeof PluginsList.prototype.runWithinTransaction
+  export type PluginsInstalledList = AsyncReturnType<
+    typeof PluginsInstalledList.prototype.runWithinTransaction
+  >;
+  export type PluginsAvailableList = AsyncReturnType<
+    typeof PluginsAvailableList.prototype.runWithinTransaction
+  >;
+  export type PluginInstall = AsyncReturnType<
+    typeof PluginInstall.prototype.runWithinTransaction
+  >;
+  export type PluginUninstall = AsyncReturnType<
+    typeof PluginUninstall.prototype.runWithinTransaction
+  >;
+
+  export type ConfigValidate = AsyncReturnType<
+    typeof ConfigValidate.prototype.runWithinTransaction
+  >;
+  export type ConfigApply = AsyncReturnType<
+    typeof ConfigApply.prototype.runWithinTransaction
+  >;
+  export type ConfigGenerate = AsyncReturnType<
+    typeof ConfigGenerate.prototype.runWithinTransaction
   >;
 
   export type PropertyCreate = AsyncReturnType<

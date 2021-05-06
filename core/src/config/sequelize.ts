@@ -76,6 +76,8 @@ export const DEFAULT = {
         storage = join(getParentPath(), `${database}.sqlite`);
       }
 
+      if (storage === "memory") storage = ":memory:";
+
       // without a starting "/" we assume relative locations are against project root
       if (storage !== ":memory:" && !isAbsolute(storage)) {
         storage = join(getParentPath(), storage);
@@ -110,6 +112,7 @@ export const DEFAULT = {
       password: password,
       models: [join(__dirname, "..", "models")],
       migrations: [join(__dirname, "..", "migrations"), ...pluginMigrations],
+      migrationLogLevel: storage === ":memory:" ? "debug" : "info",
       storage, // only used for sqlite
       dialectOptions: { ssl },
       transactionType: "DEFERRED",

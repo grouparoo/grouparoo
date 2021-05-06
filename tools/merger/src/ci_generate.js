@@ -55,6 +55,7 @@ class Generator {
     this.addUiComponents();
     this.addUiCommunity();
     this.addUiEnterprise();
+    this.addUiConfig();
     this.addStagingCommunity();
     this.addStagingEnterprise();
     this.addPlugins();
@@ -132,6 +133,16 @@ class Generator {
       type: "ui",
       test_section: "ui-enterprise",
       job_name: `test-ui-enterprise`,
+      relative_path: `ui`,
+      name: "ui",
+    });
+  }
+
+  addUiConfig() {
+    this.jobList.push({
+      type: "ui",
+      test_section: "ui-config",
+      job_name: `test-ui-config`,
       relative_path: `ui`,
       name: "ui",
     });
@@ -311,6 +322,7 @@ class Generator {
       "core/dist",
       "ui/ui-community/.next",
       "ui/ui-enterprise/.next",
+      "ui/ui-config/.next",
     ];
 
     cachePaths[cacheKey] = directories.sort();

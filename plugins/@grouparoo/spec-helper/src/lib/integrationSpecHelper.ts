@@ -68,7 +68,8 @@ export namespace IntegrationSpecHelper {
 
   export async function prepareForIntegrationTest(
     projectPath: string,
-    disableCodeConfig = false
+    disableCodeConfig = false,
+    extraEnv: { [key: string]: string } = {}
   ) {
     const jestId = parseInt(process.env.JEST_WORKER_ID || "1");
     const serverToken = `serverToken-${process.env.JEST_WORKER_ID || 0}`;
@@ -94,21 +95,25 @@ export namespace IntegrationSpecHelper {
     if (fs.existsSync(db)) fs.unlinkSync(db);
 
     // start the api server
-    const serverEnv = Object.assign(env, {
-      INIT_CWD: projectPath,
-      REDIS_URL: "redis://mock",
-      DATABASE_URL: "sqlite://grouparoo_test.sqlite",
-      ACTIONHERO_TYPESCRIPT_MODE: "false", // ensure that the test server doesn't run typescript files
-      WEB_SERVER: true,
-      PORT: port,
-      WEB_URL: url,
-      API_VERSION: 1,
-      JEST_WORKER_ID: jestId,
-      SERVER_TOKEN: serverToken,
-      GROUPAROO_CONFIG_DIR: disableCodeConfig ? "/not/a/real/dir" : undefined,
-      GROUPAROO_ENV_CONFIG_FILE: "/path/to/nothing",
-      GROUPAROO_LOG_LEVEL: "crit",
-    });
+    const serverEnv = Object.assign(
+      env,
+      {
+        INIT_CWD: projectPath,
+        REDIS_URL: "redis://mock",
+        DATABASE_URL: "sqlite://grouparoo_test.sqlite",
+        ACTIONHERO_TYPESCRIPT_MODE: "false", // ensure that the test server doesn't run typescript files
+        WEB_SERVER: true,
+        PORT: port,
+        WEB_URL: url,
+        API_VERSION: 1,
+        JEST_WORKER_ID: jestId,
+        SERVER_TOKEN: serverToken,
+        GROUPAROO_CONFIG_DIR: disableCodeConfig ? "/not/a/real/dir" : undefined,
+        GROUPAROO_ENV_CONFIG_FILE: "/path/to/nothing",
+        GROUPAROO_LOG_LEVEL: "crit",
+      },
+      extraEnv
+    );
 
     const subProcess = spawn("node", ["dist/grouparoo.js"], {
       cwd: path.join(projectPath, "node_modules/@grouparoo/core"),
