@@ -530,7 +530,7 @@ describe("actions/destinations", () => {
           expect.objectContaining({
             destinationId: id,
             creatorId: destination.destinationGroup.id,
-            force: false,
+            force: true,
           })
         );
 

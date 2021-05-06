@@ -191,7 +191,7 @@ export class DestinationEdit extends AuthenticatedAction {
     ) {
       await destination.unTrackGroup();
     } else if (params.triggerExport) {
-      await destination.exportGroupMembers();
+      await destination.exportGroupMembers(true);
     }
 
     return { destination: await destination.apiData() };
