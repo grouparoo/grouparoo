@@ -304,7 +304,7 @@ describe("actions/destinations", () => {
           trackedGroupId: group.id,
         };
 
-        const { destination, error } = await specHelper.runAction(
+        const { destination, run, error } = await specHelper.runAction(
           "destination:edit",
           connection
         );

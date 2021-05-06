@@ -40,7 +40,7 @@ export namespace DestinationOps {
     force = false
   ) {
     const group = await destination.$get("group");
-    if (group) await group.run(force, destination.id);
+    if (group) return group.run(force, destination.id);
   }
 
   /**
