@@ -1,8 +1,9 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -26,11 +27,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
     // Must delete old customer if ID has changed
-    await client.destroy(oldCustomerId);
+    await deleteCustomer(client, syncOperations, customerId);
   }
 
   if (toDelete) {
-    await client.destroy(customerId);
+    await deleteCustomer(client, syncOperations, customerId, true);
     return { success: true };
   }
 
@@ -69,6 +70,19 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   return { success: true };
 };
+
+async function deleteCustomer(
+  client,
+  syncOperations,
+  customerId,
+  doThrow = false
+) {
+  if (syncOperations.delete) {
+    await client.destroy(customerId);
+  } else if (doThrow) {
+    throw new Errors.InfoError("Destination sync mode does not delete.");
+  }
+}
 
 function formatVar(value) {
   if (value === undefined) {

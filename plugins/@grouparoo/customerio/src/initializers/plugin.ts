@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/customerio/customerio.png",
@@ -30,9 +32,12 @@ export class Plugins extends Initializer {
         new AppTemplate("customerio", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("customerio", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "customerio",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -60,6 +65,8 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export profiles to customer.io as Customers",
           app: "customerio",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
