@@ -145,7 +145,12 @@ async function authenticateTeamMemberInRoom(
   const topic =
     roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0];
 
-  if (process.env.GROUPAROO_RUN_MODE === "cli:config") return; // everything is valid
+  if (
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    env === "development"
+  ) {
+    return; // TODO: What's the log in story for `grouparoo config`
+  }
 
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);
