@@ -75,22 +75,12 @@ export default function Page(props) {
       mapping: filteredMapping,
       trackedGroupId: trackedGroupId || "_none",
       destinationGroupMemberships: destinationGroupMembershipsObject,
+      triggerExport: true,
     });
 
     setLoading(false);
     successHandler.set({
-      message: "Destination updated",
-    });
-  };
-
-  const forceExport = async () => {
-    setLoading(true);
-
-    await execApi("post", `/destination/${id}/export`, { force: true });
-
-    setLoading(false);
-    successHandler.set({
-      message: "Exporting Profiles...",
+      message: "Destination Updated and Profiles Exporting...",
     });
   };
 
@@ -783,16 +773,6 @@ export default function Page(props) {
                     disabled={loading}
                   >
                     Save Destination Data
-                  </LoadingButton>
-                  &nbsp;
-                  <LoadingButton
-                    style={{ marginTop: 5 }}
-                    variant="outline-secondary"
-                    size="sm"
-                    disabled={loading}
-                    onClick={forceExport}
-                  >
-                    Force Export Group Members
                   </LoadingButton>
                 </Col>
               </Row>
