@@ -7,6 +7,7 @@ import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexContacts } from "../utils/shared";
 import { SendgridClient } from "../../src/lib/client";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const appId = "app_78189023490-dfsjklfdsklj90-90-3k";
 
@@ -115,6 +116,7 @@ async function cleanUp(suppressErrors) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -129,6 +131,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -151,6 +154,23 @@ describe("sendgrid/exportProfile", () => {
     await cleanUp(true);
   }, helper.setupTime);
 
+  test("can not create a profile if sync mode does not allow it", async () => {
+    user = await apiClient.getUser(email);
+    expect(user).toBe(null);
+    await expect(
+      runExport({
+        syncOperations: DestinationSyncModeData.enrich.operations,
+        oldProfileProperties: {},
+        newProfileProperties: { email, first_name },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not create/);
+    user = await apiClient.getUser(email);
+    expect(user).toBe(null); // not created.
+  });
+
   test("can create profile on Sendgrid", async () => {
     user = await apiClient.getUser(email);
     expect(user).toBe(null);
@@ -162,7 +182,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     user = await apiClient.getUser(email);
 
@@ -186,8 +206,45 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
+    const user = await apiClient.getUser(email);
+    expect(user.first_name).toBe(first_name);
+    expect(user.last_name).toBe(last_name);
+    expect(user.created_at).not.toBe("2021-02-11T23:03:03Z");
+    expect(user.phone_number).toBe(phone_number);
+  });
+
+  test("can not update a profile if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: true,
+          delete: true,
+        },
+        oldProfileProperties: {
+          email,
+          first_name,
+          phone_number,
+        },
+        newProfileProperties: {
+          email,
+          first_name: alternativeName,
+          phone_number: newPhoneNumber,
+          text_field: textField,
+          number_field: numberField,
+          date_field: dateField,
+          created_at: dateField,
+          other_text_field: otherTextField,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    // no changes
     const user = await apiClient.getUser(email);
     expect(user.first_name).toBe(first_name);
     expect(user.last_name).toBe(last_name);
@@ -217,7 +274,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
     const user = await apiClient.getUser(email);
 
     expect(user.first_name).toBe(alternativeName);
@@ -253,7 +310,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
     const user = await apiClient.getUser(email);
     expect(user.first_name).toBe(alternativeName);
     expect(user.phone_number).toBe(newPhoneNumber);
@@ -276,7 +333,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
     const user = await apiClient.getUser(email);
     expect(user.first_name).toBe("");
     expect(user.phone_number).toBe("");
@@ -294,7 +351,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [listOne, listTwo],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(email);
     expect(user["list_ids"].length).toBe(2);
@@ -321,7 +378,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [listOne],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(email);
     expect(user["list_ids"].length).toBe(1);
@@ -342,7 +399,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [listTwo, listThree],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(email);
 
@@ -368,7 +425,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(email);
     const listFourId = await getListId(listFour);
@@ -388,7 +445,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(alternativeEmail);
     expect(user).not.toBe(null);
@@ -396,6 +453,36 @@ describe("sendgrid/exportProfile", () => {
 
     const oldUser = await apiClient.getUser(email);
     expect(oldUser).toBe(null);
+  });
+
+  test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
+    // hubspot requires deleting the old user on FK change
+    await runExport({
+      syncOperations: { create: true, update: true, delete: false },
+      oldProfileProperties: {
+        email: alternativeEmail,
+      },
+      newProfileProperties: {
+        email,
+      },
+      oldGroups: [listOne, listTwo, listThree],
+      newGroups: [listOne, listTwo, listThree],
+      toDelete: false,
+    });
+
+    await indexContacts(newNock);
+
+    // old user still there
+    const oldUser = await apiClient.getUser(alternativeEmail);
+    expect(oldUser).not.toBe(null);
+    expect(oldUser.email).toBe(alternativeEmail);
+    expect(oldUser["list_ids"]).toHaveLength(0); // but has been removed from lists
+
+    // new user created
+    const newUser = await apiClient.getUser(email);
+    expect(newUser).not.toBe(null);
+    expect(newUser.email).toBe(email);
+    expect(newUser["list_ids"]).toHaveLength(3);
   });
 
   test("it can change the email address along other properties", async () => {
@@ -414,7 +501,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(otherEmail);
     expect(user.email).toBe(otherEmail);
@@ -423,6 +510,33 @@ describe("sendgrid/exportProfile", () => {
 
     const oldUser = await apiClient.getUser(alternativeEmail);
     expect(oldUser).toBe(null);
+  });
+
+  test("cannot delete an user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          create: true,
+          delete: false,
+          update: true,
+        },
+        oldProfileProperties: {
+          email: otherEmail,
+        },
+        newProfileProperties: {
+          email: otherEmail,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
+
+    // no effect
+    const user = await apiClient.getUser(otherEmail);
+    expect(user.email).toBe(otherEmail);
+    expect(user.first_name).toBe(otherName);
+    expect(user.phone_number).toBe(otherPhoneNumber);
   });
 
   test("can delete a user", async () => {
@@ -437,7 +551,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: true,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     const user = await apiClient.getUser(otherEmail);
     expect(user).toBe(null);
@@ -477,7 +591,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [listFour],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     user = await apiClient.getUser(newEmail);
     expect(user).not.toBe(null);
@@ -504,7 +618,7 @@ describe("sendgrid/exportProfile", () => {
       newGroups: [],
       toDelete: false,
     });
-    await indexContacts(newNock, 60 * 1000);
+    await indexContacts(newNock);
 
     brandNewUser = await apiClient.getUser(brandNewEmail);
     expect(brandNewUser).not.toBe(null);

@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 import { getListId } from "./listMethods";
 import { isReservedField, isReadOnlyField } from "./destinationMappingOptions";
@@ -20,6 +20,7 @@ export const exportProfile: ExportProfilePluginMethod = async (args) => {
 export const sendProfile: ExportProfilePluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   destinationOptions,
   export: {
     toDelete,
@@ -47,7 +48,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (toDelete) {
     const userToDelete = user || oldUser;
     if (userToDelete) {
-      await client.deleteUsers([userToDelete["id"]]);
+      await deleteUser(client, syncOperations, userToDelete, true);
     }
     return { success: true };
   } else {
@@ -84,7 +85,7 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
     // change email
     if (oldUser) {
-      await client.deleteUsers([oldUser.id]);
+      await deleteUser(client, syncOperations, oldUser);
     }
 
     const listsToAdd = [];
@@ -97,8 +98,16 @@ export const sendProfile: ExportProfilePluginMethod = async ({
       }
     }
 
+    if (!user && !syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not create new profiles."
+      );
+    } else if (user && !syncOperations.update) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not update existing profiles."
+      );
+    }
     await client.addOrUpdateUser(formattedDataFields, listsToAdd);
-
     // remove from lists
     if (user) {
       for (const group of oldGroups) {
@@ -114,6 +123,19 @@ export const sendProfile: ExportProfilePluginMethod = async ({
     return { success: true };
   }
 };
+
+async function deleteUser(
+  client,
+  syncOperations,
+  userToDelete,
+  doThrow = false
+) {
+  if (syncOperations.delete) {
+    await client.deleteUsers([userToDelete.id]);
+  } else if (doThrow) {
+    throw new Errors.InfoError("Destination sync mode does not delete.");
+  }
+}
 
 function formatVar(value) {
   if (value === undefined || value === null) {
