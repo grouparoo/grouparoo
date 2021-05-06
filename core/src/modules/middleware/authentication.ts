@@ -1,4 +1,4 @@
-import { api, config, action, Connection, chatRoom } from "actionhero";
+import { api, config, action, Connection, chatRoom, env } from "actionhero";
 import { CLS } from "../cls";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
@@ -46,7 +46,7 @@ async function authenticateTeamMember(
 ) {
   if (
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
-    process.env.NODE_ENV === "development"
+    env === "development"
   ) {
     return; // TODO: What's the log in story for `grouparoo config`
   }
