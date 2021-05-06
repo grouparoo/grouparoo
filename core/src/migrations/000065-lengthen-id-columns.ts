@@ -32,63 +32,23 @@ const tables = {
   teams: [],
 };
 
-let primaryKeyConstraints = {};
-
-let pKeyQuery = `
-SELECT
-  kcu.table_schema,
-  kcu.table_name,
-  tco.constraint_name,
-  kcu.ordinal_position AS position,
-  kcu.column_name AS key_column
-FROM
-  information_schema.table_constraints tco
-  JOIN information_schema.key_column_usage kcu ON kcu.constraint_name = tco.constraint_name
-    AND kcu.constraint_schema = tco.constraint_schema
-    AND kcu.constraint_name = tco.constraint_name
-WHERE
-  tco.constraint_type = 'PRIMARY KEY'
-  AND kcu.table_schema = 'public'
-ORDER BY
-  kcu.table_schema,
-  kcu.table_name,
-  position;
-`;
-
 const runMigration = async ({ maxIdLength, migration, DataTypes }) => {
-  await migration.sequelize.transaction(async () => {
+  const changeColumn = async (tableName, columnName) => {
     if (config.sequelize.dialect === "postgres") {
-      const [rows] = await migration.sequelize.query(pKeyQuery);
-      primaryKeyConstraints = Object.fromEntries(
-        rows.map((row) => [row.table_name, row.constraint_name])
-      );
-    }
-
-    for (const [tableName, columnNames] of Object.entries(tables)) {
-      if (config.sequelize.dialect === "postgres") {
-        await migration.removeConstraint(
-          tableName,
-          primaryKeyConstraints[tableName]
-        );
-      }
-
-      await migration.changeColumn(tableName, "id", {
-        type: DataTypes.STRING(maxIdLength),
-        primaryKey: true,
+      const query = `ALTER TABLE "${tableName}" ALTER COLUMN "${columnName}" SET DATA TYPE varchar(${maxIdLength}); `;
+      await migration.sequelize.query(query);
+    } else {
+      await migration.changeColumn(tableName, columnName, {
+        type: DataTypes.STRING(191),
       });
+    }
+  };
 
-      if (config.sequelize.dialect === "postgres") {
-        await migration.addConstraint(tableName, {
-          fields: ["id"],
-          type: "primary key",
-          name: primaryKeyConstraints[tableName],
-        });
-      }
-
+  await migration.sequelize.transaction(async () => {
+    for (const [tableName, columnNames] of Object.entries(tables)) {
+      await changeColumn(tableName, "id");
       for (const columnName of columnNames) {
-        await migration.changeColumn(tableName, columnName, {
-          type: DataTypes.STRING(maxIdLength),
-        });
+        await changeColumn(tableName, columnName);
       }
     }
   });
