@@ -25,15 +25,15 @@ export class CodeConfig extends CLSInitializer {
   }
 
   async startWithinTransaction() {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
-      // we want to still be able to modify config
-    } else {
-      const configDir = getConfigDir();
-      const { errors } = await loadConfigDirectory(configDir);
-      if (errors.length > 0) throw new Error("code config error");
+    const configDir = getConfigDir();
+    const { errors } = await loadConfigDirectory(configDir);
 
-      // after this point in the Actionhero boot lifecycle, locked models cannot be changed
-      api.codeConfig.allowLockedModelChanges = false;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
+      // boot if there are problems with code config
+      // don't prevent lockedModelChanges
+    } else {
+      if (errors.length > 0) throw new Error("code config error");
+      api.codeConfig.allowLockedModelChanges = false; // after this point in the Actionhero boot lifecycle, locked models cannot be changed
     }
   }
 
