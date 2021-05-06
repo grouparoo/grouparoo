@@ -794,7 +794,7 @@ describe("models/destination", () => {
       parallelismResponse = Infinity;
     });
 
-    test("the app can be rate-limited and the export:send task will be re-enqueued", async () => {
+    test("the app can be rate-limited with an error and the export will have a sendAt in the future", async () => {
       exportProfileResponse = {
         success: false,
         error: new Error("oh no!"),
@@ -819,17 +819,16 @@ describe("models/destination", () => {
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
-      expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
 
       await _export.reload();
-      expect(_export.startedAt).not.toBeFalsy();
+      expect(_export.startedAt).toBeFalsy();
+      expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();
+      expect(_export.state).toBe("pending");
+      expect(_export.retryCount).toBe(1);
 
       // when the response is back to success
       exportProfileResponse = {
@@ -839,13 +838,12 @@ describe("models/destination", () => {
       };
 
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+      expect(_export.state).toBe("complete");
     });
 
-    test("export:send task will be re-enqueued on profile id error", async () => {
+    test("export:send task will be be retried on profile id error", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -875,14 +873,15 @@ describe("models/destination", () => {
       // the task should be re-enqueued with no error
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
       foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
-      expect(foundSendTasks[1].timestamp).toBeGreaterThan(new Date().getTime());
 
       await _export.reload();
       expect(_export.completedAt).toBeFalsy();
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toBe("error");
       expect(_export.completedAt).toBeFalsy();
+      expect(_export.state).toBe("pending");
+      expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
+      expect(_export.retryCount).toBe(1);
 
       // when the response is back to success
       exportProfileResponse = {
@@ -892,13 +891,12 @@ describe("models/destination", () => {
       };
 
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+      expect(_export.state).toBe("complete");
     });
 
-    test("export:send task will not be re-enqueued on info error", async () => {
+    test("export:send task will complete the export with an info error", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -926,23 +924,14 @@ describe("models/destination", () => {
       let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
       expect(foundSendTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
-      foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-      expect(foundSendTasks.length).toBe(1 + 0); // nothing new
 
       await _export.reload();
       expect(_export.completedAt).toBeFalsy();
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toBe("info");
       expect(_export.completedAt).toBeFalsy();
-
-      // later, the response is back to success
-      exportProfileResponse = {
-        success: true,
-        error: undefined,
-        retryDelay: undefined,
-      };
+      expect(_export.state).toBe("complete");
     });
 
     test("sending an export with sync and producing a retry error will throw", async () => {
@@ -1088,14 +1077,14 @@ describe("models/destination", () => {
           newProfileProperties: {},
           oldGroups: [],
           newGroups: [],
-          state: "complete",
+          state: "pending",
         });
 
         await expect(destination.destroy()).rejects.toThrow(
           /cannot delete destination until all pending exports have been sent/
         );
 
-        await _export.update({ completedAt: new Date() });
+        await _export.update({ state: "complete" });
         await destination.destroy(); // does not throw
       });
     });

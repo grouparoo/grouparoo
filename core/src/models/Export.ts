@@ -193,6 +193,8 @@ export class Export extends Model {
     if (this.retryCount >= MaxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;
+    } else if (this.errorLevel === "info") {
+      this.state = "complete";
     } else {
       this.sendAt = Moment().add(retryDelay, "ms").toDate();
       this.startedAt = null;

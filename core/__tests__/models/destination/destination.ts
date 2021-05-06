@@ -170,11 +170,12 @@ describe("models/destination", () => {
 
       const totals = await destination.getExportTotals();
       expect(totals).toEqual({
-        all: 1,
-        completed: 0,
-        created: 1,
-        error: 0,
-        started: 0,
+        canceled: 0,
+        complete: 0,
+        draft: 0,
+        failed: 0,
+        pending: 1,
+        processing: 0,
       });
 
       await _export.destroy();
