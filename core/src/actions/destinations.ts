@@ -160,6 +160,7 @@ export class DestinationEdit extends AuthenticatedAction {
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
       trackedGroupId: { required: false },
+      triggerExport: { required: false },
     };
   }
 
@@ -189,6 +190,8 @@ export class DestinationEdit extends AuthenticatedAction {
       destination.groupId
     ) {
       await destination.unTrackGroup();
+    } else if (params.triggerExport) {
+      await destination.exportGroupMembers(true);
     }
 
     return { destination: await destination.apiData() };
