@@ -53,7 +53,6 @@ export const ExportStates = [
 const STATE_TRANSITIONS = [
   { from: "draft", to: "pending", checks: [] },
   { from: "draft", to: "canceled", checks: [] },
-  { from: "draft", to: "complete", checks: [] }, // TODO: needed for testing
   { from: "pending", to: "processing", checks: [] },
   { from: "pending", to: "canceled", checks: [] },
   { from: "pending", to: "failed", checks: [] },
@@ -92,7 +91,7 @@ export class Export extends Model {
   profileId: string;
 
   @AllowNull(false)
-  @Default("pending")
+  @Default(Export.defaultState)
   @Column(DataType.ENUM(...ExportStates))
   state: typeof ExportStates[number];
 
@@ -256,6 +255,8 @@ export class Export extends Model {
   }
 
   // --- Class Methods --- //
+
+  static defaultState = "pending";
 
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
