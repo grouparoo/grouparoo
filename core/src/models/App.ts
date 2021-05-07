@@ -35,13 +35,14 @@ export interface AppOption {
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
-const STATES = ["draft", "ready"] as const;
+const STATES = ["draft", "ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
     checks: [(instance: App) => instance.validateOptions(null)],
   },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @DefaultScope(() => ({

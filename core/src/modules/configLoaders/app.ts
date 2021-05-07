@@ -8,6 +8,7 @@ import {
 } from "../../classes/codeConfig";
 import { App } from "../..";
 import { Op } from "sequelize";
+import { CLS } from "../cls";
 
 export async function loadApp(
   configObject: ConfigurationObject,
@@ -57,7 +58,8 @@ export async function deleteApps(ids: string[]) {
   });
 
   for (const i in apps) {
-    await apps[i].destroy();
+    await apps[i].update({ state: "deleted", locked: null });
+    await CLS.enqueueTask("app:destroy", { appId: apps[i].id });
     logModel(apps[i], "deleted");
   }
 

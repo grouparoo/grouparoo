@@ -28,6 +28,7 @@ export const DEFAULT = {
             "profileProperties",
             "destinations",
             "properties",
+            "apps",
             "default",
           ]
         );
@@ -100,6 +101,7 @@ export const test = {
         "schedules",
         "destinations",
         "properties",
+        "apps",
         "default",
       ],
       timeout: 100,
