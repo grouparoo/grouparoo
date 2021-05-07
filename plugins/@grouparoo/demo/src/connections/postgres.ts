@@ -85,8 +85,8 @@ export default class Postgres extends Connection {
     this.client = null;
   }
 
-  defaultConfigDir() {
-    return "purchases";
+  name() {
+    return "postgres";
   }
 
   getAppOptions() {

@@ -52,7 +52,7 @@ export class Console extends CLI {
     }
     await init({ reset: true });
 
-    if (hasDir(subDirs, ["events", "mongo", "purchases"])) {
+    if (hasDir(subDirs, ["events", "purchases"])) {
       await users(db, { scale });
       await purchases(db, { scale });
     }
@@ -64,13 +64,13 @@ export class Console extends CLI {
       const skip = ["setup"]; // not all get config files, they load into db
 
       const load = subDirs.filter((item) => skip.includes(item));
-      await loadConfigFiles(db, load);
+      await loadConfigFiles(dataset, db, load);
       await finalize();
 
       const files = subDirs.filter((item) => !skip.includes(item));
-      await writeConfigFiles(db, files);
+      await writeConfigFiles(dataset, db, files);
     } else {
-      await loadConfigFiles(db, subDirs);
+      await loadConfigFiles(dataset, db, subDirs);
       await finalize();
     }
 

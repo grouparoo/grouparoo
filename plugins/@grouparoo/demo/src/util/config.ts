@@ -5,37 +5,35 @@ class Config {
   subDirs: { [type: string]: boolean };
   types: { [type: string]: boolean };
   db: any;
-  dbType: string;
+  dbName: string;
   dataset: string;
   constructor() {
     this.db = null;
     this.dataset = null;
-    this.dbType = null;
+    this.dbName = null;
     this.subDirs = {};
     this.types = {};
   }
 
-  setDb(type: string) {
-    if (this.db) {
+  setDb(name: string, type: string) {
+    if (this.dbName && this.dbName !== name) {
       throw new Error(
-        `There should only be one source database. ${this.dbType} is already set. Cannot use ${type}.`
+        `There should only be one source database. ${this.dbName} is already set. Cannot use ${type}.`
       );
     }
 
-    this.dbType = type;
-
-    switch (type) {
+    switch (name) {
       case "postgres":
         this.db = new Postgres();
-        this.addDir("purchases");
         break;
       case "mongo":
         this.db = new Mongo();
-        this.addDir("mongo");
         break;
       default:
-        throw new Error(`Unknown db type: ${type}`);
+        throw new Error(`Unknown db type: ${name}`);
     }
+
+    this.dbName = name;
   }
 
   setDataset(name, type) {
@@ -63,10 +61,10 @@ class Config {
       case "setup":
         break;
       case "mongo":
-        this.setDb("mongo");
+        this.setDb("mongo", type);
         break;
       case "postgres":
-        this.setDb("postgres");
+        this.setDb("postgres", type);
         break;
       case "b2c":
       case "purchases":
@@ -74,6 +72,8 @@ class Config {
         this.addDir("purchases");
         break;
       case "events":
+        // only works on postgres for now
+        this.setDb("postgres", type);
         this.setDataset("b2c", type);
         this.addDir("purchases");
         this.addDir("events");
@@ -113,7 +113,7 @@ class Config {
       db = new Postgres();
     }
     if (!dataset) {
-      subDirs[db.defaultConfigDir()] = true;
+      subDirs["purchases"] = true;
       dataset = "b2c";
     }
 

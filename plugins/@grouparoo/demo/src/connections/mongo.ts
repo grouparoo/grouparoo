@@ -148,7 +148,7 @@ export default class Mongo extends Connection {
     this.conn = null;
   }
 
-  defaultConfigDir() {
+  name() {
     return "mongo";
   }
 
