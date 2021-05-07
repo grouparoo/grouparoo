@@ -68,8 +68,10 @@ describe("tasks/sweeper", () => {
       expect(count).toBe(0);
     });
 
-    test("it will delete old exports", async () => {
+    test("it will delete old exports that have no complete export for the profile", async () => {
+      await Export.truncate();
       const oldExport = await helper.factories.export();
+      const newExport = await helper.factories.export();
 
       oldExport.set({ createdAt: new Date(0) }, { raw: true });
       oldExport.changed("createdAt", true);
@@ -77,14 +79,66 @@ describe("tasks/sweeper", () => {
         silent: true,
         fields: ["createdAt"],
       });
+      await oldExport.update({ state: "canceled" });
+
+      await newExport.update({
+        state: "canceled",
+      });
 
       let count = await Export.count();
-      expect(count).toBe(1);
+      expect(count).toBe(2);
 
       await specHelper.runTask("sweeper", {});
 
-      count = await Export.count();
-      expect(count).toBe(0);
+      exports = await Export.findAll();
+      expect(exports.length).toBe(1);
+      expect(exports[0].id).toBe(newExport.id);
+    });
+
+    test("it will delete old exports but not the newest one for each profile", async () => {
+      await Export.truncate();
+      const profileA = await helper.factories.profile();
+      const oldExportA = await helper.factories.export(profileA);
+      const newerExportA = await helper.factories.export(profileA);
+      const profileB = await helper.factories.profile();
+      const newerExportB = await helper.factories.export(profileB);
+
+      oldExportA.set({ createdAt: new Date(0) }, { raw: true });
+      oldExportA.changed("createdAt", true);
+      await oldExportA.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+      await oldExportA.update({ state: "complete" });
+
+      newerExportA.set({ createdAt: new Date(1000 * 60 * 60) }, { raw: true });
+      newerExportA.changed("createdAt", true);
+      await newerExportA.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+      await newerExportA.update({ state: "complete" });
+
+      newerExportB.set({ createdAt: new Date() }, { raw: true });
+      newerExportB.changed("createdAt", true);
+      await newerExportB.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+      await newerExportB.update({ state: "canceled" });
+
+      let count = await Export.count();
+      expect(count).toBe(3);
+
+      await specHelper.runTask("sweeper", {});
+
+      await newerExportA.reload();
+      await newerExportB.reload();
+      exports = await Export.findAll();
+      expect(exports.length).toBe(2);
+      expect(exports.map((e) => e.id).sort()).toEqual(
+        [newerExportA.id, newerExportB.id].sort()
+      );
     });
 
     test("it will delete old logs", async () => {

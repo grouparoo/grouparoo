@@ -293,25 +293,36 @@ export class Export extends Model {
       .subtract(days, "days")
       .format("YYYY-MM-DD HH:mm:ss");
 
-    const count = await api.sequelize.query(
+    const rows: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
       WHERE id IN (
         SELECT id FROM exports
         WHERE "createdAt" < '${whereDate}'
-        AND "createdAt" < (
-          SELECT max("createdAt")
-          FROM exports e2
-          WHERE
-            e2."profileId" = exports."profileId"
-            AND state = 'complete'
+        AND (
+          "createdAt" < (
+            SELECT MAX("createdAt")
+            FROM exports e2
+            WHERE
+              e2."profileId" = exports."profileId"
+              AND state = 'complete'
+          ) OR (
+            0 = (
+              SELECT COUNT(id)
+              FROM exports e3
+              WHERE
+                e3."profileId" = exports."profileId"
+                AND state = 'complete'
+            )
+          )
         )
         LIMIT ${limit}
       )
-      `,
-      { type: QueryTypes.DELETE }
+      RETURNING id
+      ;`,
+      { type: QueryTypes.SELECT }
     );
 
-    return { count, days };
+    return { count: rows.length, days };
   }
 }
