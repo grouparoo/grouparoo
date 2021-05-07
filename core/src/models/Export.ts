@@ -63,8 +63,6 @@ const STATE_TRANSITIONS = [
   { from: "processing", to: "pending", checks: [] },
 ];
 
-const MaxExportAttempts = 3; // TODO: Be a Setting
-
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model {
   idPrefix() {
@@ -185,11 +183,15 @@ export class Export extends Model {
   profile: Profile;
 
   async setError(error: Error, retryDelay: number = config.tasks.timeout) {
+    const maxExportAttempts = parseInt(
+      (await plugin.readSetting("core", "exports-max-retries-count")).value
+    );
+
     this.errorMessage = error.message || error.toString();
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
     this.retryCount++;
-    if (this.retryCount >= MaxExportAttempts) {
+    if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;
     } else if (this.errorLevel === "info") {
@@ -203,8 +205,12 @@ export class Export extends Model {
   }
 
   async retry(retryDelay: number = config.tasks.timeout) {
+    const maxExportAttempts = parseInt(
+      (await plugin.readSetting("core", "exports-max-retries-count")).value
+    );
+
     this.retryCount++;
-    if (this.retryCount >= MaxExportAttempts) {
+    if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;
     } else {
