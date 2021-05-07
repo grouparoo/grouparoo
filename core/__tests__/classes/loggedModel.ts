@@ -30,6 +30,7 @@ describe("classes/loggedModel", () => {
         "foo-dash",
         "fooUpperLower",
         "foo-with-numb3r",
+        "a".repeat(191),
       ].forEach((id) => {
         const app = new App();
         app.id = id;
@@ -48,6 +49,7 @@ describe("classes/loggedModel", () => {
         "foo:stuff",
         "foo;stuff",
         "foo$stuff",
+        "a".repeat(192),
       ].forEach((id) => {
         const app = new App();
         app.id = id;
