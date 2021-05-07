@@ -16,9 +16,9 @@ export async function purchases(db: Connection, options: DataOptions = {}) {
   await createCsvTable(db, "b2c", "purchases", "user_id", true, false, options);
 }
 
-export function readCsvTable(categoryName: string, tableName: string) {
+export function readCsvTable(dataset: string, tableName: string) {
   const filePath = path.resolve(
-    path.join(__dirname, "..", "..", "data", categoryName, `${tableName}.csv`)
+    path.join(__dirname, "..", "..", "data", dataset, `${tableName}.csv`)
   );
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   return rows;
@@ -26,7 +26,7 @@ export function readCsvTable(categoryName: string, tableName: string) {
 
 async function createCsvTable(
   db: Connection,
-  categoryName: string,
+  dataset: string,
   tableName: string,
   userId: string,
   createdAt: boolean,
@@ -37,7 +37,7 @@ async function createCsvTable(
   await db.connect();
   await loadCsvTable(
     db,
-    categoryName,
+    dataset,
     tableName,
     userId,
     createdAt,
@@ -49,7 +49,7 @@ async function createCsvTable(
 
 async function loadCsvTable(
   db: Connection,
-  categoryName: string,
+  dataset: string,
   tableName: string,
   userId: string,
   createdAt: boolean,
@@ -61,7 +61,7 @@ async function loadCsvTable(
   }
   log(1, `Adding ${tableName}`);
   // read from data file
-  const rows = readCsvTable(categoryName, tableName);
+  const rows = readCsvTable(dataset, tableName);
   const keys = Object.keys(rows[0]);
 
   if (createdAt) {

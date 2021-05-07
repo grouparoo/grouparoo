@@ -40,9 +40,10 @@ export class Console extends CLI {
       types = ["purchases"];
     }
     console.log(`Using types: ${types.join(", ")}`);
-    const { db, subDirs } = getConfig(types);
+    const { db, subDirs, dataset } = getConfig(types);
 
     console.log(`Config directories: ${subDirs.join(",")}`);
+    console.log(`Using dataset: ${dataset}`);
     console.log(`Using database: ${db ? db.constructor.name : "none"}`);
 
     if (force || config) {
