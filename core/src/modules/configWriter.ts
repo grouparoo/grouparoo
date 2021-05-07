@@ -1,6 +1,7 @@
 import { api, config } from "actionhero";
 // import { Model } from "sequelize-typescript";
 import { App } from "../models/App";
+// import { Option } from "../models/Option";
 import fs from "fs";
 import path from "path";
 
@@ -32,11 +33,14 @@ export namespace ConfigWriter {
 
     const { id, name, type } = instance;
 
+    const options = await instance.getOptions();
+
     const object = {
       id,
-      name,
-      type,
       class: "app",
+      type,
+      name,
+      options,
     };
 
     // console.log(instance);
