@@ -12,7 +12,7 @@ import { getConfigDir } from "./configLoaders";
  *
  * ⬜️  Ignore the original code-config files at boot
  * ✅  (thanks sequelize) Skip "dirty" (eg: un-changed) models
- * ⬜️  Make JSON pretty
+ * ✅  Make JSON pretty
  * ⬜️  Distinguish between JSON and JS files
  * ⬜️  Account for the file name not matching the ID
  * ⬜️  Account for the file having multiple objects in it
@@ -22,7 +22,7 @@ const writeFile = async ({ configFilePath, object }) => {
   const filePath = path.join(getConfigDir(), configFilePath);
   const dir = path.dirname(filePath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  return fs.writeFileSync(filePath, JSON.stringify(object));
+  return fs.writeFileSync(filePath, JSON.stringify(object, null, 2));
 };
 
 export namespace ConfigWriter {
