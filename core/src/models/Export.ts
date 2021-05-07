@@ -18,11 +18,11 @@ import { Destination } from "./Destination";
 import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op } from "sequelize";
+import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
-import { config } from "actionhero";
+import { api, config } from "actionhero";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -289,15 +289,28 @@ export class Export extends Model {
         .value
     );
 
-    const count = await Export.destroy({
-      where: {
-        createdAt: {
-          [Op.lt]: Moment().subtract(days, "days").toDate(),
-        },
-      },
-      force: true,
-      limit,
-    });
+    const whereDate = Moment()
+      .subtract(days, "days")
+      .format("YYYY-MM-DD HH:mm:ss");
+
+    const count = await api.sequelize.query(
+      `
+      DELETE FROM exports
+      WHERE id IN (
+        SELECT id FROM exports
+        WHERE "createdAt" < '${whereDate}'
+        AND "createdAt" < (
+          SELECT max("createdAt")
+          FROM exports e2
+          WHERE
+            e2."profileId" = exports."profileId"
+            AND state = 'complete'
+        )
+        LIMIT ${limit}
+      )
+      `,
+      { type: QueryTypes.DELETE }
+    );
 
     return { count, days };
   }

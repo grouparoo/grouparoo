@@ -42,7 +42,6 @@ Object {
   "force": true,
   "hasChanges": true,
   "id": null,
-  "mostRecent": false,
   "newGroups": Array [
     "remote_group_name",
   ],
@@ -62,7 +61,10 @@ Object {
     "primary-id": Any<Number>,
   },
   "profileId": StringMatching /\\^pro_/,
+  "retryCount": 0,
+  "sendAt": Any<Number>,
   "startedAt": Any<Number>,
+  "state": "pending",
   "toDelete": false,
 }
 `;
@@ -114,7 +116,6 @@ Object {
       "force": true,
       "hasChanges": true,
       "id": null,
-      "mostRecent": false,
       "newGroups": Array [
         "remote_group_name",
       ],
@@ -134,7 +135,10 @@ Object {
         "primary-id": 100,
       },
       "profileId": Any<String>,
+      "retryCount": 0,
+      "sendAt": Any<Number>,
       "startedAt": Any<Number>,
+      "state": "pending",
       "toDelete": false,
     },
   ],

@@ -905,16 +905,6 @@ describe("models/destination", () => {
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
       );
-      // foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-      //   "export:sendBatch"
-      // );
-      // expect(foundSendBatchTasks.length).toBe(1 + 1);
-      // expect(foundSendBatchTasks[1].timestamp).toBeGreaterThan(
-      //   new Date().getTime()
-      // );
-      // exportIds = foundSendBatchTasks[1].args[0].exportIds;
-      // expect(exportIds.length).toBe(1);
-      // expect(exportIds.sort()).toEqual([_export1.id].sort());
 
       await _export1.reload();
       expect(_export1.errorMessage).toMatch(/oh no!/);
