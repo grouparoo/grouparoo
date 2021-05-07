@@ -66,7 +66,7 @@ const CACHE_TTL = env === "test" ? -1 : 1000 * 30;
 
 export interface SimplePropertyOptions extends OptionHelper.SimpleOptions {}
 
-const STATES = ["draft", "ready"] as const;
+const STATES = ["draft", "ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",
@@ -75,6 +75,7 @@ const STATE_TRANSITIONS = [
       (instance: Property) => instance.validateOptions(null, null, null),
     ],
   },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 /**

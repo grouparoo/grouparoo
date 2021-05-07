@@ -9,6 +9,7 @@ import {
 } from "../../classes/codeConfig";
 import { Property, Source } from "../..";
 import { Op } from "sequelize";
+import { CLS } from "../cls";
 
 export async function loadProperty(
   configObject: ConfigurationObject,
@@ -66,7 +67,8 @@ export async function deleteProperties(ids: string[]) {
   for (const i in properties) {
     const property = properties[i];
     if (property.directlyMapped) continue;
-    await property.destroy();
+    await property.update({ state: "deleted", locked: null });
+    await CLS.enqueueTask("property:destroy", { propertyId: property.id });
     logModel(property, "deleted");
   }
 

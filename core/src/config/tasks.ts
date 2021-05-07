@@ -23,7 +23,13 @@ export const DEFAULT = {
           api?.plugins?.plugins
             .filter((plugin) => plugin.apps?.length > 0)
             .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
-          ["profiles", "profileProperties", "destinations", "default"]
+          [
+            "profiles",
+            "profileProperties",
+            "destinations",
+            "properties",
+            "default",
+          ]
         );
       },
       // Logging levels of task workers
@@ -93,6 +99,7 @@ export const test = {
         "groups",
         "schedules",
         "destinations",
+        "properties",
         "default",
       ],
       timeout: 100,
