@@ -1,17 +1,18 @@
 import path from "path";
 import "@grouparoo/spec-helper";
 import { helper } from "@grouparoo/spec-helper";
-import axios from "axios";
 
 import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexCustomers } from "../utils/shared";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 let cioClient: any;
 
 const customerId = "grouparoo";
 const otherCustomerId = "grouparoo-new";
+const anotherCustomerId = "grouparoo-another";
 const nonexistentCustomerId = "grouparoo-fake";
 const email = "grouparoo@demo.com";
 const otherEmail = "notgrouparoo@demo.com";
@@ -31,27 +32,6 @@ require("./../fixtures/export-profile");
 
 const appOptions = loadAppOptions(newNock);
 
-async function getCustomer(customerId: string): Promise<any> {
-  try {
-    const { data } = await axios.get(
-      `https://beta-api.customer.io/v1/api/customers/${customerId}/attributes`,
-      {
-        headers: {
-          Authorization: `Bearer ${appOptions.appApiKey}`,
-        },
-      }
-    );
-
-    return data.customer;
-  } catch (error) {
-    if (error?.response?.status === 404) {
-      return null;
-    }
-
-    throw error;
-  }
-}
-
 async function cleanUp() {
   await cioClient.destroy(customerId);
   await cioClient.destroy(otherCustomerId);
@@ -60,6 +40,7 @@ async function cleanUp() {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -74,6 +55,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -96,8 +78,21 @@ describe("customer.io/exportProfile", () => {
     await cleanUp();
   }, helper.setupTime);
 
+  test("can not create a customer if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: DestinationSyncModeData.enrich.operations,
+        oldProfileProperties: {},
+        newProfileProperties: { customer_id: customerId },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not create/);
+  });
+
   test("can create customer on Customer.io", async () => {
-    const existingCustomer = await getCustomer(customerId);
+    const existingCustomer = await cioClient.getCustomer(customerId);
     expect(existingCustomer).toBe(null);
 
     await runExport({
@@ -110,7 +105,7 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer).toBeTruthy();
   });
 
@@ -137,7 +132,7 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.id).toBe(customerId);
     expect(customer.attributes.email).toBe(email);
     expect(customer.attributes.name).toBe(name);
@@ -161,13 +156,41 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.id).toBe(customerId);
     expect(customer.attributes.created_at).toBe(createDateUnix);
   });
 
+  test("can not update a customer if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: true,
+          delete: true,
+        },
+        oldProfileProperties: { customer_id: customerId, email, name },
+        newProfileProperties: {
+          customer_id: customerId,
+          email: otherEmail,
+          name,
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    // no changes
+    const customer = await cioClient.getCustomer(customerId);
+    expect(customer.id).toBe(customerId);
+    expect(customer.attributes.email).toBe(email);
+    expect(customer.attributes.name).toBe(name);
+    expect(customer.attributes.age).toBe(age.toString());
+  });
+
   test("can change user attributes", async () => {
-    const oldCustomer = await getCustomer(customerId);
+    const oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer.attributes.email).toBe(email);
 
     await runExport({
@@ -184,13 +207,13 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.attributes.email).toBe(otherEmail);
     expect(customer.attributes.name).toBe(name);
   });
 
   test("can clear user attributes", async () => {
-    const oldCustomer = await getCustomer(customerId);
+    const oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer.attributes.email).toBeTruthy();
     expect(oldCustomer.attributes.name).toBeTruthy();
     expect(oldCustomer.attributes.age).toBeTruthy();
@@ -205,14 +228,14 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.attributes.email).toBeUndefined();
     expect(customer.attributes.age).toBeUndefined();
     expect(customer.attributes.name).toBeTruthy();
   });
 
   test("can add groups as attributes", async () => {
-    const oldCustomer = await getCustomer(customerId);
+    const oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer.attributes[`In ${groupOne}`]).toBeFalsy();
     expect(oldCustomer.attributes[`In ${groupTwo}`]).toBeFalsy();
 
@@ -226,13 +249,13 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.attributes[`In ${groupOne}`]).toBeTruthy();
     expect(customer.attributes[`In ${groupTwo}`]).toBeTruthy();
   });
 
   test("can remove group attribute", async () => {
-    const oldCustomer = await getCustomer(customerId);
+    const oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer.attributes[`In ${groupOne}`]).toBeTruthy();
     expect(oldCustomer.attributes[`In ${groupTwo}`]).toBeTruthy();
 
@@ -246,16 +269,16 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer.attributes[`In ${groupOne}`]).toBeTruthy();
     expect(customer.attributes[`In ${groupTwo}`]).toBeFalsy();
   });
 
   test("can change customer_id", async () => {
-    let oldCustomer = await getCustomer(customerId);
+    let oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer.id).toBe(customerId);
 
-    let newCustomer = await getCustomer(otherCustomerId);
+    let newCustomer = await cioClient.getCustomer(otherCustomerId);
     expect(newCustomer).toBe(null);
 
     await runExport({
@@ -268,20 +291,47 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    oldCustomer = await getCustomer(customerId);
+    oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer).toBe(null);
 
-    newCustomer = await getCustomer(otherCustomerId);
+    newCustomer = await cioClient.getCustomer(otherCustomerId);
     expect(newCustomer.id).toBe(otherCustomerId);
     expect(newCustomer.attributes.email).toBe(email);
   });
 
-  test("can change customer_id along with other properties", async () => {
-    let oldCustomer = await getCustomer(otherCustomerId);
+  test("it can change the email address and orphan the old user if sync mode is not deleting", async () => {
+    // customer.io requires deleting the old customer on FK change
+    await runExport({
+      syncOperations: { create: true, update: true, delete: false },
+      oldProfileProperties: { customer_id: otherCustomerId, email },
+      newProfileProperties: { customer_id: anotherCustomerId, email },
+      oldGroups: [groupOne, groupTwo],
+      newGroups: [groupOne, groupTwo],
+      toDelete: false,
+    });
+
+    await indexCustomers(newNock);
+
+    // old user still there
+    const oldCustomer = await cioClient.getCustomer(otherCustomerId);
     expect(oldCustomer.id).toBe(otherCustomerId);
     expect(oldCustomer.attributes.email).toBe(email);
 
-    let newCustomer = await getCustomer(customerId);
+    // new user created
+    const newCustomer = await cioClient.getCustomer(anotherCustomerId);
+    expect(newCustomer).not.toBe(null);
+    expect(newCustomer.id).toBe(anotherCustomerId);
+    expect(newCustomer.attributes.email).toBe(email);
+    expect(newCustomer.attributes[`In ${groupOne}`]).toBeTruthy();
+    expect(newCustomer.attributes[`In ${groupTwo}`]).toBeTruthy();
+  });
+
+  test("can change customer_id along with other properties", async () => {
+    let oldCustomer = await cioClient.getCustomer(otherCustomerId);
+    expect(oldCustomer.id).toBe(otherCustomerId);
+    expect(oldCustomer.attributes.email).toBe(email);
+
+    let newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer).toBe(null);
 
     await runExport({
@@ -294,16 +344,38 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    oldCustomer = await getCustomer(otherCustomerId);
+    oldCustomer = await cioClient.getCustomer(otherCustomerId);
     expect(oldCustomer).toBe(null);
 
-    newCustomer = await getCustomer(customerId);
+    newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer.id).toBe(customerId);
     expect(newCustomer.attributes.email).toBe(otherEmail);
   });
 
+  test("cannot delete an user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          create: true,
+          delete: false,
+          update: true,
+        },
+        oldProfileProperties: { customer_id: customerId },
+        newProfileProperties: { customer_id: customerId },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
+
+    // no effect
+    const customer = await cioClient.getCustomer(customerId);
+    expect(customer.id).toBe(customerId);
+    expect(customer.attributes.email).toBe(otherEmail);
+  });
+
   test("can delete a customer", async () => {
-    const oldCustomer = await getCustomer(customerId);
+    const oldCustomer = await cioClient.getCustomer(customerId);
     expect(oldCustomer).toBeTruthy();
 
     await runExport({
@@ -316,12 +388,12 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(customerId);
+    const customer = await cioClient.getCustomer(customerId);
     expect(customer).toBe(null);
   });
 
   test("can delete a nonexistent customer", async () => {
-    const oldCustomer = await getCustomer(nonexistentCustomerId);
+    const oldCustomer = await cioClient.getCustomer(nonexistentCustomerId);
     expect(oldCustomer).toBe(null);
 
     await runExport({
@@ -334,15 +406,17 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await getCustomer(nonexistentCustomerId);
+    const customer = await cioClient.getCustomer(nonexistentCustomerId);
     expect(customer).toBe(null);
   });
 
   test("can add a customer passing a nonexistent customer_id on the oldProfileProperties", async () => {
-    let newCustomer = await getCustomer(customerId);
+    let newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer).toBe(null);
 
-    const nonexistentCustomer = await getCustomer(nonexistentCustomerId);
+    const nonexistentCustomer = await cioClient.getCustomer(
+      nonexistentCustomerId
+    );
     expect(nonexistentCustomer).toBe(null);
 
     await runExport({
@@ -355,7 +429,7 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    newCustomer = await getCustomer(customerId);
+    newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer).toBeTruthy();
     expect(newCustomer.attributes.email).toBe(email);
   });

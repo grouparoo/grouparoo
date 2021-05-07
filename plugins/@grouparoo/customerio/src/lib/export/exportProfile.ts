@@ -20,14 +20,16 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const customerId = newProfileProperties["customer_id"];
   const oldCustomerId = oldProfileProperties["customer_id"];
+  let newCustomer = null;
 
   if (!customerId) {
     throw new Error(`newProfileProperties[customer_id] is a required mapping`);
   }
+  newCustomer = await client.getCustomer(customerId);
 
   if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
     // Must delete old customer if ID has changed
-    await deleteCustomer(client, syncOperations, customerId);
+    await deleteCustomer(client, syncOperations, oldCustomerId);
   }
 
   if (toDelete) {
@@ -66,8 +68,17 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
   }
 
-  await client.identify(customerId, payload);
+  if (!newCustomer && !syncOperations.create) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not create new profiles."
+    );
+  } else if (newCustomer && !syncOperations.update) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not update existing profiles."
+    );
+  }
 
+  await client.identify(customerId, payload);
   return { success: true };
 };
 

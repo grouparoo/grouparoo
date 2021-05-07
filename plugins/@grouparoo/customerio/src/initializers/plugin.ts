@@ -55,6 +55,12 @@ export class Plugins extends Initializer {
               required: true,
               description: "Customer.io Tracking API key",
             },
+            {
+              key: "appApiKey",
+              displayName: "App API Key",
+              required: true,
+              description: "Customer.io App API key",
+            },
           ],
           methods: { test, appOptions },
         },

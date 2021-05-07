@@ -8,6 +8,8 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
     name: "grouparoo_test_connection",
   });
 
+  await client.getCampaigns();
+
   return {
     success: true,
     message: "Connected.",
