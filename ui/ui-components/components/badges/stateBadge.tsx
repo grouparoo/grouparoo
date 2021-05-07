@@ -26,6 +26,8 @@ export default function StateBadge({
       break;
     case "deleted":
       variant = "danger";
+    case "failed":
+      variant = "danger";
       break;
     case "draft":
       variant = "warning";
