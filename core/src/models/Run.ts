@@ -385,19 +385,17 @@ export class Run extends Model {
       (await plugin.readSetting("core", "sweeper-delete-old-runs-days")).value
     );
 
-    const runs = await Run.findAll({
+    const count = await Run.destroy({
       where: {
         state: { [Op.in]: ["stopped", "complete"] },
         createdAt: {
           [Op.lt]: Moment().subtract(days, "days").toDate(),
         },
       },
-      order: [["createdAt", "desc"]],
+      force: true,
       limit,
     });
 
-    for (const i in runs) await runs[i].destroy();
-
-    return { count: runs.length, days };
+    return { count, days };
   }
 }

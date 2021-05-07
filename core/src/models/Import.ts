@@ -245,19 +245,16 @@ export class Import extends Model {
         .value
     );
 
-    const imports = await Import.findAll({
+    const count = await Import.destroy({
       where: {
         createdAt: {
           [Op.lt]: Moment().subtract(days, "days").toDate(),
         },
       },
+      force: true,
       limit,
     });
 
-    for (const i in imports) {
-      await imports[i].destroy();
-    }
-
-    return { count: imports.length, days };
+    return { count, days };
   }
 }
