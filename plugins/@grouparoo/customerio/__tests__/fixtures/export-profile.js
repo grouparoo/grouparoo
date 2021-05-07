@@ -1,7 +1,7 @@
 const nock = require("nock");
 
 nock("https://track.customer.io:443", { encodedQueryParams: true })
-  .delete(" /api/v1/customers/grouparoo")
+  .delete("/api/v1/customers/grouparoo")
   .once()
   .reply(200, {}, [
     "Cache-Control",
