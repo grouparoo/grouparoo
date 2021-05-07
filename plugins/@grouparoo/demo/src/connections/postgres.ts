@@ -85,6 +85,10 @@ export default class Postgres extends Connection {
     this.client = null;
   }
 
+  defaultConfigDir() {
+    return "purchases";
+  }
+
   getAppOptions() {
     const { host, port, database, schema, user, password } = this.config;
     const appOptions = { host, port, database, schema, user, password };

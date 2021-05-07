@@ -25,7 +25,7 @@ class Config {
     this.dbType = type;
 
     switch (type) {
-      case "purchases":
+      case "postgres":
         this.db = new Postgres();
         this.addDir("purchases");
         break;
@@ -65,13 +65,17 @@ class Config {
       case "mongo":
         this.setDb("mongo");
         break;
+      case "postgres":
+        this.setDb("postgres");
+        break;
+      case "b2c":
       case "purchases":
-        this.setDb("purchases");
-        this.setDataset("b2b", "purchases");
+        this.setDataset("b2c", type);
+        this.addDir("purchases");
         break;
       case "events":
-        this.setDb("purchases");
-        this.setDataset("b2b", "purchases");
+        this.setDataset("b2c", type);
+        this.addDir("purchases");
         this.addDir("events");
         break;
       case "mailchimp":
@@ -107,10 +111,9 @@ class Config {
 
     if (!db) {
       db = new Postgres();
-      subDirs["purchases"] = true;
-      dataset = "b2c";
     }
     if (!dataset) {
+      subDirs[db.defaultConfigDir()] = true;
       dataset = "b2c";
     }
 

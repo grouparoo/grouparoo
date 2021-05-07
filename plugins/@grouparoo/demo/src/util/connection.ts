@@ -17,4 +17,7 @@ export default class Connection {
     keys: string[],
     row: { [key: string]: string | number | Date }
   ): Promise<void> {}
+  defaultConfigDir() {
+    return null;
+  }
 }

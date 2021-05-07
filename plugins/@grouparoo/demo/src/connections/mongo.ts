@@ -13,6 +13,9 @@ const TYPES = {
           id: {
             bsonType: "int",
           },
+          account_id: {
+            bsonType: "int",
+          },
           first_name: {
             bsonType: "string",
           },
@@ -143,6 +146,10 @@ export default class Mongo extends Connection {
     super();
     this.config = findConfig();
     this.conn = null;
+  }
+
+  defaultConfigDir() {
+    return "mongo";
   }
 
   getAppOptions() {

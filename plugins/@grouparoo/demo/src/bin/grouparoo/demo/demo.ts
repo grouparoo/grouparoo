@@ -37,7 +37,7 @@ export class Console extends CLI {
 
     let types = params._arguments || [];
     if (types.length === 0) {
-      types = ["purchases"];
+      types = ["b2c"];
     }
     console.log(`Using types: ${types.join(", ")}`);
     const { db, subDirs, dataset } = getConfig(types);
