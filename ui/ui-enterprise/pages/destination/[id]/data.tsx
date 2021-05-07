@@ -70,30 +70,13 @@ export default function Page(props) {
     destination.destinationGroupMemberships.forEach(
       (dgm) => (destinationGroupMembershipsObject[dgm.groupId] = dgm.remoteKey)
     );
+
     await execApi("put", `/destination/${id}`, {
       mapping: filteredMapping,
+      trackedGroupId: trackedGroupId || "_none",
       destinationGroupMemberships: destinationGroupMembershipsObject,
+      triggerExport: true,
     });
-
-    // update group being tracked after the edit
-    if (
-      trackedGroupId !== props.trackedGroupId &&
-      trackedGroupId !== "_none" &&
-      trackedGroupId !== null &&
-      trackedGroupId !== ""
-    ) {
-      await execApi("post", `/destination/${id}/track`, {
-        groupId: trackedGroupId,
-      });
-    } else if (
-      trackedGroupId !== props.trackedGroupId &&
-      trackedGroupId === "_none"
-    ) {
-      await execApi("post", `/destination/${id}/untrack`);
-    } else {
-      // trigger a full export
-      await execApi("post", `/destination/${id}/export`, { force: true });
-    }
 
     setLoading(false);
     successHandler.set({

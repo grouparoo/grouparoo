@@ -169,7 +169,7 @@ export default function Navigation(props) {
           </span>
         </div>
 
-        {navigationMode && navigationMode !== "unauthenticated" && (
+        {navigationMode === "authenticated" && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}
@@ -322,6 +322,8 @@ export default function Navigation(props) {
             Join us on Slack!
           </Button>
         </div>
+
+      {navigation?.bottomMenuItems?.length > 0 ? (
         <div
           id="bottomNavigationMenu"
           style={{
@@ -378,6 +380,7 @@ export default function Navigation(props) {
           </Accordion>
         </div>
       </div>
+      ) : null}
     </div>
   );
 }

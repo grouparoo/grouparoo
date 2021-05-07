@@ -7,6 +7,7 @@ import { exportProfile } from "../../src/lib/export/exportProfile";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
 import { indexDevices } from "../utils/shared";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 let client: OneSignal.Client;
 
@@ -49,6 +50,7 @@ async function cleanUp(suppressErrors: boolean) {
 }
 
 async function runExport({
+  syncOperations = DestinationSyncModeData.sync.operations,
   oldProfileProperties,
   newProfileProperties,
   oldGroups,
@@ -63,6 +65,7 @@ async function runExport({
     destination: null,
     destinationId: null,
     destinationOptions: null,
+    syncOperations,
     export: {
       profile: null,
       profileId: null,
@@ -115,6 +118,32 @@ describe("OneSignal/exportProfile", () => {
         toDelete: false,
       })
     ).rejects.toThrow(/external_user_id/);
+  });
+
+  test("cannot update a device if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: false,
+          create: false,
+          delete: false,
+        },
+        oldProfileProperties: { external_user_id: extUserId1 },
+        newProfileProperties: {
+          external_user_id: extUserId1,
+          first_name: "Joe",
+        },
+        oldGroups: [],
+        newGroups: [],
+        toDelete: false,
+      })
+    ).rejects.toThrow(/sync mode does not update/);
+
+    await indexDevices(newNock);
+
+    const { body: player } = await client.viewDevice(playerId1);
+    expect(player.external_user_id).toBe(extUserId1);
+    expect(player.tags.first_name).toBeUndefined(); // no change.
   });
 
   test("can add tags", async () => {
@@ -256,32 +285,36 @@ describe("OneSignal/exportProfile", () => {
     expect(player.tags[`in_${weirdGroupNormalized}`]).toBeTruthy();
   });
 
-  test("can clear tags when deleting a user", async () => {
-    await runExport({
-      oldProfileProperties: {
-        external_user_id: extUserId1,
-        first_name: "John",
-        [weirdTag]: "test",
-      },
-      newProfileProperties: {
-        external_user_id: extUserId1,
-        first_name: "John",
-        [weirdTag]: "test",
-        some_new_tag: "but he's being deleted!",
-      },
-      oldGroups: [groupOne, weirdGroup],
-      newGroups: [groupOne, weirdGroup],
-      toDelete: true,
-    });
+  test("cannot clean tags when deleting a contact if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          update: true,
+          create: false,
+          delete: false,
+        },
+        oldProfileProperties: {
+          external_user_id: extUserId1,
+          first_name: "John",
+          [weirdTag]: "test",
+        },
+        newProfileProperties: {
+          external_user_id: extUserId1,
+          first_name: "John",
+          [weirdTag]: "test",
+          some_new_tag: "but he's being deleted!",
+        },
+        oldGroups: [groupOne, weirdGroup],
+        newGroups: [groupOne, weirdGroup],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
 
     await indexDevices(newNock);
 
     const { body: player } = await client.viewDevice(playerId1);
     expect(player.external_user_id).toBe(extUserId1);
-    expect(player.tags.first_name).toBeUndefined();
-    expect(player.tags.some_new_tag).toBeUndefined();
-    expect(player.tags[weirdTagNormalized]).toBeUndefined();
-    expect(player.tags[`in_${weirdGroupNormalized}`]).toBeUndefined();
-    expect(player.tags[`in_${groupOne}`]).toBeUndefined();
+    expect(player.tags.first_name).toBe("John"); // no change.
+    expect(player.tags[weirdTagNormalized]).toBe("test"); // no change.
   });
 });

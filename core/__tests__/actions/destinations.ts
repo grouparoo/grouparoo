@@ -301,23 +301,18 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          groupId: group.id,
+          trackedGroupId: group.id,
         };
-        const { error } = await specHelper.runAction(
-          "destination:trackGroup",
-          connection
-        );
-        expect(error).toBeUndefined();
 
-        connection.params = {
-          csrfToken,
-          id,
-        };
-        const { destination } = await specHelper.runAction(
-          "destination:view",
+        const { destination, run, error } = await specHelper.runAction(
+          "destination:edit",
           connection
         );
+        expect(error).toBeFalsy();
         expect(destination.destinationGroup.id).toBe(group.id);
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(true);
+        expect(run.state).toBe("running");
       });
 
       test("an administrator can set the destination group memberships", async () => {
@@ -334,6 +329,7 @@ describe("actions/destinations", () => {
           connection
         );
         expect(error).toBeFalsy();
+        expect(destination.destinationGroup.id).toBe(group.id);
         expect(destination.destinationGroupMemberships).toEqual([
           {
             groupId: group.id,
@@ -472,18 +468,103 @@ describe("actions/destinations", () => {
         connection.params = {
           csrfToken,
           id,
-          groupId: destination.destinationGroup.id,
+          trackedGroupId: null,
         };
-        const { error } = await specHelper.runAction(
-          "destination:unTrackGroup",
+        const {
+          destination: updatedDestination,
+          run,
+          error,
+        } = await specHelper.runAction("destination:edit", connection);
+        expect(error).toBeFalsy();
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(false);
+        expect(run.state).toBe("running");
+        expect(updatedDestination.destinationGroup).toBe(null);
+      });
+
+      test("update the tracked group", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          trackedGroupId: group.id,
+        };
+        const { destination: _destination } = await specHelper.runAction(
+          "destination:edit",
           connection
         );
-        expect(error).toBeUndefined();
+        expect(_destination.destinationGroup.id).toBe(group.id);
+
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0]).toEqual(
+          expect.objectContaining({
+            destinationId: id,
+            creatorId: group.id,
+            force: true,
+          })
+        );
+
+        await runningRuns[0].stop();
+      });
+
+      test("an administrator can trigger an export while updating a destination", async () => {
+        let runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+        expect(runningRuns).toHaveLength(0);
+
+        connection.params = {
+          csrfToken,
+          id,
+          name: "the test destination",
+          triggerExport: true,
+        };
+        const { errors, destination: destination } = await specHelper.runAction(
+          "destination:edit",
+          connection
+        );
+        expect(errors).toBeFalsy();
+        expect(destination.name).toBe("the test destination");
+
+        runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0]).toEqual(
+          expect.objectContaining({
+            destinationId: id,
+            creatorId: destination.destinationGroup.id,
+            force: true,
+          })
+        );
+
+        await runningRuns[0].stop();
+      });
+
+      test("an administator will not trigger an export by default when updating a destination", async () => {
+        connection.params = {
+          csrfToken,
+          id,
+          name: "test destination",
+        };
+        const { errors, destination: destination } = await specHelper.runAction(
+          "destination:edit",
+          connection
+        );
+        expect(errors).toBeFalsy();
+        expect(destination.name).toBe("test destination");
+
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorType: "group" },
+        });
+
+        expect(runningRuns.length).toBe(0);
       });
 
       test("an administrator can export the members of a destination with a forced group run", async () => {
-        await specHelper.runAction("destination:trackGroup", connection);
-
         connection.params = {
           csrfToken,
           id,
@@ -513,9 +594,20 @@ describe("actions/destinations", () => {
             force: true,
           })
         );
-
-        await specHelper.runAction("destination:unTrackGroup", connection);
       });
+    });
+
+    test("remove the tracked group", async () => {
+      connection.params = {
+        csrfToken,
+        id,
+        trackedGroupId: "_none",
+      };
+      const { destination } = await specHelper.runAction(
+        "destination:edit",
+        connection
+      );
+      expect(destination.destinationGroup).toBe(null);
     });
 
     test("an administrator can destroy a destination (soft)", async () => {

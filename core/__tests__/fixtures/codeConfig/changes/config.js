@@ -92,7 +92,7 @@ module.exports = async function getConfig() {
       isArray: false,
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
-        column: "first_name",
+        column: "other_first_name", // CHANGED!
       },
       filters: [],
     },

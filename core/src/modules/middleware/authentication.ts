@@ -1,4 +1,4 @@
-import { api, config, action, Connection, chatRoom } from "actionhero";
+import { api, config, action, Connection, chatRoom, env } from "actionhero";
 import { CLS } from "../cls";
 import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
@@ -44,6 +44,13 @@ async function authenticateTeamMember(
   data: { [key: string]: any },
   optional: boolean
 ) {
+  if (
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    env === "development"
+  ) {
+    return; // TODO: What's the log in story for `grouparoo config`
+  }
+
   const error: Error = await CLS.wrap(
     async () => {
       const session = await api.session.load(data.connection);
@@ -137,6 +144,13 @@ async function authenticateTeamMemberInRoom(
   const mode = "read";
   const topic =
     roomNameParts[0] === "model" ? roomNameParts[1] : roomNameParts[0];
+
+  if (
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    env === "development"
+  ) {
+    return; // TODO: What's the log in story for `grouparoo config`
+  }
 
   await CLS.wrap(async () => {
     const session = await api.session.load(connection);

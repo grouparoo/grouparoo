@@ -1,7 +1,6 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, api, config } from "actionhero";
-import { Schedule, Run } from "..";
-import { CLS } from "../modules/cls";
+import { Schedule } from "..";
 import { Reset } from "../modules/reset";
 
 export class RunCLI extends CLI {
@@ -22,13 +21,6 @@ export class RunCLI extends CLI {
         default: false,
         description: "Should we run all Schedules from the beginning?",
         letter: "m",
-        flag: true,
-      },
-      "run-all-schedules": {
-        default: false,
-        description:
-          "Should we run all Schedules, even those that do not have a recurring time set?",
-        letter: "s",
         flag: true,
       },
       "no-export": {
@@ -60,31 +52,39 @@ export class RunCLI extends CLI {
     if (params.reset) await Reset.data(process.env.GROUPAROO_RUN_MODE);
     if (params.resetHighWatermarks) await Reset.resetHighWatermarks();
     process.env.GROUPAROO_DISABLE_EXPORTS = String(
-      params.export.toString().toLowerCase() !== "true"
+      params.export?.toString()?.toLowerCase() !== "true"
     );
 
     const { main } = await import("../grouparoo");
     await main();
 
-    await this.runPausedTasks(params);
-
-    if (params.runAllSchedules) await this.runNonRecurringSchedules();
+    await this.checkSchedules();
+    await this.runTasks(params);
 
     return false;
   }
 
   checkWorkers() {
-    if (!config.tasks.scheduler)
-      throw new Error(`The Task Scheduler is not enabled`);
-    if (config.tasks.minTaskProcessors < 1)
-      throw new Error(`No Task Workers are enabled`);
+    if (config.tasks.minTaskProcessors < 1) {
+      return GrouparooCLI.logger.fatal(`No Task Workers are enabled`);
+    }
   }
 
-  async runPausedTasks(params) {
-    let checkDeltas = !params.resetHighWatermarks;
+  async checkSchedules() {
+    const scheduleCount = await Schedule.count();
+    if (scheduleCount === 0) {
+      return GrouparooCLI.logger.fatal(`No schedules found.
+The run command uses schedules to know what profiles to import.
+See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`);
+    }
+  }
 
+  async runTasks(params) {
     const tasks = {
-      "schedule:updateSchedules": { checkDeltas },
+      "schedules:enqueueRuns": {
+        ignoreDeltas: true,
+        runIfNotRecurring: true,
+      },
       "run:recurringInternalRun": {},
       "group:updateCalculatedGroups": {},
     };
@@ -93,22 +93,6 @@ export class RunCLI extends CLI {
       const args = tasks[name];
       const task: Task = api.tasks.tasks[name];
       await task.run(args, {});
-    }
-  }
-
-  async runNonRecurringSchedules() {
-    const schedules = await Schedule.findAll({ where: { recurring: false } });
-    for (const i in schedules) {
-      const run = await Run.create({
-        creatorId: schedules[i].id,
-        creatorType: "schedule",
-        state: "running",
-      });
-
-      await CLS.enqueueTask("schedule:run", {
-        scheduleId: schedules[i].id,
-        runId: run.id,
-      });
     }
   }
 }

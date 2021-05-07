@@ -160,6 +160,8 @@ function renderError(error: AxiosError) {
 }
 
 function sanitizeHeaders(headers: { [k: string]: any } = {}) {
+  if (!process.env.SERVER_TOKEN) return headers; // if the page is being initialized in the browser, the ENV won't be set
+
   const matcher = new RegExp(process.env.SERVER_TOKEN, "g");
   const replacement = "[REDACTED]";
 

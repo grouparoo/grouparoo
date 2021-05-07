@@ -5,6 +5,7 @@ import { Destination } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
+import { Run } from "../models/Run";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
@@ -159,6 +160,8 @@ export class DestinationEdit extends AuthenticatedAction {
       mapping: { required: false },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
+      trackedGroupId: { required: false },
+      triggerExport: { required: false },
     };
   }
 
@@ -176,7 +179,28 @@ export class DestinationEdit extends AuthenticatedAction {
 
     await destination.update(params);
 
-    return { destination: await destination.apiData() };
+    let run: Run;
+
+    if (
+      params.trackedGroupId &&
+      params.trackedGroupId !== "_none" &&
+      params.trackedGroupId !== destination.groupId
+    ) {
+      const group = await Group.findById(params.trackedGroupId);
+      run = await destination.trackGroup(group);
+    } else if (
+      (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
+      destination.groupId
+    ) {
+      run = await destination.unTrackGroup();
+    } else if (params.triggerExport) {
+      run = await destination.exportGroupMembers(true);
+    }
+
+    return {
+      destination: await destination.apiData(),
+      run: run ? await run.apiData() : undefined,
+    };
   }
 }
 
@@ -250,46 +274,6 @@ export class DestinationExportArrayProperties extends AuthenticatedAction {
     return {
       exportArrayProperties: await destination.getExportArrayProperties(),
     };
-  }
-}
-
-export class DestinationTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:trackGroup";
-    this.description = "add a group to a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-      groupId: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    const group = await Group.findById(params.groupId);
-    await destination.trackGroup(group);
-    return { destination: await destination.apiData() };
-  }
-}
-
-export class DestinationUnTrackGroup extends AuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "destination:unTrackGroup";
-    this.description = "remove a group from a destination";
-    this.outputExample = {};
-    this.permission = { topic: "destination", mode: "write" };
-    this.inputs = {
-      id: { required: true },
-    };
-  }
-
-  async runWithinTransaction({ params }) {
-    const destination = await Destination.findById(params.id);
-    await destination.unTrackGroup();
-    return { destination: await destination.apiData() };
   }
 }
 

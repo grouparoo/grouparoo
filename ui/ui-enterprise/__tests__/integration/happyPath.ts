@@ -143,6 +143,7 @@ describe("integration", () => {
 
       const button = await browser.findElement(by.className("btn-primary"));
       await button.click();
+      await helper.sleep(1 * 1000);
 
       await browser.get(`${env.url}/dashboard`);
 

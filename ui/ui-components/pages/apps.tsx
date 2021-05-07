@@ -120,7 +120,7 @@ export default function Page(props) {
 
       <br />
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
         <Button
           variant="primary"
           onClick={() => {

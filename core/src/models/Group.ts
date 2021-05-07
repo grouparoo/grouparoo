@@ -357,8 +357,8 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.stopPreviousRuns(this);
   }
 
-  async addProfile(profile: Profile) {
-    await GroupOps.buildProfileImport(profile.id, "group", this.id);
+  async addProfile(profile: Profile, force = true) {
+    await GroupOps.updateProfile(profile.id, "group", this.id, force);
 
     await GroupMember.create({
       groupId: this.id,
@@ -366,14 +366,14 @@ export class Group extends LoggedModel<Group> {
     });
   }
 
-  async removeProfile(profile: Profile) {
+  async removeProfile(profile: Profile, force = false) {
     const membership = await GroupMember.findOne({
       where: { groupId: this.id, profileId: profile.id },
     });
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    await GroupOps.buildProfileImport(profile.id, "group", this.id);
+    await GroupOps.updateProfile(profile.id, "group", this.id, force);
 
     await membership.destroy();
   }
