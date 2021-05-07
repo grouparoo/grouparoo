@@ -9,7 +9,7 @@ import {
   BeforeDestroy,
   BeforeCreate,
   AfterDestroy,
-  AfterUpdate,
+  // AfterUpdate,
   HasMany,
   DefaultScope,
 } from "sequelize-typescript";
@@ -20,7 +20,7 @@ import { Source } from "./Source";
 import { Option } from "./Option";
 import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
-import { ConfigWriter } from "./../modules/configWriter";
+// import { ConfigWriter } from "./../modules/configWriter";
 import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
@@ -320,10 +320,10 @@ export class App extends LoggedModel<App> {
     }
   }
 
-  @AfterUpdate
-  static async writeConfig(instance: App) {
-    return await ConfigWriter.write(instance);
-  }
+  // @AfterUpdate
+  // static async writeConfig(instance: App) {
+  //   return await ConfigWriter.write(instance);
+  // }
 
   @AfterDestroy
   static async destroyOptions(instance: App) {
