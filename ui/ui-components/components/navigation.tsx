@@ -323,64 +323,64 @@ export default function Navigation(props) {
           </Button>
         </div>
 
-      {navigation?.bottomMenuItems?.length > 0 ? (
-        <div
-          id="bottomNavigationMenu"
-          style={{
-            alignSelf: "flex-end",
-            justifyContent: "normal",
-            width: "100%",
-            margin: 20,
-            paddingRight: 20,
-          }}
-        >
-          <Accordion activeKey={expandAccountMenu ? "1" : null}>
-            <Accordion.Toggle
-              eventKey="0"
-              as={Button}
-              variant="link"
-              onClick={() => setExpandAccountMenu(!expandAccountMenu)}
-            >
-              <span
-                id="navigation-greeting"
-                style={{
-                  marginLeft: -13,
-                  color: "white",
-                  fontSize: 16,
-                  width: "100%",
-                  textAlign: "left",
-                  textTransform: "none",
-                  fontWeight: 300,
-                }}
+        {navigation?.bottomMenuItems?.length > 0 ? (
+          <div
+            id="bottomNavigationMenu"
+            style={{
+              alignSelf: "flex-end",
+              justifyContent: "normal",
+              width: "100%",
+              margin: 20,
+              paddingRight: 20,
+            }}
+          >
+            <Accordion activeKey={expandAccountMenu ? "1" : null}>
+              <Accordion.Toggle
+                eventKey="0"
+                as={Button}
+                variant="link"
+                onClick={() => setExpandAccountMenu(!expandAccountMenu)}
               >
-                {subMenuGreeting}
-              </span>
-            </Accordion.Toggle>
-            <Accordion.Collapse eventKey="1">
-              <div
-                style={{
-                  marginLeft: 10,
-                }}
-              >
-                {navigation?.bottomMenuItems.map((nav, idx) => {
-                  if (nav.type === "link") {
-                    return (
-                      <p key={`bottom-dropdown-${idx}`}>
-                        <Link href={nav.href}>
-                          <a style={{ color: "white" }}>{nav.title}</a>
-                        </Link>
-                      </p>
-                    );
-                  } else if (nav.type === "divider") {
-                    return <hr key={`bottom-dropdown-${idx}`} />;
-                  }
-                })}
-              </div>
-            </Accordion.Collapse>
-          </Accordion>
-        </div>
+                <span
+                  id="navigation-greeting"
+                  style={{
+                    marginLeft: -13,
+                    color: "white",
+                    fontSize: 16,
+                    width: "100%",
+                    textAlign: "left",
+                    textTransform: "none",
+                    fontWeight: 300,
+                  }}
+                >
+                  {subMenuGreeting}
+                </span>
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="1">
+                <div
+                  style={{
+                    marginLeft: 10,
+                  }}
+                >
+                  {navigation?.bottomMenuItems.map((nav, idx) => {
+                    if (nav.type === "link") {
+                      return (
+                        <p key={`bottom-dropdown-${idx}`}>
+                          <Link href={nav.href}>
+                            <a style={{ color: "white" }}>{nav.title}</a>
+                          </Link>
+                        </p>
+                      );
+                    } else if (nav.type === "divider") {
+                      return <hr key={`bottom-dropdown-${idx}`} />;
+                    }
+                  })}
+                </div>
+              </Accordion.Collapse>
+            </Accordion>
+          </div>
+        ) : null}
       </div>
-      ) : null}
     </div>
   );
 }
