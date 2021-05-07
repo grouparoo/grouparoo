@@ -49,7 +49,7 @@ export namespace GroupOps {
   }
 
   /**
-   * Given a Profile, create an import to recalculate its Group Membership
+   * Given a Profile, create an import to recalculate its Group Membership.  Optionally re-import all Profile Properties with `force`
    */
   export async function updateProfile(
     profileId: string,
