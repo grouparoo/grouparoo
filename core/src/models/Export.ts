@@ -318,11 +318,23 @@ export class Export extends Model {
         )
         LIMIT ${limit}
       )
-      RETURNING id
+     ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
       ;`,
       { type: QueryTypes.SELECT }
     );
 
-    return { count: rows.length, days };
+    let responseCount: number;
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCount = changesRows[0].count;
+    }
+
+    return {
+      count: responseCount !== undefined ? responseCount : rows.length,
+      days,
+    };
   }
 }
