@@ -100,12 +100,7 @@ export default function Page(props) {
                 />
               </Form.Group>
 
-              <LoadingButton
-                variant="primary"
-                type="submit"
-                id="update"
-                disabled={loading}
-              >
+              <LoadingButton variant="primary" type="submit" disabled={loading}>
                 Update
               </LoadingButton>
             </fieldset>
