@@ -145,11 +145,13 @@ describe("integration", () => {
       await button.click();
 
       await browser.get(`${env.url}/dashboard`);
-      await helper.sleep(4 * 1000); // sleep to let the navigation load
 
-      const greeting = await browser
-        .findElement(by.id("navigation-greeting"))
-        .getText();
+      const element = await browser.wait(
+        until.elementLocated(by.id("navigation-greeting")),
+        10000
+      );
+
+      const greeting = await element.getText();
       expect(greeting).toContain("Hello Super Mario");
     },
     helper.mediumTime
