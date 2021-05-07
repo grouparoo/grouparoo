@@ -8,6 +8,7 @@ export const SCHEMA_NAME = "demo";
 const TYPES = {
   users: {
     id: "INT NOT NULL PRIMARY KEY",
+    account_id: "INT",
     first_name: "VARCHAR(191) NOT NULL",
     last_name: "VARCHAR(191) NOT NULL",
     email: "VARCHAR(191) NOT NULL",

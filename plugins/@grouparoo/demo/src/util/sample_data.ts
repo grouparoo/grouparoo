@@ -9,16 +9,16 @@ interface DataOptions {
 }
 
 export async function users(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "users", "id", true, true, options);
+  await createCsvTable(db, "shared", "users", "id", true, true, options);
 }
 
 export async function purchases(db: Connection, options: DataOptions = {}) {
-  await createCsvTable(db, "purchases", "user_id", true, false, options);
+  await createCsvTable(db, "b2c", "purchases", "user_id", true, false, options);
 }
 
-export function readCsvTable(tableName) {
+export function readCsvTable(categoryName: string, tableName: string) {
   const filePath = path.resolve(
-    path.join(__dirname, "..", "..", "data", `${tableName}.csv`)
+    path.join(__dirname, "..", "..", "data", categoryName, `${tableName}.csv`)
   );
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   return rows;
@@ -26,6 +26,7 @@ export function readCsvTable(tableName) {
 
 async function createCsvTable(
   db: Connection,
+  categoryName: string,
   tableName: string,
   userId: string,
   createdAt: boolean,
@@ -36,6 +37,7 @@ async function createCsvTable(
   await db.connect();
   await loadCsvTable(
     db,
+    categoryName,
     tableName,
     userId,
     createdAt,
@@ -47,6 +49,7 @@ async function createCsvTable(
 
 async function loadCsvTable(
   db: Connection,
+  categoryName: string,
   tableName: string,
   userId: string,
   createdAt: boolean,
@@ -58,7 +61,7 @@ async function loadCsvTable(
   }
   log(1, `Adding ${tableName}`);
   // read from data file
-  const rows = readCsvTable(tableName);
+  const rows = readCsvTable(categoryName, tableName);
   const keys = Object.keys(rows[0]);
 
   if (createdAt) {
