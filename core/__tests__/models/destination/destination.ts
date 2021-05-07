@@ -644,6 +644,18 @@ describe("models/destination", () => {
           await otherDestination.destroy();
         });
 
+        test("force (reimporting) can be toggled when tracking and un-tracking groups", async () => {
+          const trackRunA = await destination.trackGroup(group, false);
+          expect(trackRunA.force).toBe(false);
+          const unTrackRunA = await destination.unTrackGroup(false);
+          expect(unTrackRunA.force).toBe(false);
+
+          const trackRunB = await destination.trackGroup(group, true);
+          expect(trackRunB.force).toBe(true);
+          const unTrackRunB = await destination.unTrackGroup(true);
+          expect(unTrackRunB.force).toBe(true);
+        });
+
         test("when the group being tracked is removed, the previous group should be exported one last time", async () => {
           const runA = await destination.trackGroup(group);
           const runB = await destination.unTrackGroup();
@@ -653,7 +665,7 @@ describe("models/destination", () => {
           expect(runA.state).toBe("stopped");
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
-          expect(runB.force).toBe(true);
+          expect(runB.force).toBe(false);
         });
 
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {

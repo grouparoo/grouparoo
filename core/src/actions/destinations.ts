@@ -5,6 +5,7 @@ import { Destination } from "../models/Destination";
 import { App } from "../models/App";
 import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
+import { Run } from "../models/Run";
 import { GroupMember } from "../models/GroupMember";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
@@ -178,23 +179,28 @@ export class DestinationEdit extends AuthenticatedAction {
 
     await destination.update(params);
 
+    let run: Run;
+
     if (
       params.trackedGroupId &&
       params.trackedGroupId !== "_none" &&
       params.trackedGroupId !== destination.groupId
     ) {
       const group = await Group.findById(params.trackedGroupId);
-      await destination.trackGroup(group);
+      run = await destination.trackGroup(group);
     } else if (
       (params.trackedGroupId === "_none" || params.trackedGroupId === null) &&
       destination.groupId
     ) {
-      await destination.unTrackGroup();
+      run = await destination.unTrackGroup();
     } else if (params.triggerExport) {
-      await destination.exportGroupMembers(true);
+      run = await destination.exportGroupMembers(true);
     }
 
-    return { destination: await destination.apiData() };
+    return {
+      destination: await destination.apiData(),
+      run: run ? await run.apiData() : undefined,
+    };
   }
 }
 

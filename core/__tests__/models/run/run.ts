@@ -11,6 +11,7 @@ import {
   Team,
   TeamMember,
   Profile,
+  GroupMember,
 } from "../../../src";
 import { utils } from "actionhero";
 
@@ -44,6 +45,9 @@ describe("models/run", () => {
     let team: Team;
     let teamMember: TeamMember;
     let schedule: Schedule;
+    let profileA: Profile;
+    let profileB: Profile;
+    let profileC: Profile;
 
     beforeAll(async () => {
       source = await helper.factories.source();
@@ -55,6 +59,15 @@ describe("models/run", () => {
       team = await helper.factories.team();
       teamMember = await helper.factories.teamMember(team);
       schedule = await helper.factories.schedule(source);
+
+      await group.update({ type: "calculated" });
+      await group.setRules(
+        group.fromConvenientRules([{ key: "id", operation: { op: "exists" } }])
+      );
+
+      profileA = await helper.factories.profile();
+      profileB = await helper.factories.profile();
+      profileC = await helper.factories.profile();
     });
 
     describe("creatorName", () => {
@@ -107,6 +120,10 @@ describe("models/run", () => {
     });
 
     describe("percentComplete", () => {
+      beforeEach(async () => {
+        await GroupMember.truncate();
+      });
+
       test("complete", async () => {
         run = await Run.create({
           state: "complete",
@@ -144,8 +161,15 @@ describe("models/run", () => {
           creatorType: "group",
           groupMethod: "runAddGroupMembers",
         });
+
+        // 0 members
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(0);
+
+        // 1 member
+        await profileA.updateGroupMembership();
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(16);
       });
 
       test("running - group - runRemoveGroupMembers", async () => {
@@ -155,8 +179,15 @@ describe("models/run", () => {
           creatorType: "group",
           groupMethod: "runRemoveGroupMembers",
         });
+
+        // 0 members
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(50);
+        expect(run.percentComplete).toBe(49);
+
+        // 1 member
+        await profileA.updateGroupMembership();
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(65);
       });
 
       test("running - group - removePreviousRunGroupMembers", async () => {
@@ -166,8 +197,20 @@ describe("models/run", () => {
           creatorType: "group",
           groupMethod: "removePreviousRunGroupMembers",
         });
+
+        run = await Run.create({
+          state: "running",
+          creatorId: group.id,
+          creatorType: "group",
+          groupMethod: "runRemoveGroupMembers",
+        });
+
+        // 3 members
+        await profileA.updateGroupMembership();
+        await profileB.updateGroupMembership();
+        await profileC.updateGroupMembership();
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(50);
+        expect(run.percentComplete).toBe(99);
       });
 
       test("running - group - complete", async () => {
@@ -178,22 +221,18 @@ describe("models/run", () => {
           groupMethod: "complete",
         });
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(100);
+        expect(run.percentComplete).toBe(99);
       });
 
       test("running - teamMember", async () => {
-        const profileA = await helper.factories.profile();
-        const profileB = await helper.factories.profile();
         run = await Run.create({
           state: "running",
           creatorId: teamMember.id,
           creatorType: "teamMember",
-          importsCreated: 1,
+          importsCreated: 1, // based on imports created
         });
         await run.determinePercentComplete();
-        expect(run.percentComplete).toBe(50);
-        await profileA.destroy();
-        await profileB.destroy();
+        expect(run.percentComplete).toBe(33);
       });
     });
 
@@ -581,6 +620,8 @@ describe("models/run", () => {
     });
 
     test("creating a run will throw and become complete if there is an error with a property", async () => {
+      await Profile.truncate();
+
       const app = await App.create({
         name: "bad app",
         type: "test-error-app",

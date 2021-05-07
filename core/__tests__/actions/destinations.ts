@@ -304,12 +304,15 @@ describe("actions/destinations", () => {
           trackedGroupId: group.id,
         };
 
-        const { destination, error } = await specHelper.runAction(
+        const { destination, run, error } = await specHelper.runAction(
           "destination:edit",
           connection
         );
         expect(error).toBeFalsy();
         expect(destination.destinationGroup.id).toBe(group.id);
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(true);
+        expect(run.state).toBe("running");
       });
 
       test("an administrator can set the destination group memberships", async () => {
@@ -469,9 +472,13 @@ describe("actions/destinations", () => {
         };
         const {
           destination: updatedDestination,
+          run,
           error,
         } = await specHelper.runAction("destination:edit", connection);
         expect(error).toBeFalsy();
+        expect(run.creatorId).toBe(group.id);
+        expect(run.force).toBe(false);
+        expect(run.state).toBe("running");
         expect(updatedDestination.destinationGroup).toBe(null);
       });
 

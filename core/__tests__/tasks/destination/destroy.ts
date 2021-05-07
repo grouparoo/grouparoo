@@ -65,6 +65,7 @@ describe("tasks/destination:destroy", () => {
 
       run = await Run.findOne({ where: { creatorId: group.id } });
       expect(run.state).toBe("running");
+      expect(run.force).toBe(false);
 
       const foundTasks = await specHelper.findEnqueuedTasks(
         "destination:destroy"
@@ -129,6 +130,7 @@ describe("tasks/destination:destroy", () => {
       const foundExportSendTasks = await specHelper.findEnqueuedTasks(
         "export:send"
       );
+      expect(foundExportSendTasks.length).toBe(2);
       await Promise.all(
         foundExportSendTasks.map((t) =>
           specHelper.runTask("export:send", t.args[0])
