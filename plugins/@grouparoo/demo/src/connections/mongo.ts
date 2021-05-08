@@ -94,10 +94,10 @@ const TYPES = {
           id: {
             bsonType: "int",
           },
-          company_name: {
+          name: {
             bsonType: "string",
           },
-          company_domain: {
+          domain: {
             bsonType: "string",
           },
           plan_id: {
@@ -141,7 +141,7 @@ const TYPES = {
     },
   },
 
-  purchases: {
+  payments: {
     validationLevel: "off",
     validator: {
       $jsonSchema: {
@@ -154,7 +154,7 @@ const TYPES = {
           account_id: {
             bsonType: "int",
           },
-          ammount: {
+          amount: {
             bsonType: "double",
           },
           state: {
@@ -203,7 +203,7 @@ function castValue(
   const type = TYPES[collectionName]?.validator?.$jsonSchema?.properties[field];
   if (!type) {
     throw new Error(
-      `The jsonSchema is required for the proper data insertion.`
+      `The jsonSchema is required for the proper data insertion: ${field}`
     );
   }
   switch (type.bsonType) {

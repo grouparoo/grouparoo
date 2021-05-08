@@ -1,4 +1,4 @@
-id,company_name,company_domain,plan_id
+id,name,domain,plan_id
 1,Aerified,aerified.com,1
 2,Alpha,alpha.com,4
 3,Andalax,andalax.com,1

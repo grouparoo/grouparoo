@@ -61,7 +61,7 @@ export async function accounts(db: Connection, options: DataOptions = {}) {
     "id",
     "account",
     true,
-    false,
+    true,
     options
   );
 }

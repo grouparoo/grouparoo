@@ -1,0 +1,15 @@
+{
+  "id": "account_id",
+  "name": "accountId",
+  "class": "Property",
+  "type": "integer",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_users",
+  "options": {
+    "column": "account_id",
+    "aggregationMethod": "exact",
+    "sortColumn": null
+  },
+  "filters": []
+}

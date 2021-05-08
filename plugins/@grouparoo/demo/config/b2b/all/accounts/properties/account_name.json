@@ -1,0 +1,15 @@
+{
+  "id": "account_name",
+  "name": "accountName",
+  "class": "Property",
+  "type": "string",
+  "unique": false,
+  "isArray": false,
+  "sourceId": "demo_accounts",
+  "options": {
+    "column": "name",
+    "aggregationMethod": "exact",
+    "sortColumn": null
+  },
+  "filters": []
+}

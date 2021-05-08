@@ -33,8 +33,8 @@ const TYPES = {
 
   accounts: {
     id: "INT NOT NULL PRIMARY KEY",
-    company_name: "VARCHAR(191) NOT NULL",
-    company_domain: "VARCHAR(191) NOT NULL",
+    name: "VARCHAR(191) NOT NULL",
+    domain: "VARCHAR(191) NOT NULL",
     plan_id: "INT",
     created_at: "TIMESTAMP NOT NULL",
     updated_at: "TIMESTAMP NOT NULL",
