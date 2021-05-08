@@ -1,0 +1,26 @@
+[
+  {
+    "id": "demo_accounts",
+    "name": "Accounts",
+    "class": "Source",
+    "type": "postgres-table-import",
+    "appId": "demo_db",
+    "options": {
+      "table": "accounts"
+    },
+    "mapping": {
+      "id": "account_id"
+    }
+  }
+  // {
+  //   "id": "demo_accounts_schedule",
+  //   "name": "Accounts Schedule",
+  //   "class": "Schedule",
+  //   "sourceId": "demo_accounts",
+  //   "recurring": true,
+  //   "recurringFrequency": 900000,
+  //   "options": {
+  //     "column": "updated_at"
+  //   }
+  // }
+]

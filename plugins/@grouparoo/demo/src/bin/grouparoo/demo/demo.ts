@@ -1,5 +1,12 @@
 import { CLI } from "actionhero";
-import { users, purchases } from "../../../util/sample_data";
+import {
+  consumers,
+  employees,
+  purchases,
+  accounts,
+  plans,
+  payments,
+} from "../../../util/sample_data";
 import {
   deleteConfigDir,
   loadConfigFiles,
@@ -37,12 +44,13 @@ export class Console extends CLI {
 
     let types = params._arguments || [];
     if (types.length === 0) {
-      types = ["purchases"];
+      types = ["b2c"];
     }
     console.log(`Using types: ${types.join(", ")}`);
-    const { db, subDirs } = getConfig(types);
+    const { db, subDirs, dataset } = getConfig(types);
 
     console.log(`Config directories: ${subDirs.join(",")}`);
+    console.log(`Using dataset: ${dataset}`);
     console.log(`Using database: ${db ? db.constructor.name : "none"}`);
 
     if (force || config) {
@@ -51,10 +59,17 @@ export class Console extends CLI {
     }
     await init({ reset: true });
 
-    if (hasDir(subDirs, ["events", "mongo", "purchases"])) {
-      await users(db, { scale });
+    if (hasDir(subDirs, ["events", "purchases"])) {
+      await consumers(db, { scale });
       await purchases(db, { scale });
     }
+    if (hasDir(subDirs, ["accounts"])) {
+      await plans(db, {});
+      await accounts(db, { scale });
+      await payments(db, { scale });
+      await employees(db, { scale });
+    }
+
     if (hasDir(subDirs, ["events"])) {
       await events({ scale });
     }
@@ -63,13 +78,13 @@ export class Console extends CLI {
       const skip = ["setup"]; // not all get config files, they load into db
 
       const load = subDirs.filter((item) => skip.includes(item));
-      await loadConfigFiles(db, load);
+      await loadConfigFiles(dataset, db, load);
       await finalize();
 
       const files = subDirs.filter((item) => !skip.includes(item));
-      await writeConfigFiles(db, files);
+      await writeConfigFiles(dataset, db, files);
     } else {
-      await loadConfigFiles(db, subDirs);
+      await loadConfigFiles(dataset, db, subDirs);
       await finalize();
     }
 

@@ -40,11 +40,30 @@ export async function sleep(time = 1000) {
 
 const START_TIME = new Date();
 export const numberOfUsers = 1000;
-export function userCreatedAt(userId: any) {
+export function userCreatedAt(id: any) {
   // 1000 people in last 3 months, spaced out
+  if (!id) {
+    return null;
+  }
   const secondsBack = 60 * 60 * 24 * 30 * 3;
   const secondsEach = secondsBack / 1000; // for each user
-  const ageNumber = numberOfUsers - parseInt(userId);
+  const ageNumber = numberOfUsers - parseInt(id);
+  const creationAgo = secondsEach * ageNumber * 1000;
+
+  // use that from something specific.
+  const epochMilli = START_TIME.getTime() - creationAgo;
+  return new Date(epochMilli);
+}
+
+export const numberOfAccounts = 50;
+export function accountCreatedAt(id: any) {
+  // 50 people in last 3 months, spaced out
+  if (!id) {
+    return null;
+  }
+  const secondsBack = 60 * 60 * 24 * 30 * 3;
+  const secondsEach = secondsBack / 1000; // for each user
+  const ageNumber = numberOfAccounts - parseInt(id);
   const creationAgo = secondsEach * ageNumber * 1000;
 
   // use that from something specific.
