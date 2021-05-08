@@ -78,6 +78,11 @@ class Config {
         this.addDir("purchases");
         this.addDir("events");
         break;
+      case "b2b":
+      case "accounts":
+        this.setDataset("b2b", type);
+        this.addDir("accounts");
+        break;
       case "mailchimp":
         this.addDir(type);
         break;

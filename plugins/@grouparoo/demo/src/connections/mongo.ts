@@ -50,6 +50,7 @@ const TYPES = {
       },
     },
   },
+
   purchases: {
     validationLevel: "off",
     validator: {
@@ -70,6 +71,90 @@ const TYPES = {
             bsonType: "string",
           },
           price: {
+            bsonType: "double",
+          },
+          state: {
+            bsonType: "string",
+          },
+          created_at: {
+            bsonType: "date",
+          },
+        },
+      },
+    },
+  },
+
+  accounts: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          company_name: {
+            bsonType: "string",
+          },
+          company_domain: {
+            bsonType: "string",
+          },
+          plan_id: {
+            bsonType: "int",
+          },
+          state: {
+            bsonType: "string",
+          },
+          created_at: {
+            bsonType: "date",
+          },
+          updated_at: {
+            bsonType: "date",
+          },
+        },
+      },
+    },
+  },
+
+  plans: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          name: {
+            bsonType: "string",
+          },
+          seats: {
+            bsonType: "int",
+          },
+          monthly_rate: {
+            bsonType: "int",
+          },
+        },
+      },
+    },
+  },
+
+  purchases: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["account_id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          account_id: {
+            bsonType: "int",
+          },
+          ammount: {
             bsonType: "double",
           },
           state: {
@@ -176,7 +261,7 @@ export default class Mongo extends Connection {
     return this.conn;
   }
 
-  async createTable(tableName: string, userId: string, keys: string[]) {
+  async createTable(tableName: string, typeColumn: string, keys: string[]) {
     const collectionName = tableName;
     const typeData = TYPES[collectionName];
     if (!typeData) {

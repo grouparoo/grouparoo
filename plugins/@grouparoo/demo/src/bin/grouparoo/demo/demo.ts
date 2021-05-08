@@ -1,5 +1,12 @@
 import { CLI } from "actionhero";
-import { users, purchases } from "../../../util/sample_data";
+import {
+  consumers,
+  employees,
+  purchases,
+  accounts,
+  plans,
+  payments,
+} from "../../../util/sample_data";
 import {
   deleteConfigDir,
   loadConfigFiles,
@@ -53,9 +60,16 @@ export class Console extends CLI {
     await init({ reset: true });
 
     if (hasDir(subDirs, ["events", "purchases"])) {
-      await users(db, { scale });
+      await consumers(db, { scale });
       await purchases(db, { scale });
     }
+    if (hasDir(subDirs, ["accounts"])) {
+      await plans(db, {});
+      await accounts(db, { scale });
+      await payments(db, { scale });
+      await employees(db, { scale });
+    }
+
     if (hasDir(subDirs, ["events"])) {
       await events({ scale });
     }

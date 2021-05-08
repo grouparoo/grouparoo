@@ -20,12 +20,37 @@ const TYPES = {
     created_at: "TIMESTAMP NOT NULL",
     updated_at: "TIMESTAMP NOT NULL",
   },
+
   purchases: {
     id: "INT NOT NULL PRIMARY KEY",
     user_id: "INT NOT NULL",
     item: "VARCHAR(191) NOT NULL",
     category: "VARCHAR(191) NOT NULL",
     price: "DECIMAL",
+    state: "VARCHAR(191)",
+    created_at: "TIMESTAMP NOT NULL",
+  },
+
+  accounts: {
+    id: "INT NOT NULL PRIMARY KEY",
+    company_name: "VARCHAR(191) NOT NULL",
+    company_domain: "VARCHAR(191) NOT NULL",
+    plan_id: "INT",
+    created_at: "TIMESTAMP NOT NULL",
+    updated_at: "TIMESTAMP NOT NULL",
+  },
+
+  plans: {
+    id: "INT NOT NULL PRIMARY KEY",
+    name: "VARCHAR(191) NOT NULL",
+    seats: "INT NOT NULL",
+    monthly_rate: "INT NOT NULL",
+  },
+
+  payments: {
+    id: "INT NOT NULL PRIMARY KEY",
+    account_id: "INT NOT NULL",
+    amount: "DECIMAL",
     state: "VARCHAR(191)",
     created_at: "TIMESTAMP NOT NULL",
   },
@@ -117,7 +142,7 @@ export default class Postgres extends Connection {
     return this.client;
   }
 
-  async createTable(tableName: string, userId: string, keys: string[]) {
+  async createTable(tableName: string, typeColumn: string, keys: string[]) {
     const sqlTable = `${this.config.schema}."${tableName}"`;
 
     const typeData = TYPES[tableName];
@@ -138,8 +163,8 @@ export default class Postgres extends Connection {
     const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(", ")})`;
     await this.query(1, createQuery);
 
-    if (userId !== "id") {
-      const indexQuery = `CREATE INDEX "${tableName}_userId" ON ${sqlTable} ("${userId}");`;
+    if (typeColumn !== "id") {
+      const indexQuery = `CREATE INDEX "${tableName}_${typeColumn}" ON ${sqlTable} ("${typeColumn}");`;
       await this.query(1, indexQuery);
     }
   }
