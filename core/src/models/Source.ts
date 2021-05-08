@@ -37,7 +37,7 @@ import { APIData } from "../modules/apiData";
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
 
-const STATES = ["draft", "ready"] as const;
+const STATES = ["draft", "ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",
@@ -47,6 +47,7 @@ const STATE_TRANSITIONS = [
       (instance: Source) => instance.validateMapping(),
     ],
   },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @DefaultScope(() => ({

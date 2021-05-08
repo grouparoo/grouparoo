@@ -28,6 +28,7 @@ export const DEFAULT = {
             "profileProperties",
             "destinations",
             "properties",
+            "sources",
             "apps",
             "default",
           ]
@@ -101,6 +102,7 @@ export const test = {
         "schedules",
         "destinations",
         "properties",
+        "sources",
         "apps",
         "default",
       ],
