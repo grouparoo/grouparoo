@@ -756,6 +756,7 @@ describe("models/destination", () => {
       expect(_export.completedAt).toBeFalsy();
       expect(_export.errorMessage).toBeFalsy();
       expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
+      expect(_export.retryCount).toBe(1);
 
       await _export.update({ sendAt: new Date() });
 
