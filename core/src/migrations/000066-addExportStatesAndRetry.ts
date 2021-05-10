@@ -36,6 +36,12 @@ export default {
         allowNull: true,
       });
 
+      await migration.bulkUpdate(
+        "exports",
+        { sendAt: new Date() },
+        { state: "pending" }
+      );
+
       await migration.addColumn("exports", "retryCount", {
         type: DataTypes.INTEGER,
         allowNull: true,
