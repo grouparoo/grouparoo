@@ -18,7 +18,7 @@ export class AppDestroy extends CLSTask {
 
   async runWithinTransaction(params) {
     const app = await App.scope(null).findOne({
-      where: { id: params.appId, state: "deleted" },
+      where: { id: params.appId },
     });
 
     // the app may have been force-deleted
@@ -29,6 +29,9 @@ export class AppDestroy extends CLSTask {
       await App.checkDependents(app);
     } catch (error) {
       if (error.message.match(/cannot delete this app,/)) {
+        if (app.state !== "deleted") {
+          await app.update({ state: "deleted" });
+        }
         return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
           appId: app.id,
         });

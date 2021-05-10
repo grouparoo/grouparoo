@@ -18,7 +18,7 @@ export class PropertyDestroy extends CLSTask {
 
   async runWithinTransaction(params) {
     const property = await Property.scope(null).findOne({
-      where: { id: params.propertyId, state: "deleted" },
+      where: { id: params.propertyId },
     });
 
     // the property may have been force-deleted
@@ -29,6 +29,9 @@ export class PropertyDestroy extends CLSTask {
       await Property.ensureNotInUse(property);
     } catch (error) {
       if (error.message.match(/cannot delete property/)) {
+        if (property.state !== "deleted") {
+          await property.update({ state: "deleted" });
+        }
         return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
           propertyId: property.id,
         });

@@ -18,7 +18,7 @@ export class SourceDestroy extends CLSTask {
 
   async runWithinTransaction(params) {
     const source = await Source.scope(null).findOne({
-      where: { id: params.sourceId, state: "deleted" },
+      where: { id: params.sourceId },
     });
 
     // the source may have been force-deleted
@@ -29,6 +29,9 @@ export class SourceDestroy extends CLSTask {
       await Source.ensureNoProperties(source);
     } catch (error) {
       if (error.message.match(/cannot delete a source that has a property/)) {
+        if (source.state !== "deleted") {
+          await source.update({ state: "deleted" });
+        }
         return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
           sourceId: source.id,
         });
