@@ -102,6 +102,8 @@ describe("tasks/sweeper", () => {
       const newerExportA = await helper.factories.export(profileA);
       const profileB = await helper.factories.profile();
       const newerExportB = await helper.factories.export(profileB);
+      const profileC = await helper.factories.profile();
+      const oldExportC = await helper.factories.export(profileC);
 
       oldExportA.set({ createdAt: new Date(0) }, { raw: true });
       oldExportA.changed("createdAt", true);
@@ -127,8 +129,16 @@ describe("tasks/sweeper", () => {
       });
       await newerExportB.update({ state: "canceled" });
 
+      oldExportC.set({ createdAt: new Date(1000 * 60 * 60) }, { raw: true });
+      oldExportC.changed("createdAt", true);
+      await oldExportC.save({
+        silent: true,
+        fields: ["createdAt"],
+      });
+      await oldExportC.update({ state: "failed" });
+
       let count = await Export.count();
-      expect(count).toBe(3);
+      expect(count).toBe(4);
 
       await specHelper.runTask("sweeper", {});
 

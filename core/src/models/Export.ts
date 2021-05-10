@@ -299,28 +299,23 @@ export class Export extends Model {
       .subtract(days, "days")
       .format("YYYY-MM-DD HH:mm:ss");
 
-    const rows: { id: string }[] = await api.sequelize.query(
+    // for SQLite secondary changes queries
+    let responseCountWithCompleteExport: number;
+    let responseCountWithNoCompleteExports: number;
+
+    // 1. Delete Exports for the Profile older than the oldest complete Export
+    const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
       `
       DELETE FROM exports
       WHERE id IN (
         SELECT id FROM exports
         WHERE "createdAt" < '${whereDate}'
-        AND (
-          "createdAt" < (
-            SELECT MAX("createdAt")
-            FROM exports e2
-            WHERE
-              e2."profileId" = exports."profileId"
-              AND state = 'complete'
-          ) OR (
-            0 = (
-              SELECT COUNT(id)
-              FROM exports e3
-              WHERE
-                e3."profileId" = exports."profileId"
-                AND state = 'complete'
-            )
-          )
+        AND "createdAt" < (
+          SELECT MAX("createdAt")
+          FROM exports e2
+          WHERE
+            e2."profileId" = exports."profileId"
+            AND state = 'complete'
         )
         LIMIT ${limit}
       )
@@ -329,17 +324,50 @@ export class Export extends Model {
       { type: QueryTypes.SELECT }
     );
 
-    let responseCount: number;
     if (config.sequelize.dialect === "sqlite") {
       const changesRows = await api.sequelize.query(
         "SELECT changes() as count;",
         { type: QueryTypes.SELECT }
       );
-      responseCount = changesRows[0].count;
+      responseCountWithCompleteExport = changesRows[0].count;
+    }
+
+    // 2. If there are no complete Exports for the Profile, any old Exports can be deleted
+    const rowsWithNoCompleteExport: { id: string }[] =
+      await api.sequelize.query(
+        `
+      DELETE FROM exports
+      WHERE id IN (
+        SELECT id FROM exports
+        WHERE "createdAt" < '${whereDate}'
+        AND 0 = (
+          SELECT COUNT(id)
+          FROM exports e2
+          WHERE
+            e2."profileId" = exports."profileId"
+            AND state = 'complete'
+        )
+        LIMIT ${limit}
+      )
+     ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
+      ;`,
+        { type: QueryTypes.SELECT }
+      );
+
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCountWithNoCompleteExports = changesRows[0].count;
     }
 
     return {
-      count: responseCount !== undefined ? responseCount : rows.length,
+      count:
+        config.sequelize.dialect === "postgres"
+          ? rowsWithCompleteExport.length + rowsWithNoCompleteExport.length
+          : responseCountWithCompleteExport +
+            responseCountWithNoCompleteExports,
       days,
     };
   }
