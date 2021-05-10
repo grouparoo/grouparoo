@@ -319,7 +319,7 @@ export default function Navigation(props) {
               icon={["fab", "slack"]}
               size="1x"
             />{" "}
-            Join us on Slack!
+            Join us on Slack
           </Button>
         </div>
 
