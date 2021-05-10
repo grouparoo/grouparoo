@@ -278,6 +278,23 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
+  async getConfigObject() {
+    const { id, name, type, appId } = this;
+
+    const options = await this.getOptions();
+    const mapping = await this.getMapping();
+
+    return {
+      class: "source",
+      id,
+      name,
+      type,
+      appId,
+      mapping,
+      options,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {

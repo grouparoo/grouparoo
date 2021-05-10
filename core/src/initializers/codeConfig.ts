@@ -26,12 +26,12 @@ export class CodeConfig extends CLSInitializer {
     };
   }
 
-  async start() {
-    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
-      await ConfigWriter.write();
-    }
-    process.exit(1);
-  }
+  // async start() {
+  //   if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
+  //     await ConfigWriter.write();
+  //   }
+  //   process.exit(1);
+  // }
 
   async startWithinTransaction() {
     const configDir = getConfigDir();

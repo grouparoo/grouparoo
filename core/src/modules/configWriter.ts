@@ -41,6 +41,8 @@ import { ConfigurationObject } from "../classes/codeConfig";
 // };
 
 export namespace ConfigWriter {
+  export async function buildBaseObject(object) {}
+
   export async function write() {
     // Any models we see before starting would be from existing code config
     // files.
@@ -55,19 +57,8 @@ export namespace ConfigWriter {
     let app: App;
 
     for (app of apps) {
-      const { id, name, type } = app;
-
-      // NOTE: Choosing to hit the db again in favor of using the shared logic,
-      // rather than eager loading the associations.
-      const options = await app.getOptions();
-
-      config[`apps/${id}.json`] = {
-        id,
-        class: "app",
-        type,
-        name,
-        options,
-      };
+      const appConfig = await app.getConfigObject();
+      config[`apps/${app.id}.json`] = appConfig;
     }
 
     // ---------------------------------------- | Sources & Schedules
@@ -77,39 +68,13 @@ export namespace ConfigWriter {
     let source: Source;
 
     for (source of sources) {
-      const { id, name, type, appId, schedule } = source;
+      const sourceConfig = await source.getConfigObject();
+      config[`sources/${source.id}.json`] = sourceConfig;
 
-      // NOTE: Choosing to hit the db again in favor of using the shared logic,
-      // rather than eager loading the associations.
-      const options = await source.getOptions();
-      const mappings = await source.getMapping();
-
-      config[`sources/${id}.json`] = {
-        id,
-        class: "source",
-        type,
-        name,
-        appId,
-        mapping: mappings,
-        options,
-      };
-
+      const { schedule } = source;
       if (schedule) {
-        const { id, name, recurring, recurringFrequency } = schedule;
-
-        // Here we've already eager-loaded the schedule, but didn't dig deeper
-        // to find its options.
-        const options = await schedule.getOptions();
-
-        config[`schedules/${schedule.id}.json`] = {
-          id,
-          name,
-          class: "schedule",
-          sourceId: source.id,
-          recurring,
-          recurringFrequency,
-          options,
-        };
+        const scheduleConfig = await schedule.getConfigObject();
+        config[`schedules/${schedule.id}.json`] = scheduleConfig;
       }
     }
 
