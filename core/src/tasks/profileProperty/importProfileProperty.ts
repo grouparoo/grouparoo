@@ -46,8 +46,7 @@ export class ImportProfileProperty extends RetryableTask {
       if (properties[dep.key].state !== "ready") ok = false;
     });
 
-    // there's a dependency we don't have yet
-    if (!ok) return;
+    if (!ok) return; // there's a dependency we don't have yet
 
     const propertyValues = await source.importProfileProperty(
       profile,
