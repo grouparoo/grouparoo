@@ -2,6 +2,8 @@ import { api } from "actionhero";
 import { getConfigDir, loadConfigDirectory } from "../modules/configLoaders";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
+import { ConfigWriter } from "../modules/configWriter";
+
 declare module "actionhero" {
   export interface Api {
     codeConfig: {
@@ -22,6 +24,13 @@ export class CodeConfig extends CLSInitializer {
     api.codeConfig = {
       allowLockedModelChanges: true,
     };
+  }
+
+  async start() {
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
+      await ConfigWriter.write();
+    }
+    process.exit(1);
   }
 
   async startWithinTransaction() {
