@@ -1346,6 +1346,7 @@ importers:
   ui/ui-community:
     specifiers:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14
       '@grouparoo/core': 0.3.1-alpha.0
@@ -1386,6 +1387,7 @@ importers:
       victory: 35.5.1
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
@@ -1429,6 +1431,7 @@ importers:
   ui/ui-components:
     specifiers:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14
       '@grouparoo/core': 0.3.1-alpha.0
@@ -1469,6 +1472,7 @@ importers:
       victory: 35.5.1
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@grouparoo/core': link:../../core
@@ -1592,6 +1596,7 @@ importers:
   ui/ui-enterprise:
     specifiers:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14
       '@grouparoo/core': 0.3.1-alpha.0
@@ -1632,6 +1637,7 @@ importers:
       victory: 35.5.1
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
+      '@fortawesome/free-brands-svg-icons': 5.15.3
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
@@ -2009,6 +2015,13 @@ packages:
 
   /@fortawesome/fontawesome-svg-core/1.2.35:
     resolution: {integrity: sha512-uLEXifXIL7hnh2sNZQrIJWNol7cTVIzwI+4qcBIq9QWaZqUblm0IDrtSqbNg+3SQf8SMGHkiSigD++rHmCHjBg==}
+    engines: {node: '>=6'}
+    requiresBuild: true
+    dependencies:
+      '@fortawesome/fontawesome-common-types': 0.2.35
+
+  /@fortawesome/free-brands-svg-icons/5.15.3:
+    resolution: {integrity: sha512-1hirPcbjj72ZJtFvdnXGPbAbpn3Ox6mH3g5STbANFp3vGSiE5u5ingAKV06mK6ZVqNYxUPlh4DlTnaIvLtF2kw==}
     engines: {node: '>=6'}
     requiresBuild: true
     dependencies:
