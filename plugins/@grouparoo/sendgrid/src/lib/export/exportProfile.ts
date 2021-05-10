@@ -4,6 +4,7 @@ import { getListId } from "./listMethods";
 import { isReservedField, isReadOnlyField } from "./destinationMappingOptions";
 import { getFieldId } from "./fieldsMethods";
 import { log } from "actionhero";
+import { removeFromList } from "../../../../hubspot/src/lib/export/listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
@@ -48,7 +49,15 @@ export const sendProfile: ExportProfilePluginMethod = async ({
   if (toDelete) {
     const userToDelete = user || oldUser;
     if (userToDelete) {
-      await deleteUser(client, syncOperations, userToDelete, true);
+      await deleteUser(
+        client,
+        appId,
+        appOptions,
+        syncOperations,
+        userToDelete,
+        oldGroups,
+        true
+      );
     }
     return { success: true };
   } else {
@@ -85,7 +94,14 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
     // change email
     if (oldUser) {
-      await deleteUser(client, syncOperations, oldUser);
+      await deleteUser(
+        client,
+        appId,
+        appOptions,
+        syncOperations,
+        oldUser,
+        oldGroups
+      );
     }
 
     const listsToAdd = [];
@@ -126,14 +142,28 @@ export const sendProfile: ExportProfilePluginMethod = async ({
 
 async function deleteUser(
   client,
+  appId,
+  appOptions,
   syncOperations,
   userToDelete,
+  oldGroups,
   doThrow = false
 ) {
   if (syncOperations.delete) {
     await client.deleteUsers([userToDelete.id]);
   } else if (doThrow) {
     throw new Errors.InfoError("Destination sync mode does not delete.");
+  } else {
+    if (syncOperations.update) {
+      // clear groups
+      const existingLists = userToDelete?.["list_ids"] || [];
+      for (const group of oldGroups) {
+        const listId = await getListId(client, appId, appOptions, group);
+        if (listId && existingLists.includes(listId)) {
+          await client.unsubscribe(listId, userToDelete.id);
+        }
+      }
+    }
   }
 }
 

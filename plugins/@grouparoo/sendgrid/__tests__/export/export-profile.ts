@@ -442,7 +442,7 @@ describe("sendgrid/exportProfile", () => {
         email: alternativeEmail,
       },
       oldGroups: [],
-      newGroups: [],
+      newGroups: [listOne, listTwo],
       toDelete: false,
     });
     await indexContacts(newNock);
@@ -450,6 +450,7 @@ describe("sendgrid/exportProfile", () => {
     const user = await apiClient.getUser(alternativeEmail);
     expect(user).not.toBe(null);
     expect(user.email).toBe(alternativeEmail);
+    expect(user["list_ids"]).toHaveLength(2);
 
     const oldUser = await apiClient.getUser(email);
     expect(oldUser).toBe(null);
