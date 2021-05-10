@@ -44,22 +44,39 @@ export function ImportProfilePropertiesDiff({
           JSON.stringify(_import.newProfileProperties[k])
             ? true
             : false;
+        const nullOld =
+          _import.oldProfileProperties[k] === null ||
+          _import.oldProfileProperties[k] === undefined;
+        const nullNew =
+          _import.newProfileProperties[k] === null ||
+          _import.newProfileProperties[k] === undefined;
+
+        const badge = hasChanges ? (
+          nullOld && !nullNew ? (
+            <Badge variant="success">+</Badge>
+          ) : !nullOld && nullNew ? (
+            <Badge variant="danger">-</Badge>
+          ) : (
+            <Badge variant="warning">-/+</Badge>
+          )
+        ) : (
+          <Badge variant="info">○</Badge>
+        );
 
         return (
           <li key={`${_import.id}-prp-${k}`}>
-            {hasChanges ? (
-              <Badge variant="warning">-/+</Badge>
-            ) : (
-              <Badge variant="info">○</Badge>
-            )}{" "}
-            <strong>{k}</strong>:{" "}
-            {_import.oldProfileProperties[k] !== null &&
-            _import.oldProfileProperties[k] !== undefined ? (
-              _import.oldProfileProperties[k].toString()
-            ) : (
+            {badge} <strong>{k}</strong>:{" "}
+            {nullOld ? (
               <code>null</code>
+            ) : (
+              _import.oldProfileProperties[k].toString()
             )}{" "}
-            / {_import.newProfileProperties[k]}
+            /{" "}
+            {nullNew ? (
+              <code>null</code>
+            ) : (
+              _import.newProfileProperties[k].toString()
+            )}
           </li>
         );
       })}
