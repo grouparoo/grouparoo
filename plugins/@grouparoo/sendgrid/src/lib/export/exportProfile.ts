@@ -4,7 +4,6 @@ import { getListId } from "./listMethods";
 import { isReservedField, isReadOnlyField } from "./destinationMappingOptions";
 import { getFieldId } from "./fieldsMethods";
 import { log } from "actionhero";
-import { removeFromList } from "../../../../hubspot/src/lib/export/listMethods";
 
 export const exportProfile: ExportProfilePluginMethod = async (args) => {
   try {
