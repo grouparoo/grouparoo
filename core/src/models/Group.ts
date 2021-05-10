@@ -37,7 +37,7 @@ export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export interface GroupRuleWithKey {
-  key: string;
+  key?: string;
   type?: string;
   topLevel?: boolean;
   operation: { op: string; description?: string };
