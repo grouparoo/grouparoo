@@ -91,7 +91,8 @@ export namespace DestinationOps {
     const profileProperties = await profile.properties();
     const mappingKeys = Object.keys(mapping);
     const mappedProfileProperties = {};
-    const destinationMappingOptions = await destination.destinationMappingOptions();
+    const destinationMappingOptions =
+      await destination.destinationMappingOptions();
     for (const k of mappingKeys) {
       const collection = profileProperties[mapping[k]];
       if (!collection) continue; // we may have an optional property that hasn't yet been set
@@ -215,8 +216,8 @@ export namespace DestinationOps {
       );
     }
 
-    const mappingOptions = await pluginConnection.methods.destinationMappingOptions(
-      {
+    const mappingOptions =
+      await pluginConnection.methods.destinationMappingOptions({
         connection,
         app,
         appId: app.id,
@@ -224,8 +225,7 @@ export namespace DestinationOps {
         destination,
         destinationId: destination.id,
         destinationOptions,
-      }
-    );
+      });
 
     if (saveCache) await cache.save(cacheKey, mappingOptions, cacheDuration);
 
@@ -270,7 +270,8 @@ export namespace DestinationOps {
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
     const properties = await Property.findAll();
-    const destinationGroupMemberships = await destination.getDestinationGroupMemberships();
+    const destinationGroupMemberships =
+      await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();
 
     let mappedOldProfileProperties: ExportProfilePropertiesWithType = {};
@@ -719,7 +720,8 @@ export namespace DestinationOps {
   ) {
     const response: { [key: string]: any } = {};
     const rawProperties = JSON.parse(_export["dataValues"][key]);
-    const destinationMappingOptions = await destination.destinationMappingOptions();
+    const destinationMappingOptions =
+      await destination.destinationMappingOptions();
     for (const k in rawProperties) {
       const type: string = rawProperties[k].type;
       const value = _export[key][k];

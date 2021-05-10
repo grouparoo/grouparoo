@@ -113,9 +113,8 @@ GrouparooWebApp.getInitialProps = async (appContext) => {
       appProps = await App.getInitialProps(appContext);
     } catch (_error) {
       try {
-        const { formattedErrorMessage, formattedErrorObject } = renderError(
-          _error
-        );
+        const { formattedErrorMessage, formattedErrorObject } =
+          renderError(_error);
         hydrationError = JSON.stringify({
           message: formattedErrorMessage,
           data: formattedErrorObject,

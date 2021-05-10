@@ -16,57 +16,54 @@ export interface SalesforceDestinationMappingOptionsMethod {
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
-export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMethod = async ({
-  appId,
-  appOptions,
-  model,
-}) => {
-  const conn = await connect(appOptions);
-  const {
-    profileObject,
-    profileMatchField,
-    groupObject,
-    profileReferenceField,
-    profileReferenceObject,
-    profileReferenceMatchField,
-  } = model;
-  const cacheData = { appId, appOptions };
-  const profileInfo = await describeObject(
-    conn,
-    cacheData,
-    profileObject,
-    true
-  );
-  const referenceInfo = profileReferenceField
-    ? await describeObject(conn, cacheData, profileReferenceObject, true)
-    : null;
-  const groupInfo = await describeObject(conn, cacheData, groupObject, true);
-  const { known, required } = getFields(
-    profileInfo,
-    profileMatchField,
-    referenceInfo,
-    profileReferenceMatchField,
-    profileReferenceObject
-  );
+export const getDestinationMappingOptions: SalesforceDestinationMappingOptionsMethod =
+  async ({ appId, appOptions, model }) => {
+    const conn = await connect(appOptions);
+    const {
+      profileObject,
+      profileMatchField,
+      groupObject,
+      profileReferenceField,
+      profileReferenceObject,
+      profileReferenceMatchField,
+    } = model;
+    const cacheData = { appId, appOptions };
+    const profileInfo = await describeObject(
+      conn,
+      cacheData,
+      profileObject,
+      true
+    );
+    const referenceInfo = profileReferenceField
+      ? await describeObject(conn, cacheData, profileReferenceObject, true)
+      : null;
+    const groupInfo = await describeObject(conn, cacheData, groupObject, true);
+    const { known, required } = getFields(
+      profileInfo,
+      profileMatchField,
+      referenceInfo,
+      profileReferenceMatchField,
+      profileReferenceObject
+    );
 
-  return {
-    labels: {
-      property: {
-        singular: `Salesforce ${profileInfo.label || profileObject} Field`,
-        plural: `Salesforce ${profileInfo.label || profileObject} Fields`,
+    return {
+      labels: {
+        property: {
+          singular: `Salesforce ${profileInfo.label || profileObject} Field`,
+          plural: `Salesforce ${profileInfo.label || profileObject} Fields`,
+        },
+        group: {
+          singular: `Salesforce ${groupInfo.label || groupObject}`,
+          plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
+        },
       },
-      group: {
-        singular: `Salesforce ${groupInfo.label || groupObject}`,
-        plural: `Salesforce ${groupInfo.labelPlural || groupObject}`,
+      properties: {
+        required,
+        known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required,
-      known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const supportedTypeMap = {
   string: "string",
@@ -135,10 +132,10 @@ const isFieldImportant = function (field: any): Boolean {
 };
 
 const REFERENCE_SEPARATOR = ".";
-export const parseFieldName = function ({
-  profileReferenceObject,
-  key,
-}): { reference: string; fieldName: string } {
+export const parseFieldName = function ({ profileReferenceObject, key }): {
+  reference: string;
+  fieldName: string;
+} {
   if (profileReferenceObject) {
     const refName = `${profileReferenceObject}${REFERENCE_SEPARATOR}`;
     if (key.startsWith(refName)) {

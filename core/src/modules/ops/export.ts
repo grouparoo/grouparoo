@@ -64,9 +64,10 @@ export namespace ExportOps {
     serializedStringifiedProperties: string
   ): ExportProfileProperties {
     const response = {};
-    const serializedProperties: ExportProfilePropertiesWithType = serializedStringifiedProperties
-      ? JSON.parse(serializedStringifiedProperties)
-      : {};
+    const serializedProperties: ExportProfilePropertiesWithType =
+      serializedStringifiedProperties
+        ? JSON.parse(serializedStringifiedProperties)
+        : {};
 
     for (const key in serializedProperties) {
       const type = serializedProperties[key]?.type;

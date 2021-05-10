@@ -77,13 +77,8 @@ describe("actions/status", () => {
       });
 
       test("can retrieve server metadata", async () => {
-        const {
-          id,
-          packageName,
-          clusterName,
-          description,
-          version,
-        } = await specHelper.runAction("status:private", connection);
+        const { id, packageName, clusterName, description, version } =
+          await specHelper.runAction("status:private", connection);
 
         expect(id).toBeTruthy();
         expect(clusterName).toBe("My Grouparoo Cluster");

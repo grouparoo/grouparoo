@@ -159,10 +159,8 @@ describe("actions/profiles", () => {
         csrfToken,
         state: "pending",
       };
-      const {
-        profiles: pendingProfiles,
-        total: pendingTotal,
-      } = await specHelper.runAction("profiles:list", connection);
+      const { profiles: pendingProfiles, total: pendingTotal } =
+        await specHelper.runAction("profiles:list", connection);
       expect(pendingProfiles.length).toBe(0);
       expect(pendingTotal).toBe(0);
 
@@ -170,10 +168,8 @@ describe("actions/profiles", () => {
         csrfToken,
         state: "ready",
       };
-      const {
-        profiles: readyProfiles,
-        total: readyTotal,
-      } = await specHelper.runAction("profiles:list", connection);
+      const { profiles: readyProfiles, total: readyTotal } =
+        await specHelper.runAction("profiles:list", connection);
       expect(readyProfiles.length).toBe(1);
       expect(readyTotal).toBe(1);
     });

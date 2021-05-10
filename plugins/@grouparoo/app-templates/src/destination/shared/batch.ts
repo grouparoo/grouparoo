@@ -65,9 +65,10 @@ export interface ErrorCheckExport {
   error?: any;
 }
 
-export function checkErrors(
-  exportedProfiles: ErrorCheckExport[]
-): { success: boolean; errors: ErrorWithProfileId[] } {
+export function checkErrors(exportedProfiles: ErrorCheckExport[]): {
+  success: boolean;
+  errors: ErrorWithProfileId[];
+} {
   // assuming semantics here of success is only true if there are zero errors
   let errors: ErrorWithProfileId[] = null; // for ones that go wrong
   let success = true;

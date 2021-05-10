@@ -82,9 +82,8 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
   }
 
   async runWithinTransaction({ params }) {
-    const generatedErrorPayload: ErrorPayload = await api.resque.queue.forceCleanWorker(
-      params.workerName
-    );
+    const generatedErrorPayload: ErrorPayload =
+      await api.resque.queue.forceCleanWorker(params.workerName);
     return { generatedErrorPayload };
   }
 }

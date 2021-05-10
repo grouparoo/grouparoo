@@ -22,14 +22,8 @@ export class Plugins extends CLSInitializer {
     pluginName: string
   ) {
     for (const i in settingsList) {
-      const {
-        key,
-        title,
-        defaultValue,
-        description,
-        type,
-        variant,
-      } = settingsList[i];
+      const { key, title, defaultValue, description, type, variant } =
+        settingsList[i];
       await plugin.registerSetting(
         pluginName,
         key,

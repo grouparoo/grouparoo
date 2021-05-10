@@ -60,19 +60,14 @@ let groupId2 = null;
 const deleteProfileValues = [email1, email2, newEmail1];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [];
-const {
-  findId,
-  getUser,
-  findGroupId,
-  getGroupMemberIds,
-  cleanUp,
-} = getModelHelpers({
-  appOptions,
-  model,
-  deleteProfileValues,
-  deleteGroupValues,
-  deleteReferenceValues,
-});
+const { findId, getUser, findGroupId, getGroupMemberIds, cleanUp } =
+  getModelHelpers({
+    appOptions,
+    model,
+    deleteProfileValues,
+    deleteGroupValues,
+    deleteReferenceValues,
+  });
 
 const {
   getClient,

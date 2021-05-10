@@ -53,9 +53,8 @@ export class NewRelic extends Initializer {
           `task/${worker.job.class}`,
           queue,
           () => {
-            activeBackgroundTransactions[
-              this.worker.name
-            ] = newrelic.getTransaction();
+            activeBackgroundTransactions[this.worker.name] =
+              newrelic.getTransaction();
             newrelic.addCustomAttribute("args", this.worker.job.args);
           }
         );

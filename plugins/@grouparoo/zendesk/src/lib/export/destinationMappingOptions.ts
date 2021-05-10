@@ -4,32 +4,31 @@ import {
 } from "@grouparoo/core";
 import { connect } from "./../connect";
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-}) => {
-  const client = await connect(appOptions);
-  const required = getRequiredFields();
-  const userFields = await getUserFields(client);
-  const known = getBuiltInFields().concat(userFields);
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions }) => {
+    const client = await connect(appOptions);
+    const required = getRequiredFields();
+    const userFields = await getUserFields(client);
+    const known = getBuiltInFields().concat(userFields);
 
-  return {
-    labels: {
-      property: {
-        singular: "Zendesk User Field",
-        plural: "Zendesk User Fields",
+    return {
+      labels: {
+        property: {
+          singular: "Zendesk User Field",
+          plural: "Zendesk User Fields",
+        },
+        group: {
+          singular: "Zendesk Tag",
+          plural: "Zendesk Tags",
+        },
       },
-      group: {
-        singular: "Zendesk Tag",
-        plural: "Zendesk Tags",
+      properties: {
+        required,
+        known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required,
-      known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesFromZendeskToGrouparoo = (zendeskType) => {
   const map = {
@@ -88,9 +87,8 @@ export const getUserFields = async (
   const list = await client.userfields.list();
   const out = [];
   for (const field of list) {
-    const type: DestinationMappingOptionsResponseTypes = mapTypesFromZendeskToGrouparoo(
-      field.type
-    );
+    const type: DestinationMappingOptionsResponseTypes =
+      mapTypesFromZendeskToGrouparoo(field.type);
     const key = field.key;
     out.push({ key, type, important: true });
   }

@@ -183,7 +183,8 @@ describe("models/destination", () => {
     });
 
     test("a destination can get options from a connection", async () => {
-      const connectionOptions = await destination.destinationConnectionOptions();
+      const connectionOptions =
+        await destination.destinationConnectionOptions();
       expect(connectionOptions).toEqual({
         table: { type: "list", options: ["users_out"] },
       });

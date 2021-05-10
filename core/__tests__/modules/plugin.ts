@@ -265,9 +265,10 @@ describe("modules/plugin", () => {
           where: { key: "userId" },
         });
         const initialString = "select * from users where id = {{ userId }}";
-        const replacedWithId = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
-          initialString
-        );
+        const replacedWithId =
+          await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+            initialString
+          );
         expect(replacedWithId).toEqual(
           `select * from users where id = {{ ${property.id} }}`
         );

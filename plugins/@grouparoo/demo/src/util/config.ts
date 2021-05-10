@@ -130,9 +130,11 @@ class Config {
   }
 }
 
-export function getConfig(
-  types: string[]
-): { db: any; subDirs: string[]; dataset: string } {
+export function getConfig(types: string[]): {
+  db: any;
+  subDirs: string[];
+  dataset: string;
+} {
   const config = new Config();
   for (const type of types) {
     config.add(type);

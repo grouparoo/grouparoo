@@ -8,13 +8,8 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   let success = false;
   let error;
 
-  let {
-    table,
-    primaryKey,
-    groupsTable,
-    groupForeignKey,
-    groupColumnName,
-  } = await destination.parameterizedOptions();
+  let { table, primaryKey, groupsTable, groupForeignKey, groupColumnName } =
+    await destination.parameterizedOptions();
 
   table = table?.toString();
   primaryKey = primaryKey?.toString();

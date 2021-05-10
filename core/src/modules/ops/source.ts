@@ -328,8 +328,8 @@ export namespace SourceOps {
           const connection = await app.getConnection();
           const appOptions = await app.getOptions(true);
           const options = await source.getOptions(true);
-          const defaultOptions = await pluginConnection.methods.uniquePropertyBootstrapOptions(
-            {
+          const defaultOptions =
+            await pluginConnection.methods.uniquePropertyBootstrapOptions({
               app,
               appId: app.id,
               connection,
@@ -338,8 +338,7 @@ export namespace SourceOps {
               sourceId: source.id,
               sourceOptions: options,
               mappedColumn,
-            }
-          );
+            });
 
           ruleOptions = defaultOptions;
         }

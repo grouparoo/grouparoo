@@ -92,9 +92,9 @@ export namespace Plugins {
     size = 250
   ) {
     const url = "https://registry.npmjs.com/-/v1/search";
-    const response = await fetch(
-      `${url}?text=${query}&size=${size}`
-    ).then((r) => r.json());
+    const response = await fetch(`${url}?text=${query}&size=${size}`).then(
+      (r) => r.json()
+    );
 
     if (!response.objects) throw new Error(`No NPM packages matching ${query}`);
 

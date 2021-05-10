@@ -238,10 +238,8 @@ describe("models/group", () => {
         groupId: groupB.id,
       });
 
-      const {
-        groups,
-        newestMembersAdded,
-      } = await GroupOps.newestGroupMembers();
+      const { groups, newestMembersAdded } =
+        await GroupOps.newestGroupMembers();
       expect(groups.length).toBeGreaterThan(0);
       expect(newestMembersAdded[groupA.id]).toBeLessThanOrEqual(
         new Date().getTime()

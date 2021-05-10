@@ -106,9 +106,8 @@ export const getPropertyValues: GetPropertyValuesMethod = async ({
   const options = { query, params, types };
 
   try {
-    const [rows]: [
-      Array<{ __pk: string; __result: any }>
-    ] = await connection.query(options);
+    const [rows]: [Array<{ __pk: string; __result: any }>] =
+      await connection.query(options);
 
     rows.forEach((row) => {
       if (!responses[row.__pk]) responses[row.__pk] = [];

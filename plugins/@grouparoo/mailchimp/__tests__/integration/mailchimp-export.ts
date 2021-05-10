@@ -35,9 +35,8 @@ const email1 = "test3039@grouparoo.com";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
-  newNock
-);
+const destinationOptions: SimpleDestinationOptions =
+  loadDestinationOptions(newNock);
 
 let client;
 

@@ -5,17 +5,17 @@ export interface GetUniquePropertyBootstrapOptionsMethod {
   (): UniquePropertyBootstrapOptions;
 }
 
-export const getUniquePropertyBootstrapOptions: GetUniquePropertyBootstrapOptionsMethod = () => {
-  const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions = async ({
-    mappedColumn,
-  }) => {
-    const columnName = mappedColumn;
-    const options = {
-      [aggregationMethodKey]: AggregationMethod.Exact,
-      column: columnName,
-    };
+export const getUniquePropertyBootstrapOptions: GetUniquePropertyBootstrapOptionsMethod =
+  () => {
+    const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
+      async ({ mappedColumn }) => {
+        const columnName = mappedColumn;
+        const options = {
+          [aggregationMethodKey]: AggregationMethod.Exact,
+          column: columnName,
+        };
 
-    return options;
+        return options;
+      };
+    return uniquePropertyBootstrapOptions;
   };
-  return uniquePropertyBootstrapOptions;
-};

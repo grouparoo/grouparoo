@@ -187,9 +187,8 @@ export async function sortConfigurationObjects(
   configObjects: ConfigurationObject[]
 ): Promise<ConfigurationObject[]> {
   const configObjectsWithIds = await getConfigObjectsWithIds(configObjects);
-  const sortedConfigObjectsWithIds = sortConfigObjectsWithIds(
-    configObjectsWithIds
-  );
+  const sortedConfigObjectsWithIds =
+    sortConfigObjectsWithIds(configObjectsWithIds);
   return sortedConfigObjectsWithIds.map((o) => o.configObject);
 }
 
@@ -198,9 +197,10 @@ export async function sortConfigurationObjects(
  *
  * @param configObjects ConfigurationObject[]
  */
-export function validateConfigObjects(
-  configObjects: ConfigurationObject[]
-): { configObjects: ConfigurationObject[]; errors: string[] } {
+export function validateConfigObjects(configObjects: ConfigurationObject[]): {
+  configObjects: ConfigurationObject[];
+  errors: string[];
+} {
   let errors = [];
   configObjects
     .filter((c) => !c.id || c.id === "")
@@ -281,10 +281,11 @@ export async function getParentIds(
     configObject.class?.toLowerCase() === "property" &&
     configObject?.options?.query
   ) {
-    const mustachePrerequisiteIds = await MustacheUtils.getMustacheVariablesAsPropertyIds(
-      configObject?.options?.query,
-      otherConfigObjects
-    );
+    const mustachePrerequisiteIds =
+      await MustacheUtils.getMustacheVariablesAsPropertyIds(
+        configObject?.options?.query,
+        otherConfigObjects
+      );
     prerequisiteIds.push(...mustachePrerequisiteIds);
   }
 

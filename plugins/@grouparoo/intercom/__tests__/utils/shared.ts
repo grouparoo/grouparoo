@@ -103,7 +103,8 @@ export function setup(appOptions, destinationOptions, newNock) {
     });
   }
 
-  const idRegex = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
+  const idRegex =
+    /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 
   beforeAll(async () => {
     client = await connect(appOptions);

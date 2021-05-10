@@ -29,8 +29,7 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -62,8 +61,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -95,8 +93,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -128,8 +125,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichother%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichother%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -161,8 +157,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -194,8 +189,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -227,8 +221,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -260,8 +253,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -293,8 +285,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -326,8 +317,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10858,8 +10848,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10891,8 +10880,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10924,8 +10912,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10957,8 +10944,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10990,8 +10976,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -21522,8 +21507,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -21555,8 +21539,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
+    q: "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -21667,8 +21650,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(
@@ -21829,8 +21811,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(
@@ -21878,8 +21859,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
   })
   .once()
   .reply(
@@ -21927,8 +21907,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -21960,8 +21939,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -32492,8 +32470,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -32542,8 +32519,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Small%20Account5%27%29",
+    q: "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Small%20Account5%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -32656,8 +32632,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
   })
   .once()
   .reply(
@@ -32818,8 +32793,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -32851,8 +32825,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -32884,8 +32857,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUgDQAU%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUgDQAU%27",
   })
   .once()
   .reply(
@@ -43432,8 +43404,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -43638,8 +43609,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUgDQAU%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUgDQAU%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -54170,8 +54140,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -54220,8 +54189,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichother%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichother%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -54409,8 +54377,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -54442,8 +54409,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -54475,8 +54441,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -65007,8 +64972,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichother%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichother%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -65057,8 +65021,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -65090,8 +65053,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
+    q: "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
   })
   .once()
   .reply(
@@ -65183,8 +65145,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -65404,8 +65365,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(
@@ -65453,8 +65413,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
   })
   .once()
   .reply(
@@ -65466,8 +65425,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001UinnQAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001UinnQAC",
           },
           ContactId: "0034S000003RTYmQAO",
         },
@@ -76002,8 +75960,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -76052,8 +76009,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(
@@ -76101,8 +76057,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27%20AND%20ContactId%20IN%20%28%270034S000003RTYmQAO%27%29",
+    q: "SELECT%20Id%2C%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27%20AND%20ContactId%20IN%20%28%270034S000003RTYmQAO%27%29",
   })
   .once()
   .reply(
@@ -76114,8 +76069,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001UinnQAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001UinnQAC",
           },
           Id: "00v4S000001UinnQAC",
           ContactId: "0034S000003RTYmQAO",
@@ -76297,8 +76251,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -86829,8 +86782,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian3%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian3%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -86862,8 +86814,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -86895,8 +86846,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -97427,8 +97377,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian2%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian2%40demo.com%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -97503,8 +97452,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(
@@ -97665,8 +97613,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -108197,8 +108144,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -108307,8 +108253,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(
@@ -108356,8 +108301,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -108476,8 +108420,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(
@@ -108525,8 +108468,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
   })
   .once()
   .reply(
@@ -108538,16 +108480,14 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio2QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio2QAC",
           },
           ContactId: "0034S000003RTYmQAO",
         },
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio3QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio3QAC",
           },
           ContactId: "0034S000003RTY4QAO",
         },
@@ -108583,8 +108523,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27",
   })
   .once()
   .reply(
@@ -108596,8 +108535,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio4QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio4QAC",
           },
           ContactId: "0034S000003RTYmQAO",
         },
@@ -108746,8 +108684,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -119278,8 +119215,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -119388,8 +119324,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(
@@ -119437,8 +119372,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27%20AND%20ContactId%20IN%20%28%270034S000003RTYmQAO%27%2C%20%270034S000003RTY4QAO%27%29",
+    q: "SELECT%20Id%2C%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27%20AND%20ContactId%20IN%20%28%270034S000003RTYmQAO%27%2C%20%270034S000003RTY4QAO%27%29",
   })
   .once()
   .reply(
@@ -119450,8 +119384,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio4QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio4QAC",
           },
           Id: "00v4S000001Uio4QAC",
           ContactId: "0034S000003RTYmQAO",
@@ -119520,8 +119453,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(
@@ -119637,8 +119569,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095yLQAQ%27",
   })
   .once()
   .reply(
@@ -119650,16 +119581,14 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio2QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio2QAC",
           },
           ContactId: "0034S000003RTYmQAO",
         },
         {
           attributes: {
             type: "CampaignMember",
-            url:
-              "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio3QAC",
+            url: "/services/data/v42.0/sobjects/CampaignMember/00v4S000001Uio3QAC",
           },
           ContactId: "0034S000003RTY4QAO",
         },
@@ -119695,8 +119624,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27",
+    q: "SELECT%20ContactId%20FROM%20CampaignMember%20WHERE%20CampaignId%20%3D%20%277014S00000095y7QAA%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -119728,8 +119656,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -119761,8 +119688,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -130293,8 +130219,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
+    q: "SELECT%20Id%2C%20Email%20FROM%20Contact%20WHERE%20Email%20IN%20%28%27enrichbrian%40demo.com%27%2C%20%27enrichbrian2%40demo.com%27%2C%20%27enrichbrian3%40demo.com%27%29",
   })
   .once()
   .reply(
@@ -130351,8 +130276,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
+    q: "SELECT%20Id%2C%20Name%20FROM%20Account%20WHERE%20Name%20IN%20%28%27%28test%29%20Big%20Account5%27%29",
   })
   .once()
   .reply(
@@ -130689,8 +130613,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004qUglQAE%27",
   })
   .once()
   .reply(
@@ -130738,8 +130661,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -130771,8 +130693,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian%40demo.com%27",
   })
   .once()
   .reply(
@@ -130820,8 +130741,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian2%40demo.com%27",
   })
   .once()
   .reply(
@@ -130869,8 +130789,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichbrian3%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -130902,8 +130821,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichother%40demo.com%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Email%20%3D%20%27enrichother%40demo.com%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -130970,8 +130888,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value5%27",
   })
   .once()
   .reply(
@@ -131019,8 +130936,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned5%27",
   })
   .once()
   .reply(
@@ -131103,8 +131019,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Big%20Account5%27",
   })
   .once()
   .reply(
@@ -131152,8 +131067,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20Name%20%3D%20%27%28test%29%20Small%20Account5%27",
   })
   .once()
   .reply(

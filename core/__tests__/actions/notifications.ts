@@ -36,12 +36,8 @@ describe("actions/notifications", () => {
 
     test("a reader can view notifications", async () => {
       connection.params = { csrfToken };
-      const {
-        error,
-        notifications,
-        total,
-        unreadCount,
-      } = await specHelper.runAction("notifications:list", connection);
+      const { error, notifications, total, unreadCount } =
+        await specHelper.runAction("notifications:list", connection);
 
       expect(error).toBeUndefined();
       expect(notifications.length).toBe(3);
