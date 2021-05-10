@@ -6,10 +6,19 @@ export default function DestinationTabs({
 }: {
   destination: Models.DestinationType;
 }) {
-  const tabs =
-    process.env.GROUPAROO_UI_EDITION === "enterprise"
-      ? ["edit", "data", "exports"]
-      : ["exports"];
+  let tabs = [];
+  switch (process.env.GROUPAROO_UI_EDITION) {
+    case "enterprise":
+      tabs.push("edit", "data", "exports");
+      break;
+    case "config":
+      tabs.push("edit", "data");
+      break;
+
+    default:
+      tabs.push("exports");
+      break;
+  }
 
   return (
     <Tabs name={destination.name} draftType={destination.type} tabs={tabs} />

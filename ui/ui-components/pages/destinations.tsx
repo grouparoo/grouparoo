@@ -99,7 +99,7 @@ export default function Page(props) {
                   <AppIcon src={destination.app?.icon} />
                 </td>
                 <td>
-                  {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+                  {process.env.GROUPAROO_UI_EDITION !== "community" ? (
                     <EnterpriseLink
                       href="/destination/[id]/edit"
                       as={`/destination/${destination.id}/edit`}
@@ -167,7 +167,7 @@ export default function Page(props) {
 
       <br />
 
-      {process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+      {process.env.GROUPAROO_UI_EDITION !== "community" ? (
         <Button
           variant="primary"
           onClick={() => {
