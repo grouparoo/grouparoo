@@ -40,9 +40,8 @@ const email1 = "testid3039@grouparoo.com";
 
 // these used and set by test
 const appOptions: SimpleAppOptions = loadAppOptions(newNock);
-const destinationOptions: SimpleDestinationOptions = loadDestinationOptions(
-  newNock
-);
+const destinationOptions: SimpleDestinationOptions =
+  loadDestinationOptions(newNock);
 
 let client;
 

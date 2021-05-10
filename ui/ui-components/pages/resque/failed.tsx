@@ -88,9 +88,8 @@ export default function ResqueFailedList(props) {
     const _focusedException = failed[index];
     _focusedException.renderedStack = "";
     if (_focusedException.backtrace) {
-      _focusedException.renderedStack = _focusedException.backtrace.join(
-        "\r\n"
-      );
+      _focusedException.renderedStack =
+        _focusedException.backtrace.join("\r\n");
     }
 
     const showModal = true;

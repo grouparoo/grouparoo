@@ -40,30 +40,29 @@ const defaultProspectFields: DestinationMappingOptionsResponseProperty[] = [
   { key: "score", type: "integer" },
 ];
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-}) => {
-  const client = await connect(appOptions);
-  const known = await getProspectFields(client);
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions }) => {
+    const client = await connect(appOptions);
+    const known = await getProspectFields(client);
 
-  return {
-    labels: {
-      property: {
-        singular: "Pardot Field",
-        plural: "Pardot Fields",
+    return {
+      labels: {
+        property: {
+          singular: "Pardot Field",
+          plural: "Pardot Fields",
+        },
+        group: {
+          singular: "Pardot List",
+          plural: "Pardot Lists",
+        },
       },
-      group: {
-        singular: "Pardot List",
-        plural: "Pardot Lists",
+      properties: {
+        known,
+        required: requiredProspectFields,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      known,
-      required: requiredProspectFields,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesToGrouparoo = (
   pardotType: string

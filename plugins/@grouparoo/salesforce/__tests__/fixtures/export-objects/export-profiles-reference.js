@@ -35,8 +35,7 @@ nock("https://login.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -78,8 +77,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -121,8 +119,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -164,8 +161,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value3%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value3%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -207,8 +203,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned3%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned3%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -250,8 +245,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -293,8 +287,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -336,8 +329,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -379,8 +371,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -422,8 +413,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -465,8 +455,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -10966,8 +10955,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%29",
+    q: "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -11009,8 +10997,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%27abcd%27%29",
+    q: "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%27abcd%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -11157,8 +11144,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
   })
   .once()
   .reply(
@@ -11338,8 +11324,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
   })
   .once()
   .reply(
@@ -11397,8 +11382,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltAQAQ%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltAQAQ%27",
   })
   .once()
   .reply(
@@ -11574,8 +11558,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -11617,8 +11600,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -11660,8 +11642,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -22161,8 +22142,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%272refid%27%29",
+    q: "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%272refid%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -22204,8 +22184,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
+    q: "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -22354,8 +22333,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
   })
   .once()
   .reply(
@@ -22535,8 +22513,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -22578,8 +22555,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(
@@ -22637,8 +22613,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
   })
   .once()
   .reply(
@@ -33272,8 +33247,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%29",
+    q: "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%29",
   })
   .once()
   .reply(
@@ -33332,8 +33306,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
+    q: "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
   })
   .once()
   .reply(
@@ -33566,8 +33539,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
   })
   .once()
   .reply(
@@ -33750,8 +33722,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -33793,8 +33764,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -44294,8 +44264,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%2C%20%272refid%27%2C%20%273refid%27%29",
+    q: "SELECT%20Id%2C%20Custom_External_ID__c%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20IN%20%28%271refid%27%2C%20%272refid%27%2C%20%273refid%27%29",
   })
   .once()
   .reply(
@@ -44362,8 +44331,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%27shouldnotexist%27%29",
+    q: "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%27shouldnotexist%27%29",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -44520,8 +44488,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
+    q: "SELECT%20Id%2C%20AccountNumber%20FROM%20Account%20WHERE%20AccountNumber%20IN%20%28%271234567890123456789012345678901234567890%27%29",
   })
   .once()
   .reply(
@@ -44877,8 +44844,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
   })
   .once()
   .reply(
@@ -45058,8 +45024,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltAQAQ%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltAQAQ%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -45101,8 +45066,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20AccountId%20%3D%20%270014S000004pltFQAQ%27",
   })
   .once()
   .reply(
@@ -45167,8 +45131,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -45210,8 +45173,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%271refid%27",
   })
   .once()
   .reply(
@@ -45269,8 +45231,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%272refid%27",
   })
   .once()
   .reply(
@@ -45328,8 +45289,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
+    q: "SELECT%20Id%20FROM%20Contact%20WHERE%20Custom_External_ID__c%20%3D%20%273refid%27",
   })
   .once()
   .reply(
@@ -45436,8 +45396,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value3%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20High%20Value3%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -45479,8 +45438,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned3%27",
+    q: "SELECT%20Id%20FROM%20Campaign%20WHERE%20Name%20%3D%20%27%28test%29%20Churned3%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -45522,8 +45480,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27abcd%27",
   })
   .once()
   .reply(
@@ -45581,8 +45538,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%2712345678901234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [
@@ -45624,8 +45580,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%271234567890123456789012345678901234567890%27",
   })
   .once()
   .reply(
@@ -45683,8 +45638,7 @@ nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
 nock("https://na135.salesforce.com:443", { encodedQueryParams: true })
   .get("/services/data/v42.0/query")
   .query({
-    q:
-      "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
+    q: "SELECT%20Id%20FROM%20Account%20WHERE%20AccountNumber%20%3D%20%27shouldnotexist%27",
   })
   .once()
   .reply(200, { totalSize: 0, done: true, records: [] }, [

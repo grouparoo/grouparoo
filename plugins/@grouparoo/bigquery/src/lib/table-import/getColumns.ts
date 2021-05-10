@@ -38,9 +38,10 @@ export const getColumnsInternal = async ({ connection, tableName }) => {
   return map;
 };
 
-const getTypeInfo = function (
-  dataType: string
-): { type: ColumnType; filterOperations: FilterOperation[] } {
+const getTypeInfo = function (dataType: string): {
+  type: ColumnType;
+  filterOperations: FilterOperation[];
+} {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
   let type: ColumnType = null;
   let compare = false;

@@ -37,9 +37,9 @@ describe("mysql/table/sourceFilters", () => {
   });
 
   test("gets filters", async () => {
-    const columns = await (await getFilters()).sort((a, b) =>
-      a.key.localeCompare(b.key)
-    );
+    const columns = await (
+      await getFilters()
+    ).sort((a, b) => a.key.localeCompare(b.key));
     const columnNames = columns.map((r) => r.key);
     expect(columnNames).toEqual([
       "amount",

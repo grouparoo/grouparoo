@@ -33,8 +33,8 @@
   "dependencies": {
     "chalk": "4.1.0",
     "commander": "7.2.0",
-    "fs-extra": "9.1.0",
-    "glob": "7.1.6",
+    "fs-extra": "10.0.0",
+    "glob": "7.1.7",
     "isomorphic-fetch": "3.0.0",
     "npm-check-updates": "11.5.7",
     "ora": "5.4.0",
@@ -43,7 +43,7 @@
   "devDependencies": {
     "@types/fs-extra": "*",
     "@types/node": "*",
-    "prettier": "2.2.1",
+    "prettier": "2.3.0",
     "ts-node": "9.1.1",
     "typescript": "4.2.4"
   },

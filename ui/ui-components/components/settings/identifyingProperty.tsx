@@ -9,10 +9,8 @@ export default function IdentifyingProperty(props) {
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
   const [properties, setProperties] = useState<Models.PropertyType[]>([]);
-  const [
-    identifyingProfilePropertyId,
-    setIdentifyingProfilePropertyId,
-  ] = useState("");
+  const [identifyingProfilePropertyId, setIdentifyingProfilePropertyId] =
+    useState("");
 
   useEffect(() => {
     load();

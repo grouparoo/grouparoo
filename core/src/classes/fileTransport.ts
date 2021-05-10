@@ -9,9 +9,7 @@ export abstract class FileTransport {
   tmp: string;
   bucket: string;
 
-  abstract downloadToServer(
-    file: File
-  ): Promise<{
+  abstract downloadToServer(file: File): Promise<{
     localPath: string;
   }>;
 

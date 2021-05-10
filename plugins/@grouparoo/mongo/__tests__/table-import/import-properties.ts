@@ -14,12 +14,8 @@ import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
 
 // these used and set by test
-const {
-  appOptions,
-  usersTableName,
-  purchasesTableName,
-  locationsTableName,
-} = getConfig();
+const { appOptions, usersTableName, purchasesTableName, locationsTableName } =
+  getConfig();
 let profile: Profile;
 let otherProfile: Profile;
 

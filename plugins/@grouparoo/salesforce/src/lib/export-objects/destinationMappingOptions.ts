@@ -3,14 +3,11 @@ import { destinationModel } from "./model";
 
 import { getDestinationMappingOptions } from "../export/mapping";
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appId,
-  appOptions,
-  destinationOptions,
-}) => {
-  return getDestinationMappingOptions({
-    appId,
-    appOptions,
-    model: destinationModel(destinationOptions),
-  });
-};
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appId, appOptions, destinationOptions }) => {
+    return getDestinationMappingOptions({
+      appId,
+      appOptions,
+      model: destinationModel(destinationOptions),
+    });
+  };

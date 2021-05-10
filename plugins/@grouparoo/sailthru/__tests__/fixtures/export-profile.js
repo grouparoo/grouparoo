@@ -6,8 +6,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -44,8 +43,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -126,8 +124,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -173,8 +170,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -264,8 +260,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -313,8 +308,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -404,8 +398,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -453,8 +446,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -544,8 +536,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -593,8 +584,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -896,8 +886,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -948,8 +937,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1086,8 +1074,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1135,8 +1122,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1182,8 +1168,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%7D",
     sig: "NOCK",
   })
   .reply(200, { ok: true }, [
@@ -1216,8 +1201,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1254,8 +1238,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1292,8 +1275,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%22brian%40bleonard.com%22%2C%22key%22%3A%22email%22%2C%22fields%22%3A%7B%22keys%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1330,8 +1312,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%2C%22fields%22%3A%7B%22keys%22%3A1%2C%22vars%22%3A1%2C%22lists%22%3A1%7D%7D",
     sig: "NOCK",
   })
   .reply(
@@ -1371,8 +1352,7 @@ nock("https://api.sailthru.com:443", { encodedQueryParams: true })
   .query({
     api_key: "29831a903632490eb5e1722df107f06ac",
     format: "json",
-    json:
-      "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%7D",
+    json: "%7B%22id%22%3A%225e98d4dfdb4f0f46bf07c5d3%22%2C%22key%22%3A%22sid%22%7D",
     sig: "NOCK",
   })
   .reply(200, { ok: true }, [

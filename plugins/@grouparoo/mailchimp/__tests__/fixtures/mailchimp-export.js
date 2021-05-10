@@ -76,8 +76,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -93,8 +92,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -103,8 +101,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -113,46 +110,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -198,16 +189,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -216,8 +205,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -226,8 +214,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "DELETE",
             },
           ],
@@ -247,16 +234,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -265,8 +250,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -275,8 +259,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "DELETE",
             },
           ],
@@ -296,16 +279,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -314,8 +295,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -324,8 +304,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "DELETE",
             },
           ],
@@ -345,16 +324,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -363,8 +340,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -373,8 +349,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "DELETE",
             },
           ],
@@ -394,16 +369,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -412,8 +385,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -422,8 +394,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "DELETE",
             },
           ],
@@ -443,16 +414,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -461,8 +430,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -471,8 +439,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "DELETE",
             },
           ],
@@ -483,8 +450,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -493,8 +459,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "create",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -623,8 +588,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -633,24 +597,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -659,8 +620,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -669,8 +629,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -679,8 +638,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -689,8 +647,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -699,8 +656,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -709,8 +665,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -719,8 +674,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -815,8 +769,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -825,24 +778,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -851,8 +801,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -861,8 +810,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -871,8 +819,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -881,8 +828,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -891,8 +837,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -901,8 +846,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -911,8 +855,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -1007,8 +950,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -1017,24 +959,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -1043,8 +982,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -1053,8 +991,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -1063,8 +1000,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -1073,8 +1009,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -1083,8 +1018,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -1093,8 +1027,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -1103,8 +1036,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -1200,8 +1132,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -1210,24 +1141,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -1236,8 +1164,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -1246,8 +1173,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -1256,8 +1182,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -1266,8 +1191,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -1276,8 +1200,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -1286,8 +1209,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -1296,8 +1218,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -1392,8 +1313,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -1402,24 +1322,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -1428,8 +1345,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -1438,8 +1354,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -1448,8 +1363,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -1458,8 +1372,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -1468,8 +1381,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -1478,8 +1390,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -1488,8 +1399,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -1639,8 +1549,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -1649,24 +1558,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -1675,8 +1581,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -1685,8 +1590,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -1695,8 +1599,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -1705,8 +1608,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -1715,8 +1617,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -1725,8 +1626,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -1735,8 +1635,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1b724bb934/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -1831,8 +1730,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -1841,24 +1739,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -1867,8 +1762,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -1877,8 +1771,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -1887,8 +1780,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -1897,8 +1789,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -1907,8 +1798,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -1917,8 +1807,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -1927,8 +1816,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/1fb4269058/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -2023,8 +1911,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -2033,24 +1920,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -2059,8 +1943,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -2069,8 +1952,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -2079,8 +1961,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2089,8 +1970,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -2099,8 +1979,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -2109,8 +1988,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -2119,8 +1997,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/6f890f62ee/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -2216,8 +2093,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -2226,24 +2102,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -2252,8 +2125,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -2262,8 +2134,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -2272,8 +2143,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2282,8 +2152,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -2292,8 +2161,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -2302,8 +2170,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -2312,8 +2179,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/7cf8c94812/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -2408,8 +2274,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "abuse-reports",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/abuse-reports",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/abuse-reports",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Abuse/CollectionResponse.json",
@@ -2418,24 +2283,21 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "activity",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/activity",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/activity",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Activity/Response.json",
             },
             {
               rel: "clients",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/clients",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/clients",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Clients/Response.json",
             },
             {
               rel: "growth-history",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/growth-history",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/growth-history",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Growth/CollectionResponse.json",
@@ -2444,8 +2306,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "interest-categories",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/interest-categories",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/interest-categories",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/InterestCategories/CollectionResponse.json",
@@ -2454,8 +2315,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "members",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/CollectionResponse.json",
@@ -2464,8 +2324,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "merge-fields",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2474,8 +2333,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "segments",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/segments",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/segments",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Segments/CollectionResponse.json",
@@ -2484,8 +2342,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "webhooks",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/webhooks",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/webhooks",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Webhooks/CollectionResponse.json",
@@ -2494,8 +2351,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "signup-forms",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/signup-forms",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/signup-forms",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/SignupForms/CollectionResponse.json",
@@ -2504,8 +2360,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "locations",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/locations",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/locations",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Locations/CollectionResponse.json",
@@ -2583,16 +2438,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2601,8 +2454,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2611,8 +2463,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/3",
               method: "DELETE",
             },
           ],
@@ -2632,16 +2483,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2650,8 +2499,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2660,8 +2508,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/1",
               method: "DELETE",
             },
           ],
@@ -2681,16 +2528,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2699,8 +2544,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2709,8 +2553,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/2",
               method: "DELETE",
             },
           ],
@@ -2730,16 +2573,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2748,8 +2589,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2758,8 +2598,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/6",
               method: "DELETE",
             },
           ],
@@ -2779,16 +2618,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2797,8 +2634,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2807,8 +2643,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/4",
               method: "DELETE",
             },
           ],
@@ -2828,16 +2663,14 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
           _links: [
             {
               rel: "self",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
             },
             {
               rel: "parent",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
               method: "GET",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2846,8 +2679,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "update",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "PATCH",
               targetSchema:
                 "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2856,8 +2688,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
             },
             {
               rel: "delete",
-              href:
-                "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
+              href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields/5",
               method: "DELETE",
             },
           ],
@@ -2868,8 +2699,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/CollectionResponse.json",
@@ -2878,8 +2708,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "create",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/merge-fields",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/MergeFields/Response.json",
@@ -2959,8 +2788,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -2976,8 +2804,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -2986,8 +2813,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -2996,46 +2822,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -3113,8 +2933,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3130,8 +2949,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3140,8 +2958,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3150,46 +2967,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -3275,8 +3086,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3292,8 +3102,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3302,8 +3111,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3312,46 +3120,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -3420,8 +3222,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3437,8 +3238,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3447,8 +3247,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3457,46 +3256,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -3573,8 +3366,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3590,8 +3382,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3600,8 +3391,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3610,46 +3400,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],
@@ -3735,8 +3519,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
       _links: [
         {
           rel: "self",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3752,8 +3535,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "update",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PATCH",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3762,8 +3544,7 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "upsert",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "PUT",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Response.json",
@@ -3772,46 +3553,40 @@ nock("https://us3.api.mailchimp.com:443", { encodedQueryParams: true })
         },
         {
           rel: "delete",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3",
           method: "DELETE",
         },
         {
           rel: "activity",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/activity",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Activity/Response.json",
         },
         {
           rel: "goals",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/goals",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Goals/Response.json",
         },
         {
           rel: "notes",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/notes",
           method: "GET",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Notes/CollectionResponse.json",
         },
         {
           rel: "events",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/events",
           method: "POST",
           targetSchema:
             "https://us3.api.mailchimp.com/schema/3.0/Definitions/Lists/Members/Events/POST.json",
         },
         {
           rel: "delete_permanent",
-          href:
-            "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
+          href: "https://us3.api.mailchimp.com/3.0/lists/26d8e9db1e/members/4e933e008c49baadf05a858fdf201db3/actions/delete-permanent",
           method: "POST",
         },
       ],

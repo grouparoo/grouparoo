@@ -84,7 +84,8 @@ export const buildConnection: BuildConnectionMethod = ({
   const sourceFilters: SourceFilterMethod = getSourceFilters({
     getColumns,
   });
-  const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions = getUniquePropertyBootstrapOptions();
+  const uniquePropertyBootstrapOptions: UniquePropertyBootstrapOptions =
+    getUniquePropertyBootstrapOptions();
   const profiles: ProfilesPluginMethod = getProfiles({
     getChangedRows,
   });
@@ -98,11 +99,10 @@ export const buildConnection: BuildConnectionMethod = ({
         getPropertyValues,
       })
     : null;
-  const sourceRunPercentComplete: SourceRunPercentCompleteMethod = getSourceRunPercentComplete(
-    {
+  const sourceRunPercentComplete: SourceRunPercentCompleteMethod =
+    getSourceRunPercentComplete({
       getChangedRowCount,
-    }
-  );
+    });
 
   const options = (additionalOptions?.options || []).concat({
     key: tableNameKey,

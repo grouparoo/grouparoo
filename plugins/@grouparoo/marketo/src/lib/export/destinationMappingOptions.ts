@@ -5,30 +5,29 @@ import {
 import { connect } from "./../connect";
 import { log } from "actionhero";
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-}) => {
-  const client = await connect(appOptions);
-  const { known, required } = await getFields(client);
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions }) => {
+    const client = await connect(appOptions);
+    const { known, required } = await getFields(client);
 
-  return {
-    labels: {
-      property: {
-        singular: "Marketo Field",
-        plural: "Marketo Fields",
+    return {
+      labels: {
+        property: {
+          singular: "Marketo Field",
+          plural: "Marketo Fields",
+        },
+        group: {
+          singular: "Marketo List",
+          plural: "Marketo Lists",
+        },
       },
-      group: {
-        singular: "Marketo List",
-        plural: "Marketo Lists",
+      properties: {
+        required,
+        known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required,
-      known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesFromMarketoToGrouparoo = (marketoType) => {
   // https://developers.marketo.com/rest-api/lead-database/fields/field-types/

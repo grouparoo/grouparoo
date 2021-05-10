@@ -7,30 +7,29 @@ import { connect } from "./../connect";
 
 const importantFields = ["firstname", "lastname", "company"];
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-}) => {
-  const client = await connect(appOptions);
-  const required = getRequiredFields();
-  const known = await getUserFields(client, appOptions);
-  return {
-    labels: {
-      property: {
-        singular: "Hubspot Contact Property",
-        plural: "Hubspot Contact Properties",
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions }) => {
+    const client = await connect(appOptions);
+    const required = getRequiredFields();
+    const known = await getUserFields(client, appOptions);
+    return {
+      labels: {
+        property: {
+          singular: "Hubspot Contact Property",
+          plural: "Hubspot Contact Properties",
+        },
+        group: {
+          singular: "Hubspot List",
+          plural: "Hubspot Lists",
+        },
       },
-      group: {
-        singular: "Hubspot List",
-        plural: "Hubspot Lists",
+      properties: {
+        required: required,
+        known: known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required: required,
-      known: known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesFromHubspotToGrouparoo = (fieldKey, hubspotType) => {
   switch (fieldKey) {
@@ -83,10 +82,8 @@ export const getUserFields = async (
   const out = [];
   for (const field of fields) {
     if (field["name"] !== "email" && !field["readOnlyValue"]) {
-      const type: DestinationMappingOptionsResponseTypes = mapTypesFromHubspotToGrouparoo(
-        field["name"],
-        field["type"]
-      );
+      const type: DestinationMappingOptionsResponseTypes =
+        mapTypesFromHubspotToGrouparoo(field["name"], field["type"]);
       if (type) {
         out.push({
           key: field["name"],

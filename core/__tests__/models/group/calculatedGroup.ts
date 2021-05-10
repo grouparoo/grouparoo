@@ -631,10 +631,8 @@ describe("models/group", () => {
         const count = await group.countPotentialMembers(rules);
         expect(count).toBe(1);
 
-        const {
-          componentCounts,
-          funnelCounts,
-        } = await group.countComponentMembersFromRules(rules);
+        const { componentCounts, funnelCounts } =
+          await group.countComponentMembersFromRules(rules);
 
         // if we just had the rule `firstName: { match: "%", op: "iLike" },` there would be 4 group members
         // if we just had the rule `lastLoginAt: { match: new Date(100000).getTime(), op: "gte" }` there would be 2 group members

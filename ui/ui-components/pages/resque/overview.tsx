@@ -42,11 +42,12 @@ export default function ResqueOverview(props) {
     let _failedCount = 0;
 
     samples.forEach(({ metrics, timestamp }) => {
-      const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] = JSON.parse(
-        metrics.find(
-          (m) => m.collection === "cluster" && m.topic === "resqueDetails"
-        ).metadata
-      );
+      const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] =
+        JSON.parse(
+          metrics.find(
+            (m) => m.collection === "cluster" && m.topic === "resqueDetails"
+          ).metadata
+        );
 
       _queues = resqueDetails?.queues || _queues;
       _workers = resqueDetails?.workers || _workers;

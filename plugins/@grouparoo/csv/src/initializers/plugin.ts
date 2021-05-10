@@ -107,7 +107,8 @@ export class Plugins extends Initializer {
             sourcePreview: remoteSourcePreview,
             profiles: remoteProfiles,
             sourceRunPercentComplete: remoteSourceRunPercentComplete,
-            uniquePropertyBootstrapOptions: remoteUniquePropertyBootstrapOptions,
+            uniquePropertyBootstrapOptions:
+              remoteUniquePropertyBootstrapOptions,
             profileProperty: remoteProfileProperty,
             profileProperties: remoteProfileProperties,
           },

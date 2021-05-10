@@ -31,10 +31,11 @@ export class ProfilePropertiesEnqueue extends CLSTask {
     });
 
     for (const property of properties) {
-      const pendingProfileProperties = await ProfilePropertyOps.processPendingProfileProperties(
-        property,
-        limit
-      );
+      const pendingProfileProperties =
+        await ProfilePropertyOps.processPendingProfileProperties(
+          property,
+          limit
+        );
 
       count = count + pendingProfileProperties.length;
     }

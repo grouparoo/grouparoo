@@ -46,9 +46,10 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
 // character varying
 // abstime
 
-const getTypeInfo = function (
-  dataType: string
-): { type: ColumnType; filterOperations: FilterOperation[] } {
+const getTypeInfo = function (dataType: string): {
+  type: ColumnType;
+  filterOperations: FilterOperation[];
+} {
   const ops = [FilterOperation.Equal, FilterOperation.NotEqual];
   let type: ColumnType = null;
   let compare = false;

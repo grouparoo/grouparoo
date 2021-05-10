@@ -5352,8 +5352,7 @@ nock("https://api.iterable.com:443", { encodedQueryParams: true })
   .reply(
     400,
     {
-      msg:
-        "Project 10216: The request does not have the same data types as the data previously submitted. Field 'signupDate' already exists for type 'user' and has a data type of 'date' but possible types 'string, keyword' in the request.",
+      msg: "Project 10216: The request does not have the same data types as the data previously submitted. Field 'signupDate' already exists for type 'user' and has a data type of 'date' but possible types 'string, keyword' in the request.",
       code: "RequestFieldsTypesMismatched",
       params: {
         validationErrors: {

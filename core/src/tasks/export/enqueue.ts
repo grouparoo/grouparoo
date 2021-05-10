@@ -33,11 +33,12 @@ export class EnqueueExports extends RetryableTask {
     const destinations = await Destination.scope(null).findAll();
 
     for (const i in destinations) {
-      const enqueuedExportsCount = await ExportOps.processPendingExportsForDestination(
-        destinations[i],
-        limit,
-        delayMs
-      );
+      const enqueuedExportsCount =
+        await ExportOps.processPendingExportsForDestination(
+          destinations[i],
+          limit,
+          delayMs
+        );
       totalEnqueued += enqueuedExportsCount;
       if (enqueuedExportsCount > 0) {
         log(

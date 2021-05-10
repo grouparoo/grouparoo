@@ -61,19 +61,14 @@ let groupId2 = null;
 const deleteProfileValues = [custom1, custom2, custom3];
 const deleteGroupValues = [group1, group2];
 const deleteReferenceValues = [];
-const {
-  findId,
-  getUser,
-  findGroupId,
-  getGroupMemberIds,
-  cleanUp,
-} = getModelHelpers({
-  appOptions,
-  model,
-  deleteProfileValues,
-  deleteGroupValues,
-  deleteReferenceValues,
-});
+const { findId, getUser, findGroupId, getGroupMemberIds, cleanUp } =
+  getModelHelpers({
+    appOptions,
+    model,
+    deleteProfileValues,
+    deleteGroupValues,
+    deleteReferenceValues,
+  });
 
 describe("salesforce/sales-cloud/export-profiles/custom", () => {
   beforeAll(async () => {

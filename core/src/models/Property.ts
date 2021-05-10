@@ -203,11 +203,10 @@ export class Property extends LoggedModel<Property> {
   async getOptions(sourceFromEnvironment = true) {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
     for (const i in options) {
-      options[
-        i
-      ] = await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
-        options[i].toString()
-      );
+      options[i] =
+        await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+          options[i].toString()
+        );
     }
 
     return options;
@@ -217,11 +216,10 @@ export class Property extends LoggedModel<Property> {
     if (test) await this.test(options);
 
     for (const i in options) {
-      options[
-        i
-      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
-        options[i].toString()
-      );
+      options[i] =
+        await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+          options[i].toString()
+        );
     }
 
     return OptionHelper.setOptions(this, options);

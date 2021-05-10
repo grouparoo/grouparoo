@@ -122,26 +122,22 @@ describe("models/profile", () => {
     });
 
     test("it can find the profile via email", async () => {
-      const {
-        profile,
-        isNew,
-      } = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["toad@example.com"],
-        color: ["orange"],
-      });
+      const { profile, isNew } =
+        await ProfileOps.findOrCreateByUniqueProfileProperties({
+          email: ["toad@example.com"],
+          color: ["orange"],
+        });
 
       expect(isNew).toBe(false);
       expect(profile.id).toBe(toad.id);
     });
 
     test("it cannot find the profile by color and will create a new one", async () => {
-      const {
-        profile,
-        isNew,
-      } = await ProfileOps.findOrCreateByUniqueProfileProperties({
-        email: ["luigi@example.com"],
-        color: ["green"],
-      });
+      const { profile, isNew } =
+        await ProfileOps.findOrCreateByUniqueProfileProperties({
+          email: ["luigi@example.com"],
+          color: ["green"],
+        });
 
       expect(isNew).toBe(true);
       expect(profile.id).not.toBe(toad.id);

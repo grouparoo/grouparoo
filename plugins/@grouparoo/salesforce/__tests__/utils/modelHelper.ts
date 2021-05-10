@@ -93,34 +93,34 @@ export const getModelHelpers: ModelHelperMethod = function ({
     }
     return results[0][idType];
   };
-  const getGroupMemberIds: ModelHelperFunctions["getGroupMemberIds"] = async function (
-    groupId
-  ) {
-    const client = await getClient();
-    const query = { [membershipGroupField]: groupId };
-    const fields = [membershipProfileField];
-    const results = await client.sobject(membershipObject).find(query, fields);
-    return results.map((result) => result[membershipProfileField]);
-  };
+  const getGroupMemberIds: ModelHelperFunctions["getGroupMemberIds"] =
+    async function (groupId) {
+      const client = await getClient();
+      const query = { [membershipGroupField]: groupId };
+      const fields = [membershipProfileField];
+      const results = await client
+        .sobject(membershipObject)
+        .find(query, fields);
+      return results.map((result) => result[membershipProfileField]);
+    };
 
-  const findReferenceId: ModelHelperFunctions["findReferenceId"] = async function (
-    value
-  ) {
-    const client = await getClient();
-    const query = { [profileReferenceMatchField]: value };
-    const fields = [idType];
-    const results = await client
-      .sobject(profileReferenceObject)
-      .find(query, fields);
-    if (results.length === 0) {
-      return null;
-    } else if (results.length > 1) {
-      throw new Error(
-        `more than one result! ${profileReferenceMatchField} == ${value}`
-      );
-    }
-    return results[0][idType];
-  };
+  const findReferenceId: ModelHelperFunctions["findReferenceId"] =
+    async function (value) {
+      const client = await getClient();
+      const query = { [profileReferenceMatchField]: value };
+      const fields = [idType];
+      const results = await client
+        .sobject(profileReferenceObject)
+        .find(query, fields);
+      if (results.length === 0) {
+        return null;
+      } else if (results.length > 1) {
+        throw new Error(
+          `more than one result! ${profileReferenceMatchField} == ${value}`
+        );
+      }
+      return results[0][idType];
+    };
   const getReference: ModelHelperFunctions["getReference"] = async function (
     id
   ) {
@@ -135,15 +135,14 @@ export const getModelHelpers: ModelHelperMethod = function ({
       throw err;
     }
   };
-  const getReferencedUserIds: ModelHelperFunctions["getReferencedUserIds"] = async function (
-    referenceId
-  ) {
-    const client = await getClient();
-    const query = { [profileReferenceField]: referenceId };
-    const fields = [idType];
-    const results = await client.sobject(profileObject).find(query, fields);
-    return results.map((result) => result[idType]);
-  };
+  const getReferencedUserIds: ModelHelperFunctions["getReferencedUserIds"] =
+    async function (referenceId) {
+      const client = await getClient();
+      const query = { [profileReferenceField]: referenceId };
+      const fields = [idType];
+      const results = await client.sobject(profileObject).find(query, fields);
+      return results.map((result) => result[idType]);
+    };
 
   const deleteGroups = async function (suppressErrors) {
     const client = await getClient();

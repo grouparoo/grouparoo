@@ -93,9 +93,10 @@ describe("tasks/profileProperties:enqueue", () => {
 
           await specHelper.runTask("profileProperties:enqueue", {});
 
-          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperties"
-          );
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
           const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
             "profileProperty:importProfileProperty"
           );
@@ -131,9 +132,10 @@ describe("tasks/profileProperties:enqueue", () => {
 
           await specHelper.runTask("profileProperties:enqueue", {});
 
-          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperties"
-          );
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
           const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
             "profileProperty:importProfileProperty"
           );
@@ -168,9 +170,10 @@ describe("tasks/profileProperties:enqueue", () => {
 
           await specHelper.runTask("profileProperties:enqueue", {});
 
-          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperties"
-          );
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
           const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
             "profileProperty:importProfileProperty"
           );
@@ -219,9 +222,10 @@ describe("tasks/profileProperties:enqueue", () => {
 
           await specHelper.runTask("profileProperties:enqueue", {});
 
-          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperties"
-          );
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
           const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
             "profileProperty:importProfileProperty"
           );
@@ -258,9 +262,10 @@ describe("tasks/profileProperties:enqueue", () => {
 
           await specHelper.runTask("profileProperties:enqueue", {});
 
-          const importProfilePropertiesTasks = await specHelper.findEnqueuedTasks(
-            "profileProperty:importProfileProperties"
-          );
+          const importProfilePropertiesTasks =
+            await specHelper.findEnqueuedTasks(
+              "profileProperty:importProfileProperties"
+            );
           const importProfilePropertyTasks = await specHelper.findEnqueuedTasks(
             "profileProperty:importProfileProperty"
           );
