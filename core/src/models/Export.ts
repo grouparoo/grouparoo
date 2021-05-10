@@ -195,7 +195,7 @@ export class Export extends Model {
       this.state = "failed";
       this.sendAt = null;
     } else if (this.errorLevel === "info") {
-      this.state = "complete";
+      this.state = "failed";
     } else {
       this.sendAt = Moment().add(retryDelay, "ms").toDate();
       this.startedAt = null;

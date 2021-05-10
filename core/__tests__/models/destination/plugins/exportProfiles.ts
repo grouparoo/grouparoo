@@ -916,7 +916,7 @@ describe("models/destination", () => {
       expect(_export2.errorMessage).toMatch(/inform me!/);
       expect(_export2.errorLevel).toMatch("info");
       expect(_export2.completedAt).toBeFalsy();
-      expect(_export2.state).toBe("complete");
+      expect(_export2.state).toBe("failed");
 
       await _export3.reload();
       expect(_export3.errorMessage).toBeNull();

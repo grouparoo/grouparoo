@@ -931,7 +931,7 @@ describe("models/destination", () => {
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toBe("info");
       expect(_export.completedAt).toBeFalsy();
-      expect(_export.state).toBe("complete");
+      expect(_export.state).toBe("failed");
     });
 
     test("sending an export with sync and producing a retry error will throw", async () => {
