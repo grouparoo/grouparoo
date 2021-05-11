@@ -15,7 +15,7 @@ function RealRedisConfig() {
   let db = process.env.REDIS_DB;
   let username = process.env.REDIS_USER;
   let password = process.env.REDIS_PASS;
-  let protocol = "redis";
+  let protocol = process.env.REDIS_SSL ? "rediss" : "redis";
 
   if (process.env.REDIS_URL) {
     const parsed = new URL(process.env.REDIS_URL);
