@@ -20,6 +20,7 @@ describe("tasks/app:destroy", () => {
     test("will delete app immediately if it's not being used", async () => {
       const app: App = await helper.factories.app();
 
+      await app.update({ state: "deleted" });
       await task.enqueue("app:destroy", { appId: app.id });
       const foundTasks = await specHelper.findEnqueuedTasks("app:destroy");
       expect(foundTasks.length).toBe(1);
@@ -32,6 +33,7 @@ describe("tasks/app:destroy", () => {
       const app: App = await helper.factories.app();
       const destination: Destination = await helper.factories.destination(app);
 
+      await app.update({ state: "deleted" });
       await task.enqueue("app:destroy", { appId: app.id });
 
       const foundTasks = await specHelper.findEnqueuedTasks("app:destroy");
@@ -53,6 +55,7 @@ describe("tasks/app:destroy", () => {
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
 
+      await app.update({ state: "deleted" });
       await task.enqueue("app:destroy", { appId: app.id });
 
       const foundTasks = await specHelper.findEnqueuedTasks("app:destroy");

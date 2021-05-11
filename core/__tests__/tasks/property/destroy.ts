@@ -36,7 +36,7 @@ describe("tasks/property:destroy", () => {
         unique: false,
       });
       await property.setOptions({ column: "col" });
-      await property.update({ state: "ready" });
+      await property.update({ state: "deleted" });
 
       await task.enqueue("property:destroy", { propertyId: property.id });
       const foundTasks = await specHelper.findEnqueuedTasks("property:destroy");
@@ -63,6 +63,7 @@ describe("tasks/property:destroy", () => {
         { key: "test_property", match: "%", operation: { op: "like" } },
       ]);
 
+      await property.update({ state: "deleted" });
       await task.enqueue("property:destroy", { propertyId: property.id });
 
       const foundTasks = await specHelper.findEnqueuedTasks("property:destroy");
@@ -93,6 +94,7 @@ describe("tasks/property:destroy", () => {
       const destination: Destination = await helper.factories.destination();
       await destination.setMapping({ prop: "test_property" }, false);
 
+      await property.update({ state: "deleted" });
       await task.enqueue("property:destroy", { propertyId: property.id });
 
       const foundTasks = await specHelper.findEnqueuedTasks("property:destroy");

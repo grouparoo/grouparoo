@@ -26,6 +26,7 @@ describe("tasks/source:destroy", () => {
       await source.setOptions({ table: "some table" });
       await source.setMapping({ id: "userId" });
 
+      await source.update({ state: "deleted" });
       await task.enqueue("source:destroy", { sourceId: source.id });
       const foundTasks = await specHelper.findEnqueuedTasks("source:destroy");
       expect(foundTasks.length).toBe(1);
@@ -48,6 +49,7 @@ describe("tasks/source:destroy", () => {
         { column: "col" }
       );
 
+      await source.update({ state: "deleted" });
       await task.enqueue("source:destroy", { sourceId: source.id });
 
       const foundTasks = await specHelper.findEnqueuedTasks("source:destroy");
