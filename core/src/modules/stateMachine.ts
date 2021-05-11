@@ -13,12 +13,13 @@ export namespace StateMachine {
   ) {
     const klass = modelName(instance);
     const newState: string = instance["state"];
-    const oldState: string =
-      instance["_previousDataValues"]["state"] || "draft";
+    const oldState: string = instance["_previousDataValues"]["state"]
+      ? instance["_previousDataValues"]["state"]
+      : instance.constructor["defaultState"]
+      ? instance.constructor["defaultState"]
+      : "draft";
 
-    if (!newState || newState === oldState) {
-      return;
-    }
+    if (!newState || newState === oldState) return;
 
     const transition = findTransition(oldState, newState, transitions);
     if (!transition) {
@@ -38,13 +39,7 @@ export namespace StateMachine {
     to: string,
     transitions: Array<StateTransition>
   ) {
-    return transitions.filter((t) => {
-      if (t.from === from && t.to === to) {
-        return true;
-      } else {
-        return false;
-      }
-    })[0];
+    return transitions.find((t) => t.from === from && t.to === to);
   }
 
   function modelName(instance: Model): string {

@@ -46,7 +46,7 @@ describe("models/export", () => {
       newProfileProperties,
       oldGroups,
       newGroups,
-      mostRecent: true,
+      state: "complete",
     });
   });
 
@@ -105,7 +105,7 @@ describe("models/export", () => {
       newProfileProperties,
       oldGroups,
       newGroups,
-      mostRecent: true,
+      state: "complete",
     });
 
     expect(oldExport.oldProfileProperties).toEqual({
@@ -159,7 +159,7 @@ describe("models/export", () => {
       newProfileProperties,
       oldGroups: [],
       newGroups: [],
-      mostRecent: true,
+      state: "complete",
     });
 
     expect(nullExport.oldProfileProperties).toEqual({
@@ -208,7 +208,7 @@ describe("models/export", () => {
       newProfileProperties,
       oldGroups: [],
       newGroups: [],
-      mostRecent: true,
+      state: "complete",
     });
 
     expect(oldNullExport.oldProfileProperties).toEqual({
@@ -350,46 +350,6 @@ describe("models/export", () => {
     await destination.destroy();
   });
 
-  test("an export can claim the most-recent spot", async () => {
-    expect(_export.mostRecent).toBe(true);
-
-    const newExport = await Export.create({
-      destinationId: destination.id,
-      profileId: profile.id,
-      startedAt: new Date(),
-      oldProfileProperties: {},
-      newProfileProperties: {},
-      oldGroups: [],
-      newGroups: [],
-    });
-
-    const unrelatedExport = await Export.create({
-      destinationId: "other-destination",
-      profileId: profile.id,
-      startedAt: new Date(),
-      oldProfileProperties: {},
-      newProfileProperties: {},
-      oldGroups: [],
-      newGroups: [],
-      mostRecent: true,
-    });
-
-    expect(newExport.mostRecent).toBe(false);
-
-    await newExport.completeAndMarkMostRecent();
-
-    await _export.reload();
-    await newExport.reload();
-    await unrelatedExport.reload();
-
-    expect(_export.mostRecent).toBe(false);
-    expect(newExport.mostRecent).toBe(true);
-    expect(unrelatedExport.mostRecent).toBe(true);
-
-    await newExport.destroy();
-    await unrelatedExport.destroy();
-  });
-
   test("exports can be marked as having changes or not", async () => {
     await Export.destroy({ where: { destinationId: destination.id } });
     const group = await helper.factories.group();
@@ -404,7 +364,7 @@ describe("models/export", () => {
       newProfileProperties: {},
       oldGroups: [],
       newGroups: [],
-      mostRecent: true,
+      state: "complete",
     });
 
     await destination.exportProfile(profile);
@@ -433,7 +393,7 @@ describe("models/export", () => {
       newProfileProperties: {},
       oldGroups: [],
       newGroups: [],
-      mostRecent: false,
+      state: "pending",
     });
 
     const oldExportMostRecent = await Export.create({
@@ -444,7 +404,8 @@ describe("models/export", () => {
       newProfileProperties: {},
       oldGroups: [],
       newGroups: [],
-      mostRecent: true,
+      completedAt: new Date(),
+      state: "complete",
     });
 
     oldExport.set({ createdAt: new Date(0) }, { raw: true });
@@ -454,7 +415,7 @@ describe("models/export", () => {
       fields: ["createdAt"],
     });
 
-    oldExportMostRecent.set({ createdAt: new Date(0) }, { raw: true });
+    oldExportMostRecent.set({ createdAt: new Date(1000 * 61) }, { raw: true });
     oldExportMostRecent.changed("createdAt", true);
     await oldExportMostRecent.save({
       silent: true,
@@ -482,9 +443,10 @@ describe("models/export", () => {
         newProfileProperties: { firstName: "new" },
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
     });
+
     test("an export can save an error message", async () => {
       errorExport.errorMessage = "bad stuff happened!";
       await errorExport.save();

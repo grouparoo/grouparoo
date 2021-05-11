@@ -1,12 +1,9 @@
-import { Task } from "actionhero";
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
 import { App } from "../../models/App";
-import { DestinationOps } from "../../modules/ops/destination";
-import { CLS } from "../../modules/cls";
-import { AsyncReturnType } from "type-fest";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
-export class ExportSend extends Task {
+export class ExportSend extends CLSTask {
   constructor() {
     super();
     this.name = "export:send";
@@ -19,38 +16,20 @@ export class ExportSend extends Task {
     };
   }
 
-  async run(params) {
-    let response: AsyncReturnType<typeof DestinationOps["sendExport"]>;
+  async runWithinTransaction(params) {
     let app: App;
 
-    await CLS.wrap(async () => {
-      const destination = await Destination.scope(null).findOne({
-        where: { id: params.destinationId },
-      });
-      if (!destination) return;
-      app = await destination.$get("app");
-      const _export = await Export.findOne({
-        where: { id: params.exportId },
-      });
-      if (!_export) return; // the export was deleted
-      if (_export.completedAt) return; // be sure not to export twice
-
-      response = await destination.sendExport(_export);
+    const destination = await Destination.scope(null).findOne({
+      where: { id: params.destinationId },
     });
+    if (!destination) return;
+    app = await destination.$get("app");
+    const _export = await Export.findOne({
+      where: { id: params.exportId },
+    });
+    if (!_export) return;
+    if (_export.state !== "pending") return;
 
-    if (!response) return; // we exited early
-
-    if (!response.success) {
-      if (response.retryDelay) {
-        return CLS.enqueueTaskIn(
-          response.retryDelay,
-          "export:send",
-          params,
-          `exports:${app.type}`
-        );
-      } else {
-        throw response.error; // auto retry
-      }
-    }
+    await destination.sendExport(_export);
   }
 }

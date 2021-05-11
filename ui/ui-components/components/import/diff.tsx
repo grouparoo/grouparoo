@@ -2,6 +2,10 @@ import { Badge } from "react-bootstrap";
 import EnterpriseLink from "../enterpriseLink";
 import { Models } from "../../utils/apiData";
 
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+}
+
 export function ImportProfilePropertiesDiff({
   _import,
 }: {
@@ -25,44 +29,58 @@ export function ImportProfilePropertiesDiff({
     );
   }
 
-  return (
-    <>
-      <ul>
-        {Object.keys(_import.oldProfileProperties).map((k) => {
-          return (
-            <li key={`${_import.id}-prp-${k}`}>
-              {k}:{" "}
-              {JSON.stringify(_import.oldProfileProperties[k]) !==
-              JSON.stringify(_import.newProfileProperties[k]) ? (
-                <>
-                  <Badge variant="danger">-</Badge>&nbsp;
-                  {_import.oldProfileProperties[k]?.toString()}
-                  {_import.newProfileProperties[k] !== null &&
-                  _import.newProfileProperties[k] !== undefined ? (
-                    <>
-                      {" "}
-                      | <Badge variant="success">+</Badge>&nbsp;
-                      {_import.newProfileProperties[k].toString()}
-                    </>
-                  ) : null}
-                </>
-              ) : (
-                _import.oldProfileProperties[k]?.toString()
-              )}
-            </li>
-          );
-        })}
+  const keys = [
+    ...Object.keys(_import.oldProfileProperties),
+    ...Object.keys(_import.newProfileProperties),
+  ]
+    .filter(onlyUnique)
+    .sort();
 
-        {Object.keys(_import.newProfileProperties).map((k) =>
-          _import.oldProfileProperties[k] === undefined ? (
-            <li key={`${_import.id}-prp-${k}`}>
-              {k}: <Badge variant="success">+</Badge>&nbsp;
-              {_import.newProfileProperties[k]?.toString()}
-            </li>
-          ) : null
-        )}
-      </ul>
-    </>
+  return (
+    <ul>
+      {keys.map((k) => {
+        const hasChanges =
+          JSON.stringify(_import.oldProfileProperties[k]) !==
+          JSON.stringify(_import.newProfileProperties[k])
+            ? true
+            : false;
+        const nullOld =
+          _import.oldProfileProperties[k] === null ||
+          _import.oldProfileProperties[k] === undefined;
+        const nullNew =
+          _import.newProfileProperties[k] === null ||
+          _import.newProfileProperties[k] === undefined;
+
+        const badge = hasChanges ? (
+          nullOld && !nullNew ? (
+            <Badge variant="success">+</Badge>
+          ) : !nullOld && nullNew ? (
+            <Badge variant="danger">-</Badge>
+          ) : (
+            <Badge variant="warning">-/+</Badge>
+          )
+        ) : (
+          <Badge variant="info">○</Badge>
+        );
+
+        return (
+          <li key={`${_import.id}-prp-${k}`}>
+            {badge} <strong>{k}</strong>:{" "}
+            {nullOld ? (
+              <code>null</code>
+            ) : (
+              _import.oldProfileProperties[k].toString()
+            )}{" "}
+            /{" "}
+            {nullNew ? (
+              <code>null</code>
+            ) : (
+              _import.newProfileProperties[k].toString()
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -95,7 +113,9 @@ export function ImportGroupsDiff({
             <li key={`${_import.id}-grp-${g}`}>
               {!_import.newGroupIds.includes(g) ? (
                 <Badge variant="danger">-</Badge>
-              ) : null}{" "}
+              ) : (
+                <Badge variant="info">○</Badge>
+              )}{" "}
               {groupLink(groups, g)}
             </li>
           );

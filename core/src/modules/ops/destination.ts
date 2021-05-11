@@ -296,9 +296,9 @@ export namespace DestinationOps {
       where: {
         destinationId: destination.id,
         profileId: profile.id,
-        mostRecent: true,
-        errorMessage: null,
+        state: "complete",
       },
+      order: [["completedAt", "desc"]],
     });
 
     if (mostRecentExport && mostRecentExport.toDelete !== true) {
@@ -390,6 +390,8 @@ export namespace DestinationOps {
       newProfileProperties: mappedNewProfileProperties,
       oldGroups: oldGroupNames.sort(),
       newGroups: newGroupNames.sort(),
+      state: "pending",
+      sendAt: new Date(),
       hasChanges,
       toDelete,
       force,
@@ -497,7 +499,7 @@ export namespace DestinationOps {
   ): Promise<ExportedProfile[]> {
     const exportedProfiles: ExportedProfile[] = [];
     for (const _export of _exports) {
-      const profile = await _export.$get("profile"); // PEFORMANCE: get all profiles at once
+      const profile = await _export.$get("profile"); // PERFORMANCE: get all profiles at once
       exportedProfiles.push({
         profile,
         profileId: profile?.id,
@@ -537,7 +539,7 @@ export namespace DestinationOps {
     for (const _export of givenExports) {
       // TODO: maybe should recalcuate hasChanges and from current mostRecent
       if (!_export.hasChanges) {
-        await _export.completeAndMarkMostRecent(); // do not include exports with hasChanges=false
+        await _export.complete(); // do not include exports with hasChanges=false
       } else {
         _exports.push(_export);
       }
@@ -562,16 +564,22 @@ export namespace DestinationOps {
     if (!parallelismOk) {
       const error = new Error(`parallelism limit reached for ${app.type}`);
       if (synchronous) throw error;
+
+      const outRetryDelay = config.tasks.timeout + 1;
+      for (const _export of _exports) {
+        await _export.retry(outRetryDelay);
+      }
+
       return {
         success: false,
         error,
-        retryDelay: config.tasks.timeout + 1,
+        retryDelay: outRetryDelay,
         retryexportIds: _exports.map((e) => e.id),
       };
     }
 
     let combinedError: CombinedError = null;
-    let outRetryDelay: number = undefined;
+    let outRetryDelay: number;
     let outSuccess = false;
 
     try {
@@ -609,10 +617,8 @@ export namespace DestinationOps {
     }
 
     if (outSuccess) {
-      // they were all correct!
-      for (const _export of _exports) {
-        await _export.completeAndMarkMostRecent();
-      }
+      for (const _export of _exports) await _export.complete(); // they were all correct!
+
       return {
         success: true,
         error: undefined,
@@ -626,7 +632,7 @@ export namespace DestinationOps {
       // unspecified error, so don't know specific profile with issue.
       const retryexportIds: string[] = [];
       for (const _export of _exports) {
-        await _export.setError(combinedError);
+        await _export.setError(combinedError, outRetryDelay);
         retryexportIds.push(_export.id);
       }
       if (synchronous) {
@@ -660,7 +666,7 @@ export namespace DestinationOps {
       const { profileId } = _export;
       const errorWithId = profilesWithErrors[profileId];
       if (errorWithId) {
-        await _export.setError(errorWithId);
+        await _export.setError(errorWithId, outRetryDelay);
         delete remainingProfilesWithErrors[profileId]; // used
 
         // "info" means that it's actually ok. for example, skipped.
@@ -670,7 +676,7 @@ export namespace DestinationOps {
         }
       } else {
         // this one was a success!
-        await _export.completeAndMarkMostRecent();
+        await _export.complete();
       }
     }
 

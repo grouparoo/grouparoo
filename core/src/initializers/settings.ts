@@ -112,6 +112,14 @@ export class Plugins extends CLSInitializer {
         type: "number",
       },
       {
+        key: "exports-max-retries-count",
+        title: "Exports Maximum Retry Count",
+        defaultValue: 5,
+        description:
+          "How many times should we attempt to retry an Export before considering it failed?",
+        type: "number",
+      },
+      {
         key: "profiles-default-country-code",
         title: "Profile: Default Country Code",
         defaultValue: "US",

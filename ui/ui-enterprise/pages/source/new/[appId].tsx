@@ -5,7 +5,7 @@ import { Row, Col, Card } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import AppIcon from "@grouparoo/ui-components/components/appIcon";
 import { useRouter } from "next/router";
-import { humanizePluginName } from "@grouparoo/ui-components/utils/humanizePluginName";
+import { humanizePluginName } from "@grouparoo/ui-components/utils/languageHelper";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
