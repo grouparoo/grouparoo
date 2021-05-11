@@ -15,7 +15,7 @@ import { CLS } from "../../modules/cls";
 export interface ProfilePropertyType {
   [key: string]: {
     id: ProfileProperty["id"];
-    state: ProfileProperty["state"] | Property["state"]; // TODO idk if this is the right thing- i'll check this out later
+    state: ProfileProperty["state"];
     values: Array<string | number | boolean | Date>;
     type: Property["type"];
     unique: Property["unique"];
