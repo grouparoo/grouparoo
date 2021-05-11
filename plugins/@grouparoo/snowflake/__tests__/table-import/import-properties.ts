@@ -877,6 +877,51 @@ describe("snowflake/table/profileProperties", () => {
     });
   });
 
+  describe("non-unique joins", () => {
+    beforeAll(async () => {
+      const userId = await Property.findOne({ where: { key: "userId" } });
+      const users = await userId.$get("source");
+
+      // add accountId property
+      const accountId = await Property.create({
+        id: "accountId",
+        key: "accountId",
+        sourceId: users.id,
+        type: "string",
+        unique: false,
+        isArray: false,
+      });
+      await accountId.setOptions({ column: "ACCOUNT_ID" });
+      await accountId.update({ state: "ready" });
+    });
+
+    beforeAll(() => {
+      sourceOptions = { table: "ACCOUNTS" };
+    });
+
+    test("it will not import if the dependency is not ready", async () => {
+      const values = await getPropertyValues({
+        column: "NAME",
+        sourceMapping: { ID: "accountId" },
+        aggregationMethod: "exact",
+      });
+      expect(values).toEqual({});
+    });
+
+    test("it will import properties when the dependency is ready", async () => {
+      await profile.addOrUpdateProperties({ accountId: [1] });
+      await otherProfile.addOrUpdateProperties({ accountId: [1] });
+
+      const values = await getPropertyValues({
+        column: "NAME",
+        sourceMapping: { ID: "accountId" },
+        aggregationMethod: "exact",
+      });
+      expect(values[profile.id]).toEqual(["super_mega_corp"]);
+      expect(values[otherProfile.id]).toEqual(["super_mega_corp"]);
+    });
+  });
+
   describe("edge cases", () => {
     beforeAll(() => {
       sourceOptions = { table: "PROFILES" };

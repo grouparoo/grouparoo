@@ -4,9 +4,14 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 });
 
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, Profile, Property } from "@grouparoo/core";
+import { Profile, Property } from "@grouparoo/core";
 
-import { beforeData, afterData, getConfig } from "../utils/data";
+import {
+  beforeData,
+  afterData,
+  getConfig,
+  accountsTableName,
+} from "../utils/data";
 
 import { getConnection } from "../../src/lib/table-import/connection";
 const profileProperties = getConnection().methods.profileProperties;
@@ -842,6 +847,52 @@ describe("mysql/table/profileProperties", () => {
         expect(values[profile.id]).toEqual([2]);
         expect(values[otherProfile.id]).toEqual([2]);
       });
+    });
+  });
+
+  describe("non-unique joins", () => {
+    beforeAll(async () => {
+      const userId = await Property.findOne({ where: { key: "userId" } });
+      const users = await userId.$get("source");
+
+      // add accountId property
+      const accountId = await Property.create({
+        id: "accountId",
+        key: "accountId",
+        sourceId: users.id,
+        type: "string",
+        unique: false,
+        isArray: false,
+      });
+      await accountId.setOptions({ column: "account_id" });
+      await accountId.update({ state: "ready" });
+    });
+
+    beforeAll(() => {
+      sourceOptions = { table: accountsTableName };
+    });
+
+    test("it will not import if the dependency is not ready", async () => {
+      const values = await getPropertyValues({
+        column: "name",
+        sourceMapping: { id: "accountId" },
+        aggregationMethod: "exact",
+      });
+      expect(values).toEqual({});
+    });
+
+    test("it will import properties when the dependency is ready", async () => {
+      await profile.addOrUpdateProperties({ accountId: [1] });
+      await otherProfile.addOrUpdateProperties({ accountId: [1] });
+
+      const values = await getPropertyValues({
+        column: "name",
+        sourceMapping: { id: "accountId" },
+        aggregationMethod: "exact",
+      });
+
+      expect(values[profile.id]).toEqual(["super_mega_corp"]);
+      expect(values[otherProfile.id]).toEqual(["super_mega_corp"]);
     });
   });
 

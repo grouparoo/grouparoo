@@ -38,8 +38,7 @@ export class ImportProfileProperties extends RetryableTask {
     const profilesToImport: Profile[] = [];
     const dependencies = await PropertyOps.dependencies(property);
 
-    for (const i in profiles) {
-      const profile = profiles[i];
+    for (const profile of profiles) {
       let ok = true;
       const properties = await profile.properties();
 

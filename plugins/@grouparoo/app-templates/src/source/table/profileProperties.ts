@@ -43,7 +43,7 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     const tableMappingCol: string = Object.values(sourceMapping)[0];
     const tablePrimaryKeyCol: string = Object.keys(sourceMapping)[0];
-    const primaryKeysHash: { [pk: string]: string } = {};
+    const primaryKeysHash: { [pk: string]: string[] } = {};
 
     for (const i in profiles) {
       const properties = await profiles[i].properties();
@@ -51,8 +51,9 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
         properties[tableMappingCol]?.values.length > 0 &&
         properties[tableMappingCol].values[0] // not null or undefined
       ) {
-        primaryKeysHash[properties[tableMappingCol].values[0].toString()] =
-          profiles[i].id;
+        const k = properties[tableMappingCol].values[0].toString();
+        if (!primaryKeysHash[k]) primaryKeysHash[k] = [];
+        primaryKeysHash[k].push(profiles[i].id);
       }
     }
 
@@ -86,8 +87,9 @@ export const getProfileProperties: GetProfilePropertiesMethod = ({
 
     const responsesById = {};
     for (const pk in responsesByPrimaryKey) {
-      const profileId = primaryKeysHash[pk];
-      responsesById[profileId] = responsesByPrimaryKey[pk];
+      primaryKeysHash[pk].forEach((profileId) => {
+        responsesById[profileId] = responsesByPrimaryKey[pk];
+      });
     }
 
     return responsesById;
