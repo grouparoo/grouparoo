@@ -176,6 +176,10 @@ export class Property extends LoggedModel<Property> {
   @Column
   isArray: boolean;
 
+  @AllowNull(true)
+  @Column
+  configFilePath: string;
+
   @BelongsTo(() => Source)
   source: Source;
 
@@ -205,10 +209,11 @@ export class Property extends LoggedModel<Property> {
   async getOptions(sourceFromEnvironment = true) {
     const options = await OptionHelper.getOptions(this, sourceFromEnvironment);
     for (const i in options) {
-      options[i] =
-        await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
-          options[i].toString()
-        );
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyIdsWithProfilePropertyKeys(
+        options[i].toString()
+      );
     }
 
     return options;
@@ -218,10 +223,11 @@ export class Property extends LoggedModel<Property> {
     if (test) await this.test(options);
 
     for (const i in options) {
-      options[i] =
-        await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
-          options[i].toString()
-        );
+      options[
+        i
+      ] = await plugin.replaceTemplateProfilePropertyKeysWithProfilePropertyId(
+        options[i].toString()
+      );
     }
 
     return OptionHelper.setOptions(this, options);
@@ -371,6 +377,11 @@ export class Property extends LoggedModel<Property> {
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
+  }
+
+  async setConfigFilePath(newPath?: string) {
+    this.configFilePath = newPath ? newPath : `properties/${this.id}.json`;
+    await this.save();
   }
 
   async getConfigObject() {

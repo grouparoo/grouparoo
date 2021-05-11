@@ -9,6 +9,7 @@ import {
   BeforeDestroy,
   BeforeCreate,
   AfterDestroy,
+  AfterSave,
   // AfterUpdate,
   HasMany,
   DefaultScope,
@@ -75,6 +76,10 @@ export class App extends LoggedModel<App> {
   @Default("draft")
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
+
+  @AllowNull(true)
+  @Column
+  configFilePath: string;
 
   @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
@@ -209,6 +214,11 @@ export class App extends LoggedModel<App> {
       : false;
 
     return { source, destination };
+  }
+
+  async setConfigFilePath(newPath?: string) {
+    this.configFilePath = newPath ? newPath : `apps/${this.id}.json`;
+    await this.save();
   }
 
   async getConfigObject() {

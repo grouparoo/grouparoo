@@ -134,6 +134,10 @@ export class Group extends LoggedModel<Group> {
   @Column
   calculatedAt: Date;
 
+  @AllowNull(true)
+  @Column
+  configFilePath: string;
+
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
 
@@ -528,8 +532,9 @@ export class Group extends LoggedModel<Group> {
       if (relativeMatchNumber && !match && !topLevel) {
         const todayBoundWhereGroup = {};
         const todayBoundMatch = {};
-        todayBoundMatch[Op[operation.op === "gt" ? "lte" : "gte"]] =
-          new Date().getTime();
+        todayBoundMatch[
+          Op[operation.op === "gt" ? "lte" : "gte"]
+        ] = new Date().getTime();
         todayBoundWhereGroup[Op.and] = api.sequelize.where(
           api.sequelize.cast(
             api.sequelize.col(`${alias}.rawValue`),
@@ -579,10 +584,9 @@ export class Group extends LoggedModel<Group> {
             );
             break;
         }
-        const whereClause: string =
-          api.sequelize.queryInterface.queryGenerator.getWhereConditions(
-            reverseMatchWhere
-          );
+        const whereClause: string = api.sequelize.queryInterface.queryGenerator.getWhereConditions(
+          reverseMatchWhere
+        );
 
         const affirmativeArrayMatch = api.sequelize.literal(
           `"ProfileMultipleAssociationShim"."id" NOT IN (SELECT "profileId" FROM "profileProperties" WHERE ${whereClause})`
@@ -613,6 +617,11 @@ export class Group extends LoggedModel<Group> {
     whereContainer[joinType] = wheres;
 
     return { where: whereContainer, include };
+  }
+
+  async setConfigFilePath(newPath?: string) {
+    this.configFilePath = newPath ? newPath : `groups/${this.id}.json`;
+    await this.save();
   }
 
   async getConfigObject() {
@@ -707,10 +716,11 @@ export class Group extends LoggedModel<Group> {
 
   @AfterDestroy
   static async destroyDestinationGroupMembership(instance: Group) {
-    const destinationGroupMemberships =
-      await DestinationGroupMembership.findAll({
+    const destinationGroupMemberships = await DestinationGroupMembership.findAll(
+      {
         where: { groupId: instance.id },
-      });
+      }
+    );
 
     for (const i in destinationGroupMemberships) {
       const destination = await destinationGroupMemberships[i].$get(

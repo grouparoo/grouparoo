@@ -107,6 +107,10 @@ export class Schedule extends LoggedModel<Schedule> {
   @Column
   recurringFrequency: number;
 
+  @AllowNull(true)
+  @Column
+  configFilePath: string;
+
   @HasMany(() => Option, "ownerId")
   _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
 
@@ -180,6 +184,11 @@ export class Schedule extends LoggedModel<Schedule> {
 
   async run(run: Run) {
     return ScheduleOps.run(this, run);
+  }
+
+  async setConfigFilePath(newPath?: string) {
+    this.configFilePath = newPath ? newPath : `schedules/${this.id}.json`;
+    await this.save();
   }
 
   async getConfigObject() {

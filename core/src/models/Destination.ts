@@ -164,6 +164,10 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 
+  @AllowNull(true)
+  @Column
+  configFilePath: string;
+
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
@@ -174,8 +178,7 @@ export class Destination extends LoggedModel<Destination> {
 
     const mapping = await this.getMapping();
     const options = await this.getOptions(null);
-    const destinationGroupMemberships =
-      await this.getDestinationGroupMemberships();
+    const destinationGroupMemberships = await this.getDestinationGroupMemberships();
     const { pluginConnection } = await this.getPlugin();
     const exportTotals = await this.getExportTotals();
 
@@ -242,11 +245,12 @@ export class Destination extends LoggedModel<Destination> {
   async getDestinationGroupMemberships(): Promise<
     SimpleDestinationGroupMembership[]
   > {
-    const destinationGroupMemberships =
-      await DestinationGroupMembership.findAll({
+    const destinationGroupMemberships = await DestinationGroupMembership.findAll(
+      {
         where: { destinationId: this.id },
         include: [Group],
-      });
+      }
+    );
 
     return destinationGroupMemberships.map((dgm) => {
       return {
@@ -515,6 +519,11 @@ export class Destination extends LoggedModel<Destination> {
         );
       }
     }
+  }
+
+  async setConfigFilePath(newPath?: string) {
+    this.configFilePath = newPath ? newPath : `destinations/${this.id}.json`;
+    await this.save();
   }
 
   async getConfigObject() {

@@ -7,7 +7,8 @@ import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
 import { Source } from "../../src/models/Source";
 
-import { ConfigWriter } from "../../src/modules/configWriter";
+// import { ConfigWriter } from "../../src/modules/configWriter";
+// import { getConfigDir } from "../../src/modules/configLoaders";
 
 describe("modules/configWriter", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -15,26 +16,95 @@ describe("modules/configWriter", () => {
   let property: Property;
   let group: Group;
 
-  beforeAll(async () => {
-    source = await helper.factories.source();
-    await source.setOptions({ table: "test table" });
-    await source.bootstrapUniqueProperty("userId", "integer", "id");
-    await source.setMapping({ id: "userId" });
-    await source.update({ state: "ready" });
+  // ---------------------------------------- | Model Config File Refs
 
-    property = await helper.factories.property(
-      source,
-      { key: "firstName" },
-      { column: "firstName" }
-    );
+  describe("Model config file references", () => {
+    let testObjects = {};
 
-    group = await helper.factories.group({ type: "calculated" });
-    await group.setRules([
-      { key: "firstName", match: "nobody", operation: { op: "eq" } },
-    ]);
+    const tests: Array<{ type: string; plural?: string }> = [
+      { type: "app" },
+      { type: "source" },
+      { type: "schedule" },
+      { type: "property", plural: "properties" },
+      { type: "group" },
+      { type: "destination" },
+    ];
+
+    beforeAll(async () => {
+      const app: App = await helper.factories.app();
+
+      const source: Source = await helper.factories.source(app);
+      await source.setOptions({ table: "test-table-01" });
+      await source.bootstrapUniqueProperty("userId_01", "integer", "id");
+      await source.setMapping({ id: "userId_01" });
+      await source.update({ state: "ready" });
+
+      const property = await helper.factories.property(
+        source,
+        { key: "lastName" },
+        { column: "lastName" }
+      );
+
+      const schedule: Schedule = await helper.factories.schedule(source);
+
+      const group = await helper.factories.group({ type: "calculated" });
+      await group.setRules([
+        { key: "lastName", match: "nobody", operation: { op: "eq" } },
+      ]);
+
+      const destination: Destination = await helper.factories.destination();
+
+      testObjects = { app, source, schedule, property, group, destination };
+    });
+
+    for (let testConfig of tests) {
+      let { type, plural } = testConfig;
+      if (!plural) plural = `${testConfig.type}s`;
+
+      test(`${plural} can set a config file path reference`, async () => {
+        const obj = testObjects[type];
+        expect(obj.configFilePath).toBe(null);
+        await obj.setConfigFilePath("file/path/override.js");
+        expect(obj.configFilePath).toBe("file/path/override.js");
+      });
+      test(`${plural} can override a config file path ref when set`, async () => {
+        const obj = testObjects[type];
+        obj.configFilePath = `${plural}/my_${type}.js`;
+        await obj.save();
+        expect(obj.configFilePath).toBe(`${plural}/my_${type}.js`);
+        await obj.setConfigFilePath("file/path/override.js");
+        expect(obj.configFilePath).toBe("file/path/override.js");
+      });
+      test(`${plural} can be prompted to set a default config file path reference`, async () => {
+        const obj = testObjects[type];
+        await obj.setConfigFilePath();
+        expect(obj.configFilePath).toBe(`${plural}/${obj.id}.json`);
+      });
+    }
   });
 
+  // ---------------------------------------- | Model Config Builders
+
   describe("Model Config Providers", () => {
+    beforeAll(async () => {
+      source = await helper.factories.source();
+      await source.setOptions({ table: "test table" });
+      await source.bootstrapUniqueProperty("userId", "integer", "id");
+      await source.setMapping({ id: "userId" });
+      await source.update({ state: "ready" });
+
+      property = await helper.factories.property(
+        source,
+        { key: "firstName" },
+        { column: "firstName" }
+      );
+
+      group = await helper.factories.group({ type: "calculated" });
+      await group.setRules([
+        { key: "firstName", match: "nobody", operation: { op: "eq" } },
+      ]);
+    });
+
     test("apps can provide their config objects", async () => {
       const app: App = await helper.factories.app();
       const config = await app.getConfigObject();
