@@ -1,4 +1,4 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import Sailthru from "../client";
 
 import { log } from "actionhero";
@@ -7,6 +7,7 @@ import { log } from "actionhero";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -27,6 +28,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   if (toDelete) {
     await deleteUser(
       client,
+      syncOperations,
       newProfileProperties,
       oldProfileProperties,
       sid,
@@ -45,12 +47,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     lists: {},
     vars: {},
   };
-
-  if (!payload.id) {
-    // new user, use email
-    payload.id = email;
-    payload.key = "email";
-  }
 
   // TODO: extid if that's a thing
 
@@ -82,6 +78,21 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   for (const removedGroup of removedLists) {
     const listName = formatList(removedGroup);
     payload.lists[listName] = 0;
+  }
+
+  if (!payload.id) {
+    if (!syncOperations.create) {
+      throw new Errors.InfoError(
+        "Destination sync mode does not create new profiles."
+      );
+    }
+    // new user, use email
+    payload.id = email;
+    payload.key = "email";
+  } else if (!syncOperations.update) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not update existing profiles."
+    );
   }
 
   await client.updateUser(payload);
@@ -127,11 +138,17 @@ async function deleteEmail(client, email) {
 }
 async function deleteUser(
   client: Sailthru,
+  syncOperations,
   newProfileProperties: { [key: string]: any },
   oldProfileProperties: { [key: string]: any },
   cachedSid: string,
   attemptNum: number
 ) {
+  if (!syncOperations.delete) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not delete profiles."
+    );
+  }
   const sid =
     cachedSid ||
     (await client.findSid(newProfileProperties, oldProfileProperties));

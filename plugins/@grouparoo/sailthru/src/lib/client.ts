@@ -16,12 +16,10 @@ export default class SailthruClient {
   async findSid(newProperties: any, oldProperties: any = {}) {
     let sid = null;
     // TODO: use extid first
-    if (!sid) {
-      if (!newProperties.email) {
-        throw `findSid: email expected`;
-      }
-      sid = await this.getSidBy("email", newProperties.email);
+    if (!newProperties.email) {
+      throw `findSid: email expected`;
     }
+    sid = await this.getSidBy("email", newProperties.email);
     if (
       !sid &&
       oldProperties.email &&
@@ -40,16 +38,10 @@ export default class SailthruClient {
         keys: 1,
       },
     };
-
     try {
       const response: any = await this.get("user", payload);
       return response.keys.sid;
     } catch (err) {
-      // {
-      //   statusCode: 400,
-      //   error: 99,
-      //   errormsg: 'User not found with email: brian@bleonard.com'
-      // }
       if (err.statusCode === 400 && err.error === 99) {
         // really not found
         return null;
@@ -98,6 +90,7 @@ export default class SailthruClient {
     }
     return response.lists;
   }
+
   async getList(name: string) {
     try {
       const response: any = await this.get("list", { list: name });
@@ -110,6 +103,7 @@ export default class SailthruClient {
       throw err;
     }
   }
+
   async createList(name: string) {
     const response: any = await this.post("list", { list: name });
     return response;
@@ -118,9 +112,11 @@ export default class SailthruClient {
   async get(apiName: string, options = {}) {
     return this.promiseFetch("apiGet", apiName, options);
   }
+
   async post(apiName: string, options = {}) {
     return this.promiseFetch("apiPost", apiName, options);
   }
+
   async delete(apiName: string, options = {}) {
     return this.promiseFetch("apiDelete", apiName, options);
   }
