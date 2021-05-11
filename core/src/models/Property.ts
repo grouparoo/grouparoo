@@ -75,6 +75,7 @@ const STATE_TRANSITIONS = [
       (instance: Property) => instance.validateOptions(null, null, null),
     ],
   },
+  { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
 ];
 

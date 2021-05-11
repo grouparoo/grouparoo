@@ -47,6 +47,7 @@ const STATE_TRANSITIONS = [
       (instance: Source) => instance.validateMapping(),
     ],
   },
+  { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
 ];
 
