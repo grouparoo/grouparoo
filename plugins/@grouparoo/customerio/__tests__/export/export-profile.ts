@@ -14,6 +14,7 @@ const customerId = "grouparoo";
 const otherCustomerId = "grouparoo-new";
 const anotherCustomerId = "grouparoo-another";
 const nonexistentCustomerId = "grouparoo-fake";
+const anotherNonexistentCustomerId = "grouparoo-ultra-fake";
 const email = "grouparoo@demo.com";
 const otherEmail = "notgrouparoo@demo.com";
 const name = "Grouparoo Kangaroo";
@@ -352,7 +353,7 @@ describe("customer.io/exportProfile", () => {
     expect(newCustomer.attributes.email).toBe(otherEmail);
   });
 
-  test("cannot delete an user if sync mode does not allow it", async () => {
+  test("cannot delete a customer if sync mode does not allow it", async () => {
     await expect(
       runExport({
         syncOperations: {
@@ -374,12 +375,15 @@ describe("customer.io/exportProfile", () => {
     expect(customer.attributes.email).toBe(otherEmail);
   });
 
-  test("can delete a customer", async () => {
-    const oldCustomer = await cioClient.getCustomer(customerId);
-    expect(oldCustomer).toBeTruthy();
+  test("can delete a customer passing an existing customer on oldProfile", async () => {
+    let oldCustomer = await cioClient.getCustomer(anotherCustomerId);
+    expect(oldCustomer).not.toBe(null);
+
+    let newCustomer = await cioClient.getCustomer(customerId);
+    expect(newCustomer).not.toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: customerId },
+      oldProfileProperties: { customer_id: anotherCustomerId },
       newProfileProperties: { customer_id: customerId },
       oldGroups: [],
       newGroups: [],
@@ -388,7 +392,27 @@ describe("customer.io/exportProfile", () => {
 
     await indexCustomers(newNock);
 
-    const customer = await cioClient.getCustomer(customerId);
+    oldCustomer = await cioClient.getCustomer(anotherCustomerId);
+    expect(oldCustomer).not.toBe(null);
+
+    newCustomer = await cioClient.getCustomer(customerId);
+    expect(newCustomer).toBe(null);
+  });
+
+  test("can delete a customer", async () => {
+    let customer = await cioClient.getCustomer(anotherCustomerId);
+    expect(customer).not.toBe(null);
+
+    await runExport({
+      oldProfileProperties: { customer_id: anotherCustomerId },
+      newProfileProperties: { customer_id: anotherCustomerId },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexCustomers(newNock);
+    customer = await cioClient.getCustomer(customerId);
     expect(customer).toBe(null);
   });
 
@@ -397,7 +421,7 @@ describe("customer.io/exportProfile", () => {
     expect(oldCustomer).toBe(null);
 
     await runExport({
-      oldProfileProperties: { customer_id: nonexistentCustomerId },
+      oldProfileProperties: { customer_id: anotherNonexistentCustomerId },
       newProfileProperties: { customer_id: nonexistentCustomerId },
       oldGroups: [],
       newGroups: [],
@@ -432,5 +456,28 @@ describe("customer.io/exportProfile", () => {
     newCustomer = await cioClient.getCustomer(customerId);
     expect(newCustomer).toBeTruthy();
     expect(newCustomer.attributes.email).toBe(email);
+  });
+
+  test("can delete an existing customer if the new customer is nonexistent", async () => {
+    let oldCustomer = await cioClient.getCustomer(customerId);
+    expect(oldCustomer).not.toBe(email);
+    let newCustomer = await cioClient.getCustomer(nonexistentCustomerId);
+    expect(newCustomer).toBe(null);
+
+    await runExport({
+      oldProfileProperties: { customer_id: customerId },
+      newProfileProperties: { customer_id: nonexistentCustomerId },
+      oldGroups: [],
+      newGroups: [],
+      toDelete: true,
+    });
+
+    await indexCustomers(newNock);
+
+    newCustomer = await cioClient.getCustomer(nonexistentCustomerId);
+    expect(newCustomer).toBe(null);
+
+    oldCustomer = await cioClient.getCustomer(customerId);
+    expect(oldCustomer).toBe(null);
   });
 });

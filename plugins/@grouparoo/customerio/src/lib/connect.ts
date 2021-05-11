@@ -1,8 +1,8 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import { CustormerioClient } from "./client";
+import { CustomerioClient } from "./client";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  return new CustormerioClient(
+  return new CustomerioClient(
     appOptions.siteId,
     appOptions.apiKey,
     appOptions.appApiKey

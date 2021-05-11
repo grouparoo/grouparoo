@@ -11,7 +11,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:13:48 GMT",
+    "Tue, 11 May 2021 02:31:02 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -32,7 +32,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:13:49 GMT",
+    "Tue, 11 May 2021 02:31:02 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -53,7 +53,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:13:49 GMT",
+    "Tue, 11 May 2021 02:31:03 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -71,7 +71,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529MT19S2A513TRZ0ZVXHNS)",
+          detail: "not found (reference 01F5CM77E5JHK33DZ05GG400WV)",
           status: "404",
         },
       ],
@@ -82,7 +82,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:00 GMT",
+      "Tue, 11 May 2021 02:31:14 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -105,7 +105,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529MTM63240HEH3KDW65XCB)",
+          detail: "not found (reference 01F5CM785X0XFQY9M761280F5M)",
           status: "404",
         },
       ],
@@ -116,7 +116,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:01 GMT",
+      "Tue, 11 May 2021 02:31:14 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -139,7 +139,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529MVD9AXWJ5JYD3SK1F53N)",
+          detail: "not found (reference 01F5CM78XB16M40PCYJ3GMKPA1)",
           status: "404",
         },
       ],
@@ -150,7 +150,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:01 GMT",
+      "Tue, 11 May 2021 02:31:15 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -176,7 +176,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:14:02 GMT",
+    "Tue, 11 May 2021 02:31:16 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -195,7 +195,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { id: "grouparoo" },
-        timestamps: { id: 1620353644 },
+        timestamps: { id: 1620700277 },
         unsubscribed: false,
         devices: [],
       },
@@ -206,7 +206,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:12 GMT",
+      "Tue, 11 May 2021 02:31:26 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -230,7 +230,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { id: "grouparoo" },
-        timestamps: { id: 1620353644 },
+        timestamps: { id: 1620700277 },
         unsubscribed: false,
         devices: [],
       },
@@ -241,7 +241,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:13 GMT",
+      "Tue, 11 May 2021 02:31:27 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -271,7 +271,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:14:14 GMT",
+    "Tue, 11 May 2021 02:31:27 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -296,10 +296,10 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -311,7 +311,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:24 GMT",
+      "Tue, 11 May 2021 02:31:38 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -341,10 +341,10 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -356,7 +356,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:25 GMT",
+      "Tue, 11 May 2021 02:31:39 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -382,7 +382,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:14:25 GMT",
+    "Tue, 11 May 2021 02:31:39 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -408,11 +408,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -424,7 +424,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:36 GMT",
+      "Tue, 11 May 2021 02:31:50 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -455,11 +455,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -471,7 +471,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:36 GMT",
+      "Tue, 11 May 2021 02:31:50 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -502,11 +502,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -518,7 +518,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:37 GMT",
+      "Tue, 11 May 2021 02:31:51 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -549,11 +549,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -565,7 +565,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:38 GMT",
+      "Tue, 11 May 2021 02:31:52 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -596,11 +596,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353654,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700287,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -612,7 +612,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:39 GMT",
+      "Tue, 11 May 2021 02:31:52 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -641,7 +641,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:14:39 GMT",
+    "Tue, 11 May 2021 02:31:53 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -667,11 +667,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353679,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700313,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -683,7 +683,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:50 GMT",
+      "Tue, 11 May 2021 02:32:03 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -714,11 +714,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353679,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700313,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -730,7 +730,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:50 GMT",
+      "Tue, 11 May 2021 02:32:04 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -761,11 +761,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          age: 1620353654,
-          created_at: 1620353665,
-          email: 1620353679,
-          id: 1620353644,
-          name: 1620353654,
+          age: 1620700287,
+          created_at: 1620700299,
+          email: 1620700313,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -777,7 +777,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:14:51 GMT",
+      "Tue, 11 May 2021 02:32:04 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -807,7 +807,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:14:52 GMT",
+    "Tue, 11 May 2021 02:32:05 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -831,9 +831,9 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -845,7 +845,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:02 GMT",
+      "Tue, 11 May 2021 02:32:15 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -874,9 +874,9 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -888,7 +888,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:03 GMT",
+      "Tue, 11 May 2021 02:32:16 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -917,9 +917,9 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -931,7 +931,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:04 GMT",
+      "Tue, 11 May 2021 02:32:17 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -960,7 +960,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:04 GMT",
+    "Tue, 11 May 2021 02:32:17 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -986,11 +986,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          "In High Value": 1620353704,
-          "In Spanish Speaking": 1620353704,
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          "In High Value": 1620700337,
+          "In Spanish Speaking": 1620700337,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -1002,7 +1002,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:15 GMT",
+      "Tue, 11 May 2021 02:32:28 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1033,11 +1033,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          "In High Value": 1620353704,
-          "In Spanish Speaking": 1620353704,
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          "In High Value": 1620700337,
+          "In Spanish Speaking": 1620700337,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -1049,7 +1049,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:15 GMT",
+      "Tue, 11 May 2021 02:32:29 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1080,11 +1080,11 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          "In High Value": 1620353704,
-          "In Spanish Speaking": 1620353704,
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          "In High Value": 1620700337,
+          "In Spanish Speaking": 1620700337,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -1096,7 +1096,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:16 GMT",
+      "Tue, 11 May 2021 02:32:29 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1125,7 +1125,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:17 GMT",
+    "Tue, 11 May 2021 02:32:30 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1150,10 +1150,10 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          "In High Value": 1620353704,
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          "In High Value": 1620700337,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -1165,7 +1165,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:27 GMT",
+      "Tue, 11 May 2021 02:32:40 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1195,10 +1195,10 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           name: "Grouparoo Kangaroo",
         },
         timestamps: {
-          "In High Value": 1620353704,
-          created_at: 1620353665,
-          id: 1620353644,
-          name: 1620353654,
+          "In High Value": 1620700337,
+          created_at: 1620700299,
+          id: 1620700277,
+          name: 1620700287,
         },
         unsubscribed: false,
         devices: [],
@@ -1210,7 +1210,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:28 GMT",
+      "Tue, 11 May 2021 02:32:41 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1233,7 +1233,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529QGSMKHDGW1M2RH1HYXMJ)",
+          detail: "not found (reference 01F5CM9XNABZVQ1RN74NA90EBP)",
           status: "404",
         },
       ],
@@ -1244,7 +1244,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:29 GMT",
+      "Tue, 11 May 2021 02:32:42 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1267,7 +1267,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529QHJ830X8B2DWXKEC41G5)",
+          detail: "not found (reference 01F5CM9Y6VT1JHZV4AZN17GMPZ)",
           status: "404",
         },
       ],
@@ -1278,7 +1278,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:30 GMT",
+      "Tue, 11 May 2021 02:32:42 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1304,7 +1304,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:30 GMT",
+    "Tue, 11 May 2021 02:32:43 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1325,7 +1325,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:30 GMT",
+    "Tue, 11 May 2021 02:32:43 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1343,7 +1343,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529QWPBCQW51PKP16FJATAT)",
+          detail: "not found (reference 01F5CMA9DB86QBMRRQM83254MV)",
           status: "404",
         },
       ],
@@ -1354,7 +1354,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:41 GMT",
+      "Tue, 11 May 2021 02:32:54 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1378,7 +1378,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo-new",
         attributes: { email: "grouparoo@demo.com", id: "grouparoo-new" },
-        timestamps: { email: 1620353730, id: 1620353732 },
+        timestamps: { email: 1620700363, id: 1620700364 },
         unsubscribed: false,
         devices: [],
       },
@@ -1389,7 +1389,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:42 GMT",
+      "Tue, 11 May 2021 02:32:55 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1412,7 +1412,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529QXVFTN145ZTZYTHDR134)",
+          detail: "not found (reference 01F5CMAAP39QGF5YJ50R0WG389)",
           status: "404",
         },
       ],
@@ -1423,7 +1423,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:42 GMT",
+      "Tue, 11 May 2021 02:32:55 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1453,7 +1453,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:43 GMT",
+    "Tue, 11 May 2021 02:32:56 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1472,7 +1472,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo-new",
         attributes: { email: "grouparoo@demo.com", id: "grouparoo-new" },
-        timestamps: { email: 1620353730, id: 1620353732 },
+        timestamps: { email: 1620700363, id: 1620700364 },
         unsubscribed: false,
         devices: [],
       },
@@ -1483,7 +1483,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:53 GMT",
+      "Tue, 11 May 2021 02:33:06 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1513,10 +1513,10 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
           id: "grouparoo-another",
         },
         timestamps: {
-          "In High Value": 1620353743,
-          "In Spanish Speaking": 1620353743,
-          email: 1620353743,
-          id: 1620353744,
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
         },
         unsubscribed: false,
         devices: [],
@@ -1528,7 +1528,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:54 GMT",
+      "Tue, 11 May 2021 02:33:07 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1552,7 +1552,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo-new",
         attributes: { email: "grouparoo@demo.com", id: "grouparoo-new" },
-        timestamps: { email: 1620353730, id: 1620353732 },
+        timestamps: { email: 1620700363, id: 1620700364 },
         unsubscribed: false,
         devices: [],
       },
@@ -1563,7 +1563,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:54 GMT",
+      "Tue, 11 May 2021 02:33:08 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1586,7 +1586,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529RAC5XCRMBM3T2Z9WCWCT)",
+          detail: "not found (reference 01F5CMAQD58GZG34DC0NV8MYG7)",
           status: "404",
         },
       ],
@@ -1597,7 +1597,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:55 GMT",
+      "Tue, 11 May 2021 02:33:08 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1620,7 +1620,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529RAYPPXJPA5G1FF3VVXHY)",
+          detail: "not found (reference 01F5CMAQYQ85S8EQRX5K29G26H)",
           status: "404",
         },
       ],
@@ -1631,7 +1631,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:15:56 GMT",
+      "Tue, 11 May 2021 02:33:09 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1657,7 +1657,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:56 GMT",
+    "Tue, 11 May 2021 02:33:09 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1678,7 +1678,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:15:57 GMT",
+    "Tue, 11 May 2021 02:33:10 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1696,7 +1696,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529RP879GY1YWCKSTZHBYAZ)",
+          detail: "not found (reference 01F5CMB3B22TDJDP5Y2P8SA8YC)",
           status: "404",
         },
       ],
@@ -1707,7 +1707,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:07 GMT",
+      "Tue, 11 May 2021 02:33:20 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1731,7 +1731,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353757, id: 1620353758 },
+        timestamps: { email: 1620700390, id: 1620700391 },
         unsubscribed: false,
         devices: [],
       },
@@ -1742,7 +1742,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:08 GMT",
+      "Tue, 11 May 2021 02:33:21 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1766,7 +1766,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353757, id: 1620353758 },
+        timestamps: { email: 1620700390, id: 1620700391 },
         unsubscribed: false,
         devices: [],
       },
@@ -1777,7 +1777,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:09 GMT",
+      "Tue, 11 May 2021 02:33:22 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1801,7 +1801,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353757, id: 1620353758 },
+        timestamps: { email: 1620700390, id: 1620700391 },
         unsubscribed: false,
         devices: [],
       },
@@ -1812,7 +1812,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:09 GMT",
+      "Tue, 11 May 2021 02:33:23 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1836,7 +1836,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353757, id: 1620353758 },
+        timestamps: { email: 1620700390, id: 1620700391 },
         unsubscribed: false,
         devices: [],
       },
@@ -1847,7 +1847,52 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:10 GMT",
+      "Tue, 11 May 2021 02:33:23 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:24 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1871,7 +1916,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353757, id: 1620353758 },
+        timestamps: { email: 1620700390, id: 1620700391 },
         unsubscribed: false,
         devices: [],
       },
@@ -1882,7 +1927,87 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:11 GMT",
+      "Tue, 11 May 2021 02:33:25 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo",
+        attributes: { email: "notgrouparoo@demo.com", id: "grouparoo" },
+        timestamps: { email: 1620700390, id: 1620700391 },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "179",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:25 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:26 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1908,7 +2033,242 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:11 GMT",
+    "Tue, 11 May 2021 02:33:26 GMT",
+    "Status",
+    "200 OK",
+    "Via",
+    "1.1 google",
+    "Alt-Svc",
+    "clear",
+    "Connection",
+    "close",
+  ]);
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:37 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMBM8DEE0HXZ8M9FF74E8S)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:38 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:39 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:39 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-another/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo-another",
+        attributes: {
+          "In High Value": "true",
+          "In Spanish Speaking": "true",
+          email: "grouparoo@demo.com",
+          id: "grouparoo-another",
+        },
+        timestamps: {
+          "In High Value": 1620700376,
+          "In Spanish Speaking": 1620700376,
+          email: 1620700376,
+          id: 1620700377,
+        },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "304",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:40 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://track.customer.io:443", { encodedQueryParams: true })
+  .delete("/api/v1/customers/grouparoo-another")
+  .once()
+  .reply(200, {}, [
+    "Cache-Control",
+    "no-cache, no-store, must-revalidate, max-age=0",
+    "Content-Length",
+    "3",
+    "Content-Type",
+    "application/json; charset=utf-8",
+    "Date",
+    "Tue, 11 May 2021 02:33:40 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -1926,7 +2286,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529S4GVKANNFTZSV7ZVE8F4)",
+          detail: "not found (reference 01F5CMC0Z1GBCA8PG6BETR41ZD)",
           status: "404",
         },
       ],
@@ -1937,7 +2297,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:22 GMT",
+      "Tue, 11 May 2021 02:33:51 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1960,7 +2320,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529S53J1G9QB3CV2RJP2PXH)",
+          detail: "not found (reference 01F5CMC1GPNCDGM9GC71NTZS0Y)",
           status: "404",
         },
       ],
@@ -1971,7 +2331,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:22 GMT",
+      "Tue, 11 May 2021 02:33:51 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -1994,7 +2354,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
     {
       errors: [
         {
-          detail: "not found (reference 01F529S5W88WXSZ14ZKD40DVYR)",
+          detail: "not found (reference 01F5CMC225DJCYTZ8J8H8993EB)",
           status: "404",
         },
       ],
@@ -2005,7 +2365,177 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:23 GMT",
+      "Tue, 11 May 2021 02:33:52 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-ultra-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMC2SFT6991W1CBGWT8XMY)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:33:53 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCD9Q5FSZYVKAXKCJYZNJ)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:03 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCDVDYSWR6HAGCE4BHRBQ)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:04 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCEJSHYPYWRMXZ5A831FA)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:05 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCFABRDSFF3RXG2VTMF57)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:06 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -2031,164 +2561,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:24 GMT",
-    "Status",
-    "200 OK",
-    "Via",
-    "1.1 google",
-    "Alt-Svc",
-    "clear",
-    "Connection",
-    "close",
-  ]);
-nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
-  .get("/v1/api/customers/grouparoo-fake/attributes")
-  .once()
-  .reply(
-    404,
-    {
-      errors: [
-        {
-          detail: "not found (reference 01F529SGMCM74E46Q5981PNZYN)",
-          status: "404",
-        },
-      ],
-    },
-    [
-      "content-length",
-      "89",
-      "content-type",
-      "application/json; charset=utf-8",
-      "date",
-      "Fri, 07 May 2021 02:16:34 GMT",
-      "strict-transport-security",
-      "max-age=15768000",
-      "x-frame-options",
-      "SAMEORIGIN",
-      "x-content-type-options",
-      "nosniff",
-      "x-xss-protection",
-      "1; mode=block",
-      "referrer-policy",
-      "no-referrer-when-downgrade",
-      "connection",
-      "close",
-    ]
-  );
-nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
-  .get("/v1/api/customers/grouparoo/attributes")
-  .once()
-  .reply(
-    404,
-    {
-      errors: [
-        {
-          detail: "not found (reference 01F529SH6XC5PMTC1KJ041MWNB)",
-          status: "404",
-        },
-      ],
-    },
-    [
-      "content-length",
-      "89",
-      "content-type",
-      "application/json; charset=utf-8",
-      "date",
-      "Fri, 07 May 2021 02:16:35 GMT",
-      "strict-transport-security",
-      "max-age=15768000",
-      "x-frame-options",
-      "SAMEORIGIN",
-      "x-content-type-options",
-      "nosniff",
-      "x-xss-protection",
-      "1; mode=block",
-      "referrer-policy",
-      "no-referrer-when-downgrade",
-      "connection",
-      "close",
-    ]
-  );
-nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
-  .get("/v1/api/customers/grouparoo-fake/attributes")
-  .once()
-  .reply(
-    404,
-    {
-      errors: [
-        {
-          detail: "not found (reference 01F529SHSE0HJK08FFMXQ650GK)",
-          status: "404",
-        },
-      ],
-    },
-    [
-      "content-length",
-      "89",
-      "content-type",
-      "application/json; charset=utf-8",
-      "date",
-      "Fri, 07 May 2021 02:16:35 GMT",
-      "strict-transport-security",
-      "max-age=15768000",
-      "x-frame-options",
-      "SAMEORIGIN",
-      "x-content-type-options",
-      "nosniff",
-      "x-xss-protection",
-      "1; mode=block",
-      "referrer-policy",
-      "no-referrer-when-downgrade",
-      "connection",
-      "close",
-    ]
-  );
-nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
-  .get("/v1/api/customers/grouparoo/attributes")
-  .once()
-  .reply(
-    404,
-    {
-      errors: [
-        {
-          detail: "not found (reference 01F529SJJAS7D5MDVCWPS4FNCQ)",
-          status: "404",
-        },
-      ],
-    },
-    [
-      "content-length",
-      "89",
-      "content-type",
-      "application/json; charset=utf-8",
-      "date",
-      "Fri, 07 May 2021 02:16:36 GMT",
-      "strict-transport-security",
-      "max-age=15768000",
-      "x-frame-options",
-      "SAMEORIGIN",
-      "x-content-type-options",
-      "nosniff",
-      "x-xss-protection",
-      "1; mode=block",
-      "referrer-policy",
-      "no-referrer-when-downgrade",
-      "connection",
-      "close",
-    ]
-  );
-nock("https://track.customer.io:443", { encodedQueryParams: true })
-  .delete("/api/v1/customers/grouparoo-fake")
-  .once()
-  .reply(200, {}, [
-    "Cache-Control",
-    "no-cache, no-store, must-revalidate, max-age=0",
-    "Content-Length",
-    "3",
-    "Content-Type",
-    "application/json; charset=utf-8",
-    "Date",
-    "Fri, 07 May 2021 02:16:37 GMT",
+    "Tue, 11 May 2021 02:34:06 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -2209,7 +2582,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:37 GMT",
+    "Tue, 11 May 2021 02:34:06 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -2228,7 +2601,7 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       customer: {
         id: "grouparoo",
         attributes: { email: "grouparoo@demo.com", id: "grouparoo" },
-        timestamps: { email: 1620353797, id: 1620353798 },
+        timestamps: { email: 1620700446, id: 1620700447 },
         unsubscribed: false,
         devices: [],
       },
@@ -2239,7 +2612,145 @@ nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
       "content-type",
       "application/json; charset=utf-8",
       "date",
-      "Fri, 07 May 2021 02:16:48 GMT",
+      "Tue, 11 May 2021 02:34:17 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo",
+        attributes: { email: "grouparoo@demo.com", id: "grouparoo" },
+        timestamps: { email: 1620700446, id: 1620700447 },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "176",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:18 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCVSRF3ZDJM6XX9QJV34W)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:18 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMCWB9G4CCR3ZEMX7XBD1C)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:19 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    200,
+    {
+      customer: {
+        id: "grouparoo",
+        attributes: { email: "grouparoo@demo.com", id: "grouparoo" },
+        timestamps: { email: 1620700446, id: 1620700447 },
+        unsubscribed: false,
+        devices: [],
+      },
+    },
+    [
+      "content-length",
+      "176",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:19 GMT",
       "strict-transport-security",
       "max-age=15768000",
       "x-frame-options",
@@ -2265,7 +2776,96 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:48 GMT",
+    "Tue, 11 May 2021 02:34:20 GMT",
+    "Status",
+    "200 OK",
+    "Via",
+    "1.1 google",
+    "Alt-Svc",
+    "clear",
+    "Connection",
+    "close",
+  ]);
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo-fake/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMD7THEXD417Z6Y8H5QY8V)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:31 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://beta-api.customer.io:443", { encodedQueryParams: true })
+  .get("/v1/api/customers/grouparoo/attributes")
+  .once()
+  .reply(
+    404,
+    {
+      errors: [
+        {
+          detail: "not found (reference 01F5CMD8CJMSNZJ2E7A674KWX0)",
+          status: "404",
+        },
+      ],
+    },
+    [
+      "content-length",
+      "89",
+      "content-type",
+      "application/json; charset=utf-8",
+      "date",
+      "Tue, 11 May 2021 02:34:31 GMT",
+      "strict-transport-security",
+      "max-age=15768000",
+      "x-frame-options",
+      "SAMEORIGIN",
+      "x-content-type-options",
+      "nosniff",
+      "x-xss-protection",
+      "1; mode=block",
+      "referrer-policy",
+      "no-referrer-when-downgrade",
+      "connection",
+      "close",
+    ]
+  );
+nock("https://track.customer.io:443", { encodedQueryParams: true })
+  .delete("/api/v1/customers/grouparoo")
+  .once()
+  .reply(200, {}, [
+    "Cache-Control",
+    "no-cache, no-store, must-revalidate, max-age=0",
+    "Content-Length",
+    "3",
+    "Content-Type",
+    "application/json; charset=utf-8",
+    "Date",
+    "Tue, 11 May 2021 02:34:32 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -2286,7 +2886,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:48 GMT",
+    "Tue, 11 May 2021 02:34:32 GMT",
     "Status",
     "200 OK",
     "Via",
@@ -2307,7 +2907,7 @@ nock("https://track.customer.io:443", { encodedQueryParams: true })
     "Content-Type",
     "application/json; charset=utf-8",
     "Date",
-    "Fri, 07 May 2021 02:16:49 GMT",
+    "Tue, 11 May 2021 02:34:32 GMT",
     "Status",
     "200 OK",
     "Via",

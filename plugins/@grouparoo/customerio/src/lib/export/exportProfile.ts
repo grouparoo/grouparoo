@@ -27,14 +27,18 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   }
   newCustomer = await client.getCustomer(customerId);
 
+  if (toDelete) {
+    const oldCustomer = await client.getCustomer(oldCustomerId);
+    const userToDelete = newCustomer || oldCustomer;
+    if (userToDelete) {
+      await deleteCustomer(client, syncOperations, userToDelete.id, true);
+    }
+    return { success: true };
+  }
+
   if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
     // Must delete old customer if ID has changed
     await deleteCustomer(client, syncOperations, oldCustomerId);
-  }
-
-  if (toDelete) {
-    await deleteCustomer(client, syncOperations, customerId, true);
-    return { success: true };
   }
 
   const payload: any = {};

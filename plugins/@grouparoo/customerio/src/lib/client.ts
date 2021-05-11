@@ -1,9 +1,9 @@
 import CIO from "customerio-node";
 import axios from "axios";
 
-class CustormerioClient {
+class CustomerioClient {
   client: any;
-  appApiKey: any;
+  appApiKey: string;
 
   constructor(siteId, apiKey, appApiKey) {
     this.client = new CIO(siteId, apiKey);
@@ -14,11 +14,11 @@ class CustormerioClient {
     return this.client.destroy(customerId);
   }
 
-  async identify(customerId: string, payload: string) {
+  async identify(customerId: string, payload: object) {
     return this.client.identify(customerId, payload);
   }
 
-  async trackAnonymous(data: any) {
+  async trackAnonymous(data: object) {
     return this.client.trackAnonymous(data);
   }
 
@@ -54,4 +54,4 @@ class CustormerioClient {
   }
 }
 
-export { CustormerioClient };
+export { CustomerioClient };
