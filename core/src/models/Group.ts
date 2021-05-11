@@ -615,6 +615,32 @@ export class Group extends LoggedModel<Group> {
     return { where: whereContainer, include };
   }
 
+  async getConfigObject() {
+    const { id, name, type } = this;
+
+    let rules = [];
+
+    const groupRules = await this.$get("groupRules", {
+      order: [["position", "asc"]],
+    });
+
+    if (groupRules?.length > 0) {
+      rules = groupRules.map(({ propertyId, op, match }) => ({
+        propertyId,
+        operation: { op },
+        match,
+      }));
+    }
+
+    return {
+      id,
+      class: "group",
+      type,
+      name,
+      rules,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {

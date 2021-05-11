@@ -85,33 +85,9 @@ export namespace ConfigWriter {
     let property: Property;
 
     for (property of properties) {
-      const {
-        id,
-        key,
-        type,
-        sourceId,
-        unique,
-        identifying,
-        isArray,
-      } = property;
-
-      // NOTE: Choosing to hit the db again in favor of using the shared logic,
-      // rather than eager loading the associations.
-      const options = await property.getOptions();
-      const filters = await property.getFilters();
-
-      config[`properties/${id}.json`] = {
-        id,
-        class: "property",
-        type,
-        name: key,
-        sourceId,
-        unique,
-        identifying,
-        isArray,
-        options,
-        filters,
-      };
+      config[
+        `properties/${property.id}.json`
+      ] = await property.getConfigObject();
     }
 
     // ---------------------------------------- | Groups
@@ -121,19 +97,7 @@ export namespace ConfigWriter {
     let group: Group;
 
     for (group of groups) {
-      const { id, name, type, groupRules } = group;
-
-      config[`groups/${id}.json`] = {
-        id,
-        class: "group",
-        type,
-        name,
-        rules: groupRules.map(({ propertyId, op, match }) => ({
-          propertyId,
-          operation: { op },
-          match,
-        })),
-      };
+      config[`groups/${group.id}.json`] = await group.getConfigObject();
     }
 
     // ---------------------------------------- | Destinations
@@ -145,33 +109,9 @@ export namespace ConfigWriter {
     let destination: Destination;
 
     for (destination of destinations) {
-      const {
-        id,
-        name,
-        type,
-        appId,
-        groupId,
-        syncMode,
-        destinationGroupMemberships,
-      } = destination;
-
-      const options = await destination.getOptions();
-      const mapping = await destination.getMapping();
-
-      config[`destinations/${id}.json`] = {
-        id,
-        class: "destination",
-        name,
-        type,
-        appId,
-        groupId,
-        syncMode,
-        options,
-        mapping,
-        destinationGroupMemberships: Object.fromEntries(
-          destinationGroupMemberships.map((dgm) => [dgm.remoteKey, groupId])
-        ),
-      };
+      config[
+        `destinations/${destination.id}.json`
+      ] = await destination.getConfigObject();
     }
 
     // console.log(config);

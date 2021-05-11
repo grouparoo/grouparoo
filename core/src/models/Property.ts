@@ -373,6 +373,26 @@ export class Property extends LoggedModel<Property> {
     };
   }
 
+  async getConfigObject() {
+    const { id, key, type, sourceId, unique, identifying, isArray } = this;
+
+    const options = await this.getOptions();
+    const filters = await this.getFilters();
+
+    return {
+      class: "property",
+      id,
+      type,
+      name: key,
+      sourceId,
+      unique,
+      identifying,
+      isArray,
+      options,
+      filters,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {
