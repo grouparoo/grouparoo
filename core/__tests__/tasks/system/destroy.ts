@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Property, Source, App, Destination } from "../../../src";
+import { Property, Source, App, Destination, Group } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/destroy", () => {
@@ -36,6 +36,17 @@ describe("tasks/destroy", () => {
       const found = await specHelper.findEnqueuedTasks("property:destroy");
       expect(found.length).toEqual(1);
       expect(found[0].args[0].propertyId).toBe(property.id);
+    });
+
+    test("it will enqueue destroy tasks for deleted groups", async () => {
+      const group: Group = await helper.factories.group();
+      await group.update({ state: "deleted" });
+
+      await specHelper.runTask("destroy", {});
+
+      const found = await specHelper.findEnqueuedTasks("group:destroy");
+      expect(found.length).toEqual(1);
+      expect(found[0].args[0].groupId).toBe(group.id);
     });
 
     test("it will enqueue destroy tasks for deleted sources", async () => {
