@@ -141,6 +141,14 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       await profileProperty.reload();
       expect(profileProperty.state).toBe("pending");
       expect(profileProperty.rawValue).toBe(`old@example.com`);
+
+      // sendAt is slightly in the future from (now - 5 minutes) to try again soon
+      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
+        new Date().getTime() - 1000 * 60 * 5
+      );
+      expect(profileProperty.startedAt.getTime()).toBeLessThan(
+        new Date().getTime()
+      );
     });
 
     test("can be run for the same profile more than once without deadlock", async () => {

@@ -3,9 +3,14 @@ import { Run } from "../../models/Run";
 import { ProfileOps } from "./profile";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
+import { config } from "actionhero";
 
 export namespace ImportOps {
   const defaultImportProcessingDelay = 1000 * 60 * 5;
+
+  export function retrySendAt(delayMs = defaultImportProcessingDelay) {
+    return new Date(new Date().getTime() - delayMs + config.tasks.timeout * 2);
+  }
 
   export async function processPendingImportsForAssociation(
     limit = 100,
