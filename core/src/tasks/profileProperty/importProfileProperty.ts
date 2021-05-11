@@ -1,9 +1,10 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
-import { log } from "actionhero";
+import { config } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { PropertyOps } from "../../modules/ops/property";
+import { ImportOps } from "../../modules/ops/import";
 
 export class ImportProfileProperty extends RetryableTask {
   constructor() {
@@ -46,7 +47,19 @@ export class ImportProfileProperty extends RetryableTask {
       if (properties[dep.key].state !== "ready") ok = false;
     });
 
-    if (!ok) return; // there's a dependency we don't have yet
+    if (!ok) {
+      // there's a dependency we don't have yet, sleep a little and will be retried later
+      return ProfileProperty.update(
+        { startedAt: ImportOps.retryStartedAt() },
+        {
+          where: {
+            propertyId: property.id,
+            profileId: profile.id,
+            state: "pending",
+          },
+        }
+      );
+    }
 
     const propertyValues = await source.importProfileProperty(
       profile,
