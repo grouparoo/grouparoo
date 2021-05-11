@@ -146,6 +146,7 @@ describe("integration/runs/postgres", () => {
     expect(error).toBeUndefined();
     expect(preview.length).toBe(10);
     expect(Object.keys(preview[0]).sort()).toEqual([
+      "account_id",
       "android_app",
       "date",
       "email",
