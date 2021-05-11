@@ -59,7 +59,7 @@ export class ImportProfileProperties extends RetryableTask {
 
     if (profilesNotReady.length > 0) {
       await ProfileProperty.update(
-        { startedAt: ImportOps.retrySendAt() },
+        { startedAt: ImportOps.retryStartedAt() },
         {
           where: {
             propertyId: property.id,

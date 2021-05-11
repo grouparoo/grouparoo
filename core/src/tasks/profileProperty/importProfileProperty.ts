@@ -50,7 +50,7 @@ export class ImportProfileProperty extends RetryableTask {
     if (!ok) {
       // there's a dependency we don't have yet, sleep a little and will be retried later
       return ProfileProperty.update(
-        { startedAt: ImportOps.retrySendAt() },
+        { startedAt: ImportOps.retryStartedAt() },
         {
           where: {
             propertyId: property.id,

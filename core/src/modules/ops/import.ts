@@ -8,7 +8,7 @@ import { config } from "actionhero";
 export namespace ImportOps {
   const defaultImportProcessingDelay = 1000 * 60 * 5;
 
-  export function retrySendAt(delayMs = defaultImportProcessingDelay) {
+  export function retryStartedAt(delayMs = defaultImportProcessingDelay) {
     return new Date(new Date().getTime() - delayMs + config.tasks.timeout * 2);
   }
 
