@@ -2,6 +2,10 @@ export const DEFAULT = {
   routes: (api) => {
     // prettier-ignore
     return {
+      head: [
+        { path: "/v:apiVersion/status/:route", action: "status:public", matchTrailingPathParts: true },
+      ],
+
       get: [
         { path: "/v:apiVersion/status/public", action: "status:public" },
         { path: "/v:apiVersion/status/private", action: "status:private" },
