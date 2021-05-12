@@ -21,6 +21,7 @@ npm run prepare
 cd $PROJECT_DIR
 
 echo "-----> DROPPING AND RE-CREATING DATABASE\r\n"
+rm -rf *.sqlite
 dropdb grouparoo_development
 createdb grouparoo_development
 
