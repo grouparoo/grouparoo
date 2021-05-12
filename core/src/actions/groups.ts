@@ -362,8 +362,8 @@ export class GroupDestroy extends AuthenticatedAction {
       await GroupMember.destroy({ where: { groupId: group.id } });
       await group.destroy(); // other related models are handled by hooks
     } else {
+      // group:destroy will be eventually enqueued by the `destroy` system task
       await group.update({ state: "deleted" });
-      await CLS.enqueueTask("group:destroy", { groupId: group.id });
     }
 
     return { success: true };
