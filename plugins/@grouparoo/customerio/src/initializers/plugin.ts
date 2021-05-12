@@ -50,8 +50,8 @@ export class Plugins extends Initializer {
               description: "Customer.io Tracking API site id",
             },
             {
-              key: "apiKey",
-              displayName: "API Key",
+              key: "trackingApiKey",
+              displayName: "Tracking API Key",
               required: true,
               description: "Customer.io Tracking API key",
             },

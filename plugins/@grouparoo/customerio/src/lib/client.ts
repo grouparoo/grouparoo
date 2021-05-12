@@ -5,8 +5,8 @@ class CustomerioClient {
   client: any;
   appApiKey: string;
 
-  constructor(siteId, apiKey, appApiKey) {
-    this.client = new CIO(siteId, apiKey);
+  constructor(siteId, trackingApiKey, appApiKey) {
+    this.client = new CIO(siteId, trackingApiKey);
     this.appApiKey = appApiKey;
   }
 

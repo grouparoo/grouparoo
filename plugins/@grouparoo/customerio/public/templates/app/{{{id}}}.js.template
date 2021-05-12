@@ -7,7 +7,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}",
       options: {
         siteId: "...", // Customer.io Site ID
-        apiKey: "...", // Customer.io Tracking API Key
+        trackingApiKey: "...", // Customer.io Tracking API Key
         appApiKey: "..." // Customer.io App API Key
       }
     },
