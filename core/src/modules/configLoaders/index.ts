@@ -1,4 +1,4 @@
-import { log, config, env } from "actionhero";
+import { log, config, env, Task, api } from "actionhero";
 import path from "path";
 import fs from "fs";
 import glob from "glob";
@@ -23,6 +23,8 @@ import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
+import { CLS } from "../cls";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
 export function getConfigDir() {
   const configDir =
@@ -321,6 +323,10 @@ export async function deleteLockedObjects(seenIds) {
   });
   // back to normal
   deletedIds["app"] = await deleteApps(seenIds.app);
+
+  // Enqueue deletion tasks
+  const task: CLSTask = api.tasks.tasks["destroy"];
+  await task.runWithinTransaction({}, {});
 
   return deletedIds;
 }
