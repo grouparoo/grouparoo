@@ -28,7 +28,7 @@ export class CodeConfig extends CLSInitializer {
 
   // async start() {
   //   if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
-  //     await ConfigWriter.write();
+  //     await ConfigWriter.run();
   //   }
   //   process.exit(1);
   // }

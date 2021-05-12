@@ -1,3 +1,7 @@
+import fs from "fs";
+import glob from "glob";
+import path from "path";
+import os from "os";
 import { helper } from "@grouparoo/spec-helper";
 
 import { App } from "../../src/models/App";
@@ -7,14 +11,114 @@ import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
 import { Source } from "../../src/models/Source";
 
-// import { ConfigWriter } from "../../src/modules/configWriter";
+import { ConfigWriter } from "../../src/modules/configWriter";
 // import { getConfigDir } from "../../src/modules/configLoaders";
+
+const workerId = process.env.JEST_WORKER_ID;
+const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
+const configFilePattern = path.join(configDir, "**/*.json");
+
+process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("modules/configWriter", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
-  let source: Source;
-  let property: Property;
-  let group: Group;
+
+  // ---------------------------------------- | ConfigWriter.run()
+
+  describe("run()", () => {
+    afterEach(async () => {
+      await App.destroy({ truncate: true });
+      await Source.destroy({ truncate: true });
+      await Property.destroy({ truncate: true });
+
+      const files = glob.sync(configFilePattern);
+      for (let file of files) fs.rmSync(file);
+    });
+
+    test("writes a file for each object", async () => {
+      const app: App = await helper.factories.app();
+      const source: Source = await helper.factories.source(app);
+      await source.setOptions({ table: "test-table-04" });
+      await source.bootstrapUniqueProperty("userId_04", "integer", "id");
+      await source.setMapping({ id: "userId_04" });
+      await source.update({ state: "ready" });
+
+      await ConfigWriter.run();
+
+      // Reload so we can grab the configFilePath attributes, which have been
+      // set while running this method (that test is below).
+      await app.reload();
+      await source.reload();
+      const property: Property = await Property.findOne();
+
+      const files = glob.sync(configFilePattern);
+      const expConfigFiles = [app, source, property].map((instance) =>
+        path.join(process.env.GROUPAROO_CONFIG_DIR, instance.configFilePath)
+      );
+      // Verify all expected files exist.
+      expect(files.sort()).toEqual(expConfigFiles.sort());
+      // Check the app's config file contents
+      const appConfig = JSON.parse(
+        fs.readFileSync(expConfigFiles[0]).toString()
+      );
+      expect(appConfig).toEqual(await app.getConfigObject());
+    });
+  });
+
+  // ---------------------------------------- | ConfigWriter.getConfigObjects()
+
+  describe("getConfigObjects()", () => {
+    afterEach(async () => {
+      await App.destroy({ truncate: true });
+      await Source.destroy({ truncate: true });
+      await Property.destroy({ truncate: true });
+    });
+
+    test("returns an empty array when there are no objects", async () => {
+      const configObjects = await ConfigWriter.getConfigObjects();
+      expect(configObjects).toEqual([]);
+    });
+    test("lists the formatted config objects, ready to be written", async () => {
+      const app: App = await helper.factories.app();
+      const source: Source = await helper.factories.source(app);
+      await source.setOptions({ table: "test-table-03" });
+      await source.bootstrapUniqueProperty("userId_03", "integer", "id");
+      await source.setMapping({ id: "userId_03" });
+      await source.update({ state: "ready" });
+
+      const configObjects = await ConfigWriter.getConfigObjects();
+
+      // Reload so we can grab the configFilePath attributes, which have been
+      // set while running this method (that test is below).
+      await app.reload();
+      await source.reload();
+      const property: Property = await Property.findOne();
+
+      expect(configObjects).toEqual([
+        {
+          filePath: app.configFilePath,
+          object: await app.getConfigObject(),
+        },
+        {
+          filePath: source.configFilePath,
+          object: await source.getConfigObject(),
+        },
+        {
+          filePath: property.configFilePath,
+          object: await property.getConfigObject(),
+        },
+      ]);
+    });
+    test("sets the configFilePath attribute on objects", async () => {
+      const app: App = await helper.factories.app();
+      await app.reload();
+      expect(app.configFilePath).toEqual(null);
+      await ConfigWriter.getConfigObjects();
+      await app.reload();
+      expect(app.configFilePath).not.toEqual(null);
+      expect(app.configFilePath).toContain(app.id);
+    });
+  });
 
   // ---------------------------------------- | Model Config File Refs
 
@@ -41,15 +145,15 @@ describe("modules/configWriter", () => {
 
       const property = await helper.factories.property(
         source,
-        { key: "lastName" },
-        { column: "lastName" }
+        { key: "fistName01" },
+        { column: "fistName01" }
       );
 
       const schedule: Schedule = await helper.factories.schedule(source);
 
       const group = await helper.factories.group({ type: "calculated" });
       await group.setRules([
-        { key: "lastName", match: "nobody", operation: { op: "eq" } },
+        { key: "fistName01", match: "nobody", operation: { op: "eq" } },
       ]);
 
       const destination: Destination = await helper.factories.destination();
@@ -86,22 +190,26 @@ describe("modules/configWriter", () => {
   // ---------------------------------------- | Model Config Builders
 
   describe("Model Config Providers", () => {
+    let source: Source;
+    let property: Property;
+    let group: Group;
+
     beforeAll(async () => {
       source = await helper.factories.source();
-      await source.setOptions({ table: "test table" });
-      await source.bootstrapUniqueProperty("userId", "integer", "id");
-      await source.setMapping({ id: "userId" });
+      await source.setOptions({ table: "test-table-02" });
+      await source.bootstrapUniqueProperty("userId_02", "integer", "id");
+      await source.setMapping({ id: "userId_02" });
       await source.update({ state: "ready" });
 
       property = await helper.factories.property(
         source,
-        { key: "firstName" },
-        { column: "firstName" }
+        { key: "firstName02" },
+        { column: "firstName02" }
       );
 
       group = await helper.factories.group({ type: "calculated" });
       await group.setRules([
-        { key: "firstName", match: "nobody", operation: { op: "eq" } },
+        { key: "firstName02", match: "nobody", operation: { op: "eq" } },
       ]);
     });
 
