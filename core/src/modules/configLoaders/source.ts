@@ -161,7 +161,6 @@ export async function deleteSources(ids: string[]) {
     }
 
     await source.update({ state: "deleted", locked: null });
-    await CLS.enqueueTask("source:destroy", { sourceId: source.id });
     logModel(source, "deleted");
 
     deletedIds.source.push(source.id);

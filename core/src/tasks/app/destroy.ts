@@ -1,6 +1,4 @@
-import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 import { App } from "../../models/App";
 
 export class AppDestroy extends CLSTask {
@@ -29,9 +27,7 @@ export class AppDestroy extends CLSTask {
       await App.checkDependents(app);
     } catch (error) {
       if (error.message.match(/cannot delete this app,/)) {
-        return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-          appId: app.id,
-        });
+        return; // check back later
       }
 
       throw error;

@@ -10,9 +10,8 @@ export class DestroySweeper extends CLSTask {
   constructor() {
     super();
     this.name = "destroy";
-    this.description =
-      "re-enqueue destroy tasks for models waiting to be deleted";
-    this.frequency = 1000 * 60 * 10; // every 10 minutes
+    this.description = "enqueue destroy tasks for models waiting to be deleted";
+    this.frequency = 1000 * 30;
     this.queue = "system";
   }
 

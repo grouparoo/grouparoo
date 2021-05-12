@@ -1,6 +1,4 @@
-import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 import { Property } from "../../models/Property";
 
 export class PropertyDestroy extends CLSTask {
@@ -29,9 +27,7 @@ export class PropertyDestroy extends CLSTask {
       await Property.ensureNotInUse(property);
     } catch (error) {
       if (error.message.match(/cannot delete property/)) {
-        return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-          propertyId: property.id,
-        });
+        return; // check back later
       }
 
       throw error;

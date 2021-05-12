@@ -1,6 +1,4 @@
-import { config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
-import { CLS } from "../../modules/cls";
 import { Source } from "../../models/Source";
 
 export class SourceDestroy extends CLSTask {
@@ -29,9 +27,7 @@ export class SourceDestroy extends CLSTask {
       await Source.ensureNoProperties(source);
     } catch (error) {
       if (error.message.match(/cannot delete a source that has a property/)) {
-        return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-          sourceId: source.id,
-        });
+        return; // check back later
       }
 
       throw error;
