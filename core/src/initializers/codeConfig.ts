@@ -26,13 +26,6 @@ export class CodeConfig extends CLSInitializer {
     };
   }
 
-  // async start() {
-  //   if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
-  //     await ConfigWriter.run();
-  //   }
-  //   process.exit(1);
-  // }
-
   async startWithinTransaction() {
     const configDir = getConfigDir();
     const { errors } = await loadConfigDirectory(configDir);

@@ -1,5 +1,4 @@
-// import { api, config } from "actionhero";
-// import { Model } from "sequelize-typescript";
+import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
 
@@ -10,7 +9,6 @@ import { Property } from "../models/Property";
 import { Group } from "../models/Group";
 import { Destination } from "../models/Destination";
 
-// import { Option } from "../models/Option";
 import { ConfigurationObject } from "../classes/codeConfig";
 
 import { getConfigDir } from "./configLoaders";
@@ -22,12 +20,12 @@ import { getConfigDir } from "./configLoaders";
  * - ✅  (thanks sequelize) Skip "dirty" (eg: un-changed) models
  * - ✅  Make JSON pretty
  * - ✅  Make this run for all models in the database.
- * - ⬜️  Be able to boot the app when the object was created from file. (Note:
- *   This is only an issue when using a file-based DB, but would be nice to have
- *   for dev.)
  * - ⬜️  Distinguish between JSON and JS files
  * - ⬜️  Account for the file name not matching the ID
  * - ⬜️  Account for the file having multiple objects in it
+ * - ⬜️  Be able to boot the app when the object was created from file. (Note:
+ *   This is only an issue when using a file-based DB, but would be nice to have
+ *   for dev.)
  */
 
 type WritableConfigObject = {
@@ -39,10 +37,12 @@ export namespace ConfigWriter {
   export async function run() {
     // Any models we see before starting would be from existing code config
     // files.
-    // if (!api.process.started) return;
+    if (!api.process.started) return;
 
     const configObjects: WritableConfigObject[] = await getConfigObjects();
     await writeFiles(configObjects);
+
+    return configObjects;
   }
 
   async function writeFile({ filePath, object }: WritableConfigObject) {
