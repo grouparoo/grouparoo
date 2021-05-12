@@ -20,7 +20,10 @@ export default function NewGroup(props) {
     const response: Actions.GroupCreate = await execApi(
       "post",
       `/group`,
-      Object.assign({}, data, { state })
+      Object.assign({}, data, {
+        state,
+        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
+      })
     );
     if (response?.group) {
       const path = response.group.type === "calculated" ? "rules" : "edit";

@@ -12,13 +12,8 @@ import { useRouter } from "next/router";
 import { Actions } from "../../../utils/apiData";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    types,
-    scheduleCount,
-    hydrationError,
-  } = props;
+  const { errorHandler, successHandler, types, scheduleCount, hydrationError } =
+    props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);
@@ -55,7 +50,10 @@ export default function Page(props) {
       const response: Actions.SourceBootstrapUniqueProperty = await execApi(
         "post",
         `/source/${source.id}/bootstrapUniqueProperty`,
-        Object.assign(newProperty, { mappedColumn: newMappingKey })
+        Object.assign(newProperty, {
+          mappedColumn: newMappingKey,
+          writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
+        })
       );
       if (response?.property) {
         successHandler.set({ message: "Property created" });
@@ -92,7 +90,10 @@ export default function Page(props) {
     const response: Actions.SourceEdit = await execApi(
       "put",
       `/source/${source.id}`,
-      Object.assign({}, source, { state: "ready" })
+      Object.assign({}, source, {
+        state: "ready",
+        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
+      })
     );
     if (response?.source) {
       // this source can have a schedule, and we have no schedules yet

@@ -53,6 +53,7 @@ export default function Page(props) {
         `/group/${group.id}`,
         {
           force,
+          writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
         }
       );
       if (response?.success) {

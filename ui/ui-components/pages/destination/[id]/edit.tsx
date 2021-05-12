@@ -51,7 +51,10 @@ export default function Page(props) {
     const response: Actions.DestinationEdit = await execApi(
       "put",
       `/destination/${id}`,
-      Object.assign({}, destination, { state: "ready" })
+      Object.assign({}, destination, {
+        state: "ready",
+        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
+      })
     );
     if (response?.destination) {
       setDestination(response.destination);
@@ -92,7 +95,8 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.DestinationDestroy = await execApi(
         "delete",
-        `/destination/${id}`
+        `/destination/${id}`,
+        { writeConfig: process.env.GROUPAROO_UI_EDITION === "config" }
       );
       if (success) {
         router.push("/destinations");

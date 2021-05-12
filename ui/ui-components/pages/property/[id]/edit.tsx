@@ -57,6 +57,7 @@ export default function Page(props) {
         Object.assign({}, property, {
           filters: localFilters,
           state: "ready",
+          writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
         })
       );
       if (response?.property) {
@@ -84,7 +85,8 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.PropertyDestroy = await execApi(
         "delete",
-        `/property/${id}`
+        `/property/${id}`,
+        { writeConfig: process.env.GROUPAROO_UI_EDITION === "config" }
       );
       setLoading(false);
       if (success) {

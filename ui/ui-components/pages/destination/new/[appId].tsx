@@ -27,6 +27,7 @@ export default function Page(props) {
       {
         appId,
         type: connection.name,
+        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
       }
     );
     if (response?.destination) {

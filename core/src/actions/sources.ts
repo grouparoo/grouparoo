@@ -4,9 +4,8 @@ import { App } from "../models/App";
 import { Source } from "../models/Source";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
+import { ConfigWriter } from "../modules/configWriter";
 import { AsyncReturnType } from "type-fest";
-import { ProfileProperty } from "../models/ProfileProperty";
-import { Property } from "../models/Property";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -92,8 +91,9 @@ export class SourceConnectionApps extends AuthenticatedAction {
       }
     }
 
-    const environmentVariableOptions =
-      OptionHelper.getEnvironmentVariableOptionsForTopic("source");
+    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "source"
+    );
 
     return { connectionApps, environmentVariableOptions };
   }
@@ -113,6 +113,7 @@ export class SourceCreate extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -126,6 +127,8 @@ export class SourceCreate extends AuthenticatedAction {
     if (params.options) await source.setOptions(params.options);
     if (params.mapping) await source.setMapping(params.mapping);
     if (params.state) await source.update({ state: params.state });
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return { source: await source.apiData() };
   }
@@ -164,6 +167,7 @@ export class SourceEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -173,6 +177,9 @@ export class SourceEdit extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
 
     await source.update(params);
+
+    if (params.writeConfig) await ConfigWriter.run();
+
     return { source: await source.apiData() };
   }
 }
@@ -190,6 +197,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
       key: { required: true },
       type: { required: true },
       mappedColumn: { required: true },
+      writeConfig: { required: false },
     };
   }
 
@@ -201,6 +209,8 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
       params.type,
       params.mappedColumn
     );
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return {
       source: await source.apiData(),
@@ -268,12 +278,14 @@ export class SourceDestroy extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
+      writeConfig: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
     await source.destroy();
+    if (params.writeConfig) await ConfigWriter.run();
     return { success: true };
   }
 }

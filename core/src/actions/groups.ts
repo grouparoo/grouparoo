@@ -4,7 +4,7 @@ import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
-import { GroupOps } from "../modules/ops/group";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -80,6 +80,7 @@ export class GroupCreate extends AuthenticatedAction {
       matchType: { required: true, default: "all" },
       rules: { required: false },
       state: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -92,6 +93,7 @@ export class GroupCreate extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
+    if (params.writeConfig) await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -109,6 +111,7 @@ export class GroupEdit extends AuthenticatedAction {
       type: { required: false },
       matchType: { required: false },
       rules: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -120,6 +123,7 @@ export class GroupEdit extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
+    if (params.writeConfig) await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -242,10 +246,12 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
       }
     }
 
-    const { componentCounts, funnelCounts } =
-      await group.countComponentMembersFromRules(
-        group.fromConvenientRules(rules)
-      );
+    const {
+      componentCounts,
+      funnelCounts,
+    } = await group.countComponentMembersFromRules(
+      group.fromConvenientRules(rules)
+    );
 
     return { componentCounts, funnelCounts };
   }
@@ -349,6 +355,7 @@ export class GroupDestroy extends AuthenticatedAction {
         formatter: (p: string | boolean) =>
           p.toString().toLowerCase() === "true",
       },
+      writeConfig: { required: false },
     };
   }
 
@@ -363,6 +370,8 @@ export class GroupDestroy extends AuthenticatedAction {
       // group:destroy will be eventually enqueued by the `destroy` system task
       await group.update({ state: "deleted" });
     }
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return { success: true };
   }

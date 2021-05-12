@@ -43,6 +43,7 @@ export async function createSchedule({
   const data = {
     sourceId,
     recurring: false,
+    writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
   };
 
   setLoading(true);

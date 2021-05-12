@@ -11,6 +11,7 @@ import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { AsyncReturnType } from "type-fest";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -97,8 +98,9 @@ export class DestinationConnectionApps extends AuthenticatedAction {
       }
     }
 
-    const environmentVariableOptions =
-      OptionHelper.getEnvironmentVariableOptionsForTopic("destination");
+    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
+      "destination"
+    );
 
     return { connectionApps, environmentVariableOptions };
   }
@@ -120,6 +122,7 @@ export class DestinationCreate extends AuthenticatedAction {
       mapping: { required: false, default: {} },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -139,6 +142,8 @@ export class DestinationCreate extends AuthenticatedAction {
         params.destinationGroupMemberships
       );
     if (params.state) await destination.update({ state: params.state });
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return { destination: await destination.apiData() };
   }
@@ -161,6 +166,7 @@ export class DestinationEdit extends AuthenticatedAction {
       destinationGroupMemberships: { required: false },
       trackedGroupId: { required: false },
       triggerExport: { required: false },
+      writeConfig: { required: false },
     };
   }
 
@@ -195,6 +201,8 @@ export class DestinationEdit extends AuthenticatedAction {
     } else if (params.triggerExport) {
       run = await destination.exportGroupMembers(true);
     }
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return {
       destination: await destination.apiData(),
@@ -362,8 +370,7 @@ export class DestinationProfilePreview extends AuthenticatedAction {
 
     let destinationGroupMemberships = params.destinationGroupMemberships;
     if (!destinationGroupMemberships) {
-      const destinationGroupMembershipsArray =
-        await destination.getDestinationGroupMemberships();
+      const destinationGroupMembershipsArray = await destination.getDestinationGroupMemberships();
       destinationGroupMemberships = {};
       destinationGroupMembershipsArray.map(
         (dgm) => (destinationGroupMemberships[dgm.groupId] = dgm.remoteKey)
@@ -408,6 +415,7 @@ export class DestinationDestroy extends AuthenticatedAction {
         formatter: (p: string | boolean) =>
           p.toString().toLowerCase() === "true",
       },
+      writeConfig: { required: false },
     };
   }
 
@@ -419,6 +427,8 @@ export class DestinationDestroy extends AuthenticatedAction {
       // destination:destroy will be enqueued by the `destroy` system task
       await destination.update({ state: "deleted" });
     }
+
+    if (params.writeConfig) await ConfigWriter.run();
 
     return { success: true };
   }
