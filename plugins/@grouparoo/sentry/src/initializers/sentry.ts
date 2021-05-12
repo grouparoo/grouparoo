@@ -25,9 +25,6 @@ export class SentryInitializer extends Initializer {
       // skip reporting some types of errors
       if (error?.code === "AUTHENTICATION_ERROR") return null;
       if (error?.code === "AUTHORIZATION_ERROR") return null;
-      if (error?.toString().includes("unknown action or invalid apiVersion")) {
-        return null;
-      }
 
       return event;
     }
