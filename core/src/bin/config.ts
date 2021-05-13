@@ -15,8 +15,8 @@ export class Apply extends CLI {
     GrouparooCLI.setGrouparooRunMode(this);
 
     // use temporary databases
-    // process.env.DATABASE_URL = "sqlite://memory";
-    process.env.DATABASE_URL = "sqlite://grouparoo_config.sqlite";
+    process.env.DATABASE_URL =
+      process.env.CONFIG_DATABASE_URL || "sqlite://memory";
     process.env.REDIS_URL = "redis://mock";
 
     // turn off workers
