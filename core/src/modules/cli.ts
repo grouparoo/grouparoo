@@ -13,7 +13,10 @@ export namespace GrouparooCLI {
     [key: string]: number[] | string[];
   }
 
-  export type LogFinalArray = Array<{ header: string; data: LogStatus }>;
+  export type LogFinalArray = Array<{
+    header: string;
+    data: LogFinal | LogFinalArray;
+  }>;
 
   /** Settings and Boot Options */
 
@@ -140,57 +143,97 @@ export namespace GrouparooCLI {
       );
       GrouparooCLI.logger.log("");
     }
+    export const dummyFinalArray: LogFinalArray = [
+      {
+        header: "SUMMARY",
+        data: {
+          "Sources used": [0],
+          "Runs processed": [0],
+          "Total imports": [0],
+          "Total exports": [0],
+        },
+      },
+      {
+        header: "SOURCES",
+        data: [
+          {
+            header: "MySQL",
+            data: {
+              "Schedules run": [0],
+              "Imports created": [0],
+              "Imports processed": [0],
+              "Import errors": [0],
+            },
+          },
+          {
+            header: "BigQuery",
+            data: {
+              "Schedules run": [0],
+              "Imports created": [0],
+              "Imports processed": [0],
+              "Import errors": [0],
+            },
+          },
+        ],
+      },
+      {
+        header: "DESTINATIONS",
+        data: [
+          {
+            header: "Mailchimp",
+            data: {
+              "Exports created": [0],
+              "Exports processed": [0],
+              "Export errors": [0],
+            },
+          },
+          {
+            header: "Pardot",
+            data: {
+              "Exports created": [0],
+              "Exports processed": [0],
+              "Export errors": [0],
+            },
+          },
+        ],
+      },
+    ];
 
-    const dummyLogFinalArray = [];
+    function generateFinalSummaryLogs(logFinalArray: LogFinalArray) {
+      logFinalArray.forEach(({ header, data }, idx) => {
+        if (idx > 0) logger.log(cyanBold(`|`));
+
+        GrouparooCLI.logger.log(cyanBold(`|`) + " " + underlineBold(header));
+
+        if (Array.isArray(data)) {
+          generateFinalSummaryLogs(data);
+          return false;
+        }
+
+        for (const key in data) {
+          const [v1, v2] = data[key];
+          GrouparooCLI.logger.log(
+            `${cyanBold("|")} * ${deCamel(key)}${
+              (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
+              (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
+            }`
+          );
+        }
+      });
+      return false;
+    }
 
     export function finalSummary(
-      // logFinalArray: LogFinalArray,
+      logFinalArray: LogFinalArray,
       secondaryTitle = `@ ${new Date().toISOString()}`
     ) {
       const formattedTitle = `┌-- 🦘 Run Completed @ ${secondaryTitle} ---`;
 
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
-      GrouparooCLI.logger.log("| SUMMARY:");
-      GrouparooCLI.logger.log("| * Sources used");
-      GrouparooCLI.logger.log("| * Destinations synced");
-      GrouparooCLI.logger.log("| * Runs processed");
-      GrouparooCLI.logger.log("| * Total imports");
-      GrouparooCLI.logger.log("| * Total exports");
-      GrouparooCLI.logger.log("| ");
-      GrouparooCLI.logger.log("| SOURCES:");
-      GrouparooCLI.logger.log("| {SOURCE NAME}");
-      GrouparooCLI.logger.log("| Schedules run");
-      GrouparooCLI.logger.log("| Imports created");
-      GrouparooCLI.logger.log("| Imports processed");
-      GrouparooCLI.logger.log("| Import errors");
-      GrouparooCLI.logger.log("| ");
-      GrouparooCLI.logger.log("| PROFILES:");
-      GrouparooCLI.logger.log("| Profiles created");
-      GrouparooCLI.logger.log("| Profiles updated");
-      GrouparooCLI.logger.log("| Current total profiles");
-      GrouparooCLI.logger.log("| ");
-      GrouparooCLI.logger.log("| DESTINATIONS");
-      GrouparooCLI.logger.log("| {DESTINATION_NAME} ({APP_NAME})");
-      GrouparooCLI.logger.log("| Exports created");
-      GrouparooCLI.logger.log("| Exports processed");
-      GrouparooCLI.logger.log("| Export errors");
 
       // TODO: modify following function to process logFinalArray similar to statusArray
-      // logFinalArray.forEach(({ header, data }, idx) => {
-      //   if (idx > 0) logger.log(cyanBold(`|`));
-
-      //   GrouparooCLI.logger.log(cyanBold(`|`) + " " + underlineBold(header));
-      //   for (const key in data) {
-      //     const [v1, v2] = data[key];
-      //     GrouparooCLI.logger.log(
-      //       `${blueBold("|")} * ${deCamel(key)}${
-      //         (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
-      //         (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
-      //       }`
-      //     );
-      //   }
-      // });
+      generateFinalSummaryLogs(logFinalArray);
 
       GrouparooCLI.logger.log(
         cyanBold("└" + "-".repeat(formattedTitle.length - 1))
