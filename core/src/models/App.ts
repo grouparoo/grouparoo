@@ -213,7 +213,7 @@ export class App extends LoggedModel<App> {
     const { id, type, name } = this;
     const options = await this.getOptions();
     return {
-      class: "app",
+      class: "App",
       id,
       name,
       type,

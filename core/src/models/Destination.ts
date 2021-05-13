@@ -521,7 +521,7 @@ export class Destination extends LoggedModel<Destination> {
     const { id, name, type, appId, groupId, syncMode } = this;
 
     const options = await this.getOptions();
-    const mapping = await this.getMapping();
+    const mapping = await MappingHelper.getMapping(this, "id");
 
     const dgm = await DestinationGroupMembership.findAll({
       where: { destinationId: id },
@@ -531,7 +531,7 @@ export class Destination extends LoggedModel<Destination> {
     );
 
     return {
-      class: "destination",
+      class: "Destination",
       id,
       name,
       type,

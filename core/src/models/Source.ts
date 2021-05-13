@@ -282,10 +282,10 @@ export class Source extends LoggedModel<Source> {
     const { id, name, type, appId } = this;
 
     const options = await this.getOptions();
-    const mapping = await this.getMapping();
+    const mapping = await MappingHelper.getMapping(this, "id");
 
     return {
-      class: "source",
+      class: "Source",
       id,
       name,
       type,

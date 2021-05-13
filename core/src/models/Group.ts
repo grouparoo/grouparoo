@@ -634,7 +634,7 @@ export class Group extends LoggedModel<Group> {
 
     return {
       id,
-      class: "group",
+      class: "Group",
       type,
       name,
       rules,

@@ -186,7 +186,7 @@ export class Schedule extends LoggedModel<Schedule> {
     const { id, name, sourceId, recurring, recurringFrequency } = this;
     const options = await this.getOptions();
     return {
-      class: "schedule",
+      class: "Schedule",
       id,
       name,
       sourceId,

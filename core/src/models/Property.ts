@@ -382,7 +382,7 @@ export class Property extends LoggedModel<Property> {
     const filters = await this.getFilters();
 
     return {
-      class: "property",
+      class: "Property",
       id,
       type,
       name: key,
