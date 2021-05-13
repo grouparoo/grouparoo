@@ -1,6 +1,7 @@
 import { api } from "actionhero";
 import { getConfigDir, loadConfigDirectory } from "../modules/configLoaders";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
+import { ConfigWriter } from "../modules/configWriter";
 
 declare module "actionhero" {
   export interface Api {
@@ -17,6 +18,11 @@ export class CodeConfig extends CLSInitializer {
     this.loadPriority = 10000;
     this.startPriority = 1;
   }
+
+  // async start() {
+  //   await ConfigWriter.run();
+  //   process.exit(1);
+  // }
 
   async initializeWithinTransaction() {
     api.codeConfig = {

@@ -42,19 +42,19 @@ describe("modules/configWriter", () => {
       await source.bootstrapUniqueProperty("userId_04", "integer", "id");
       await source.setMapping({ id: "userId_04" });
       await source.update({ state: "ready" });
+      const property: Property = await Property.findOne();
 
       await ConfigWriter.run();
 
-      // Reload so we can grab the configFilePath attributes, which have been
-      // set while running this method (that test is below).
-      await app.reload();
-      await source.reload();
-      const property: Property = await Property.findOne();
-
       const files = glob.sync(configFilePattern);
-      const expConfigFiles = [app, source, property].map((instance) =>
-        path.join(process.env.GROUPAROO_CONFIG_DIR, instance.configFilePath)
+      const expConfigFiles = [
+        `apps/${app.id}.json`,
+        `sources/${source.id}.json`,
+        `properties/${property.id}.json`,
+      ].map((configFilePath) =>
+        path.join(process.env.GROUPAROO_CONFIG_DIR, configFilePath)
       );
+
       // Verify all expected files exist.
       expect(files.sort()).toEqual(expConfigFiles.sort());
       // Check the app's config file contents
@@ -85,106 +85,25 @@ describe("modules/configWriter", () => {
       await source.bootstrapUniqueProperty("userId_03", "integer", "id");
       await source.setMapping({ id: "userId_03" });
       await source.update({ state: "ready" });
+      const property: Property = await Property.findOne();
 
       const configObjects = await ConfigWriter.getConfigObjects();
 
-      // Reload so we can grab the configFilePath attributes, which have been
-      // set while running this method (that test is below).
-      await app.reload();
-      await source.reload();
-      const property: Property = await Property.findOne();
-
       expect(configObjects).toEqual([
         {
-          filePath: app.configFilePath,
+          filePath: `apps/${app.id}.json`,
           object: await app.getConfigObject(),
         },
         {
-          filePath: source.configFilePath,
+          filePath: `sources/${source.id}.json`,
           object: await source.getConfigObject(),
         },
         {
-          filePath: property.configFilePath,
+          filePath: `properties/${property.id}.json`,
           object: await property.getConfigObject(),
         },
       ]);
     });
-    test("sets the configFilePath attribute on objects", async () => {
-      const app: App = await helper.factories.app();
-      await app.reload();
-      expect(app.configFilePath).toEqual(null);
-      await ConfigWriter.getConfigObjects();
-      await app.reload();
-      expect(app.configFilePath).not.toEqual(null);
-      expect(app.configFilePath).toContain(app.id);
-    });
-  });
-
-  // ---------------------------------------- | Model Config File Refs
-
-  describe("Model config file references", () => {
-    let testObjects = {};
-
-    const tests: Array<{ type: string; plural?: string }> = [
-      { type: "app" },
-      { type: "source" },
-      { type: "schedule" },
-      { type: "property", plural: "properties" },
-      { type: "group" },
-      { type: "destination" },
-    ];
-
-    beforeAll(async () => {
-      const app: App = await helper.factories.app();
-
-      const source: Source = await helper.factories.source(app);
-      await source.setOptions({ table: "test-table-01" });
-      await source.bootstrapUniqueProperty("userId_01", "integer", "id");
-      await source.setMapping({ id: "userId_01" });
-      await source.update({ state: "ready" });
-
-      const property = await helper.factories.property(
-        source,
-        { key: "fistName01" },
-        { column: "fistName01" }
-      );
-
-      const schedule: Schedule = await helper.factories.schedule(source);
-
-      const group = await helper.factories.group({ type: "calculated" });
-      await group.setRules([
-        { key: "fistName01", match: "nobody", operation: { op: "eq" } },
-      ]);
-
-      const destination: Destination = await helper.factories.destination();
-
-      testObjects = { app, source, schedule, property, group, destination };
-    });
-
-    for (let testConfig of tests) {
-      let { type, plural } = testConfig;
-      if (!plural) plural = `${testConfig.type}s`;
-
-      test(`${plural} can set a config file path reference`, async () => {
-        const obj = testObjects[type];
-        expect(obj.configFilePath).toBe(null);
-        await obj.setConfigFilePath("file/path/override.js");
-        expect(obj.configFilePath).toBe("file/path/override.js");
-      });
-      test(`${plural} can override a config file path ref when set`, async () => {
-        const obj = testObjects[type];
-        obj.configFilePath = `${plural}/my_${type}.js`;
-        await obj.save();
-        expect(obj.configFilePath).toBe(`${plural}/my_${type}.js`);
-        await obj.setConfigFilePath("file/path/override.js");
-        expect(obj.configFilePath).toBe("file/path/override.js");
-      });
-      test(`${plural} can be prompted to set a default config file path reference`, async () => {
-        const obj = testObjects[type];
-        await obj.setConfigFilePath();
-        expect(obj.configFilePath).toBe(`${plural}/${obj.id}.json`);
-      });
-    }
   });
 
   // ---------------------------------------- | Model Config Builders

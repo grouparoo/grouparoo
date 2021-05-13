@@ -164,10 +164,6 @@ export class Destination extends LoggedModel<Destination> {
   @Column(DataType.ENUM(...SYNC_MODES))
   syncMode: DestinationSyncMode;
 
-  @AllowNull(true)
-  @Column
-  configFilePath: string;
-
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
@@ -519,11 +515,6 @@ export class Destination extends LoggedModel<Destination> {
         );
       }
     }
-  }
-
-  async setConfigFilePath(newPath?: string) {
-    this.configFilePath = newPath ? newPath : `destinations/${this.id}.json`;
-    await this.save();
   }
 
   async getConfigObject() {

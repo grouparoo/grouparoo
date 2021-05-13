@@ -176,10 +176,6 @@ export class Property extends LoggedModel<Property> {
   @Column
   isArray: boolean;
 
-  @AllowNull(true)
-  @Column
-  configFilePath: string;
-
   @BelongsTo(() => Source)
   source: Source;
 
@@ -377,11 +373,6 @@ export class Property extends LoggedModel<Property> {
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
     };
-  }
-
-  async setConfigFilePath(newPath?: string) {
-    this.configFilePath = newPath ? newPath : `properties/${this.id}.json`;
-    await this.save();
   }
 
   async getConfigObject() {

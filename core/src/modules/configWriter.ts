@@ -46,25 +46,22 @@ export namespace ConfigWriter {
   }
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    const apps = await App.findAll();
-    const sources = await Source.findAll();
-    const schedules = await Schedule.findAll();
-    const properties = await Property.findAll();
-    const groups = await Group.findAll();
-    const destinations = await Destination.findAll();
-    const instances = [].concat(
-      apps,
-      sources,
-      schedules,
-      properties,
-      groups,
-      destinations
-    );
     let objects = [];
-    for (let instance of instances) {
-      await instance.setConfigFilePath();
-      const configObject = await instance.getConfigObject();
-      objects.push({ filePath: instance.configFilePath, object: configObject });
+    const queries = {
+      apps: await App.findAll(),
+      sources: await Source.findAll(),
+      schedules: await Schedule.findAll(),
+      properties: await Property.findAll(),
+      groups: await Group.findAll(),
+      destinations: await Destination.findAll(),
+    };
+
+    for (let [type, instances] of Object.entries(queries)) {
+      for (let instance of instances) {
+        const object = await instance.getConfigObject();
+        const filePath = `${type}/${instance.id}.json`;
+        objects.push({ filePath, object });
+      }
     }
     return objects;
   }

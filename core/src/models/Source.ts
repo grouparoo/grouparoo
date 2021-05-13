@@ -84,10 +84,6 @@ export class Source extends LoggedModel<Source> {
   @Column
   locked: string;
 
-  @AllowNull(true)
-  @Column
-  configFilePath: string;
-
   @BelongsTo(() => App)
   app: App;
 
@@ -280,11 +276,6 @@ export class Source extends LoggedModel<Source> {
       local,
       options
     );
-  }
-
-  async setConfigFilePath(newPath?: string) {
-    this.configFilePath = newPath ? newPath : `sources/${this.id}.json`;
-    await this.save();
   }
 
   async getConfigObject() {

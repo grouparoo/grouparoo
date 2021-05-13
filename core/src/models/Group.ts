@@ -134,10 +134,6 @@ export class Group extends LoggedModel<Group> {
   @Column
   calculatedAt: Date;
 
-  @AllowNull(true)
-  @Column
-  configFilePath: string;
-
   @HasMany(() => GroupMember)
   groupMembers: GroupMember[];
 
@@ -617,11 +613,6 @@ export class Group extends LoggedModel<Group> {
     whereContainer[joinType] = wheres;
 
     return { where: whereContainer, include };
-  }
-
-  async setConfigFilePath(newPath?: string) {
-    this.configFilePath = newPath ? newPath : `groups/${this.id}.json`;
-    await this.save();
   }
 
   async getConfigObject() {
