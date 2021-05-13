@@ -28,7 +28,7 @@ pnpm run -r prepare
 
 # Stop if there are un-commited changes
 if [[ -n $(git status -s) ]]; then
-  echo "There are uncommited changes on this branch.  Exiting"
+  echo "There are uncommitted changes on this branch.  Exiting"
   exit 1
 else
   echo "branch is clean"
@@ -67,7 +67,7 @@ curl -H "Authorization: token $GITHUB_AUTH" --data "{
 }" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
 if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
-  echo "Publishing alpha pacakges to NPM"
+  echo "-----> Publishing ALPHA packages to NPM"
   ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag next --yes
 
   # Make sure to exit script with code 1 if publish failed
@@ -75,25 +75,25 @@ if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
     exit 1;
   fi
 else
-  echo "Did not publish alpha packages"
+  echo ""
 fi
 
 if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
-  echo "Publishing stable pacakges to NPM"
+  echo "-----> Publishing STABLE packages to NPM"
   ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --yes
-
-  # and update main with this new version
-  git checkout main
-  git pull
-  git rebase stable
-  git push origin main
 
   # Make sure to exit script with code 1 if publish failed
   if [[ ! $? -eq 0 ]];then
     exit 1;
   fi
+
+  # and update main with this new version
+  git checkout main
+  git pull
+  git rebase stable
+  git push origin main --force-with-lease
 else
-  echo "Did not publish stable packages"
+  echo ""
 fi
 
 # update the pnpm lockfile with the new versions
@@ -102,7 +102,8 @@ echo "Updating pnpm lockfile by re-installing"
 echo "---"
 
 git checkout main
+git pull
 pnpm install --prefer-frozen-lockfile --ignore-scripts
 git add pnpm-lock.yaml
 git commit -m "Update pnpm lockfile [ci skip]"
-git push origin main
+git push origin main --force-with-lease
