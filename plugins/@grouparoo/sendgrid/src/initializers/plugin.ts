@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/sendgrid/sendgrid.png",
@@ -30,9 +32,12 @@ export class Plugins extends Initializer {
         new AppTemplate("sendgrid", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("sendgrid", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "sendgrid",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -56,6 +61,8 @@ export class Plugins extends Initializer {
           description:
             "Export profiles to Sendgrid marketing as Contacts and put them in static Lists.",
           app: "sendgrid",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,
