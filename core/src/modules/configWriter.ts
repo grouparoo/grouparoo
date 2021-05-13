@@ -13,21 +13,6 @@ import { ConfigurationObject } from "../classes/codeConfig";
 
 import { getConfigDir } from "./configLoaders";
 
-/**
- * TODO:
- *
- * - ✅  Ignore the original code-config files at boot
- * - ✅  (thanks sequelize) Skip "dirty" (eg: un-changed) models
- * - ✅  Make JSON pretty
- * - ✅  Make this run for all models in the database.
- * - ⬜️  Distinguish between JSON and JS files
- * - ⬜️  Account for the file name not matching the ID
- * - ⬜️  Account for the file having multiple objects in it
- * - ⬜️  Be able to boot the app when the object was created from file. (Note:
- *   This is only an issue when using a file-based DB, but would be nice to have
- *   for dev.)
- */
-
 type WritableConfigObject = {
   filePath: string;
   object: ConfigurationObject;
