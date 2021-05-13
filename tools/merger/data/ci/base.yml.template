@@ -68,14 +68,6 @@ workflows:
           requires:
 {{{job_name_list}}}
 
-      - publish:
-          filters:
-            branches:
-              only:
-                - stable
-          requires:
-            - complete
-
   #
   # Run the tests each week + publish pre-release from main branch
   test-grouparoo-nightly:

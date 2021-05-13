@@ -1,62 +1,92 @@
 #!/bin/bash
 
+HELP = : <<'COMMENT'
+** THE GROUPAROO PUBLISHING PROCESS **
+
+1. When the `main` branch is in a good place and you want to publish it, run this command (`./bin/publish`)
+  a. Choose your release mode:
+    * If you want to make an alpha release (for testing), run `./bin/publish alpha`
+    * If you want to make a stable release (for customers), run `./bin/publish stable`
+  b. This command will:
+    a. Update the versions of all packages in the monorepo
+    b. Create a tag for the new version on Github
+    c. Generate release notes for that tag and publish them
+  c. Publish new packages to NPM
+
+Changes:
+  * No more "stable" branch.  The tags are what matters.
+  * Humans publish stable releases now
+  * CI continues to try to publish a weekly alpha release
+  * We don't need to rebuild the lockfile after publish, the `update-lockfile` action does that for us now
+COMMENT
+
 set -e
 cd "$(dirname "$0")"
 cd '..'
 
 GITHUB_ORG='grouparoo'
 GITHUB_REPO='grouparoo'
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+OLD_VERSION=`cat lerna.json | jq -r '.version'`
+RELEASE_MODE=$1
+
+## CHECK INPUTS
+
+if [[ "$RELEASE_MODE" == "alpha" ]]
+then
+  PRERELEASE='true'
+  LERNA_VERSION_ARGS="prerelease --exact --preid alpha --force-publish --yes"
+  DIST_TAG="next"
+elif [[ "$RELEASE_MODE" == "stable" ]]
+then
+  PRERELEASE='false'
+  LERNA_VERSION_ARGS="patch --exact --force-publish --yes"
+  DIST_TAG="latest"
+else
+  echo 'Release Mode required.  "publish alpha" or "publish stable"'
+  exit 1
+fi
 
 if [[ -z "$GITHUB_AUTH" ]];then
-  echo "No GITHUB_AUTH, exiting.."
+  echo "No GITHUB_AUTH env, exiting.."
   exit 1;
 fi
 
 if [ -f ~/.npmrc ]; then
-    echo "using local NPM user..."
+  echo "Using local NPM user: `npm whoami`"
 else
-    if [[ -z "$NPM_TOKEN" ]];then
-      echo "No NPM_TOKEN or ~/.npmrc, exiting.."
-      exit 1;
-    else
-      echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
-    fi
+  if [[ -z "$NPM_TOKEN" ]];then
+    echo "No NPM_TOKEN or ~/.npmrc, exiting.."
+    exit 1;
+  else
+    echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+  fi
 fi
 
-# Rebuild all packages
-pnpm run -r prepare
+if [[ $BRANCH != 'main' ]]; then
+  echo "Not on 'main' branch.  Exiting"
+  exit 1
+fi
 
-# Stop if there are un-commited changes
 if [[ -n $(git status -s) ]]; then
   echo "There are uncommitted changes on this branch.  Exiting"
   exit 1
-else
-  echo "branch is clean"
 fi
 
-# Push new version & tags to git with lerna
-BRANCH=`git rev-parse --abbrev-ref HEAD`
-OLD_VERSION=`cat lerna.json | jq -r '.version'`
-echo "on $BRANCH branch"
-if [[ $BRANCH == 'main' ]]; then
-  npm run version-alpha
-  PRERELEASE='true'
-fi
+echo "Publishing $RELEASE_MODE packages"
+echo "Old Version: $OLD_VERSION"
+echo ""
 
-if [[ $BRANCH == 'stable' ]]; then
-  npm run version-stable
-  PRERELEASE='false'
-fi
+## BUMP THE VERSION & PUSH TO GITHUB
 
-# only publish if we match a tag directly (ie: 'v1.2.3'); i.e. the lerna version command succeded
-git describe --exact-match
-if [[ ! $? -eq 0 ]]; then
-  echo "Nothing to publish, exiting.."
-  exit 0;
-fi
+./node_modules/.bin/lerna version $LERNA_VERSION_ARGS
 
-## Update the realease with the changelog
+## PUBLISH RELEASE NOTES
+
 NEW_VERSION=`cat lerna.json | jq -r '.version'`
+echo "New Version: $NEW_VERSION"
+
+# Update the release with the changelog
 CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
 ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
 sleep 10
@@ -66,44 +96,18 @@ curl -H "Authorization: token $GITHUB_AUTH" --data "{
     \"prerelease\": $PRERELEASE
 }" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
-if [[ $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
-  echo "-----> Publishing ALPHA packages to NPM"
-  ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag next --yes
+## BUILD PACKAGES
 
-  # Make sure to exit script with code 1 if publish failed
-  if [[ ! $? -eq 0 ]];then
-    exit 1;
-  fi
-else
-  echo ""
-fi
+pnpm run -r prepare
 
-if [[ ! $(git describe --exact-match 2> /dev/null || :) =~ -alpha ]]; then
-  echo "-----> Publishing STABLE packages to NPM"
-  ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --yes
+## PUSH TO NPM
 
-  # Make sure to exit script with code 1 if publish failed
-  if [[ ! $? -eq 0 ]];then
-    exit 1;
-  fi
+./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag $DIST_TAG --yes
 
-  # and update main with this new version
-  git checkout main
-  git pull
-  git rebase stable
-  git push origin main --force-with-lease
-else
-  echo ""
-fi
+## COMPLETE
 
-# update the pnpm lockfile with the new versions
-echo "---"
-echo "Updating pnpm lockfile by re-installing"
-echo "---"
+echo ""
+echo "--- Version $NEW_VERSION published to $DIST_TAG tag ---"
+echo ""
 
-git checkout main
-git pull
-pnpm install --prefer-frozen-lockfile --ignore-scripts
-git add pnpm-lock.yaml
-git commit -m "Update pnpm lockfile [ci skip]"
-git push origin main --force-with-lease
+exit 0

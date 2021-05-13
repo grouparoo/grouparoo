@@ -2567,7 +2567,7 @@ jobs:
       - run: git config --global user.email "hello@grouparoo.com"
       - run: git config --global user.name "Grouparoo Bot"
       - run: sudo npm install -g pnpm
-      - run: ./bin/publish
+      - run: ./bin/publish alpha
 workflows:
   version: 2
   #
@@ -2911,13 +2911,6 @@ workflows:
             - test-client-web
             - test-plugin-zendesk
             - test-cli
-      - publish:
-          filters:
-            branches:
-              only:
-                - stable
-          requires:
-            - complete
   #
   # Run the tests each week + publish pre-release from main branch
   test-grouparoo-nightly:
