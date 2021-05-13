@@ -484,30 +484,17 @@ describe("modules/codeConfig", () => {
       expect(app.state).toBe("deleted");
       expect(app.locked).toBeNull();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("app:destroy");
-      expect(foundTasks).toHaveLength(1);
-      expect(foundTasks[0].args[0].appId).toBe("events");
-
-      await specHelper.runTask("app:destroy", foundTasks[0].args[0]);
-
-      // clean up the queue for other tests
-      await specHelper.deleteEnqueuedTasks(
-        "app:destroy",
-        foundTasks[0].args[0]
-      );
+      await specHelper.runTask("app:destroy", { appId: "events" });
     });
 
     test("a removed group will be deleted", async () => {
       const groups = await Group.scope(null).findAll();
       expect(groups.length).toBe(1);
+      expect(groups[0].id).toBe("email_group");
       expect(groups[0].state).toBe("deleted");
       expect(groups[0].locked).toBe(null);
 
-      const foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks).toHaveLength(1);
-      expect(foundTasks[0].args[0].groupId).toBe("email_group");
-
-      await specHelper.runTask("group:destroy", foundTasks[0].args[0]);
+      await specHelper.runTask("group:destroy", { groupId: "email_group" });
     });
 
     test("removed properties will be deleted", async () => {
@@ -524,21 +511,15 @@ describe("modules/codeConfig", () => {
         expect(prop.locked).toBe(null);
       });
 
-      const foundTasks = await specHelper.findEnqueuedTasks("property:destroy");
-      expect(foundTasks).toHaveLength(2);
-      expect(foundTasks.map((t) => t.args[0].propertyId).sort()).toEqual([
-        "first_name",
-        "last_name",
-      ]);
-
-      await specHelper.runTask("property:destroy", foundTasks[0].args[0]);
-      await specHelper.runTask("property:destroy", foundTasks[1].args[0]);
+      await specHelper.runTask("property:destroy", {
+        propertyId: "first_name",
+      });
+      await specHelper.runTask("property:destroy", { propertyId: "last_name" });
     });
   });
 
   describe("empty config", () => {
     beforeAll(async () => {
-      await api.resque.queue.connection.redis.flushdb();
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "empty")
@@ -587,15 +568,7 @@ describe("modules/codeConfig", () => {
       expect(properties[0].state).toBe("deleted");
       expect(properties[0].locked).toBe(null);
 
-      const foundTasks = await specHelper.findEnqueuedTasks("property:destroy");
-      expect(foundTasks).toHaveLength(1);
-      expect(foundTasks[0].args[0].propertyId).toBe("email");
-
-      await specHelper.runTask("property:destroy", foundTasks[0].args[0]);
-      await specHelper.deleteEnqueuedTasks(
-        "property:destroy",
-        foundTasks[0].args[0]
-      );
+      await specHelper.runTask("property:destroy", { propertyId: "email" });
     });
 
     test("a removed source will be deleted", async () => {
@@ -605,11 +578,7 @@ describe("modules/codeConfig", () => {
       expect(sources[0].state).toBe("deleted");
       expect(sources[0].locked).toBeNull();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("source:destroy");
-      expect(foundTasks).toHaveLength(1);
-      expect(foundTasks[0].args[0].sourceId).toBe("users_table");
-
-      await specHelper.runTask("source:destroy", foundTasks[0].args[0]);
+      await specHelper.runTask("source:destroy", { sourceId: "users_table" });
     });
 
     test("a removed app will be deleted", async () => {
@@ -619,11 +588,7 @@ describe("modules/codeConfig", () => {
       expect(apps[0].state).toBe("deleted");
       expect(apps[0].locked).toBeNull();
 
-      const foundTasks = await specHelper.findEnqueuedTasks("app:destroy");
-      expect(foundTasks).toHaveLength(1);
-      expect(foundTasks[0].args[0].appId).toBe("data_warehouse");
-
-      await specHelper.runTask("app:destroy", foundTasks[0].args[0]);
+      await specHelper.runTask("app:destroy", { appId: "data_warehouse" });
     });
 
     test("settings remain", async () => {
