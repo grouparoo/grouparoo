@@ -146,6 +146,7 @@ describe("integration/runs/postgres", () => {
     expect(error).toBeUndefined();
     expect(preview.length).toBe(10);
     expect(Object.keys(preview[0]).sort()).toEqual([
+      "account_id",
       "android_app",
       "date",
       "email",
@@ -300,10 +301,8 @@ describe("integration/runs/postgres", () => {
       },
       state: "ready",
     };
-    const {
-      error,
-      destination: destinationResponse,
-    } = await specHelper.runAction("destination:edit", session);
+    const { error, destination: destinationResponse } =
+      await specHelper.runAction("destination:edit", session);
     expect(error).toBeUndefined();
     expect(destinationResponse.state).toBe("ready");
   });

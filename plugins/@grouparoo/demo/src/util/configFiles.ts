@@ -15,19 +15,27 @@ export async function deleteConfigDir() {
   deleteDir(configDir);
 }
 
-export async function writeConfigFiles(db: Connection, subDirs: string[]) {
+export async function writeConfigFiles(
+  dataset: string,
+  db: Connection,
+  subDirs: string[]
+) {
   const configDir = getConfigDir();
-  await generateConfig(db, configDir, subDirs);
+  await generateConfig(dataset, db, configDir, subDirs);
   if (subDirs.length > 0) {
     await prettier(configDir);
   }
 }
 
-export async function loadConfigFiles(db: Connection, subDirs: string[]) {
+export async function loadConfigFiles(
+  dataset: string,
+  db: Connection,
+  subDirs: string[]
+) {
   subDirs = [...new Set(subDirs)]; // unique
 
   const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(db, configDir, subDirs);
+  await generateConfig(dataset, db, configDir, subDirs);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -39,12 +47,17 @@ export async function loadConfigFiles(db: Connection, subDirs: string[]) {
   await unlockAll();
 }
 
-async function generateConfig(db: Connection, configDir, subDirs: string[]) {
+async function generateConfig(
+  dataset: string,
+  db: Connection,
+  configDir,
+  subDirs: string[]
+) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
 
   for (const subDir of subDirs) {
-    copyDir(configDir, subDir);
+    copyDir(configDir, db, dataset, subDir);
   }
   updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
@@ -56,12 +69,20 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, subDir: string) {
-  let dirPath = path.resolve(
-    path.join(__dirname, "..", "..", "config", subDir)
-  );
+function copyDir(configDir, db: any, dataset: string, subDir: string) {
+  const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
-  fs.copySync(dirPath, configDir);
+
+  copyDirIfExists(path.join(rootPath, "shared", "all", subDir), configDir);
+  copyDirIfExists(path.join(rootPath, "shared", db.name(), subDir), configDir);
+  copyDirIfExists(path.join(rootPath, dataset, "all", subDir), configDir);
+  copyDirIfExists(path.join(rootPath, dataset, db.name(), subDir), configDir);
+}
+
+function copyDirIfExists(from, to) {
+  if (fs.existsSync(from)) {
+    fs.copySync(from, to);
+  }
 }
 
 function updateDatabase(db: Connection, configDir) {

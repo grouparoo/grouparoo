@@ -12,6 +12,17 @@ import LoadingTable from "../loadingTable";
 import { Models, Actions } from "../../utils/apiData";
 import { ErrorHandler } from "../../utils/errorHandler";
 import { ExportGroupsDiff, ExportProfilePropertiesDiff } from "./diff";
+import { capitalize } from "../../utils/languageHelper";
+import StateBadge from "../badges/stateBadge";
+
+const states = [
+  "all",
+  "pending",
+  "processing",
+  "canceled",
+  "failed",
+  "complete",
+];
 
 export default function ExportsList(props) {
   const {
@@ -27,7 +38,7 @@ export default function ExportsList(props) {
   // pagination
   const limit = 100;
   const { offset, setOffset } = useOffset();
-  const [state, setState] = useState(router.query.state?.toString() || "");
+  const [state, setState] = useState(router.query.state?.toString() || "all");
 
   let profileId: string;
   let destinationId: string;
@@ -49,7 +60,7 @@ export default function ExportsList(props) {
     const response: Actions.ExportsList = await execApi("get", `/exports`, {
       limit,
       offset,
-      state,
+      state: state === "all" ? undefined : state,
       profileId,
       destinationId,
     });
@@ -98,41 +109,19 @@ export default function ExportsList(props) {
         <Col>
           State:{" "}
           <ButtonGroup>
-            <Button
-              size="sm"
-              variant={state === "" ? "secondary" : "info"}
-              onClick={() => setState("")}
-            >
-              All
-            </Button>
-            <Button
-              size="sm"
-              variant={state === "created" ? "secondary" : "info"}
-              onClick={() => setState("created")}
-            >
-              Created
-            </Button>
-            <Button
-              size="sm"
-              variant={state === "started" ? "secondary" : "info"}
-              onClick={() => setState("started")}
-            >
-              Started
-            </Button>
-            <Button
-              size="sm"
-              variant={state === "completed" ? "secondary" : "info"}
-              onClick={() => setState("completed")}
-            >
-              Completed
-            </Button>
-            <Button
-              size="sm"
-              variant={state === "error" ? "secondary" : "info"}
-              onClick={() => setState("error")}
-            >
-              Error
-            </Button>
+            {states.map((_state) => {
+              return (
+                <Fragment key={`export-state-button-${_state}`}>
+                  <Button
+                    size="sm"
+                    variant={state === _state ? "secondary" : "info"}
+                    onClick={() => setState(_state)}
+                  >
+                    {capitalize(_state)}
+                  </Button>
+                </Fragment>
+              );
+            })}
           </ButtonGroup>
         </Col>
       </Row>
@@ -170,6 +159,9 @@ export default function ExportsList(props) {
                       <a>{_export.id}</a>
                     </Link>
                     <br />
+                    <span>State</span>:{" "}
+                    <StateBadge state={_export.state} marginBottom={0} />
+                    <br />
                     Profile:{" "}
                     <Link
                       href="/profile/[id]/edit"
@@ -193,8 +185,6 @@ export default function ExportsList(props) {
                       "false"
                     )}
                     <br />
-                    Most Recent? {_export.mostRecent.toString()}
-                    <br />
                     Has Changes? {_export.hasChanges.toString()}
                     <br />
                     Forced: {_export.force.toString()}
@@ -204,6 +194,9 @@ export default function ExportsList(props) {
                     {_export.createdAt
                       ? formatTimestamp(_export.createdAt)
                       : null}
+                    <br />
+                    Send:{" "}
+                    {_export.startedAt ? formatTimestamp(_export.sendAt) : null}
                     <br />
                     Start:{" "}
                     {_export.startedAt
@@ -266,7 +259,7 @@ ExportsList.hydrate = async (ctx) => {
   const { exports: _exports, total } = await execApi("get", `/exports`, {
     limit,
     offset,
-    state,
+    state: state === "all" ? undefined : state,
     destinationId,
     profileId,
   });

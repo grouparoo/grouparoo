@@ -33,6 +33,7 @@ describe("actions/exports", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
+        state: "pending",
       });
       id = firstExport.id;
 
@@ -44,6 +45,7 @@ describe("actions/exports", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
+        state: "pending",
       });
 
       await Export.create({
@@ -55,6 +57,7 @@ describe("actions/exports", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
+        state: "complete",
       });
 
       await Export.create({
@@ -66,6 +69,7 @@ describe("actions/exports", () => {
         oldGroups: [],
         newGroups: [],
         errorMessage: "broken",
+        state: "failed",
       });
 
       connection = await specHelper.buildConnection();
@@ -138,11 +142,12 @@ describe("actions/exports", () => {
       );
       expect(error).toBeUndefined();
       expect(totals).toEqual({
-        all: 4,
-        created: 1,
-        started: 1,
-        completed: 1,
-        error: 1,
+        canceled: 0,
+        complete: 1,
+        draft: 0,
+        failed: 1,
+        pending: 2,
+        processing: 0,
       });
     });
 
@@ -154,11 +159,12 @@ describe("actions/exports", () => {
       );
       expect(error).toBeUndefined();
       expect(totals).toEqual({
-        all: 3,
-        created: 1,
-        started: 0,
-        completed: 1,
-        error: 1,
+        canceled: 0,
+        complete: 1,
+        draft: 0,
+        failed: 1,
+        pending: 1,
+        processing: 0,
       });
     });
 
@@ -170,11 +176,12 @@ describe("actions/exports", () => {
       );
       expect(error).toBeUndefined();
       expect(totals).toEqual({
-        all: 2,
-        created: 1,
-        started: 1,
-        completed: 0,
-        error: 0,
+        canceled: 0,
+        complete: 0,
+        draft: 0,
+        failed: 0,
+        pending: 2,
+        processing: 0,
       });
     });
   });

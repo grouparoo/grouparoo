@@ -8,33 +8,30 @@ import { connect } from "../connect";
 import { IntercomCacheData } from "./listMethods";
 import { CreationMode } from "./destinationOptions";
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appId,
-  appOptions,
-  destinationOptions,
-}) => {
-  const client = await connect(appOptions);
-  const required = getRequiredFields(destinationOptions);
-  const known = await getKnownAttributes(client, { appId, appOptions }, true);
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appId, appOptions, destinationOptions }) => {
+    const client = await connect(appOptions);
+    const required = getRequiredFields(destinationOptions);
+    const known = await getKnownAttributes(client, { appId, appOptions }, true);
 
-  return {
-    labels: {
-      property: {
-        singular: "Intercom User Attribute",
-        plural: "Intercom User Attributes",
+    return {
+      labels: {
+        property: {
+          singular: "Intercom User Attribute",
+          plural: "Intercom User Attributes",
+        },
+        group: {
+          singular: "Intercom Tag",
+          plural: "Intercom Tags",
+        },
       },
-      group: {
-        singular: "Intercom Tag",
-        plural: "Intercom Tags",
+      properties: {
+        required,
+        known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required,
-      known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesFromIntercomToGrouparoo = (key, intercomType) => {
   switch (key) {
@@ -137,10 +134,8 @@ export const fetchKnownAttributes = async (
       continue;
     }
     const important = field.custom || importantKeys.includes(key);
-    const type: DestinationMappingOptionsResponseTypes = mapTypesFromIntercomToGrouparoo(
-      key,
-      field.data_type
-    );
+    const type: DestinationMappingOptionsResponseTypes =
+      mapTypesFromIntercomToGrouparoo(key, field.data_type);
     if (type) {
       out.push({ key, type, important });
     }

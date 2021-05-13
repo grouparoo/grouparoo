@@ -18,18 +18,19 @@ export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   },
 };
 
-export const OptionallyAuthenticatedActionMiddleware: action.ActionMiddleware = {
-  name: "optionally-authenticated-action",
-  global: false,
-  priority: 1000,
-  preProcessor: async (data) => {
-    if (data.params.apiKey) {
-      return authenticateApiKey(data);
-    } else {
-      return authenticateTeamMember(data, true);
-    }
-  },
-};
+export const OptionallyAuthenticatedActionMiddleware: action.ActionMiddleware =
+  {
+    name: "optionally-authenticated-action",
+    global: false,
+    priority: 1000,
+    preProcessor: async (data) => {
+      if (data.params.apiKey) {
+        return authenticateApiKey(data);
+      } else {
+        return authenticateTeamMember(data, true);
+      }
+    },
+  };
 
 export const ChatRoomMiddleware: chatRoom.ChatMiddleware = {
   name: "model chat room middleware",

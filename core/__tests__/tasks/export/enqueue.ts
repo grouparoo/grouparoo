@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, task, specHelper } from "actionhero";
+import { api, task, specHelper, utils } from "actionhero";
 import { Profile, Destination, Export, Run, plugin } from "../../../src";
 
 describe("tasks/export:enqueue", () => {
@@ -20,7 +20,8 @@ describe("tasks/export:enqueue", () => {
       stuckStartedExport: Export,
       newCompleteExport: Export,
       oldCompleteExport: Export,
-      newErrorExport: Export,
+      newErrorExportNow: Export,
+      newErrorExportTooSoon: Export,
       oldErrorExport: Export,
       infoExport: Export;
 
@@ -38,6 +39,8 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(),
+        state: "pending",
       });
 
       pendingExportB = await Export.create({
@@ -47,6 +50,8 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(),
+        state: "pending",
       });
 
       recentStartedExport = await Export.create({
@@ -56,7 +61,9 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(),
         startedAt: new Date(),
+        state: "pending",
       });
 
       stuckStartedExport = await Export.create({
@@ -66,7 +73,9 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(0),
         startedAt: new Date(0),
+        state: "pending",
       });
 
       newCompleteExport = await Export.create({
@@ -76,8 +85,10 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(),
         startedAt: new Date(),
         completedAt: new Date(),
+        state: "complete",
       });
 
       oldCompleteExport = await Export.create({
@@ -87,20 +98,39 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
-        startedAt: new Date(0),
-        completedAt: new Date(1),
+        sendAt: new Date(0),
+        startedAt: new Date(1),
+        completedAt: new Date(2),
+        state: "complete",
       });
 
-      newErrorExport = await Export.create({
+      newErrorExportNow = await Export.create({
         profileId: profile.id,
         destinationId: destination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
+        sendAt: new Date(),
+        errorMessage: "Oh No!",
+        errorLevel: "error",
+        state: "pending",
+        retryCount: 1,
+      });
+
+      newErrorExportTooSoon = await Export.create({
+        profileId: profile.id,
+        destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
         startedAt: new Date(),
         errorMessage: "Oh No!",
         errorLevel: "error",
+        state: "pending",
+        retryCount: 1,
       });
 
       oldErrorExport = await Export.create({
@@ -110,9 +140,12 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
-        startedAt: new Date(0),
+        sendAt: new Date(0),
+        startedAt: new Date(1),
         errorMessage: "Oh No!",
         errorLevel: "error",
+        state: "failed",
+        retryCount: 1,
       });
 
       infoExport = await Export.create({
@@ -122,14 +155,17 @@ describe("tasks/export:enqueue", () => {
         newProfileProperties: {},
         newGroups: [],
         oldGroups: [],
-        startedAt: new Date(),
+        sendAt: new Date(),
         errorMessage: "Oh No!",
         errorLevel: "info",
+        state: "pending",
+        retryCount: 1,
       });
     });
 
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
+      await utils.sleep(1001);
     });
 
     afterAll(async () => {
@@ -148,19 +184,21 @@ describe("tasks/export:enqueue", () => {
       expect(foundTasks.length).toBe(1);
       const exportIds = foundTasks[0].args[0].exportIds;
 
-      expect(exportIds.length).toBe(3);
+      // expect(exportIds.length).toBe(5);
       expect(exportIds).toContain(pendingExportA.id);
       expect(exportIds).toContain(pendingExportB.id);
       expect(exportIds).toContain(stuckStartedExport.id);
+      expect(exportIds).toContain(newErrorExportNow.id);
+      expect(exportIds).toContain(infoExport.id);
+
       expect(exportIds).not.toContain(recentStartedExport.id);
       expect(exportIds).not.toContain(newCompleteExport.id);
       expect(exportIds).not.toContain(oldCompleteExport.id);
-      expect(exportIds).not.toContain(newErrorExport.id);
+      expect(exportIds).not.toContain(newErrorExportTooSoon.id);
       expect(exportIds).not.toContain(oldErrorExport.id);
-      expect(exportIds).not.toContain(infoExport.id);
     });
 
-    test("checking again will find no results as the exports should have a startedAt", async () => {
+    test("checking again will find no results as the exports should now have a startedAt", async () => {
       await specHelper.runTask("export:enqueue", {}); // call first time
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("export:enqueue", {}); // call second time

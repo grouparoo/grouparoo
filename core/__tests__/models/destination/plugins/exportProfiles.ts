@@ -160,10 +160,10 @@ describe("models/destination", () => {
         newProfileProperties: {
           customer_email: { type: "email", rawValue: "oldmail@example.com" },
         },
+        state: "complete",
         newGroups: [],
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -224,7 +224,6 @@ describe("models/destination", () => {
       expect(_exports[1].newGroups).toEqual(
         [groupA, groupB].map((g) => `${g.name}+`).sort()
       );
-      expect(_exports[1].mostRecent).toBe(true);
 
       await profile.destroy();
     });
@@ -253,7 +252,7 @@ describe("models/destination", () => {
         oldProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile);
@@ -310,7 +309,7 @@ describe("models/destination", () => {
         newGroups: [groupA.name, groupB.name].sort(),
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
+        state: "complete",
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -367,7 +366,7 @@ describe("models/destination", () => {
         newGroups: [groupA.name, groupB.name].sort(),
         startedAt: new Date(),
         completedAt: new Date(),
-        mostRecent: true,
+        state: "complete",
       });
       await specHelper.deleteEnqueuedTasks("exports:send", {
         id: oldExport.id,
@@ -432,7 +431,7 @@ describe("models/destination", () => {
           newGroups: [groupA.name, groupB.name].sort(),
           startedAt: new Date(),
           completedAt: new Date(),
-          mostRecent: true,
+          state: "complete",
         });
         await specHelper.deleteEnqueuedTasks("exports:send", {
           id: oldExport.id,
@@ -483,7 +482,7 @@ describe("models/destination", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile);
@@ -525,7 +524,7 @@ describe("models/destination", () => {
         newProfileProperties: {},
         oldGroups: [],
         newGroups: [],
-        mostRecent: true,
+        state: "complete",
       });
 
       await destination.exportProfile(profile, false, true);
@@ -594,7 +593,7 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
-    test("exportProfile can handle parallelsims export:sendBatch task will be re-enqueued", async () => {
+    test("exportProfile can handle parallelsims export:sendBatch and the export can be retried", async () => {
       parallelismResponse = 0;
 
       const group = await helper.factories.group();
@@ -618,19 +617,17 @@ describe("models/destination", () => {
       );
       expect(foundSendBatchTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask(
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
       );
-      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-        "export:sendBatch"
-      );
-      expect(foundSendBatchTasks.length).toBe(1 + 1);
+
       await _export.reload();
       expect(_export.errorMessage).toBeNull();
       expect(_export.errorLevel).toBeNull();
       expect(_export.completedAt).toBeFalsy();
+      expect(_export.state).toBe("pending");
+      expect(_export.retryCount).toBe(1);
 
       // when the parallelism is back to OK...
       parallelismResponse = Infinity;
@@ -639,12 +636,10 @@ describe("models/destination", () => {
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
       );
-      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-        "export:sendBatch"
-      );
-      expect(foundSendBatchTasks.length).toBe(1 + 1);
+
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+      expect(_export.state).toBe("complete");
     });
 
     test("sending an export with sync and producing a parallelism error will throw", async () => {
@@ -738,7 +733,7 @@ describe("models/destination", () => {
       };
     });
 
-    test("the app can be rate-limited and the export:sendBatches task will be re-enqueued", async () => {
+    test("the app can be rate-limited and the export:sendBatches can retry the export", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -767,22 +762,17 @@ describe("models/destination", () => {
       );
       expect(foundSendBatchTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask(
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
       );
-      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-        "export:sendBatch"
-      );
-      expect(foundSendBatchTasks.length).toBe(1 + 1);
-      expect(foundSendBatchTasks[1].timestamp).toBeGreaterThan(
-        new Date().getTime()
-      );
+
       await _export.reload();
       expect(_export.errorMessage).toMatch(/oh no!/);
       expect(_export.errorLevel).toMatch("error");
       expect(_export.completedAt).toBeFalsy();
+      expect(_export.state).toBe("pending");
+      expect(_export.retryCount).toBe(1);
 
       // when the response is back to success
       exportProfilesResponse = {
@@ -793,14 +783,11 @@ describe("models/destination", () => {
 
       await specHelper.runTask(
         "export:sendBatch",
-        foundSendBatchTasks[1].args[0]
+        foundSendBatchTasks[0].args[0]
       );
-      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-        "export:sendBatch"
-      );
-      expect(foundSendBatchTasks.length).toBe(1 + 1);
       await _export.reload();
       expect(_export.completedAt).toBeTruthy();
+      expect(_export.state).toBe("complete");
     });
 
     test("the app have export:sendBatches task with info level", async () => {
@@ -833,7 +820,6 @@ describe("models/destination", () => {
       );
       expect(foundSendBatchTasks.length).toBe(1);
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask(
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
@@ -856,7 +842,7 @@ describe("models/destination", () => {
       };
     });
 
-    test("the app can be re-enqueued for some profiles", async () => {
+    test("the export can be retried for some profiles", async () => {
       const group = await helper.factories.group();
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = group.name;
@@ -915,36 +901,28 @@ describe("models/destination", () => {
         [_export1.id, _export2.id, _export3.id].sort()
       );
 
-      // the task should be re-enqueued with no error
       await specHelper.runTask(
         "export:sendBatch",
         foundSendBatchTasks[0].args[0]
       );
-      foundSendBatchTasks = await specHelper.findEnqueuedTasks(
-        "export:sendBatch"
-      );
-      expect(foundSendBatchTasks.length).toBe(1 + 1);
-      expect(foundSendBatchTasks[1].timestamp).toBeGreaterThan(
-        new Date().getTime()
-      );
-      exportIds = foundSendBatchTasks[1].args[0].exportIds;
-      expect(exportIds.length).toBe(1);
-      expect(exportIds.sort()).toEqual([_export1.id].sort());
 
       await _export1.reload();
       expect(_export1.errorMessage).toMatch(/oh no!/);
       expect(_export1.errorLevel).toMatch("error");
       expect(_export1.completedAt).toBeFalsy();
+      expect(_export1.state).toBe("pending");
 
       await _export2.reload();
       expect(_export2.errorMessage).toMatch(/inform me!/);
       expect(_export2.errorLevel).toMatch("info");
       expect(_export2.completedAt).toBeFalsy();
+      expect(_export2.state).toBe("failed");
 
       await _export3.reload();
       expect(_export3.errorMessage).toBeNull();
       expect(_export3.errorLevel).toBeNull();
       expect(_export3.completedAt).toBeTruthy();
+      expect(_export3.state).toBe("complete");
 
       // when the response is back to success
       exportProfilesResponse = {
@@ -955,17 +933,17 @@ describe("models/destination", () => {
 
       await specHelper.runTask(
         "export:sendBatch",
-        foundSendBatchTasks[1].args[0]
+        foundSendBatchTasks[0].args[0]
       );
       foundSendBatchTasks = await specHelper.findEnqueuedTasks(
         "export:sendBatch"
       );
-      expect(foundSendBatchTasks.length).toBe(1 + 1); // sames
+
       await _export1.reload();
-      // QUESTION: this is bit weird. added note to Export.
-      expect(_export1.errorMessage).toMatch(/oh no!/);
-      expect(_export1.errorLevel).toMatch("error");
+      expect(_export1.errorMessage).toBeNull();
+      expect(_export1.errorLevel).toBeNull();
       expect(_export1.completedAt).toBeTruthy();
+      expect(_export1.state).toBe("complete");
     });
   });
 });

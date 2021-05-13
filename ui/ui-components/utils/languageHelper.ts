@@ -6,3 +6,12 @@ export function humanizePluginName(name: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.substring(1))
     .join(" ");
 }
+
+export function capitalize(s: string) {
+  return s
+    .split(" ")
+    .map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+}

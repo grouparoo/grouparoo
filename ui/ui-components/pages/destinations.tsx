@@ -85,9 +85,7 @@ export default function Page(props) {
         </thead>
         <tbody>
           {destinations.map((destination) => {
-            const pendingExports =
-              destination.exportTotals.created +
-              destination.exportTotals.started;
+            const pendingExports = destination.exportTotals.pending;
 
             const formattedDestinationName =
               destination.name ||

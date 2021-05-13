@@ -14,42 +14,40 @@ export interface PipedriveCacheData {
   appOptions: SimpleAppOptions;
 }
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-  appId,
-}) => {
-  const client = await connect(appOptions);
-  const allKnown = await getKnownPersonFields(
-    client,
-    { appId, appOptions },
-    true
-  );
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions, appId }) => {
+    const client = await connect(appOptions);
+    const allKnown = await getKnownPersonFields(
+      client,
+      { appId, appOptions },
+      true
+    );
 
-  const required = allKnown.filter((field) => field.required);
+    const required = allKnown.filter((field) => field.required);
 
-  // Filter out required fields and those that we create to manage group membership
-  const knownNotRequired = allKnown.filter(
-    (field) => !field.required && !field.groupMembershipField
-  );
+    // Filter out required fields and those that we create to manage group membership
+    const knownNotRequired = allKnown.filter(
+      (field) => !field.required && !field.groupMembershipField
+    );
 
-  return {
-    labels: {
-      property: {
-        singular: "Pipedrive Field",
-        plural: "Pipedrive Fields",
+    return {
+      labels: {
+        property: {
+          singular: "Pipedrive Field",
+          plural: "Pipedrive Fields",
+        },
+        group: {
+          singular: "Pipedrive Filter",
+          plural: "Pipedrive Filters",
+        },
       },
-      group: {
-        singular: "Pipedrive Filter",
-        plural: "Pipedrive Filters",
+      properties: {
+        known: knownNotRequired,
+        required,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      known: knownNotRequired,
-      required,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 const mapTypesToGrouparoo = (
   pipedriveType: string,

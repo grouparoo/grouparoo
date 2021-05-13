@@ -2,6 +2,7 @@ import { Tab, Tabs, Breadcrumb } from "react-bootstrap";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { plural } from "pluralize";
+import { capitalize } from "../utils/languageHelper";
 
 export default function GrouparooTabs({
   name,
@@ -67,13 +68,4 @@ export default function GrouparooTabs({
       <br />
     </>
   );
-}
-
-export function capitalize(s: string) {
-  return s
-    .split(" ")
-    .map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join(" ");
 }

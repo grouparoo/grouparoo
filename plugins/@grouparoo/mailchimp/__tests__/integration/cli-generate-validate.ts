@@ -8,11 +8,8 @@ const pluginName = JSON.parse(
 ).name;
 
 describe(`${pluginName} CLI`, () => {
-  const {
-    projectPath,
-    runCliCommand,
-    runCliCommandSync,
-  } = CLISpecHelper.prepareForCLITest(pluginName, pluginPath);
+  const { projectPath, runCliCommand, runCliCommandSync } =
+    CLISpecHelper.prepareForCLITest(pluginName, pluginPath);
 
   const generatorNames = CLISpecHelper.getGeneratorNames(
     pluginName,

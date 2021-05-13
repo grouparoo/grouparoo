@@ -12,8 +12,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -21,8 +20,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -30,8 +28,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],
@@ -155,8 +152,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "text_field",
           field_type: "Text",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
           },
         },
         {
@@ -164,8 +160,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "number_field",
           field_type: "Number",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
           },
         },
         {
@@ -173,8 +168,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           name: "date_field",
           field_type: "Date",
           _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+            self: "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
           },
         },
       ],

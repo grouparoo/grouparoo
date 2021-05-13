@@ -12,13 +12,8 @@ import { useRouter } from "next/router";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function Page(props) {
-  const {
-    errorHandler,
-    successHandler,
-    types,
-    scheduleCount,
-    hydrationError,
-  } = props;
+  const { errorHandler, successHandler, types, scheduleCount, hydrationError } =
+    props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [loading, setLoading] = useState(false);

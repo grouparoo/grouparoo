@@ -103,7 +103,9 @@ describe("test grouparoo profiles", () => {
 
       expect(exportApiData[0]).toMatchSnapshot({
         profileId: expect.stringMatching(/^pro_/),
+        state: "pending",
         startedAt: expect.any(Number),
+        sendAt: expect.any(Number),
         newProfileProperties: expect.objectContaining({
           email: expect.stringMatching(/@example.com/),
           "primary-id": expect.any(Number),

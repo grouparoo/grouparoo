@@ -42,7 +42,8 @@ export const buildConnection: BuildConnectionMethod = ({
   validateQuery = validateGenericQuery,
   getTables,
 }) => {
-  const propertyOptions: PluginConnectionPropertyOption[] = getPropertyOptions();
+  const propertyOptions: PluginConnectionPropertyOption[] =
+    getPropertyOptions();
   const sourceOptions: SourceOptionsMethod = getSourceOptions({ getTables });
   const profileProperty: ProfilePropertyPluginMethod = getProfileProperty({
     executeQuery,

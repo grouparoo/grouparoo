@@ -8,6 +8,7 @@ export const usersTableName = `users_${process.env.JEST_WORKER_ID || 1}`;
 export const purchasesTableName = `purchases_${
   process.env.JEST_WORKER_ID || 1
 }`;
+export const accountsTableName = `accounts_${process.env.JEST_WORKER_ID || 1}`;
 export const profilesDestinationTableName = `output_users_${
   process.env.JEST_WORKER_ID || 1
 }`;
@@ -19,6 +20,7 @@ const allTables = {
   [usersTableName]: `
 CREATE TABLE ${usersTableName} (
   "id" SERIAL PRIMARY KEY,
+  "account_id" integer,
   "first_name" text,
   "last_name" text,
   "email" text,
@@ -40,6 +42,13 @@ CREATE TABLE ${purchasesTableName} (
   "amount" double precision,
   "date" date,
   "stamp" timestamp
+)
+`,
+  [accountsTableName]: `
+CREATE TABLE ${accountsTableName} (
+  "id" integer PRIMARY KEY,
+  "name" text,
+  "plan" text
 )
 `,
   [profilesDestinationTableName]: `
@@ -119,6 +128,7 @@ export async function populate() {
   await createTables();
   await fillTable(usersTableName, "profiles.csv");
   await fillTable(purchasesTableName, "purchases.csv");
+  await fillTable(accountsTableName, "accounts.csv");
 }
 
 export function getConfig() {

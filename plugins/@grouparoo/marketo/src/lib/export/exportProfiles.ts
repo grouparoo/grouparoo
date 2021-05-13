@@ -86,13 +86,11 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
-const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = async ({
-  client,
-  users,
-}) => {
-  const options = { lookupField: "email", action: "createOrUpdate" };
-  await updateUsers(client, users, options);
-};
+const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
+  async ({ client, users }) => {
+    const options = { lookupField: "email", action: "createOrUpdate" };
+    await updateUsers(client, users, options);
+  };
 
 async function updateUsers(client, users: BatchExport[], options) {
   const input: any[] = [];

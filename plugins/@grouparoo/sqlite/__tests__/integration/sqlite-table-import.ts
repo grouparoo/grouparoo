@@ -305,10 +305,8 @@ describe("integration/runs/sqlite", () => {
       },
       state: "ready",
     };
-    const {
-      error,
-      destination: destinationResponse,
-    } = await specHelper.runAction("destination:edit", session);
+    const { error, destination: destinationResponse } =
+      await specHelper.runAction("destination:edit", session);
     expect(error).toBeUndefined();
     expect(destinationResponse.state).toBe("ready");
   });

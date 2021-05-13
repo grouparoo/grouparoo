@@ -43,10 +43,8 @@ export default function Page(props) {
   const [destination, setDestination] = useState<Models.DestinationType>(
     props.destination
   );
-  const [
-    displayedDestinationProperties,
-    setDisplayedDestinationProperties,
-  ] = useState<string[]>([]);
+  const [displayedDestinationProperties, setDisplayedDestinationProperties] =
+    useState<string[]>([]);
   const displayedDestinationPropertiesAutocomleteRef = useRef(null);
   const taggedGroupRef = useRef(null);
   const [unlockedProperties, setUnlockedProperties] = useState({});
@@ -180,9 +178,10 @@ export default function Page(props) {
     oldGroupId = null
   ) {
     const _destination = Object.assign({}, destination);
-    _destination.destinationGroupMemberships = _destination.destinationGroupMemberships.filter(
-      (dgm) => dgm.groupId !== oldGroupId
-    );
+    _destination.destinationGroupMemberships =
+      _destination.destinationGroupMemberships.filter(
+        (dgm) => dgm.groupId !== oldGroupId
+      );
 
     const groupName = groups.filter((g) => g.id === groupId)[0]?.name;
 
@@ -744,9 +743,10 @@ export default function Page(props) {
                           placeholder={`Choose a group...`}
                           onChange={(selected) => {
                             taggedGroupRef.current.clear();
-                            const chosenGroup = groupsAvailalbeForDestinationGroupMemberships.filter(
-                              (g) => g.name === selected[0]
-                            )[0];
+                            const chosenGroup =
+                              groupsAvailalbeForDestinationGroupMemberships.filter(
+                                (g) => g.name === selected[0]
+                              )[0];
 
                             updateDestinationGroupMembership(
                               chosenGroup.id,

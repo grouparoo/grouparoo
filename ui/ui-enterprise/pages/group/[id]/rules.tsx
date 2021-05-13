@@ -53,28 +53,30 @@ export default function Page(props) {
 
   async function getCounts(useCache = true) {
     setLoading(true);
-    const componentMembersResponse: Actions.GroupCountComponentMembers = await execApi(
-      "get",
-      `/group/${group.id}/countComponentMembers`,
-      { rules: localRules },
-      null,
-      null,
-      useCache
-    );
+    const componentMembersResponse: Actions.GroupCountComponentMembers =
+      await execApi(
+        "get",
+        `/group/${group.id}/countComponentMembers`,
+        { rules: localRules },
+        null,
+        null,
+        useCache
+      );
 
     if (componentMembersResponse?.componentCounts) {
       setComponentCounts(componentMembersResponse.componentCounts);
       // setFunnelCounts(response.funnelCounts);
     }
 
-    const potentialMembersResponse: Actions.GroupCountPotentialMembers = await execApi(
-      "get",
-      `/group/${group.id}/countPotentialMembers`,
-      { rules: localRules },
-      null,
-      null,
-      useCache
-    );
+    const potentialMembersResponse: Actions.GroupCountPotentialMembers =
+      await execApi(
+        "get",
+        `/group/${group.id}/countPotentialMembers`,
+        { rules: localRules },
+        null,
+        null,
+        useCache
+      );
     if (potentialMembersResponse) {
       setCountPotentialMembers(potentialMembersResponse.count);
     }

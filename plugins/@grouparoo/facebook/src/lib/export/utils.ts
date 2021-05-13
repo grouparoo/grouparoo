@@ -66,9 +66,8 @@ export default class ServerSideUtils {
         break;
       case "f5first":
       case "f5last":
-        normalized_input = ServerSideUtils.normalizeF5NameField(
-          normalized_input
-        );
+        normalized_input =
+          ServerSideUtils.normalizeF5NameField(normalized_input);
         break;
       case "fi":
         normalized_input = normalized_input.charAt(0);
@@ -145,7 +144,8 @@ export default class ServerSideUtils {
    */
   static normalizeEmail(email: string) {
     // RFC 2822 REGEX approximation
-    const EMAIL_RE = /^[\w!#\$%&'\*\+\/\=\?\^`\{\|\}~\-]+(:?\.[\w!#\$%&'\*\+\/\=\?\^`\{\|\}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?$/i;
+    const EMAIL_RE =
+      /^[\w!#\$%&'\*\+\/\=\?\^`\{\|\}~\-]+(:?\.[\w!#\$%&'\*\+\/\=\?\^`\{\|\}~\-]+)*@(?:[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?$/i;
 
     if (!EMAIL_RE.test(email)) {
       throw new Error(

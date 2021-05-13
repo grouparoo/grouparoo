@@ -76,23 +76,20 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
-const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = async ({
-  client,
-  users,
-  config,
-}) => {
-  const { cacheData } = config.data;
+const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
+  async ({ client, users, config }) => {
+    const { cacheData } = config.data;
 
-  await updateProspects(client, users, cacheData);
+    await updateProspects(client, users, cacheData);
 
-  for (let user of users) {
-    // We're not using destinationIds for created prospects, but app-templates/batch requires it to be set
-    // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
-    if (!user.destinationId) {
-      user.destinationId = user.foreignKeyValue;
+    for (let user of users) {
+      // We're not using destinationIds for created prospects, but app-templates/batch requires it to be set
+      // and the batch upsert does not return IDs, so we'll just set it to the foreignKey
+      if (!user.destinationId) {
+        user.destinationId = user.foreignKeyValue;
+      }
     }
-  }
-};
+  };
 
 async function updateProspects(
   client: PardotClient,
@@ -203,7 +200,12 @@ const normalizeGroupName: BatchMethodNormalizeGroupName = ({ groupName }) => {
   return groupName.toString().trim();
 };
 
-export async function exportBatch({ appId, appOptions, exports }) {
+export async function exportBatch({
+  appId,
+  appOptions,
+  syncOperations,
+  exports,
+}) {
   const batchSize = 50;
   const findSize = 200;
 
@@ -217,6 +219,7 @@ export async function exportBatch({ appId, appOptions, exports }) {
       batchSize,
       groupMode: BatchGroupMode.TotalMembers,
       syncMode: BatchSyncMode.Sync,
+      syncOperations,
       appOptions,
       data,
       foreignKey: "email",
@@ -238,12 +241,14 @@ export async function exportBatch({ appId, appOptions, exports }) {
 export const exportProfiles: ExportProfilesPluginMethod = async ({
   appId,
   appOptions,
+  syncOperations,
   exports: profilesToExport,
 }) => {
   const batchExports = buildBatchExports(profilesToExport);
   return exportBatch({
     appId,
     appOptions,
+    syncOperations,
     exports: batchExports,
   });
 };

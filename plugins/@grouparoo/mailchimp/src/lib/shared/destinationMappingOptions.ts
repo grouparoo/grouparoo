@@ -11,35 +11,32 @@ export interface GetDestinationMappingOptionsMethod {
   (mappingKey: MailchimpMappingKey): DestinationMappingOptionsMethod;
 }
 
-export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod = (
-  mappingKey
-) => {
-  const destinationMappingOptionsMethod: DestinationMappingOptionsMethod = async ({
-    appOptions,
-    destinationOptions,
-  }) => {
-    const client = await connect(appOptions);
-    const listId = destinationOptions.listId?.toString();
-    const mergeVars = await getMergeVars(client, listId);
-    const properties = getProperties(mergeVars, mappingKey);
+export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod =
+  (mappingKey) => {
+    const destinationMappingOptionsMethod: DestinationMappingOptionsMethod =
+      async ({ appOptions, destinationOptions }) => {
+        const client = await connect(appOptions);
+        const listId = destinationOptions.listId?.toString();
+        const mergeVars = await getMergeVars(client, listId);
+        const properties = getProperties(mergeVars, mappingKey);
 
-    return {
-      labels: {
-        property: {
-          singular: "Mailchimp Merge Var",
-          plural: "Mailchimp Merge Vars",
-        },
-        group: {
-          singular: "Mailchimp Tag",
-          plural: "Mailchimp Tags",
-        },
-      },
-      properties,
-    };
+        return {
+          labels: {
+            property: {
+              singular: "Mailchimp Merge Var",
+              plural: "Mailchimp Merge Vars",
+            },
+            group: {
+              singular: "Mailchimp Tag",
+              plural: "Mailchimp Tags",
+            },
+          },
+          properties,
+        };
+      };
+
+    return destinationMappingOptionsMethod;
   };
-
-  return destinationMappingOptionsMethod;
-};
 
 function getProperties(
   mergeVars: GrouparooMergeVar[],
@@ -51,9 +48,8 @@ function getProperties(
     grouparooFields[key] = { key, type, important };
   }
 
-  const known: DestinationMappingOptionsResponseProperty[] = Object.values(
-    grouparooFields
-  );
+  const known: DestinationMappingOptionsResponseProperty[] =
+    Object.values(grouparooFields);
 
   let requiredField = null;
   switch (mappingKey) {

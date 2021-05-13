@@ -223,12 +223,15 @@ describe("tasks/export:send", () => {
         // the export should be complete
         await _export.reload();
         expect(_export.startedAt).not.toBeFalsy();
+        expect(_export.sendAt).not.toBeFalsy();
         expect(_export.errorMessage).toBeNull();
         expect(_export.errorLevel).toBeNull();
         expect(_export.completedAt).not.toBeFalsy();
+        expect(_export.state).toBe("complete");
+        expect(_export.retryCount).toBe(0);
       });
 
-      test("if the export fails with a retryDelay, the task will be re-enqueued and the export will have the error message appended", async () => {
+      test("if the export fails with a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
         exportProfileResponse = {
           success: false,
@@ -247,27 +250,23 @@ describe("tasks/export:send", () => {
 
         await specHelper.runTask("export:send", foundSendTasks[0].args[0]);
 
-        // the task should be re-enqueued
-        foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
-        expect(foundSendTasks.length).toBe(1 + 1);
-        expect(foundSendTasks[1].timestamp).toBeGreaterThan(
-          new Date().getTime()
-        );
-
         // the export should be marked with the error
         await _export.reload();
-        expect(_export.startedAt).not.toBeFalsy();
+        expect(_export.startedAt).toBeFalsy();
+        expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
         expect(_export.errorMessage).toMatch(/oh no!/);
         expect(_export.errorLevel).toBe("error");
         expect(_export.completedAt).toBeFalsy();
+        expect(_export.state).toBe("pending");
+        expect(_export.retryCount).toBe(1);
       });
 
-      test("if the export fails without a retryDelay, the task will be re-enqueued and the export will have the error message appended", async () => {
+      test("if the export fails without a retryDelay, the export will have the error message appended", async () => {
         // this export will fail
         exportProfileResponse = {
           success: false,
           error: new Error("oh no!"),
-          retryDelay: null,
+          retryDelay: undefined,
         };
 
         await destination.exportProfile(profile);
@@ -279,18 +278,17 @@ describe("tasks/export:send", () => {
         let foundSendTasks = await specHelper.findEnqueuedTasks("export:send");
         expect(foundSendTasks.length).toBe(1);
 
-        await expect(
-          specHelper.runFullTask("export:send", foundSendTasks[0].args[0])
-        ).rejects.toThrow(
-          /error exporting 1 profiles to destination test plugin destination/
-        ); // throw === retry in real system
+        await specHelper.runFullTask("export:send", foundSendTasks[0].args[0]);
 
         // the export should be marked with the error
         await _export.reload();
-        expect(_export.startedAt).not.toBeFalsy();
+        expect(_export.startedAt).toBeFalsy();
+        expect(_export.sendAt.getTime()).toBeGreaterThan(new Date().getTime());
         expect(_export.errorMessage).toMatch(/oh no!/);
         expect(_export.errorLevel).toBe("error");
         expect(_export.completedAt).toBeFalsy();
+        expect(_export.state).toBe("pending");
+        expect(_export.retryCount).toBe(1);
       });
     });
   });

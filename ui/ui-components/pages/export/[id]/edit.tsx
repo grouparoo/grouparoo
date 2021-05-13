@@ -10,6 +10,7 @@ import {
   ExportGroupsDiff,
   ExportProfilePropertiesDiff,
 } from "../../../components/export/diff";
+import StateBadge from "../../../components/badges/stateBadge";
 
 export default function Page({
   _export,
@@ -32,6 +33,8 @@ export default function Page({
         <Card.Body>
           <h2>Details</h2>
           <p>
+            State: <StateBadge state={_export.state} marginBottom={0} />
+            <br />
             Destination:{" "}
             <EnterpriseLink
               href="/destination/[id]/edit"
@@ -48,8 +51,9 @@ export default function Page({
               <a>{_export.profileId}</a>
             </Link>
             <br />
-            <br />
             Forced: {_export.force.toString()}
+            <br />
+            Retry Count: {_export.retryCount}
           </p>
           {_export.errorMessage ? (
             <Alert variant="warning">
@@ -104,6 +108,23 @@ export default function Page({
                 <td>⇣</td>
               </tr>
               <tr>
+                <td>Send</td>
+                <td>
+                  {_export.sendAt
+                    ? new Date(_export.sendAt).toLocaleString()
+                    : null}
+                </td>
+                <td>
+                  ⇣
+                  {_export.sendAt ? (
+                    <Moment
+                      duration={_export.createdAt}
+                      date={_export.sendAt + 1} // +1 needed as the times may be exactly the same
+                    />
+                  ) : null}
+                </td>
+              </tr>
+              <tr>
                 <td>Started</td>
                 <td>
                   {_export.startedAt
@@ -114,7 +135,7 @@ export default function Page({
                   ⇣
                   {_export.startedAt ? (
                     <Moment
-                      duration={_export.createdAt}
+                      duration={_export.sendAt}
                       date={_export.startedAt}
                     />
                   ) : null}

@@ -12,11 +12,8 @@ export namespace CLISpecHelper {
    */
   export function validateGenerators(pluginName: string, pluginPath: string) {
     describe(`${pluginName} CLI`, () => {
-      const {
-        projectPath,
-        runCliCommand,
-        runCliCommandSync,
-      } = CLISpecHelper.prepareForCLITest(pluginName, pluginPath);
+      const { projectPath, runCliCommand, runCliCommandSync } =
+        CLISpecHelper.prepareForCLITest(pluginName, pluginPath);
 
       const generatorNames = CLISpecHelper.getGeneratorNames(
         pluginName,

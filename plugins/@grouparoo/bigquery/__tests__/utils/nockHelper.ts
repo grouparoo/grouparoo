@@ -47,8 +47,13 @@ export const updater = {
   prepend: function () {
     return `process.env.BIGQUERY_JEST_TIMESTAMP = "${uniqueTimestamp}"`;
   },
-  rewrite: function (nockCall) {
-    nockCall = nockCall.replace(/\"assertion\":\".+?\"/, '"assertion": /.+/g');
+  rewrite: function (nockCall: string) {
+    // manually stub out oAuth req/res
+    nockCall = nockCall.replace(
+      /, "grant_type=.+?\"/,
+      ", { grant_type: /.+/g, assertion: /.+/g }"
+    );
+
     return nockCall;
   },
 };

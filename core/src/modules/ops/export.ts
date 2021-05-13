@@ -3,7 +3,7 @@ import {
   ExportProfilePropertiesWithType,
 } from "../../models/Export";
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
-import { Export } from "../../models/Export";
+import { Export, ExportStates } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
@@ -15,43 +15,20 @@ export namespace ExportOps {
   export async function totals(
     where: { profileId?: string; destinationId?: string } = {}
   ) {
-    const totals = { all: 0, created: 0, started: 0, completed: 0, error: 0 };
+    const totals: { [k in typeof ExportStates[number]]: number } = {
+      draft: 0,
+      pending: 0,
+      processing: 0,
+      canceled: 0,
+      failed: 0,
+      complete: 0,
+    };
 
-    totals.all = await Export.count({ where });
-
-    totals.created = await Export.count({
-      where: Object.assign({}, where, {
-        startedAt: { [Op.eq]: null },
-        [Op.and]: {
-          completedAt: { [Op.eq]: null },
-          errorMessage: { [Op.eq]: null },
-        },
-      }),
-    });
-
-    totals.started = await Export.count({
-      where: Object.assign({}, where, {
-        startedAt: { [Op.ne]: null },
-        [Op.and]: {
-          completedAt: { [Op.eq]: null },
-          errorMessage: { [Op.eq]: null },
-        },
-      }),
-    });
-
-    totals.completed = await Export.count({
-      where: Object.assign({}, where, {
-        startedAt: { [Op.ne]: null },
-        completedAt: { [Op.ne]: null },
-        errorMessage: { [Op.eq]: null },
-      }),
-    });
-
-    totals.error = await Export.count({
-      where: Object.assign({}, where, {
-        errorMessage: { [Op.ne]: null },
-      }),
-    });
+    for (const state of ExportStates) {
+      totals[state] = await Export.count({
+        where: Object.assign({}, where, { state }),
+      });
+    }
 
     return totals;
   }
@@ -64,9 +41,10 @@ export namespace ExportOps {
     serializedStringifiedProperties: string
   ): ExportProfileProperties {
     const response = {};
-    const serializedProperties: ExportProfilePropertiesWithType = serializedStringifiedProperties
-      ? JSON.parse(serializedStringifiedProperties)
-      : {};
+    const serializedProperties: ExportProfilePropertiesWithType =
+      serializedStringifiedProperties
+        ? JSON.parse(serializedStringifiedProperties)
+        : {};
 
     for (const key in serializedProperties) {
       const type = serializedProperties[key]?.type;
@@ -106,14 +84,14 @@ export namespace ExportOps {
 
     _exports = await Export.findAll({
       where: {
-        completedAt: null,
-        errorMessage: null,
+        state: "pending",
+        destinationId: destination.id,
+        sendAt: { [Op.lte]: new Date() },
         startedAt: {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },
-        destinationId: destination.id,
       },
-      order: [["createdAt", "asc"]],
+      order: [["sendAt", "asc"]],
       limit,
     });
 

@@ -8,26 +8,25 @@ export interface FacebookDestinationMappingOptionsMethod {
   }): Promise<DestinationMappingOptionsMethodResponse>;
 }
 
-export const getDestinationMappingOptions: FacebookDestinationMappingOptionsMethod = async ({
-  model,
-}) => {
-  const { known, required } = getMappingFields(model);
+export const getDestinationMappingOptions: FacebookDestinationMappingOptionsMethod =
+  async ({ model }) => {
+    const { known, required } = getMappingFields(model);
 
-  return {
-    labels: {
-      property: {
-        singular: "Facebook Key",
-        plural: "Facebook Keys",
+    return {
+      labels: {
+        property: {
+          singular: "Facebook Key",
+          plural: "Facebook Keys",
+        },
+        group: {
+          singular: "Facebook Audience",
+          plural: "Facebook Audiences",
+        },
       },
-      group: {
-        singular: "Facebook Audience",
-        plural: "Facebook Audiences",
+      properties: {
+        required,
+        known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required,
-      known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};

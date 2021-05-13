@@ -1,6 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Export } from "../models/Export";
-import { Op } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 
 export class ExportsList extends AuthenticatedAction {
@@ -31,29 +30,8 @@ export class ExportsList extends AuthenticatedAction {
     if (params.destinationId) {
       where["destinationId"] = params.destinationId;
     }
-
     if (params.state) {
-      if (params.state === "created") {
-        where["startedAt"] = { [Op.eq]: null };
-        where[Op.and] = {
-          completedAt: { [Op.eq]: null },
-          errorMessage: { [Op.eq]: null },
-        };
-      } else if (params.state === "started") {
-        where["startedAt"] = { [Op.ne]: null };
-        where[Op.and] = {
-          completedAt: { [Op.eq]: null },
-          errorMessage: { [Op.eq]: null },
-        };
-      } else if (params.state === "completed") {
-        where["startedAt"] = { [Op.ne]: null };
-        where["completedAt"] = { [Op.ne]: null };
-        where["errorMessage"] = { [Op.eq]: null };
-      } else if (params.state === "error") {
-        where["errorMessage"] = { [Op.ne]: null };
-      } else {
-        throw new Error("invalid state");
-      }
+      where["state"] = params.state;
     }
 
     const _exports = await Export.findAll({

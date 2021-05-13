@@ -462,18 +462,19 @@ const updateByDestinationIds: BatchMethodUpdateByDestinationIds = async ({
 };
 
 // usually this is creating them. ideally upsert. set the destinationId on each when done
-const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = async ({
-  client,
-  users,
-  config,
-}) => {
-  const { profileObject } = config.data;
-  const { payload, usersInPayload } = await buildPayload(client, users, config);
+const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
+  async ({ client, users, config }) => {
+    const { profileObject } = config.data;
+    const { payload, usersInPayload } = await buildPayload(
+      client,
+      users,
+      config
+    );
 
-  // upsert doesn't have a HTTP batch api (even though jsforce does and fakes it), so use create
-  const results = await client.sobject(profileObject).create(payload);
-  processResults(results, usersInPayload, ResultType.USER);
-};
+    // upsert doesn't have a HTTP batch api (even though jsforce does and fakes it), so use create
+    const results = await client.sobject(profileObject).create(payload);
+    processResults(results, usersInPayload, ResultType.USER);
+  };
 
 // make sure these user are in these groups (keys of map are group names)
 const addToGroups: BatchMethodAddToGroups = async ({
@@ -481,11 +482,8 @@ const addToGroups: BatchMethodAddToGroups = async ({
   groupMap,
   config,
 }) => {
-  const {
-    membershipObject,
-    membershipProfileField,
-    membershipGroupField,
-  } = config.data;
+  const { membershipObject, membershipProfileField, membershipGroupField } =
+    config.data;
   const payload = [];
   const users = [];
   for (const name in groupMap) {
@@ -515,11 +513,8 @@ const removeFromGroups: BatchMethodRemoveFromGroups = async ({
   destIdMap,
   config,
 }) => {
-  const {
-    membershipObject,
-    membershipProfileField,
-    membershipGroupField,
-  } = config.data;
+  const { membershipObject, membershipProfileField, membershipGroupField } =
+    config.data;
   let payload = []; // to delete
   const users = [];
   for (const name in groupMap) {

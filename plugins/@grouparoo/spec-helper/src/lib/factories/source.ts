@@ -4,7 +4,7 @@ import AppFactory from "./app";
 
 const data = async (props = {}) => {
   const defaultProps = {
-    name: `schedule ${faker.company.companyName()} - ${Math.random()}`,
+    name: `source ${faker.company.companyName()} - ${Math.random()}`,
     type: "test-plugin-import",
     createdAt: new Date(),
     updatedAt: new Date(),

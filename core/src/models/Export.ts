@@ -18,9 +18,11 @@ import { Destination } from "./Destination";
 import { Profile } from "./Profile";
 import { plugin } from "../modules/plugin";
 import Moment from "moment";
-import { Op } from "sequelize";
+import { QueryTypes } from "sequelize";
 import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
+import { StateMachine } from "../modules/stateMachine";
+import { api, config } from "actionhero";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -38,6 +40,28 @@ export interface ExportProfilePropertiesWithType {
 
 const ERROR_LEVELS = ["error", "info"] as const;
 export type ExportErrorLevel = typeof ERROR_LEVELS[number];
+
+export const ExportStates = [
+  "draft", // not ready to send, needs manual review
+  "pending", // ready to send
+  "processing", // have been sent, waiting on the destination's OK
+  "canceled", // manually canceled
+  "failed", // something went wrong and we won't try again
+  "complete", // OK!
+] as const;
+
+const STATE_TRANSITIONS = [
+  { from: "draft", to: "pending", checks: [] },
+  { from: "draft", to: "canceled", checks: [] },
+  { from: "pending", to: "processing", checks: [] },
+  { from: "pending", to: "canceled", checks: [] },
+  { from: "pending", to: "failed", checks: [] },
+  { from: "pending", to: "complete", checks: [] },
+  { from: "processing", to: "canceled", checks: [] },
+  { from: "processing", to: "failed", checks: [] },
+  { from: "processing", to: "complete", checks: [] },
+  { from: "processing", to: "pending", checks: [] },
+];
 
 @Table({ tableName: "exports", paranoid: false })
 export class Export extends Model {
@@ -65,12 +89,24 @@ export class Export extends Model {
   profileId: string;
 
   @AllowNull(false)
+  @Default(Export.defaultState)
+  @Column(DataType.ENUM(...ExportStates))
+  state: typeof ExportStates[number];
+
+  @AllowNull(false)
   @Default(false)
   @Column
   force: boolean;
 
   @Column
   startedAt: Date;
+
+  @Column
+  sendAt: Date;
+
+  @Default(0)
+  @Column
+  retryCount: number;
 
   @Column
   completedAt: Date;
@@ -140,41 +176,57 @@ export class Export extends Model {
   @Column
   hasChanges: boolean;
 
-  @Default(false)
-  @AllowNull(false)
-  @Column
-  mostRecent: boolean;
-
   @BelongsTo(() => Destination)
   destination: Destination;
 
   @BelongsTo(() => Profile)
   profile: Profile;
 
-  async setError(error: Error) {
-    this.errorMessage = error.message || error.toString();
-    if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
-    await this.save();
-  }
-
-  async completeAndMarkMostRecent() {
-    const [count] = await Export.update(
-      { mostRecent: false },
-      {
-        where: {
-          profileId: this.profileId,
-          destinationId: this.destinationId,
-          id: { [Op.not]: this.id },
-        },
-      }
+  async setError(error: Error, retryDelay: number = config.tasks.timeout) {
+    const maxExportAttempts = parseInt(
+      (await plugin.readSetting("core", "exports-max-retries-count")).value
     );
 
-    // QUESTION: should this clear the error and level?
-    this.completedAt = new Date();
-    this.mostRecent = true;
-    await this.save();
+    this.errorMessage = error.message || error.toString();
+    if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
-    return count;
+    this.retryCount++;
+    if (this.retryCount >= maxExportAttempts) {
+      this.state = "failed";
+      this.sendAt = null;
+    } else if (this.errorLevel === "info") {
+      this.state = "failed";
+    } else {
+      this.sendAt = Moment().add(retryDelay, "ms").toDate();
+      this.startedAt = null;
+    }
+
+    return this.save();
+  }
+
+  async retry(retryDelay: number = config.tasks.timeout) {
+    const maxExportAttempts = parseInt(
+      (await plugin.readSetting("core", "exports-max-retries-count")).value
+    );
+
+    this.retryCount++;
+    if (this.retryCount >= maxExportAttempts) {
+      this.state = "failed";
+      this.sendAt = null;
+    } else {
+      this.sendAt = Moment().add(retryDelay, "ms").toDate();
+      this.startedAt = null;
+    }
+
+    return this.save();
+  }
+
+  async complete() {
+    this.errorMessage = null;
+    this.errorLevel = null;
+    this.completedAt = new Date();
+    this.state = "complete";
+    await this.save();
   }
 
   async apiData(includeDestination = true) {
@@ -190,17 +242,19 @@ export class Export extends Model {
           : null,
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
+      state: this.state,
       force: this.force,
       createdAt: APIData.formatDate(this.createdAt),
+      sendAt: APIData.formatDate(this.sendAt),
       startedAt: APIData.formatDate(this.startedAt),
       completedAt: APIData.formatDate(this.completedAt),
+      retryCount: this.retryCount,
       oldProfileProperties: this.oldProfileProperties,
       newProfileProperties: this.newProfileProperties,
       oldGroups: this.oldGroups,
       newGroups: this.newGroups,
       toDelete: this.toDelete,
       hasChanges: this.hasChanges,
-      mostRecent: this.mostRecent,
       errorMessage: this.errorMessage,
       errorLevel: this.errorLevel,
     };
@@ -208,10 +262,17 @@ export class Export extends Model {
 
   // --- Class Methods --- //
 
+  static defaultState = "pending";
+
   static async findById(id: string) {
     const instance = await this.scope(null).findOne({ where: { id } });
     if (!instance) throw new Error(`cannot find ${this.name} ${id}`);
     return instance;
+  }
+
+  @BeforeSave
+  static async updateState(instance: Profile) {
+    await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 
   @BeforeCreate
@@ -234,21 +295,80 @@ export class Export extends Model {
         .value
     );
 
-    const _exports = await Export.findAll({
-      where: {
-        mostRecent: false,
-        createdAt: {
-          [Op.lt]: Moment().subtract(days, "days").toDate(),
-        },
-      },
-      order: [["createdAt", "desc"]],
-      limit,
-    });
+    const whereDate = Moment()
+      .subtract(days, "days")
+      .format("YYYY-MM-DD HH:mm:ss");
 
-    for (const i in _exports) {
-      await _exports[i].destroy();
+    // for SQLite secondary changes queries
+    let responseCountWithCompleteExport: number;
+    let responseCountWithNoCompleteExports: number;
+
+    // 1. Delete Exports for the Profile older than the oldest complete Export
+    const rowsWithCompleteExport: { id: string }[] = await api.sequelize.query(
+      `
+      DELETE FROM exports
+      WHERE id IN (
+        SELECT id FROM exports
+        WHERE "createdAt" < '${whereDate}'
+        AND "createdAt" < (
+          SELECT MAX("createdAt")
+          FROM exports e2
+          WHERE
+            e2."profileId" = exports."profileId"
+            AND state = 'complete'
+        )
+        LIMIT ${limit}
+      )
+     ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
+      ;`,
+      { type: QueryTypes.SELECT }
+    );
+
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCountWithCompleteExport = changesRows[0].count;
     }
 
-    return { count: _exports.length, days };
+    // 2. If there are no complete Exports for the Profile, any old Exports can be deleted
+    const rowsWithNoCompleteExport: { id: string }[] =
+      await api.sequelize.query(
+        `
+      DELETE FROM exports
+      WHERE id IN (
+        SELECT id FROM exports
+        WHERE "createdAt" < '${whereDate}'
+        AND 0 = (
+          SELECT COUNT(id)
+          FROM exports e2
+          WHERE
+            e2."profileId" = exports."profileId"
+            AND state = 'complete'
+        )
+        LIMIT ${limit}
+      )
+     ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
+      ;`,
+        { type: QueryTypes.SELECT }
+      );
+
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCountWithNoCompleteExports = changesRows[0].count;
+    }
+
+    return {
+      count:
+        config.sequelize.dialect === "postgres"
+          ? rowsWithCompleteExport.length + rowsWithNoCompleteExport.length
+          : responseCountWithCompleteExport +
+            responseCountWithNoCompleteExports,
+      days,
+    };
   }
 }

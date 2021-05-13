@@ -170,11 +170,12 @@ describe("models/destination", () => {
 
       const totals = await destination.getExportTotals();
       expect(totals).toEqual({
-        all: 1,
-        completed: 0,
-        created: 1,
-        error: 0,
-        started: 0,
+        canceled: 0,
+        complete: 0,
+        draft: 0,
+        failed: 0,
+        pending: 1,
+        processing: 0,
       });
 
       await _export.destroy();
@@ -183,7 +184,8 @@ describe("models/destination", () => {
     });
 
     test("a destination can get options from a connection", async () => {
-      const connectionOptions = await destination.destinationConnectionOptions();
+      const connectionOptions =
+        await destination.destinationConnectionOptions();
       expect(connectionOptions).toEqual({
         table: { type: "list", options: ["users_out"] },
       });

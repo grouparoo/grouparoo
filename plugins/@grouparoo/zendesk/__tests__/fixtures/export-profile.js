@@ -472,8 +472,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Doe",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -586,8 +585,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -762,8 +760,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -893,8 +890,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Doe",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -1005,8 +1001,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1121,8 +1116,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1241,8 +1235,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1357,8 +1350,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1489,8 +1481,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -1601,8 +1592,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1717,8 +1707,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -1845,8 +1834,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -1957,8 +1945,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2073,8 +2060,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2198,8 +2184,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -2310,8 +2295,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2426,8 +2410,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2551,8 +2534,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -2663,8 +2645,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2779,8 +2760,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -2895,8 +2875,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -3007,8 +2986,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -3132,8 +3110,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -3244,8 +3221,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -3360,8 +3336,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -3485,8 +3460,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -3597,8 +3571,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -3713,8 +3686,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -3838,8 +3810,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:10Z",
@@ -3948,8 +3919,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434776630.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434776630.json",
           id: 1261434776630,
           user_id: 1263482086730,
           type: "email",
@@ -3962,8 +3932,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434777510.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434777510.json",
           id: 1261434777510,
           user_id: 1263482086730,
           type: "email",
@@ -4050,8 +4019,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434777510.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434777510.json",
           id: 1261434777510,
           user_id: 1263482086730,
           type: "email",
@@ -4064,8 +4032,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434776630.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730/identities/1261434776630.json",
           id: 1261434776630,
           user_id: 1263482086730,
           type: "email",
@@ -4145,8 +4112,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -4267,8 +4233,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531659969,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
         name: "Anakin",
         email: "skywalker@demo.com",
         created_at: "2021-04-27T23:23:28Z",
@@ -4448,8 +4413,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531659969,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
         name: "Anakin",
         email: "skywalker@demo.com",
         created_at: "2021-04-27T23:23:28Z",
@@ -4560,8 +4524,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531659969,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
         name: "Anakin",
         email: "skywalker@demo.com",
         created_at: "2021-04-27T23:23:28Z",
@@ -4738,8 +4701,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531660149,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
         name: "Bobby",
         email: "notgrouparoo@demo.com",
         created_at: "2021-04-27T23:23:31Z",
@@ -4852,8 +4814,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -4968,8 +4929,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -5084,8 +5044,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -5200,8 +5159,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -5325,8 +5283,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531660149,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
         name: "Bobby",
         email: "notgrouparoo@demo.com",
         created_at: "2021-04-27T23:23:31Z",
@@ -5437,8 +5394,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -5553,8 +5509,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -5669,8 +5624,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -5901,8 +5855,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "notgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -6022,8 +5975,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531660149,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
         name: "Bobby",
         email: "notgrouparoo@demo.com",
         created_at: "2021-04-27T23:23:31Z",
@@ -6132,8 +6084,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
           id: 1261435247589,
           user_id: 1263531660149,
           type: "email",
@@ -6146,8 +6097,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
           id: 1261434777990,
           user_id: 1263531660149,
           type: "email",
@@ -6234,8 +6184,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
           id: 1261434777990,
           user_id: 1263531660149,
           type: "email",
@@ -6248,8 +6197,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
           id: 1261435247589,
           user_id: 1263531660149,
           type: "email",
@@ -6329,8 +6277,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "almostgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -6445,8 +6392,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -6565,8 +6511,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -6681,8 +6626,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263482086730,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
           name: "John Connor",
           email: "othergrouparoo@demo.com",
           created_at: "2021-04-27T23:23:10Z",
@@ -6799,8 +6743,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263482086730,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263482086730.json",
         name: "John Connor",
         email: null,
         created_at: "2021-04-27T23:23:10Z",
@@ -7083,8 +7026,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Bobby",
           email: "almostgrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -7209,8 +7151,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531660149,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
         name: "Jill",
         email: "almostgrouparoo@demo.com",
         created_at: "2021-04-27T23:23:31Z",
@@ -7319,8 +7260,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
           id: 1261434777990,
           user_id: 1263531660149,
           type: "email",
@@ -7333,8 +7273,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
           id: 1261435247589,
           user_id: 1263531660149,
           type: "email",
@@ -7347,8 +7286,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435248529.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435248529.json",
           id: 1261435248529,
           user_id: 1263531660149,
           type: "email",
@@ -7435,8 +7373,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       identities: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435248529.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435248529.json",
           id: 1261435248529,
           user_id: 1263531660149,
           type: "email",
@@ -7449,8 +7386,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261434777990.json",
           id: 1261434777990,
           user_id: 1263531660149,
           type: "email",
@@ -7463,8 +7399,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           deliverable_state: "deliverable",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149/identities/1261435247589.json",
           id: 1261435247589,
           user_id: 1263531660149,
           type: "email",
@@ -7544,8 +7479,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Jill",
           email: "maybegrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -7726,8 +7660,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531663029,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
         name: "John Doe",
         email: "grouparoo@demo.com",
         created_at: "2021-04-27T23:23:46Z",
@@ -7840,8 +7773,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531663029,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:46Z",
@@ -7956,8 +7888,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531663029,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
           name: "John Doe",
           email: "grouparoo@demo.com",
           created_at: "2021-04-27T23:23:46Z",
@@ -8074,8 +8005,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531663029,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531663029.json",
         name: "John Doe",
         email: null,
         created_at: "2021-04-27T23:23:46Z",
@@ -8242,8 +8172,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Jill",
           email: "maybegrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -8418,8 +8347,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531660149,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
           name: "Jill",
           email: "maybegrouparoo@demo.com",
           created_at: "2021-04-27T23:23:31Z",
@@ -8532,8 +8460,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531660149,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531660149.json",
         name: "Jill",
         email: null,
         created_at: "2021-04-27T23:23:31Z",
@@ -9152,8 +9079,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
       users: [
         {
           id: 1263531659969,
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
           name: "Anakin",
           email: "skywalker@demo.com",
           created_at: "2021-04-27T23:23:28Z",
@@ -9266,8 +9192,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user: {
         id: 1263531659969,
-        url:
-          "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
+        url: "https://d3v-grouparoo.zendesk.com/api/v2/users/1263531659969.json",
         name: "Anakin",
         email: null,
         created_at: "2021-04-27T23:23:28Z",

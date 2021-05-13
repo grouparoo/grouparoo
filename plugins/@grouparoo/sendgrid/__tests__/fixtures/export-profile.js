@@ -8,36 +8,8 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "Caio",
-          id: "ac1f33e2-abdc-45d6-b221-8cee3f3fc659",
-          last_name: "",
-          list_ids: [],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {},
-          created_at: "2021-02-16T22:26:20Z",
-          updated_at: "2021-02-16T22:26:49Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/ac1f33e2-abdc-45d6-b221-8cee3f3fc659",
-          },
-        },
-      ],
+      contact_count: 0,
+      result: [],
       _metadata: {
         self: "https://api.sendgrid.com/v3/marketing/contacts/search",
       },
@@ -46,21 +18,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:08 GMT",
+      "Mon, 10 May 2021 23:35:40 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "661",
+      "109",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "7070cca7-a967-4896-8aba-1d1bb564dc25",
+      "2d866abe-aaac-4c31-ba30-23820fd60265",
       "x-amz-apigw-id",
-      "a3Q8_GztvHcF06g=",
+      "fItz_GWQvHcFh1g=",
       "x-amzn-trace-id",
-      "Root=1-602c61ec-23c252f23ab424e70ad9da90;Sampled=0",
+      "Root=1-6099c34c-548049601746abef60bfd17b;Sampled=0",
       "x-envoy-upstream-service-time",
-      "125",
+      "135",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -68,9 +40,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "184",
+      "199",
       "x-ratelimit-reset",
-      "52",
+      "20",
       "Powered-By",
       "SGGateway",
     ]
@@ -93,7 +65,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:09 GMT",
+      "Mon, 10 May 2021 23:35:41 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -101,13 +73,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "f6ba89db-cadc-4e5a-9dae-96e36d68cb27",
+      "2d4bd64a-9277-448f-b0cf-8dc59301e7dd",
       "x-amz-apigw-id",
-      "a3Q9EGBsPHcFu0w=",
+      "fIt0GG-UvHcF-ow=",
       "x-amzn-trace-id",
-      "Root=1-602c61ed-354d5f892c57021338b03e1b;Sampled=0",
+      "Root=1-6099c34d-24ef28f40fe11d751665009c;Sampled=0",
       "x-envoy-upstream-service-time",
-      "123",
+      "141",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -115,9 +87,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "182",
+      "198",
       "x-ratelimit-reset",
-      "51",
+      "19",
       "Powered-By",
       "SGGateway",
     ]
@@ -140,7 +112,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:09 GMT",
+      "Mon, 10 May 2021 23:35:42 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -148,13 +120,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e2ac4fcc-58b9-41fc-bc91-4cd8c826ae18",
+      "a87f6be9-2c02-4e9b-8921-f641c6a37923",
       "x-amz-apigw-id",
-      "a3Q9JECZvHcF_SA=",
+      "fIt0MEuOvHcF_Iw=",
       "x-amzn-trace-id",
-      "Root=1-602c61ed-5f2a909201fb6cda2b783222;Sampled=0",
+      "Root=1-6099c34d-236aff9240c4e5383ee109c6;Sampled=0",
       "x-envoy-upstream-service-time",
-      "206",
+      "184",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -162,9 +134,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "181",
+      "197",
       "x-ratelimit-reset",
-      "51",
+      "19",
       "Powered-By",
       "SGGateway",
     ]
@@ -187,7 +159,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:10 GMT",
+      "Mon, 10 May 2021 23:35:42 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -195,13 +167,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "4da6ea31-3eaf-4d23-9027-eb821184420e",
+      "eb6a5d0d-96e0-4b5b-ab5d-730f39593482",
       "x-amz-apigw-id",
-      "a3Q9PG5QPHcFeCw=",
+      "fIt0SFmlvHcFwqw=",
       "x-amzn-trace-id",
-      "Root=1-602c61ee-2d56aa083be269cf5aedac6b;Sampled=0",
+      "Root=1-6099c34e-28e1f34d6a0bd9de6629978b;Sampled=0",
       "x-envoy-upstream-service-time",
-      "134",
+      "169",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -209,9 +181,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "180",
+      "196",
       "x-ratelimit-reset",
-      "50",
+      "18",
       "Powered-By",
       "SGGateway",
     ]
@@ -234,7 +206,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:10 GMT",
+      "Mon, 10 May 2021 23:35:43 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -242,13 +214,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "7f7f013c-5ccd-4b9c-94a1-a5f942f33425",
+      "2a408941-2422-4451-a350-ca75ab89e014",
       "x-amz-apigw-id",
-      "a3Q9UHpfPHcFpJA=",
+      "fIt0YHQzvHcFfog=",
       "x-amzn-trace-id",
-      "Root=1-602c61ee-438f72be5e5c92ed28668600;Sampled=0",
+      "Root=1-6099c34f-7303cf34141059e01aca291e;Sampled=0",
       "x-envoy-upstream-service-time",
-      "124",
+      "247",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -256,55 +228,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "179",
+      "195",
       "x-ratelimit-reset",
-      "50",
+      "17",
       "Powered-By",
       "SGGateway",
     ]
   );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/contacts")
-  .query({ ids: "ac1f33e2-abdc-45d6-b221-8cee3f3fc659" })
-  .once()
-  .reply(202, { job_id: "1ea19fde-5752-4cd1-8756-0452e4eba1d4" }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Wed, 17 Feb 2021 00:23:11 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "50",
-    "Connection",
-    "close",
-    "x-amzn-requestid",
-    "77e19c63-3427-44cb-8562-f64d2db71f69",
-    "access-control-allow-origin",
-    "*",
-    "access-control-allow-headers",
-    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
-    "x-amz-apigw-id",
-    "a3Q9ZF7NvHcFshw=",
-    "access-control-allow-methods",
-    "PUT,DELETE,OPTIONS",
-    "access-control-expose-headers",
-    "Link, Location",
-    "x-amzn-trace-id",
-    "Root=1-602c61ef-35c403920a0dc2bf4c42506e;Sampled=0",
-    "x-envoy-upstream-service-time",
-    "457",
-    "referrer-policy",
-    "strict-origin-when-cross-origin",
-    "x-content-type-options",
-    "nosniff",
-    "x-ratelimit-limit",
-    "200",
-    "x-ratelimit-remaining",
-    "199",
-    "x-ratelimit-reset",
-    "49",
-  ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .get("/v3/marketing/lists")
   .once()
@@ -315,16 +245,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -340,21 +306,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:12 GMT",
+      "Mon, 10 May 2021 23:35:43 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "499",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "1ae26618-45e7-4075-8c8d-2711d02f1238",
+      "2ff2e55d-ac72-427c-a2f3-87e4c998e03d",
       "x-amz-apigw-id",
-      "a3Q9iF9ovHcFuig=",
+      "fIt0fFLfvHcFqGA=",
       "x-amzn-trace-id",
-      "Root=1-602c61f0-102d182c403472dc44b54709;Sampled=0",
+      "Root=1-6099c34f-6a35e90911df5d731b0dbd6f;Sampled=0",
       "x-envoy-upstream-service-time",
-      "125",
+      "149",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -364,7 +330,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "48",
+      "17",
       "Powered-By",
       "SGGateway",
     ]
@@ -379,16 +345,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -404,21 +406,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:12 GMT",
+      "Mon, 10 May 2021 23:35:44 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "499",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "ab230f37-2075-414e-82cb-908012b8819b",
+      "f8f870b3-fe64-4937-b14a-4092152ba99a",
       "x-amz-apigw-id",
-      "a3Q9nGT7vHcFXmQ=",
+      "fIt0lFmOvHcFzFA=",
       "x-amzn-trace-id",
-      "Root=1-602c61f0-2abe2a870c6fb29938921782;Sampled=0",
+      "Root=1-6099c350-6c6a8b3f32703df008cf3316;Sampled=0",
       "x-envoy-upstream-service-time",
-      "88",
+      "107",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -428,7 +430,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "598",
       "x-ratelimit-reset",
-      "48",
+      "16",
       "Powered-By",
       "SGGateway",
     ]
@@ -443,16 +445,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -468,21 +506,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:13 GMT",
+      "Mon, 10 May 2021 23:35:45 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "499",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "ddeaa3ee-cbc3-4a74-82ff-dbe20b1eb6ea",
+      "277e5558-b3aa-47e3-9bd9-5f643d89244c",
       "x-amz-apigw-id",
-      "a3Q9rENUvHcFttA=",
+      "fIt0rFeEvHcFg4g=",
       "x-amzn-trace-id",
-      "Root=1-602c61f1-1291451e27acea812ef8fe4c;Sampled=0",
+      "Root=1-6099c351-6edea9395afde361776f5262;Sampled=0",
       "x-envoy-upstream-service-time",
-      "96",
+      "148",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -492,7 +530,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "597",
       "x-ratelimit-reset",
-      "47",
+      "15",
       "Powered-By",
       "SGGateway",
     ]
@@ -507,16 +545,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -532,21 +606,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:23:13 GMT",
+      "Mon, 10 May 2021 23:35:45 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "499",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "6adf60f4-16e5-47ca-a84b-f3115008b1d7",
+      "06395a79-1297-401a-8232-ab86f52f2140",
       "x-amz-apigw-id",
-      "a3Q9wE2rPHcFUdg=",
+      "fIt0xH7hPHcFmiQ=",
       "x-amzn-trace-id",
-      "Root=1-602c61f1-17fdaadd21830e90475acda1;Sampled=0",
+      "Root=1-6099c351-65925b3323efe65e63cb5dbd;Sampled=0",
       "x-envoy-upstream-service-time",
-      "86",
+      "121",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -556,101 +630,242 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "596",
       "x-ratelimit-reset",
-      "47",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 0,
-      result: [],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:23:44 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "109",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "cb57d08b-6cca-4993-9c80-e295d84c6cee",
-      "x-amz-apigw-id",
-      "a3RCiFX5PHcFaqQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c6210-1c9907f23b897ea345381a07;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "505",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "172",
-      "x-ratelimit-reset",
-      "16",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 0,
-      result: [],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:23:45 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "109",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "a12704b9-1043-4736-ae64-75572b75a89a",
-      "x-amz-apigw-id",
-      "a3RCrFFYPHcFl2g=",
-      "x-amzn-trace-id",
-      "Root=1-602c6211-6d2a1501495e98cc1bd7b4a3;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "114",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "171",
-      "x-ratelimit-reset",
       "15",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:36:16 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "09564b69-34ac-4bdd-8ebc-0ffeaaf3d1db",
+      "x-amz-apigw-id",
+      "fIt5kEgwPHcFd-g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c370-03a31a3b0dd38c0f70e219b8;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "211",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "199",
+      "x-ratelimit-reset",
+      "44",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:36:17 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "fe375a76-2e99-4f0e-aa7f-0f17e79f90ef",
+      "x-amz-apigw-id",
+      "fIt5rHx3vHcF1OA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c371-22f5f94451c0df666748549a;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "331",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "198",
+      "x-ratelimit-reset",
+      "43",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:36:18 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "46877e6c-033e-4dc6-86ba-fe30fa934520",
+      "x-amz-apigw-id",
+      "fIt5zG6XPHcFhuA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c371-033030f8356ccc1e097a79a1;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "248",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "197",
+      "x-ratelimit-reset",
+      "43",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:36:18 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "b2c5c9f0-5244-4a20-93b0-edbb7d14b5e9",
+      "x-amz-apigw-id",
+      "fIt55EKNPHcF8ew=",
+      "x-amzn-trace-id",
+      "Root=1-6099c372-17fa29994c47c7ab70baa6b2;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "152",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "196",
+      "x-ratelimit-reset",
+      "42",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:36:19 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "1921db16-82e3-423f-be4b-94e1c81067a0",
+      "x-amz-apigw-id",
+      "fIt5_EzAvHcFz5A=",
+      "x-amzn-trace-id",
+      "Root=1-6099c372-40d65eaf5968965533a3d11f;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "138",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "195",
+      "x-ratelimit-reset",
+      "42",
       "Powered-By",
       "SGGateway",
     ]
@@ -667,11 +882,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "b2ce72c9-0604-4a13-886a-d0250592aa9d" }, [
+  .reply(202, { job_id: "d32c6eab-107c-4d26-8428-c8084d9544d3" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:23:46 GMT",
+    "Mon, 10 May 2021 23:36:19 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -679,21 +894,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "2a9f701a-5e61-4158-8545-a71b57d28f67",
+    "96a55e53-0efa-4529-b3fd-153b8627ca6e",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3RCwGbOvHcFcag=",
+    "fIt6EHVJvHcF28A=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6211-45886db93a3b8b6c49f409d7;Sampled=0",
+    "Root=1-6099c373-039075706b58d3fb06fb9c68;Sampled=0",
     "x-envoy-upstream-service-time",
-    "655",
+    "362",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -703,7 +918,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "15",
+    "41",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -723,7 +938,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Caio",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -735,11 +950,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:24:14Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:36:49Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -751,7 +966,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:24:46 GMT",
+      "Mon, 10 May 2021 23:36:50 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -759,13 +974,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "42fb434e-0c6a-45f3-9c09-07f348517cba",
+      "4142c66b-696a-4c76-aff9-d70fbc7e4c68",
       "x-amz-apigw-id",
-      "a3RMUF9HPHcFjeQ=",
+      "fIt-4H5-PHcF0sQ=",
       "x-amzn-trace-id",
-      "Root=1-602c624e-155036be2469d53b3e2bb15b;Sampled=0",
+      "Root=1-6099c392-32be5f8a2c1aa696496941e7;Sampled=0",
       "x-envoy-upstream-service-time",
-      "261",
+      "154",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -773,9 +988,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "178",
+      "194",
       "x-ratelimit-reset",
-      "14",
+      "10",
       "Powered-By",
       "SGGateway",
     ]
@@ -798,7 +1013,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Caio",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -810,11 +1025,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:24:14Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:36:49Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -826,7 +1041,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:24:47 GMT",
+      "Mon, 10 May 2021 23:36:51 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -834,13 +1049,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "66baad60-ff27-424e-99a0-31b14058efb4",
+      "35385eff-c5e6-4cba-9fe0-d4e6e90006fd",
       "x-amz-apigw-id",
-      "a3RMaHwqPHcFqDA=",
+      "fIt-9HoNvHcFksA=",
       "x-amzn-trace-id",
-      "Root=1-602c624f-394c967c4529c32b2a1abeb7;Sampled=0",
+      "Root=1-6099c392-3694a3464c6a0f7304e67fbe;Sampled=0",
       "x-envoy-upstream-service-time",
-      "121",
+      "271",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -848,9 +1063,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "176",
+      "193",
       "x-ratelimit-reset",
-      "13",
+      "10",
       "Powered-By",
       "SGGateway",
     ]
@@ -869,11 +1084,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "5d85b2c5-a209-4876-afe9-0275fd5b46fa" }, [
+  .reply(202, { job_id: "4a2aafe1-1a83-4ea7-8713-7e8e25d07c6d" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:24:48 GMT",
+    "Mon, 10 May 2021 23:36:52 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -881,21 +1096,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "4d04120a-76f8-4729-ab48-a580c53087ec",
+    "2dcdd149-a643-4d63-93fc-4c7128c091ae",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3RMfED-PHcFqpA=",
+    "fIt_EFByPHcFkpQ=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c624f-6e8108822d4a75e50d7a7606;Sampled=0",
+    "Root=1-6099c393-5bbcd7be79f40fdf724e090f;Sampled=0",
     "x-envoy-upstream-service-time",
-    "508",
+    "607",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -903,9 +1118,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-limit",
     "200",
     "x-ratelimit-remaining",
-    "199",
+    "198",
     "x-ratelimit-reset",
-    "13",
+    "9",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -925,7 +1140,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Caio",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [],
           postal_code: "",
@@ -937,11 +1152,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:25:17Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -953,7 +1168,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:49 GMT",
+      "Mon, 10 May 2021 23:37:22 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -961,13 +1176,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "ff330909-c6b3-4b08-9591-ed171ec317fa",
+      "860f653d-dbac-49a3-a77d-3bc114c6a4d3",
       "x-amz-apigw-id",
-      "a3RWCGF7PHcFmGw=",
+      "fIuD7G_zvHcFQ9g=",
       "x-amzn-trace-id",
-      "Root=1-602c628c-5216c24322b947e17138e579;Sampled=0",
+      "Root=1-6099c3b2-1ef4e2223d4917865997ca9e;Sampled=0",
       "x-envoy-upstream-service-time",
-      "281",
+      "155",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -975,9 +1190,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "179",
+      "199",
       "x-ratelimit-reset",
-      "12",
+      "38",
       "Powered-By",
       "SGGateway",
     ]
@@ -1000,7 +1215,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Caio",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [],
           postal_code: "",
@@ -1012,11 +1227,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:25:17Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:37:21Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1028,7 +1243,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:49 GMT",
+      "Mon, 10 May 2021 23:37:23 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1036,13 +1251,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a3044ac9-9306-4273-ae76-983bde617a15",
+      "229d0d75-6924-4fcf-b690-e97b033a7149",
       "x-amz-apigw-id",
-      "a3RWJEIBvHcFbXg=",
+      "fIuEAHjdPHcF-AQ=",
       "x-amzn-trace-id",
-      "Root=1-602c628d-0c5d1ad112e9189d0367aecd;Sampled=0",
+      "Root=1-6099c3b3-1ab13c202ab356ed3be7224b;Sampled=0",
       "x-envoy-upstream-service-time",
-      "154",
+      "345",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1050,9 +1265,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "178",
+      "198",
       "x-ratelimit-reset",
-      "11",
+      "37",
       "Powered-By",
       "SGGateway",
     ]
@@ -1171,7 +1386,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:50 GMT",
+      "Mon, 10 May 2021 23:37:23 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1179,13 +1394,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "68bfcb64-553c-4c5f-a631-dc84b8fe1edc",
+      "e179545a-2cd5-40fa-9312-56ef8bbdf83c",
       "x-amz-apigw-id",
-      "a3RWPFIsoAMF80w=",
+      "fIuEHFI7oAMFzNQ=",
       "x-amzn-trace-id",
-      "Root=1-602c628e-3afbc8891e94f4a218d90d67;Sampled=0",
+      "Root=1-6099c3b3-46f2e30a79ba6c714da0b6bf;Sampled=0",
       "x-envoy-upstream-service-time",
-      "92",
+      "77",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1195,7 +1410,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "10",
+      "37",
       "Powered-By",
       "SGGateway",
     ]
@@ -1314,7 +1529,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:50 GMT",
+      "Mon, 10 May 2021 23:37:24 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1322,13 +1537,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "aee8e0ca-f57b-46c5-afe9-3ef27bdd4ccc",
+      "cb528cd4-c1f6-4f6f-a65f-485cd64264cc",
       "x-amz-apigw-id",
-      "a3RWVHyWoAMFbpQ=",
+      "fIuEMF02oAMFZ5A=",
       "x-amzn-trace-id",
-      "Root=1-602c628e-5377d3a3389dce545fb3379c;Sampled=0",
+      "Root=1-6099c3b4-2a5c4cc64c693e1a0904ea1a;Sampled=0",
       "x-envoy-upstream-service-time",
-      "48",
+      "30",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1338,7 +1553,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "598",
       "x-ratelimit-reset",
-      "10",
+      "36",
       "Powered-By",
       "SGGateway",
     ]
@@ -1457,7 +1672,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:51 GMT",
+      "Mon, 10 May 2021 23:37:24 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1465,13 +1680,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "9f9ed269-331d-44f7-bbad-3c6e22b2a2b2",
+      "ddcc7b3b-9530-4e9d-a4df-35d1cf57fe22",
       "x-amz-apigw-id",
-      "a3RWaFDEoAMFgnQ=",
+      "fIuERH9gIAMF8Gw=",
       "x-amzn-trace-id",
-      "Root=1-602c628f-7638eed875abde16015dd841;Sampled=0",
+      "Root=1-6099c3b4-2b6a13c27f6eb3dc1c96b420;Sampled=0",
       "x-envoy-upstream-service-time",
-      "23",
+      "118",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1481,7 +1696,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "597",
       "x-ratelimit-reset",
-      "9",
+      "36",
       "Powered-By",
       "SGGateway",
     ]
@@ -1600,7 +1815,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:51 GMT",
+      "Mon, 10 May 2021 23:37:25 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1608,13 +1823,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "f020bd79-86e8-4f9e-993b-eff6a3c5e40f",
+      "0cccd829-c30c-4e79-9881-eeacedd97091",
       "x-amz-apigw-id",
-      "a3RWfFytoAMF_Jg=",
+      "fIuEWFowIAMFw_A=",
       "x-amzn-trace-id",
-      "Root=1-602c628f-07631c6a4290a51c79ca4d50;Sampled=0",
+      "Root=1-6099c3b5-4502f43d3d5e30e952fbc8ba;Sampled=0",
       "x-envoy-upstream-service-time",
-      "24",
+      "82",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1624,7 +1839,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "596",
       "x-ratelimit-reset",
-      "9",
+      "35",
       "Powered-By",
       "SGGateway",
     ]
@@ -1743,7 +1958,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:25:52 GMT",
+      "Mon, 10 May 2021 23:37:25 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1751,13 +1966,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "dad1d19b-542b-4ec5-a118-7800cfea13f6",
+      "db6866f3-de22-4289-a369-d25ca97e33b7",
       "x-amz-apigw-id",
-      "a3RWkEnFIAMFzeg=",
+      "fIuEbFzooAMF6-g=",
       "x-amzn-trace-id",
-      "Root=1-602c6290-060a2847105501424528d420;Sampled=0",
+      "Root=1-6099c3b5-610ba478533915100a06deb9;Sampled=0",
       "x-envoy-upstream-service-time",
-      "101",
+      "28",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1767,7 +1982,872 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "595",
       "x-ratelimit-reset",
-      "8",
+      "35",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "Caio",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "+5583999999999",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:37:21Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:26 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "683",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "05a91e11-ee84-44d6-9175-8721c37ee8f0",
+      "x-amz-apigw-id",
+      "fIuEfEiLPHcF7tw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b6-38b4b5a00e816ea431a65edb;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "298",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "197",
+      "x-ratelimit-reset",
+      "34",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "Caio",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "+5583999999999",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:37:21Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:27 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "683",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "4a7fcf5e-80ed-4555-97af-a687d6cb4090",
+      "x-amz-apigw-id",
+      "fIuEmHWSPHcF07g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b6-6738175c26e105be66721554;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "323",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "196",
+      "x-ratelimit-reset",
+      "34",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:27 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "991800e6-4c91-4246-a17e-defacd9a002a",
+      "x-amz-apigw-id",
+      "fIuEtHRQIAMF9kw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b7-0956c92b62c8319f109b2c22;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "33",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "594",
+      "x-ratelimit-reset",
+      "33",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:28 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "0744ca9d-07ac-4ac5-9ca4-4d57fd6f634f",
+      "x-amz-apigw-id",
+      "fIuEyEAZIAMF7DA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b8-424ac9351abe4bed0a0f9424;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "26",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "593",
+      "x-ratelimit-reset",
+      "32",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:28 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "91ffbd2c-cc1a-4a4b-877b-046d1907daea",
+      "x-amz-apigw-id",
+      "fIuE2GNZoAMF-3w=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b8-1c7c604e11db1d8a1d20e4ad;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "30",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "592",
+      "x-ratelimit-reset",
+      "32",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:29 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "2a2e75a0-624c-44c1-9614-1ad0d02e9795",
+      "x-amz-apigw-id",
+      "fIuE6F1nIAMFrAg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b8-45cc25ad661b3a0f2555e4e3;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "26",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "591",
+      "x-ratelimit-reset",
+      "32",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:37:29 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "cc4d78e5-f1b4-4887-b64b-adea80b52ca3",
+      "x-amz-apigw-id",
+      "fIuE_HJ8oAMFi3A=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3b9-74c67ee122c1b868573f3c77;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "33",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "590",
+      "x-ratelimit-reset",
+      "31",
       "Powered-By",
       "SGGateway",
     ]
@@ -1789,11 +2869,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "175471af-a086-471e-b9f2-bb5989e2dc2a" }, [
+  .reply(202, { job_id: "2a16f00d-d67a-41c1-8f38-1995a62f6883" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:25:53 GMT",
+    "Mon, 10 May 2021 23:37:30 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -1801,21 +2881,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "18a63e08-7ac4-4e75-ae78-afff9ef355e2",
+    "e01914c5-32fd-48f2-a5ac-2ff377ad6efb",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3RWqFeDvHcFhlw=",
+    "fIuFDHKgPHcFxzQ=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6290-6052e3f17914fd5e05a41f9e;Sampled=0",
+    "Root=1-6099c3b9-0e721ff959ba755679890217;Sampled=0",
     "x-envoy-upstream-service-time",
-    "488",
+    "332",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -1825,7 +2905,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "8",
+    "31",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -1845,7 +2925,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Evan",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [],
           postal_code: "",
@@ -1861,11 +2941,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:26:22Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1877,7 +2957,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:26:54 GMT",
+      "Mon, 10 May 2021 23:38:01 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1885,13 +2965,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "66075bf7-1590-4fa6-a599-75c54ab54941",
+      "dca34e63-fec0-4ef8-adbe-d5a15b5679d0",
       "x-amz-apigw-id",
-      "a3RgNGJyvHcFaWw=",
+      "fIuJ7Hw4PHcF6KQ=",
       "x-amzn-trace-id",
-      "Root=1-602c62cd-115c0d6e75f2beb26159ad84;Sampled=0",
+      "Root=1-6099c3d8-0c8658693b4bed027b255454;Sampled=0",
       "x-envoy-upstream-service-time",
-      "229",
+      "305",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1899,9 +2979,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "169",
+      "199",
       "x-ratelimit-reset",
-      "7",
+      "60",
       "Powered-By",
       "SGGateway",
     ]
@@ -1924,7 +3004,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "Evan",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [],
           postal_code: "",
@@ -1940,11 +3020,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:26:22Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -1956,7 +3036,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:26:54 GMT",
+      "Mon, 10 May 2021 23:38:02 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -1964,13 +3044,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e9ff9990-4ac8-4965-a58b-e62fe50dd253",
+      "02cdd330-8ff1-4e02-aa14-ddac42f75adc",
       "x-amz-apigw-id",
-      "a3RgUG8PPHcFXlQ=",
+      "fIuKDHRHvHcFWsA=",
       "x-amzn-trace-id",
-      "Root=1-602c62ce-030f35223fbbf2b0372057f7;Sampled=0",
+      "Root=1-6099c3d9-096ba81e51cf84385bfc54c6;Sampled=0",
       "x-envoy-upstream-service-time",
-      "151",
+      "273",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -1978,9 +3058,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "167",
+      "198",
       "x-ratelimit-reset",
-      "6",
+      "59",
       "Powered-By",
       "SGGateway",
     ]
@@ -2099,7 +3179,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:26:55 GMT",
+      "Mon, 10 May 2021 23:38:02 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -2107,13 +3187,156 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "09bf9412-404e-4709-9ba3-b941ef3b40f2",
+      "794b6b9a-4276-4f1a-ab91-b9e3c3cd0a27",
       "x-amz-apigw-id",
-      "a3RgZEOFoAMFsZg=",
+      "fIuKKGJtoAMFr8Q=",
       "x-amzn-trace-id",
-      "Root=1-602c62cf-5a5bb7f20fe98aed3d6d7935;Sampled=0",
+      "Root=1-6099c3da-4a7f0b4f11c994af261d38c1;Sampled=0",
       "x-envoy-upstream-service-time",
-      "30",
+      "52",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "599",
+      "x-ratelimit-reset",
+      "58",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/field_definitions")
+  .once()
+  .reply(
+    200,
+    {
+      custom_fields: [
+        {
+          id: "e2_T",
+          name: "text_field",
+          field_type: "Text",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
+          },
+        },
+        {
+          id: "e3_N",
+          name: "number_field",
+          field_type: "Number",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
+          },
+        },
+        {
+          id: "e4_D",
+          name: "date_field",
+          field_type: "Date",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
+          },
+        },
+      ],
+      reserved_fields: [
+        { id: "_rf0_T", name: "first_name", field_type: "Text" },
+        { id: "_rf1_T", name: "last_name", field_type: "Text" },
+        { id: "_rf2_T", name: "email", field_type: "Text" },
+        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
+        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
+        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
+        { id: "_rf6_T", name: "city", field_type: "Text" },
+        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
+        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
+        { id: "_rf9_T", name: "country", field_type: "Text" },
+        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
+        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
+        { id: "_rf12_T", name: "line", field_type: "Text" },
+        { id: "_rf13_T", name: "facebook", field_type: "Text" },
+        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
+        {
+          id: "_rf15_T",
+          name: "email_domains",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf16_D",
+          name: "last_clicked",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf17_D",
+          name: "last_opened",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf18_D",
+          name: "last_emailed",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf19_T",
+          name: "singlesend_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf20_T",
+          name: "automation_id",
+          field_type: "Text",
+          read_only: true,
+        },
+        {
+          id: "_rf21_D",
+          name: "created_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf22_D",
+          name: "updated_at",
+          field_type: "Date",
+          read_only: true,
+        },
+        {
+          id: "_rf23_T",
+          name: "contact_id",
+          field_type: "Text",
+          read_only: true,
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:38:03 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2066",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "e42e7624-696d-4936-9c0f-bf1ae9a802b3",
+      "x-amz-apigw-id",
+      "fIuKPFFAIAMF4ZQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3db-1447c7e83af98ef41698a5b5;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "31",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -2123,7 +3346,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "598",
       "x-ratelimit-reset",
-      "5",
+      "57",
       "Powered-By",
       "SGGateway",
     ]
@@ -2242,7 +3465,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:26:55 GMT",
+      "Mon, 10 May 2021 23:38:03 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -2250,13 +3473,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "6f119cb2-c54d-406c-95d9-b08f6b0ea9a4",
+      "08873fd8-afb3-45fa-9371-6acac75e1841",
       "x-amz-apigw-id",
-      "a3RgeHl7oAMFn2w=",
+      "fIuKTHfYIAMFRTw=",
       "x-amzn-trace-id",
-      "Root=1-602c62cf-40ee8b29113a101e3d95806f;Sampled=0",
+      "Root=1-6099c3db-215905f62689e6397dcd7593;Sampled=0",
       "x-envoy-upstream-service-time",
-      "26",
+      "35",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -2266,150 +3489,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "597",
       "x-ratelimit-reset",
-      "5",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/field_definitions")
-  .once()
-  .reply(
-    200,
-    {
-      custom_fields: [
-        {
-          id: "e2_T",
-          name: "text_field",
-          field_type: "Text",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e2_T",
-          },
-        },
-        {
-          id: "e3_N",
-          name: "number_field",
-          field_type: "Number",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e3_N",
-          },
-        },
-        {
-          id: "e4_D",
-          name: "date_field",
-          field_type: "Date",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/field_definitions/e4_D",
-          },
-        },
-      ],
-      reserved_fields: [
-        { id: "_rf0_T", name: "first_name", field_type: "Text" },
-        { id: "_rf1_T", name: "last_name", field_type: "Text" },
-        { id: "_rf2_T", name: "email", field_type: "Text" },
-        { id: "_rf3_T", name: "alternate_emails", field_type: "Text" },
-        { id: "_rf4_T", name: "address_line_1", field_type: "Text" },
-        { id: "_rf5_T", name: "address_line_2", field_type: "Text" },
-        { id: "_rf6_T", name: "city", field_type: "Text" },
-        { id: "_rf7_T", name: "state_province_region", field_type: "Text" },
-        { id: "_rf8_T", name: "postal_code", field_type: "Text" },
-        { id: "_rf9_T", name: "country", field_type: "Text" },
-        { id: "_rf10_T", name: "phone_number", field_type: "Text" },
-        { id: "_rf11_T", name: "whatsapp", field_type: "Text" },
-        { id: "_rf12_T", name: "line", field_type: "Text" },
-        { id: "_rf13_T", name: "facebook", field_type: "Text" },
-        { id: "_rf14_T", name: "unique_name", field_type: "Text" },
-        {
-          id: "_rf15_T",
-          name: "email_domains",
-          field_type: "Text",
-          read_only: true,
-        },
-        {
-          id: "_rf16_D",
-          name: "last_clicked",
-          field_type: "Date",
-          read_only: true,
-        },
-        {
-          id: "_rf17_D",
-          name: "last_opened",
-          field_type: "Date",
-          read_only: true,
-        },
-        {
-          id: "_rf18_D",
-          name: "last_emailed",
-          field_type: "Date",
-          read_only: true,
-        },
-        {
-          id: "_rf19_T",
-          name: "singlesend_id",
-          field_type: "Text",
-          read_only: true,
-        },
-        {
-          id: "_rf20_T",
-          name: "automation_id",
-          field_type: "Text",
-          read_only: true,
-        },
-        {
-          id: "_rf21_D",
-          name: "created_at",
-          field_type: "Date",
-          read_only: true,
-        },
-        {
-          id: "_rf22_D",
-          name: "updated_at",
-          field_type: "Date",
-          read_only: true,
-        },
-        {
-          id: "_rf23_T",
-          name: "contact_id",
-          field_type: "Text",
-          read_only: true,
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/field_definitions",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:26:56 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "2066",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "ec2f7037-5405-4b6d-b353-2d1b42b1f835",
-      "x-amz-apigw-id",
-      "a3RgjFssIAMFlWg=",
-      "x-amzn-trace-id",
-      "Root=1-602c62d0-42f6dc6941989d5e3948370c;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "26",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "596",
-      "x-ratelimit-reset",
-      "4",
+      "57",
       "Powered-By",
       "SGGateway",
     ]
@@ -2427,11 +3507,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "2b10806d-0dce-440b-8cc0-525c6d3f0ab5" }, [
+  .reply(202, { job_id: "ab056a7d-08a4-4393-b0ae-6baca01b0fbd" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:26:57 GMT",
+    "Mon, 10 May 2021 23:38:04 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -2439,803 +3519,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "b9fafb19-11d3-4ee5-9658-392f0ce3a79b",
+    "ace371ff-3045-44a3-9294-d015b1f9fb1a",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3RgoFKuvHcF5qg=",
+    "fIuKZE9FvHcFVBw=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c62d0-44765d1855c395b40cdc73ba;Sampled=0",
+    "Root=1-6099c3db-525b2275570909d64f5e87b0;Sampled=0",
     "x-envoy-upstream-service-time",
-    "398",
-    "referrer-policy",
-    "strict-origin-when-cross-origin",
-    "x-content-type-options",
-    "nosniff",
-    "x-ratelimit-limit",
-    "200",
-    "x-ratelimit-remaining",
-    "199",
-    "x-ratelimit-reset",
-    "4",
-  ]);
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "Evan",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: [],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "+5583999999998",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:26:22Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:27:57 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "758",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "70859a70-86e6-43b3-8373-c1a353b219d0",
-      "x-amz-apigw-id",
-      "a3RqKEZpPHcFf1A=",
-      "x-amzn-trace-id",
-      "Root=1-602c630d-0f55eaca764cd2995868dcff;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "146",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "171",
-      "x-ratelimit-reset",
-      "3",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "Evan",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: [],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "+5583999999998",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:26:22Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:27:58 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "758",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "eb8127a7-defc-4fbb-8e52-0123acb34a5c",
-      "x-amz-apigw-id",
-      "a3RqQEbQvHcFReA=",
-      "x-amzn-trace-id",
-      "Root=1-602c630e-434262b05ee2a4075a3c8fed;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "143",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "170",
-      "x-ratelimit-reset",
-      "2",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .put("/v3/marketing/contacts", {
-    contacts: [
-      {
-        custom_fields: {},
-        first_name: "",
-        phone_number: "",
-        email: "caio.silveira@mailinator.com",
-      },
-    ],
-    list_ids: [],
-  })
-  .once()
-  .reply(202, { job_id: "c2914bb5-ceb0-4455-8fe7-7db4b5b7d916" }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Wed, 17 Feb 2021 00:27:59 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "50",
-    "Connection",
-    "close",
-    "x-amzn-requestid",
-    "2a74658e-05bb-4147-bc2b-e2aa5a06b733",
-    "access-control-allow-origin",
-    "*",
-    "access-control-allow-headers",
-    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
-    "x-amz-apigw-id",
-    "a3RqWEebPHcFReA=",
-    "access-control-allow-methods",
-    "PUT,DELETE,OPTIONS",
-    "access-control-expose-headers",
-    "Link, Location",
-    "x-amzn-trace-id",
-    "Root=1-602c630e-2b5a7752020084356b9d31f7;Sampled=0",
-    "x-envoy-upstream-service-time",
-    "422",
-    "referrer-policy",
-    "strict-origin-when-cross-origin",
-    "x-content-type-options",
-    "nosniff",
-    "x-ratelimit-limit",
-    "200",
-    "x-ratelimit-remaining",
-    "199",
-    "x-ratelimit-reset",
-    "2",
-  ]);
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: [],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:28:28Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:00 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "740",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "94b7920f-a62f-4e6f-a381-b09b1e3e7b74",
-      "x-amz-apigw-id",
-      "a3Rz3E85vHcFeiQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c634b-2e34fccb6786dbc70394c5d2;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "136",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "170",
-      "x-ratelimit-reset",
-      "1",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: [],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:28:28Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:00 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "740",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "0e3bc3d4-9dd9-44e9-964c-a51ed57e8a0e",
-      "x-amz-apigw-id",
-      "a3Rz-GN2vHcFuVQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c634c-753f131064a351d40f2aa632;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "209",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "199",
-      "x-ratelimit-reset",
-      "60",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:01 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "499",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "93e8bb13-74a2-4b6c-ba9f-5a856fe383fe",
-      "x-amz-apigw-id",
-      "a3R0DHTdvHcFpzw=",
-      "x-amzn-trace-id",
-      "Root=1-602c634c-6c6d1fbf10bc134f5765fdff;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "145",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "599",
-      "x-ratelimit-reset",
-      "60",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:01 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "499",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "fb11d804-2605-4f07-9c9e-f59f4d1d4eda",
-      "x-amz-apigw-id",
-      "a3R0IFKXvHcFksw=",
-      "x-amzn-trace-id",
-      "Root=1-602c634d-7e836e256ac708600e464f90;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "99",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "598",
-      "x-ratelimit-reset",
-      "59",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/lists", { name: "List One" })
-  .once()
-  .reply(
-    201,
-    {
-      name: "List One",
-      id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-      contact_count: 0,
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:02 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "186",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "8e4a0f86-9ab4-440e-9b08-99b8e23ab092",
-      "x-amz-apigw-id",
-      "a3R0NEaNvHcFZxQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c634d-2c367ab1110e4de31e6a7fd6;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "117",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "599",
-      "x-ratelimit-reset",
-      "59",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 0,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:02 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "685",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "d637c1d3-a35d-4073-940c-cddd4cdf54e8",
-      "x-amz-apigw-id",
-      "a3R0SHzCPHcF_KQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c634e-294efe6f352c06665ea2c5cc;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "95",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "597",
-      "x-ratelimit-reset",
-      "58",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 0,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:03 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "685",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "d203004b-e647-4d66-b91a-4d1d7e712ca9",
-      "x-amz-apigw-id",
-      "a3R0WEd5PHcF_Zw=",
-      "x-amzn-trace-id",
-      "Root=1-602c634e-076e6f477424533a0debc2b4;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "99",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "596",
-      "x-ratelimit-reset",
-      "58",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/lists", { name: "List Two" })
-  .once()
-  .reply(
-    201,
-    {
-      name: "List Two",
-      id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-      contact_count: 0,
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:29:03 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "186",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "0901a07e-ce7d-4377-aa09-6c543cd5ecb2",
-      "x-amz-apigw-id",
-      "a3R0bFxcvHcFnjQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c634f-23f79a6f09fd79dc20d84145;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "127",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "598",
-      "x-ratelimit-reset",
-      "57",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .put("/v3/marketing/contacts", {
-    contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
-    list_ids: [
-      "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-      "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-    ],
-  })
-  .once()
-  .reply(202, { job_id: "db96c6b2-b474-4803-8457-5fbc51fca0f6" }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Wed, 17 Feb 2021 00:29:04 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "50",
-    "Connection",
-    "close",
-    "x-amzn-requestid",
-    "c57ebb7f-9673-4b19-8157-fbe0c319ddc8",
-    "access-control-allow-origin",
-    "*",
-    "access-control-allow-headers",
-    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
-    "x-amz-apigw-id",
-    "a3R0gG40PHcF0mw=",
-    "access-control-allow-methods",
-    "PUT,DELETE,OPTIONS",
-    "access-control-expose-headers",
-    "Link, Location",
-    "x-amzn-trace-id",
-    "Root=1-602c634f-69bda7b265335a9a4bad909c;Sampled=0",
-    "x-envoy-upstream-service-time",
-    "514",
+    "435",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -3264,17 +3562,14 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           city: "",
           country: "",
           email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          first_name: "Evan",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
-          list_ids: [
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          ],
+          list_ids: [],
           postal_code: "",
           segment_ids: null,
           state_province_region: "",
-          phone_number: "",
+          phone_number: "+5583999999998",
           whatsapp: "",
           line: "",
           facebook: "",
@@ -3284,11 +3579,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:29:33Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:38:00Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -3300,21 +3595,100 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:30:05 GMT",
+      "Mon, 10 May 2021 23:38:35 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "817",
+      "758",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "28727edf-2809-4d3c-ab0e-feab0d076db0",
+      "7961ef1f-014a-4204-9908-f5cad167ab1c",
       "x-amz-apigw-id",
-      "a3R-DFyYPHcFxww=",
+      "fIuPOFfmPHcFVPQ=",
       "x-amzn-trace-id",
-      "Root=1-602c638d-315816c93da3abe53d8487e3;Sampled=0",
+      "Root=1-6099c3fa-12bc06f350c5d8f459347b00;Sampled=0",
       "x-envoy-upstream-service-time",
-      "136",
+      "170",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "197",
+      "x-ratelimit-reset",
+      "26",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "Evan",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "+5583999999998",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:38:00Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:38:35 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "758",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "9b337583-149f-4222-bfba-ebcb84d9b21b",
+      "x-amz-apigw-id",
+      "fIuPUHW-vHcFTmg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c3fb-508516a317aa53b442beb8c0;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "141",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -3324,7 +3698,216 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "196",
       "x-ratelimit-reset",
-      "55",
+      "25",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .put("/v3/marketing/contacts", {
+    contacts: [
+      {
+        custom_fields: {},
+        first_name: "",
+        phone_number: "",
+        email: "caio.silveira@mailinator.com",
+      },
+    ],
+    list_ids: [],
+  })
+  .once()
+  .reply(202, { job_id: "e260121a-e699-43c4-9591-60b3f01bd8ef" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:38:36 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "92431c94-0a4c-4de2-951e-630e64ae84d4",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuPaH_LvHcFtjg=",
+    "access-control-allow-methods",
+    "PUT,DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c3fc-262372c92d55da3a35b3a1c9;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "571",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "200",
+    "x-ratelimit-remaining",
+    "198",
+    "x-ratelimit-reset",
+    "24",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:39:06Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "740",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "309d56e4-dd17-40e6-b397-89573288ce07",
+      "x-amz-apigw-id",
+      "fIuUaGV8PHcFgUg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c41c-11e361b90672e5c21bdb71fe;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "319",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "199",
+      "x-ratelimit-reset",
+      "52",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:39:06Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:09 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "740",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "dcc6541a-a0fa-4273-9b52-0d0ce4d34958",
+      "x-amz-apigw-id",
+      "fIuUiFYnvHcFTRA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c41c-5205921d248ab1de3bf8e519;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "138",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "198",
+      "x-ratelimit-reset",
+      "52",
       "Powered-By",
       "SGGateway",
     ]
@@ -3339,34 +3922,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          contact_count: 1,
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -3382,21 +3983,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:30:05 GMT",
+      "Mon, 10 May 2021 23:39:09 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "8a6f6a2c-b612-43d7-9a1e-ac70db5aeb53",
+      "0090a4b7-222c-4b51-8427-40c83c437cd7",
       "x-amz-apigw-id",
-      "a3R-IGuyvHcFRjw=",
+      "fIuUpEhZvHcFzzw=",
       "x-amzn-trace-id",
-      "Root=1-602c638d-3fcec22f78d351692c3b5181;Sampled=0",
+      "Root=1-6099c41d-72567bb10971e9dd3efe8ba6;Sampled=0",
       "x-envoy-upstream-service-time",
-      "136",
+      "103",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -3406,7 +4007,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "55",
+      "51",
       "Powered-By",
       "SGGateway",
     ]
@@ -3421,34 +4022,52 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          contact_count: 1,
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -3464,21 +4083,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:30:06 GMT",
+      "Mon, 10 May 2021 23:39:10 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "1340",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a534daf7-a5d0-471a-9294-702ba4544923",
+      "3fb289fe-9990-4e1e-80c4-420527f0dcb3",
       "x-amz-apigw-id",
-      "a3R-NHWKPHcFqIQ=",
+      "fIuUvHDPPHcFyag=",
       "x-amzn-trace-id",
-      "Root=1-602c638e-34aa180a7ec29cb2272e2211;Sampled=0",
+      "Root=1-6099c41e-462431ea1c9d8adb657dbd9a;Sampled=0",
       "x-envoy-upstream-service-time",
-      "123",
+      "110",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -3488,161 +4107,44 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "598",
       "x-ratelimit-reset",
-      "54",
+      "50",
       "Powered-By",
       "SGGateway",
     ]
   );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
+  .post("/v3/marketing/lists", { name: "List One" })
   .once()
   .reply(
-    200,
+    201,
     {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: [
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          ],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:29:33Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:30:06 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "817",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "22f6b5b8-d394-4779-9ce4-361d509b4e22",
-      "x-amz-apigw-id",
-      "a3R-SG3JvHcFiEw=",
-      "x-amzn-trace-id",
-      "Root=1-602c638e-7dc80c7976fed616040c633d;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "165",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "193",
-      "x-ratelimit-reset",
-      "54",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
+      name: "List One",
+      id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+      contact_count: 0,
       _metadata: {
         self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+          "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
       },
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:30:07 GMT",
+      "Mon, 10 May 2021 23:39:10 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "186",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "ba60c4cc-7fd4-46b0-a054-5f4176e6bb26",
+      "1ae9c6f1-5877-49f8-ac1f-9d2ad70ce630",
       "x-amz-apigw-id",
-      "a3R-YFWZPHcF79Q=",
+      "fIuU0HRSPHcFc-w=",
       "x-amzn-trace-id",
-      "Root=1-602c638f-1a1e607d632c51d84afcbeab;Sampled=0",
+      "Root=1-6099c41e-554838102373cca746055bac;Sampled=0",
       "x-envoy-upstream-service-time",
-      "99",
+      "114",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -3650,333 +4152,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "597",
-      "x-ratelimit-reset",
-      "53",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .put("/v3/marketing/contacts", {
-    contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
-    list_ids: [],
-  })
-  .once()
-  .reply(202, { job_id: "f4f9d48c-6fc7-4738-b4d6-20efbbaa2b97" }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Wed, 17 Feb 2021 00:30:08 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "50",
-    "Connection",
-    "close",
-    "x-amzn-requestid",
-    "86f058b0-cada-4b32-a0f6-19a786501419",
-    "access-control-allow-origin",
-    "*",
-    "access-control-allow-headers",
-    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
-    "x-amz-apigw-id",
-    "a3R-dFvUPHcFoWA=",
-    "access-control-allow-methods",
-    "PUT,DELETE,OPTIONS",
-    "access-control-expose-headers",
-    "Link, Location",
-    "x-amzn-trace-id",
-    "Root=1-602c638f-39a8a4210f4e704435bff775;Sampled=0",
-    "x-envoy-upstream-service-time",
-    "489",
-    "referrer-policy",
-    "strict-origin-when-cross-origin",
-    "x-content-type-options",
-    "nosniff",
-    "x-ratelimit-limit",
-    "200",
-    "x-ratelimit-remaining",
-    "199",
-    "x-ratelimit-reset",
-    "53",
-  ]);
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .get("/v3/marketing/lists")
-  .once()
-  .reply(
-    200,
-    {
-      result: [
-        {
-          name: "Recent Automotive Shoppers",
-          id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
-          },
-        },
-        {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
-          },
-        },
-        {
-          name: "High Value",
-          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
-          },
-        },
-      ],
-      _metadata: {
-        self:
-          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:30:08 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "871",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "26631ded-4edc-4781-89c7-d088f2ca0b0d",
-      "x-amz-apigw-id",
-      "a3R-lFYQvHcFYOQ=",
-      "x-amzn-trace-id",
-      "Root=1-602c6390-03705d8170eca7f0602018a6;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "195",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "600",
-      "x-ratelimit-remaining",
-      "596",
-      "x-ratelimit-reset",
-      "52",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd/contacts")
-  .query({ contact_ids: "dd3827bb-b952-4f9a-84d9-491c698b6a28" })
-  .once()
-  .reply(202, { job_id: "3a7b12f0-af23-4092-b57f-0d105182a42f" }, [
-    "Server",
-    "nginx",
-    "Date",
-    "Wed, 17 Feb 2021 00:30:09 GMT",
-    "Content-Type",
-    "application/json",
-    "Content-Length",
-    "50",
-    "Connection",
-    "close",
-    "x-amzn-requestid",
-    "42ce1190-f0c2-4f38-8715-0feab9811ebf",
-    "access-control-allow-origin",
-    "*",
-    "access-control-allow-headers",
-    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
-    "x-amz-apigw-id",
-    "a3R-rEcxvHcFdqQ=",
-    "access-control-allow-methods",
-    "DELETE,OPTIONS",
-    "access-control-expose-headers",
-    "Link, Location",
-    "x-amzn-trace-id",
-    "Root=1-602c6391-02e137b84aafa9f93fe15028;Sampled=0",
-    "x-envoy-upstream-service-time",
-    "453",
-    "referrer-policy",
-    "strict-origin-when-cross-origin",
-    "x-content-type-options",
-    "nosniff",
-    "x-ratelimit-limit",
-    "600",
-    "x-ratelimit-remaining",
-    "599",
-    "x-ratelimit-reset",
-    "51",
-  ]);
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: ["af966691-c619-4c54-b8b2-a4f5e2f31a49"],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:30:38Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:31:10 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "778",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "4209614a-f8ca-44a9-875c-12962627cf37",
-      "x-amz-apigw-id",
-      "a3SINGS9vHcFm8Q=",
-      "x-amzn-trace-id",
-      "Root=1-602c63cd-563f50107321a1f03f2a5228;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "162",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "184",
-      "x-ratelimit-reset",
-      "51",
-      "Powered-By",
-      "SGGateway",
-    ]
-  );
-nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .post("/v3/marketing/contacts/search", {
-    query: "email = 'caio.silveira@mailinator.com'",
-  })
-  .once()
-  .reply(
-    200,
-    {
-      contact_count: 1,
-      result: [
-        {
-          address_line_1: "",
-          address_line_2: "",
-          alternate_emails: [],
-          city: "",
-          country: "",
-          email: "caio.silveira@mailinator.com",
-          first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          last_name: "Silveira",
-          list_ids: ["af966691-c619-4c54-b8b2-a4f5e2f31a49"],
-          postal_code: "",
-          segment_ids: null,
-          state_province_region: "",
-          phone_number: "",
-          whatsapp: "",
-          line: "",
-          facebook: "",
-          unique_name: "",
-          custom_fields: {
-            date_field: "2021-02-11T23:03:03Z",
-            number_field: 15.5,
-            text_field: "text",
-          },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:30:38Z",
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
-          },
-        },
-      ],
-      _metadata: {
-        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
-      },
-    },
-    [
-      "Server",
-      "nginx",
-      "Date",
-      "Wed, 17 Feb 2021 00:31:10 GMT",
-      "Content-Type",
-      "application/json",
-      "Content-Length",
-      "778",
-      "Connection",
-      "close",
-      "x-amzn-requestid",
-      "bed25ff8-0bde-4119-ae05-09a9e8ed297c",
-      "x-amz-apigw-id",
-      "a3SITHDrvHcFa0A=",
-      "x-amzn-trace-id",
-      "Root=1-602c63ce-6b1649b52a8a970b5107bbfd;Sampled=0",
-      "x-envoy-upstream-service-time",
-      "159",
-      "referrer-policy",
-      "strict-origin-when-cross-origin",
-      "x-content-type-options",
-      "nosniff",
-      "x-ratelimit-limit",
-      "200",
-      "x-ratelimit-remaining",
-      "182",
+      "599",
       "x-ratelimit-reset",
       "50",
       "Powered-By",
@@ -3993,34 +4169,61 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4036,21 +4239,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:31:11 GMT",
+      "Mon, 10 May 2021 23:39:11 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "1526",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "1db8e5ba-cb80-4cb7-8a2f-3aeaae71baab",
+      "279d131f-4a60-448a-abdb-18ef8bb3e5ca",
       "x-amz-apigw-id",
-      "a3SIZFvNvHcFWdA=",
+      "fIuU5GuzPHcFVOA=",
       "x-amzn-trace-id",
-      "Root=1-602c63cf-6b9464f152f7ed9e227f595f;Sampled=0",
+      "Root=1-6099c41f-51d2b96c03e4a89e26f1c4db;Sampled=0",
       "x-envoy-upstream-service-time",
-      "106",
+      "120",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4058,7 +4261,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "599",
+      "597",
       "x-ratelimit-reset",
       "49",
       "Powered-By",
@@ -4075,34 +4278,61 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4118,21 +4348,68 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:31:11 GMT",
+      "Mon, 10 May 2021 23:39:11 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "1526",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e40860b7-b05c-4560-ade4-3bc25d1dddf7",
+      "7ebefad7-8185-4e3a-9bca-71b8e0cb1087",
       "x-amz-apigw-id",
-      "a3SIfGv6vHcF8bg=",
+      "fIuU_F6kvHcFb3A=",
       "x-amzn-trace-id",
-      "Root=1-602c63cf-60391bb24856b38323c09549;Sampled=0",
+      "Root=1-6099c41f-4618b7b51a2f781b54566e88;Sampled=0",
       "x-envoy-upstream-service-time",
-      "125",
+      "113",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "596",
+      "x-ratelimit-reset",
+      "49",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/lists", { name: "List Two" })
+  .once()
+  .reply(
+    201,
+    {
+      name: "List Two",
+      id: "632f6427-3d80-4319-99d3-f90766888351",
+      contact_count: 0,
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:12 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "186",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "6be927ea-8c9f-4548-bdc5-bb91256dec2c",
+      "x-amz-apigw-id",
+      "fIuVEHgxPHcFsFw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c420-6f834711726b592111296813;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "124",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4142,7 +4419,136 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "598",
       "x-ratelimit-reset",
-      "49",
+      "48",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .put("/v3/marketing/contacts", {
+    contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
+    list_ids: [
+      "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+      "632f6427-3d80-4319-99d3-f90766888351",
+    ],
+  })
+  .once()
+  .reply(202, { job_id: "53c92856-1c27-4bd4-a73d-ed7bd9b3f2dc" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:39:13 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "c4081134-98d8-4a45-b92d-7eb63eb0e1cc",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuVKEmKvHcFmPQ=",
+    "access-control-allow-methods",
+    "PUT,DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c420-516c83fc03c12b4213df5f8a;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "633",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "200",
+    "x-ratelimit-remaining",
+    "199",
+    "x-ratelimit-reset",
+    "48",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:39:43Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:44 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "817",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "be6e7b2f-08b6-48de-8dbd-184adece6a8b",
+      "x-amz-apigw-id",
+      "fIuaAFiePHcFkJQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c43f-4ac4352d74f7e35c589589a3;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "282",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "197",
+      "x-ratelimit-reset",
+      "17",
       "Powered-By",
       "SGGateway",
     ]
@@ -4157,34 +4563,70 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4200,19 +4642,1053 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:31:12 GMT",
+      "Mon, 10 May 2021 23:39:44 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "871",
+      "1712",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "428b96c7-c897-4913-adab-8ee8561f974c",
+      "20bab12b-ee53-41ae-8839-8fc67e49716c",
       "x-amz-apigw-id",
-      "a3SIlF7tvHcFiew=",
+      "fIuaHFnPPHcF56A=",
       "x-amzn-trace-id",
-      "Root=1-602c63d0-792af4114f453f242070ab66;Sampled=0",
+      "Root=1-6099c440-31db3b057a0b770f3d2a8851;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "107",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "595",
+      "x-ratelimit-reset",
+      "16",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:45 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "c50e941f-7fc1-4a28-b5d0-d6027e359f94",
+      "x-amz-apigw-id",
+      "fIuaNH--PHcF0Fg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c441-0cdccea047b3eb551b269f94;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "106",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "594",
+      "x-ratelimit-reset",
+      "15",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: [
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:39:43Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:45 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "817",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "14b0c326-4b61-4f30-ad31-6b6da0657341",
+      "x-amz-apigw-id",
+      "fIuaSHOKvHcFbWw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c441-5b415e5f1cba966b6fa00d41;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "141",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "196",
+      "x-ratelimit-reset",
+      "15",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:46 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "e1ad01a4-7e4e-4fad-a8ab-8890435a5ea1",
+      "x-amz-apigw-id",
+      "fIuaYEUCvHcFj2A=",
+      "x-amzn-trace-id",
+      "Root=1-6099c442-4c9e8d8506d561c870ab547c;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "103",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "593",
+      "x-ratelimit-reset",
+      "14",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .put("/v3/marketing/contacts", {
+    contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
+    list_ids: [],
+  })
+  .once()
+  .reply(202, { job_id: "bdeff2d1-11b8-406e-ad5d-f241d9b04de9" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:39:47 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "87918f30-80f1-48ac-ac67-cd53b3865d51",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuaeGzaPHcFwpA=",
+    "access-control-allow-methods",
+    "PUT,DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c442-110b47df038f90b36bf3738c;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "543",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "200",
+    "x-ratelimit-remaining",
+    "198",
+    "x-ratelimit-reset",
+    "14",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:39:47 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "51a61c23-65a5-4619-975b-10656c719db5",
+      "x-amz-apigw-id",
+      "fIuanGUivHcFW8w=",
+      "x-amzn-trace-id",
+      "Root=1-6099c443-0eaf00d376a97b73689ec501;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "138",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "592",
+      "x-ratelimit-reset",
+      "13",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .delete("/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351/contacts")
+  .query({ contact_ids: "fed1e586-b11c-42c9-9ecf-e1f823b71a62" })
+  .once()
+  .reply(202, { job_id: "a267831e-b2aa-42f5-825e-7305d973a1bc" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:39:48 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "7d1901d1-8127-43a8-bf39-14cfacd7f96b",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuatGknPHcF5Yg=",
+    "access-control-allow-methods",
+    "DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c444-2b97dd966391950712e31956;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "424",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "600",
+    "x-ratelimit-remaining",
+    "599",
+    "x-ratelimit-reset",
+    "12",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: ["d3749cad-9066-43ba-bd8b-f6b3eb8289ed"],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:18Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:40:19 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "778",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "a235e46b-0503-4dbf-ba01-b629097b9f48",
+      "x-amz-apigw-id",
+      "fIufjFWdPHcFlkw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c463-328874f043ab51b00db0f4fd;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "165",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "199",
+      "x-ratelimit-reset",
+      "41",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          last_name: "Silveira",
+          list_ids: ["d3749cad-9066-43ba-bd8b-f6b3eb8289ed"],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {
+            date_field: "2021-02-11T23:03:03Z",
+            number_field: 15.5,
+            text_field: "text",
+          },
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:18Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:40:20 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "778",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "3a6c520a-7812-4be2-94b5-e6c215e94a03",
+      "x-amz-apigw-id",
+      "fIufqHJePHcFrdw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c464-6f4a5d2b6397197421d7508f;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "153",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "198",
+      "x-ratelimit-reset",
+      "40",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:40:20 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "de1e32a2-329b-4982-aabc-8eca2d138914",
+      "x-amz-apigw-id",
+      "fIufwHsKvHcF88w=",
+      "x-amzn-trace-id",
+      "Root=1-6099c464-500001535becb0d95a0c049d;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "132",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "599",
+      "x-ratelimit-reset",
+      "40",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:40:21 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "50e82c9b-f03a-48c4-bab3-76c96e6e5cb3",
+      "x-amz-apigw-id",
+      "fIuf1HQzPHcF4UA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c465-61fd00f258355ddc4ebdf64b;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "124",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "598",
+      "x-ratelimit-reset",
+      "39",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:40:21 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "1712",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "86e14277-0075-410a-b10a-69d83e593ab4",
+      "x-amz-apigw-id",
+      "fIuf7FrovHcFuAA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c465-7b09af2e48adb3a943cc039b;Sampled=0",
       "x-envoy-upstream-service-time",
       "111",
       "referrer-policy",
@@ -4224,7 +5700,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "597",
       "x-ratelimit-reset",
-      "48",
+      "39",
       "Powered-By",
       "SGGateway",
     ]
@@ -4236,18 +5712,18 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     201,
     {
       name: "List Three",
-      id: "400d3819-fd76-4597-8e31-f955a6a828d1",
+      id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
       contact_count: 0,
       _metadata: {
         self:
-          "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
+          "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
       },
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:31:13 GMT",
+      "Mon, 10 May 2021 23:40:22 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4255,13 +5731,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "ea7135c2-0326-483a-90be-780c3b508b49",
+      "2105bdb6-5959-4d4e-911e-bb2a6042a7c5",
       "x-amz-apigw-id",
-      "a3SIrGpIPHcFr6Q=",
+      "fIugBF0jvHcFkbg=",
       "x-amzn-trace-id",
-      "Root=1-602c63d0-1fccbf663f6dd15111a6f6f4;Sampled=0",
+      "Root=1-6099c466-5e8e451c258af882698e5ad7;Sampled=0",
       "x-envoy-upstream-service-time",
-      "123",
+      "137",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4271,7 +5747,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "48",
+      "38",
       "Powered-By",
       "SGGateway",
     ]
@@ -4280,16 +5756,16 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .put("/v3/marketing/contacts", {
     contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
     list_ids: [
-      "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-      "400d3819-fd76-4597-8e31-f955a6a828d1",
+      "632f6427-3d80-4319-99d3-f90766888351",
+      "42e0783e-54ae-4548-9fe6-943d2e6fa835",
     ],
   })
   .once()
-  .reply(202, { job_id: "754da8da-ea80-4b5c-ba7d-dcb340611752" }, [
+  .reply(202, { job_id: "cef07c4d-2815-4151-9700-642595492d8c" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:31:14 GMT",
+    "Mon, 10 May 2021 23:40:23 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4297,21 +5773,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "cecf70de-f764-44fa-8417-f5bd0cba017c",
+    "26fea9f4-1884-433e-b6c5-4fb16e904140",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3SIwHdFvHcF9JA=",
+    "fIugGHXQvHcFZiA=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c63d1-1d0232e6282e205d1a7777d0;Sampled=0",
+    "Root=1-6099c466-23b24c4e6b1dbdb65f52c667;Sampled=0",
     "x-envoy-upstream-service-time",
-    "613",
+    "541",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -4321,7 +5797,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "47",
+    "38",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -4341,12 +5817,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-            "400d3819-fd76-4597-8e31-f955a6a828d1",
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           ],
           postal_code: "",
           segment_ids: null,
@@ -4361,11 +5837,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:31:42Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -4377,7 +5853,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:14 GMT",
+      "Mon, 10 May 2021 23:40:54 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4385,13 +5861,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "9bfc870f-56c9-4656-bd35-b6607b92b641",
+      "a1259a95-3f84-4eb0-b68d-56b9f5fc7a18",
       "x-amz-apigw-id",
-      "a3SSTEPPPHcFd6Q=",
+      "fIuk_GUovHcFXCw=",
       "x-amzn-trace-id",
-      "Root=1-602c640e-7bf30a863ef60b1630c5750f;Sampled=0",
+      "Root=1-6099c486-612565fc741a1877391579e1;Sampled=0",
       "x-envoy-upstream-service-time",
-      "151",
+      "204",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4399,9 +5875,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "191",
+      "197",
       "x-ratelimit-reset",
-      "46",
+      "6",
       "Powered-By",
       "SGGateway",
     ]
@@ -4416,43 +5892,79 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List Three",
-          id: "400d3819-fd76-4597-8e31-f955a6a828d1",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4468,21 +5980,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:15 GMT",
+      "Mon, 10 May 2021 23:40:55 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1059",
+      "1900",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "efdf4504-5003-4ddb-bf04-6148cb754fb1",
+      "6281a341-1bf3-4972-bbd5-21d4c7006f64",
       "x-amz-apigw-id",
-      "a3SSZGnaPHcFbrA=",
+      "fIulHFxsvHcFqsg=",
       "x-amzn-trace-id",
-      "Root=1-602c640f-1f38e8f571a7f6207f9dadda;Sampled=0",
+      "Root=1-6099c487-39b8c048415aa1485c3f06f4;Sampled=0",
       "x-envoy-upstream-service-time",
-      "98",
+      "120",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4490,9 +6002,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "599",
+      "596",
       "x-ratelimit-reset",
-      "45",
+      "5",
       "Powered-By",
       "SGGateway",
     ]
@@ -4515,12 +6027,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-            "400d3819-fd76-4597-8e31-f955a6a828d1",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           ],
           postal_code: "",
           segment_ids: null,
@@ -4535,11 +6047,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:31:42Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -4551,7 +6063,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:15 GMT",
+      "Mon, 10 May 2021 23:40:55 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4559,13 +6071,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a466964f-e006-45d2-b979-b7887b777178",
+      "4f7067b9-3641-4073-bd79-31af1b0429a7",
       "x-amz-apigw-id",
-      "a3SSfEZ9vHcFn4A=",
+      "fIulNGrgPHcF7bg=",
       "x-amzn-trace-id",
-      "Root=1-602c640f-0bd64bd036b35b9826aff23b;Sampled=0",
+      "Root=1-6099c487-008b873c57e89de046bdb794;Sampled=0",
       "x-envoy-upstream-service-time",
-      "149",
+      "178",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4573,9 +6085,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "190",
+      "196",
       "x-ratelimit-reset",
-      "45",
+      "5",
       "Powered-By",
       "SGGateway",
     ]
@@ -4586,11 +6098,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "3519c72d-8216-488c-983a-0006766559e9" }, [
+  .reply(202, { job_id: "067fa0f8-500d-4217-9d3d-48ba48c6518e" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:32:16 GMT",
+    "Mon, 10 May 2021 23:40:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -4598,21 +6110,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "cf9b758c-e15f-4585-b1ce-b219b40855ff",
+    "d0db52b3-e247-4a51-9b76-ef630fd89869",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3SSlE3BvHcFd0A=",
+    "fIulTFV_PHcFm1w=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6410-6468e1974187415e30532b68;Sampled=0",
+    "Root=1-6099c488-37b1ea672e86ad7c10a70c16;Sampled=0",
     "x-envoy-upstream-service-time",
-    "496",
+    "454",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -4620,9 +6132,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-limit",
     "200",
     "x-ratelimit-remaining",
-    "199",
+    "198",
     "x-ratelimit-reset",
-    "44",
+    "4",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .get("/v3/marketing/lists")
@@ -4634,43 +6146,79 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List Three",
-          id: "400d3819-fd76-4597-8e31-f955a6a828d1",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4686,21 +6234,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:17 GMT",
+      "Mon, 10 May 2021 23:40:57 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1059",
+      "1900",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "503a3bea-ed38-4bb9-8564-c4d7a1764427",
+      "2b915383-08fe-4ba8-bb4c-7028a83fb0e6",
       "x-amz-apigw-id",
-      "a3SSvFUsvHcF2CA=",
+      "fIulbEoTPHcFiuQ=",
       "x-amzn-trace-id",
-      "Root=1-602c6411-2369f7420f5573405d95f509;Sampled=0",
+      "Root=1-6099c489-1698ee8e286f5d4c2862cc42;Sampled=0",
       "x-envoy-upstream-service-time",
-      "115",
+      "119",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4708,9 +6256,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "598",
+      "595",
       "x-ratelimit-reset",
-      "43",
+      "3",
       "Powered-By",
       "SGGateway",
     ]
@@ -4725,43 +6273,79 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List Three",
-          id: "400d3819-fd76-4597-8e31-f955a6a828d1",
-          contact_count: 1,
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -4777,21 +6361,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:18 GMT",
+      "Mon, 10 May 2021 23:40:57 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1059",
+      "1900",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "68fc9c23-63e4-4b2a-9995-7101ab66d05e",
+      "871bba05-7086-4d6a-a232-3e5f3657500a",
       "x-amz-apigw-id",
-      "a3SS1EygvHcFj8A=",
+      "fIulgGElvHcFv0A=",
       "x-amzn-trace-id",
-      "Root=1-602c6412-76e9cd37684d8b9d77aab093;Sampled=0",
+      "Root=1-6099c489-3fbe02985dc42f6a0687b396;Sampled=0",
       "x-envoy-upstream-service-time",
-      "113",
+      "101",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4799,9 +6383,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "597",
+      "594",
       "x-ratelimit-reset",
-      "42",
+      "3",
       "Powered-By",
       "SGGateway",
     ]
@@ -4813,18 +6397,18 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     201,
     {
       name: "List Four",
-      id: "b5a03dde-1b82-479d-8c9f-5685147503ad",
+      id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
       contact_count: 0,
       _metadata: {
         self:
-          "https://api.sendgrid.com/v3/marketing/lists/b5a03dde-1b82-479d-8c9f-5685147503ad",
+          "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
       },
     },
     [
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:32:18 GMT",
+      "Mon, 10 May 2021 23:40:58 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4832,13 +6416,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "d469a999-4e20-46fe-bf56-0494bf3df9ef",
+      "b795bfc7-5fed-4461-87f6-546ff6e58424",
       "x-amz-apigw-id",
-      "a3SS7HgBvHcFp6g=",
+      "fIulmHs6PHcFbKA=",
       "x-amzn-trace-id",
-      "Root=1-602c6412-094d31a0512dd583750c9e95;Sampled=0",
+      "Root=1-6099c48a-62fb30de136199261ac894a8;Sampled=0",
       "x-envoy-upstream-service-time",
-      "122",
+      "125",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4846,9 +6430,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "600",
       "x-ratelimit-remaining",
-      "599",
+      "598",
       "x-ratelimit-reset",
-      "42",
+      "2",
       "Powered-By",
       "SGGateway",
     ]
@@ -4871,12 +6455,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-            "400d3819-fd76-4597-8e31-f955a6a828d1",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           ],
           postal_code: "",
           segment_ids: null,
@@ -4891,11 +6475,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:31:42Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -4907,7 +6491,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:33:19 GMT",
+      "Mon, 10 May 2021 23:41:28 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -4915,13 +6499,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "c16faa65-8f2e-41d0-bad7-f5bfd7fc9434",
+      "b87557cb-cc38-4769-a4b8-5eba2ee3e3f6",
       "x-amz-apigw-id",
-      "a3ScZGlUPHcF_KQ=",
+      "fIuqYECfvHcFzJQ=",
       "x-amzn-trace-id",
-      "Root=1-602c644f-2e755c693dab4ae25ec83ad9;Sampled=0",
+      "Root=1-6099c4a8-6bf01b6a591420ed2e5fad68;Sampled=0",
       "x-envoy-upstream-service-time",
-      "130",
+      "239",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -4929,9 +6513,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "188",
+      "199",
       "x-ratelimit-reset",
-      "41",
+      "32",
       "Powered-By",
       "SGGateway",
     ]
@@ -4946,52 +6530,88 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
-          name: "List Three",
-          id: "400d3819-fd76-4597-8e31-f955a6a828d1",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
-          },
-        },
-        {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          contact_count: 1,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Four",
-          id: "b5a03dde-1b82-479d-8c9f-5685147503ad",
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/b5a03dde-1b82-479d-8c9f-5685147503ad",
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
           contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -5007,21 +6627,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:33:19 GMT",
+      "Mon, 10 May 2021 23:41:29 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1246",
+      "2087",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "34dc3022-218d-46f7-9bd3-ac14355e3e09",
+      "7cbee37e-44d8-428d-96f8-d150cc134971",
       "x-amz-apigw-id",
-      "a3ScfFNvPHcFT6Q=",
+      "fIuqfFJyPHcFuYg=",
       "x-amzn-trace-id",
-      "Root=1-602c644f-533c46594dd29e2e4871681a;Sampled=0",
+      "Root=1-6099c4a9-0e433d9848f5becf6174f6cd;Sampled=0",
       "x-envoy-upstream-service-time",
-      "91",
+      "105",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5031,7 +6651,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "41",
+      "31",
       "Powered-By",
       "SGGateway",
     ]
@@ -5054,7 +6674,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:33:20 GMT",
+      "Mon, 10 May 2021 23:41:30 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5062,13 +6682,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "c7144000-6c7f-48ea-a2b1-5ab4ab08c8a6",
+      "3efd0a85-7600-4a03-ba82-95c6ff5bdaa1",
       "x-amz-apigw-id",
-      "a3ScjF7NPHcFyWg=",
+      "fIuqlHpfPHcFUdg=",
       "x-amzn-trace-id",
-      "Root=1-602c6450-6efb468965b847387e9d5776;Sampled=0",
+      "Root=1-6099c4aa-1da89d9d39dd54936f9e8b21;Sampled=0",
       "x-envoy-upstream-service-time",
-      "187",
+      "146",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5076,9 +6696,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "186",
+      "198",
       "x-ratelimit-reset",
-      "40",
+      "30",
       "Powered-By",
       "SGGateway",
     ]
@@ -5101,12 +6721,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "caio.silveira@mailinator.com",
           first_name: "",
-          id: "dd3827bb-b952-4f9a-84d9-491c698b6a28",
+          id: "fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           last_name: "Silveira",
           list_ids: [
-            "c584270c-5aa4-4f28-b02b-195bddcf59fd",
-            "af966691-c619-4c54-b8b2-a4f5e2f31a49",
-            "400d3819-fd76-4597-8e31-f955a6a828d1",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
           ],
           postal_code: "",
           segment_ids: null,
@@ -5121,11 +6741,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
             number_field: 15.5,
             text_field: "text",
           },
-          created_at: "2021-02-17T00:23:45Z",
-          updated_at: "2021-02-17T00:31:42Z",
+          created_at: "2021-05-10T23:36:19Z",
+          updated_at: "2021-05-10T23:40:53Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/dd3827bb-b952-4f9a-84d9-491c698b6a28",
+              "https://api.sendgrid.com/v3/marketing/contacts/fed1e586-b11c-42c9-9ecf-e1f823b71a62",
           },
         },
       ],
@@ -5137,7 +6757,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:33:21 GMT",
+      "Mon, 10 May 2021 23:41:30 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5145,13 +6765,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e709add7-edc8-4387-a29b-1cfd802284b8",
+      "0aa50c2f-6573-4ead-bf2a-9cc68a16cf06",
       "x-amz-apigw-id",
-      "a3ScqHNkvHcFXmQ=",
+      "fIuqrEgNvHcF_Rw=",
       "x-amzn-trace-id",
-      "Root=1-602c6450-24e98d725f02756a57cff1ca;Sampled=0",
+      "Root=1-6099c4aa-7aa2561b15472ccb1313e761;Sampled=0",
       "x-envoy-upstream-service-time",
-      "115",
+      "156",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5159,22 +6779,22 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "185",
+      "197",
       "x-ratelimit-reset",
-      "40",
+      "30",
       "Powered-By",
       "SGGateway",
     ]
   );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .delete("/v3/marketing/contacts")
-  .query({ ids: "dd3827bb-b952-4f9a-84d9-491c698b6a28" })
+  .query({ ids: "fed1e586-b11c-42c9-9ecf-e1f823b71a62" })
   .once()
-  .reply(202, { job_id: "80207e87-a8e4-4132-b1ce-0ddfa921c5c4" }, [
+  .reply(202, { job_id: "1c2b6dbb-19d4-45d9-9364-8d215cf4b7f6" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:33:21 GMT",
+    "Mon, 10 May 2021 23:41:31 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5182,21 +6802,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "ca2b23ee-e064-4d73-b307-32425335caec",
+    "e85b1757-1fea-4e3e-8d1d-e41e68458b43",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3ScvEYOvHcFTeQ=",
+    "fIuqxES1PHcF7fA=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6451-1468d25232dd76bb49d723d9;Sampled=0",
+    "Root=1-6099c4ab-608c171b5b262c1f080fc49b;Sampled=0",
     "x-envoy-upstream-service-time",
-    "428",
+    "727",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -5206,19 +6826,294 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "39",
+    "29",
   ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:41:32 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "a98d35a5-9f7e-4945-934f-066da7cd28d1",
+      "x-amz-apigw-id",
+      "fIuq8E7pvHcFX6w=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4ac-0b8e618209e9220b5fc31bdd;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "122",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "598",
+      "x-ratelimit-reset",
+      "28",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:41:32 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "ef36d1ab-046c-4096-93d3-3707e5a40d2f",
+      "x-amz-apigw-id",
+      "fIurBFsDPHcFneQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4ac-4c9538cf37c87c783918a322;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "132",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "597",
+      "x-ratelimit-reset",
+      "28",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .put("/v3/marketing/contacts", {
     contacts: [{ custom_fields: {}, email: "lucas.nogueira@mailinator.com" }],
-    list_ids: [],
+    list_ids: [
+      "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+      "632f6427-3d80-4319-99d3-f90766888351",
+    ],
   })
   .once()
-  .reply(202, { job_id: "021bc4a3-f8c8-4005-8013-5a3d51bf5464" }, [
+  .reply(202, { job_id: "54ebedb3-0554-4653-a72e-c676d3f2b9fa" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:33:22 GMT",
+    "Mon, 10 May 2021 23:41:33 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5226,21 +7121,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "ab7e2a02-08fa-4a94-92cd-d06b11eec31c",
+    "64ac41ca-32c4-41ec-91ac-a3ab2b9b2474",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3Sc3Fa1vHcF1sA=",
+    "fIurHGR6PHcFoKg=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6452-717c88af30e93ac043647ecc;Sampled=0",
+    "Root=1-6099c4ad-61facdc66dec8ca8778071f9;Sampled=0",
     "x-envoy-upstream-service-time",
-    "457",
+    "552",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -5250,7 +7145,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "38",
+    "27",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -5270,9 +7165,12 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "lucas.nogueira@mailinator.com",
           first_name: "",
-          id: "4be8be2d-f7a2-4462-99c2-ce5cab2138e0",
+          id: "745843ab-7ed3-486d-8ff5-79bfae418772",
           last_name: "",
-          list_ids: [],
+          list_ids: [
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
           postal_code: "",
           segment_ids: null,
           state_province_region: "",
@@ -5282,11 +7180,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:33:22Z",
-          updated_at: "2021-02-17T00:33:51Z",
+          created_at: "2021-05-10T23:41:33Z",
+          updated_at: "2021-05-10T23:42:03Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/4be8be2d-f7a2-4462-99c2-ce5cab2138e0",
+              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -5298,21 +7196,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:34:23 GMT",
+      "Mon, 10 May 2021 23:42:04 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "658",
+      "735",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "fb2843f1-f1e1-40d6-b1dc-4bc1cb41acfc",
+      "2bc9f1ca-6d4b-4043-be96-b4ce7e9c725c",
       "x-amz-apigw-id",
-      "a3SmZHD2PHcFlZw=",
+      "fIuv9E6YvHcFx2Q=",
       "x-amzn-trace-id",
-      "Root=1-602c648f-63663b357955ca5952e63ae0;Sampled=0",
+      "Root=1-6099c4cc-2bd57c4c4b30cc905f401005;Sampled=0",
       "x-envoy-upstream-service-time",
-      "128",
+      "162",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5320,9 +7218,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "183",
+      "199",
       "x-ratelimit-reset",
-      "37",
+      "56",
       "Powered-By",
       "SGGateway",
     ]
@@ -5345,7 +7243,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:34:23 GMT",
+      "Mon, 10 May 2021 23:42:05 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5353,13 +7251,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "df90d129-4036-404f-a4aa-7610558cdc5c",
+      "f819c87d-bf27-407f-a059-e19f1c06d88f",
       "x-amz-apigw-id",
-      "a3SmeGIfvHcFXcg=",
+      "fIuwCHc1PHcFScg=",
       "x-amzn-trace-id",
-      "Root=1-602c648f-5cd7aa756e009f4e5e154625;Sampled=0",
+      "Root=1-6099c4cc-6c84848d74ce4f8022d75d4f;Sampled=0",
       "x-envoy-upstream-service-time",
-      "117",
+      "161",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5367,9 +7265,1236 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "181",
+      "198",
       "x-ratelimit-reset",
-      "37",
+      "56",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 0,
+      result: [],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:05 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "109",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "88221365-76cf-4d58-9346-393d09778974",
+      "x-amz-apigw-id",
+      "fIuwIFdivHcFe_g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4cd-4e3572b0631fd48718226263;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "286",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "197",
+      "x-ratelimit-reset",
+      "55",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'lucas.nogueira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "lucas.nogueira@mailinator.com",
+          first_name: "",
+          id: "745843ab-7ed3-486d-8ff5-79bfae418772",
+          last_name: "",
+          list_ids: [
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:41:33Z",
+          updated_at: "2021-05-10T23:42:03Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:06 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "735",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "be63c4e7-2dd7-4fd5-89ba-2514cf03b3e3",
+      "x-amz-apigw-id",
+      "fIuwPGXtvHcF8RQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4ce-06819d2c75d2b9bc07fabfac;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "153",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "196",
+      "x-ratelimit-reset",
+      "54",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:06 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "c8c82cac-19c2-4c91-ac35-29e114c6edfb",
+      "x-amz-apigw-id",
+      "fIuwVHUQvHcFj2g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4ce-27595e5a240cb0173de74a62;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "149",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "599",
+      "x-ratelimit-reset",
+      "54",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .delete("/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed/contacts")
+  .query({ contact_ids: "745843ab-7ed3-486d-8ff5-79bfae418772" })
+  .once()
+  .reply(202, { job_id: "fb4de9da-30a8-4a55-8406-9bde5b5af814" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:42:07 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "b32ab570-ba5f-447d-a133-91042a7c4da0",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuwbE2QPHcFecg=",
+    "access-control-allow-methods",
+    "DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c4cf-4d72f83004684a032c226ee3;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "555",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "600",
+    "x-ratelimit-remaining",
+    "599",
+    "x-ratelimit-reset",
+    "53",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:08 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "f81eead6-fa7f-4fa2-a99c-6c331c0752a6",
+      "x-amz-apigw-id",
+      "fIuwkGcePHcFWsA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4d0-5c709d17244654f336879cfd;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "122",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "598",
+      "x-ratelimit-reset",
+      "52",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .delete("/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351/contacts")
+  .query({ contact_ids: "745843ab-7ed3-486d-8ff5-79bfae418772" })
+  .once()
+  .reply(202, { job_id: "8710359c-3604-43a3-b7b4-1dc9a7362832" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:42:09 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "5cecf526-58dc-43ab-8de6-67159d9278b7",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuwqHH1vHcFsoA=",
+    "access-control-allow-methods",
+    "DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c4d0-7ebdf14079a6ac77287a608e;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "779",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "600",
+    "x-ratelimit-remaining",
+    "599",
+    "x-ratelimit-reset",
+    "52",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "488b1018-9ba8-4e66-a348-c75c2ff372fb",
+      "x-amz-apigw-id",
+      "fIuw2HIMPHcFoJQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4d2-3530832312652a1440813779;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "160",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "597",
+      "x-ratelimit-reset",
+      "50",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:10 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "cf9f5f82-155e-494c-835b-2b91d2036d90",
+      "x-amz-apigw-id",
+      "fIuw7E7CvHcFdGA=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4d2-3693119107b51738349fce45;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "122",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "596",
+      "x-ratelimit-reset",
+      "50",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:11 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "d1e0e045-d7c4-4c7b-a81b-1cfa90ae351a",
+      "x-amz-apigw-id",
+      "fIuxBGBsPHcFmDg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4d3-2ace32044caab6a8214ba656;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "124",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "595",
+      "x-ratelimit-reset",
+      "49",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .get("/v3/marketing/lists")
+  .once()
+  .reply(
+    200,
+    {
+      result: [
+        {
+          name: "Recent Automotive Shoppers",
+          id: "01c956e2-58f5-4957-885b-62624cf157c7",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
+          },
+        },
+        {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
+          name: "List Three",
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          },
+        },
+        {
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
+          },
+        },
+        {
+          name: "List Two",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          },
+        },
+        {
+          name: "High Value",
+          id: "faf2f326-ff23-44f1-bd34-554932b0723b",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
+          },
+        },
+      ],
+      _metadata: {
+        self:
+          "https://api.sendgrid.com/v3/marketing/lists?page_size=100&page_token=",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:11 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "2087",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "4964c05e-09e1-411d-b0a0-59f42ac47584",
+      "x-amz-apigw-id",
+      "fIuxGFz1vHcFTDw=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4d3-7b2c1f0679e09c651ed7f154;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "112",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "600",
+      "x-ratelimit-remaining",
+      "594",
+      "x-ratelimit-reset",
+      "49",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .put("/v3/marketing/contacts", {
+    contacts: [{ custom_fields: {}, email: "caio.silveira@mailinator.com" }],
+    list_ids: [
+      "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+      "632f6427-3d80-4319-99d3-f90766888351",
+      "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+    ],
+  })
+  .once()
+  .reply(202, { job_id: "ce3d93a5-ba77-4df7-9e0e-ec7451073577" }, [
+    "Server",
+    "nginx",
+    "Date",
+    "Mon, 10 May 2021 23:42:12 GMT",
+    "Content-Type",
+    "application/json",
+    "Content-Length",
+    "50",
+    "Connection",
+    "close",
+    "x-amzn-requestid",
+    "efb53594-cdc8-41da-937c-20af977a3942",
+    "access-control-allow-origin",
+    "*",
+    "access-control-allow-headers",
+    "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
+    "x-amz-apigw-id",
+    "fIuxMHhbvHcFmKg=",
+    "access-control-allow-methods",
+    "PUT,DELETE,OPTIONS",
+    "access-control-expose-headers",
+    "Link, Location",
+    "x-amzn-trace-id",
+    "Root=1-6099c4d4-016edc8c24c4188968096b9b;Sampled=0",
+    "x-envoy-upstream-service-time",
+    "697",
+    "referrer-policy",
+    "strict-origin-when-cross-origin",
+    "x-content-type-options",
+    "nosniff",
+    "x-ratelimit-limit",
+    "200",
+    "x-ratelimit-remaining",
+    "199",
+    "x-ratelimit-reset",
+    "48",
+  ]);
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'lucas.nogueira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "lucas.nogueira@mailinator.com",
+          first_name: "",
+          id: "745843ab-7ed3-486d-8ff5-79bfae418772",
+          last_name: "",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:41:33Z",
+          updated_at: "2021-05-10T23:42:39Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:43 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "658",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "3f2c70af-9e53-4f43-826a-ad3d7390c474",
+      "x-amz-apigw-id",
+      "fIu2FFeWPHcFozg=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4f3-1c43ae671b975a701a4076a8;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "348",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "195",
+      "x-ratelimit-reset",
+      "17",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'caio.silveira@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+          last_name: "",
+          list_ids: [
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:42:12Z",
+          updated_at: "2021-05-10T23:42:42Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:42:44 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "773",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "ae978edd-276a-4371-ba09-c834c7868856",
+      "x-amz-apigw-id",
+      "fIu2OGfuPHcFv6g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c4f4-2a4a3b5d41d1f53c3678d44a;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "141",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "194",
+      "x-ratelimit-reset",
+      "16",
       "Powered-By",
       "SGGateway",
     ]
@@ -5392,7 +8517,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:34:24 GMT",
+      "Mon, 10 May 2021 23:42:45 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5400,13 +8525,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "18290957-60b5-47f1-905f-e52b02b5090c",
+      "bfdd3a54-88e8-44f9-ad2e-965d7a923319",
       "x-amz-apigw-id",
-      "a3SmjG3jvHcF4mg=",
+      "fIu2TFg1vHcF0Lg=",
       "x-amzn-trace-id",
-      "Root=1-602c6490-2b0c5ab70a65c9d3797f3406;Sampled=0",
+      "Root=1-6099c4f5-08393ab26306c7bf730c0b62;Sampled=0",
       "x-envoy-upstream-service-time",
-      "138",
+      "159",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5414,9 +8539,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "180",
+      "193",
       "x-ratelimit-reset",
-      "36",
+      "15",
       "Powered-By",
       "SGGateway",
     ]
@@ -5439,7 +8564,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "lucas.nogueira@mailinator.com",
           first_name: "",
-          id: "4be8be2d-f7a2-4462-99c2-ce5cab2138e0",
+          id: "745843ab-7ed3-486d-8ff5-79bfae418772",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -5451,11 +8576,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:33:22Z",
-          updated_at: "2021-02-17T00:33:51Z",
+          created_at: "2021-05-10T23:41:33Z",
+          updated_at: "2021-05-10T23:42:39Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/4be8be2d-f7a2-4462-99c2-ce5cab2138e0",
+              "https://api.sendgrid.com/v3/marketing/contacts/745843ab-7ed3-486d-8ff5-79bfae418772",
           },
         },
       ],
@@ -5467,7 +8592,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:34:25 GMT",
+      "Mon, 10 May 2021 23:42:45 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5475,13 +8600,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "cb5357b3-9536-4d30-aea2-28eeb9d345ea",
+      "e18f156d-40e3-4d62-8152-1aadf2a0b624",
       "x-amz-apigw-id",
-      "a3SmoEO3vHcFXKQ=",
+      "fIu2ZG5IPHcFfmg=",
       "x-amzn-trace-id",
-      "Root=1-602c6490-30c38f96168322102c36ea87;Sampled=0",
+      "Root=1-6099c4f5-19578a7578f9d5004efaeb1d;Sampled=0",
       "x-envoy-upstream-service-time",
-      "354",
+      "154",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5489,22 +8614,22 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "178",
+      "192",
       "x-ratelimit-reset",
-      "36",
+      "15",
       "Powered-By",
       "SGGateway",
     ]
   );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .delete("/v3/marketing/contacts")
-  .query({ ids: "4be8be2d-f7a2-4462-99c2-ce5cab2138e0" })
+  .query({ ids: "745843ab-7ed3-486d-8ff5-79bfae418772" })
   .once()
-  .reply(202, { job_id: "a886c6c9-46ea-4542-b74e-44940fd953d7" }, [
+  .reply(202, { job_id: "cf57203d-032c-445d-94a1-2cafaefbf639" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:34:25 GMT",
+    "Mon, 10 May 2021 23:42:46 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5512,21 +8637,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "2f73e8e3-a694-42d3-8a26-6a7295865828",
+    "5ad7dc43-6612-44ee-979d-94d08a365ace",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3SmwG9_vHcFhAw=",
+    "fIu2fFM0vHcFYxw=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6491-47c669272209f68618e2c08a;Sampled=0",
+    "Root=1-6099c4f6-4c88e5e513d0593537814ffd;Sampled=0",
     "x-envoy-upstream-service-time",
-    "366",
+    "519",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -5536,7 +8661,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "35",
+    "14",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .put("/v3/marketing/contacts", {
@@ -5551,11 +8676,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "a48db9ca-2c6b-4ead-907c-d80cfea17750" }, [
+  .reply(202, { job_id: "4e773814-20f6-4a40-9443-6fd142cc5b56" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:34:26 GMT",
+    "Mon, 10 May 2021 23:42:47 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5563,21 +8688,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "3bb1c015-8c7b-4362-be6f-22d539dd336a",
+    "8bc9f538-44bc-490d-ace3-bce78f574341",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3Sm3FtLvHcF0SA=",
+    "fIu2pHe0vHcFjmg=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6492-26f1a67163410f9354f82c30;Sampled=0",
+    "Root=1-6099c4f7-078082e01ca5ef43593d2b90;Sampled=0",
     "x-envoy-upstream-service-time",
-    "413",
+    "490",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -5585,9 +8710,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-limit",
     "200",
     "x-ratelimit-remaining",
-    "199",
+    "198",
     "x-ratelimit-reset",
-    "34",
+    "13",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -5607,7 +8732,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "sandro.arturo@mailinator.com",
           first_name: "Lucas",
-          id: "46c3c802-3cf0-4821-a203-4613a905e904",
+          id: "91121cae-3d76-4fee-9c5a-4021860f9a20",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -5619,11 +8744,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:34:26Z",
-          updated_at: "2021-02-17T00:34:55Z",
+          created_at: "2021-05-10T23:42:47Z",
+          updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/46c3c802-3cf0-4821-a203-4613a905e904",
+              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -5635,7 +8760,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:35:27 GMT",
+      "Mon, 10 May 2021 23:43:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5643,13 +8768,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "9a343966-fb96-4839-bbc9-f635c03f108d",
+      "4e32d49d-39d0-417b-aba5-14423909cae5",
       "x-amz-apigw-id",
-      "a3SwZGiyvHcFhdg=",
+      "fIu7eFECPHcF1sg=",
       "x-amzn-trace-id",
-      "Root=1-602c64cf-19e371a02303aa2624d3f036;Sampled=0",
+      "Root=1-6099c516-5e944f2105044e16301fd335;Sampled=0",
       "x-envoy-upstream-service-time",
-      "169",
+      "168",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5657,9 +8782,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "170",
+      "199",
       "x-ratelimit-reset",
-      "33",
+      "42",
       "Powered-By",
       "SGGateway",
     ]
@@ -5682,7 +8807,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:35:27 GMT",
+      "Mon, 10 May 2021 23:43:18 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5690,13 +8815,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "290338ac-0e6e-4126-bbe9-c200ff8d29be",
+      "9bdbdaa7-d334-466a-a840-ac53c00c9d33",
       "x-amz-apigw-id",
-      "a3SwfFDkPHcFRGA=",
+      "fIu7lHlvvHcFh1g=",
       "x-amzn-trace-id",
-      "Root=1-602c64cf-3b426d694699eed03fc6b0e0;Sampled=0",
+      "Root=1-6099c516-16dbde551203a3f85ced4254;Sampled=0",
       "x-envoy-upstream-service-time",
-      "133",
+      "180",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5704,9 +8829,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "169",
+      "198",
       "x-ratelimit-reset",
-      "33",
+      "42",
       "Powered-By",
       "SGGateway",
     ]
@@ -5729,7 +8854,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "sandro.arturo@mailinator.com",
           first_name: "Lucas",
-          id: "46c3c802-3cf0-4821-a203-4613a905e904",
+          id: "91121cae-3d76-4fee-9c5a-4021860f9a20",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -5741,11 +8866,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:34:26Z",
-          updated_at: "2021-02-17T00:34:55Z",
+          created_at: "2021-05-10T23:42:47Z",
+          updated_at: "2021-05-10T23:43:17Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/46c3c802-3cf0-4821-a203-4613a905e904",
+              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
           },
         },
       ],
@@ -5757,7 +8882,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:35:28 GMT",
+      "Mon, 10 May 2021 23:43:19 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5765,13 +8890,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e6f170ee-83db-4518-8ac9-ec6442a10a84",
+      "ad84bf6d-2ef0-40ae-91ca-854acd2d50c5",
       "x-amz-apigw-id",
-      "a3SwlEg0vHcFZTQ=",
+      "fIu7sHxmPHcFzzw=",
       "x-amzn-trace-id",
-      "Root=1-602c64d0-1abb0e5c7fee68f4186eb8dd;Sampled=0",
+      "Root=1-6099c517-7ef24bfd06194ad50e01ef85;Sampled=0",
       "x-envoy-upstream-service-time",
-      "180",
+      "325",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5779,22 +8904,172 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "167",
+      "197",
       "x-ratelimit-reset",
-      "32",
+      "41",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'sandro.arturo@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "sandro.arturo@mailinator.com",
+          first_name: "Lucas",
+          id: "91121cae-3d76-4fee-9c5a-4021860f9a20",
+          last_name: "",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "+5583999999997",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:42:47Z",
+          updated_at: "2021-05-10T23:43:17Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:43:20 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "676",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "d3b4cc75-582f-4996-9703-cbbb24f2e069",
+      "x-amz-apigw-id",
+      "fIu7yHq6vHcFh1g=",
+      "x-amzn-trace-id",
+      "Root=1-6099c518-60c4f61b4dd5dd3d392b813c;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "145",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "196",
+      "x-ratelimit-reset",
+      "40",
+      "Powered-By",
+      "SGGateway",
+    ]
+  );
+nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
+  .post("/v3/marketing/contacts/search", {
+    query: "email = 'sandro.arturo@mailinator.com'",
+  })
+  .once()
+  .reply(
+    200,
+    {
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "sandro.arturo@mailinator.com",
+          first_name: "Lucas",
+          id: "91121cae-3d76-4fee-9c5a-4021860f9a20",
+          last_name: "",
+          list_ids: [],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "+5583999999997",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:42:47Z",
+          updated_at: "2021-05-10T23:43:17Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/91121cae-3d76-4fee-9c5a-4021860f9a20",
+          },
+        },
+      ],
+      _metadata: {
+        self: "https://api.sendgrid.com/v3/marketing/contacts/search",
+      },
+    },
+    [
+      "Server",
+      "nginx",
+      "Date",
+      "Mon, 10 May 2021 23:43:20 GMT",
+      "Content-Type",
+      "application/json",
+      "Content-Length",
+      "676",
+      "Connection",
+      "close",
+      "x-amzn-requestid",
+      "310ff65b-cd51-4ffd-b4b8-b80a6ebeb11d",
+      "x-amz-apigw-id",
+      "fIu74GZ0vHcFzRQ=",
+      "x-amzn-trace-id",
+      "Root=1-6099c518-01f508e40bc86e810fd0002a;Sampled=0",
+      "x-envoy-upstream-service-time",
+      "144",
+      "referrer-policy",
+      "strict-origin-when-cross-origin",
+      "x-content-type-options",
+      "nosniff",
+      "x-ratelimit-limit",
+      "200",
+      "x-ratelimit-remaining",
+      "195",
+      "x-ratelimit-reset",
+      "40",
       "Powered-By",
       "SGGateway",
     ]
   );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .delete("/v3/marketing/contacts")
-  .query({ ids: "46c3c802-3cf0-4821-a203-4613a905e904" })
+  .query({ ids: "91121cae-3d76-4fee-9c5a-4021860f9a20" })
   .once()
-  .reply(202, { job_id: "a144a30b-f681-400b-a8cd-622abcf55f18" }, [
+  .reply(202, { job_id: "298798a3-c25a-4890-83c3-48848ad234c2" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:35:29 GMT",
+    "Mon, 10 May 2021 23:43:21 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -5802,21 +9077,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "f548fd00-b4f0-4677-91e0-e0aafa8b1414",
+    "19651e06-5742-41bd-8b30-62bd40afda2b",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3SwsE9evHcF6jg=",
+    "fIu79E7TvHcFhDA=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c64d1-72f94f14114c53f475e09da5;Sampled=0",
+    "Root=1-6099c519-0f5efec936dd66ae5a4d9c65;Sampled=0",
     "x-envoy-upstream-service-time",
-    "450",
+    "442",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -5826,7 +9101,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "31",
+    "39",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -5846,7 +9121,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:30 GMT",
+      "Mon, 10 May 2021 23:43:52 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5854,13 +9129,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "7fcaf231-612f-4eed-8e2a-a352603ced7c",
+      "89a5de3a-d431-436d-af20-62c8b2cc0fa9",
       "x-amz-apigw-id",
-      "a3S6OG2qPHcFk4g=",
+      "fIvAyEofPHcFkIw=",
       "x-amzn-trace-id",
-      "Root=1-602c650e-098745c1497c9d0a0a62f2bf;Sampled=0",
+      "Root=1-6099c538-0dd2476d05c6f41118b8cc48;Sampled=0",
       "x-envoy-upstream-service-time",
-      "169",
+      "180",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5870,7 +9145,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "194",
       "x-ratelimit-reset",
-      "30",
+      "8",
       "Powered-By",
       "SGGateway",
     ]
@@ -5893,7 +9168,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:30 GMT",
+      "Mon, 10 May 2021 23:43:52 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5901,13 +9176,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "b0026f11-0b21-4abb-a12d-6f46cd605fa3",
+      "8044f9a3-4361-47d0-8a52-10fe27ffe057",
       "x-amz-apigw-id",
-      "a3S6UHQkvHcFTTg=",
+      "fIvA4ERHPHcFTPg=",
       "x-amzn-trace-id",
-      "Root=1-602c650e-70bdc52362c655a4022839be;Sampled=0",
+      "Root=1-6099c538-5a357b6d56481d9b1c0a521b;Sampled=0",
       "x-envoy-upstream-service-time",
-      "114",
+      "169",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5917,7 +9192,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "193",
       "x-ratelimit-reset",
-      "30",
+      "8",
       "Powered-By",
       "SGGateway",
     ]
@@ -5940,7 +9215,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:31 GMT",
+      "Mon, 10 May 2021 23:43:53 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5948,13 +9223,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "20ea33dd-3c1a-420b-b9d5-47e4bc01cc64",
+      "99e65955-5347-4124-8eac-4030bccb9971",
       "x-amz-apigw-id",
-      "a3S6ZEBvPHcFpbg=",
+      "fIvA-GrQPHcFV7A=",
       "x-amzn-trace-id",
-      "Root=1-602c650f-034f9d7f108d81002ee71c96;Sampled=0",
+      "Root=1-6099c539-31413f61492e85fc201eadcd;Sampled=0",
       "x-envoy-upstream-service-time",
-      "124",
+      "213",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -5964,7 +9239,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "192",
       "x-ratelimit-reset",
-      "29",
+      "7",
       "Powered-By",
       "SGGateway",
     ]
@@ -5987,8 +9262,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-
-      "Wed, 17 Feb 2021 00:36:31 GMT",
+      "Mon, 10 May 2021 23:43:54 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -5996,13 +9270,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "81ec587f-05a1-4d46-805a-213da2cfbef7",
+      "d01cb815-f2a1-4a59-8b3f-701ec873a974",
       "x-amz-apigw-id",
-      "a3S6eGjpvHcFhMQ=",
+      "fIvBEECuPHcF7ug=",
       "x-amzn-trace-id",
-      "Root=1-602c650f-3ff669893c80948667c2d400;Sampled=0",
+      "Root=1-6099c539-1500c34d4c2d0bb12c071afc;Sampled=0",
       "x-envoy-upstream-service-time",
-      "129",
+      "145",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6012,7 +9286,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "191",
       "x-ratelimit-reset",
-      "29",
+      "7",
       "Powered-By",
       "SGGateway",
     ]
@@ -6035,7 +9309,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:32 GMT",
+      "Mon, 10 May 2021 23:43:54 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6043,13 +9317,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "e4e11408-29fa-4a87-988a-39608487ef85",
+      "6d40ff4e-141a-4aa6-b63f-a56c25ccffca",
       "x-amz-apigw-id",
-      "a3S6jFzqPHcFtDg=",
+      "fIvBKELGvHcFdAg=",
       "x-amzn-trace-id",
-      "Root=1-602c6510-04c9d6cc0fb6516d4b983af4;Sampled=0",
+      "Root=1-6099c53a-4cf64fb7161a341d3270d915;Sampled=0",
       "x-envoy-upstream-service-time",
-      "119",
+      "390",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6059,7 +9333,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "190",
       "x-ratelimit-reset",
-      "28",
+      "6",
       "Powered-By",
       "SGGateway",
     ]
@@ -6082,7 +9356,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:32 GMT",
+      "Mon, 10 May 2021 23:43:55 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6090,13 +9364,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "08543ab3-83bd-4a89-9240-f8f81d84e7a2",
+      "9a2c8c27-605f-4838-b29f-0df083c66cb2",
       "x-amz-apigw-id",
-      "a3S6oFcTvHcFxjg=",
+      "fIvBSEbAvHcFWpw=",
       "x-amzn-trace-id",
-      "Root=1-602c6510-5c664239027e7f0c1c2bba4a;Sampled=0",
+      "Root=1-6099c53b-6e18a6ee2d9cb7e45d59d7ea;Sampled=0",
       "x-envoy-upstream-service-time",
-      "125",
+      "129",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6106,7 +9380,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "189",
       "x-ratelimit-reset",
-      "28",
+      "5",
       "Powered-By",
       "SGGateway",
     ]
@@ -6121,52 +9395,88 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         {
           name: "Recent Automotive Shoppers",
           id: "01c956e2-58f5-4957-885b-62624cf157c7",
-          contact_count: 7,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/01c956e2-58f5-4957-885b-62624cf157c7",
           },
         },
         {
+          name: "462cde61-94d7-4ee0-9bc2-ce02ed7855ee",
+          id: "3f641067-6b50-4353-8c87-0825fbb85228",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/3f641067-6b50-4353-8c87-0825fbb85228",
+          },
+        },
+        {
           name: "List Three",
-          id: "400d3819-fd76-4597-8e31-f955a6a828d1",
-          contact_count: 0,
+          id: "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+          contact_count: 1,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1",
+              "https://api.sendgrid.com/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835",
           },
         },
         {
-          name: "List One",
-          id: "af966691-c619-4c54-b8b2-a4f5e2f31a49",
+          name: "Spanish Speakers",
+          id: "58764d52-ce54-410e-aa41-31062ba5e732",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49",
-          },
-        },
-        {
-          name: "List Four",
-          id: "b5a03dde-1b82-479d-8c9f-5685147503ad",
-          contact_count: 0,
-          _metadata: {
-            self:
-              "https://api.sendgrid.com/v3/marketing/lists/b5a03dde-1b82-479d-8c9f-5685147503ad",
+              "https://api.sendgrid.com/v3/marketing/lists/58764d52-ce54-410e-aa41-31062ba5e732",
           },
         },
         {
           name: "List Two",
-          id: "c584270c-5aa4-4f28-b02b-195bddcf59fd",
+          id: "632f6427-3d80-4319-99d3-f90766888351",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351",
+          },
+        },
+        {
+          name: "High Value with Recent Automotive Purchase",
+          id: "844c12a9-a1f1-406f-8707-f42c3b4563d6",
           contact_count: 0,
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd",
+              "https://api.sendgrid.com/v3/marketing/lists/844c12a9-a1f1-406f-8707-f42c3b4563d6",
+          },
+        },
+        {
+          name: "14dc7033-1bb3-4ef7-83d7-4e9c2c865412",
+          id: "a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a4779a3e-5676-4e4d-a31b-2ac34849e4e4",
+          },
+        },
+        {
+          name: "List Four",
+          id: "a735b597-51c5-4420-b58d-ab8c02d5d693",
+          contact_count: 0,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693",
+          },
+        },
+        {
+          name: "List One",
+          id: "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          contact_count: 1,
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
           },
         },
         {
           name: "High Value",
           id: "faf2f326-ff23-44f1-bd34-554932b0723b",
-          contact_count: 63,
+          contact_count: 0,
           _metadata: {
             self:
               "https://api.sendgrid.com/v3/marketing/lists/faf2f326-ff23-44f1-bd34-554932b0723b",
@@ -6182,21 +9492,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:36:33 GMT",
+      "Mon, 10 May 2021 23:43:56 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "1246",
+      "2087",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a4a28865-49dc-43c2-b4a0-6205581d938d",
+      "3d146fcb-c8c4-4bcd-af23-2da70b25d06a",
       "x-amz-apigw-id",
-      "a3S6tGvePHcFRcg=",
+      "fIvBYH73vHcFf8A=",
       "x-amzn-trace-id",
-      "Root=1-602c6511-3ab632443258501f6d82118b;Sampled=0",
+      "Root=1-6099c53b-2d13c5fd092ad6e86be9237f;Sampled=0",
       "x-envoy-upstream-service-time",
-      "84",
+      "116",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6206,7 +9516,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "599",
       "x-ratelimit-reset",
-      "27",
+      "5",
       "Powered-By",
       "SGGateway",
     ]
@@ -6220,14 +9530,14 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
         first_name: "Carlos",
       },
     ],
-    list_ids: ["b5a03dde-1b82-479d-8c9f-5685147503ad"],
+    list_ids: ["a735b597-51c5-4420-b58d-ab8c02d5d693"],
   })
   .once()
-  .reply(202, { job_id: "31107d43-ab6e-4718-9e2c-d14933435a68" }, [
+  .reply(202, { job_id: "40c7bbbc-2d80-4122-8e36-3e523f0398a6" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:36:34 GMT",
+    "Mon, 10 May 2021 23:43:56 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -6235,21 +9545,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "e43a9dd8-5ee0-4d2d-b37f-d096b372ca74",
+    "4a493309-152d-409e-b4bd-58af71810148",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3S6xGz7vHcFXsg=",
+    "fIvBeFBMPHcF8RQ=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6511-4ac6082b47b50bc474859a12;Sampled=0",
+    "Root=1-6099c53c-0bbc4eb36548cce66e415542;Sampled=0",
     "x-envoy-upstream-service-time",
-    "654",
+    "471",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -6259,7 +9569,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "27",
+    "4",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -6279,9 +9589,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "carlos.solimoes@mailinator.com",
           first_name: "Carlos",
-          id: "4d7553cb-3d12-41ba-9180-5dd5da29e189",
+          id: "c42cc844-ecee-440f-8272-137feb259f46",
           last_name: "",
-          list_ids: ["b5a03dde-1b82-479d-8c9f-5685147503ad"],
+          list_ids: ["a735b597-51c5-4420-b58d-ab8c02d5d693"],
           postal_code: "",
           segment_ids: null,
           state_province_region: "",
@@ -6291,11 +9601,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:36:33Z",
-          updated_at: "2021-02-17T00:37:02Z",
+          created_at: "2021-05-10T23:43:56Z",
+          updated_at: "2021-05-10T23:44:26Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/4d7553cb-3d12-41ba-9180-5dd5da29e189",
+              "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
           },
         },
       ],
@@ -6307,7 +9617,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:37:35 GMT",
+      "Mon, 10 May 2021 23:44:27 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6315,13 +9625,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "348a6670-5b1a-42d9-a074-3504d880cf53",
+      "9ed5a7a2-07fc-4f71-8f78-c410cdb6922d",
       "x-amz-apigw-id",
-      "a3TEWETjPHcFaqQ=",
+      "fIvGVEWyPHcFfrw=",
       "x-amzn-trace-id",
-      "Root=1-602c654e-72a072a454f998d166cb1af3;Sampled=0",
+      "Root=1-6099c55b-3234fc2d5449c47a37e178b5;Sampled=0",
       "x-envoy-upstream-service-time",
-      "295",
+      "160",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6329,9 +9639,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "172",
+      "199",
       "x-ratelimit-reset",
-      "26",
+      "33",
       "Powered-By",
       "SGGateway",
     ]
@@ -6354,7 +9664,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:37:35 GMT",
+      "Mon, 10 May 2021 23:44:28 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6362,13 +9672,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "156f8450-41dc-4e8d-bc7f-216dd65791de",
+      "27dfd203-4006-42f2-a771-bbdd58049307",
       "x-amz-apigw-id",
-      "a3TEcF0zvHcF8Lw=",
+      "fIvGcG7PvHcF39g=",
       "x-amzn-trace-id",
-      "Root=1-602c654f-54c2f460510d380f32189b10;Sampled=0",
+      "Root=1-6099c55c-358e38766b6eaafc22cab48e;Sampled=0",
       "x-envoy-upstream-service-time",
-      "163",
+      "259",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6376,9 +9686,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "170",
+      "198",
       "x-ratelimit-reset",
-      "25",
+      "32",
       "Powered-By",
       "SGGateway",
     ]
@@ -6401,7 +9711,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:37:36 GMT",
+      "Mon, 10 May 2021 23:44:29 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6409,13 +9719,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "7b62c163-12d9-4f49-a39e-d8c90492c0e4",
+      "b3c98da7-ef4d-4735-aff3-701127003ea6",
       "x-amz-apigw-id",
-      "a3TEiENZvHcFkAQ=",
+      "fIvGjEVtPHcFuYg=",
       "x-amzn-trace-id",
-      "Root=1-602c6550-4b08df714c2f9e983e25485e;Sampled=0",
+      "Root=1-6099c55c-2c120abb78308e2d47f863c8;Sampled=0",
       "x-envoy-upstream-service-time",
-      "179",
+      "150",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6423,9 +9733,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "169",
+      "197",
       "x-ratelimit-reset",
-      "24",
+      "32",
       "Powered-By",
       "SGGateway",
     ]
@@ -6448,7 +9758,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:37:36 GMT",
+      "Mon, 10 May 2021 23:44:29 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6456,13 +9766,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "f283ec30-e7d1-44fc-abf1-0b24f543ac84",
+      "757bca77-92a6-4b1d-8dd5-ac12b5beb0bf",
       "x-amz-apigw-id",
-      "a3TEnFYIPHcF_Zw=",
+      "fIvGoHn8PHcFynQ=",
       "x-amzn-trace-id",
-      "Root=1-602c6550-21b0ec956abf6e747e913b82;Sampled=0",
+      "Root=1-6099c55d-6008f41c5cade52239ac5d06;Sampled=0",
       "x-envoy-upstream-service-time",
-      "132",
+      "200",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6470,9 +9780,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "168",
+      "196",
       "x-ratelimit-reset",
-      "24",
+      "31",
       "Powered-By",
       "SGGateway",
     ]
@@ -6495,7 +9805,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:37:37 GMT",
+      "Mon, 10 May 2021 23:44:30 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6503,13 +9813,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "aab064fb-2733-4c1e-85cd-ed2dca0a31b4",
+      "5406e439-40ef-4c23-a240-a681d53bca34",
       "x-amz-apigw-id",
-      "a3TEsFoLvHcFbrA=",
+      "fIvGvFUMPHcFz3g=",
       "x-amzn-trace-id",
-      "Root=1-602c6551-1056217d72fa23b93808ae23;Sampled=0",
+      "Root=1-6099c55e-56e0fd154e64e6704a614451;Sampled=0",
       "x-envoy-upstream-service-time",
-      "109",
+      "154",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6517,9 +9827,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "167",
+      "195",
       "x-ratelimit-reset",
-      "23",
+      "30",
       "Powered-By",
       "SGGateway",
     ]
@@ -6536,11 +9846,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     list_ids: [],
   })
   .once()
-  .reply(202, { job_id: "8b259ecd-69c5-40f2-97db-a40e56bc1cba" }, [
+  .reply(202, { job_id: "cc209537-d6dd-4cf3-93ab-95f06c0b5019" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:37:38 GMT",
+    "Mon, 10 May 2021 23:44:31 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -6548,21 +9858,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "9708c015-86d5-4e3f-bd66-3900cc208768",
+    "aada82ef-60d5-49a3-b81f-9d0808edb726",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TExHF_vHcFSPw=",
+    "fIvG0F1cPHcFpww=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6551-1dcadc54529be62d2b97ac38;Sampled=0",
+    "Root=1-6099c55e-34a62655231af0a00014e094;Sampled=0",
     "x-envoy-upstream-service-time",
-    "410",
+    "524",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -6572,7 +9882,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "23",
+    "30",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .post("/v3/marketing/contacts/search", {
@@ -6592,7 +9902,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "jake.jill@mailinator.com",
           first_name: "Jake",
-          id: "2d0d8cdc-52af-4577-896f-bebfe2617827",
+          id: "1af00abd-733e-483a-96be-7bf1f685cdb7",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -6604,11 +9914,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:37:37Z",
-          updated_at: "2021-02-17T00:38:06Z",
+          created_at: "2021-05-10T23:44:30Z",
+          updated_at: "2021-05-10T23:45:00Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/2d0d8cdc-52af-4577-896f-bebfe2617827",
+              "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
           },
         },
       ],
@@ -6620,7 +9930,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:39 GMT",
+      "Mon, 10 May 2021 23:45:02 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6628,13 +9938,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a6d5372a-c43a-4423-847b-4eecc362fe18",
+      "9dbc54fe-d6f0-4470-8a95-c77b4e904279",
       "x-amz-apigw-id",
-      "a3TOUG_cvHcFtIw=",
+      "fIvLwEJdPHcFz1A=",
       "x-amzn-trace-id",
-      "Root=1-602c658e-489c223640c13dd0675aad02;Sampled=0",
+      "Root=1-6099c57e-0810154f572526101ddb5832;Sampled=0",
       "x-envoy-upstream-service-time",
-      "401",
+      "671",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6642,9 +9952,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "191",
+      "199",
       "x-ratelimit-reset",
-      "22",
+      "58",
       "Powered-By",
       "SGGateway",
     ]
@@ -6665,7 +9975,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:39 GMT",
+      "Mon, 10 May 2021 23:45:03 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6673,13 +9983,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "5df1612e-8e24-4be8-bfd1-b7ca9d73d1ef",
+      "ca8662e1-2584-48b9-b674-458314ff3642",
       "x-amz-apigw-id",
-      "a3TOdFErPHcFm9g=",
+      "fIvL5Hm8vHcF_ug=",
       "x-amzn-trace-id",
-      "Root=1-602c658f-7b26e29f107b1b803e90620b;Sampled=0",
+      "Root=1-6099c57f-17579bfe23559289053feb6b;Sampled=0",
       "x-envoy-upstream-service-time",
-      "268",
+      "211",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6687,9 +9997,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "199",
+      "198",
       "x-ratelimit-reset",
-      "21",
+      "57",
       "Powered-By",
       "SGGateway",
     ]
@@ -6711,7 +10021,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:40 GMT",
+      "Mon, 10 May 2021 23:45:03 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6719,21 +10029,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "5fb4c4bb-aa6a-45b9-8fc2-0402eced168b",
+      "bd853f10-aadd-4fa6-9d66-7dede33c122a",
       "access-control-allow-origin",
       "*",
       "access-control-allow-headers",
       "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
       "x-amz-apigw-id",
-      "a3TOjE_cPHcF1cw=",
+      "fIvL_ELlPHcFbyg=",
       "access-control-allow-methods",
       "PUT,DELETE,OPTIONS",
       "access-control-expose-headers",
       "Link, Location",
       "x-amzn-trace-id",
-      "Root=1-602c6590-661fe572037d49e82f5f2dcd;Sampled=0",
+      "Root=1-6099c57f-267a78f71ead8906396b870f;Sampled=0",
       "x-envoy-upstream-service-time",
-      "120",
+      "127",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6743,7 +10053,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-remaining",
       "199",
       "x-ratelimit-reset",
-      "20",
+      "57",
     ]
   );
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
@@ -6754,8 +10064,40 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .reply(
     200,
     {
-      contact_count: 0,
-      result: [],
+      contact_count: 1,
+      result: [
+        {
+          address_line_1: "",
+          address_line_2: "",
+          alternate_emails: [],
+          city: "",
+          country: "",
+          email: "caio.silveira@mailinator.com",
+          first_name: "",
+          id: "9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+          last_name: "",
+          list_ids: [
+            "42e0783e-54ae-4548-9fe6-943d2e6fa835",
+            "632f6427-3d80-4319-99d3-f90766888351",
+            "d3749cad-9066-43ba-bd8b-f6b3eb8289ed",
+          ],
+          postal_code: "",
+          segment_ids: null,
+          state_province_region: "",
+          phone_number: "",
+          whatsapp: "",
+          line: "",
+          facebook: "",
+          unique_name: "",
+          custom_fields: {},
+          created_at: "2021-05-10T23:42:12Z",
+          updated_at: "2021-05-10T23:42:42Z",
+          _metadata: {
+            self:
+              "https://api.sendgrid.com/v3/marketing/contacts/9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7",
+          },
+        },
+      ],
       _metadata: {
         self: "https://api.sendgrid.com/v3/marketing/contacts/search",
       },
@@ -6764,21 +10106,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:40 GMT",
+      "Mon, 10 May 2021 23:45:04 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
-      "109",
+      "773",
       "Connection",
       "close",
       "x-amzn-requestid",
-      "bf33d391-9720-44b1-9654-f37139e2dcb7",
+      "0e79b7a3-22b6-4514-ac00-28c5aba2421d",
       "x-amz-apigw-id",
-      "a3TOpH8dvHcFt9Q=",
+      "fIvMFECxvHcFvNg=",
       "x-amzn-trace-id",
-      "Root=1-602c6590-7623a0947bd60958512945c0;Sampled=0",
+      "Root=1-6099c580-41507c874e384d39205af0c4;Sampled=0",
       "x-envoy-upstream-service-time",
-      "125",
+      "217",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6786,9 +10128,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "198",
+      "197",
       "x-ratelimit-reset",
-      "20",
+      "56",
       "Powered-By",
       "SGGateway",
     ]
@@ -6811,7 +10153,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:41 GMT",
+      "Mon, 10 May 2021 23:45:05 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6819,13 +10161,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "a0df5350-6abd-4d29-83d4-8fa41f67aa9d",
+      "bc58db68-57b1-48ff-8499-37d84aeb3d48",
       "x-amz-apigw-id",
-      "a3TOuEiWvHcFyWg=",
+      "fIvMLF7-PHcFiww=",
       "x-amzn-trace-id",
-      "Root=1-602c6591-448d40774e6bccae5303ada3;Sampled=0",
+      "Root=1-6099c580-4bcf5bbd24ecc841181e0825;Sampled=0",
       "x-envoy-upstream-service-time",
-      "110",
+      "129",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6833,9 +10175,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "197",
+      "196",
       "x-ratelimit-reset",
-      "19",
+      "56",
       "Powered-By",
       "SGGateway",
     ]
@@ -6858,7 +10200,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:41 GMT",
+      "Mon, 10 May 2021 23:45:05 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6866,13 +10208,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "5ee30c2a-833e-4362-9e3e-bb6e19fc2e7a",
+      "16195eb2-d286-4807-818c-212dd0447c71",
       "x-amz-apigw-id",
-      "a3TOyFzqvHcF7Iw=",
+      "fIvMQGYzvHcF2Og=",
       "x-amzn-trace-id",
-      "Root=1-602c6591-48053c8d266f58ce09dc27a1;Sampled=0",
+      "Root=1-6099c581-6918fd7f491c78967df9eb47;Sampled=0",
       "x-envoy-upstream-service-time",
-      "135",
+      "143",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6880,9 +10222,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "196",
+      "195",
       "x-ratelimit-reset",
-      "19",
+      "55",
       "Powered-By",
       "SGGateway",
     ]
@@ -6905,9 +10247,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "carlos.solimoes@mailinator.com",
           first_name: "Carlos",
-          id: "4d7553cb-3d12-41ba-9180-5dd5da29e189",
+          id: "c42cc844-ecee-440f-8272-137feb259f46",
           last_name: "",
-          list_ids: ["b5a03dde-1b82-479d-8c9f-5685147503ad"],
+          list_ids: ["a735b597-51c5-4420-b58d-ab8c02d5d693"],
           postal_code: "",
           segment_ids: null,
           state_province_region: "",
@@ -6917,11 +10259,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:36:33Z",
-          updated_at: "2021-02-17T00:37:02Z",
+          created_at: "2021-05-10T23:43:56Z",
+          updated_at: "2021-05-10T23:44:26Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/4d7553cb-3d12-41ba-9180-5dd5da29e189",
+              "https://api.sendgrid.com/v3/marketing/contacts/c42cc844-ecee-440f-8272-137feb259f46",
           },
         },
       ],
@@ -6933,7 +10275,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:42 GMT",
+      "Mon, 10 May 2021 23:45:06 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -6941,13 +10283,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "cd61aaa3-5d43-48c4-a62c-bdc316730b17",
+      "7676aac2-75cf-4e24-afab-b4c48eb61def",
       "x-amz-apigw-id",
-      "a3TO4FoJvHcF_9Q=",
+      "fIvMWFUcvHcFp2Q=",
       "x-amzn-trace-id",
-      "Root=1-602c6592-12742f093df5e2096f63e893;Sampled=0",
+      "Root=1-6099c582-2f79b0c70651ba597dccde81;Sampled=0",
       "x-envoy-upstream-service-time",
-      "137",
+      "169",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -6955,9 +10297,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "195",
+      "194",
       "x-ratelimit-reset",
-      "18",
+      "54",
       "Powered-By",
       "SGGateway",
     ]
@@ -6980,7 +10322,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           country: "",
           email: "jake.jill@mailinator.com",
           first_name: "Jake",
-          id: "2d0d8cdc-52af-4577-896f-bebfe2617827",
+          id: "1af00abd-733e-483a-96be-7bf1f685cdb7",
           last_name: "",
           list_ids: [],
           postal_code: "",
@@ -6992,11 +10334,11 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
           facebook: "",
           unique_name: "",
           custom_fields: {},
-          created_at: "2021-02-17T00:37:37Z",
-          updated_at: "2021-02-17T00:38:06Z",
+          created_at: "2021-05-10T23:44:30Z",
+          updated_at: "2021-05-10T23:45:00Z",
           _metadata: {
             self:
-              "https://api.sendgrid.com/v3/marketing/contacts/2d0d8cdc-52af-4577-896f-bebfe2617827",
+              "https://api.sendgrid.com/v3/marketing/contacts/1af00abd-733e-483a-96be-7bf1f685cdb7",
           },
         },
       ],
@@ -7008,7 +10350,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Server",
       "nginx",
       "Date",
-      "Wed, 17 Feb 2021 00:38:42 GMT",
+      "Mon, 10 May 2021 23:45:06 GMT",
       "Content-Type",
       "application/json",
       "Content-Length",
@@ -7016,13 +10358,13 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "Connection",
       "close",
       "x-amzn-requestid",
-      "18848d59-73da-456c-a110-37cadb51b861",
+      "5053bdb2-6165-4cb8-b9f2-d90ccc3c94f9",
       "x-amz-apigw-id",
-      "a3TO9Ef7PHcFtTQ=",
+      "fIvMcGVlvHcFVqw=",
       "x-amzn-trace-id",
-      "Root=1-602c6592-434fe92b39c344c05eaf3983;Sampled=0",
+      "Root=1-6099c582-7ce4c6917f4649951ac47fef;Sampled=0",
       "x-envoy-upstream-service-time",
-      "155",
+      "163",
       "referrer-policy",
       "strict-origin-when-cross-origin",
       "x-content-type-options",
@@ -7030,9 +10372,9 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
       "x-ratelimit-limit",
       "200",
       "x-ratelimit-remaining",
-      "194",
+      "193",
       "x-ratelimit-reset",
-      "18",
+      "54",
       "Powered-By",
       "SGGateway",
     ]
@@ -7041,14 +10383,14 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
   .delete("/v3/marketing/contacts")
   .query({
     ids:
-      "4d7553cb-3d12-41ba-9180-5dd5da29e189%2C2d0d8cdc-52af-4577-896f-bebfe2617827",
+      "9d8ea1ae-8a57-4f91-86c1-1b2ed22b23e7%2Cc42cc844-ecee-440f-8272-137feb259f46%2C1af00abd-733e-483a-96be-7bf1f685cdb7",
   })
   .once()
-  .reply(202, { job_id: "bd282378-32f3-436e-bb2d-057fb04336c6" }, [
+  .reply(202, { job_id: "eb97cb9d-323e-4f07-acfe-f2e9b2e43211" }, [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:38:43 GMT",
+    "Mon, 10 May 2021 23:45:07 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -7056,21 +10398,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "8d81a231-3e7a-446f-ac4b-2682939c573a",
+    "091cbada-6a2e-42b0-8825-e551ad8acaff",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TPCEzRPHcF_Xg=",
+    "fIvMiHn3PHcFzFA=",
     "access-control-allow-methods",
     "PUT,DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6593-4cc92d9f167962e70c53f83e;Sampled=0",
+    "Root=1-6099c583-07c961253fd7132b4b9ab389;Sampled=0",
     "x-envoy-upstream-service-time",
-    "381",
+    "402",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -7080,16 +10422,16 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "199",
     "x-ratelimit-reset",
-    "17",
+    "53",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/lists/af966691-c619-4c54-b8b2-a4f5e2f31a49")
+  .delete("/v3/marketing/lists/d3749cad-9066-43ba-bd8b-f6b3eb8289ed")
   .once()
   .reply(204, "", [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:38:44 GMT",
+    "Mon, 10 May 2021 23:45:11 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -7097,21 +10439,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "e3d32f55-a8d4-4258-9881-d6e8fe3b8922",
+    "3241d344-9e4e-4fd8-8d29-df35d1a773d9",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TPKFaMPHcFlRg=",
+    "fIvM0FZGvHcFpAg=",
     "access-control-allow-methods",
     "DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6594-397a5b795ab17e8351793dc8;Sampled=0",
+    "Root=1-6099c585-6cfdf6f765d152c825374a81;Sampled=0",
     "x-envoy-upstream-service-time",
-    "592",
+    "2257",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -7121,18 +10463,18 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "599",
     "x-ratelimit-reset",
-    "16",
+    "51",
     "Powered-By",
     "SGGateway",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/lists/c584270c-5aa4-4f28-b02b-195bddcf59fd")
+  .delete("/v3/marketing/lists/632f6427-3d80-4319-99d3-f90766888351")
   .once()
   .reply(204, "", [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:38:45 GMT",
+    "Mon, 10 May 2021 23:45:13 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -7140,21 +10482,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "08d97282-caa8-4960-a774-22d0cadf8c01",
+    "e96e3625-e576-483e-9c6d-12c4e53c3fc1",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TPTGE5vHcFXmQ=",
+    "fIvNQHLlPHcFg_g=",
     "access-control-allow-methods",
     "DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6595-4532507c5df341dc342c3a01;Sampled=0",
+    "Root=1-6099c587-13d48d8e1db951930b27878b;Sampled=0",
     "x-envoy-upstream-service-time",
-    "677",
+    "1330",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -7164,18 +10506,18 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "598",
     "x-ratelimit-reset",
-    "15",
+    "49",
     "Powered-By",
     "SGGateway",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/lists/400d3819-fd76-4597-8e31-f955a6a828d1")
+  .delete("/v3/marketing/lists/42e0783e-54ae-4548-9fe6-943d2e6fa835")
   .once()
   .reply(204, "", [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:38:47 GMT",
+    "Mon, 10 May 2021 23:45:14 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -7183,21 +10525,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "8566b5c4-1bf9-4a5b-a890-890ae791b951",
+    "f01fae3b-4276-475b-83e7-1656c9ff6ac1",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TPeFdJvHcFr_A=",
+    "fIvNjHaovHcFp_A=",
     "access-control-allow-methods",
     "DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6596-2860b3555f49dfcb0eb45f28;Sampled=0",
+    "Root=1-6099c589-76378d162c407cfe73f8f2ee;Sampled=0",
     "x-envoy-upstream-service-time",
-    "1063",
+    "903",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -7207,18 +10549,18 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "597",
     "x-ratelimit-reset",
-    "14",
+    "47",
     "Powered-By",
     "SGGateway",
   ]);
 nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
-  .delete("/v3/marketing/lists/b5a03dde-1b82-479d-8c9f-5685147503ad")
+  .delete("/v3/marketing/lists/a735b597-51c5-4420-b58d-ab8c02d5d693")
   .once()
   .reply(204, "", [
     "Server",
     "nginx",
     "Date",
-    "Wed, 17 Feb 2021 00:38:48 GMT",
+    "Mon, 10 May 2021 23:45:16 GMT",
     "Content-Type",
     "application/json",
     "Content-Length",
@@ -7226,21 +10568,21 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "Connection",
     "close",
     "x-amzn-requestid",
-    "7d78e0b1-d0b3-473c-8a8c-c2a1aabbf6c7",
+    "3f38d8b8-64a4-4910-b144-2222c635f44c",
     "access-control-allow-origin",
     "*",
     "access-control-allow-headers",
     "AUTHORIZATION, Content-Type, On-behalf-of, x-sg-elas-acl, X-Recaptcha, X-Request-Source",
     "x-amz-apigw-id",
-    "a3TPsHOlPHcFvEQ=",
+    "fIvNwGubPHcFq8g=",
     "access-control-allow-methods",
     "DELETE,OPTIONS",
     "access-control-expose-headers",
     "Link, Location",
     "x-amzn-trace-id",
-    "Root=1-602c6597-46df96fd30c4662e2ccb39ef;Sampled=0",
+    "Root=1-6099c58b-3d4f45ea45fd3a9a5d58a28e;Sampled=0",
     "x-envoy-upstream-service-time",
-    "577",
+    "879",
     "referrer-policy",
     "strict-origin-when-cross-origin",
     "x-content-type-options",
@@ -7250,7 +10592,7 @@ nock("https://api.sendgrid.com:443", { encodedQueryParams: true })
     "x-ratelimit-remaining",
     "596",
     "x-ratelimit-reset",
-    "13",
+    "45",
     "Powered-By",
     "SGGateway",
   ]);

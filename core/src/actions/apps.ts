@@ -106,9 +106,8 @@ export class AppOptions extends AuthenticatedAction {
       }
     }
 
-    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
-      "app"
-    );
+    const environmentVariableOptions =
+      OptionHelper.getEnvironmentVariableOptionsForTopic("app");
 
     return { environmentVariableOptions, types };
   }

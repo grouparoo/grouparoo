@@ -1,0 +1,5 @@
+id,name,seats,monthly_rate
+1,Starter,2,20
+2,Base,10,50
+3,Premium,50,150
+4,Enterprise,1000,500

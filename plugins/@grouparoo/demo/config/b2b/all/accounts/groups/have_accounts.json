@@ -1,0 +1,12 @@
+{
+  "id": "have_accounts",
+  "name": "Have an Account",
+  "class": "Group",
+  "type": "calculated",
+  "rules": [
+    {
+      "propertyId": "account_id",
+      "operation": { "op": "exists" }
+    }
+  ]
+}

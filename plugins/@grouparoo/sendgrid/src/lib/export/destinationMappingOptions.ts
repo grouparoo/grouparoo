@@ -37,32 +37,30 @@ const readOnlyFields = [
   "contact_id",
 ];
 
-export const destinationMappingOptions: DestinationMappingOptionsMethod = async ({
-  appOptions,
-  appId,
-}) => {
-  const client = await connect(appOptions);
-  const required = getRequiredFields();
-  const known = await getUserFields(client, appOptions, appId);
+export const destinationMappingOptions: DestinationMappingOptionsMethod =
+  async ({ appOptions, appId }) => {
+    const client = await connect(appOptions);
+    const required = getRequiredFields();
+    const known = await getUserFields(client, appOptions, appId);
 
-  return {
-    labels: {
-      property: {
-        singular: "Sendgrid Contact Field",
-        plural: "Sendgrid Contact Fields",
+    return {
+      labels: {
+        property: {
+          singular: "Sendgrid Contact Field",
+          plural: "Sendgrid Contact Fields",
+        },
+        group: {
+          singular: "Sendgrid List",
+          plural: "Sendgrid Lists",
+        },
       },
-      group: {
-        singular: "Sendgrid List",
-        plural: "Sendgrid Lists",
+      properties: {
+        required: required,
+        known: known,
+        allowOptionalFromProperties: false,
       },
-    },
-    properties: {
-      required: required,
-      known: known,
-      allowOptionalFromProperties: false,
-    },
+    };
   };
-};
 
 export const isReservedField = (key): boolean => {
   return reservedFields.includes(key);
@@ -116,10 +114,8 @@ export const getUserFields = async (
 
   for (const field of fields) {
     if (field["name"] !== "email" && !field["read_only"]) {
-      const type: DestinationMappingOptionsResponseTypes = mapTypesFromSendgridToGrouparoo(
-        field["name"],
-        field["field_type"]
-      );
+      const type: DestinationMappingOptionsResponseTypes =
+        mapTypesFromSendgridToGrouparoo(field["name"], field["field_type"]);
       if (type) {
         out.push({
           key: field["name"],

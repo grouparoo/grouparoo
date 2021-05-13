@@ -9,7 +9,7 @@ export default class Connection {
   }
   async createTable(
     tableName: string,
-    userId: string,
+    typeColumn: string,
     keys: string[]
   ): Promise<void> {}
   async insertRow(
@@ -17,4 +17,7 @@ export default class Connection {
     keys: string[],
     row: { [key: string]: string | number | Date }
   ): Promise<void> {}
+  name() {
+    return null;
+  }
 }

@@ -20,7 +20,7 @@ describe("tasks/profileProperty:importProfileProperty", () => {
     });
 
     test("does not throw if the profile or property cannot be found", async () => {
-      const property = await Property.findOne();
+      const profileProperty = await Property.findOne();
       const profile = await helper.factories.profile();
 
       await specHelper.runTask("profileProperty:importProfileProperty", {
@@ -35,7 +35,7 @@ describe("tasks/profileProperty:importProfileProperty", () => {
 
       await specHelper.runTask("profileProperty:importProfileProperty", {
         profileId: "missing",
-        propertyId: property.id,
+        propertyId: profileProperty.id,
       });
 
       await profile.destroy();
@@ -47,20 +47,20 @@ describe("tasks/profileProperty:importProfileProperty", () => {
         userId: [1],
         email: ["old@example.com"],
       });
-      const property = await ProfileProperty.findOne({
+      const profileProperty = await ProfileProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await property.update({ state: "pending" });
+      await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profileProperty:importProfileProperty", {
         profileId: profile.id,
-        propertyId: property.propertyId,
+        propertyId: profileProperty.propertyId,
       });
 
       // new value and state
-      await property.reload();
-      expect(property.state).toBe("ready");
-      expect(property.rawValue).toBe(`${profile.id}@example.com`);
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("ready");
+      expect(profileProperty.rawValue).toBe(`${profile.id}@example.com`);
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
@@ -73,10 +73,10 @@ describe("tasks/profileProperty:importProfileProperty", () => {
         userId: [null],
         email: ["old@example.com"],
       });
-      const property = await ProfileProperty.findOne({
+      const profileProperty = await ProfileProperty.findOne({
         where: { rawValue: "old@example.com" },
       });
-      await property.update({ state: "pending" });
+      await profileProperty.update({ state: "pending" });
 
       const userIdProfileProperty = await ProfileProperty.findOne({
         where: {
@@ -86,15 +86,23 @@ describe("tasks/profileProperty:importProfileProperty", () => {
       });
       await userIdProfileProperty.update({ state: "pending" });
 
-      await specHelper.runTask("profileProperty:importProfileProperties", {
-        profileIds: [profile.id],
-        propertyId: property.propertyId,
+      await specHelper.runTask("profileProperty:importProfileProperty", {
+        profileId: profile.id,
+        propertyId: profileProperty.propertyId,
       });
 
       // no change
-      await property.reload();
-      expect(property.state).toBe("pending");
-      expect(property.rawValue).toBe(`old@example.com`);
+      await profileProperty.reload();
+      expect(profileProperty.state).toBe("pending");
+      expect(profileProperty.rawValue).toBe(`old@example.com`);
+
+      // sendAt is slightly in the future from (now - 5 minutes) to try again soon
+      expect(profileProperty.startedAt.getTime()).toBeGreaterThan(
+        new Date().getTime() - 1000 * 60 * 5
+      );
+      expect(profileProperty.startedAt.getTime()).toBeLessThan(
+        new Date().getTime()
+      );
     });
   });
 });

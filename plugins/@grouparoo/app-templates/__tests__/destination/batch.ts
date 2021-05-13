@@ -65,11 +65,10 @@ describe("app-templates/destination/batch", () => {
         BatchTestAction.Create
       );
 
-      const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = jest.fn(
-        async ({ users }) => {
+      const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
+        jest.fn(async ({ users }) => {
           expect(users.length).toBe(batchSize);
-        }
-      );
+        });
 
       await exportProfilesInBatch(
         batchExports,
@@ -257,11 +256,10 @@ describe("app-templates/destination/batch", () => {
         BatchTestAction.Create
       );
 
-      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
-        async ({ foreignKeys }) => {
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds =
+        jest.fn(async ({ foreignKeys }) => {
           expect(foreignKeys.length).toBe(findSize);
-        }
-      );
+        });
 
       await exportProfilesInBatch(
         batchExports,
@@ -292,20 +290,18 @@ describe("app-templates/destination/batch", () => {
       const oldForeignKeyValue = "fk1@demo.com";
       const newForeignKeyValue = "fk2@demo.com";
 
-      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
-        async ({ foreignKeys }) => {
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds =
+        jest.fn(async ({ foreignKeys }) => {
           expect(foreignKeys).toHaveLength(1);
           // Note: does not set destinationId to indicate neither exist
-        }
-      );
+        });
 
-      const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds = jest.fn(
-        async ({ users }) => {
+      const createByForeignKeyAndSetDestinationIds: BatchMethodCreateByForeignKeyAndSetDestinationIds =
+        jest.fn(async ({ users }) => {
           expect(users).toHaveLength(1);
           expect(users[0].destinationId).toBeUndefined();
           expect(users[0].newProfileProperties.email).toBe(newForeignKeyValue);
-        }
-      );
+        });
 
       await exportProfilesInBatch(
         [
@@ -350,8 +346,8 @@ describe("app-templates/destination/batch", () => {
       const newForeignKeyValue = "fk2@demo.com";
       const destinationId = "destId1";
 
-      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
-        async ({ foreignKeys, getByForeignKey }) => {
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds =
+        jest.fn(async ({ foreignKeys, getByForeignKey }) => {
           expect(foreignKeys).toHaveLength(1);
 
           for (const fk of foreignKeys) {
@@ -361,8 +357,7 @@ describe("app-templates/destination/batch", () => {
               user.destinationId = destinationId;
             }
           }
-        }
-      );
+        });
 
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {
@@ -415,8 +410,8 @@ describe("app-templates/destination/batch", () => {
       const newForeignKeyValue = "fk2@demo.com";
       const destinationId = "destId2";
 
-      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
-        async ({ foreignKeys, getByForeignKey }) => {
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds =
+        jest.fn(async ({ foreignKeys, getByForeignKey }) => {
           expect(foreignKeys).toHaveLength(1);
 
           for (const fk of foreignKeys) {
@@ -426,8 +421,7 @@ describe("app-templates/destination/batch", () => {
               user.destinationId = destinationId;
             }
           }
-        }
-      );
+        });
 
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {
@@ -481,8 +475,8 @@ describe("app-templates/destination/batch", () => {
       const destinationId = "destId1";
       const destinationId2 = "destId2";
 
-      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds = jest.fn(
-        async ({ foreignKeys, getByForeignKey }) => {
+      const findAndSetDestinationIds: BatchMethodFindAndSetDestinationIds =
+        jest.fn(async ({ foreignKeys, getByForeignKey }) => {
           expect(foreignKeys).toHaveLength(1);
 
           for (const fk of foreignKeys) {
@@ -495,8 +489,7 @@ describe("app-templates/destination/batch", () => {
               user.destinationId = destinationId2;
             }
           }
-        }
-      );
+        });
 
       const updateByDestinationIds: BatchMethodUpdateByDestinationIds = jest.fn(
         async ({ users }) => {

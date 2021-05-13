@@ -97,9 +97,8 @@ export class DestinationConnectionApps extends AuthenticatedAction {
       }
     }
 
-    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
-      "destination"
-    );
+    const environmentVariableOptions =
+      OptionHelper.getEnvironmentVariableOptionsForTopic("destination");
 
     return { connectionApps, environmentVariableOptions };
   }
@@ -363,7 +362,8 @@ export class DestinationProfilePreview extends AuthenticatedAction {
 
     let destinationGroupMemberships = params.destinationGroupMemberships;
     if (!destinationGroupMemberships) {
-      const destinationGroupMembershipsArray = await destination.getDestinationGroupMemberships();
+      const destinationGroupMembershipsArray =
+        await destination.getDestinationGroupMemberships();
       destinationGroupMemberships = {};
       destinationGroupMembershipsArray.map(
         (dgm) => (destinationGroupMemberships[dgm.groupId] = dgm.remoteKey)

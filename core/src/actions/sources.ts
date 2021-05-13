@@ -92,9 +92,8 @@ export class SourceConnectionApps extends AuthenticatedAction {
       }
     }
 
-    const environmentVariableOptions = OptionHelper.getEnvironmentVariableOptionsForTopic(
-      "source"
-    );
+    const environmentVariableOptions =
+      OptionHelper.getEnvironmentVariableOptionsForTopic("source");
 
     return { connectionApps, environmentVariableOptions };
   }

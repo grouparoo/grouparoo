@@ -123,9 +123,8 @@ function getNestedResults(entries, responseRow, columnName = "") {
         columnName === "" ? key : `${columnName}.${key}`
       );
     } else {
-      responseRow[columnName === "" ? key : `${columnName}.${key}`] = castValue(
-        value
-      );
+      responseRow[columnName === "" ? key : `${columnName}.${key}`] =
+        castValue(value);
     }
   }
   return responseRow;

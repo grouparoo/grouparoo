@@ -7,6 +7,7 @@ import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
+import { ImportOps } from "../../modules/ops/import";
 
 export class ImportProfileProperties extends RetryableTask {
   constructor() {
@@ -36,10 +37,10 @@ export class ImportProfileProperties extends RetryableTask {
     const source = await property.$get("source");
 
     const profilesToImport: Profile[] = [];
+    const profilesNotReady: Profile[] = [];
     const dependencies = await PropertyOps.dependencies(property);
 
-    for (const i in profiles) {
-      const profile = profiles[i];
+    for (const profile of profiles) {
       let ok = true;
       const properties = await profile.properties();
 
@@ -49,7 +50,26 @@ export class ImportProfileProperties extends RetryableTask {
         if (properties[dep.key].state !== "ready") ok = false;
       });
 
-      if (ok) profilesToImport.push(profile);
+      if (ok) {
+        profilesToImport.push(profile);
+      } else {
+        profilesNotReady.push(profile);
+      }
+    }
+
+    if (profilesNotReady.length > 0) {
+      await ProfileProperty.update(
+        { startedAt: ImportOps.retryStartedAt() },
+        {
+          where: {
+            propertyId: property.id,
+            profileId: {
+              [Op.in]: profilesNotReady.map((p) => p.id),
+            },
+            state: "pending",
+          },
+        }
+      );
     }
 
     if (profilesToImport.length === 0) return;

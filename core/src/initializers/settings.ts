@@ -22,14 +22,8 @@ export class Plugins extends CLSInitializer {
     pluginName: string
   ) {
     for (const i in settingsList) {
-      const {
-        key,
-        title,
-        defaultValue,
-        description,
-        type,
-        variant,
-      } = settingsList[i];
+      const { key, title, defaultValue, description, type, variant } =
+        settingsList[i];
       await plugin.registerSetting(
         pluginName,
         key,
@@ -115,6 +109,14 @@ export class Plugins extends CLSInitializer {
         defaultValue: 60 * 30, // 30 minutes
         description:
           "How long before Grouparoo considers a started but not-yet-complete Export to have stalled and try again?",
+        type: "number",
+      },
+      {
+        key: "exports-max-retries-count",
+        title: "Exports Maximum Retry Count",
+        defaultValue: 5,
+        description:
+          "How many times should we attempt to retry an Export before considering it failed?",
         type: "number",
       },
       {

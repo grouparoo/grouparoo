@@ -8,8 +8,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user_fields: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056209.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056209.json",
           id: 1260800056209,
           type: "text",
           key: "text_field",
@@ -25,8 +24,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:02Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057270.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057270.json",
           id: 1260800057270,
           type: "textarea",
           key: "multiline_field",
@@ -42,8 +40,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:13Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057290.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057290.json",
           id: 1260800057290,
           type: "integer",
           key: "numeric_field",
@@ -59,8 +56,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:21Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057310.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057310.json",
           id: 1260800057310,
           type: "decimal",
           key: "decimal_field",
@@ -76,8 +72,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:33Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057330.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057330.json",
           id: 1260800057330,
           type: "date",
           key: "date_field",
@@ -94,8 +89,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:42Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056229.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056229.json",
           id: 1260800056229,
           type: "checkbox",
           key: "checkbox_field",
@@ -112,8 +106,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           tag: "checkbox_field_selected",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057350.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057350.json",
           id: 1260800057350,
           type: "regexp",
           key: "regex_field",
@@ -129,8 +122,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:53:04Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057370.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057370.json",
           id: 1260800057370,
           type: "dropdown",
           key: "dropdown_field",
@@ -235,8 +227,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
     {
       user_fields: [
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056209.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056209.json",
           id: 1260800056209,
           type: "text",
           key: "text_field",
@@ -252,8 +243,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:02Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057270.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057270.json",
           id: 1260800057270,
           type: "textarea",
           key: "multiline_field",
@@ -269,8 +259,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:13Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057290.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057290.json",
           id: 1260800057290,
           type: "integer",
           key: "numeric_field",
@@ -286,8 +275,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:21Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057310.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057310.json",
           id: 1260800057310,
           type: "decimal",
           key: "decimal_field",
@@ -303,8 +291,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:33Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057330.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057330.json",
           id: 1260800057330,
           type: "date",
           key: "date_field",
@@ -321,8 +308,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:51:42Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056229.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800056229.json",
           id: 1260800056229,
           type: "checkbox",
           key: "checkbox_field",
@@ -339,8 +325,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           tag: "checkbox_field_selected",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057350.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057350.json",
           id: 1260800057350,
           type: "regexp",
           key: "regex_field",
@@ -356,8 +341,7 @@ nock("https://d3v-grouparoo.zendesk.com:443", { encodedQueryParams: true })
           updated_at: "2021-04-20T04:53:04Z",
         },
         {
-          url:
-            "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057370.json",
+          url: "https://d3v-grouparoo.zendesk.com/api/v2/user_fields/1260800057370.json",
           id: 1260800057370,
           type: "dropdown",
           key: "dropdown_field",

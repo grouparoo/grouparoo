@@ -43,14 +43,8 @@ const externalId2 = `testuser2.${rand[2]}`;
 const email2 = `testuser2.${rand[2]}@demo.com`;
 
 describe("intercom/contacts/exportProfile/no delete", () => {
-  const {
-    getUser,
-    findEmail,
-    getTags,
-    idRegex,
-    indexContacts,
-    runExport,
-  } = setup(appOptions, destinationOptions, newNock);
+  const { getUser, findEmail, getTags, idRegex, indexContacts, runExport } =
+    setup(appOptions, destinationOptions, newNock);
 
   test("can create lead profile on Intercom", async () => {
     userId = await findEmail(email);
