@@ -175,6 +175,7 @@ async function deleteUser(
   await sleep(1000);
   await deleteUser(
     client,
+    syncOperations,
     newProfileProperties,
     oldProfileProperties,
     null, // look up by email again
