@@ -99,7 +99,8 @@ export namespace ProfileOps {
    */
   export async function addOrUpdateProperty(
     profile: Profile,
-    hash: { [key: string]: Array<string | number | boolean | Date> }
+    hash: { [key: string]: Array<string | number | boolean | Date> },
+    properties: Property[]
   ) {
     const key = Object.keys(hash)[0]; // either the key or id of the property, preferring the id
     const values = hash[key];
@@ -107,12 +108,10 @@ export namespace ProfileOps {
     // ignore reserved profile property key
     if (key === "_meta") return;
 
-    let property = await Property.findOne({
-      where: { id: key },
-    });
-    if (!property) {
-      property = await Property.findOne({ where: { key } });
-    }
+    const property =
+      properties.find((p) => p.id === key) ||
+      properties.find((p) => p.key === key);
+
     if (!property) {
       throw new Error(`cannot find a property for id or key \`${key}\``);
     }
@@ -133,19 +132,21 @@ export namespace ProfileOps {
       );
 
       if (arraysAreEqual(existingValues, values)) {
-        await Promise.all(
-          profileProperties.map((property) =>
-            property.update({
-              state: "ready",
-              stateChangedAt: new Date(),
-              confirmedAt: new Date(),
-            })
-          )
+        await ProfileProperty.update(
+          {
+            state: "ready",
+            stateChangedAt: new Date(),
+            confirmedAt: new Date(),
+          },
+          {
+            where: { id: { [Op.in]: profileProperties.map((p) => p.id) } },
+          }
         );
       } else {
-        await Promise.all(
-          profileProperties.map((property) => property.destroy())
-        );
+        await ProfileProperty.destroy({
+          where: { id: { [Op.in]: profileProperties.map((p) => p.id) } },
+        });
+
         let position = 0;
         for (const i in values) {
           const value = values[i];
@@ -176,6 +177,7 @@ export namespace ProfileOps {
           "cannot set multiple profile properties for a non-array property"
         );
       }
+
       const value = values[0];
       let changed = false;
 
@@ -192,6 +194,7 @@ export namespace ProfileOps {
         profileProperty = new ProfileProperty({
           profileId: profile.id,
           propertyId: property.id,
+          position: 0,
         });
       } else if (
         profileProperty.rawValue !==
@@ -227,12 +230,17 @@ export namespace ProfileOps {
     properties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     },
-    toLock = true
+    toLock = true,
+    preloadedProperties: Property[] = []
   ) {
     let releaseLock: Function;
     if (toLock) {
       const response = await waitForLock(`profile:${profile.id}`);
       releaseLock = response.releaseLock;
+    }
+
+    if (!preloadedProperties || preloadedProperties.length === 0) {
+      preloadedProperties = await Property.findAll();
     }
 
     try {
@@ -247,7 +255,7 @@ export namespace ProfileOps {
           ? properties[keys[i]]
           : [properties[keys[i]]];
 
-        await addOrUpdateProperty(profile, h);
+        await addOrUpdateProperty(profile, h, preloadedProperties);
       }
 
       return profile;

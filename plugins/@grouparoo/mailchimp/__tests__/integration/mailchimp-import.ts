@@ -5,6 +5,7 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper } from "actionhero";
 import {
+  plugin,
   Profile,
   ProfileProperty,
   Property,
@@ -44,6 +45,10 @@ describe("integration/runs/mailchimp-import", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  beforeAll(async () => {
+    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
   beforeAll(async () => {

@@ -22,6 +22,7 @@ import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
+import { Property } from "./Property";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -100,19 +101,32 @@ export class Profile extends LoggedModel<Profile> {
     return simpleProperties;
   }
 
-  async addOrUpdateProperty(properties: {
-    [key: string]: Array<string | number | boolean | Date>;
-  }) {
-    return ProfileOps.addOrUpdateProperty(this, properties);
+  async addOrUpdateProperty(
+    properties: {
+      [key: string]: Array<string | number | boolean | Date>;
+    },
+    preloadedProperties: Property[]
+  ) {
+    return ProfileOps.addOrUpdateProperty(
+      this,
+      properties,
+      preloadedProperties
+    );
   }
 
   async addOrUpdateProperties(
     properties: {
       [key: string]: Array<string | number | boolean | Date>;
     },
-    toLock = true
+    toLock = true,
+    preloadedProperties: Property[] = []
   ) {
-    return ProfileOps.addOrUpdateProperties(this, properties, toLock);
+    return ProfileOps.addOrUpdateProperties(
+      this,
+      properties,
+      toLock,
+      preloadedProperties
+    );
   }
 
   async removeProperty(key: string) {
