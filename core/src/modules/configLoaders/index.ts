@@ -24,6 +24,7 @@ import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import { getParentPath } from "../../utils/pluginDetails";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { ConfigWriter } from "../configWriter";
 
 export function getConfigDir() {
   const configDir =
@@ -86,6 +87,9 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
   }
 
   if (typeof payload === "function") payload = await payload(config);
+
+  ConfigWriter.setFileLoaded(file);
+
   return payload;
 }
 

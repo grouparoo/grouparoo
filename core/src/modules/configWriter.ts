@@ -18,16 +18,29 @@ type WritableConfigObject = {
   object: ConfigurationObject;
 };
 
+let FILES_TO_DELETE: string[] = [];
+
 export namespace ConfigWriter {
   export async function run() {
     // Any models we see before starting would be from existing code config
     // files.
     if (!api.process.started) return;
 
+    await deleteFiles();
+
     const configObjects: WritableConfigObject[] = await getConfigObjects();
     await writeFiles(configObjects);
 
     return configObjects;
+  }
+
+  export async function setFileLoaded(absFilePath: string) {
+    FILES_TO_DELETE.push(absFilePath);
+  }
+
+  async function deleteFiles() {
+    for (let file of FILES_TO_DELETE) fs.rmSync(file);
+    FILES_TO_DELETE = [];
   }
 
   async function writeFile({ filePath, object }: WritableConfigObject) {
@@ -36,7 +49,9 @@ export namespace ConfigWriter {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
     const stringifyFilter = (k, v) => (v === null ? undefined : v);
     const content = JSON.stringify(object, stringifyFilter, 2);
-    return fs.writeFileSync(configFilePath, content);
+    await fs.writeFileSync(configFilePath, content);
+    setFileLoaded(configFilePath);
+    return true;
   }
 
   async function writeFiles(configObjects: WritableConfigObject[]) {
