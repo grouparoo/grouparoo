@@ -26,6 +26,16 @@ export class GroupDestroy extends CLSTask {
     });
     if (!group) return; // the group may have been force-deleted
 
+    try {
+      await Group.checkDestinationTracking(group);
+    } catch (error) {
+      if (error.message.match(/group still in use by/)) {
+        return null;
+      }
+
+      throw error;
+    }
+
     let run = await Run.findOne({
       where: { creatorId: group.id, creatorType: "group", state: "running" },
     });
