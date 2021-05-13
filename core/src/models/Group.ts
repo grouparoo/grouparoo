@@ -625,10 +625,13 @@ export class Group extends LoggedModel<Group> {
     });
 
     if (groupRules?.length > 0) {
-      rules = groupRules.map(({ propertyId, op, match }) => ({
-        propertyId,
-        operation: { op },
-        match,
+      rules = groupRules.map((rule) => ({
+        propertyId: rule.propertyId,
+        operation: { op: rule.op },
+        match: rule.match,
+        relativeMatchNumber: rule.relativeMatchNumber,
+        relativeMatchUnit: rule.relativeMatchUnit,
+        relativeMatchDirection: rule.relativeMatchDirection,
       }));
     }
 
