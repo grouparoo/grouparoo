@@ -1,6 +1,5 @@
 import { SimpleAppOptions } from "@grouparoo/core";
 import dotenv from "dotenv";
-import os from "os";
 import path from "path";
 import fs from "fs-extra";
 import { BigQuery } from "@google-cloud/bigquery";
@@ -50,17 +49,10 @@ export const updater = {
   },
   rewrite: function (nockCall: string) {
     // manually stub out oAuth req/res
-    if (nockCall.includes("grant_type=")) {
-      let response = "";
-      const lines = nockCall.split(os.EOL);
-      for (let line of lines) {
-        if (line.includes(".post('/oauth2/v4/token', \"grant_type=urn")) {
-          line = ` .post("/oauth2/v4/token", { grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion: /.+/g })`;
-        }
-        response += `${line}${os.EOL}`;
-      }
-      return response;
-    }
+    nockCall = nockCall.replace(
+      /, "grant_type=.+?\"/,
+      ", { grant_type: /.+/g, assertion: /.+/g }"
+    );
 
     return nockCall;
   },

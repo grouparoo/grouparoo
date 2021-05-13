@@ -1,17 +1,29 @@
 const nock = require("nock");
-process.env.BIGQUERY_JEST_TIMESTAMP = "1620764096226";
+process.env.BIGQUERY_JEST_TIMESTAMP = "1620919035659";
 
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
-      "8b08000000000002ff1dd04b7282300000d0bb64ad0ee513a1cb880832a030e1e7860949b414140c51814eef5ea74778ef07104af93094b26bf80d7c8289a8d68aaefcde44e58585229e6510126b7d474a59db7d306ecac7eccc054c8f028ed178773ef86c6552f7d267e46dbb8ac64346f69cdac9c9d462b330f5e640c2a13d62942c63a7865775d93e0f4ce6671653ecee0a5d69bf553c65cdb61059f6a4b7615f31053ba8c7937e715163880e051d641bd9f4d5862dc328f572b3d51f534cce79c15f6b0c13fbabda32066df7e0ecb049c26b025bcd4fd553466410e4d8f1a1f1b2c002f0b1af051fcafacdd50ccb5a807f7b29a79ebf031027820bf0fb073c8c87831a010000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "cb",
+      "72",
+      "82",
+      "30",
+      "1400d07fc95a1c3450a43b3050c2c38e6080b26134dc02528521541e9dfe7b9d7ec2393fe8cc3908910f6d0377f48ae6f3565ff3b5d7edccbc84e8f4aebd69049f764e151b8f6c99e2ab649b75432f123da60a6fc3e952639b854a9987c7593319f125c37578648b96e34cfd6c05732a0a49529125083f9cf171602aa32694a9cbf4dade83bc79216e71cdb062a5f82493a0e3f160e8a15b6e0c7609273ccb0fec9126002ad5365e9251d6d456f430c587fd7730c67a83bdb1e8543f5922792b6e24b76e9e5714f87ed4ac0d55b225f63a9f5689fc855608a6aeee41e4f5938b555d5fa17f7b3ecc1d3c034c38f7d0a3df3f19224fb91a010000",
     ],
     [
       "Content-Type",
@@ -25,7 +37,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:14:59 GMT",
+      "Thu, 13 May 2021 15:17:17 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -44,7 +56,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -65,7 +76,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-1-1620764096226",
+      jobId: "grouparoo-job-1-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -77,14 +88,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "0002ff85536b6f9b3014fd2bc8fbda04f2822452b446296da3256405d26a9a26649c0b734b708a4da6aeca7fdfb569b25695da4fd8bee7dc73ee8367f2c0cb0d199394e78f35544f5fee454ace08289ae36b41d77fed7b8f5ee5b7fb6f54dd659b2aeadd4c2688e09a25e97657404b8aba6220c7eba89d57a2ded14a8816266a755a1db7eb786edf19b9ddae8b340945b6e0e503927f2bb59363db3e4ab77321f202e88ecb3613dbd3bbbdefdabb4adc0353d27eab68a388b43fd4fc5a08461517e5641da17e2da14a604b79810efe1337e9f9dbcc6d4eb7ed1cc17bce803226ea52695798828932e3795d99ac64fc4c8ccb570712f90b7f165b4c14f5b64c4aba85336b43154dd4d30eaccb70b5b4e6c1e52a5c4ee3f92a48a2d9b5bf9cb667abc57a1944d6ddb51ffa96a26901866b4dac73730bf082fa1b908a97463dd6cf5af9a53ff3f743d1049496d00413cf716967e88cd22cf55836ec0dd2cc81341da6de80f652878dfad0dfa4409167440d8b96a24c07ae33ec3aa3c41da690f4fbe026b4e70c13a70769bf83473670c8e18cfca9b8820b2e7742f2a643e42e9cc77e1287eb60368d7d534246eb425d34c67401af3d2a2c10411fd474d0512e5049b77b1ec47e389dc5f35bbf99f00272ca9ea2479c71460b0988a615364f41b5141b6c1809a64bff02c16662df8f4149c63f9f89eeb976f1aae5277a8c03d47695f992280ee7c195b17344dcd2a236907d73d06564bcd0a60fbf10882bda2421376b3ffc419aa71032a8a0649f0f13c126f0d98f765c7b84e2e2a38a5478c7cd61526bb00a9a0de2a6d8137bd41b7ac4802bf52ee679fd63cf740e9d11b650aa97829ab5c73a1bb15a9e4018c4e107a657877fb7315a1074040000",
+      "0000000002ff85535d6fda3014fd2b91f75a20400209125a114d572412b624b4daa629b28d93ba0d318d1da6aae2bfefda298caa52fb14dbf79c7bcefdc80b7ae4d5064d10e1c553c3eae72f0f82a00bc4142ee075e83769bc4f8ad1e6e6f1de7197bfea950a67d32920b86649bcdd95ac234553532627eba45bd4a2d9e15a880e24eaf43bfdd1c0f6fbbe3d7447ae0f34c9ca7cc9ab4720df2bb593935eef28dd2d84284a86775c76a9d89ede7bfb416f578b074695ecbd55ec8188ec7da8f9b514142b2eaae93a01fd46b23a635bcc4b70f09fb821976f337739de760b00ef39659852d1544abb82145454392f9ada64459317645c9e1d50122c83796a515136db2aabf0965d581bac70a69e77ccba8e57a1b588ae5771384b17ab284be6374138ebce57cb751825d6dd4d100796c2a464866b4dad4b738be002fa1b2615af8c7aaa9fb5f26b7f16ef87a209202d591bccc6f608f73ddb273919d3dc1bba24b719211e19bb78486cea3bccd910868167440d0b57a2a2d81df4478e9f8d1d9f648e331e65de100f32e20e09259eab59e87081fed65cb12b2e7742f2b643e82e5ea44196c6eb683e4b0353428e9b525db5c67401e71e151408a00f6a3ae82817a0a4dbbd88d2209ecdd3c56dd04e78c90a4c9f932798718e4bc9008d6b689e62752836d03014cdc2e00ac06662df8f418926bf5f90eeb97671d6f2133d85016abbca7c5192c68be89bb17344dce2b231907d7bd065e4bcd4a60f7f00082bda26413fd641fc13b54f31cb59cd2afaf930016c029ffd68c7b507282c3ea8480577d81c2ab506ad59bb41dc147b627bb6677e53856bf52e36f0bc63cf740e9d916d59a55e0b6ad71eea6cc51a79024110861f995e1dfe01117f1cfc74040000",
     ],
     [
       "ETag",
-      "laUz/j7aGgVvKatWfdrS3Q==",
+      "39uTRvSg6dHkh45LZrOtMA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -96,7 +104,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:14:59 GMT",
+      "Thu, 13 May 2021 15:17:18 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -115,7 +123,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-1-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-1-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -129,11 +137,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8d93514fdb3010c7bf8bf79a4a6d57028bc443ba7550115a68c3cb261419fb929939b1eb730a55d5efbe7360dd34268597e4eefc3be5eeef7ff6eca76a244bd883aa362db8dd870afc6d085680adf6482f6b1a041631f0bc22f239cbaf707356637af1edea7273b2b36a7dfb747e4e048a1f507396ec59a9404b64c9f73d6b780dd4268c6eeba6e8b288f99d0dc575be9a2f2e28af8d0cf9e22ecbd269366387e8d828b9e745c7bfa3edfe10b147f3b082121c3402c22cd69947107e1ed6445e5b0d0334ad1380ac83bb83ca99d67267cc802a83d160148f87a7f164f8291e8f63e2b411dc2bd3107ab7a6f198379eeb9579a225d9e82311ae8b69e1b27b6ea9ae64b74808e78b3c9e74f3fd0d70214cdbf8a2172c9543ff22de6ff055847f49cddf09d24d29dd0755d048707d94b20597d201622f69b0e0d61eb1e97299bd55a591ce28d90f6e550fa0fdf6087ccd96e9ffa4257ffdd1ea4b9acfde10e8c93547249f5fcfd6797a7d13b8fb57234c771ef0c619321542f0d36838393b398d872f16fb6c82ede83b89772d444c70fa532e956749c935c2e117385a052e87030000",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "93",
+      "51",
+      "6f",
+      "9b3010c7bf8bf74ab4d036d982d407b2661b13255d42b587a9428e7d30a7c6a6b6c91445f9ee3bbb5d5aad93e80bdc9d7f27eefefe7320f7427192908d681e7a30fb770db8ef3e5881eda5b3f8eab4b24022028e3648deae9b871fefbfcd54561693223bdb6eeeaf8af4f21209cb7e414b497220b500c92d497e1e88a22d601bd3b26f5515b288b87de78beb7295155f306f35f779719be7e93c5f9063746ae4d4d12af06f68bb3b4664ab372ba8c18062e067e98cde0273995fd3d2b69330b2ba370c2c097038688cee3b6ab41e6165148fe2e9d97816cfc6e793e964869cd48c3aa1551000c7234e3b2a57fa372e49e273244c8871e13a3c7758173c2ce2c3ac28a71761be9700654cf7ca5583602d8c758fe2fd059f44f89794f48d20de94904350038a8319a2445751ce0d583b486a5bd1ae3b61f3e5327fad8ae2460b3e0ceec40020ddee047cce97e9ffa4457f3d6b7595968b578475e89a135266d78b75995edf78eeeec908f3bd037b63349aca82f7533cbef838f9301d3f5aec93f6b6c3ef24cef4101146f14ff92a1c496a2a2d1cff004cb9702d87030000",
     ],
     [
       "ETag",
-      "xLTKsq8msAGZKHq5ypiSQw==",
+      "USgqW/J9nITN5NI2jbkDNA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -145,7 +160,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:00 GMT",
+      "Thu, 13 May 2021 15:17:19 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -182,7 +197,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-2-1620764096226",
+      jobId: "grouparoo-job-2-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -198,17 +213,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "eb",
-      "4e",
-      "a340147e1532fb6737a9056ab9b48971bbca2ad94a95528dd96cda811ed851607066d034a6efbe07b05ed644932674e6bb9cdb9c4772cbca3519939865773588cd971b1e931e014533bc3d760b959e6e1617c6955ee7bfe2a9f7c01eb2830364b046256951e5b027792d1290e3c5bc9f095e575470be87467b833dd31e188e3d3446f66060a34c429e4e59798be2bf4a5572acebbbd0fd8cf32c075a31d94f78f17cafdf0ff44af01b4894d4df46d43188d43f8c7998f3842ac6cb83c51ce3d712c4120aca72cce045b88ebfbf75ee335af43324dfb3046892f0ba544d566891f03265592d5a57327e246d96affe90b937f58e226d953221d5b2a405ac342ab5e55280ac73d5d3566cfd7453dd6a3fc3d999b6c20a5396835c6957a75ee8691dc70fb4451078f348fb7af84d3b09678b73edc7758bf5def8635e6b908a956d56118d7368327aea9bff7e588d802a2aa103978e6153d33546711a3b49eaee5b716a401cbbb163d1fdd848464318ae63a0a8538d7baba2252f5dd719c5e6d07229351cc372acfd81e382b9b6621bac14a86d2509a443976c7be4413005c74c565cb2ae7be42af4236f19858be06812796d1929c5261d77c93545bcce53619148faa0ae6d83328e919a51f841e48593a3c8bff4bae94f21a3c9667e87f34f692e01d9546007158833bec6a691f3d9dc8ffc593099a2a21de9f98e21c9f8f7e38b20da546d9755fb2593309c5ca3860a4137ff6198873d24dbedab709734af5b4acb6f4f9dff7d0710136b79390dc8f6cf167f3d82afbc7327170b2fbc26dd550829082893cfe78ee416f86c57779b8354dc1d8c22159ef19125b2899108e81e1b2bda6c3bb5691896e992962cd43bcc1e99bbae361e8d231450aaa782bacd69fbd440b57c2621886f24f0831344ff0155990977b7040000",
+      "02ff8553796f9b3014ff2ac8fb67d37290830422555d96b28d29251d21adaa694a8c7930b70453dbb48aaa7cf73da0e9b14aad8400fb77bccbbe27d73c8fc984443cbd2941ee3e5c8988b408689ae26e6ce6ec737a123a908772f6f39ace85e3dc1d1d2183572a45b745066d254ac9404d56cb4e2a45595029441b8ddafd766fd4379d9e630eac91e5a04c4196cc797e8de2bf5a176ad2ed1e42775221d20c68c1558789ede37ef7b6df2da4b802a655f765c42e0651dd37631e678251cd457eb45a62fc52815cc396f20c337812c6d19797ce1d4eb79d14c9b79c01654c94b9aeb2420b26f284a7a5ac5dc9e49ed4593efb214b77eece42639370a9f43aa75bd8185419ebb5045566ba656c78fcb0535c1bdf82c5a9b1c10a139e81da18173fdcc0351a8ee71b2bdf7797a1f1f1f893f13d58acce8caf9735d67ae18f79c5a034cfebac421a655065f4d037eff5b02a01d5544103aec7e688f66cd3899268cc127b60458909516447638b0e2293394318c61150d4e9cabd56d15ce4b63d76a2ded0b22935c7a635b606fdb10dbdd88a46602540471663900c6db26f913bc9359c705508c59bee918bc00bdd7518acfcd93474eb32128a4d3a6992ab8a789ea7c62291f4465dfb0ae5022355a3f0fcd00da6b3d03b779be9cf21a56cb7bcc1f9273453806c2ab1831ae4a988b169e46cb1f4426fe14fe7a8a8477a76602832f97dff24087745dd655d7fc93408a697a8a152d2dd7f18e6311a92fdfe59b8739a9535a5e6d7abc6ffb601480f6b795af5c9fecf1e9f16c153deb8935f2b37b824cd56000948c8d9fb7347720dbc77570f3707a97877308ad2b8c643c654158349680e1bdfd6d91ed4f8b2484d96fa1536340787ae561e95236c21d70f053537a7ee530595ea9184209e11dff3bf23fa0f73f0baefb7040000",
     ],
     [
       "ETag",
-      "D8mtfHyUQ0W/ulKbLEwiwg==",
+      "d0nc+gDT9enTrCJkaLo99w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -220,7 +229,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:00 GMT",
+      "Thu, 13 May 2021 15:17:19 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -239,7 +248,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-2-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-2-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -255,11 +264,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff6d90d14fc23010c6ff97f3754b60213392f020644194200c7c308690aedc6661dbcdb64391f0bf7b2d26f2e04b7b77fd7d97efeb09f6aade421f32557cb4a88f3705da852b52346d690d5f0dd5062100b4a260f29099f98116f9137e7f8d7ab97ccef0f5b1180c9830f21d2b01fd13e40acbad81fedb096a5121cb361bed3732668f8d9b2c57e96436e6bea2adeb672fd3e9fd709ac039b85235fb3fc564b64ac649fa9f647d0e6047598a396aac253a138da61d4a3b71f98ca89a124343ad9668c0c3fea1d0d4364213853c09a3b01b479ddbb8d7b98ba32866ae2429aca29ad197255b034b5694297d723a8818d0bee4a0b93f0f3c4eb4429fc2355d6feefa7924a42aaf88c811ebdfcdc3a34533d7c42e0d3a839d8bd911b900968359dd620052f0673f287be9cf3ffe7553f6c9010000",
+      "ff",
+      "6d",
+      "90",
+      "41",
+      "6f",
+      "c2",
+      "30",
+      "0c85ff8b776d35e8065291765851c5ba21340a9c2684426a4a206db224dd8410ff7d4e98340ebb24b6f33debbd9ce128da0a46b015f56787e67457a39bfba244db4967e9d2aab50811a0633591d2b4fa317bb3afc5c0dd9b6cbc4f2b23e74f4f4458bec786c1e80c3b81b2b230fa3843cb1a24d96663c246c2dc49fbc9625916b309f58daa7c3f5b4da7cfd934874b74a3d2c73f45315be693bcfc4fb2be447050db127768b0e5e84d68a30ec85de1f359d66889b1559de16821c0e1a136aad3cc2815d3244ee2fe30e9a5fdb4f730180e52e2a4e2cc09d512ba5a903570ca3159aa6f4a0709012694147417ce2f1ae7466048e19b7e3077fb3c665cc81b22f1c4fa7773767268df8d229716bdc1ded5ec58f9008e8239d361049cd167bf0877ed2f3fe73a2e81c9010000",
     ],
     [
       "ETag",
-      "vbsPvoQfKezxC4fcObeYJg==",
+      "lrnp4BKsJI5t/rBCh9drlQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -271,7 +287,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:01 GMT",
+      "Thu, 13 May 2021 15:17:19 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -289,10 +305,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -301,7 +314,12 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff1dd0516e82300000d0bbf45b8c206c767fa2130a4c810e447e9aa616b014c74a23e2b2bbcfec08effd00ca181f06a2bf5a7e056f60a2169cb379d8af5c5257c7e550ac0536d57e42b5b86d6c63a70a6547af717e2e4e6dbade06250a11239ce5f936adcc56eed78d8bbf6b2d75e7681534163dc871850f79b5a8657cdd76e2f310d20cdfcb7e671ae147e4c9739997514fbb2480ed39867a12411507f0bae81e62197b8ef0ec3a32fddb06eded4ca6d832e1689051ba99872abd43c782192e368d41db2839d5347d618eb831dfe7644cca06674dc43aec9377cb0633c0effd45f1815c9edca503e10cfcdb899e7afe0c7039555c81df3fcd7efb441a010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff1dd04b7282300000d0bb646d1d85f0497762412154a0f2df64f804451049b022747af73a3dc27b3f202b0a3a0ce47e6b6807dec1940968592c71af6ae454b2f2d6559275d343265fc945dfc5b96b377a02059fb575b0de6a5c8436cf4a5918ebc8689b04cbde8a3d0fd176160666918f194247bdb43135d3d61b57290edc435d0422a2b8b3999da5fe43f5e82e16147f73fc94b519e743edb76f7194b0828be77980caddc19942a3d4940cdb9ae9c321cc897c6804a837b8194ce1f55485df892e9e4c75dfb8b3fa25add1d9c59b3c3f275572f4a02eb4fb3145be0416803efb9ad381d42fae2821b400ff76729f7afa0ad068c62907bf7f9438de181a010000",
     ],
     [
       "Content-Type",
@@ -315,7 +333,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:01 GMT",
+      "Thu, 13 May 2021 15:17:19 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -334,7 +352,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -355,7 +372,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-3-1620764096226",
+      jobId: "grouparoo-job-3-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -375,16 +392,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "6b",
+      "5d",
       "6f",
       "da",
-      "30",
-      "14",
-      "fd2b91f7b54080f094d0ca205d91206c21b49aa629729c9bd46d88d3d8a16515ff7dd74ee95a556a3fc5f63de79e731f7922773c8fc998443cbdafa03c7cb915113923a0688aaf4c5e1c865df5cdf61fedbffbd5e3fef1665ea4930922b86649ba2b32684851950ce478bb69a6a5a80a5a0ad1c0448d6ea3ddefd883be638ffa9d4e1f6912b264c9f33b24df2855c871ab75926ea642a419d082cb2613bb97f7d6bed32a4a710b4cc9d65bc5168ac8d6879a5f33c1a8e2229f6c37a85f492843d8519ea183ffc4383a7f9bb9c9e9ae992278cf1950c644952bed0a533091273cad4a93958c9f8871f9ea4036eed29d05161359b5cbc39ceee0cc8aa9a2a13a14605df8eb95b5f02ed6fe6a1a2cd65eb8995dbaab6973b65e6e57dec6babe747dd75234cac070ad89756e6e1e5e503f06a9786ed403fdac959ffbb3783f144d40690975301cd87dda1edaa32889062c19767b516243140da3418f76239b8d1c70e20828f28ca861d15ce4b6c33a43e82661771047a1133bc370d466bd903a117346edc4a67d20c733f2507205732e0b2179dd2172ed2f02370cfcad379b06ae2921a155a6e6b5315dc06b8f0a0b44d007351d75940b54d2ed5e7881eb4f67c1e2caad27bc8494b2c3e61e679cd04c02a26989cd5350ae448c0d23de74e5ce116c26f6e3149464fcfb89e89e6b17af5afe420f7080daae325fb209fc85f7ddd83921ae685619c8be3ee832129e69d3c73f08c415ad93909f5bd7ff45ea271f122821679f0f13c126f0d98f765a7b84e2e2a38a5478c7cd61526bb012ea0de2a6d86776db6e77866d62c0a57a1773babd53cf740e9d117690abe782eab5c73a6bb14abe803088c3f74caf8eff00f4785d6774040000",
+      "40",
+      "10",
+      "fc",
+      "2b",
+      "d6",
+      "f5356013638391504389d35081498d49d45695753ed6ee25c6e7f8ce4951c47feffa1c68a248c913bedd999dd90f9ec81d2f366444129eddd750ed3edd8a849c105034c3e84fd973a32f93b5f4bed903f7b1be3277177f1fc76344f08625e9b6cca123455d3190a3f5aa9b55a22e692544070b75ec4ecf3db5bc9e67d98eeb78489390a7735edc21f98f52a51c99e641ba9b0991e5404b2ebb4c6c8f71f3e1d42c2b710b4c49f3b5a28922d27c57f3732e18555c14e3f50af56b09550c5bca7374f09fb849ce5e57ee72baed66087ee00c2863a22e54e30a4b3051a43cab2b5d958c9e8876f9e283acfcb93f8d0c26f27a5bc405ddc289b1a18ac66a578271112e17c62cb858868b49345b06f16a7ae92f26dde972be5e042be3e6d20f7d43d12407cd35c6c6997e05f840fd0d48c50bad1e35e146f9793eb3b74b6908282da14dc603cba5bda1e525693260e9d07692d4822419260387da89c5bc3ef4370950e46951cda285287a43703c6a5b71620d4fe3be438771421d3776c0c5087353cf1e92fd0979acb882732e4b21793b217213ce223f8ec275309d44be6e21a575aece5b634d032f3d2a6c1041eff4b46fb25ca05233ee5910f9e1641acdaefd76c373c828dbadee71c729cd25209a56383c05d5426c706024982cfc7304eb8d5d1d92928c7e3d9166e68d8b17233fd2235c606357e95fb28ac259f055db3920ae695e6bc843fbd1b491f2bc31bdff8d403cd1b608f9bef6c31fa40d8590420505fb789908d6898ffe6887b347281e3eaa48856fbc1c261b0d56417b415c377b60f7addec0261a5ca937395be78ee7de54842d14eab9a1f6ecb1cf56ac964710",
+      "2671f9819ed5fe1f2c16be2074040000",
     ],
     [
       "ETag",
-      "csFy83tB0Rx0zvMxvxhDpg==",
+      "Zs16TBAUs9J376wuP/yFxw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -396,7 +417,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:01 GMT",
+      "Thu, 13 May 2021 15:17:20 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -415,7 +436,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-3-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-3-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -431,18 +452,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "8d",
-      "93",
-      "51",
-      "4f",
-      "db",
-      "30",
-      "10c7bf8b795c2ab5a5a42c120fed5646a5b4656978422832f125181c5fb09db0aaea77df39b00e8d49e125b93bff4eb9fbfb9f3d7b925ab088ddcbf2b901b33b29c1fdf44102b651ced2ab466d81050c1c2f89fc55ae9ee5a6d5e753d1261a9e42b8fae25e2e2e88b0f903549c457b564850c2b2e876cf34af80da72544da5b32e0b98dbd5beb84d93e5fa07e5150a9faf6fe278368f17ec101c1b05773cebf84fb4dd1d02f688f709146040e7e067a90d3e42ee967e4dcbab5ac1c0626372b0ac83bb83d26053738338a0cae074300ac7c36938197e0dc7e390388539771235a1375b1a8f39745c25f8424bb2d12911a68b69e1a27bb65497a25bc487cb751a4ebaf9de033ccfb1d12eeb050b69ac7b15ef0ff826c2bfa4e29f04e9a6a4ea834ad0024c1f25eb8c0b61c0da5e126dc6ebfa88cd379bf8a32a5a1894a21f6c650fa05c7b042ee3cdec7fd292bffe6af57d962e3e10d6916b8e48ba5c2db6e96c75edb9bb3723cc770eecb541329505efa7d170727e360d87af16fb86de76f49dc89906029673fa53aea46351c19585c36f627abb5b87030000",
+      "ff8d93616fda301086ff8bfb3568504a3a22f50374b4b0a6d0412a4d9aaac8b52fa999e3cb6c078a10ff7d97b463d35a29fd92dc9d9f53ee5ebfd9b39fca4816b14795ffaac0ee4e72f0dfea6009aed2ded1ab44e380050c3ccf89bc7abef93eceb67a7a1eaea7b27f7af3e969f7757b714184134f507016ed59a6404bc7a21f7b667801d426505785499b2c607e57d6c555b29ccdaf292f50d6f9fc3e8e47e378c20ec1b15172cfd386ff40dbc321606b7c5c4206168c807a96d2e21a849fd56b3a5e941a3a0e2b2bc0b1066e0e728b55c92d62872a9d7ea7179e7687bd61b73f080743e2340aee151a42ef57341ef3e8b95ee2969664bd3e11b68969e1ac796ea8ae64b3481dcee64978d6ccf72fc085c0caf8b415cc9475fe45bc3fe0ab08ff939a7f10a49b52ba0dcac148b06d942a532ea505e75a4974292fcb23365e2ce2b7aa186951c97670a35a00ed3747e02a5e8cde9396fcf557ab2fa364f286709e5c734492d9ed64958c6eef6aeee1d508e39d077767914ce5a0f653af7bf679701e765f2c7689b5ede83b91b715044c70fa53a6cab328e3dac1e1371988207287030000",
     ],
     [
       "ETag",
-      "xgMqiOvn87dvRnek6eH+tw==",
+      "FxKXBfwlH76jHd32K/hyJw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -454,7 +468,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:02 GMT",
+      "Thu, 13 May 2021 15:17:21 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -491,7 +505,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-4-1620764096226",
+      jobId: "grouparoo-job-4-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -511,11 +525,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "eb6e9b30147e15e4fdd9a45c20a19044aabab4651d524a5a425a55d3941873606e094e6c9329aaf2ee3b40d3cb2ab55224627f97f39d63fb913cf022212312f36c5382dc7db917316911d034c3dda0bf49123775ae93d9ede9919a9fdafd4d363e3e4606af548aaed639b495282503359acf3a9914e59a4a21da68d4b6db96d3335dc736874eafe7a04c419e4e78f180e23f5aafd5a8db3d94ee64426439d035571d2656cffbdd6dafbb96e21e9856ddb715bb5844753fac79920b463517c5f17c86f54b0572012bca734cf0224ce2ef6f9d3b9cae3a1992b79c01654c9485ae52a1051345cab352d6ae64f448ea94affe909937f1ce226399ebedd2a0ca582c24a832d72d63c993a79df583f1239c5e1a4b6c2de539a8a571fbd30b3da3e1f881310f026f16195f4fbe1917e1747e659cded558ab31c6240928cd8b3a4744e31caa0c4f93f2df1f4f25a09a2a68c0856b3ad41a98c3388d5d960efa47716a421c0f62f788f663930d6db0931828ea74e55eab68218a182c6be8baaec32cd366963db012cb8223334e5d0a76cf02c6904013b26f91bf926b38e76a2d146fe6456e433ff21651380fcec69157b791529cce7913ae6ae2754e8d4d22e983bef615ca0556aa86ef0791178ecf22ffc66bce7b021965bbd9064f3ca5b90264534957a0415e8a048746aea6333ff2a7c178828afa10af0e0c4546bf1e5f04d16e5d4f59d75f320ec3f11d6aa89474f71f86391c9becf7afcaddd0bcac2935bf5e35fedb062016f6f2b2ea91fdef3dfe5a04ef75e34eaee75e78479aad10529050b0cfcf1dc935f0d9eb3cbc15a4e26bc12a4ae31a2f1953550d26a1b96c7c55a76dd496d9b3b0d39a2cf53bacdfef1fa65a79548eb082423f35d4bc957a4e1554aa6712827847023fb840f41fade346a0a9040000",
+      "eb",
+      "6e",
+      "da",
+      "30",
+      "147e95c8fbb3695c120857a9ea689b754c34d0105a55d3048e7392b90d716a3b6cace2dd7792402fabd44a48c1fe2ee73bc7f603b9e369488624e0f17d0e72fbe15604a44640d31877b76e70325322e4edf8fb9f741a647fa79f2f2e8f8e90c10b95a2eb2c81ba12b964a0868b79239622cfa814a28e4675bb6e755be6c01a98ed4eb733409982249af0f40ec5bfb4ced4b0d93c946ec442c409d08cab0613ebc7fde6a6d5cca4b805a655f365c5261651cd376b1e278251cd457ab49863fd5c815cc29af204133c09c3e0cb4be706a7eb468ce40d6740191379aa8b5468c1441af13897a52b193e9032e5b33f64ee4c9c53df58257ab332a832964b092a4f74cd58f170bf93dd195fbde985b1c2d6229e805a19d7df1ccf312aced83516aeebcc7de3e3f127e3dc9b2e66c6c94d89d52a634c1282d23c2d73f83448a0c8b09fd4f8f5f11402aaa9820a5cf6cc2eb5fae62088821e8bfaed4e10991004fda0d7a1edc064031bec30008a3a5db8972a9a8a3400cb1af47abd2eb34c9b5976df0a2d0b3a6610f528d82d0b1843020dc9ae467e4baee18cab4c285ecd8b5c7b63df59fadec23d1df94ed94644713a6755b8a289e739353689a437fada15281758a918fed8f51d6f74ea8faf9ceabc271053b69ddfe389473451806c2ae91a34c80b11e2d0c86c3a1ffbe3a93b9aa0a23cc4d981a1c8f0c7c393c0df66e59475f92523cf1bdda0864a49b7ff6198a36b93ddee59b92b9ae425a5e497abca7f5301c4c25e9e562db2fbb9c35f8de0bdaedcc9e5c2f16e48b5e541041252f6feb923b904de7b9d87b782547c2d5845695ce32563aaa8c12454978dafcbb47bb56dd9a6454ab2d4afb06edb3a4cb5f0281c610da9de3754bd95724e0594ab4712827847dcb17b8ee83ff227bcffa9040000",
     ],
     [
       "ETag",
-      "N3qdd7f6QdSWB5sUB43qgA==",
+      "yNbBPsodi3gJxnObpzO+MQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -527,7 +545,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:02 GMT",
+      "Thu, 13 May 2021 15:17:21 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -546,7 +564,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-4-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-4-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -566,17 +584,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "6d",
       "90",
       "41",
-      "6f",
+      "4f",
       "c2",
-      "30",
-      "0c",
+      "40",
+      "10",
       "85",
       "ff",
-      "8b776d11b4ac884a1c60828156b15140d33421148ae90a6ddd25e91042fcf73961da38ec92c4f6f7acf7728643566e21844d967ed6284f7729ea9979c4a8ea5c2bbe2a2a158203a845ca64673cf70759f136f2557a783a8ad1e4d5efcc7a3d2654f2818580f00cbb0cf3ad82f0fd0ca5289065ebb5b41b19d3a7ca7446d1737fc165415b534e9751d41f4443b83837a2eaf027984c17c3c761fc9f647571604f9b187728b14cd078a824ed31d113134f89a2cad15554cb041558d80e524975252491cb1db7edb602afd909dacd6ee0790173392542675432ba9cb335d0a4451ed391c381c780b44fceb9b3e79769df771b2dcfe63065cbdabb05baed861ffcce3d335ffd6c1e9c34aa1749ec52a131d8bc9a7d20134073302d6b742011fcd7e34c5febcb3734f0bd6ac8010000",
+      "cb",
+      "78",
+      "6d092d94a4241e4051491ad40a8989216469875a683b65772b3484ffeeec62948397dd9d99ef4ddedb13ecf22a8521acf36cdfa06c6f32d4afe611a36a0aadf8aaa952080ea01619936970acee0ff41e36e5be6e8a75daeee5f1707bcb844a3eb114303cc126c7225530fc3841254a64d96a25ed46c6745b9bce43f43c9a7359526acad9228a46e3680267e74a54effe04d3d97cf23889ff932ccf0e6c691de3062556091a0fb5a42d267a6ae22951d605ba8a1a99a0020bdb4126a9a9852472b9e3f65d6fe077432fecf682411032575022744e15a38b37b6069ab428623a7038f01990f6c93937f6fc32ed20ec78becd614acfdabb06c27ea737f89dfb66befcd93c6e35aa1749ec52a131d8bd98bd23134073302d1b742011fcd74fb9bed4e76fcc6a2222c8010000",
     ],
     [
       "ETag",
-      "7HS3BimYF3sgkKwaFIW37Q==",
+      "d5xnDwoX9umqpulbdyqrxw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -588,7 +608,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:02 GMT",
+      "Thu, 13 May 2021 15:17:21 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -606,28 +626,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b",
-      "7282300000d0bb642d0e88fcba2b0c502c6d61b4226c32186208bf000902767af73a3dc27b3f204708730e05ab71075ec09aefac2ddabef7a60dc98dfa97a12a76fcb4bc8a8274ab6d37dfe9991e63ed46f7c83131f374af6def578f75e3d96c1ce63b7adc143066fda4a43c58a81486ee8a33653fd4816e95b5c4b9b82e22411e39988d5132f1964c4d749f8c34c8a0366701646179760b593116a252c36a6c4a7cbf552294baa52cd58306fb23aa3e2334133612b743d17048e1a0f61f95ac15de74194490406fae1e45998bd65856df8cd5f1f4c556b00178e9e98839a44faeaa59d606fcdba1587bfc0cb0713ee211fcfe01ef8f36fb1a010000",
+      "1f8b08000000000002ff1dd0c97282300000d07fc9d971400885de484459048950592e0c4b5844ca12b0d24effbd4e3fe1bd1f90e639652c99fb967e8277b0a63b659b6fad41464995cbd21c613fd6bc0b977d4df124297016c4206cb3120ea9ab5408dbb7e2c2f6223969561aad27dc09f7c5e31cf1bb41f271a2446832384247efc8d3ac3b74554d099b3dcc98c11dcff8435743fb508f0472c62a67f42eb4e4a1b5c4c176874452f058948bc5f18ac3cc06562dd575f7d0ad317c5b341cedf5abccb7c6dea57ed497ca29ab423fd6ad33ab0bd5e6961b1fd47e59203f182456c35ad46f2ed800fa1c9a89b2a4797105a8281bf06f4fe675a0af0044d3894ee0f70f67c09cbb1a010000",
     ],
     [
       "Content-Type",
@@ -641,7 +645,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:02 GMT",
+      "Thu, 13 May 2021 15:17:22 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -660,7 +664,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -681,7 +684,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-5-1620764096226",
+      jobId: "grouparoo-job-5-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -691,11 +694,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08000000000002ff85535d6f9b3014fd2bc87b6d0249099048d11a2574454bc806a4d5344dc81843dd124cb0e95455f9efbb364dd7aa52fb84ed7bce3de77ef084ee599da319ca5879e868fbf8e58e67e80c51894b7815dfeba62a9ad52abe1d1fdcc3c8a637cbabc57c0e08a65802ef9b8a0e04ef5a42c56c170fcb96770d6e391f40a2c1643072c696ebd8d6d4198f1da0095a156b56df03f956ca46cc4cf3243d2c392f2b8a1b268684ef5fdecd87b1d9b4fc8e1229ccb78a268808f343cdaf152758325ecf7731e87782b629dd63568183ffc43cbb789b79c8f07e5802f881118a09e15d2d952b4841785db0b26b7556347b42dae5ab038afdb5bf4c0cc2ab6e5fa735ded33323c712a7f2b1a1c665b4dd184178b98d368b24d88669bcbcf2378be172bbde6dc2d8b8b9f223df9038aba8e61a73e342df42b8807e4e8564b5564fd4b3527eee4ff07e288a00d282f6c1d4b51c3cf2ac6956642e29bcf349565834cbbccc9de0f3cc22539bda794631f0b4a866e19ad7963db26de238a9e77838b55de2a6de64324d3dcf1e8dc6e4dc9a78393a9ea1bf2d9374c544c305eb3b846ea220f1d324da85cb45e2eb120adc5572d51b5305bcf628a140007d50d35145190725d5ee204cfc68b14c826bbf9ff09a96983cc6079871812b41018d5b689ea4ed86e7d030142e36fe0ac07a623f4e418166bf9f90eab972f1aae52ff40406a8ec4afd45711205e1376de784b8c655a7210ffd419551b04a993efe0120ac689f04fddcf9d12fd43f45b4a02dadc9e7c304b00e7cf6a39dd61ea0b0f8a02224dc617388501aa4a5fd06315dec337b648d3ddb421adcca77b1a9e79e7aa672a88c744f6bf95c50bff650672fd68917100461f8a1eed5f11f10be999174040000",
+      "08",
+      "00",
+      "00",
+      "00",
+      "000002ff85536b6f9b3014fd2bc8fbdabc210991a2354ae91a2d211d90760f4dc83817e696608a4dbaaaca7fdfb569ba5695da2f807dcfb9e7dc078fe496175b322109cfee6aa81e3edd88849c105034c3dbfa67b15dd3d178f6fdfeeb258b2eec7efa37b89f4e11c1354bd25d99434b8aba6220279bb09d55a22e6925440b13b59c566fd8efba3db73b70868e8b340979bae4c52d92ff2855ca49a773946e67426439d092cb3613bbe7fbcebedf292b71034cc9ce6bc50e8ac8cebb9a9f73c1a8e2a2986e42d4af255431ec28cfd1c17fe236397d9db9cde9ae9d2178cf1950c6445d28ed0a533051a43cab2b93954c1e8971f9e28384ded29b47161379bd2be282eee0c4da524563f55082751eac57d6c23f5f07ab59b458fb7138bff056b3f67cbddcacfcd0babef002cf5234c9c170ada9756a4e3e1e507f0b52f1c2a847fa5a2b3ff567f176289a80d2129a603cea0e696fdc75933419b1743c7092b40b49324e460e1d245de6da606f13a0c833a286450b51741ddb71c0edc5835ecf8e6d1b1f94f52066c3b1dd1fbaccc184e47042ee2baee08ccb5248de74885c078bc88ba360e3cf6791674a48699dabb3c6982ee0a547850522e89d9a0e3aca052ae9762ffcc80b66f36871e535135e4246d9437887334e692e01d1b4c2e629a856628b0d23fe6ce59d21d84cecf2189464f2eb91e89e6b172f5afe4c8f7080daae326f1246c1c2ff62ec1c115734af0d64df7ce832529e6bd387df08c4156d92906f1b2ff8419aab0052a8a0601f0f13c126f0d18f765c7b84e2e2a38a5478c6cd61526bb00a9a0de2a6d823dbeef76df39b2a5aa937317be81e7ba673e88cb083423d15d4ac3dd6d988d5f21984411cbe6f7a75f807f996a18774040000",
     ],
     [
       "ETag",
-      "sKnplfpDDSh2q7q14eWCHA==",
+      "uZndOa78AXwKPcTH42fxRw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -707,7 +714,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:03 GMT",
+      "Thu, 13 May 2021 15:17:22 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -726,7 +733,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-5-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-5-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -739,15 +746,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d93514fdb3010c7bf8b794db5b494c022f1d06edd56296d599bee610845c6be0483637bb6135455fdee3b0756d0400a2fc9ddf977cadddfffecc983509ca4e456547f1ab0bb930afccf10acc135d23b7c19ad1c908880a7159217a7abdf86c56dd28aad182d1f169f9a5ff2f1f21209c7eea0a624dd935280e48ea4d77ba2680dd8c6b46c6a55745944fcce84e2265fcf97df31af350ff9729b659369362387e8d8c8a9a745c77fa0ede610917b7dbb86122c2806611663f53d303f0f6b3a5a1b0903a71bcbc0910eee0e2aab1b43add603ac0cce06c364149f27e3f873321a25c849cda8175a21badde078c46b4fe55a3fe29264788a84ed625cb8ec9e2dd605ef1609e17c9927e36ebed700654c37ca17bd6029acf34fe2fd039f45f89f94f48320de94907d50058a83eda3842928e7169ceb25b52ba831476cba5a656f5551dc6ac1fbc156f400d2b747e05bb69abc272dfaeb45abaf937cf686701e5d7344f2f962b6c9278babc0dd3c1b61baf3e0aeac465339087e1ac6e38bb3f3247eb2d8171d6c87df49bd6d20228ce29ff243789296543a38fc0501dac4e887030000",
+      "000002ff8d93516fda3010c7bf8bfb1a5418858d487d081bdbd0027410b487aa8a5cfb92b9737c99edd051c477df39edd8d44e4a5f92bbf3ef94bbbfff39b01fca4816b35b55fe6cc0eecf4af05f43b006d768efe855a371c022069e97449e270b0ddbe1c39792ff92f7df86d387d9ae4c2e2f8970e23b549cc5075628d0d2b1f8fac00caf80da04eaa632799b45ccefeb50dc64ebf9f213e515ca902fb7699a4cd3193b46a746c93dcf5bfe156d37c788dde1ed1a0ab0600484596a8b7720fc3cace978556be8396cac00c75ab83d282d3635b7883daaf446bdc1f84d7f3298f487a3f168429c46c1bd4243e87643e3318f9eeb35ded3926c3024c2b6312d5cb4cf1dd5956c1709e17c998d2fdaf9fe05b810d8189f778285b2ce3f8af7077c12e139a9f92b41ba29a5bba0128c04db45a93ae7525a70ae934497f3ba3e61d3d52a7da98a911695ec0677aa03d07e77023ea6abe47fd292bffe6af521c9662f08e7c93527249b2f669b2c595c05eee6c908d3bd077765914ce520f869d0bf78377a3bee3f5aec3d06dbd177626f1b8898e0f4a77c569ec505d70e8ebf016cc1494f87030000",
     ],
     [
       "ETag",
-      "83OZpc0v6viUi2NkM/uVlw==",
+      "/AMleU3zKgaxdwW3BzEvgA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -759,7 +762,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:03 GMT",
+      "Thu, 13 May 2021 15:17:23 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -796,7 +799,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-6-1620764096226",
+      jobId: "grouparoo-job-6-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -811,11 +814,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8553eb6e9b30147e15e4fdd9a424402e4022555dd6b28e29211d218daa694a8c31cc2d606a9b56519577df019aa65da5568a447cbecbb9d98fe89615319aa088a5771515bb4f373c421d44154e21faa017f68ff061ed247dfb6235cfbdf5fc67323d390106ab5512e76546bb9257825039592d7ba9e0558905e75d30ea5a5dd3ea1bb63534c656bf6f814cd22c99b1e216c47f952ae544d70fa97b29e7694671c9648ff0fc39aedff7f552f01b4a94d45f67d42189d4dfcd799a718215e3c5c96a09f92b49c586e6986550c15118475f5f3bf718ce7b2990ef19a198105e15aaae0a2c082f129656a271459347d454f9e20f5aba33f72cd4b68ccb0d2ecbad86a5b6d9082aab4c75201c3f45ca5bed7bb0986b5b682f6119955b6dfdc30d5cade578beb6f27d77196a9f4fbf6817c16275a97dbb6eb0ced11c2a8aa954ac68ea097194d1ba96a789796fd7540bb0c292b6e0c6362c6c3ac6384a229b24ce601425068d2227b247781019643ca4c338a21874aa766f54b8e0c5c8198e1c524bccd87286648c6d830c4678e424b6650de2786c9a38310768df410f82297ace64c9256be786d68117ba9b3058f967d3d06dda48304ce8bc2dae6ee2659d0a9a04d23b7ded6b9471c8542fc1f34337989e85de95dbee7d46534c76cb3bd87c823349818d05cea9a262ce63181aba5c2cbdd05bf8d319289a655e1e18124d7e3f1e05e1ae6ca6ac9a2f9a06c1f41a345808bcfb0f833aac21daef5fa4bbc259d5501a7e736afdef5b0099d0cbf1d447fb3f7bf87510dcefd61dfd5ab9c1356a43014da8a005f978ef406e808f5ee9e1cd00155e0d64910ace70c988ac731041dbcbc6f2a6da566d1a03c730504316ea0d36b60687a9d61eb523cd69a19e1a6adf4c33a71aaae4330940b823bee75f00fa0f5f9a33bab1040000",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "7f",
+      "4f",
+      "db",
+      "30",
+      "10fd2a91f7cf26f547d236695209b10e3216a9a490a630344dade33899218d83ed3055a8df7d17a7501812489552fbbd77f7eecef788ee5899a2094a587e5f53b1fd74cb13d44154e11c6e7fcaed65ed96332f8de4e930c847f3a424f9d1113058a392785315b42b792d089593e5a2970b5e575870de85405da76b3903d3b33c73683bb60732498b6cc6ca3b10ff51aa92937eff29752fe73c2f28ae98ec11be79beef3f0cfa95e0b79428d97f9db10f4964ffdd9cc7052758315e1e2d1790bf9654ace806b3021c1c8469f2f575e41ec39b5e0ee40746282684d7a56a5c4108c2cb8ce5b5d051d1e41169972ffea0853ff34f6263cdb85ce1aa5a1b581aab95a0b22e5407aed3fd4d75677c8fe6e7c61acacb5841e5dab8fee147bed17282d05886a1bf888dcfc75f8cb368bebc30bedd68ac73080e8e522a152bb59f1827056dbcec3b16bc1d5323c00a4bda82abb1e960cb35bd244bc62473877692993449dc646ce36162126f4447694231e854135dab70c94bdb1dd92e692456eab823e2e1b1498636b6dd6cec38c334f52c0b67d610ed3ae8af608a9e325971c9dabea1eb2888fd551c2dc39369eceb32320c1d3a6dcd3545bcf4a9a04820bd53d7ae4119874ccd108230f6a3e9491c5cf9eddc6734c764bbb887c967b89014d858e00d55549cf3149a862ee68b200ee6e174060a3dcc8b278644935f8f0741bcad749795fea269144d6f408385c0dbff30f0e18cd06ef722dd152e6a4dd17c7d6ae33fb400b2a096c3698076bf77f0eb2078df6d7474b9f4a31bd45e4534a38296e4e3b90359031f6de9d3ce0015b606b2480567786444363988a0ed63631bed76af1e0d5d73803459a83798075de81c76a5894837b454fb82da9dd17d6aa05a3e930084371206e119a0ff00",
+      "46015547b1040000",
     ],
     [
       "ETag",
-      "w/n7HTwW8f27GUMmIWMJfA==",
+      "XsyQu8nL9dRsD3Ig4Obncg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -827,7 +840,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:04 GMT",
+      "Thu, 13 May 2021 15:17:24 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -846,7 +859,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-6-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-6-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -865,16 +878,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "6d",
       "50",
-      "4d",
+      "5d",
       "4f",
       "c2",
-      "40",
-      "10",
-      "fd2fe3b54da0c11a48388069b4da801438194296322d856da7ee6ed586f0df9d5d4ce4e06577e77d4cdedb339cca7a0f23d895c5478baabb2bd02cec2345dd4aa3f96aa8d6081ea011052b972fafabef43373ccaf9fd20558b2c8c639c8cc7acd0d9012b01a333e425cabd86d1fb196a5121dbb65be536b2cc748d45a6f379124d660c54b4b7c06c9d24936912c1c5bbb135a73f4b3c5b454f51fa9f6573f1e048bb14735458676853348a8e9899d816d4a26a24fa9a5a95a106277644a1a86d8422f219f143bf1f06bd8770d01b864110b24e52264c49354bd74b8e06868c90297d713d0858a0dc939be6eefc64d8a8165d0b3bf45db85b3a1752fff181e537bf7ba79d41fda688336ab4f17ad7a88f64e31bae65777b9009feebe7d25ce7cb0fe7ba1d1fc8010000",
+      "30",
+      "14",
+      "fd",
+      "2f",
+      "d7",
+      "d7",
+      "2d01942523e1017451e2009d92180d2165dccdc1b65bdbce4908ffdddb62020fbeb4bde7e3e69c1e6057d41b18c0bac8bf1a54fbab1ccdb37d24a89bd268be24d51ac1033422676510deb48f3aff799f8cbea7d4caf8ae7d9bb6c3212b74fa899580c101b202cb8d86c1c7016a5121db562be536b2cceca545c6f3791c8d660c54b4b1c06c11c7a3711cc1d1bbb0c9ddd93299bd46f751f29f6579f4604beb04335458a7685348455b4ccdc416d4a29225fa9a1a95a206277644aea8914211f98cf881df0d7a9db01b76aefb413f645d49a93005d52c5dbc70343064449950cbf5a0c702e59edc3473e737c34635e85ad8a1ebc25dd29928f599ef597ef9b777bc37a89f1471468d365ee714f5966c7cc3b5ec6e0f52c17ffd5098d37cfc055f1da118c8010000",
     ],
     [
       "ETag",
-      "SJKTxhy9jlO54RrQc6IIeA==",
+      "694wKsgxZIAvMowpLDwXMw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -886,7 +903,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:04 GMT",
+      "Thu, 13 May 2021 15:17:24 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -904,17 +921,26 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
       "8b",
-      "08000000000002ff1dd0c97282300080e177c9591d40db21bd89e20202229be59261099b2c8184453a7df7327d80fff0fd3f2088224c2962cd0bd7e00bbc03016ea28d4a4409a5f1bd529542d2743256bd940eb3515bfc941f6a33bc8f09ca3d3b9a9d497bb6eb9b42cb96c1a40c23141a56c6b24adfd3efd789fabd46c46ace3881bfe2da12d12561a949b84ae8613e3609452ddcd96b3925ca799fc76a175b179e1ba03ff04aa1ef4cc7b51efc1679cccb1ccf9907b50d4a87f909c7a546a7f12d0e6757ce5479fb0125cd2e94397c1e45b737026622d236e4889a537c385f6f8e1b7d2a6005f044f20e53942fdc25822bf06f47ec4df03240c241873bf0fb076f8f09bf1a010000",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82300000d0bb64ad8ef2d1d05d500c1a8162e9d8ae321a43448dd07c5aa2d3bbd7e911de7b803d635c6b6ada0bbf8117e0f65e346223d2c1988a23b9b713a6aef5349ccbd8cf137991f966bb4bacf88e22b1d264e795eba5d409cc6939ae0f02a638cddd161de83126beb197dbc9ac16106712ddcbda779bebec16e2fa6cda82924457cd279cfd845485ebee6d15244d35b9a7432f405f3cb005c2d90e42bb388d0d733a91d746f5c613e3b09566438a0a2d2b55e35e1515462e9bcce37ef8d18aec9cc2736bede21dbd1227b508a6595f308b993d0dc100f0be6b14d7b47972fd308a06e0df4e8debf83320e67bc515f8fd031eb017781a010000",
     ],
     [
       "Content-Type",
@@ -928,7 +954,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:04 GMT",
+      "Thu, 13 May 2021 15:17:24 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -947,7 +973,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -968,7 +993,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-7-1620764096226",
+      jobId: "grouparoo-job-7-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -988,11 +1013,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "5d4fdb3014fd2b91f738daa4a16d9a4ad5a84a18959a942529689ba6c8769ccc90c625764080fadf77ed50064282a7d8bee7dc73ee479ed00daf7334458497b72d6b1ebe5c0b828e1053b88457fb319c57bfaaafa3f3bc38bb50f7b91f5d25e56c0608ae59126f7715eb49d13694c9e926e9978d6877b811a207897a5e6f30761d6f3c74fcb1eb8e81265955ac787d03e4bf4aede4d4b60fd2fd5288b26278c7659f8aedcbbb7de7dabb465c33aaa4fd56d10611697fa8f9ad12142b2eead92601fd56b226635bcc2b70f09f989393b799fb1c6ffb2580ef38659852d1d64abb821454d4052fdbc66445d327645cbe3aa02458058bd4a2a26ab77556e32d3bb272ac70a61e76cc3a8bd7a1b58cced671384f97eb284b16e74138ef2fd6ab4d1825d6d579100796c2a462866bcdac13738be002fa39938ad7463dd5cf5af9b93fcbf743d1049096ac0b669e33c68389e3938278b4981c8f48e1304226c41be163e2507fc8863961187846d4b0702d6a3220ae3f193959e17aa36ce87b830c33dfcddce33c1f17d81b13df45fb2374df70c54eb9dc09c9bb0ea1ab789906591a6fa2c53c0d4c09056e2b75da19d305bcf6a8a040007d50d35e47b90025ddee659406f17c912e2f836ec22b5662fa90dcc28c0b5c490668dc40f3146b429143c350340f8353009b895d1c82124d7f3f21dd73ede255cb5fe8290c50db55e68b92345e46df8d9d03e21257ad81dc75075d46c12b6d7aff0780b0a25d12f46313c43f51f714b38235aca69f0f13c026f0d98f76587b80c2e2838a547087cda1526bd086751bc44db1cfec81331c392364c08d7a17f306cea1673a87cec8b6ac56cf05756b0f757662ad7c014110861f995eedff0138164f5874040000",
+      "6b",
+      "6f",
+      "da3014fd2b91f771850408e121a11541ba4682b086d06a9aa6c8313799db10d3d8a1ea2afefbae9dd2b5aad47e8aed7bce3de73ef244ee78b9256392f2fcbe86eaf1cbad48c9190145737cbdbeb4bdbf419e565f879d3abe13b3c566fe70359920826b96a4bb7d012d29ea8a811c6fd6edbc12f59e5642b430516bd0ea785d67d41939bdbed71f214d42912d787987e43f4aede5d8b64fd2ed5c88bc00bae7b2cdc4eee5dd3e74ed7d256e812969bf55b45144da1f6a7e2b04a38a8b72b259a37e2da14a604779810efe13b7e9f9dbcc6d4e77ed1cc107ce803226ea52695798828932e3795d99ac64fc448ccb5707b2f617fe2cb69828ea5d9994740767d6962a9aa8c73d5817d16a6905e1c52a5a4ee3601526ebd9a5bf9cb667abc56619aead9b4b3ff22d45d3020cd79a58e7e616e205f5b720152f8d7aac9fb5f2737f82f743d1049496d0049381e3d1ced019a5593a60d9b0d74f3307d274980efab4973a6ce482bb4d8122cf881a162d45e9760783de96b124ed78a3c4751c9a0cfb2e24acef663d36e87b8ed325c733f2507105732ef742f2a643e4260a623f89a34d389bc6be2921a375a1e68d315dc06b8f0a0b44d007351d75940b54d2ed0ec2d88fa6b338b8f69b092f20a7ec717d8f33ce682101d1b4c2e629a896628b0d23e174e9cf116c26f6e3149464fceb89e89e6b17af5afe428f7180daae325fb28ea320fc6eec9c10d7b4a80de4d01c7419192fb4e9e36f04e28a3649c8d5c68f7e92e629820c2a28d9e7c344b0097cf6a39dd61ea1b8f8a82215de717398d41aac826683b829f6c4765dcf73880157ea5d6ce8754e3dd3397446d841a99e0b6ad61eeb6cc46af902c2200e3f34bd3afe039c33e0e374040000",
     ],
     [
       "ETag",
-      "/zMAlZl+5HdfFPtwd9NWSg==",
+      "VH/6zIgbr+81uTkoCLUDwQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1004,7 +1031,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:04 GMT",
+      "Thu, 13 May 2021 15:17:24 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1023,7 +1050,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-7-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-7-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1042,11 +1069,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "93",
-      "dd6edb300c85df45bb7580244b9dcd402f92366d03b8f9752e86a2305489f694c9a627c9de8220ef5ecaedb2621de0ded824f511268f8e8fec872a258bd893ca7fd6600e9f72706b1f6cc0d6da597a55585a600103c773229b35d7d7cdeaee76fdfbea1b663683fd6e9d5f5e1261c57728388b8e2c53a0a565d1c39195bc006a13a8eba24cdb2c60ee50f9e236d9cc17b79417287dbed8c5f1641acfd82938374aee78daf21f687b3c056c8f4f1bc8c04029c0cf5219dc837073bfa6e545a5a167b136022c6be1f620375857dc20f6a8d21bf706e1b03f0e47fdafe1701812a75170a7b02474b7a5f19843c7f5067fd1926cf09908d3c6b470d63e1baa2bd92ee2c3f9220947ed7c6f012e04d6a54b3bc14c19eb5ec4fb03be8af02fa9f90741ba29a5bba01c4a09a68b5255caa534606d278936e55575c6a6cb65fc5e95521a54b21b6c5407a05d73066ee2e5e47fd292bffe6a753d4966ef08ebc835672499dfcfb6c9e47ee5b9c757234c0f0eecca2099ca82f7d3a03ffa72310efb2f16bb426f3bfa4ee44c0d01139cfe943be55894716de1f40c1b89726087030000",
+      "614fdb301086ff8bf73595dad1161a890f2deb46b4d0d2364c48138a8c7dc9cc1c5f663b4555d5ffce39b082c6a4f025b93b3fa7dcbd7eb367bf95912c66f7aafcd380dd7d2ac1af42b006d768efe855a371c022069e97816c5697093f1baef0f6c7fcbbdb29bce5178fe7e74438f10b2acee23d2b1468e958fc73cf0caf80da04eaa632799b45ccefea50dc64eb64f18df20a65c81737693a9da57376888e8d927b9eb7fc07daee0e117bc0fb351460c10808b3d4161f40f824ace978556be8396cac00c75ab83d282d3635b7883daaf44e7b83f1e7fe6430e99f8cc6a309711a05f70a0da1371b1a8f79f45caff19196648313226c1bd3c245fbdc525dc9769110268b6c3c6ce77b0b7021b0313eef040b659d7f16ef2ff822c2bfa4e61f04e9a694ee824a30126c17a5ea9c4b69c1b94e125dceebfa88cd96cbf4bd2a465a54b21bdcaa0e40fbed11f89a2ea7ff9396fcf5aad59769367f47384fae3922597235df64d3abebc0ddbd1861b6f3e0ae2d92a91c043f0dfac3b3d1e9b8ff6cb10b0cb6a3efc4de361031c1e94fb9549ec505d70e0e4fe0265a0f87030000",
     ],
     [
       "ETag",
-      "vQalDvPHGQxCYofsfejUQg==",
+      "buQHIa84QoXVEKsyioXaCw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1058,7 +1085,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:05 GMT",
+      "Thu, 13 May 2021 15:17:25 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1095,7 +1122,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-8-1620764096226",
+      jobId: "grouparoo-job-8-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1106,12 +1133,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "0000000002ff8553eb6eda30147e95c8fbb3695c9200e122551da5698744a184d0164d1338e624751be2d4765aa18a77df4902bdac522b2105fbbb9cef1cdbcfe49e276bd223018f1e3290db6f77222015029a46b87bf6f3642ad96072e3df2c60eaf9f2761ab1a7a32364f05ca5e8268da1aa442619a8de7c568ba4c8522a85a8a251b553b51cdb6c3b4db3ebd8b68332057138e2c93d8a6fb54e55af5e3f94ae45424431d094ab1a139b97fdfaa35d4fa5b803a655fd7dc53a1651f54f6b1ec78251cd4572349f61fd4c815cc286f21813bc0ad7c1aff7ce354e37b508c98f9c01654c6489ce53a1051349c8a34c16aea4f74c8a946ffe90993b7207beb15a530d2b832a63b994a0b258578c155fef77d27be3cc9b5c182bec2de431a89571fddbf55ca3e40cc7c67c3c7667bef1fdf88771ee4de697c6c9a2c02a7b67ccb206a5795224f16910439e623fabe1c703ca0554530525b86c9b0eb53a66370883360b3b8d56109a10049da0dda28dc064dd2634d70150d4e9dcbd50d144240ddb6a77ed266d9aad36ebda6d302dea045dca1c1aaeed4ec36e598d308090ec2ae449720da75ca542f17262e4da1bfaeed2f7e6e341df778b36428ae3392dc3e54dbccda9b149247dd2d72e47b9c04af9f88763dff5fa037f78e596273e8288b2edec01cf3ca4b10264534937a0415e88350e8d5c4e66437f3819f747a8288ef1f2c050a4f7e7f955e06fd362cabaf892bee7f517a8a152d2ed7f18e6709a64b77b53ee8ac6594129f8c5aaf47f2c0162612faf2b9becfeeef0572178b34b77329dbbde82945b1e842021615f9f3b920be0abf779782d48c5f7825594c6355e32a6f21a4c4279d9f8a6485baa2db3e5381629c8527fc0ba4dfb30d5dc2377840d247adf50f95a8a39e550a65e4808e21d190fc7e788fe035e3e7105ab040000",
+      "000000000002ff8553eb6e9b30147e15e4fdd9a45c80040891aa2e6d59879492969056d53425c618e68660824da7a8cabbef60925e56a9952211fbbb9cef1cdb4f68cd8a048d51ccb26d4dabdd97071ea30ea21267b09bfbb667ada31b5b4fb65b039fe9b36ccbb2931360b04625f0a6cc6957f0ba22548c17f35e56f1bac415e75d30ea8eba866deaaee1ea03cbb65c90099aa75356ac41fc47ca528cfbfd63e95ec67996535c32d1237cf3bcdf7f34fb65c51f2891a2ffb6621f8a88fe87354f734eb064bc3859cca17e2d68b5a41bcc7248f0224ce2ef6f9d7b0c6f7a19901f19a198105e17b2490516841729cbea4ab9a2f11352295ffd41736fea9d47da2ac192ae342cb4e5b2a2a2ce65475bb1e4b053aeb51fe1ec4a5b416f29cba95869773fbdd0d35a8e1f688b20f0e691f6f5f49b7619ce16d7dad9bdc23a0767c892502159a1924438ce6993e2302bfffd0135022cb1a02db874741b1b23dd8dd3d821e96860c5a94ee378143b161ec43a71877498c414834e36ee4a850b5e0c4cc371cd211eea96435cd3a1ba81edd8c5c4c669628e06a6650cd298a668df417f2b26e905132517ac9d18ba0bfdc85b46e122389f449e6a23c5309e8b365cd3c4eb9c129a04d2077ded1b9471a8d48cdf0f222f9c9c47feadd79ef8946698ece65b38f314e782021b57784325adae78024343d7b3b91ff9b3603205853ac6eb2343a0f1afa71741b42bd594a5faa249184eee4183ab0aeffec320873d44fbfdab72b738af1545f1d5aaf57f6c0164402f2f2b13ed7fefe1d74170b35b7774b3f0c27bd46e8534a5152dc8e7e70e64057cf63e8faf05a8f05ea08a90b0864b4644538354b4bd6c6ca3d21ed443cb724ca4c8957c8739867d9c6ae3d138d20d2de4a1a1f6b5a83935502d9e4900c21d09fce012d07f53af1a0aab040000",
     ],
     [
       "ETag",
-      "F+BQrcCOXTXYeQRTrhQgcw==",
+      "lI6E5kTQ60dqq1aB0Ogqig==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1123,7 +1149,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:06 GMT",
+      "Thu, 13 May 2021 15:17:25 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1142,7 +1168,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-8-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-8-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1161,13 +1187,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "6d",
       "90",
-      "51",
+      "5f",
       "4f",
-      "c2301485ffcbf5758b5d35534978009d0a02d101f2600829e36e16b675b69d6621fc776f87511f7869ef3dfd6e7b4ef7b093e5063ab096d9478dba39cbd0beb8224653e7d6d056a9d22078805664445ebc4e65848b6120c3749c9c3f0d17cdf8bed7ed126192772c0474f6904acc37063a6f7b28458134b65ae9f646c26c5339e5ae378ba82bd4c67593f968d4eb8f223878ff66aadd1f3f98cca287283e35b23c78b055eb1853d45826e82c545a6d31b10397ce88a2cad137aad6091a68e1f620d3aaae8456ca27c5bff68390b3abf092dd849c87c4e52a1156aa92d0f994ac815556e4b1faa26cc009d06d4931d376fd7432e3cc67dc67419bc549416bf124c47f21eea0e5cf13fdc6a279d68aec1a744ed9d1f5ad72492c25b4ba460f12417ffe28edb13f7c033b1d4f8cd0010000",
+      "c2",
+      "30",
+      "14",
+      "c5",
+      "bf",
+      "cbf5d12de9c69f08090f20134908d109d1c41052b6bbb9b1adb3ed2493f0ddb92d467de0a5bdf7f477db737a847d56c530845d967e3628db9b14f5b32942544da1156db5a8148203a8794ae4edf7f4b59b54b3a48d1fba5ebe7b637927388c4644a8e8034b0ec323241916b182e1fb112a5e228d6db7d2de48986e6ba34cc7ab80ba52c4a65bae178bf16411c0c9f93753effff8f97215cc82f0dac8e6e4402e76212628b18ad058a8a5c831d273934ef1b22ed055a291112ab0b03d48a5686a2e85704971ef5cafefb38137609d5ebf3720ae1011d799a8085dbf9035d042f3221407ca063e01d2961433b1eb979199cf5ce6bbccb3598ce4598b5721ff17f20db4f97962d26a544f52905d85c629bbb8be172689a6845a36e840c4e9cf1f337de94f676cb33225d0010000",
     ],
     [
       "ETag",
-      "3VSiEeWJ1i6fMc/KJWyMFA==",
+      "+zDW4fnGfydF41jbX0j3Ew==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1179,7 +1210,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:06 GMT",
+      "Thu, 13 May 2021 15:17:26 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1197,10 +1228,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -1217,7 +1245,14 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "cb7282301400d07fc95a1d1e8ad2658ad254072d2a6236199a5c303c044250b1d37fafd34f38e707259c43d7315d1770456f68482c77c227eb668159968635b74ccdb6993726614e77443ce6589deeee7bfc251f2aee53d73b2e1ab1bc4d95e8481256ed5cb28194255f428005a743ce239606b771474fc74d16c02aceb7c68e447615e0cadf3ccffb789d9578b1d29b621bf94f2eebe452ca6f2f913d85c28b3b573bbea1da7d7fc795080fcc3e3a7df931fd0ce8cc74ae4fd3a2564df717c16dd23a7cbd0411c9e69c46da08799afb2d85b1361d028753c4d108c1a3910a3a265f5c7be6ba23f46f677a68e015802151a0d0ef1fa2070ad31a010000",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00",
+      "d0",
+      "bb642d0ef24f77042ad1a00ce26774c3601a28080182c8a7d3bbd7e911defb0109a5acebe267fd601c7c802951e0922e4963a138a35a9f5d64c8ab23e7b3a4857d39d790c8892acb3a946daf364ee2c653d7211bf3deaf15470ab887b221bc4661a0e7c3b07227cf2932e2b45fca9ac7f070ebb5ed48a26bf2c029bee43edebf86dcb87a0f7cc74f6aaa48b78ac2f75ca3f509225c0b8f528a5db9dfcf28a5cd5e3fcfebfe158d4794fa7cf247bb5468fbb9a53767579e37814285e5cc874254b89a57c5694584c94afa6deeaa564fcc62b2c102b0b1c905ebe2fccd55750817e0df1e3fa786bd03104b0413e0f70f625d1aca1a010000",
     ],
     [
       "Content-Type",
@@ -1231,7 +1266,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:06 GMT",
+      "Thu, 13 May 2021 15:17:26 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -1250,7 +1285,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -1271,7 +1305,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-9-1620764096226",
+      jobId: "grouparoo-job-9-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1288,12 +1322,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "85536d6fda3010fe2b91f7b540780b0d125a11a46b54085b0874d334458e73c94c434c63a75357f1df77764ad7aa52fb29e7bbe7b9e7def2486e7999923149787e5743f5f0692712724640d11cbddb45703d5ffddd8e76ddfa7ab70db7df77fd7e3e9920826b96a4fb43012d29ea8a811c6fd6edbc12f5815642b43051cb6d759d9e3d7206b6ebf47a0ed22414d98297b748feadd4418e3b9d93743b17222f801eb86c33b17ff677ee7b9d432576c094ecbc56eca088ecbcabf9b9108c2a2ecac9668dfab5842a863de50556f09f982617af33b739ddb77304df7306943151974a5785299828339ed795c94ac68fc454f9c2206b6fe1cd228b89a2de977149f77066a554d1583d1cc0ba0c574bcb0f2e57e1721af9ab205ecfaebce5b43d5b2d36cb606ddd5c79a167299a1460b8d6c4ba30af001fa89f8254bc34ea91766be5a7f9f86f97a209282da109c623dba1dd73db4db264c4b2f3fe30c96c4892f36434a4fdc466ee00066902147946d4b06829ca9eebda5dd7b16336e8a7f1a097b1d8a56875d10930183a6890e319f9537105732e0f42f26642e426f4232f8ec24d309b469e6921a375a1e64d61ba8197352a6c1041eff474d4512e50498fdb0f222f9cce227feb351b5e404ed9c3fa0e779cd14202a26985c353502d458a0323c174e9cd116c36f6f5149464fcf391e899eb2a5e8cfc991ee10275b9ca7cc93a0afde08b29e784d8d2a23690fbc6d06d64bcd0451f7f21104fb44942be6dbcf007695c21645041c93e5e26824de0a31fed74f608c5c34715a9f08d97c3a4d660153417c44db34fecaeed0c9bdf54d14abd898d1cfb34339d4367843d94eaa9a1e6ecb1cf46ac96cf200ce2f20333abe33f62c8e59a74040000",
+      "ff85536b6f9b3014fd2bc8fbd826212f1222456b94d21529212b9056d33421632ecc2bc129369da22aff7dd7a6e95a556a3f61fb9e73cfb90f9ec83daf323223292f1e1aa80f5ffe88949c1350b4c0d73e95779b12e4963ef8f763af3a3b3b5cf76fe6734470cd9274b72fa12345533390b36dd42d6ad1ec692d44071375dc4edf19d86edfb5876367ec224d4299af78758fe4df4aede5acd73b49770b218a12e89ecb2e13bb97f7dee3a0b7afc51f604af6de2af65044f63ed4fc5a0a461517d57c1ba17e23a14e604779890efe13b3f4e26de62ea7bb6e81e047ce8032269a4a69579882892ae745539bac64f6448ccb570712792b6f195b4c94cdae4a2aba83732ba38a26eab007eb2adcac2d3fb8da84eb45ec6f82245a5e7beb4577b9596dd74164dd5d7ba167299a9660b8d6dcba30b7002fa89f8154bc32eab17ed6cacffdf1df0f4513505a421b4c26b643fb53db4df374c2f2e9709ce636a4e9349d8ce930b5993b82519602459e11352c5a892a9b384ecadc7e6283eb26233b85643a183a494601a6e3091bd2d421c773f2b7e60a2eb9dc0bc9db0e91bbd08fbd240eb7c172117ba6849c36a5ba6c8de9025e7b545820823ea8e9a8a35ca0926eb71fc45eb858c6feadd74e7805056587e801679cd35202a2698dcd5350af45860d23c162ed5d22d84cecfb2928c9ece713d13dd72e5eb5fc851ee300b55d65be248a433ff866ec9c10b7b46c0ce4b13de832725e6ad3c75f08c4156d93909bad17fe20ed530839d450b1cf87896013f8ec473bad3d4271f151452abce3e630a935580ded067153ec893d7246833131e05abd8b397de7d4339d4367841d54eab9a076edb1ce56ac912f200ce2f003d3abe33f5c3915ab74040000",
     ],
     [
       "ETag",
-      "VLNKDOzV7j1uKjVRVXj33g==",
+      "1asWOlesUaqIk5En++yH1Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1305,7 +1338,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:06 GMT",
+      "Thu, 13 May 2021 15:17:26 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1324,7 +1357,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-9-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-9-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1337,11 +1370,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff8d936f6f9b3010c6bf8bf77244227f4a57a4be48b66c43a24946a8d66eaa90631fcc9db1a96db24651be7bcfb44ba776127d0377e7df89bbc70f7bf25b284e62b211d55d0b66f7ae02f7cd0719d8563a8baf462b0b2420e0688524cc36d7e5d5bd82efefb3e5f8477895aceec6d5f9391296fd829a92784f4a01925b12ffdc13456bc036a6655baba2cb02e2768d2faef32c597cc1bcd6dce78bcb349dced2393904c7464e1d2d3afe0d6d378780dcea4d062518500cfc2c8dd1b7c05ce2d7b4b46e240cac6e0d034b3ab83ba88c6e1b6ab41e606570361846a3f0349a8467d16814212735a34e6885e8e51ac7234e3b2a33fd079724c33112a68b71e1b27b6eb12e78b7880f93451e4dbaf9fe052863ba55aee8054b61ac7b14ef2ff824c24b52d23782785342f64115280ea68f124d413937606d2fa96d419be688cd96cbf4b52a8a1b2d783fb8153d8074db23f0395d4eff272dfaeb59ab4fd37cfe8ab00e5d7344f2e462becea7172bcfdd3c1961b673605746a3a92c783f0dc3c98793d3287cb4d847ed6d87df899d6921208ce29ff255381297545a383c00ef557c1187030000",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "93",
+      "61",
+      "6f",
+      "da",
+      "30",
+      "10",
+      "86ff8bf735a8300a2b91fa21b46c634aa185304d9aaac8d897ccccf165b6c38410ff7de7b463d33a29fd92dc9d9f53ee5ebf39b2efca4816b3ad2a7f34600f6f4af00f2158816bb477f4aad138601103cf4b22e59533bb8bedf0739928d8dcde7cfae22e460fd7d74438f10d2acee2232b1468e958fcf5c80caf80da04eaa632799b45cc1fea505c67abf9e203e515ca902f36699a4cd3193b45e746c93dcf5bfe156d8fa788ed70bb82022c18016196dae20e849f87351daf6a0d3d878d15e0580bb707a5c5a6e616b14795dea43718bfed4f0693fe70341e4d88d328b8576808ddac693ce6d173bdc29fb4241b0c89b06d4c0b17ed734f7525db4542385f64e3cb76bebf012e0436c6e79d60a1acf34fe2fd069f45f897d4fc9520dd94d25d50094682eda2549d73292d38d749a2cb795d9fb1e97299be54c5488b4a76837bd50168bf3f03efd365f23f69c95f7fb4ba4db2d90bc27972cd19c9e677b37596dcdd07eef1d908d38307776f914ce520f869d0bfbc1abd1bf79f2c7683c176f49dd8db06222638fd291f956771c1b583d32f3d300e2b87030000",
     ],
     [
       "ETag",
-      "eBbYfXxneW+RO3Z0XIPq3g==",
+      "d8snj/b3VgAieUDCJXs/5Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1353,7 +1397,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:07 GMT",
+      "Thu, 13 May 2021 15:17:27 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1390,7 +1434,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-10-1620764096226",
+      jobId: "grouparoo-job-10-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1403,27 +1447,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "40",
-      "10",
-      "fc",
-      "2b",
-      "e8",
-      "faa5956c03c6c60f294a5d87a6480e4e314e1455957dc0422fc61cb93b9c5a91ff7b1788f368a44442026e676667776f1fc886e531199390a5772588fda75b1e92160145533cbd758bd9df3d7776b44cf2707abfdfcc997e7f72820856b124dd1619b4252f450472bc5c7452c1cb820acedb28d4368db669778d81dd334676b76b234f4296cc58be41f61fa50a39d6f563ee4eca799a012d98ec447cfb74aeefba7a21f82d444aeaaf53ea9845eaef273dcd784415e3f9c97281064a0962055bca32b4f0cc8cc3afafa53b8c6e3b2982772c021a45bccc55650b25229e272c2d45ad4ac60fa4b6f9e2832c9c99330db4b554a8b9d6a8d4562b01b2cc544b5bb3f8f1a4d868dffdf985b6c6ea1296815c6bd73f1cdfd11a8ceb694bcf731681f6f9f48b76eecf9797dab79b3ad63a4aa39b18a46279ed25a06106958fc776b96f875411a8a2129ae06a60d8d41c1aa33009075132b4fa616240180ec3419f5aa1118d7ad08b43a0c853957acda239cf236a1930b26dcb34a9655adda105b61df5c11cc5038863dbee27100ecd1e39b4c8bd600ace982cb8644dcfc8b5ef06ce2af097de741238751909c5fe9c35e6aa225efa54582482dea9eb504519c74cd5005c2f70fcc93470af9c66e6334869b45fdce1d4139a49403415740b0ac4058fb169e472be700377ee4d66c8a8077979444832fef5f04c08f645dd6555bfc9c4f72737c8a142d0fd7f31f461630b0e2fd25dd1acac2135befe6bf4774d809858cbf35f971c7e1ff06911bcdc8d3af9b974fc1bd21cf99080803cfa78ee08ae031feee87161108b2b8369f0ae2986b72c925592484073dbd8b6b6db",
-      "b04d63d0ebd71baea8506f62b63538b6b5d2a814610bb97aaca85998ba5155a8944f200ce225f15cef1ca3ff00462c81dcb0040000",
+      "00000002ff85536b6f9b4010fc2be8faa595fc0063e38714a56e42522a073b18278aaaca3e60a1d70047b823a915f9bf7739ec3c1a29919080db99d9d9dddb4772cbf2884c48c092bb0acaeda73f3c202d029226789abb5e71f623f5166c39e8ffed9f5f668bbbd5c3d1112258cd12342b52680b5e952188c96ad9494a5e15b4e4bc8d426d436f1b564f1f1b63dd1c588331f204a4f18ce5b7c8fe2d652126ddee217727e13c4981164c74429e3d9d77ef7bdda2e47f2094a2fb3a6517b388eefb498f531e52c9787eb45aa2814a40b9868cb2142d3c33a3e0eb6be90ea3592741f03d0b818621af7259db428990e7314baa52a992c92351365f7c90a53db34f7c6d23246a6e342ab4f5ba0451a5b2a56d58b43f296eb5336f7ea16db0ba98a52036daf577dbb3b506e3b8daca75eda5af7d3efea29d7bf3d542fb76a362ad8334ba894048962b2f3e0d52a87decdbe5bc1d524da0920a6882eba16e5163a48f83381886f1c81c04b10e41300a86036a067a38ee433f0a80224fd6ea8a45739e87d4d4616c59a66150d3307b23132c2b1c80318e8610459635882118197db26b918792493865a2e082353d23d79ee3db6bdf5bb92753df5665c414fb73da98ab8b78e9536291087aa7ae5d1d651c33d503705cdff6a627be736537339f4142c3edf20ea71ed35400a269493390505ef0089b4616f3a5e33b73773a43861ae4e2801064f2f3f199e06f0bd565a9de64ea79d31be4d0b2a4dbff62e8c3c216ec5ea4bba269a5200aaffe1afdfb26400cace5f9af4776bf76f8b4085eee469d5cae6cef8634471ec450421e7e3c7704abc0873b7a5818c4e2ca601abc6b92e12d0b459d242ca1b96d2c5376f7ecfed0d2d5864b5aca37b191a11fda5a6bd48a90412ef715350ba31a55872af104c2205e12d771cf31fa0fd5c90d64b0040000",
     ],
     [
       "ETag",
-      "jIpLxyoEvaufnbCwykOi/w==",
+      "nNRpFJlRPiS54x4GQmPqUw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1435,7 +1463,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:07 GMT",
+      "Thu, 13 May 2021 15:17:27 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1454,7 +1482,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-10-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-10-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1466,11 +1494,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff6d905d4fc2301885ffcbeb259bd9169842c2059029c4f1e18078610829e3650eb675b41d6612febb6f8b89247ad38fd3e7b4e7f40c87b4d84207366972ac50d47709aa57bd88505699923495bc900816a06209918d7d3d7c5b66a7d9f44b3d4d072f8df08869afdb2542c61f9833e89c619762b695d0793f43c17224db7a2dcc8d84a9bad4ca62340ee68bde784652ceb75a9a2cc3b0d70f03b85837c6f2f06b1a4d16c17310fd67595d2cd8f34d843b1458c4a8739482ef3156235d51b2bcccd096bc12314a30b0394804af4a2638b749b15dc7767dcf79f09b4edbf73c9fc08cc74ca5bc207639a76ca0b86259c43fa921780408b3a4b23b339e4876ef5b8f4eabd576dbcda06dfa18d5c4fcc3f94d226f394f73ab9f87fab54239139c524bd4819d6bf801d785141555a2420b6246ff3f4cd5757ff9064e5c070adc010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "6d",
+      "90",
+      "61",
+      "6b",
+      "c2",
+      "301086ffcbede3ec689d152bf8414751419dab0a832112dbb356db5e97a41311fffb2e713061fb925cde3c7779df5ce098950974619ba59f35caf3438afacd1411aa3ad78ab78a4a85d000d42265f2757112fb2408c97d6ca9e1bbdfdf764659daeb31a1e23d1602ba17d86598270aba1f17284581dcb6d9483b91317dae8cb21c4fc3c5b23f9db3545062a4d96a32e90f26215c1b778dd5f1b7693c5b86c330faaf657d6dc081b611ee506219a3f151493a60acc726a2124595a3a3a896312ab0b0bd4825d59590440e2b8ee73a5ebbe9065ee03efb6d3f6030a758e88c4a66570bf6069ab4c8233a71426832206dc9617776fd62d97bf23baeeff3985618d83c56b536ff70ed1693f75cd370eb9f8706678d6a2e895d2b3486dd9bf91732813407d5b2c606c482ff7f94e9dbf9fa0d8eb84e79dc010000",
     ],
     [
       "ETag",
-      "+jyHWUlvPOztFOCK+LqeiA==",
+      "OSwahd9Eo0+4sGX5Ab8Hig==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1482,7 +1520,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:07 GMT",
+      "Thu, 13 May 2021 15:17:28 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1500,10 +1538,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -1520,13 +1555,16 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "db",
+      "4b",
       "72",
-      "43",
-      "40",
+      "82",
+      "30",
       "00",
       "00",
-      "d07fd9e7c86c5d8abe916d6a6889d0b8bcec2c96281beb56a4d37f6fa69f70ce0f20794ec7114f5d436fe0056c44d4f7f9dee19a89ab3218965782dcee3ed59704cb7a51c9335a784150d7329e5a71119fbe70596ee2da49585c4d26f6ee98f3ac810964c901b6aa1186d46e4f7c5bc93c2268857ed4ddfc9ec5bea57e3fb137a13d4eaad736193144a6088a7975b5205624786cbd0f2f8e1a9a6995ddaff3b57857c2a50c10acd2292f0fb60beb79f1cad4968d8bb3e461241808d59fdb6886674bd0ee1133ce34d6b1c2d6e1596f32c9110cb00374e5f540475c3fb892a2eb3bf06fc7d3c6e923c0a464a003f8fd036db2cbbc1a010000",
+      "d0",
+      "bb",
+      "64",
+      "2d0ef251e80e28883f2c0822dd303149c1b4601220423bbd7b9d1ee1bd1f0011225d57f6f74fd282173041cd9ea3f98e596e5921bf8885814768d03da19bcea2c15b76160a8dbc816b9b78417c85ac714a2fdf79aec90036a45e7eb57a72466ad0393e0d17cd54acd3b8314fd73533aa284dbdc46f95d552de335c4837aaed03af102f067d423ec78f7da6dc64b32de4f0cea05a260feb30ee30b4850a73eff5985997936e7d10eb28f4d68407168565e8a8999909d92746c3f37e6f1b1c437a6eaf1e66f9dd09cc7a3bf0be96fecac56006c8c86e8274e5edc9d54ddb9e817f7bd94f8c3c035c020511e0f70f4d2338dc1a010000",
     ],
     [
       "Content-Type",
@@ -1540,7 +1578,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:08 GMT",
+      "Thu, 13 May 2021 15:17:28 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -1559,7 +1597,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -1580,7 +1617,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-11-1620764096226",
+      jobId: "grouparoo-job-11-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1593,11 +1630,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff85535d4fdb3014fd2b91f74adba4346da8548daa84d1a94d479282d834458e7b9319d238c44e1143fdefbb76280321c1536cdf73ee39f7234fe48e971b322629cfef1ba81fbfdc8a941c115034c7575f3491fabbba747d3bfece647353afef7e3e4c2688e09a25e9b62aa02345533390e375d4cd6bd154b416a283893a8ed371867d7b341cd827c37e7f883c0945b6e0e51db2ff2855c971af77d0eee642e405d08acb2e13db97f7deaedfab6a710b4cc9de5bc91eaac8dec7a25f0bc1a8e2a29cac2334d048a813d8525ea085ffcc4d7afa367597d36d3747f08e33a08c89a654da16a660a2cc78ded4262b193f1163f3d58144fec29fc5161345b32d93926ee1c8da504513f55881751eae96d63c385f85cb693c5f054934bbf097d3ee6cb5582f83c8babef043df52342dc070ad89756a6e015e507f0352f1d2a8c7fa592b3f3768fe7e2c9a80d212da6032b287d4f1ec93344b472cf38edd34b3214dbd74e4d2e3d4662703186c52a0c833a286454b5142dff5bcd1c84d0619739201656e82b034a1de66446d175267e092fd1179a8b982332e2b2179db21721dce633f89c375309bc6be2921a34da1ce5a63ba80d71e151688a00f6adaeb2817a8a4db3d0f623f9ccee2f995df4e780139658fd13dce38a3850444d31a9ba7a05e8a0d368c04d3a57f866033b11f87a024e35f4f44f75cbb78d5f2177a8c03d47695f992280ee7c13763e780b8a2456320bbf6a0cbc878a14def7f231077b44d422ed77e7843daa71032a8a1649f0f13c126f0e9af76d87bc4e2e6a38c5478c7d561528bb01ada15e2a6da67b6637b4edf21065cab77b1637b70689acea133c2164af55c51bbf758682bd6c817100671fa8169d6fe1f9a5a32b677040000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "ef",
+      "6f",
+      "da",
+      "30",
+      "10fd5722ef6b21e1472820a11541da2291b086d0aa9ba6c8712e99db10b3d8a14215fffbce4ee95a556a3fc5f6bd77efeedde5993cf232256392f0fc6f0dd5e1db8348c8190145737cbdbad93fddfb07dbf1a34d6dffec0dbabdab793e9920826b96a4db5d012d29ea8a811c6fd6edbc12f58e5642b43051abd36975065d67d419393d77e08e9027a1c896bc7c44f61fa576726cdb27ed762e445e00dd71d96662fbfa6eefbbf6ae120fc094b4df4bdaa822edcf45bf178251c54539d9acb1805a4215c396f2024bf8cf4c938bf7a9db9c6edb3982f79c01654cd4a5d265610a26ca8ce77565b292f1333165be3990b5b7f46691c544516fcbb8a45b38b352aa68ac0e3bb02ec3956f2d82cb55e84fa3c52a88d7b36bcf9fb667abe5c60fd6d6ddb5177a96a24901866b4dac0b730bf082fa2948c54ba31ee967adfc62d0e2e3583401a52534c1f8dc19d0ced019255972ceb261cf4d32079264989cbbb497386cd4877e9a00459e11352c5a8a728486a623368c33ead0b8dfeda771e2d26e0c144683becb58929e93e31979aab88239973b2179e310b90b17911747e126984d23cfb490d1ba50f3a630ddc0db1a153688a04f7a3aea2817a8a4ed5e0491174e67d1e2d66b26bc849cb2c3fa2fce38a3850444d30acd5350f92245c34830f5bd3982cdc47e9c82928c7f3d13edb9aee28de5aff40807a8cb55e64bd651b808ae4c3927c42d2d6a03d93707dd46c60b5df4f1370271479b24e466e385f7a4790a21830a4af6f530116c025ffe6aa7bd472c6e3eca4885775c1d26b508aba059216eba3db1fbb8112e31e04a7d88b98e7b324de7d019610ba57ae9a8d97b6cb411abe52b088338fdc09875fc076a54de4477040000",
     ],
     [
       "ETag",
-      "EouStzOQ5E0TJcsuYrUkZw==",
+      "GQvwYMy/0MTUu/Z3623GDg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1609,7 +1657,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:08 GMT",
+      "Thu, 13 May 2021 15:17:28 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1628,7 +1676,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-11-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-11-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1636,12 +1684,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08000000000002ff8d93616f9b301086ff8bfb95a8214de986d40fb0665b241a3a42a44953855cfba0ee8ccd6c93368af2df77a65d36ad95e817b83b3f27ee5ebfecc94fa13889c99d687ef56076270db86f3e28c0f6d2597c755a59200101471b24bfb790e6e2f1e9ea5414db79b4b94f4ff328b9bc44c2b27b682989f7a41620b925f18f3d51b4056c635af6adaa862c206ed7f9e2ba2c96ab2f98b79afb7cb5c9b224cd16e4101c1b3975b41af877b4dd1e02f2a0ef0aa8c18062e067e98c7e00e6967e4d4bdb4ec2c4eade30b064808783c6e8bea346eb095626613809a3d9f4229a4f3f46b35984a0d48c3aa115b29b35ce479c765416fa11b724e11912668871e37a786eb12ef8b0890f97ab329a0f03fe0b50c674af5c350ad6c258f7acde1ff04585ff4949df09e25509390635a03898314a7415e5dc80b5a3a4b615edba2396e679f65a15c58d167c1cdc8a1140baed11f89ce5c95bd2a2c1fe6a7595948b578475689b23522eaf17eb32b9bef1dced8b11d29d037b6334baca823754389d7f38bf88a6cf1efba4bdeff03bb1333d048451fc55be0a47e29a4a0b87dfd1d09fc188030000",
+      "8b08000000000002ff8d936f6f9b3010c6bf8bf772440acb9f2d487d41b6ac43a3499650b5d25421d73ea83be3a3b6c91445f9ee3b689b4eeb24fa06eecebf13778f1f0eec97329245ec56950f0dd8fdbb12fc8f36d8806bb477f4aad138600103cf4b22c75757d5baaa46ef1feecaefd7e749b2dd2faee3b333229cb8838ab3e8c00a055a3a16fd3c30c32ba03681baa94cde6501f3fbba2d6eb34db23ca7bc42d9e6cbcb348de7e9821d8353a3e49ee71dff86b69b63c0eef1760305583002da596a8bf7207cd2aee978556b18386cac00c73ab83b282d3635b78803aa0cc270104e3f0c67e16c389a4c273302350aee151a622fb7341ff3e8b9dee06fda928523226c17d3c645f7dc515dc96e93364c96d974dc0df837c085c0c6f8bc172c9475fe51bd67f049857f49cddf08d25529dd07956024d83e4ad53997d28273bd24ba9cd7f5099baf56e96b558cb4a8643fb8533d80f6bb13f0355dc5ff93960cf6a2d597385bbc229c27db9c902cb9586cb3f862dd72374f4698ef3db8b545729583d650e170fc69f2713a7cf4d8676c7d47df89bc6d206082d3aff24d7916155c3b38fe01dfcdabbc88030000",
     ],
     [
       "ETag",
-      "XmeBOiwxD/iRv46UhB/O6A==",
+      "4WWmPmm3+qhgKXGIISyEXA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1653,7 +1700,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:08 GMT",
+      "Thu, 13 May 2021 15:17:29 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1695,7 +1742,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-12-1620764096226",
+      jobId: "grouparoo-job-12-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1714,19 +1761,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "54",
-      "fd",
-      "6f",
-      "da",
-      "30",
-      "10",
-      "fd",
-      "5722ef974da290f0113ea4aaa534eb22d1d086d0ae9a26701c27338438b51d3a56f1bfefe2405b3a69952291f8bd77f7ee7cc7335ab12c420314b2e4b1a062fb69c943544354e1044eff38c1e62afa7eb11adf8f3c3cce4473f2b4bc3d3d05062b5512aff3949e485e0842e56036ad27821739169c9f40a013ab7962d94db36bb7cdbedd6cdaa093348dc72c5b81fa9752b91c341a87dcf584f324a53867b24ef8fae5bcb1693672c1979428d9384ed9802cb2f1ffa467292758319e9dcea660a09054cce91ab3142cbc2aa3f0fc38749de1753d01f286118a09e145a64a5b1082f02c6649217454347846dae69b173475c6ce283016311352cd33bca60b034b633e175416a9aa190bed607f98af8caffee4da584095314ba95c18f7df1cdf315e68ae67cc3ccf9906c6e7b32fc6953f99dd18170f07b87694080c46542a96697b010e535a5adb77d0fdf7de4a015658d20a9c774d1b5b3db31fc66197c4bd56278c4d1a86bdb0dbc1add024fd366d4721c5a0536574adc219cf3a36b67b2d62e1b61902b385232b8c9abd4ecf24b16d5a7d624531b13a31dad5d093608a5e329973c9aa36a27bdf0d9c79e0cfbcd13070741931866e5d56e6ca22defa54502490fe53d7ae4419874ce59db85ee0f8c351e0de39d5188c6982c976fa088310e354526063011d54545cf3089a866e2653377027de700c0a7db737078644831fcfaf82609beb2e2bfd8b86be3f7c000d16026fdf61d3c077bd2bb4dbbdc97787d34273b4407f5509361580e812069133699ed3dfba483d8abbda2b03865451eb18feb983a786602b2a0fe876e6f80fa83af2694c05cdc8c7d301640d7cb8dc874d032eec1aa4910abe6116892c931041ab",
-      "9964ebd2cc5e6d99bd7e5bff35282cd47bac6fd9ed43f3cb186544baa699da57546d9aee660915f28504208c9257f5fa2f0d6ad5aee9040000",
+      "53",
+      "61",
+      "6f9b3010fd2bc8fbb249690249482152d5662ddd90529211d2ae9ba6c418c39c124c6d932daaf2df7798a66d56a9959000bff7eede9def1ed01d2b12344431cbee2b2ab61f563c462d4415cee034bfdc6cecefe1789ee64ef7fac76a1a6353642727c060b54ae27599d323c92b41a81cce67ed4cf0aac482f323087464758fac41d7742dd7ecd903db059da4793a66c51da87f2b55ca61a7b3cfddce38cf728a4b26db84af9fce3b9b6ea7147c4589929dc3941dc8223b6f273dcd39c18af1e2643e030395a46241d798e560e15999c46787a1db0cafdb1990378c504c08af0a55db8210841729cb2aa1a3a2e103d2365f7ca09937f6ce2363993221d5a2c06bba34b034160b416595ab96b1d40e1e0fcb3be3329c5c194ba8326539954be3e6ab177ac613cd0f8c791078b3c8f878fac9f8124ee653e3f3ed1e6e1d24028309958a15da5e84e39cd6d61e3be8bfbeb75a801596b40117c7e6005b8ee9c6697c4c52a767c7a949e3d8898f6ddc8b4de2f6693f8929069daaa36b152e78610ff0c0e9110bf7cd18983d9c5871d2756cc724e9c0b45c622529b1ec14ed5ae88f608a5e305972c99a36a29bd08fbc4514ce83f351e4e932520cddba68ccd545bcf4a9a04820bd51d7ae4619874cf59df841e485a3f3c8bff69a3118d30c93edec1e0621c5b9a4c0c6023aa8a8b8e209340d4d27333ff227c1680c0a7db7d33d43a2e1cf876741b42d7597957ea351188e6e418385c0dbffb05914fac117b4dbbdc8778df34a73b440ff3509360d80e80a069133699ed1bfba483d8abbd63303865451eb10feb583a785602b1a0fe8dbdc0b6f517314d2940a5a90f7a703c81a7877b9f79b065cd835482315fcc32c12592721823633c9d6b599bdbaeff66c0769b250af30bbe7ee9b5fc7a823d2352dd46345cda6e96ed650259f4800c228054dafff01c08596d7e9040000",
     ],
     [
       "ETag",
-      "zETvGdXBkLWCNaLnr2OwjQ==",
+      "lFvv5XRLUfl82VZjPba0rg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1738,7 +1779,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:09 GMT",
+      "Thu, 13 May 2021 15:17:29 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1757,7 +1798,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-12-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-12-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1776,14 +1817,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "91",
-      "51",
-      "6b",
+      "d1",
+      "4f",
       "c2",
-      "301485ff4bf6da8eb68c8e09c2a61327886c757d902112d3db1a6d7b6392ea44fcefbb897b903ded25b9f7e69ce47ce4cc76b22d588fad65b5ef409fee2ab01faec8c074b535b4296c0db08081e5152987e6a8069b2a81625cbcee55be28f33caefa7d5218b18186b3de999512eac2b0ded799b5bc01b2ad56dadf48327b526e32ffcc26b331f50d16ae9fe5d3e9cb603a6297e0c6a576ff712c2f01dbe23a831234b4025c06a5710bc24e1c9ee18daa2134d869018679b13fa834768a6bc49026619c84719a448fe943f49426494ac21a05b7125bd2e6738ac62c5a5e6778243a969040fb92404bbf1e683cd2123c856b600bfa80d244cff0ed53dc0b6c7ce25bcb900b59dfb804700bf15fcbf2f7f9c1c98279d7482c061c4674451aa2535bc2b7ba8380094e3ff226edb5bffc0083b89959ee010000",
+      "30",
+      "10",
+      "c6",
+      "ff",
+      "97f395e9368504121201892e2144a7c418434829b759d876b3ed4024fcef5e8b0fc4275fdabbebf7b5df2f3dc046552be8c152e59f0deafd458ef6c915299aa6b086b79a2a83d002b4226765517f273a7bbbb9db9589aa5e879d5d7c45837e9f15467e6029a077804c61b132d07b3f40254a64db62a1fd8d2cb3fbda4d9e5fd2647acf7d492bd74f6793c9603819c3b175e6aa37ff71cc8f2d58d332c50c3556125d865ad31aa54d1c9e11655d6060a8d1120d78b13fc83535b5d044014f82280ea24e1c76a36e78ddeeb4bb2c2c480aaba862edec99a381252b8a94764c07310bb42f1934f3eb96c763add053b806d7a8b7a44c788b5f3ec5a5a4d2273eb78c8454c5994ba2b018fdb5cc7f9f1fee2d9a474dcc62d0618427a41139b5657cab1b6c8114fc230fca9efae30f77ba9010ee010000",
     ],
     [
       "ETag",
-      "CswpBhg2edGdDqpUYfUU1g==",
+      "lpzIrfY4DwmIinWB6w2/oA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1795,7 +1840,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:09 GMT",
+      "Thu, 13 May 2021 15:17:29 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1813,10 +1858,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -1829,17 +1871,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "51",
-      "6e",
-      "82",
-      "30",
-      "00",
-      "00",
-      "d0bbf4db9a4c41cbfe04a113266a0083fe34500bb420d616515876f7991de1bd1f9051cab426ddad662df8044336b3a6741a486493f222cedbc28a6eea540f97bbde574f4c0752bf608fc2650e6f6afc9e1be87af5379dbd13382d3cd74d621cf8c7e5560f67e5e1dce4bd498b5de8a04894bcee67cd636144fb1592575f8446828c95dcac83c3d1b817e57a8e70203dd37d8c6dc85f3d8c6de89dddafcecb4418690d9d5c8db81af35cc02c5da5794f635356fca3797a4834bc5d8709ded64d2277088e894f465f1f4ee290b68eb5706c4a666002d84b72c534e16feedcb4ac09f8b7936e90ec1d60b34c31057eff002274eb981a010000",
+      "02ff1dd0cb7282300040d17fc9da3a9a8421766752208082c054281b2660482922c8a38a9dfe7b9deeefe6dc1f208a420e4336b6b5bc8057300bb859164bb72334539269a99a02ca0f355c372ad1fbe681556284b1670ea7dc6df6bb2840ce45953d5605e62865679d3c236838968f02da7e8c047ef59f4562d9685a8b637514247ac4383a4da97c1016a0b211fa614b240befb3be7d89b153a7106362dcda207d8b951d6bfc3856c9ec99f62e92e40071e95bacf42b4e6b6ae6ee55ecbf9d5d3eef23d61a57b1a26d1832efc67956c4b5bf9ab3779bc39657c9794216580079efaa5e0e59f5e4226db359807f7b36ce9d7c0ea052f4b207bf7f615c62a51a010000",
     ],
     [
       "Content-Type",
@@ -1853,7 +1885,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:09 GMT",
+      "Thu, 13 May 2021 15:17:30 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -1872,7 +1904,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -1893,7 +1924,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-13-1620764096226",
+      jobId: "grouparoo-job-13-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -1911,11 +1942,23 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "85536b4fdb3014fd2b91f795b649e95baa4657c288d6a65b9a82d83445b67b9319d238c40e1b43fdefbb7628834d824fb17dcfb9e7dc471ec88d28b6644298c86e6ba8eedf5d4b468e08689ae12bf4e7579b809ef7065f67c5ef0fb7f0e95756cea6534408c3527457e6d052b2ae38a8c966ddce2a5997b492b285895ade71cb1b74dde1a0e78e07ddee00790af274218a1b64ffd0ba54934ee7a0ddcea4cc72a0a5506d2e774fef9dbb6ea7ace43570ad3a2f253ba8a23aaf8bbecf25a75ac862ba59a3815a4195c08e8a1c2dfc656ed9c9cbd46d4177ed0cc1778203e55cd68536b6300597452ab2bab259c9e481589bcf0e64ed2ffc79ec7099d7bb2229e80e8e9c2dd534d1f7253867d16ae904e1d92a5acee2601526ebf9b9bf9cb5e7abc56619ae9dcb733ff21d4d590e96eb4c9d137b0bf182fa5b505a14563d36cf46f9b141c1ff6331049456d00493a13ba0dec81db3940d793a3aeeb3d405c6466cd8a7c7cce5e31ef4b60c28f2aca865d142167d2f75bd111b27fd63be4d7a43ce12067d37197bc3c128ed77e9d805b23f223f2ba1e154a8522ad174885c4641ec2771b409e7b3d8b725a4b4cef56963cc14f0dca3c60211f44a4d7b131512954cbb8330f6a3d93c0e2efc66c20bc828bf5fdfe28c539a2b4034adb0791aaaa5dc62c348385bfaa708b613fb7c082a32f9f6404ccf8d8b672d7fa2c738406357db2f59c751107eb4760e880b9ad71672d71c4c19a9c88de9fd7704e28e3649c8978d1f5d91e62982142a28f8dbc344b00dbcf9ab1df61eb1b8f928a334de7175b83222bc82668584adf691edb9e35177482cb8d2ffc43cb7dbf30e4d33394c46d841a11f2b6af61e0b6dc46af504c2204e3fb4cddaff0166c49df177040000",
+      "85",
+      "53",
+      "db",
+      "6e",
+      "a3",
+      "30",
+      "10",
+      "fd",
+      "15",
+      "e4",
+      "7d",
+      "6dae84042245db28a55ba484740969f7a2153230b06e09a6d8a48aaafcfb8e4dd36d55a97dc2f69c33e7cc852772cfca944c49ccf28706eac3973b1e93330292e6f85aedbdbb1fee2dd86b179c83ed5ade8dfcf5389b21822996a0bbaa808ee04d9d80986e37ddbce64d456bce3b98a833303b83f1b0ef0c9cbe698d2d0779028a6cc9ca7b64ff95b212d35eefa4ddcd39cf0ba01513dd84ef5ede7bfb61afaaf91d2452f4de4af65045f43e16fd5af0844ac6cbd97683061a0175043bca0ab4f09f99c6e76f537719dd757304ef5902344978534a650b5324bccc58ded43a2b993e116df3d5816cdca5bb088d8417cdae8c4aba833323a59246f250817119ac5786e75fae83d53cf4d67eb4595cb9ab7977b15e6e57fec6b8bd7203d790342e40738d9971ae6f3e5e503f052159a9d543f5ac949f1be4bd1f8b22a0b48036184dfa633ab0fb4e9cc59324b34d2bcefa10c7763cb1a819f7136704a334068a3c2daa59b4e4a5995267308ac7d1c071cc68348eed28b6b334b286766a9a43b026a6458e67e4b166122e98a8b8606d87c86de0856e14065b7f310f5d5d42469b425eb4c65401af3d4a2c10411fd4745451c65149b5dbf34337982f42efc66d27bc849c2687cd03ce38a3850044d31a9b27a15ef1141b46fcf9cabd40b09ed8f52928c8f4f713513d572e5eb5fc851ee200955da9bf6413069eff4ddb39216e68d168c8be3da832325628d3c73f08c41d6d9390ef5b37f849daa70032a8a14c3e1f268275e0d35fedb4f788c5cd471921f18eab93082592d4d0ae10d3d59ed8567f3898100daee5bb98694d",
+      "4e4d53395446d841299f2b6af71e0b6dc51af102c2204edfd7cd3afe03adc9486f77040000",
     ],
     [
       "ETag",
-      "e5CYUIaH46ZAnzBqeKxgpA==",
+      "pvIjXEWe8OEe9y8E5IVtZw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1927,7 +1970,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:10 GMT",
+      "Thu, 13 May 2021 15:17:30 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -1946,7 +1989,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-13-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-13-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -1959,11 +2002,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff8d93614fdb301086ff8bf9b8546b4b49d7487c6847619542cbd220a44d2872ed4b3073729eed945555fffb2e8195694c0a5f92bbf373caddeb377bf6435592456ca38a9f35d8dd4901fe6b1324e06aed1dbd0c560e58c0c0f382c8876fa9b9c3c9f8ec4392f8c9c75f49ecece6e9fc9c08271ea0e42cdab35c81968e45dff7ace225509b405d9755d66601f33bd314d769b2585e515ea26cf2e56d1c4f67f19c1d8263a3e49e672dff8eb6fb43c01e7193400e162a01cd2cc6e22308bf68d674bc341a7a0e6b2bc0b1166e0f0a8bb5e116b14795dee0b4370887fd7138ea4fc2e1302450a3e05e6145eced9ae6631e3dd7093ed1966c704a846d63da386f9f5baa2bd96ed2848b651a8eda01ff06b81058573eeb0473659d7f56ef0ff8a2c2bfa4e6ef04e9aa94ee820aa824d82e4a998c4b69c1b94e125dc68d3962b3d52a7eab4a252d2ad90d6e5507a0fdf6085cc6abe9ffa42583bd6a75314de76f08e7c93647245d5ccfd7e9f4faa6e1ee5f8c30db79703716c9550e1a430dfaa34f67e3b0ffecb1cfd8f88ebe13795b43c004a75fe58bf22ccab97670f80d0de627da88030000",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "93",
+      "6f",
+      "6f",
+      "9b3010c6bf8bfb96486169d206a92fc89ab551c99f2654da3455c8b50fead4f8986d324551befb0eda65d33a89be81bbf3efc4dde387037b5146b2883da9e2470d767f5680bf6f8235b85a7b47af0a8d031630f0bc20f2ebe6c52de2bb6fabb828af9fef06dbe1fded3cbeba22c2896728398b0e2c57a0a563d1f70333bc046a13a8ebd2646d1630bfaf9ae2265dcf16379497289b7cf19024f12499b263706a94dcf3ace53fd0f6780cd8169fd690830523a099a5b2b805e167cd9a8e9795869ec3da0a70ac85db83c2625d718bd8a34a2f1cf4c2d1a7fe381cf707c3d1704ca046c1bd4243ecc386e6631e3dd76bfc495bb27040846d63da386f9f3baa2bd96ed284b3453a3a6f07fc1be042606d7cd609e6ca3affaade6ff04d857f49cd3f08d25529dd05156024d82e4a551997d282739d24ba8c57d5099b2c97c97b558cb4a86437b8531d80f6bb13f02559c6ff93960cf647abeb389dbe239c27db9c9074369f6ed278be6ab8c737234cf61edcca22b9ca4163a8b07f7e39bc18f55f3df6191bdfd177226f6b0898e0f4abdc2acfa29c6b07c75f6f1b69a688030000",
     ],
     [
       "ETag",
-      "hZTpWo975+RRt9/xRLsrbw==",
+      "XSksNAKYPAgmDhK3j5QHMA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -1975,7 +2026,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:11 GMT",
+      "Thu, 13 May 2021 15:17:30 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2017,7 +2068,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-14-1620764096226",
+      jobId: "grouparoo-job-14-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2029,11 +2080,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff85536b6fda4010fc2bd6f54b2b017ef0468a124adcd61181c498445155c1d95ed30bc6e7dc9d6951c47feffa0c7934522259b27d3bb333bbb7fb48d62c8bc980846cf55080d87dbae721a911507485a7de8508ae5ba3f9f016ec87d85dd38b9ec9ae4f4e10c14a96a49b3c85bae48588400ee6b3c64af022a782f33a26aadbadbadd71ac6ea765f53b8ed3419e843419b36c8decdf4ae572609a47edc68af3550a3467b211f1cdd3b9b975cc5cf07b8894345f4b9aa822cdf7454f531e51c57876329fa181428258c086b2142d3c33e3f0ec75ea06a39bc60ac15b16018d225e64aab48529229e256c55089d950c1e89b6f9e283ccdcb13b0a8c65aab64b834a63b110208b54d58ca5963e1ce66be39b3fbd3496585ec252904be3f687ebbbc613cc9b18f3c9c49d05c6e7d32fc6777f3abf32bede1dc3b54a012dc52015cbb4a180862994660e3df3dede5449a08a4aa8828baed5a176cfea8749d88d925eb31d261684612fecb66933b4a27e0b5a71081479aaccae5934e359b7d94fc28e1d5ad08dfb612b892da0e0244eb3dde93b1de887916d35e33e907d8dfc114cc139933997ac6a1cb9f5bdc05d04fe7c321a06ae2e23a1d8a6f3ca5c59c44b9f0a8b44d03b75edcb28e3a854de8237095c7f380abc1bb7baf831ac68b49b3de0d527349580682ae80614884b1e63d3c8d574e605de74321c2343dfe6d51121c9e0e7e33321d8e5bacb4abfc9d0f78777c8a142d0dd7fb159e07b93ef64bf7fa17743d342633441ff5502db2a40e01e478f33699dc15f5da41ebe7ded198163a9c07e1dfeb5c7a746700f2a0fe47aeefa77a43af221010159f4f1742058073e5ce7e36e2116b70b65a4c27f9cc548962291806a26d9a6347360dbb6633b6da2c142bd8935dbdd63f3cb1c6546d840a60e1555bba5bb59860af904c2208ed2a4eaf53fde374263db040000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "536b6f9b4010fc2be8faa595fc00bfb11425ae431354c74e304e6455957d070bbd0473843b9c5a91ff7b9723cea391120909b89dd999dddb7d24773c0dc990301edf1790efbedc0a466a04148df1747075f7f3dc9fc9e5f67c7bb170fbe333d91e3f1c1d2182972c4937590275298a3c00395ccc1b712e8a8ce642d43151ddead4ad5ecbb42ddb6c777b5d1b79129268c2d33b64ff512a93c366f3a0dd88858813a019978d406c9ecf9bdb5633cbc52d044a36df4a365145363f163d4e44401517e9d1628e060a09f90a36942768e18519b293b7a91b9c6e1a3182b73c001a04a24855690b5304228d785ce43a2b193e126df3d507993b1367ec1beb446dd70695c66a95832c125533d65afae930bb337e78b30b638de5453c01b9366ece1dcf319e61eed4584ca7cedc37be1e7f33cebcd9e2d2f8be3c846b95025a0a412a9e6a433e650994669e7ae6bebfa9924015955005577db347ad8169b388f58368d0eeb2c804c606acdfa56d660676073a21038a3c5566d72c9a8ab4dfb623d6b39809fdd0669d283481422b6a61e3ed560f6c1658663bb481ec6be421e70a4eb9cc84e455e3c88de7facecaf716d3f1c877741911c5369d56e6ca225efb545824823ea86b5f46b940a5f216dca9ef78a3b1ef5e3bd5c54f20a6c16e7e8f571fd14402a2694e37a020bf1021368d5ccee6aeefcea6a30932f46d5e1e10920c7f3dbe10fc5da6bbacf49b8c3c6fb4440ecd73bafb2f36f73d777a46f6fb577ad73429344613f45f25b0ad02046e71f40497e609fcd545eae1dbd75e1038960aacb7e1df7b7c6a04f7a0f240ae168eb724d5910711e490069f4f078275e0d3753eec166271bb50462afcc7590c642912e450cd24df94660eecae852fa2c1b97a176bb53b87e69739ca8cb081543d5554ed96ee66192ae4330883384ad3aad7ff00f2d900aadb040000",
     ],
     [
       "ETag",
-      "IJrTQ4CUAWe1qdEkaJ8/iQ==",
+      "8QkKHTOsYvHvMUI7CGs3Cw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2045,7 +2103,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:12 GMT",
+      "Thu, 13 May 2021 15:17:31 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2064,7 +2122,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-14-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-14-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2084,11 +2142,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "6d",
       "91",
       "5d",
-      "4fc2301486ff4bbd1d641b38331212c14fe282323ebc308494723607dbce6c3b8410febba7c52831deb4e79cbe6ffb3ee9816db272c53a6c99a51f35c8fd450a7a648a18549d6b455b85a502e630d03c25e56c17de8ed2a7c1386955bc954f66b1788dd36e97144abc43c159e7c0920cf295629db7032b7901645b2ca4bd91647a5f99c97df4dc9b505be0cab4c36914f5fad11d3b3a67a66af36b184fe2c1f0e13fc7fce8b0352e6348404229c044a824ae41e881a153bca8726828aca500c5acd81ea412eb8a4bc4064d1a5ebbe105be7b15b4dd30f0fd8084390aae332c493b1d5334a651f33cc64f82633e09a42d8933b1ebd68c2fc3a6e75b0ed3c21ae41633e55ec3cee6680a2c6ce67353d86eb6821f8f00aec1fb6b987f3fdfdf6b502f12894581c1704f483768d49af0b5acc16182d3873c66fad41fbf00b423e4aaed010000",
+      "4f",
+      "c2",
+      "301486ff4bbd74231b5f66242482f1035d500778630829dbd92c6c3bb3ed4024fc774f8b5162bc69cf397ddff67dd23d5b8b32613db614d97b0d727796817e364504aaceb5a2adc252017318689e9132f1664de13da49e3cbfffac4789808b17b9edf749a1e2372838ebed592a204f14ebbdee59c90b20db6221ed8d24d3bbca4c6ec2c7c194da0213d38e6761381886d7ece09c98aaf5af61328d46e3dbff1cf383c356b88c200509650c2642257105b11e193ac58b2a0757612d6350cc8aed4126b1aeb8447469e2fa6dd7ef36bdc00fbc56a7db09489863ccb5c092b4b30945631a35cf23dc121c6b9240da923853bb6eccb81334fca6e5302dac406e5028ef123e6c8e468c85cd7c6a0ada8d56f7c71303d7e0ff35ccbf9f1fee34a82789c4a2c0607847a42b346a4df85ad6e0b098d387dc097dec0f5f6c2109b8ed010000",
     ],
     [
       "ETag",
-      "Vx9DQgKISf3pa3lTVRcWRg==",
+      "d0U2i0Kf0r+JzuIdie7Vrw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2100,7 +2160,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:12 GMT",
+      "Thu, 13 May 2021 15:17:31 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2118,10 +2178,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -2138,7 +2195,12 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "516e82300000d0bbf45b0dc23aecfe6408ae4a554018fc34084d032894d639cab2bbcfec08effd80a22c9952f4deb7ac036f4017265a948b9d583994b3981b663cd5733c355a62167c8a0c85a7fd709b9fad0153a72b036de32581f766ffd8935c25d0ffea6e26de565762b867af3ab61b99dcbc219938d26da6c66a3a72e2367564b97cece3743b6081581f65bc301e626d9c641b607a60794c1e0862490ca86bc127b77b31aeafab885cbc4315d130e45e64fbdbe63b4d539dc2a0433989f18ead97fc234717df668e22639149684e96b25c3bf4fbcd3b9801368a5a3245eb27d78208cdc0bf9ddeb560cf0087159249f0fb074c5674431a010000",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00d0bb646d1d05e2407780d4f0fffa810d2331622c202601c54eef5ea74778ef071c31269c97e2f64d3af009a6a3a4cdf1dced55a3acb17fe89b482777c30d610c9fb2538b2bafdc6583f8a9e543bed834a1fa31e6c57e92d5cc70570a42b6e5584f378d93915f25bf5d43893b6b6e6e141e8f698c19b3a2ecf560e9c666855a2dbe2e035949c5c528993e74222992b2a7d1fe21d74177b6cff8609bf9f2e5b66a3db0208499a9fb581337b9caa254d1a50ab5969f7a9e4e4f5e6753692be01d21d3634824bb6d975bc9a5b0a05a8c614069b00333409e3d658497f4cd95a1a6cdc0bfbd14534fde01063932c2c0ef1fd67c01181a010000",
     ],
     [
       "Content-Type",
@@ -2152,7 +2214,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:12 GMT",
+      "Thu, 13 May 2021 15:17:31 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -2171,7 +2233,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -2192,7 +2253,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-15-1620764096226",
+      jobId: "grouparoo-job-15-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2204,17 +2265,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85536b4fdb3014fd2b91f795b649dfad548daa84d1a949214d61d334458e73130c495c6287a943fdefbb7628834d824fb17dcfb9e7dc479ec83d2f13322531cf1e6aa8f69fee444c4e08289ae1ebef87bbee5c7dbb5cecbd8bccc96febaf5745ff6a364304d72c498b5d0e2d29ea8a819c6e37edac12f58e5642b43051cb19b49c61d71e0dfbf664d8ed0e9127214f57bcbc47f6ad523b39ed748edaed4c882c07bae3b2cd44f1f2de79ec767695b803a664e7ad64075564e77dd1cfb960547151ceb61b34504ba8222828cfd1c25f66129fbe4ddde6b46867087ee40c2863a22e95b685299828539ed595c94aa64fc4d87c75201b77e52e428b89bc2ecaa8a4059c5809553452fb1d58e7c1dab396fef93af0e6e172ed479bc585ebcddb8bf56aebf91bebe6c20d5c4bd13807c3b566d6a9b9f97841fd04a4e2a5510ff5b3567e6ed0f2ffb168024a4b6882d1c81e52676c4fe2341eb174dc1bc4a90d713c8e4703da8b6d36e9433f898122cf881a162d4599f4d36432e9f5a2389eb0a84f87349ad874100d18d86c688f122771c8e184fcaab882332e7742f2a643e42658866e14065b7f310f5d53424aeb5c9d35c67401af3d2a2c1041efd474d0512e5049b77be9876e305f84cb6bb799f00a32caf69b079c714a730988a615364f41e589041b46fcb9e79e21d84cecf2189464fae389e89e6b17af5afe420f7180daae325fb20983a5ffc5d83922ae695e1bc86373d065a43cd7a60f3f11883bda2421575b37f84e9aa70052a8a0641f0f13c126f0e1af76dc7bc4e2e6a38c5478c7d561528bb00a9a15e2a6da67b6e374c7dd3131e04afd1bebd9f6e8d8349d436784024af55c51b3f758682356cb17100671fabe69d6e10f64bbf3fc77040000",
+      "0000000002ff85535d6f9b3014fd2bc87b5c13421a488814ad514ad7ac09e90869374d133270616e01536c3a5555fefbae4dd3b5aad43e61fb9e73cfb91f3c925b56a5644a6296dfb5d03c7cbae131392220698eafdf46767573515f7f9ed03ccecacba1b7f97191cf6688608a25685917d013bc6d1210d3ddb69f37bcad69c3790f13f52cbb6739c3816bb98363dbb15de40928b215ab6e91fd47ca5a4c4df3a0ddcf39cf0ba03513fd8497cfefe6fdd0ac1b7e038914e66b49135584f9bee897822754325ecd765b34d00a682228292bd0c27f661a9fbc4edd67b4ece708be6709d024e16d25952d4c91f02a6379dbe8ac64fa48b4cd1707b2f556de2234125eb4651555b4842323a59246f2a106e32cd8ac8da57fb609d6f370b9f1a3ede2dc5bcffb8bcd6ab7f6b7c6f5b9177886a471019a6bcc8c137df3f182fa2908c92aad1eaa67a5fcd4a0e5dbb128024a0be882d178e0506b3270e32c1e27d9e4d88eb301c4f1241edbf4381e24ee0846690c14795a54b368c52b445067ec3ad1c8b2dc683472683419d8a308c0013b4d1d6b98ba647f44fe364cc229133517aceb10b90e96a11785c1ce5fcc434f9790d1b690a79d3155c04b8f120b44d03b35ed5594715452ed5efaa117cc17e1f2caeb26bc829c260fdb3b9c71460b0188a60d364f42b3e629368cf8f3b5778a603db1cb435090e9af47a27aae5cbc68f9333dc4012abb527fc9360c96fe576de780b8a245ab21f7dd419591b14299deff4620ee6897847cdf79c14fd23d0590410355f2f13011ac031ffe6a87bd472c6e3eca0889775c9d442891a4816e8598aef6c0b6adb163110d6ee49b986b8d0f4d5339544628a1924f15757b8f857662ad78066110a7efeb66edff01233a412077040000",
     ],
     [
       "ETag",
-      "zqj2AtXPCyMHg1lhuJQm4Q==",
+      "J45njKpW+8agbfmP2EOXKg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2226,7 +2281,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:13 GMT",
+      "Thu, 13 May 2021 15:17:31 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2245,7 +2300,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-15-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-15-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2257,19 +2312,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "93",
-      "61",
-      "6fd3301086ff8bf99a8ab474298bb40f2904a8c8dad166d2109a22d7be641e8e2fd84ea752f5bf73c946410c29fb92dc9d9f53ee5ebf39b0efca4816b3adaa7eb460f7af2af05fba600daed5ded1ab41e380050c3caf889cd55f7f9e9b3cbb29d36d58f3cfaffddd4d9a5c5c10e1c41dd49cc507562ad0d2b1f8db81195e03b509d46d6d8a3e0b98df375d7193af17cb8f94d728bb7c799d65c93c4bd93138354aee79d1f32f68bb3d06ec1eb76b28c18211d0cdd258bc07e117dd9a8ed78d8691c3d60a70ac87fb83ca62db708b38a2ca687c361a479370164dc3f368328908d428b8576888bdded07ccca3e77a8d0fb4251bbf21c2f6316d5cf6cf1dd595ec37e9c2c5328fa6fd807f035c086c8d2f06c15259e71fd5fb0d3ea9f02fa9f90b41ba2aa587a00a8c043b44a9a6e0525a706e904457f0a63961f3d52a7bae8a9116951c06776a00d07e77023e64abe47fd292c1fe68f53ec9d36784f3649b13922f2ed34d9e5c5e75dced9311e67b0feeca22b9ca4167a871387d7b368bc2478fbdc3ce77f49dd8db16022638fd2a9f946771c9b583e32f87ed824188030000",
+      "00000002ff8d93614fdb301086ff8bf9b8546a06c968243eb4a38c4ea1a5693aa44d2832f1253338b9cc768aaaaaff7de7c00a8249e14b72777e4eb97bfd66c71e642d58c4ee64f9a705bd3d2ac12e5d9080699535f46ab036c03c06969744063fd6d5f432792cbf7fba39ff896df8705a2d9767674498fc37549c453b564850c2b0e8d78ed5bc026acb51b5559d7599c7ecb671c5559acce6df28af50b87cbe8ee3f1249eb2bd776814dcf2ace33fd076bbf7d83dde255080863a07374ba3f11e723b736b1a5e350a06065b9d83611ddc1d941adb866bc40155067e30f0c3cfc3913f1a1e076130225061ceadc49ad8f58ae663162d57093ed296cc3f264277316d5c74cf0dd5a5e83671e16c9e8627dd80af019ee7d8d636eb050ba98d7d52ef1ff8acc25b52f10f82745552f54125d402741f259b8c0ba1c1985e124dc69be6804d168bf8bd2ab5d028453fb8913d80b29b0370112fc6ff93960cf6a2d5f9389dbe238c25db1c907476355da5e3ab6bc7dd3e1b61b2b560ae3592ab0c3843f9c393d3e04b387cf2d85774bea3ef4456b7e0b19cd3af72292d8b0aae0cecff023bc3160588030000",
     ],
     [
       "ETag",
-      "7mYz9nTLXfEb0maK/thXEA==",
+      "5VUmEHRwgJ+WDZou6k8mQQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2281,7 +2328,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:13 GMT",
+      "Thu, 13 May 2021 15:17:32 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2323,7 +2370,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-16-1620764096226",
+      jobId: "grouparoo-job-16-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2338,11 +2385,24 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8554fd4fa34010fd57c8de2f77492dd00f4a9b18ad153d72952aa57ee47269173a70ab944576f1ae31fddf6f585aab5ea20949cbce7bf3decccef04c1e58b6240312b2e4b18462fde59e87a44140d2044fedebf4ece4d6b82d27ecfb0f3d8baf6eef47597278880856b1045de5291c085e161188c16cda4c0a5ee6b4e0fc00131d98163e2da367758cbed56a59c81390c663963d20fbb794b918e8fa4ebb99709ea44073269a115fbd9ceb4f2d3d2ff83d4452e86f25755411fac7a247298fa8643c3b9c4dd14029a098c38ab2142dec99cbf0f86dea26a3ab6682e02716018d225e66b2b28529229ec52c290b95950c9e89b2f9ea0f993a636714680bc6c59ce6f942a3429bcf0b10652a1bda42c96f0ff307edcc9f5c680b2c316629888576f3ddf11ded05e67adaccf39c69a07d3dfaa69dfb93d9a57672b70b37f62a686d0942b24c190b689842656adb3bf7ff1bab085452017570de332c6ada463f8cc35e14dbed6e181b108676d8ebd2766844fd0e74962150e4c92abb62d10cdb11d916984637b497b115760d73d9b642a343bbcb6ebf6b773b9669763a51df269b06f9533009a74ce45cb0ba81e4c67703671ef8336f340c1c55464cb155a7b5b9aa88d73e251689a00feada5451c651a9ba0dd70b1c7f380adc6ba71e803124345a4f1f7104629a0a40342de80a2414177c894d239793a91bb8136f384686bad5cb1d4290c1cfe73d2158e7aacb52fd92a1ef0fef90438b82aedfc5a681ef7ae764b379a5774dd352611441bdd5024f7580c03d8e2067c23886bfaa4835849bc61e81e329c17c1bfeb5c1a741701f6a0fe46ae6f877a43ef2218602b2e8f3e940b00a7cbad6bb1d432c6e19ca0889ef388b91a844a202ea9964abcacc966d9aed7e5b7d14242de4fb58c7b08d5df3ab1c5546584126b715d53ba6ba59854af102c2208e9257f7fa1fb49d138ae3040000",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "7f",
+      "6f",
+      "9b",
+      "30",
+      "10",
+      "fd",
+      "2a",
+      "c8fb67d3d20492407e48559ba5ac434b490ba455374d898183b9259862d32daaf2dd7798a66957a9959000df7bf7de9def1ec82dcb633226214bef2a28371f6e78485a04244df1f4b337c983b3efd399e9bb7df8d19b99e18dbc383c4404ab5982ae8b0c0e04afca08c478e1b7d39257052d393fc0440786854f571f1923bd675ae6087902b264c6f25b64ff96b210e34e67a7dd4e394f33a00513ed88af9fce3bf7dd4e51f21b88a4e8bc94eca08ae8bc2d7a94f1884ac6f3c3858f062a01e512d694656861cf8cc3e397a9db8caedb2982ef5904348a7895cbda16a688789eb0b42a5556327e20cae6b30fe2db337b1a682bc6c59216c54aa3425b2e4b1055265bda4ac93f1e16b7da576f7ea6adb0c484652056dad537dbb3b52798e36a0bd7b5fd40fb78f4493bf5e68b73edcbf52edcdaaba0b5188464b93216d03083dad463ef9cd7375613a8a4029ae072a05bd418eaa33009075132ec9961a243180ec381497ba11e8dfad08f43a0c8937576c5a239b6231a5a60e866388c132b347523ee59a1dea7666c8ecca1d9b70ca3df8f4643b26d913f259370c244c1056b1a48ae3c27b09781b770a793c0566524145b75d298ab8b78ee536291087aa3ae6d1d651c95eadb70dcc0f626d3c0b9b49b0198414aa38d7f872390d04c00a26949d720a13ce331368d9ccf7d2770e6ee64860c75abe73b8420e39f0f7b42b0295497a57a9389e74dae9143cb926efe8bf981e7b8a764bb7da67749b34a611441fd3502f74d80c00d8e2067423f86bfaa483584dbd61e81e329c17819feb5c5a745701f1a0fe462617bd7a439f2208112f2e8fde940b00abcbbd6bb1d432c6e19ca0889ff388b91",
+      "a845a2129a9964ebdacc8e6d764dcb220a5cca57b181d5dd35bfce51678435e4f2b1a266c75437eb50259e4018c451729b5eff03c7225a36e3040000",
     ],
     [
       "ETag",
-      "8VlFBX0XuOiHK/nfQXjCng==",
+      "+RAnTMKCL5SN4eZ3L5bjtQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2354,7 +2414,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:14 GMT",
+      "Thu, 13 May 2021 15:17:32 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2373,7 +2433,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-16-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-16-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2382,17 +2442,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff6d91716bc23010c5bfcbeddf3a6a191d1384d9e1a650ea56278c8d21315e6b35edd5247513f1bbef5207ca1884f6f2fa7be97be4009ba25a420f1645be6d50efaf72b42f6e48d134ca1a7ed55419040fd08a9cc96834ca5799dce23b25ea6d3c7c5ca9dd76d0ef3361e40a4b01bd036405aaa581dec7012a5122dbe673dd9ec898ddd74e892693783848582869e9846416c783281ec2d1bbb0d59bb365fa9a8e93a7ff1c9f470fd6b44831438d954417a2d6b44669c7ae9f1165adb063a8d1120db470fb21d7d4d442137558e974435e817f1bdef8776110840c2a92c21654313b9b7234b064854ae98beb41c0806e476e9ab5cf1dcb5637d8b6701b5ca3de5161fc7bfc6e535c4b2adbc497964c2873f6481416bb7f0d9fbf3f8ff616cdb3266e62d095f04f851ec8d196cbbb001e48c117322aec697ffc01ff8f2d64ed010000",
+      "08000000000002ff6d916d6bc2301485ffcbddc7d55115dd1484a91327743aeb848d2112dbdbaef6e57649ea26e27fdf4d1c286310da9bd3e7a4e79003a4491142173649fc59a1dc5fc5a8e766f051559956fc2aa950080ea0163193f3bbb9978ec4dbe2b5354e6fddf07ad87c7ae8f77a4ca8e0037301dd03440966a182eefb010a9123dbd66b694f644cef4ba30c66336fd49fb290536884e9d2f3fa036f0447e7c256a667cbe2c59f4cc7ff39564707b6b4f13142894580264429698b819e987e4ae465863545950c508185ed875852550a495463a5566ff36ab89d7ac76db6daad0e83190542275430bb5c7034d0a445e6d317d7830603d28edc34b2cf1dcb5a56685b980d6e51ee2851ee3d7edb143701e536f1a52512993a7b02141aeb7f0dabdf9f0ff61ad5b3246ea2d094704f85866468cde54d000702c117f298e8d3fef803ca61a405ed010000",
     ],
     [
       "ETag",
-      "BHHghfcqeZoNlXIEFhlvqA==",
+      "Q8QLkEaYSX5Gk70d+C3MDA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2404,7 +2458,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:14 GMT",
+      "Thu, 13 May 2021 15:17:33 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2422,10 +2476,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -2435,13 +2486,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0d97282300040d17fc9b33aa22ca56fa2c60591a5522c2f1908415912b604a19dfe7b997ec19d737f408431e93ac4ab8230f00ec668a52ff0c2acdf0cf448ec34437b79eb53bbba780626f4604127a7a57bd353990b79fbe8f628b714fa593f2ca6685ec9e6c14e1a211fabbddfeb9bf8dc3b21ec1adff4b4a13fb59b3b74cd20d6ef6b98e5def7a96a9b73948b7208fab47dfad7bca75852062f123bad924d3bab8597b942142ff621aa440847a56140e357a1b183969447d35f8dc7afdbf619a0e2625ff87579624bf82431e3a51ace87d1924accdd296736bdaf821920439db5a443d9c45d2bba3e03ff76c4c79a4c030c12b5a405bf7fdaab586a1a010000",
+      "00000002ff1dd04b8e82300000d0bb742d264240989d1d229f4610b4fc36044a157480527e8299bb8f9923bcf7061921b4efd3a17dd2067c812513b52dd922a6c2f44ef3ab9dafd2282d169ea243aa5fb9c3d7c427c8f36acdc06b882c88fb901a97d141c6fd1bafeda5e3937383c2d804367f96b35d99c742b7c233a5a95e88ed7e77adbd2a42278514fb232a0df1a716335877b3e933a59b25b78b275d4864da22acc86e1378ea323ed4e4200b3e44621640ab564bb39e140baa9a2edda45e24a736627d83f31d1a4adc04b1e3462854392ae350789c7de63b3c145ec10a3680be58c5699f561fae246bda06fcdbd36161f4130069c62907bf7f9c5420361a010000",
     ],
     [
       "Content-Type",
@@ -2455,7 +2500,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:14 GMT",
+      "Thu, 13 May 2021 15:17:33 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -2474,7 +2519,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -2495,7 +2539,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-17-1620764096226",
+      jobId: "grouparoo-job-17-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2508,11 +2552,23 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff85535d4fdb3014fd2b91f74adba494a6ad548daa8411ad4d214981699a22c7b90986342eb1d309a1fef75d3b948190e029b6ef39f79cfb9167f2c0ab8c4c48ca8bc706eaa76ff722254704142df0555e3a925f37b77782ad7fce6fe98cd620afa6534470cd9274b32da123455333909375d42d6ad16c692d440713751cb7e30cfbb63b1cd8e361bf3f449e84325ff0ea01d9774a6de5a4d73b68770b218a12e896cb2e139bd7f7deaedfdbd6e21e9892bdf7923d5491bdcf45bf978251c545355d4768a0915027b0a1bc440bff99597afa3e7597d34db740f08e33a08c89a652da16a660a2ca79d1d4262b993c1363f3cd8144dec29bc7161365b3a9928a6ee0c8caa8a2897ada82751eae96961f9cafc2e52cf6574112cd2fbce5ac3b5f2dd6cb20b26e2ebcd0b3144d4b305c6b6a9d9a5b8017d4cf402a5e19f5583f6be59706f91fc7a209282da10d26ae3da4cec81ea779eab27c747c92e636a4e928754fe8716ab3f10006590a147946d4b06825aa61e68e323ace133aa4900cfad92819bb3924993b1ebb4e4e33009bec8fc8df9a2b38e3722b246f3b446e423ff692385c07f359ec991272da94eaac35a60b78eb51618108faa4a6bd8e72814abadd7e107be16c1efbd75e3be10514943d458f38e39c9612104d6b6c9e827a29326c1809664bef0cc166629787a02493dfcf44f75cbb78d3f2577a8c03d47695f992280efde087b173405cd3b231905d7bd065e4bcd4a6f77f10883bda2621576b2ffc45daa71072a8a1625f0f13c126f0e5af76d87bc4e2e6a38c5478c7d561528bb01ada15e2a6da17b6e30c5cdb21065cab0fb1d1a87f689acea133c2062af55251bbf758682bd6c857100671fa8169d6fe1f6f92246e77040000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "5d",
+      "6f",
+      "da",
+      "30",
+      "14",
+      "fd2b91f75a20102080845604e9ca04610ba1d5344d91636e32b7499cc64e2b5af1df77ed94ae55a5f629b6ef39f79cfb912772cb8b3d999098a7773554872f3722266704144df17523f3bbef330590a78a1f1e179bd1ed45f8309d22826b96a47999414b8aba622027bb6d3bad445dd24a8816266a75dd5677d8b3c7ddb1ed0c868331f22464c98a17b7c8feab5429279dce49bb9d0a9166404b2edb4ce42fef9dfb5ea7acc40d30253b6f253ba8223b1f8b7ecd04a38a8b62badba2815a4215414e798616fe33f7f1f9dbd46d4ef3768ae07bce803226ea42695b98828922e1695d99ac64f2448ccd5707b2f556de3cb498c8eabc880a9ac399b5a78a46ea508275116cd6d6d2bfd804eb59b8dcf8d1767ee9ad67edf966b55bfb5bebfad20b3c4bd13803c3b5a6d6b9b9f97841fd3d48c50ba31eea67adfcdca0e5fbb168024a4b6882916b0f6977648fe32476593272067162431c8f6277409dd866e33ef4f73150e41951c3a285285c77efb84902913d1af7a37e62d3284e7add08c66eaf37b46dc054e478461e2aae60c16529246f3a44ae8365e84561b0f3e7b3d0332524b4ced4a231a60b78ed51618108faa0a6a38e72814abadd4b3ff482d93c5c5e79cd8457905276d8dee18c139a494034adb0790aaab5d863c3883f5b7b0b049b89fd38052599fc7e22bae7dac5ab96bfd0431ca0b6abcc976cc360e97f33764e882b9ad50672df1c741909cfb4e9e31f04e28e3649c8cf9d17fc22cd5300095450b0cf87896013f8f4573bed3d6271f351462abce3ea30a9455805cd0a7153ed893d701cb74b0cb852ef6203c73e354de7d0192187423d57d4ec3d16da88d5f20584419cbe6f9a75fc0781ed2b5d77040000",
     ],
     [
       "ETag",
-      "sP1siVuXhocUKCXaAaresQ==",
+      "OsmqJAteemgtiyzDO8kFTw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2524,7 +2580,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:14 GMT",
+      "Thu, 13 May 2021 15:17:33 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2543,7 +2599,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-17-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-17-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2553,16 +2609,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff8d93616fd3301086ff8bf9482ab5a54b21d23ea450a090b5a3c984004d91675f82879333b6d3a9aafadf3967a32086947d49eececf2977afdf1cd80fd54a96b01b55ffecc0ee9fd5e03f85600baed3ded1cb60eb80450c3caf899ce8f48bb01fd5fab9f8fa393dfb60f23cf6f5f939114e7c8786b3e4c02a055a3a967c3bb09637406d0275d7b4659f45ccef4d28e6c576b57e47798332e4ebab2c4b17d9921da353a3e49e973dff84b6eb63c46ef1660b1558680584598cc55b107e15d674bc311a460e3b2bc0b11eee0f6a8b9de116714495d1643e9ac4d3f13c9e8d5fc5d3694ca046c1bdc296d8ab9ce6631e3dd75bbc7341931744d83ea68dabfeb9a3ba92fd26215cad8b78d60ff837c085c0aef5e5205829ebfcbd7abfc10715fe25357f224857a5f41054432bc10e51ca945c4a0bce0d92e84a6ecc095b6c36d963555a6951c96170a70600ed7727e06db649ff272d19ec8f566fd262f988709e6c73428ad5c5322fd28bcbc05d3f1861b1f7e02e2d92ab1c04434dc6b39767f3787cefb1d7187c47df49bced206282d3aff25e7996545c3b38fe023767848288030000",
+      "000000000002ff8d93614fdb301086ff8bf735959241c31a890f29ed205248599b0aa109456e7c0906c736b6d3a9aafadfb90428d39814be2477e7e794bbd76ff6e4894b4622b2e1f5730b66f7ad06f7ab0b96605be12cbeb492168847c0d11ac9f86ef6a4c3d0df3c6736c8e61797b3db641d9f9f2361cb07682889f6a4e2209825d1ef3d91b4016c2b95681b59f49947dc4e77c555be4cb24bcc1bc5ba3c5ba7693c4de7e4e01d1b1975b4e8f92fb4dd1f3cf2a8364ba8c0802ca19b451bf508a54bba352d6db4809155ad29c1921eee0f6aa35a4d8d5223ac8c82b351107ef727c1c43f1987e309824295d47125915daf703ee294a362a9fee096243841c2f4316e5cf5cf2dd639eb37e9c224cbc3d37ec0bf015a96aa95ae18042b6eac7b55ef1d7c53e15f52d02f8278555c0c413548066688e2baa08c19b0769054b6a05a1fb1e962917e564532a3381b06b77c00106e7b047ea68bf87fd2a2c13eb49ac5f9fc13611ddae688e4c9f57c95c7d7371d77ff6684e9ce81bd310a5d65a13354e09ffe189f85feabc72e54e73bfc4ee44c0b1e2929fe2a57dc91a8a2c2c2e1053c08c43d88030000",
     ],
     [
       "ETag",
-      "1lAYcrKiN+cZWA5JpSS6tg==",
+      "AYDkp660bqNs1NECGDWIUA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2574,7 +2625,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:17 GMT",
+      "Thu, 13 May 2021 15:17:34 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2616,7 +2667,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-18-1620764096226",
+      jobId: "grouparoo-job-18-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2631,21 +2682,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "7f",
-      "4f",
-      "db",
-      "30",
-      "10fd2a91f7cf2695360d250995d0e820db227585a5e926344dedc5bd6486342eb6c360a8df7d17a7e5c7268114a989efbd7befce77bd6757a25ab221cb44715da3ba7b732933d66168a0a0d37329c7b73df5fb164e336f1a8feb5f833fb2383a228468581a56eb12f7b4ac15473d9c4dbb8592f51a94947b9468af1feef57dcf0dfc817be87b9e4f3c8d653e16d515b17f19b3d6c35e6fa7dd2da42c4a84b5d05d2e570fe7bd1bafb756f212b9d1bde7923d52d1bd9745df97928311b23a9a4dc940ad51cd7105a2240b8fcc6576fc3c7557c0aa5b10f8467004ce655d99c616a5e0b2ca45512b9b950def99b5f9e4854da37174923a8b25185c38a09df95ca1ae4bd37116567b7bb8be723e26675f9c05d5978b12f5c2f9fe394a22e701164f9cd964124d53e7edfb77cea7e46c76ee7cb8d8853b5b0932b5446d44652da59095d8d8d9762dfeffae1a0218d0d806e781eb433f740fb33c0b781eee1f64b98b591666c101ec672e3f1ce060992110cf34d92d0b2a59a117f2200f3cf038c7dc5de67e1f60003ccc8370e9fb9041ee1f0461c8361df65b0983a742afa5166debd8f7244ea3799acc2627a334b265e4407d3a6dcd35453cf569a84802bd50d7a6890a494acd3dc493344a462769fc2d6aaf7e8c05f0bbe9355d7e0ea546428382151a545fe4129b993f9bc6697c36198d8961eff37c87d06cf8e3fe9190dead6d978dfd65a324195d10079482bb7f62d33489279fd866f344ef1b94b5c55882fd6a056eda00c34b1a3e29b47b8cb7b6483b7e9bce238206d360ff79f8e7869e0ea34d683db0afb328b960ed5182392aacf8ebd341601b7875a177db4558da2f92d186be6916b96e44b8c27626c5aa31b365f7fb41dfb57f070694f92fe61d84bbe637399a8cb8c2ca6c2b6ab7cb76b309d5fa",
-      "0144411aa549dbebbf069d7881dd040000",
+      "0002ff85546b6fda4010fc2bd6f54b2bf1306f8314252e71291531c498a45155c1f958bb97189fe33bd3a088ffdef519f268a444b2847d3bb333bbb7cb23b9e3c99a0c48c0a3fb1cb2dda75b11900a0145233c7df803a378f6e33a1d9a97dec87eb8b4b7e73fed931344f08225e9268da12a459e319083c5bc1665224f6926441513551b56b5d16d9afd46df6c75ba9d3ef224c4e1842777c8fea3542a07f5fa51bb160911c540532e6b4c6c9eceebdb663dcdc42d3025ebaf25eba822ebef8b9ec68251c54572b298a3815c42b6840de5315a7866ae83b3d7a96b9c6e6a1182b79c01654ce4892a6c610a2692904779a6b392c123d1365fbc90b9337186beb15a53052b834a63b9cc40e6b1aa182bad7d384cef8c6fdef4c258617d218f41ae8cebef8ee7184fb0b16b2c5cd799fbc6e7d32fc6c89b2e66c6d79b63b8729040536b908a27da924f83180a3b87ae8ddfde5541a08a4a2883cb9ed9a50dcbec0761d063a1d5ea04a109416005bd0e6d0526ebb7a1bd0e80224f15d9358b262281a6c57a61af499b8c4168aec36e83d2366556d8b3d6dd2e0d68d8edf42c8bec2be46fc6159c73990ac9cbd6916b6fec3b4bdf5bb843db77741921c53e9d97e68a225efa54582482dea96b5f44b940a5e21ec6aeef78f6d01f5f39e5d54f20a26c37bfc7cb0f692c01d134a31b50905d8835368dcca6f3b13f9ebaf60419fa3e67478424835f8fcf047f97ea2e2bfd4b6ccfb36f9043b38ceefe8bcd7d6fec8ec87eff42ef8ac6b9c66882fe2a05b66580c02d0e9fe0d23c83075da41ebf7de5198183a9a0f13afc7b8f4f85e026941ec8e5c2f16e4879e441081924ece3e940b00e7cb8d0c7ed422cee17ca4885df388b4c16222c837226f9a630736477da2d4bff1d289aa937b14eb37d6c7e91a3c8081b48d4a1a272bb74378b502e9f4018c45172cb5eff0347eb2186dd040000",
     ],
     [
       "ETag",
-      "PooLx/rwxaDb2SILuh4zog==",
+      "xheGlPJWpC0QRGAxQAvDXA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2657,7 +2698,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:17 GMT",
+      "Thu, 13 May 2021 15:17:34 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2676,7 +2717,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-18-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-18-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2693,19 +2734,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "6d",
-      "91",
-      "61",
-      "4f",
-      "c2",
-      "30",
-      "10",
-      "86",
-      "ff4bfdba99ae315349484441c1108203628c21a494630cb6dd6c3b9010febbd762d418beb477d7e76ddeb73db04d562e5883cdb3f4a306bdbf48c1beb8220153e7d6d056616980050cac4c897cb6c96ebe7b5ca543fd6adaddb7a83d2e92b4d924c2a8151492350e6c9941be30acf17e60a52c8064b399f6371266f7959bb45be30e75052e5c3798f4fbadfb7e871d833f9a6af3cb8fc6496ff0744e313d066c8df30496a0a154e01c541ad7a06ccf8533b2a872080dd65a81611ef607a9c6ba921a31a44918dd84512cf8757cc56f632162027354d26658123b19913566d1ca3cc11d65638200ed4b8ab9f4ebd68db9e02117218f7c16378235e82d6686dfc1a7f772a9b0f0becf0ac58f5081b410fd574dbf7ddcef2d98a1460a65c0e5e1a76c0fe8684bef60750d0153923ea69bd9537ffc02dd7e057df5010000",
+      "6d91514fc2301485ff4b7d7433dd08044848644a8404890e78d11052bacb1c6cbbb3ed4024fc776f8b51637869efbdfd4e734e7b64dbac4c5897adb2f4bd0675b84ac13cdb22065de746d35661a981790c8c4889bc0ef6e1e3b51aca3c687c466d7849b2e8d0eff588d0f20d0ac1ba47b6ce204f34ebbe1e59290a20d972a9dc8d8499436527f7fdd980ba0213db4de6e3713f1a0fd8c9fba3a9b6bffc74168f260f97148b93c736b88a610d0a4a09d641a57003d28c6c382d8a2a075f63ad2468e66077902aac2ba1107d9af841db0f5a21ef041dde68b69a1d027394c26458123b9f923566d0883cc63d65632101ca951473edd69d1df390fb3cf479e0b2d8116c40ed30d3fc163e9c971b8985f37d5118fe08250803c17fd5e2db477430a09f1452280d360f3f67bb434b1b7a07a36af09814f431c3cc9cfbd317a7f9e445f5010000",
     ],
     [
       "ETag",
-      "JtRwbwFhgPrWsDHY1DTmRg==",
+      "+1w2M+rHcl13zB8eZdiByA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2717,7 +2750,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:17 GMT",
+      "Thu, 13 May 2021 15:17:34 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2735,10 +2768,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -2749,16 +2779,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "d1",
-      "96",
-      "42",
-      "400000d07f99e7ea88d1b28fa64c8628a5e8c5996592629a06519dfdf7edec27dcfb0634cb58d3a4ededca38f8064faa9a936ce20ac34a8bfcb9834e7246b12a760f2e89dc75280c8f982cd63febe2aebcf6cdd42ea51f3c02c76a4f0467f9e2488a6836f384a8f7b76e708d3cad7237ea69d29a2b3e0f162aaf20d5bc298eedb6500f715dad087fe84bf71265426eecad521b7130f8db46a55f275e4f21f2ba0ebbf4daf42a8a7c485fa40b360822c51727cb1b3663cc9987e607cfc445cdc9f272eeb57b872da8f4613ee81262613bba9f8ca541c008b04194923569f9e16aba698ec0bf3d6d9f827d022c462593e0f70f39920bcd1a010000",
+      "000002ff1dd0c97282300000d07fc9d9384596426f2c6a11290808c60b4369d89798000a4effbd4e3fe1bd2748d21433160f7d8d3bf001e664a3acd3b545642dceb3e5a433e3884cf7cb1dd179eb59e453bffbb62f8dda4c14712e8207e3acb76457f1bebe634825c71e6edb48fcd685917f475d7a809d0063d6c5f04ea3f390aa75ce27e206de67231c72840cbdaf64c31fcc0387d5969a3bee3636611b7841e196d496bd7304b566a9b87d235daec2cdda67cea315dcc0ac16685ad6a828f5d0d9d3b62f7e2abb26dae4d25a8a2e28331dce09d5f22a4ca7bde485d49fa55e072b801fa4a498c5e58bcb8b8ab202fff67898097e056838a19882df3f9809b82b1a010000",
     ],
     [
       "Content-Type",
@@ -2772,7 +2793,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:17 GMT",
+      "Thu, 13 May 2021 15:17:34 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -2791,7 +2812,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -2812,7 +2832,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-19-1620764096226",
+      jobId: "grouparoo-job-19-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2826,26 +2846,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2b",
-      "c8",
-      "fbda2490172152b446295d53256425a4d5344dc8c085b925768a4daaa8ca7fdfb569ba5695da2f807dcfb9e7dc07cfe481f18c8c49c28ac71aaac3b77b919033028a1678abba9c3fdeecaf0679ef70cd6fa7c2ee5f67c5648208a659926e7725b4a4a8ab14e478b36e1795a877b412a285895a8ed772865ddb1df66d6fd8ed0e9127a1cc178c3f20fbaf523b39ee744edaed4288a204ba63b29d8aedeb7d67dfedec2a710fa9929df7921d54919dcf45bf9722a58a093ed9acd1402da18a614b598916fe33b3e4fc7dea36a3db7681e03d4b81a6a9a8b9d2b630452a78ce8aba3259c9f899189b6f3ec8da5ff8b3c84a45596f79cce916ceac8c2a1aabc30eaccb70b5b4e6c1e52a5c4ea3f92a88d7b32b7f396dcf568bcd32585b77577ee85b8a262518ae35b1cecd29c003ea672015e3463dd2d75af9a541f38f63d1049496d00463d71e5267647b499eb8693eea0d92dc86241925ee80f6123bf5fad0cf12a0c833a28645b9e0762fc9bcdc83b89f78393e5c88478e3d88dd9e9d7b993de8395d20c733f2543105174cee84644d87c85d388ffc380a37c16c1af9a6849cd6a5ba688ce902de7a545820823ea9e9a8a34ca0926ef73c88fc703a8be6b77e33e10514343dac1f71c6392d25209a56d83c05d55264d830124c97fe0582cdc47e9e82928c7f3f13dd73ede24dcb5fe9110e50db55e64dd651380f7e183b27c42d2d6b03d9371fba8c9c95daf4f10f0271479b24e466e387bf487315420e15f0f4eb6122d804befcd54e7b8f58dc7c94910acfb83aa9d4226905cd0a3153ed0bdb715c77e81003aed48798d71f9c9aa673e88cb005ae5e2a",
-      "6af61e0b6dc46af90ac2204e3f30cd3afe036e7e85ed77040000",
+      "000002ff85535d6f9b3014fd2bc87b6d12484a0291a2354ae91aa9211b21adb66942c65c985b82193699a22aff7dd7a6e95a556a9fb07dcfb9e7dc0f1ec903af323225292ffeb4d01c3edd8b949c1150b4c0d7fa471eb0dad90a79d88feffd15af46a15bcc6688e09a25e9ae2ea12745db3090d3eda65f34a2ad6923440f13f51cbfe78c87b6eff8f6c81dbb3ef22494f90daf1e90fd5ba95a4e07839376bf10a22881d65cf699d83dbf0ff6c341dd887b604a0e5e4b0e50450ede17fd5c0a461517d56cbb4103ad8426811de5255af8cfccd28bd7a9fb9ceefa0582f79c01654cb495d2b630051355ce8bb63159c9f491189b2f0e6413dc048bd862a26c775552d11d9c5919553451871aacab68bdb296e1d53a5acde3e53a4c368beb6035ef2fd637db55b8b1eeae8328b0144d4b305c6b665d985b8817d4cf402a5e19f5583f6be5a7062ddf8e4513505a42174c26f6983a9eeda7793a61b93772d3dc8634f5d2894b47a9cdfc7338cf52a0c833a286452b518d26d4773d3b4b72c783e4dc1b670905cf4ec6e3899f7afed071d8901ccfc8df862bb8e4b21692771d2277d1320e9238da868b791c981272da96eab233a60b78e9516181087aa7a6a38e72814abaddcb300ea2f9225ede06dd846fa0a0ecb0f98333ce692901d1b4c1e629685622c3869170be0a2e116c26f6f5149464faf391e89e6b172f5afe4c8f7180daae325fb289a365f8c5d839216e69d91ac8be3be832725e6ad3c75f08c41ded92906fdb20fa4ebaa7087268a0621f0f13c126f0e1af76da7bc4e2e6a38c5478c7d561528bb006ba15e2a6da13db756dd72306dca837b191eb9e9aa673e88cb0834a3d55d4ed3d16da89b5f21984419c7e689a75fc0743be4dee77040000",
     ],
     [
       "ETag",
-      "t2nnqQvH5f3yJnVAo04Jdg==",
+      "pZfEcp1Uosyv6j9Min3N5g==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2857,7 +2862,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:18 GMT",
+      "Thu, 13 May 2021 15:17:35 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2876,7 +2881,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-19-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-19-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -2889,11 +2894,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff8d936f6bdb3010c6bf8bfad681384dddd5d017c9967501e7bf0385518c229d3d65b2ce95e48c10f2dd7776bb74ac03f78d7d77fa1dbe7bf4f8c47e2a2359cc76aa78aec11eaf0af0ab265883abb577f4aad038600103cf0b2273732caecd6eb6e4cf7c5f84c9e38d586d57f7f74438f1034acee213cb1568e958fcfdc40c2f81da04eaba34599b05cc1faba6b849d7d3f903e525ca269f6f9364344e26ec1c5c1a25f73c6bf90fb43d9d03b6c7dd1a72b0600434b35416f720fcb459d3f1b2d2d073585b018eb5707b5058ac2b6e117b54e98577bd301af46fa361ff2e1a0c2202350aee151a62b71b9a8f79f45caff1176dc9c26b226c1bd3c679fb3c505dc97693269cced368d80ef837c085c0daf8ac13cc9575fe45bd3fe0ab0aff929a7f10a4ab52ba0b2ac048b05d94aa322ea505e73a497419afaa0b365e2c92f7aa186951c96ef0a03a00ed0f17e06bb218fd4f5a32d89b565f46e9e41de13cd9e682a4d3d964938e66cb867b7a35c2f8e8c12d2d92ab1c34860afbc34f37b751ffc5639fb1f11d7d27f6b68680094ebfca37e5599c73ede0fc1bdb53532888030000",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d936f6f9b3010c6bf8bf79648b026d982d417c99a7668347f08915a4d1572ed83ba3336b34daa28ca77df997669b54ea26fe0eefc3b71f7f8e1407e09c5494cee45f5bb05b3ff54815bfb2003db4a67f1d568658104041cad904c56ee21aca2edf0aabc5ddfcc36f2c72a5baccfcf91b0ec016a4ae2032905486e49fcf34014ad01db98966dad8a2e0b88db37beb8c9b364718579adb9cf17db349dced2393906a7464e1d2d3afe036d77c7803ceafb0c4a30a018f8591aa31f81b9c4af6969dd481858dd1a06967470775019dd36d4683dc0ca209a0ca2f1e770124dc2b3d1783441506a469dd00ad9ed06e7234e3b2a33fd845b92e80c09d3c5b871d93d775817bcdbc487c9221f0fbb01df029431dd2a57f482a530d63dabf7177c51e15f52d20f82785542f64115280ea68f124d413937606d2fa96d419be684cd96cbf4bd2a8a1b2d783fb8133d8074bb1370992ea7ff93160df6aad5c5349fbf23ac43db9c903cb99e6ff2e9f5ca73772f4698ed1dd895d1e82a0bde505138fc3afa320e9f3df64d7bdfe17762675a0808a3f8ab7c178ec42595168e7f0095a11ec288030000",
     ],
     [
       "ETag",
-      "fnyg3nbMPaqajg1LX5cQUQ==",
+      "IPth0g1U4GfYQXBSlKPRNQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2905,7 +2914,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:18 GMT",
+      "Thu, 13 May 2021 15:17:35 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -2947,7 +2956,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-20-1620764096226",
+      jobId: "grouparoo-job-20-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -2967,16 +2976,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "6b",
-      "6f",
-      "da",
-      "30",
-      "14fd2b91f765d37824e18d54b58ca61d1b852e8456d534816d6e329710a7b1d31555fcf7dd38d0c726b51212e07bce3de7be1ec95a242bd2274c44773964db0fb792910a014d237cfdfe30bc0ebeadafe2cff2627c96360349d3b3e8e80811a26029ba4963a82a99671c547f3eab4599cc539a4959c54455d7ae3a6dd7eeb49b76afedba6de42988c3b148d6c8fead75aafaf5fa41bb164919c54053a16a5c6e9edeebf76e3dcde42d70adeaaf25eba8a2ea6f8b1ec792532d6472349fa1815c41b6800d15315a7866aed8c9ebd4354137b508c1f78203e55ce6892e6c610a2e9350447966b292fe2331365ffc20336fec0d036ba934e65c5a54598b45062a8f75c55a1af1fd63bab6cefce985b5c4024311835a5ad75f3ddfb39e60a389359f4cbc59607d3cfe649dfbd3f9a5f5e5e610ae1c34d0d60a94168931155016436168dfb7d1ffd32a085453056570d1b1dbd4e9da3d16b20e0fbb8d160b6d60accb3a2dda6036ef35a1b9624091a78bec8645136c85cd588bb71cc7713b3dd7613ddb6d84bce182d3e8f58039ddf68a53064db2ab903f99d0702a542a95289b47aefd51e02d027f3e190e02cf9411526cd46969ae28e2a54f8d4522e88dba76455448542a26319a049e3f1806a32baf1cfe1822cab7b33b1c7f48630588a619dd8086ec42aeb069e4723a1b05a3e96430468699e8e501a148ffe7e33321d8a6a6cbda7c9381ef0f6e9043b38c6eff89cd027f343927bbdd0bbd2b1ae7066308e65f29705f0608dce2fa49a1ec137830459a05dc559e11b89a1a9cd7e15f3bfc5408de42e981fc987bfe0d299f7c08218384bfbf1d083681774ffa705f88c50b4319dc482d7017b92a447806e54e8a4d6166cf76702fec1631e04cff17eb399d43f38b1c4546d840a2f71595f765ba598472f504c2",
-      "20aed2a4ecf55f7ac16b1adf040000",
+      "6b4fdb3014fd2b91f76593fa48fa4e25041d0456090aa429884d536bbb37c1348d83edb055a8ff7d370ee53124902ab5f53de79e735f8f6425b22519122692fb02d4e6cb9d64a446c0d0045f973f557276f563d33d1aac7ac77eb16ca5f9ede5de1e2244c9d2749da750d7b2501cf470366d244a16395552d63151bde5d6bd5ecbf53ddf6d777b5d1f791ad2f854642b64df1a93eb61b3b9d36e24522629d05ce80697ebe7f7e643ab992b7907dce8e65bc926aae8e6c7a2fba9e4d40899edcda668a0d0a0e6b0a622450b2fcc253b789bba21e8ba9120f84170a09ccb2233a52d4cc165168ba450362b193e126bf3d50f320d4e83c3c859688339170ed5ce7cae4017a9a9390b2bfef498af9ce3f0fccc596081b148412f9ceb1f411838cfb0f1c4994d26c13472beee7f734ec2f3d985f3fd6617aeed34d0d612b41199351551964269e8a96fe3f7d32a09d4500d5570de777bd41bb83e8b599fc7837697c52e303660fd2e6d3397fb1de82c1950e49932bb65d10c5be132d6e55dcff35a7dbfe531df6db563de6e81d7f67d60dea0b7e49441876c6be48f12068e84cea51655f3c875388e827914ce2687a328b065c4141b7554992b8b78edd3609108faa0ae6d19151295ca498c2751108e0ea3f155500dff1412ca37d37b1c7f4c530d88a68aaec1803a934b6c1ab9389f8ea3f1f964748a0c3bd18b1d4293e1afc71742b4c96d978dfd26a3301cdd20872a4537ffc5a651389e9c90edf695de154d0b8bb104fbaf1278a80204ee70fda4d0ee01fcb545da05dcd65e10b89a06bcb7e1df5bfcd408de42e5815cce82f086544f21c4a020e39f6f07826de0d393dedd1762f1c2500637d208dc45ae4b11aea0da49b12ecdecd8dd9eebf789052bf32ed6ee7476cd2f739419610d9979aaa8ba2fdbcd3254e867100671952655afff013ce216b9df040000",
     ],
     [
       "ETag",
-      "KxCWTJkVl+oMLFp4ToapFg==",
+      "dZrgMVHy5D8k6F9ud2lphQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -2988,7 +2992,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:18 GMT",
+      "Thu, 13 May 2021 15:17:36 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3007,7 +3011,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-20-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-20-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3017,11 +3021,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff6d915f4fc23014c5bf4b7d1d641b301d0989a04431b0c0001f3084947219836d77b61d0a84efee5d3191a82ffd73fa3bcd39ed89ede26cc59a6c1947ef05c8c34d047a542e425045a2154d39660a98c540f388c86089c79a56b5d9ccdd3c06a3e3c6f65e5edbad16114a6c20e5ac7962eb18929562cdb713cb780a645b2ca4b991307dc84b65d21b74c793f66048528aab520aa6fd7ebbd3efb2b37565cc773fa6f124ec054fff39e6678b6d7119c21a246402ca18b9c42d08dd2b1b2a9ee60954141652806206360791c422e712b1424ac5b52b8ee7dab75eddf63dd7f5084c50701d6346ec744cd19846cd93103fa82073099066495dd766dc93ec541b7776a3e13b7ebdeb9b3aa50a5b907b8c957d0f9f264e55606aa2fff17a75725f7b05700dce6fe3fc3b4de7a0410d25523505652bfbd2f0014b5ad36b685980c504a73f7a8ef5657ffe0235f638a000020000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "6d",
+      "91",
+      "5d",
+      "6b",
+      "c2301885ff4b766ba575b6ac82301571b2ea5cadec6288c4f8b656db264b529d88ff7d6fe260b2ed261f27cf09e72467b2cfab0de990759e7dd4204f7719e857b38841d5855638095e29200d029a6648e6816e0fd2e3f376047ef2d617227a81e4d8ed22a1d8164a4a3a6792e6506c14e9bc9f49454b40db6a25ed8d88e993304a329e0ce7496f3243a9e41b234d1751d4eb47437269dc18c5fec7344fe2f174f49f637969901d5fc79082848a81892124df01d363d350d15214e0285e4b068a58d81e6492d7824ace1d549c96eb7841cb0dbdd0bdf7033f44b0e08cea9c57c82ee6188d68ae6911f32316242d04a45d62d7d48e0794bda6ffe0fa3e5ed31e86b68e516107f2c073e53ec2a78dd364bcb4d1ff788336ba6fbd0ca806efb771f99da67fd2a06692633505a6957b6d38e086d6f81a5ad6d0208ce21f3de5fababf7c011d77263900020000",
     ],
     [
       "ETag",
-      "Nboz3ts3ZZ2hDNQzh06JVA==",
+      "i6t4CfwKhGe5TWBppLOeTw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3033,7 +3048,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:19 GMT",
+      "Thu, 13 May 2021 15:17:36 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3051,10 +3066,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -3066,7 +3078,10 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff1dd0c97282300000d07fc9591c9045e8118114649fca72ca0086a5b284000276faef75fa09effd80ac28f034a17978e01e7c803d3b29c7e27825b28a2a7c7278d313115bb8545b4a4dccbd76a93fe1e86b15454211216b60182c25776eb39a14b6b08d3b2a7d9995b8f6cb552766dd8e10075b6c48da16840184e2ea96bc1c5d8d68bdd4029974ff5cb07e9347b2990d3282b6a6bbcf018d4997799761cd1f7aff5d77b1e03cc220bcb3e4cc845198fab127544efacae66da22fa3746d36b98deac287d67397ec990bc4359dbd91a7659adf4cdc3a2c996a85f3c001e08d34144fa879737951510ee0df8ee69de077808a338a29f8fd033494405a1a010000",
+      "00",
+      "02",
+      "ff",
+      "1dd04b7282300000d0bb64ad4e090d98eee463a002625aa9b0615012440aa41004757af73a3dc27b0f909d4eacef53d956ac016fe09641bc382d366269a4059f2c914d5c13871e2952877ba217d5cbe043c35b452a53be929026f5d90e69bbc7b5ef988df2396c211d8d8de5dc2f26fee053610b95ec8680b996a6f58ddcb54d09e5b739ae75ed7dd28917a38ae6bdeeb86b92a360d7c5a68a861635115f720d9643b3a5f394761e23634daa38b95e564e2e25273fc75719a67c1b6645617b930b47f77ac7e6591c4911f8f3b8adcd7c34ba4c9ce7791c2937971d3098013689b2637d5a3eb92ac27806feeda9bc09f60c3058d6b10efcfe019981e0b01a010000",
     ],
     [
       "Content-Type",
@@ -3080,7 +3095,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:19 GMT",
+      "Thu, 13 May 2021 15:17:36 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -3099,7 +3114,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -3120,7 +3134,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-21-1620764096226",
+      jobId: "grouparoo-job-21-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3131,12 +3145,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "0000000002ff85536b4fa34014fd2b64f6ab6d690bf491346b5351495aba02d56c361b320c171ca50c3283bbc6f4bfef65b0aec6443f3133f79c7bce7df04cee799992394978fed040fdf4ed4e24e48480a239be5eba7cbcf4523bdcad26d3bf53c7afabbb8babc50211bc6549baaf0ae849d1d40ce47c17f6f35a3415ad85e861a2de68d81b3a2373e258e6cc198d1ce44928b2352fef917dab5425e783c151bb9f0b9117402b2efb4cec5fdf078fa341558b3b604a0ede4b0e50450e3e17fd5e08461517e56217a28146421dc39ef2022dfc67a6c9e9fbd47d4ef7fd1cc18f9c01654c34a56a6d610a26ca8ce74dadb392f933d136df1c48e8aedd5564305134fb322ee91e4e8c942a1aaba70a8cf360bb313cff7c1b6c9691b7f5e37075e96e96fdd576bddbf8a17173e906aea1685280e61a0be354df7cbca07e0a52f152ab47ed73abfcd220efe3585a024a4be882f1c474e8706ace922c99b06c3ab693cc84249926139b8e1393cd2cb0d20428f2b4a866d1529453b0d3192476cc66a6135be3118d29b520a6766a5b19a39963dbe47042fed45cc119979590bceb10b909bcc88da360e7af9691ab4bc86853a8b3ce585bc05b8f0a0b44d027351dda2817a8d4b6dbf3233758ae22efdaed26bc869cb2a7f001679cd14202a2698dcd53506f448a0d23fe72e39e21584fecc73128c9fcd733697bdeba78d3f2577a84036ced2afd25611478fe85b673445cd3a2d190c7ee402ab47c8bb5a1ebc36f44e2927659c8d5ce0d7e92ee29800c6a28d9d7d344b00e7cf9af1d171fb1b8fa282315de7177986c45580ddd0e715dee0b7b389c5943936870ad3ec46cc73c76adcdd166843d94eaa5a26ef1b1d04eac91af200ce2f87dddadc33fd4d8644f78040000",
+      "000000000002ff85536b6f9b3014fd2bc8fbda242490a714ad694ad7a8095981b4daa6091973a16e08a6d874abaafcf75d4cd3a59bd47ec2f63de79e731f3c932dcf633221114f1f2a289f3edd8b889c105034c5d7fbed7725a2ab336bf3fb8e5d5babb3ad655ecda65344f09a25e9aec8a02545553290938ddf4e4b5115b414a285895abd6eab3be899e3eed8b4fa83fe187912b264c9f32db2ef942ae4a4d33968b75321d20c68c1659b89ddeb7be7b1d7294a710f4cc9ce5bc90eaac8cefba29f33c1a8e2229f6e7c3450492843d8519ea185bfcc383a7d9bbacde9ae9d22f89133a08c892a57b52d4cc1449ef0b42a7556327926dae6d181f8ced29907061359b5cbc39ceee0c488a9a2a17a2ac0b8f0d62b63e15eacbdd52c58acddd09f5f3aab597bbe5e6e56ae6fdc5e3a9e63281a65a0b9c6d438d537172fa81f83543cd7ea41fd5c2bbf3468f1ff586a024a4b6882e1d01cd0eec81c47493464c9c8ea47890951348a867d6a45261bdb60c71150e46951cda239d64cadd190f586a10d1087f620e98711d8ddb03ba0cc84c4eeda6091fd09f9557205e75c1642f2a643e4d65b044e18781b773e0b1c5d4242ab4c9d37c6ea028e3d2a2c1041efd4b4afa35ca052ddee851b38de6c1e2c6e9c66c24b48297bf21f70c609cd24209a96d83c05e54ac4d830e2ce56ce3982f5c4be1e82924c7e3c93bae7b58ba396bfd2031c606d57e92ff1036fe17ed1760e881b9a551af2d81c488196efb03674bdff89485cd2260bb9de38de37d23c7990400939fb789a08d6810fffb5c3e22316571f65a4c23bee0e93b5082ba1d921aecb3db0fb83b169130d2ed5bfb1a1690f0e5dab73d4196107b97aa9a8597c2cb411abe42b0883387e57776bff077c7868d378040000",
     ],
     [
       "ETag",
-      "HEi3AId5SUC78x86NrpjGQ==",
+      "jkZtobKB3UxhcQ3MBk30KA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3148,7 +3161,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:19 GMT",
+      "Thu, 13 May 2021 15:17:37 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3167,7 +3180,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-21-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-21-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3193,11 +3206,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "10",
       "85",
       "df",
-      "657a8ba9128b2d89176afd2151ab884993c6981506441796ee2e6d8cf1dd3b4bad6dda26ed0dcc0cdf2ce71c38c23ecd2370619326cf25cac355827a6e0a1f55c9b5a25b21728560016a9610696f1e7bfbeb9137d8213ff8f345120d8661d26e13a1c22d660cdc23c429f24881fb74849c65486ba1e06596afabce027d28cc7011f8de74487d2622d34f97e371a73beec3c9ba2c464cb375c5ff636d75b26027363ec628310fd16829a4d861a83d6353b1ace05853a294212aa8e0ea412245593029448d2635bb516b3876bde534eb778e6d3b047211329d8a9cd8e582f481169a715fbc924b3080ac4a321c57d7171aa75165c494de34709a95beaf00498b538eebbf41d2bb65f4193eb07304df39968932d7176a307ee8fc761c65fa79d47d27e8ff2094a6a42e48e04dfa8ba03399196e75f6de3d6854332928488526c346bd797bd372eaefb1f684899adee36a59a20521a3bf63946a7063c6159ede00c62bb0827b020000",
+      "65",
+      "7b",
+      "0b0958a595c40b6cb5c5a855c4a46963cc0a03a2c0d2fdb131c677ef2cb5b6699bb437cbccf0cd70e6b007b2cdca98b86495a52f0af8fe220539d5410042e552e0a362a5006210903445d2511155dbcdd3a43978ccbafda94507edddb4d34142446b2828710f24c9208f05719f0fa4a405605bc4725594cb3a3388dc57ba380b037f7c8779c1629d8fe7c3a1d71df6c8d13837c654d265cdffa36d7134c886ad024880431981d65271b68148fa7a4d418b2a075330c52310a486eb172967aaa29c31132b66c3366da761b5edb675d9725a6d0473165199b112d9f90cf511c924cd03f62ab42708f03ac48593fadc61398beb4574e88f43a759ebfb0aa0b424cb61f937887ad7147fc30776b2e03b470ba64a79a6fac307efb771e8e9e7a85b2fecfd208444a7ce48e88f7ab3d01b4d34b738eddedd4b1013ced04801da43db6a5eb7ae1cebddd61ba6adc6efb8922b304844f176dc6792b809cd051cdf00985228d77b020000",
     ],
     [
       "ETag",
-      "2bXCk/HIFjelyRQSgdFGcg==",
+      "6ucaukjZP4JXiBFQ0aJ9vQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3209,7 +3224,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:22 GMT",
+      "Thu, 13 May 2021 15:17:37 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3246,7 +3261,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-22-1620764096226",
+      jobId: "grouparoo-job-22-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3266,12 +3281,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "7d",
-      "4fa33018ff2aa4f78f267b616c632f89f1b8c9293a99c798c65c2e5b2905eb80625b7659ccbefb3d805377269a2c61edefe5f93d4fdb67b4665988c62860f15341c5f6db230f5003518563d855f6e5637fbd553abf30ccabc126bbba1453ebe40418ac54499ce6096d4a5e0842e578316fc5821739169c37c1a86918cd8e69e803b3a78f4cc330412769124d59b606f58352b91cb7dbfbdaad98f338a13867b24578fabadfde18ed5cf0474a946c1f966c4315d9febce869c209568c67278b39042824154b9a629640843765187c3fb46e319cb662206f18a198105e64aa8c05168467118b0b51b9a2f133aa62befb83e6f6d49ef8da64664dedf9c43eb26ecf8f56382d3d56c70d4d3fd6b0d4964b416591a886b682f62296d0250b573592afb59fdeec1a1008f38025952bedeec2f66ced90ecb8dac275edb9af1d9d1e6be7de6c71a3fdb83fe040e0904ac5b22aae8f838496515f26ea7c3cc7528015d4acc1e540377167a88f8228189068d8ed07914e8360180cfab81be864d4a3bd30a01874aa74af5438e39989830047a46f4461483b031d8fba1ddc1d067844a370343028e9996041d0ae81fe0aa6e819933997ac1e2bbaf31cdf5efadec29d58be5db5116198d7591dae6ce27d4e054d02e993be7625ca38542acfc8717ddbb326be736bd7d7624a634cb6f327b818114e2405361638a58a8a6b1ec2d0d0cd6ceef8ceccb5a6a0a8cefa66cf9068fcfbf94de06ff36acaaafa22cbf3ac7bd06021f0f63f0c72983db4dbbd2b778b93a2a254fc6a55fb6f6a0075a097b79581767f76f06b20b8ffb53bfab5b0bd7b546f7934a28266e4eb730772057cf98cf76f0ab8f0aaa08c54b0865b46645984085adf369656716b75c730fafa105564a13e60667fb81f6be9513ad29466eaa5a3fa4d55832aa142be9200844be23aee39a0ff0022c6cb75d3040000",
+      "eb",
+      "4edb30147e95c8fb035269d3fb45422c948c059514d2b4084d53eb3827c1348d83ed3055a8efbe9384021dd2902aa5f67739df39b65fc89aa721199180c74f39c8edb74711901a014d63dc7d1a87eddbae7fbebe12d45cb32bf0b6170bebf41419bc5029bac912385122970cd4683eabc752e41995429ca0d149ab75d2ecb5cc617368b6bbbdee10750a9268c2d335aa1fb4ced4a8d1d8d7aec742c409d08cab3a139bb7fdc673ab9149f1084cabc661c90656518dff173d4b04a39a8bf4743ec300b902b9840de50946785786c1f743eb3aa79b7a8ce467ce803226f25417b1d0828934e2712e4b57327a2165cc0f7fc8cc9ed863df184fad893d1bdb47d6e2f268453785c7eab86698c70655c6722941e589ae192b6c2fe2092c79b8aa906c6dfcf0a6d788609807aa40ad8cbb9fb6671b8764c735e6ae6bcf7ce3e8ecd8b8f4a6f31be3fcfe80838143509aa7655c9f060914515f27ea7c3ec7424035d6acc065dfecd1e6c01c0651d067d1a0dd0d2213826010f4bbb41d986cd8814e1800459d2edc4b154d45daa3414023d66d456108cdbe4987ed266d0f023a84281cf65bc03a3db4606457237f24d770c1552614afc64aee3cc7b797be3777c7966f976d4414e77551852b9af89853639348fa4f5fbb02e5022b1567e4b8beed5963df59d8d5b598404cd976f6841723a2890264534937a0415e8b1087466ea633c777a6ae35414579d6377b8622a35f2fef027f9b9553d6e597589e67dda3864a49b7ff6098a3d721bbdd87720b9ae425a5e497abcaffb90248137b795fb5c8eef70e7f3582f7bf7227b773dbbb27d59607114848d9d7e78ee412f8f219efdf1472f1556119a5718db78ca9a2089350dd36be29e3beaabbfdbed9252559ea4fd8a0d7df8fb5f0281c6103a97eeda87a53e5a00a28576f2404f192b88e7b89e85f6c5df845d3040000",
     ],
     [
       "ETag",
-      "tEJj5kyt0oH26K7vnKJrLA==",
+      "qCd3Q5TBkJoa0kcJeRyDVA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3283,7 +3298,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:22 GMT",
+      "Thu, 13 May 2021 15:17:37 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3302,7 +3317,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-22-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-22-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3311,28 +3326,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "6d",
-      "90",
-      "5f",
-      "4f",
-      "83",
-      "30",
-      "14",
-      "c5",
-      "bf",
-      "cbf5150ca0325db287cda02e215319d344b32c1d5c905128b6650b59f6ddbd65269b897da0f7cfefc039eca12cea1486b02ef2ef16657791a37e354584aae55ad1d5885a2158809ae54476d1bbfb7153f384bfadd3b2ccfc791cc4bbd18808957c61c560b887ac409e2a187eeea16615926cb592fd1b09d35d63260fe1f338a6b612a969678b301c4fc2000ed699a8294f82e92c0e1e83e83fc9f260c146ac23cc50629da0f1d048b1c1444f4d3cc5aa86a3ad442b1354d0c3fd2297a26d9814c2a689ed79b6eb7bcec0bf76ee7ccff309e42261ba1035b18b3979032d34e391d8513af008907d4941b3feb9a5b17b793bf09db373d587daf60ae3f52f3c38ad5db35efe7e64d269542f52906385c6ac73347e2f4c184d21b56cd18284d17f7f2af4b13ffc005dc876e9d4010000",
+      "08000000000002ff6d905f6f823014c5bfcbdd2b2c8011a7890fb8b9cd843045dd4c16632a5c190a94b545638cdf7db775892e591fe8fdf33b700e27d8e5550a3d58e7d97783e27897a19ae82246d9144ad255f34a2258808a6544faefd1249f0541147fa4dbf162e18fd8eee9d0ef1321932f2c19f44eb0c9b14825f43e4f50b11249b65a09f346c2d4b1d693e7f02d98515bf254b7d13c0c83413884b37523aa7757c1289a0d5f86f17f92e5d9822d5fc7b841815582da432df8161335d2f1242beb026dc91b91a004039b4526785333c1b94d13dbf36cd7f79caedb755a6dbfdd25b0e0095339af889d4fc91b28ae5811f303a5038f00614a0aba31cf3d8dddfb878eefdc9c9609b5370aedf52fdcb9ae5dbd5efe7e64705428c782936389daac7331fec8751845219568d08284d17f7fcdd5a53fff00bb470ab5d4010000",
     ],
     [
       "ETag",
-      "yRW1Z5nlclVbdkkf6STETw==",
+      "6VNQiTAANRWdjPXX6IakDw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3344,7 +3342,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:23 GMT",
+      "Thu, 13 May 2021 15:17:38 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3362,10 +3360,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -3382,16 +3377,12 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "c9",
-      "52",
-      "83",
+      "cb",
+      "72",
+      "82",
       "30",
-      "00",
-      "00",
-      "d0",
-      "7f",
-      "c9",
-      "b9d36981b27813641110642ba11786255022266c69a18eff6ec74f78ef07145585e6395fe81722e0056c05a7ecabbd33c86ade36d63133df907d0de22ed08e976ee8897cb89af4b5218e0b6ff58c703cdadeb93deb766df86ed5440f6efb90163aa6e4bb3df4a580b5bb111373d6b2a44f85f70a3a5e02a56be66ad96ac168652213f2629e986f0be5e08da96edf982f3a7dc048295b56a253bf8c022442c31f93c5c538ec655e3c596de815894568c8e91b8f29b453aaf878e10b1ab1bbe2384210b435562f92f1a935eb92cb0ac7716007d03a74139af3eec9e54f8ab203fff67cd906f40c505131a109fcfe01bb0870331a010000",
+      "14",
+      "00d07fc9da3a0a0381ee00792988225a65c3047ac1a89048427d4dffbd4e3fe19c172255054214929da1439fe84114735c8d17dcb08ba6beea98a98ba7c622f6d300deaf663ca717f23c35754bda4eaf945510a6c99909cd37f0717be88eca34c3f0e89d4edfdc27d4f8c0207d1cd2e0b2365248d3836fc55f2ed76cc3825ab63c0e3bc5b41b169372369c853ef41b335f04a51b39dfbecc379e75a054deae493871a7224c5c119d926576e3436d93754b9c5dec86d9362a96baf0f6b2d455efd264feb19b6db9cd7b0b27f30ce63b964de22aba076884e0ce690fa2a06faeaa99e608fddb0bf9e0f00eb081f4d0a3df3ffe4973d01a010000",
     ],
     [
       "Content-Type",
@@ -3405,7 +3396,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:23 GMT",
+      "Thu, 13 May 2021 15:17:38 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -3424,7 +3415,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -3445,7 +3435,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-23-1620764096226",
+      jobId: "grouparoo-job-23-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3460,11 +3450,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff85536b4fdb3014fd2b91f771d0863ed287548daa04c8d6a6234d41689a22dbb90986340eb15356a1fef7dd38948190d8a7d8bee7dc73ee23cfe441e431191326d2c70acadd977bc9c811014d537cdd5eb9de835e3fa9dd9fe476fd9d7e15173fb64f93092244cd5274536470ac64557250e3f5aa9596b22a6829e531263aee748f4f9c8e3d707af6c8e9741ce429c892b9c81f907da775a1c6edf641bb954a9966400ba15a5c6e5edfdbdb4ebb28e53d70addaef25dba8a2da9f8b7ecb24a75ac87cb25ea1814a4119c1868a0c2dfc63c6ecf47dea96a09b568ae0ade040399755ae6b5b9882cb3c1169559aac64fc4c8ccd3707b272e7ee2cb4b8ccaa4d1ee5740347564c358df4ae00eb3c582e2ccf3f5f068b69e82dfd6835bb7417d3d66c395f2ffc957573e906aea529cbc070ad89756a6e3e5e503f06a5456ed4c3fab9567e6990f7712c3501a51534c168603bf464688f58c2063c1976fb2cb181b1211bf46997d97cd4835ecc8022cf881a16cd65eec44e7fd01f24d1b0c786516fd0eb44ac3bea47d86d48fa231842ccc8fe883c9542c399508554a2e910b909bcd08dc260edcfa6a16b4a486895e9b3c6585dc05b8f1a0b44d02735edeba890a854b7dbf3433798ce42efda6d263c8794f2ddea11679cd04c01a26989cdd3502e648c0d23fe74e19e21d84cece721a8c8f8d733a97b5ebb78d3f2577a8803aced6af325ab30f0fc0b63e780b8a6596520dbe6400ab47c87b5a1ebfd6f44e2923659c8d5da0d6e49f314400225e4fcffd344b009fcf75f3b2c3e6271f5514669bce3ee70558bf0129a1d12a6dc17f649a7db1bd9c4804bfd21e674ed43d7ea1c7546d840ae5f2a6a161f0b6dc42af50ac2208edf37dddaff052ae8c01f78040000",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "6b",
+      "4f",
+      "a34014fd2b64f6ab2dd8d267d2ac4d8b2b494b9552cd66b32133c305472983cca031a6ff7d2f83753526fa8999b9e7dc73ee8317722f8a844c0913d9430dd5f38f3bc9c809014d337c1dc06a5d3d38b66f5f89852d962c71f953369b2142342c45f7650e1d25eb8a839aeeb6ddac9275492b293b98a8d3eb774e873d67723a71fa83e160823c0579ba12c53db26fb52ed5d4b68fdadd4cca2c075a0ad5e572fff66e3ff6ecb29277c0b5b23f4adaa8a2ecaf457fe692532d6431db6dd140ada08a614f458e16fe331376f6317557d07d3743f0a3e040399775a11b5b9882cb2215595d99ac64fa428ccd7707b2f556de22b2b8cceb7d1117740f275642358df57309d679b8595b7e70be09d7f3c8df04f17671e1ade7ddc566b55b075bebe6c20b3d4b539683e15a33ebccdc02bca07e024a8bc2a847cd73a3fcda20fff3581a024a2b6883f1c819d2d3b13361291bf174dc1fb0d401c6c66c34a07de6f0890b6ec28022cf881a162db06680a13366693cee392c765dda8bd93049e23ea618a7e03aa37e9f1c4ec85325342c852aa5126d87c84de8475e1c85bb60318f3c53424aeb5c2f5b634d01ef3d6a2c10415fd47468a242a252d36e3f88bc70be88fc6baf9df00a32ca9fb70f38e394e60a104d2b6c9e866a2d136c1809e66b6f896033b1cb635091e99f17d2f4bc71f1aee56ff40807d8d8d5e64bb651e807bf8c9d23e29ae6b5813cb60752a2e55bac0d5d1ffe221297b4cd42ae765ef89bb44f21a45041c1bf9f26824de0db7fedb8f888c5d54719a5f18ebbc35523c22b68774898728fecc1d81df4880157fa536ce8bac7ae35399a8cb08742bf56d42e3e16da8ad5ea0d84411c7f60ba75f8077501efe778040000",
     ],
     [
       "ETag",
-      "vQEIktUwsyxfYUJa+iGKvw==",
+      "5eLMrq0/I/QiC/iDbd4cwg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3476,7 +3473,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:23 GMT",
+      "Thu, 13 May 2021 15:17:38 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3495,7 +3492,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-23-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-23-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3503,11 +3500,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8d92414fc2401085ffcb78b42450b160130e05519b1484524e8690a59d42b1dbadbb5b0921fc77672ba25113bdb433d36fb6efbdf600cf5991800bab6cfd52a1dc5fac514f4d11a2aa72ade8568a422158809aad89c4cb72e3edc65997f3ca1b4ce5c41e2ae5f57a44a878839c817b8034c33c51e03e1da0601c692d1679c58b65dd59a0f7a519cea2d01fdf53cf4562faf13c08bc7e3084a3755e4c9866cb9affc7dae268c156ac424c516211a3d1524ab1c558fbc6a662bcccb1a14425635450c3f583b51455c9a4100d9a34ecab46cbb19b1da7ddbc716cdb21301731d39928889dcf481f68a1591e8a1db90403c8ba24c3697d7da57196d4464ce98f23a75debfb0a90b434cb71f937487a378c3ec307768ae03bc7b8a80a7da6ee8247efb7e328d3cfa36ebd68f883509a923a23913f1ace226f3431dce2e4bdbfd7a8265250900a4d86ad66bb7bdd719aefb10e84899adee36a59a10531a3bfe321d3e0a62c57787c03e908ea287b020000",
+      "8b",
+      "08000000000002ff8d925b6f82401085ffcbf415136f5025f1415b6b49bc22b60f8d312b0c8a051677170d31fef7ce526b9bb649fb0233c337cb39074ef01aa501d8b08e36fb1c4571b34135d3858b328f95a45bc6538960002ab621d2dc3b83432def0d8256319814eef3ecc955c74e8708e96f3161609f208c300e24d82f27485982b4e6f3384fd255d919a08a4c0fe79eeb8c07d4273cd0fd78311c767bc33e9c8deb62c0145b95fc3fd6966703767ced628802531fb5964cf01dfacad136254bb2182b92e7c24709255c3ed8089e674c705ea149a5dea8d4ac7ab55d6b571ba665b6098cb9cf54c453621773d2078a2b16bbfc482ec122409425190ecbeb81c651501ad1a533f6ac66a9ef2b40d2c228c6d5df20e9dd32fa0c1fd82582ef1c4b789eaa2bf5309c747f3b8e32fd3ceabeebf57f1052515257c47346fdb9d71d4d35b7bc78ef150ae554700a52a2ceb0566db6cc5babfa1eeb1dd751d37b6c257234c067f4773c460aec90c512cf6f1d28c2c07b020000",
     ],
     [
       "ETag",
-      "e+phAwNi8mmuACQrP2EssA==",
+      "5qIGv1uBGd8yGOyRWQVRtw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3519,7 +3517,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:24 GMT",
+      "Thu, 13 May 2021 15:17:39 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3556,7 +3554,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-24-1620764096226",
+      jobId: "grouparoo-job-24-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3570,11 +3568,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff85536b4fe33010fc2b91ef0b487da449481f12e27a25c7459414d214844ea7d649ed6048e2603b3d55a8fffd360eaf1e124895527b667667d7bb4fe881156b3442314b1f2b22b6dfee798c5a88289cc22df526f6fd54de7957711545e767e7349a0cc7c7c7c060b54ae2bccc485bf24a24448e16f34e2a785562c1791b02b52da7dd732db3ef3ae6d0b52c1774926474ca8a0750df2955ca51b7fb92bb93729e6604974c76129ebfde773756b714fc9e244a76f75376218bec7e9ef424e309568c17c78b3918a824114b926396818537e53afebe1fbac370de4981bc6109c149c2ab42d5b62044c20bcad24ae8a868f484b4cd777fd0dc9b7a93c898cc164174b0c2792d5e1d1a581acba520b2ca54cb58414d946564c9d6ab06291f8c9fe1ec021070708725912be3e697177ac63ed90f8c451078f3c838383934cec2d9e2d2f871bbc701976b22152bb4c708c719a9fd3db7d1fff878b5002bc8d980cbbee9e2dec01cc634ee2774601fc5d424713c88fb47d88ecd64e810671d130c3a5547d72a5cf0c232293563d3c6d8a1f611e9b9b6e3e07ecf7486568f529cc4d41e58d4b1d1ae85fe0aa6c829932597ace925ba09fdc85b46e122988c234f974131f4ebb4315717f1dea7822281f4495dbb1a651c32d50fe30791178e27917fed35b33025294eb6f34798068a3349808d05ce8922e282afa169e87236f7237f168ca7a0d00f7cf9c29068f4fbe94d106d4bdd65a5bf681c86e35bd06021f0f63f0c7cb80edaeddea5bbc659a5299aaf4f4dfc4d03a01ed4f276b2d0eecf0e7e2d0443df4447570b2fbc45cd55482811a448be7e77206be0cbdd7d5924e0c22a411aa9e00c5396c83a492248336d2cd7761b75cf72dce10069b2501fb0a18efcba4075449293423d57d42c926e540d55f29504200c49e0076780fe035cd8444cc8040000",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8553fd4fdb3010fd5722ef1790fa9134e9a7845857328854524813109aa6d671ed6248e2d476d82ad4ff7d9784021d12489552fbbd77f7ee7cf78c1e79b6422314f3f5a6a072fbed41c4a881a8c66bb8757f928bbf17d926b257e9b575be2dcebcdee6fae40418bc54299ce6096d2a514842d5289ab7d65214399642342150b3e334ad5ec71c5a43d3eef6ba43d0299ab029cf1e417daf75ae46edf63e776b2dc43aa138e7aa4544fa7adf7eeab473291e28d1aa7d98b20d5954fbf3a4a789205873919d44733050282a1734c53c010b6fca55fcfd30748be3b4b506f213271413228a4c97b620041119e3eb425651d1e8195536dffd417377ea4e4263328bfcf06889d352bc3c36b032160b495591e886b1849a184fe882af9635923f1a3f83d92520e0e01e2baa96c6ed851bb8c621d9f38dc8f7dd79681c9d1e1be7c12cba327edc1d70c0e58a2acdb3ca6388e38496fe5edae87d7cbc528035e4acc145dfec616b600e6316f7091bd8dd9899348e0771bf8bedd82443873aab9862d0e9327aa5c299c83a2663666cda183bccee52ab673b0eee5ba633ec588c6112337bd0618e8d760df447724dcfb8ca85e2752fd16de085ee220c227f320eddaa0c86a15f67b5b9b288f73e351409a44feada95281790a97c18cf0fdd603c09bd1bb79e85295d63b29d6f601a184e1405369638a59aca4bb182a6a1abd9dc0bbd993f9e82a27ae0ab3d43a1d1afe73741b8cdab2eebea8bc64130be030d96126fffc3c047cf41bbddbb743738292a4ac5af4e75fca71a4016d4f276eaa0ddef1dfc1a0886be8e8eae2337b843f55540199534235fbf3b902be0cbdddd2f12706195208dd270862923aa4c4224ada78da795dd177577d8ed579bafb1d41fb0beedecdb5ac62823d29466faa5a27a91aa469550a15e4900c290f89e7f0ee83f7a99dddbc8040000",
     ],
     [
       "ETag",
-      "fEC3jLshEQbuTTKGKfTC9A==",
+      "EFcHxHnqU3dmQ1GyuDI6qQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3586,7 +3588,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:25 GMT",
+      "Thu, 13 May 2021 15:17:39 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3605,7 +3607,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-24-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-24-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3623,19 +3625,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "8d",
-      "90",
-      "4f",
-      "4f",
+      "50",
+      "5d",
+      "6b",
       "c2",
-      "40",
-      "10",
-      "c5",
-      "bf",
-      "cb786d0334582309073144890d910a07630859da692db49d65770b16c27767763186a397fdf3de6f266fe604dba24e6100eb22df35a8dabb1ccdcc3e62d44d69345f926a8de0011a913319c8ecd8eede3a51fb696673dc1e83ce0f1d86432674f28d9580c109b202cb54c3e0eb04b5a890cb562be53a32665a6995c9743e7e19c72c54945a61ba88a2a7513486b3775326b7ff2a599e3dd8d03ac60c15d609da1452d1061333b1036a51c9127d4d8d4a5083839d912b6aa450443e2b7ed0f77b61d07d08fbddc7300842064b4a8429a86676f1c1d9c09011654c076db7c180724f1e3573e79ee57b37c3de0136daad17fe793deb2d7f1b8e5a83fa5d11a7d3688375af219fc906373c90510d7a9008def26b61aefff305fcc53cadc2010000",
+      "30",
+      "14",
+      "fd2f778f6b9975ab43c187e93a2788cc6ec26088c4f4dab5b6bd35491d22fdefdec4317cdc4b72733e2ee7e404bbac4a60009b2cdd37a88e37299a851d62d44d61345f35551ac103342265e532fa9c6095c8db38b90bf2f14bfab87f2e16c3212bb4fcc652c0e004db0c8b44c3e0eb049528916debb5721b59668eb545a6f38f6812c50c94945860be9ccd9e46b3085aefca56effe6559b51ee4b489718b0a2b893645ad284769a6b6a016655da0afa951123538b12352454d2d1491cf88df7df0835eb7d30ffa9dfbb017f65958901426a3ca767fe76c60c88822a61fee075d16283772d5ad3b0f0c87aec3c1096cb46baef7c705965bfd2e1c1d0dea37459c4ea30dd6b9841c930d6eb890510d7a2005fff26b662eeff60c48b3c218c2010000",
     ],
     [
       "ETag",
-      "2pfzyqK/LyYtQTekz2/xow==",
+      "UEXGendc+Rd/1jCFg7qDlQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3647,7 +3647,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:25 GMT",
+      "Thu, 13 May 2021 15:17:40 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3665,10 +3665,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -3685,9 +3682,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4b",
-      "8e",
-      "82300000d0bb74ad06f1839d9d2005d482c8f0dd34584be38f32b40ac4ccddc7cc11de7b839252262551e2c66af005865287133ad9352b9370ba955d13ccdcfdd5708b8217fe1267e90185da09d66ae7370ecfa3a2827b48b0c2090b688625cf515dac09eaecc7a33e6eb63f50f9f70ce5c289e4b76eb438edf9e1b988753e9099d128431d4be51ed5341461328eae19acacdc211c23d3df7b37ad5a57c836e3613b259627daf8bc0cc9ea9cbeda83629d863dd3dfe0e7e0e4ebbb1fe970ec315bd8010d03cbe6a29f27e12b88523c1763e3a4d155074680f5cda565925c3edcd902c211f8b7133534ec1360b2b2652df8fd0342d24f4a1a010000",
+      "c97282300000d07fc9599c227b6f8094cd254669a5970c0361112331892876faef75fa09effd80a22c8910580e3db9807730150b675ece53667bb8a94735bfda4317e3856f65f659dc37df11b1f6ee53990e997c263af475936fef7dea2be21623b751eba5bcb8c6b56af1a9438f5a8f0e01c403856b63059dd126bc5a51bbdcac5ba9e64e63a1de16018b8f87f1837f4588dc9614a1a47e83323a475a714e2f0da504f36b4a1f7b455b2428da6acc6d355366555d9975d8748a977802c163c8f45d180fe62ef7b3e0b342b7d61d2b7a0a59a65a5eae4212146006c883759c08dcbdb89ae13833f06fc77262e415e09182130e7eff00b11982911a010000",
     ],
     [
       "Content-Type",
@@ -3701,7 +3696,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:25 GMT",
+      "Thu, 13 May 2021 15:17:40 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -3720,7 +3715,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -3741,7 +3735,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-25-1620764096226",
+      jobId: "grouparoo-job-25-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3753,11 +3747,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff85536b4fa34014fd2b64f6ab6d292df491346b6d716dd252a554b3bbd99061b8e0286590196a5cd3ffbe97c1ba1a13fdc4ccdc73ee39f7c133b9e7794cc624e2e94305e5d3b73b119113028aa6f82a8afdbcbcfa75767b7936e8f502161762fe773a992082d72c497745062d29aa92811c6f37edb41455414b215a98a865d9adae639903a76f8e1ccb729027214b963cbf47f6ad52851c773a47ed762a449a012db86c33b17b7defecad4e518a3b604a76de4b765045763e17fd9e09461517f964bb4103958432841de5195af8cf8ca3d3f7a9db9ceeda2982f79c01654c54b9aa6d610a26f284a755a9b392f133d136df1cc8c65dbab3c06022ab767998d31d9c18315534544f0518e7fe7a652cbcf3b5bf9a068bb5176e6617ee6ada9ead97db95b7316e2e5cdf35148d32d05c63629cea9b8717d48f412a9e6bf5a07eae955f1ab4f838969a80d2129a6038301dda1d9aa32889062c19f6ec2831218a86d1c0a6bdc864a33ef4e30828f2b4a866d15ce4dd41770840211c9aa615f607b11552a73f0a7bb6dd07d319257634228713f2587205732e0b2179d32172e32f02370cfcad379b06ae2e21a155a6e68db1ba80b71e151688a04f6a3ad4512e50a96ef7c20b5c7f3a0b16d76e33e125a4943d6d1e70c609cd24209a96d83c05e54ac4d830e24d57ee1cc17a6297c7a024e3dfcfa4ee79ede24dcb5fe9010eb0b6abf4976c027fe1fdd0768e886b9a551ab26f0ea440cbb7581bba3efc41242e6993855c6d5dff27699e7c48a0849c7d3d4d04ebc097ffda71f1118bab8f3252e11d7787c95a8495d0ec10d7e5beb0bb96dd777a44834bf521668fac63d7ea1c7546d841ae5e2a6a161f0b6dc42af90ac2208edfd3dd3afc032d42043378040000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "5d",
+      "6f",
+      "9b",
+      "3014fd2bc87b5c130881348914ad514a37a4842c405a6dd3846c63a85bc0149b6e5595ffbe8b69ba5695da276cdf73ee39f7834774cbab14cd11e1f95dcb9a874f3782a013c414cee1f5e7dfd4dc8d3f6f77cbfc26ae8b7474b1cbe56eb10004ef58129775c10652b40d6572be8f867923da1a37420c20d1c07607a3896dcd46336bec4edc19f0242bb235af6e817dad542de7a679d41ee642e405c33597432acae777f3de36eb46dc30aaa4f95ad2041569be2ffaa510142b2eaac53e0203ad644dc24acc0bb0f09f9992b3d7a9871c97c31cc0f79c324ca9682bd5d98214545419cfdb466745f347a46dbe38a0c85b7babd8a0a268cb2aa970c94e8c142b9ca8879a1917e17663f8c1c536dc2c637f1b24d1ea9bb7590e57dbf57e1344c6d5372ff40c8549c134d7581867fa16c005f4532615afb47adc3d77ca4f0df2df8ea52380b4647d3039b5267834b5662423a7349b8e5d92598c90293975f1985874e63027250c034f8b6a16ae4445a6a9e5b8d3342194d889635959829d899350ec109ba4e36c44283a9ca03f0d57ec9ccb5a48de77085d857eec2571b80f56cbd8d32564b82dd4796fac2be0a547050502e89d9a0e5d940b50eadaed07b1172e57b17fe9f5135eb31cd387e80e669ce1423240e3069aa758b31129340c05cb8d770e603db1efc7a044f35f8fa8eb79e7e245cb9fe9310cb0b3abf4174571e8075fb59d23e21217ad86dcf7075483e56ba80d5c1f7e031296b4cf82767b2ffc81faa79065ac6115fd789a00d6810fffb5e3e20316561f64a4823bec0e959d086d58bf435c977b644f2cdbb5900637ea4dcc19d9c7ae7539ba8cac64957aaaa85f7c28b4176be533088230fe4077ebf00fa2b477f278040000",
     ],
     [
       "ETag",
-      "opvDrQZBhPB733TcdpoDzA==",
+      "Zxd/Q3+OQAgjTpld1FQgsQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3769,7 +3774,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:25 GMT",
+      "Thu, 13 May 2021 15:17:40 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3788,7 +3793,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-25-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-25-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3803,11 +3808,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ff8d92414f83401085ffcb789426881595a487b6564bacb5523ca831cd16064481c1dd45254dffbbb3a8d5a8895e6066f86679efc10a1eb232060f9659fa58a36cb652d417a60850d5b9567caba8540816a01629932fc1ee766aa75935bea6faaa39c5c4718669afc7848aeeb010e0ad20c9308f1578372b284581bc16515e17e5a2ed2cd04d6586f330f0a727dc17149b7e7a3999f4079311acadcd622cb458b4fc3fd66ed716dcd332c0042596111a2d95a47b8cb46f6c2a5154397614d53242052ddc3e4825d59590441d9e749cbdce8eebd8fb6ed73e741dc76530a748e88c4a662fe7ac0f34699107f4cc2ec100b22dd970d25e9f789cc5ad1153fad3d0edb6fabe022c2dc9725cfc0db2de3bc19fe1037b8fe03b270aaa4bbda18e27e7fddf8ee34c3f8f3aea87a31f84d29cd40609fdb3d13cec9fcd0c77fbee7dd0685433491ca44293e18edd3dd8db77edb7588764a2e6f7785ad6684124f8ef18671abc44e40ad7af86f997f67b020000",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "d1",
+      "4e83401045ff657ca549ab8296a40f54ab92202ac5348d699a15864a0b0cee2e364dd37f7716b51a35d1179819ce2cf75ed8c22aaf5270e1315f3c372837070bd477a688503585567caba9520816a0160b26c360624f27ab0b19273a98966b0a23bf5a0f064ca8e4094b01ee16b21c8b5481fbb0854a94c86b09154d59cddbce02bda9cd701c477e78c97d49a9e9c3fb20f086c10876d67e31155acc5bfe1f6bb39d054b7a8c3043895582464b2d698989f68d4d25cabac08ea24626a8a085db070b494d2d245187279d43bbd3730ebbfd5ebf7b643b769fc18212a173aa98bd1fb33ed0a44511d19a5d82c3806c4b369cb5d7171ee7696bc4947e183bc7adbeaf004bcbf202e77f83acf749f067f8c0de23f8ce89929a4aefa98be0c6fbed38cef4f3a8732f1efd2094e6a4f648ec5f8fc6b1777d6bb8d9bbf7e146a3ba95c4412a3419f6bac7a7f689d37d8bf58c4cd4fc1e57cb062d4804ff1d57b906371385c2dd2bce543ae67b020000",
     ],
     [
       "ETag",
-      "xR3+g0gipHZouYyKef22Cg==",
+      "NLW5YWkFrTctLYmwoNRInw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3819,7 +3829,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:29 GMT",
+      "Thu, 13 May 2021 15:17:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3856,7 +3866,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-26-1620764096226",
+      jobId: "grouparoo-job-26-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -3876,20 +3886,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "7f",
-      "6f",
-      "a2",
-      "30",
-      "18",
-      "fe",
-      "2a",
-      "a4",
-      "f7cf96384154149365e71cbb2351dc016e31978b1628d80994b5658bb7f8ddef05e6366fc9969860fbfc789ff76dfb8cb6348fd0080534792809df7dbb67016a21227102bb331ad91bdc79d00c77b9b976f3bfeaf672f0747e0e0c5aa904ce8a949c0956f29088d1c26b279c9505e68c9d81d1996e9c750c5d1b183dcd3474dd009d20693ca5f916d41b290b3152d543ed76c25892125c50d10e59f6baaf3eea6ac1d93d09a5508f4baa5045a89f17bd4859882565f9f9c28300a5207c45324c5388f0a68c82efc7d66d8ab37602e4471a121c86accc65150b2c4296c7342979ed8a46cfa88ef9ee0ff2aca935f195c97c3cb5bc8975e22d66276b9c551eebd396a29d2a5828ab1527a24c654b59437b314dc98a46eb0629b6cab53b9f010261365810b156ee7e5aaea51c936d4759388ee5f9cac9c5a9f2c39d2f6e94cbe51107024744489ad7717d1ca4a48afa3251fbe33956022ca16603ae069a813b43cd0ce26010c6c36e3f88351204c360d0c7dd400bcd1ee94501c1a093957badc239cb0d63180c31ee8726eee878609a7a3820fda1d60d3abd9898bd2020910e4668df424f9c4a724545c1046dc68aee5cdbb756bebb702663dfaadb8831ccebaa095735f13ea7842681f4495ffb0aa50c2a5567643bbee58e27be7d6b35d7624a121ceebc07b818314e050136e6382392f0198b6068e866eed9be3d77c65350d4677d73600834fafdfc26f077453d65597fd1d875c74bd060cef1ee3f0c72183db4dfbf2b778bd3b2a6d4fc7ad5f83f3600ea402f6f2b1dedffece1d74270ff1b77f46b61b94bd46cb924269ce4e1d7e70ee41af8f219",
-      "1fde1470e155411921610db72c1455919093e6b6d1ac8edba83b5d4deb77514de6f203a6ebe661ac9547e5483292cb978e9a37550faa824af14a02102e89633b3f00fd07514503a7d3040000",
+      "eb6eda30147e95c8fbd34a5c92008120551da3591b0942978456dd34811d9ce036c4a9edb0a18a77df4952dab24aad8414ecef72be736c3fa10796add01011963c1654ecbedc73821a882a9cc06efef7e73a4cc5e3746bb92333b0ae6cb1e6c9d9193058a9927893a7b4297921222a87f3a095085ee45870de04a3a669350dcbd46dc3d63b3dab67834ed2349eb0ec01d46ba572396cb70fb55b09e7494a71ce642be29b97fdf6d66ce782dfd348c9f671c9365491ed8f8b9ea73cc28af1ec6c1e40804252b1a01bcc5288f0aa5c91afc7d62d8637ad04c85b16511c45bcc854190b2c229ec52c2944e58a864fa88af9e60f0a9c89330eb5f16c347182b17312cca7274bbc293d96a70d4d3fd5b0d4160b416591aa86b684f66296d2055b2d6b247fd0befbb3292010668d25954bedf6caf11ded98ec7adadcf39c20d44ece4fb54b7f36bfd6bedd1d7120f08a4ac5b22a6e88494acba8cf1375df9f6329c00a6ad6e0a2af5bd818e83689493f8a079d1e89754ac880f47bb843f4c8eed2ee8a500c3a55ba572a9cf1ccb2066480712fb2b161e2be6d9b519ff6067a8718dd98da5d42e8ca0423b46fa03f82297ac164ce25abc78a6e7d377416a13ff7c6a3d0a9da8831cceba20e5736f136a7822681f4415ffb12651c2a9567e47aa1e38fc6a17be3d4d76242131ced8247b818314e250536167843151553be82a1a1eb59e086eecc1b4d40519df5f58121d1f0d7d3ab20dce5d59455f54523df1fdd81060b8177ff6190c3eaa2fdfe4db91b9c1615a5e257abda7f5b03c8805e5e5726daffdec3af81e0fed7eee8c7dcf1ef50bde5d3980a9a459f9f3b902be0d3677c7853c085570565a48235dcb24896452241ebdbc63655dc67b565740d035564a1de61966e1ec65a7a948e744333f5dc51fda6aa419550215f4800c225f15cef12d07fc3a1c8b0d3040000",
     ],
     [
       "ETag",
-      "MidIha1q06RYhFRnz/kB7w==",
+      "pxZhTlrqMv6IA2S6H9rhog==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3901,7 +3902,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:30 GMT",
+      "Thu, 13 May 2021 15:17:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3920,7 +3921,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-26-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-26-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -3932,11 +3933,27 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff6d905f6f823014c5bfcbdd2b38c405c5c40735b8b1109d4c932d8b3115af8802656d7131c4efbedbba6c3eac0ff4fef91d3887068e59b9853e6cb2f4b34671be4b51cd7511a3ac7325e9aa7829112c40c55222f7bd30bd3f1ed23c9874dfdec5ec391c2b7f3e181021933d160cfa0dec32ccb712fa1f0d94ac4092add7c2bc913075aef46412cd860b6a0bbed5ed741945c35114c0c5ba1155c73f41385d048f41fc9f6475b1e0c03731ee506099a0f650097ec044853a9e644595a32d792d12946060b34805af2b2638b76962bb9eddf65ca7eb3d38bee7ba1e81394f98ca7849ecf295bc81e28ae531ffa274e012204c494177e679a2b1dfea74fddb63329d8c405bbd65db4eabd3fbddb7f57ef5f391d159a17c119c1c4bd4669dabf131d761148554a2460b1246fffd2953d7fef20d3c9c345cd4010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "6d",
+      "90",
+      "4f",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "c5",
+      "bf",
+      "cb",
+      "78",
+      "6d490b8296840328024945ad70308690a54ceb42dba9bb5b4c43f8eece16a31cdc4377fefc5efb5e8fb097c516fab091e96785aabe4ad1bcd822425d6546f35552a1111c40235226bd420ee5b47ebb7f8c1693c9756a54928bafc180091d7f602ea07f844462b6d5d07f3f42217264d97aad9a373266ead24e1ec2a7e182db9cb6b69d2fc370380ac770722e44e5fe4f309b2fc69371f49f64757260479b08135458c4683d948a76189b998da7455e66e86aaa548c1a1ab859a48aaa52282297276ebbe7fabdb617f881d7e9f6ba018319c5c2482a985dbeb23730644416d117a7833603aa293968d23c0f3c0e5a9d9be0f234990e8dc05abd647dafd5b9fdddfb76bffaf9c8a836a89f15b1638dd6ac77367e47368ce1904655e8402cf8bf4fa539f7a76f46668a44d4010000",
     ],
     [
       "ETag",
-      "h8Ig/kjglEF7XYrOJICt9Q==",
+      "0niAiHyYDMRTGG4gtrfmaw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -3948,7 +3965,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:30 GMT",
+      "Thu, 13 May 2021 15:17:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -3966,10 +3983,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -3986,10 +4000,12 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "41",
-      "72",
-      "82",
-      "300000c0bfe4ac0e44a8a43711940e88204429974c4a0312103041043bfd7b9d3e61f707d02c635292bead5803dec144215a640bb7334c52e451a87ff2c1a2348c07b831e334df8fa3247980acadba192dc1ddd48d2ce774d39e71857d0c43e39e501a68a225fa414c95d76ad85f7b8503d1a9ac63ef416093aef64755095624eb2edf5c3b7ca587532a13b5e392ed125b7ff8ee0d76c778ceb4edd51fbd41691a25304a8933bcac8c361a9f04859e69ed86223a3af72a9873f4d1d7b65d3b6fe21a428e35df17fda5c0975639077164f43c3fdb9170c00cb0b12b0593a47c71973a4233f06f27fdd4b15780c9a86002fcfe018499b1bb1a010000",
+      "4b",
+      "52",
+      "83",
+      "30",
+      "00",
+      "00d0bb64dd76f8183eee1a0d02c58201acb0c9401a91a21053a00d8e77b7e311defb011563fc7ca6e3d0f11edc035519ee866d76c241b46147940dd3e749437b14ee45424e6929bd35949ad3fb2edcbabe16292f3dec26a41ee0d0968adfe99d174f81f6d818f43277969174f9f4ea47b82e53fc8525d745f02d2dd913959fb4eac93a6681274a2d9adf86b0de978630794ab0cd161b4523242174ea84995db085e1b37950fd3843d1cea4f5743f33d7766a30bd88ccd9a2d8bf2e8dc70b85e9bbf382f38f38a1539c2932ef122b2fea258e8b08ac00bf8a56f2336d6f5c13baee0afcdbe9a804bf05205e492ec1ef1fd9ec4c2a1a010000",
     ],
     [
       "Content-Type",
@@ -4003,7 +4019,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:30 GMT",
+      "Thu, 13 May 2021 15:17:41 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -4022,7 +4038,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -4043,7 +4058,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-27-1620764096226",
+      jobId: "grouparoo-job-27-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4052,11 +4067,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff85535d4fe24014fd2bcdeca302058102095909d6b50914b714cd66b36966a6b775a4746a678a6b0cff7d6fa7e26a4cf4a93373cfb9e7dc8f3e93adc86332214ca40f15944fdfee2523a704344df1d5bb1a9c74479b6dbcfc7b62df50f1785d6d753a9d2242d42c457745062d25ab92839a6cd6edb49455414b295b98a8d5735add61cf76867d7b3cecf586c85390250b916f917da775a1269dce51bb9d4a9966400ba1da5cee5edf3bfb5ea728e53d70ad3aef253ba8a23a9f8b7ecf24a75ac87cba59a3814a4119c18e8a0c2dfc67c6ecfc7deab6a0bb768ae0bde040399755ae6b5b9882cb3c1169559aac64f24c8ccd3707b27617ee3cb4b8ccaa5d1ee57407a7564c358df45301d665b05a5a9e7fb90a96b3d05bf9d17a7ee52e67edf96ab159fa6bebf6ca0d5c4b539681e15a53ebdcdc7cbca07e0c4a8bdca887f573adfcd220efe3586a024a2b688291630f6977648f59c21c9e8cce062cb181b1117306f48cd97cdc877ecc8022cf881a16cd653e1c245dc60634ea27308afa4edf8e1873ba51cc1c3b19d371afc718399c92c75268b810aa904a341d22b78117ba51186cfcf92c744d0909ad327dd118ab0b78eb51638108faa4a6431d151295ea767b7ee806b379e8ddb8cd84179052feb47ec01927345380685a62f334944b1963c3883f5bba17083613bb3e061599fc7e2675cf6b176f5afe4a0f7180b55d6dbe641d069effc3d839226e685619c8be3990022ddf616de8faf00791b8a44d16f273e306bf48f314400225e4fceb6922d804befcd78e8b8f585c7d94511aefb83b5cd522bc8466878429f785dd3db39d41971870a93fc4c6a3f1b16b758e3a23ec20d72f15358b8f853662957a056110c7ef9b6e1dfe018c0dd28878040000",
+      "8b08000000000002ff85536b6f9b3014fd2bc8fbda3cc90322456b94d235524236425255d3848cb950b704536c324555fefbae4d13b5aad47dc2f63de79e731fbc92675e246442629ebdd4501dbf3d89985c115034c3d76c74ff303fecc64ee61d77f2a9bfde3d2fedd9748a08ae5992eecb1c5a52d4150339d96eda5925ea925642b43051ab3f6ef546fdaedb73bbf67034749127214f97bc7846f6a352a59c743a67ed76264496032db96c33b1bfbc770efd4e598927604a763e4a76504576be16fd9e0b461517c574bb4103b5842a823de5b92ef0c24ce2eb8fa9db9ceedb19820f9c01654cd485d2b630051345cab3ba3259c9e495189bef0e64e32dbd79683191d7fb222ae81eaeac842a1aa96309d66db05e590bff761dac66e162ed479bf99db79ab5e7ebe576e56facfb3b2ff02c45e31c0cd79a5ad7e6e6e305f513908a17463dd4cf5af9ad418bcf63d1049496d004a37177447b4ed78dd378cc52c71ec66917e2d889c7436ac75de60e6090c4409167440d8b16a2e83923371ddb2cea3a0e8d06bdc48edcc44d220a09f4636748c7719f9caec8df8a2bb8e1b21492371d22f7c122f4a230d8faf359e89912525ae7eaa631a60b78ef51618108faa2a6938e72814abadd0b3ff482d93c5cecbc66c24bc8283b6e5e70c629cd25209a56d83c05d54a24d830e2cf56de0d82cdc47e9e83924c7ebf12dd73ede25dcb2ff41007a8ed2af3259b3058f83f8c9d336247f3da400ecd819468f9116b43d7a73f88c4256db2905f5b2f7820cd5300295450b0ff4f13c126f0df7fedbcf888c5d54719a9f08ebbc3a4166115343bc44db967367e9c1131e04a7d8ad9f6e0dc359d4367843d14eaada266f1b1d046ac9617100671fcbee9d6e91f20f1788078040000",
     ],
     [
       "ETag",
-      "IH5+18UkdMx+0VaiwPuktg==",
+      "g6WYCvV78gEyVsj2OVkL3A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4068,7 +4083,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:31 GMT",
+      "Thu, 13 May 2021 15:17:42 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4087,7 +4102,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-27-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-27-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4098,15 +4113,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff8d92d14f825014c6ff97d32b6cc8088dcd072d2d4bcd001f5a73ee0a07c4804bf75e72cef9bf772e99b56aab1738e7f03b97effb600fcf59198307ab2c7da951ecce52540fbaf051d6b99274ab7829110c40c5522287be5fdcdace5d67bbadfc60f6e86cfde93aed768990d11a0b06de1e920cf35882f7b4879215486b11cfeba25c369d016a57e96110faa3e935f5058f753f9d8fc7bdfe780007e3b41833c5960dff8fb5c5c1800d5ff998a0c03242ada5127c83911a699b9215558ea6e4b588504203370f52c1eb8a09ce4d9a9876db6cb9b6d5761debc2b56d97c09c474c65bc24761e903e505cb1dce75b72091a104d498693e6fa4ae32c6e8ce872340d5da7d1f71520694996e3f26f90f4ae197d860fec18c1778e15bc2ed5891a8eef7bbf1d47997e1e75d50b073f08a928a913128e268320ec4d669a5b1cbdf7770ae54c700a52a2ceb065399df3b66bbdc77ac975d4f41e4f891a0d8818fd1d3799022f61b9c4c31b6979a4027b020000",
+      "0000000002ff8d92dd4ec2401085df65bcb404ca4f91265c80a0120191961b0d214b3b2d85b65b77b79286f0eece5644a3267ad3ce4cbfd99e73da03eca2d4071bd651f892a3282e42548fba98a3cc6325e996f1542218808a8544eeaa0d07efebac3a9b98db8170c3a722bddc77bb44486f830903fb004184b12fc17e3e40ca12a4358fc77992aecace0055647ae8b8f3d1f496fa84fbba9f2ec6e35e7f3c84a3715ef49962ab92ffc7daf268c096afe718a0c0d443ad25137c8b9e1a699b9225598c15c973e1a184122e1f8482e719139c576852a9b72ba655af75cc4eadd1b25a1d0263ee3115f194d88543fa4071c5e239df934bb0081065498683f2fa4ae3c82f8de8723475ad66a9ef2b40d28228c6d5df20e9dd30fa0c1fd82982ef1c4b789eaa3375337ee8fd761c65fa79d4a0e70e7f1052515267c41d4d868edb9bcc34b73c79ef170ae54c700a52a2ced0ac35af5a6dabf61eeb35d751d37b6c257234c063f477dc450aec80c5128f6f44051b2f7b020000",
     ],
     [
       "ETag",
-      "FRRmJ24K8wwpRSPY4wRNhg==",
+      "k/3SeK2a/PM1jDrTgZyn+w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4118,7 +4129,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:31 GMT",
+      "Thu, 13 May 2021 15:17:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4155,7 +4166,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-28-1620764096226",
+      jobId: "grouparoo-job-28-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4168,11 +4179,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff85537f4fa34010fd2a64ef1f4dfa835204dac47855b93b924a3d0a7ae672699765c155cae2ee62d333fdee378055eb259a34a1bbefbd9937b3334fe89e15091aa398650f15159b2f773c461d4415cee0f68ac8f5dfd3d0361f4cdffcb58e9c48dc6cd6c7c7c060b54ae25599d3aee49520548ea3792f13bc2ab1e0bc0b81ba86d31d58866e5ba63eb20cc3029da4793a65c53da86f952ae5b8dfdfe5ee659c6739c525933dc2572ff7fd47a35f0a7e478992fdfd947dc822fb1f273dc939c18af1e2389a83814a52b1a02bcc72b0f0aa4ce2affba17b0caf7a19901f19a198105e15aab60521082f529655a2898ac64fa8b1f9e60f9abb53f72cd42e3cff608957b57479a861a92d1682ca2a571d6d0915a52ca70b962c5ba4bcd7be05b30b4020ff2d96542eb5eb1f6ee06afb64cfd722df77e7a1767072a87d0f66d1a5767ab3c7018f09958a158dc310c739addd3d37d1fbffe96a015690b30517b66ee181a38fe234b649ea0c8fe254a771ecc4f6111ec63a1999d44c628a41a7eae88d0a17bc300c27a17a9a24a3d8a0c3234bb71d23368740c629192416c4b4896d8ed0b683d682297ace64c9256b3b89ae032f74176110f96793d06dca4831f4ebbc355717f1d6a7822281f4415ddb1a651c32d5cfe2f9a11b4cce42efca6d27614a334c36f307988514e792021b0bbca28a8a0b9e40d3d0e56cee85decc9f4c41d13cefe58e21d1f8f7d3ab20dc944d9755f345932098dc80060b8137ef30f0619968bb7d93ee0ae7554369f8cda98dffd8026800b5bc9e0cb4fdb3855f07c1c8b7d1d1cfc80d6e507b15d0940a5a90cfdf1dc80df0e9e6eed608b8b04890462a38c3941159272182b6d3c6568ddd563d180e4643073564a1de63068ccbaead758c3a225dd1423d57d4ae51d3a81aaae40b09401812dff3bf03fa0fbe2b88acc6040000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "7f",
+      "4f",
+      "db",
+      "3010fd2a91f70f48a54d9336fd21215620834c25853485a1696a1dc70986240eb6c354a17ef75d1c0a744820554aedf7deddbbf3dd337a60458cc62862e96345c5fadb3d8f500b518553b8e52260b32bfff87178f6f3d816bfa285b33e9f1c1e0283d52a89f332a30792578250395eccdba9e0558905e70710e8c01a1e741dcb1c7547a6dd77fa23d0499a2553563c80fa4ea9528e3b9d6dee76ca799a515c32d9263c7fbdef3c599d52f07b4a94ececa6ec4016d9f93ce951c609568c17878b3918a824154b9a6396818537651c7ddf0ddd66386fa7407e628462427855a8da168420bc48585a091d158d9f91b6f9ee0f9abb53f724342e3c7f6f85f35abada37b034964b416595a996b1828a1296d1258b570d523e183f82d9052090ff0e4b2a57c6cdb91bb8c62ed9f38d85efbbf3d0d83bda37ce82d9e2d238bedde180c7984ac50aed30c451466b772f4df43e3e5d2dc00a7236e072603ab83b344751120d4832b4fb5162d2281a46833eb623938c7ab4174714834ed5d1b50a17bcb0ac614ccd248e479145a1fde66068453d1bc83821ddd881980332e88dd0a685fe0aa6e829932597ace924ba09bcd05d86c1c23f9984ae2e23c1d0afd3c65c5dc47b9f0a8a04d227756d6a9471c8543f8be7876e303909bd6bb79984294d3159cf1f6116129c490a6c2c704e1515173c86a6a1cbd9dc0bbd993f9982423fefe59621d1f8f7f39b205c97bacb4a7fd1240826b7a0c142e0f57f18f8707a68b37997ee1a6795a668be3e35f19f1a0075a196b79385367f36f06b2118f9263aba5ab8c12d6aae029a50410bf2f5bb0359035f6eee768d800b8b0469a482334c199175122268336d2cd7765fd48e6df71ca4c9427dc01cbbbf6d6b1da38e48735aa8978a9a35d28daaa14abe92008421f13dff0cd07f7f688684c6040000",
     ],
     [
       "ETag",
-      "VcswzBT74q4N4XwU8UrYyw==",
+      "orRiOQNBq8GJB3rXbU6yHA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4184,7 +4205,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:32 GMT",
+      "Thu, 13 May 2021 15:17:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4203,7 +4224,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-28-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-28-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4211,11 +4232,27 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff6d90dd4ec2401085df65bc6da1545290840b3028c406a5808931842ccb500b6db7ee0f8634bcbbb38b512ebcd9dd99f9cee49cade190955be8c1264b3f0dcad34d8a7a661f092a936b4557254a85e0016a9612d9e453bd2cc7b7af73667461dec64fcd5992f6fb4428fe8105835e0dbb0cf3ad82de7b0d252b9064ebb5741b09d3a7ca761ee2e7c182ca426c6d395dc6f160188fe0ec5d89aac39f60325d8c1e47c97f92d5d983bdd824b843892547eba192628f5c4f6c3cc58a2a475f0923392a70b01ba452988a49217ceaf861d76f4561d089dac15d14861181b9e04c67a2247639276fa085667922be281d840448f7a4a03b771ea91d343a5d17e3e818ebee7adc6ab4c3df71cb8e573f6b87278dea450af2a8d0da0b2e56ef85b5af299696063de08c7e7a9ce94b7dfe068802fd99c6010000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "6d",
+      "90",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85ffcb786d495b05a109075040b441ac100f8690a50cb5d076eaee164308ffddd9c528072fbb3b33df9bbcb747d865e51a425865e9678df27095a27e318f18559d6bc55745a5427000b548991c3d3ef5de906a3dedef9af7237f1c0de361daed32a1920f2c048447d86498af1584ef472845812c5b2ea5ddc8983e54a6338c9e7b332e0b5a9b72328fa25e3f1ac0c9b91055bb3fc178321b8c06f17f92c5c9812dad62dca0c43241e3a192b4c5448f4d3c258a2a4757512d135460613b4825d59590442e77dca0edfaadc0ebf81defbad96a7618cc29113aa392d9f92b7b034d5ae4317d713a081890f6c94137f6dc73db6bdcb66d8cbd658cbbcbb1dfb8097ec7be192f7ed6f60f1ad554127b5468ec7967ab7764ec6b8ea5658d0e24827ffa21d3e7faf40dec1179dbc6010000",
     ],
     [
       "ETag",
-      "/cNtUnH3VSautmuYHK/QRg==",
+      "GJKAWeoutPBk5DG1ILFRFg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4227,7 +4264,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:32 GMT",
+      "Thu, 13 May 2021 15:17:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4245,10 +4282,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -4265,10 +4299,16 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4d",
+      "4b",
       "72",
       "82",
-      "301800d0bb64ad8e5a51e94e408313a1fc54296c32103e4900218088b4d3bbd7e911defb413163d075f45e1750a17734c64b75c666446e359ab1c585615b78b95befad8313cf69a7c0adbe0ea96a96d6757a7b642cf9341e031c5a29385e6dc5253aa4c4c3acbb2ea275e39154e72229bcbcc638c98d9e473c7571558163ea6bf205ad3b3a947b3b6c95665f92d029023f8434284e845302b66f6f82cd4998989cf79eed93f390e1b05f92f54ad71a2597df49bf9bdbcd54546cef07d691e82236b27ea72cd2231f1eaa7bfa905665e5fa45325c528926089e52b4d051f1e2be29aa3a41ff767a1f25bc0234885b68d1ef1f1c928d481a010000",
+      "30",
+      "00",
+      "00",
+      "d0",
+      "bb",
+      "64",
+      "ad0e05c1a43bf0438481882005360c924814a129a108767af73a3dc27b3fa0284b2665de7fd6ac05ef602a54b42817ae80565e51f238adebd6afb94eeea96ffb17d2e255da1d549325766c1e87ec2c1c19e135e59ecd03322f61d5472159e9e8f8956d8d03a4df8182ef654b79f4303fac2522fe7836ae2683c5c60b94e412566f95d099e7a68ded2a56a6215f21306e5422b49d0395c694089338d9e09d3325eb717078dd2bb5819931274b4e43dff04430543c6cf737d999a7685f6edd816a3b71ab63a93d65241a6d89038c6862811960a3b8764ce6d71757d3119a817f7bde4f82bd022c5674ac03bf7ffd19f1a71a010000",
     ],
     [
       "Content-Type",
@@ -4282,7 +4322,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:32 GMT",
+      "Thu, 13 May 2021 15:17:44 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -4301,7 +4341,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -4322,7 +4361,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-29-1620764096226",
+      jobId: "grouparoo-job-29-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4336,13 +4375,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02ff85535d6f9b3014fd2bc87b6d1292901022456b94d21529211b9056d53421e35c885bc0149b4e5595ffbe8b69ba5695da276cdf73ee39f7836772cfcb3d999384670f0dd44fdfee4442ce08289ae16b7a792f0ff6cdfa70db14bebf7d281d7f77952d1688e02d4bd2a2caa12745533390f35dd8cf6ad154b416a287897a23a7379c8e4c7b6a99ce74349a224f429eae79798fec8352959c0f0627ed7e26449603adb8ec3351bcbe0f1e4783aa1677c0941cbc971ca08a1c7c2efa3d178c2a2ecac52e44038d843a8682f21c2dfc67ee93f3f7a9fb9c16fd0cc18f9c01654c34a56a6d610a26ca94674dadb392f933d136df1c48e8aedd5564309137451997b48033634f158dd55305c665b0dd189e7fb90d36cbc8dbfa71b8ba7237cbfe6abbde6dfcd0b8b97203d75034c941738d8571ae6f3e5e507f0f52f152ab47ed73abfcd220efe3585a024a4be882b16d4ee970663a499ad82c9d8d27496a4292cc127b42c789c91c0bac7d0214795a54b368294a6acf98994e209e38368d2d1368ec8c6d2bb6666c640e4d67688dc7e47846fed65cc105979590bceb10b909bcc88da360e7af9691ab4b486993ab8bce585bc05b8f0a0b44d027351ddb2817a8d4b6dbf3233758ae22efdaed26bc868cb2a7f001679cd25c02a2698dcd53506fc41e1b46fce5c6bd40b09ed8cf535092f9ef67d2f6bc75f1a6e5aff40807d8da55fa4bc228f0fc1fdace09714df346431ebb03a9d0f2016b43d7c73f88c425edb2905f3b37b825dd530029d450b2afa789601df8f25f3b2d3e6271f551462abce3ee30d98ab01aba1de2badc17f6703cb26726d1e05a7d8839c3f1a96b6d8e36231450aa978abac5c7423bb146be823088e3f775b78eff00d30834f878040000",
+      "000002ff85536b4fa34014fd2b64f6ab6d297dd2a4599b8ada4d4b77816ad6cd860cc305c70283cca031a6ff7d2f83753526fa8999b9e7dc73ee8367b2e7454c6624e2e97d0dd5d3b73b119113028aa6f8ca7e04c17abfbfc980e7bbc9857f73f5288ac7f91c11bc61499a971974a4a82b0672b6f3bb6925ea925642743051c7b23bfdb165da7ddb1c8cc6231b7912b264cd8b3db26f952ae5acd73b6a775321d20c68c9659789fcf5bdf760f5ca4adc0153b2f75eb2872ab2f7b9e8f74c30aab828e63b1f0dd412aa1072ca33b4f09f1947a7ef537739cdbb29821f3803ca98a80bd5d8c2144c14094feb4a6725b367a26dbe3910df593bcbc06022abf3222c680e27464c150dd55309c6b9b7dd182bf77ceb6d16c16aeb86fef2d2d92cbacbed7ab7717de3fad2f11c43d12803cd35e6c6a9beb97841fd18a4e285560f9ae746f9a541ab8f636908282da10d8613734cfb53d38e9268c292e96014252644d1349a8ce82032993d84611c01459e16d52c5a88c2eef707537b3c09ad911d87c37ec4427b341d85d6640c142c33a61690c30979acb882332e4b2179db2172edad02270cbc9dbb5c048e2e21a175a6ce5a634d016f3d2a2c10419fd47468a25ca052d3ee951b38de6219acae9c76c26b48297bf2ef71c609cd24209a56d83c05d546c4d830e22e36ce1982f5c47e1e8392ccfe3c93a6e78d8b372d7fa50738c0c6aed25fe207decabdd0768e882b9ad51af2d01e4889966fb136747df88b485cd2360bf9b573bcdfa47df220810a0af6f53411ac035ffe6bc7c5472cae3eca488577dc1d261b115641bb435c977b648f87963d251a5ca90fb161df3e76adc9d164841c0af55251bbf858682b56cb57100671fcaeeed6e11f69ad416978040000",
     ],
     [
       "ETag",
-      "fFksh7WLhYumNNOqn9NUHg==",
+      "cJTTLkkZleimU7GSZVwonw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4354,7 +4391,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:32 GMT",
+      "Thu, 13 May 2021 15:17:44 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4373,7 +4410,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-29-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-29-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4388,11 +4425,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ff8d92d14ec2401045ff657c2d4969b040131e405189800845128d214b3b8562dba9bb5b0912feddd98a68d4445fda99e999edbdb7ddc1539c85e0c1225e3e1728b7274bd4b7a618a32a12adf89653a6102c402d964c5edf913daba113fb912e66af8dc67dbe196c5a2d2654b0c25480b78328c62454e03dec201329f25a40499166f3b2b3406f73339cf8e3def092fb9442d30fa7fd7ebbd3efc2de3a2e86428b79c9ff63ed716fc19a16638c506216a0d1924b5a63a07bc6a612699e60455121035450c2e583a5a4221792a8c2938ad3ac545dc7aebb35bbe93a8ecb604281d03165cc4e27ac0f3469918c69c32ec100b22cd970545e5f781c87a51153f686be5b2bf57d05585a142738ff1b64bd2bc19fe1033b44f09d132915993e5217fd9bf66fc771a69f479db7fdee0f42694eea88f8bd4177e2b70723c33d1ebc77b61ad5481207a9d06458b56b8dd3ba6bbfc77a46266a7e8fa76581160482ff8eab5883178944e1fe0db70551997b020000",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "dd6e82401085df657a8b897f6025f1425bdb9aa8b582578d312b0c88051677871a637cf7ce526b9bb6497b0333c337cb39078ef092e421b8b04ee25d89ea7015233d99628eba4c49f3ad90b946b00049c44cda8359d3a3c12eb6c37096b784a6b243fb5e8f091d6c3013e01e214a300d35b8cf47c84586bc16c8b4ccf255d5594087c20c3d7f3e9ade739fc9d0f4d3c578dc1f8c8770b22e8ba120b1aaf87fac2d4f166ce57a8e112acc03345a0a25b718d0c8d8d4222b52ac6959aa00355470f52056b22c8492b2c6935ab35b6b38cd7ab7d1adb76cc7ee3298ca4050227366171eeb039224d2b9dcb34b70185055c986a3eafacae324ac8c987234f59d76a5ef2bc0d2a224c5d5df20ebdd08fe0c1fd83982ef9cc86499d385ba1b3ff67f3b8e33fd3ceab6ef0f7f109a38a90be28f2643cfef4f66865b9ebd0f0e847aa62407a9d164d8a8b7afed8e537f8ff5469aa8f93d2ea9122d0804ff1d0f09811b8954e3e90d03ccfdd87b020000",
     ],
     [
       "ETag",
-      "KVo0W4e2iTftuWz88ZpwMw==",
+      "5BP2StBqg5ddPn3astu7tw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4404,7 +4445,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:33 GMT",
+      "Thu, 13 May 2021 15:17:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4441,7 +4482,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-30-1620764096226",
+      jobId: "grouparoo-job-30-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4459,11 +4500,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "8553fd4fdb3010fd5722ef17d0fa917e24692b21d641c62295b44b53ba6a9a5ac77182218983ed800aeaffbe4b42810e09a44aa9fddebb7b77be7b42b72c0bd108052cbe2ba8d87eb9e1016a20aa700cb79dc75e11d932940fdbc7e0ab9c2db7dde56a7c72020c56aa244ef38436252f04a172b498b762c18b1c0bce9b10a8d9d39b1db3ab5b665f1f9addae093a499368c2b25b505f2b95cb51bbbdcfdd8a398f138a73265b84a72ff7edfb6e3b17fc861225db8729db9045b63f4e7a9a708215e3d9c9620e060a49c59aa6982560e1551906df0e43b7184e5b3190ef19a198105e64aab4052108cf221617a28a8a464fa8b2f9e60f9adb13fbccd72ec7bf8f36382da59b630d4b6dbd165416896a681ba82862095db3705323f9adf6c39b5e0202f9afb1a472a32d7fda9ead1d921d575bb8ae3df7b5a3d363edc29b2e66daf7d501073c86542a96550e7d1c24b474f7dc44e7fdd39502ac20670dae2dddc49d813e0ca2c022d1a06704914e8360105806ee053a19f6693f0c28069d2aa3572a9cf12cb4c2a86fe99dfe80040625a11186ba15e83d6c92be6e9826269898062668d7400f82297ace64ce25ab3b89969ee3db6bdf5bb86763dfaeca8830f4ebbc365716f1d6a7822281f4415dbb12651c3295cfe2b8beed8dcf7ce7caae276142634cb6f33b9885082792021b0b9c5245c5250fa16968369d3bbe3375c7135054cf3bdb33241afd797a15f8dbbceab2aabe68ec79e31568b01078fb1f063ecc3edaeddea4bbc24951512a7e75aae3dfd700ea402dafa72edafdddc1af8160e4ebe8e8d7c2f656a8bef2684405cdc8e7ef0ee40af87473f76b045c58244823159c61ca882c931041eb69636965b756777a3dc3d0514516ea1d665ac37d5bcb1865449ad24c3d5754af51d5a8122ae40b09401812d7712f00fd075420b59ec6040000",
+      "85",
+      "53",
+      "7f",
+      "4f",
+      "e2",
+      "40",
+      "10",
+      "fd",
+      "2a",
+      "cdde3f1a058ad0f223311ea73daf09162d45cf5c2eb0dd4e71b5ed96ddad8618befb4d5b5139134d48caee7b6fe6cdeccc3379e059448624e4cb550172fded5e84e49080a64bbc1dd8c9f513acaece8ba7f16a7290df1d44abf1e8f81819bc54299ae6093494282403359c4d9b4b298a9c4a211a18a8d1311b6dfbc81cb40766c7b2ad01ea1424f198670fa8bed33a57c3566b9bbbb914629900cdb96a3291bedeb71e8f5ab914f7c0b46aeda66c6116d5fa3ce9492218d55c64c7b3291a2814c839a4942768e14d1985df774337394d9b4b243f720694315164bab4852198c862be2c6415950c9f4965f3dd1f3275c6ce69605c8c7eef2d685a4a17fb0655c67c2e4115893e34165851cc1398f3685123f983f1d39f5c2082f9efa802b5306e7e39be63ec925dcf98799e330d8cbd937de3dc9fcc2e8d1fb73b1cf41881d23cab1c06344ca074f7d244f7e3d39502aa31670dce7ba64ddb7d7310c6618fc5fd8e15c62684613fec59b4139a6cd0856e1402459d2ea3572a9a892cea4571b767b6bb7d165ac0222b8acc5e6876a8cdbaa665db9451665b9491cd2179925cc31957b950bcee24b9f1ddc09907fecc3b1d054e55464cb15f67b5b9b288f73e351689a44feada94281798a97c16d70b1c7f741ab8d74e3d09635852b69eae7016629a2840369534050df24244d834723999ba813bf146635454cf7bb9652832fcf3fc2608d679d5655d7dc9c8f747b7a8a152d2f57f18fab0bb64b37997ee9a264545a9f8d5a98eff5803a48db5bc9d8ec8e6ef067f870447be8e4eae668e7f4bea2b1f629090b1afdf1dc915f0e5e66ed708b9b8489846693ce3943155266112ea69e36965f7456d",
+      "5b56a74f2ab2d41f30bbdfdfb6b58c5146841432fd5251bd4655a34aa850af240471483cd73b47f41fc87058b8c6040000",
     ],
     [
       "ETag",
-      "1z3ufEsdswyzb+sPWy2WYA==",
+      "96lVweqQGuwLqO+ph+dqLA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4475,7 +4526,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:33 GMT",
+      "Thu, 13 May 2021 15:17:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4494,7 +4545,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-30-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-30-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4502,11 +4553,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff6d90414fc2401085ffcb786d4929a42a0907308848035a20c618429632ad85b65376b798a6e1bf3b5b8c72f0b2bb33f3bdc97b5bc321c977d0836d121f4b94d54d8cfad53c025465aa155f05e50ac102d42266325edc3d4fa259f63ede1e17d3b7f9b43aecc771bfcf840a3f3113d0ab214a30dd29e87dd4908b0c59b6d9c8662363ba2a4ce7d19f0f965c66b433e56ce5fb83a13f82b375252a0e7f82c96c391a8f82ff24ebb3057bda0618a1c43c44e3a190b4c7504f4c3c25b222455b51294354d0c0cd209654164212d9dcb13b8eddf65ce7d6eb3af79eeb7a0ca6140a9d50ceec6ac1de40931669405f9c0e5c0664f3e4a051739eb8dd69b5bb4d8c53c31877d763b7e5767ec76d335effac1d561ad58b24f6a8d0d8732e561fc8d8d71c4bcb122d0805fff453a22ff5f91bfa0029d8c6010000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "0002ff6d505d4fc23014fd2fd7d70df6212490f0000604b3a04e48348690d25dc6605b47db6108d97ff7b618e5c197b6f77cdc9cd30b1cb232813e6cb2f458a33cdfa5a85fcd234655e75ad15589522138809aa5a47c9f74261f3b3f39b4dbf2184f79f994619e0e06a4507c870583fe05b684250afa9f17285981645bafa5dd48327dae0c32899e870b1a0b919871be8ca2e1281a43e3dc98aac39f61365f8c1fc7f17f9655e3c05e6c62dca2c492a3c95049b147ae67a69e624595a3ab442d392ab0624ba452d4159342b884b8a1e7faddc0ebf93d2fec743b3d12e682339d8992b4cb37ca065a6896c7e28bda414002699f54746bcf13c161cbbfb7354e5663d2ddd2412b087f69dfd0ab9fb5a3b346f52205655468e279d7a80fc2c4d7544bcb1a1de08c7e7a9ae9ebdc7c03288ad506c6010000",
     ],
     [
       "ETag",
-      "gS8JIfNmYGbqSKWOKykjGg==",
+      "XF5FYh1dk//rqRHcnJielg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4518,7 +4575,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:34 GMT",
+      "Thu, 13 May 2021 15:17:46 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4536,10 +4593,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -4554,7 +4608,11 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "1dd0c97282300000d07fc9d93a41229ade4a95b26f22562f1996240a28bb1a3afdf73afd84f77e409265b4efc95097f406de814816789ecdad66ad129ed5016cdd5a5f056e5421ac179501c35832b9b78732624e715c5581512b016f972c6d24c7da93c96b45a5f154c92da564e560e752299b5b3c09363de1e6e41a3bfbf0e16b50b0548ddf3ab3a9d87518e553925bd37dbd389cb9722e5116f94f0e6323f40eabdcf4d0434581b218635ddd6d7061fbb2caed5b82cde806a7cf2fcb28f2aba0e2a8294e14b21aa579d75b7e48f5919cd076b817924db46f630f66803e9b4b477b727971e525c633f06f278368e82b40a549473bf0fb077e69ce4f1a010000",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82300000d0bb64ad8e2234a43b3eca4f6ba90cc82a0324b5a0402089129ddebd4e8ff0de1314554539c7a2bfd00ebc03556868512d2266daf84c53c592e6f691b7e80ad32111ace554968db93e366f9e0863691fa5eee353e94abd3f28bc0f82d10aa0bbc5a421c5d58567fd91eadd60ccc567e1967d8efc6cf0204927367f6cabef6c6f3911451d53db8bdfaacbf2161de2655284932636abd6d2a21466bbd1d9c73f2b3d94736733768e8ccd245fd776cb0743de6dad0da76c72575c78b54e203b43a94c7562de447869851aeeef5fbbb82328dc9000cc009d583d528eeb17776d203403ff762c14a3af009b16231dc1ef1f8e162b341a010000",
     ],
     [
       "Content-Type",
@@ -4568,7 +4626,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:34 GMT",
+      "Thu, 13 May 2021 15:17:46 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -4587,7 +4645,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -4608,7 +4665,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-31-1620764096226",
+      jobId: "grouparoo-job-31-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4619,11 +4676,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff85536b6f9b3014fd2b91f7b54908214f295aa394ae6c09e90869364d1332e642dd02a6d8a4ebaafcf75d4cd3b5aad47ec2f63de79e731f3c925b9e47644a429edc55503e7cba11213921a06882af96fb977e35e1c7a5b32bee59b6fbb6fbb3bf9fcf6688e0354bd2ac48a12d45553290d3eda69394a22a6829441b13b5fbbd766f681aa3a1654c86a639449e84345ef2fc16d9d74a1572daed1eb53b8910490ab4e0b2c344f6fcdedd9bdda21437c094ecbe96eca28aecbe2ffa39158c2a2ef2d97683062a09650019e5295af8cf8cc2d3d7a93b9c669d04c17bce803226aa5cd5b630051379cc93aad459c9f491689b2f0e64632fed85df6222adb23cc8690627ad882a1aa887025ae7de7ad572dcf3b5b79afbceda0d368b0b7b35ef2cd6cbedcaddb47617b667b7140d53d0dcd6ac75aa6f2e5e503f02a978aed5fdfab9567e6a90f3762c3501a52534c160640c696f6c4cc2381cb178dc1f84b10161380e4703da0f0d36b1c08a42a0c8d3a29a4573910fc6e164641983a06ff6a2c08a1804d432cc208e47e1281a9a7438b0c8e184dc975cc119978590bce910d9798e6f07beb7751773dfd625c4b44ad55963ac2ee0a547850522e89d9a0e75940b54aadbedb8beedcd17be736537135e4242d9c3e60e671cd35402a26989cd5350ae44840d23ee7c659f21584fecf2189464faeb91d43daf5dbc68f933ddc701d67695fe928def39ee176de788b8a269a521fbe6400ab47c8db5a1ebc36f44e2923659c8f7adedfd24cd9307319490b38fa789601df8f05f3b2e3e6271f551462abce3ee30598bb0129a1de2badc2776af6f99864534b8546f62fd71efd8b53a479d1132c8d55345cde263a18d58259f4118c4f1bbba5b877fa35314c478040000",
+      "00",
+      "00",
+      "00000002ff85536b4fdb3014fd2b91f795b6e9fb2155a32a61546b534853d098a6c8766e82218943ec001dea7fdf8d431908093ec5f63de79e731f792677220bc9843011df9750ecbedd4a468e08681ae3eb757afda49677bbbfc5726e5f3c853f3b8ffefd6c3a4584a8588aa679020d25cb82839a6c37cdb890654e0b291b98a8d16d37da838e3d6e8fed6e7fd01f234f41122d457687ec1bad733569b50edacd58ca38019a0bd5e4327d7d6f3d745a79216f816bd57a2fd94215d5fa5cf47b2239d54266d3ed060d940a8a00522a12b4f09f19b2e3f7a99b82a6cd18c10f8203e55c9699ae6c610a2eb348c46561b292c9333136df1cc8c6593a73dfe23229d32cc8680a475648350df42e07ebd45bafac857bbaf656337fb17683cdfccc59cd9af3f572bb7237d6d599e33996a62c01c3b5a6d6b1b9b97841fd1094169951f7abe74af9a5418b8f63a90828ada00e06437b40db237bcc2236e4d1a8db67910d8c8dd8b04fbbcce6e31ef44206147946d4b0682633d6ebf77b8cf20020a2416f308882719bb320ec8cec61cf0e29ebf4c8fe883c1642c38950b954a2ee10b9f216be13f8ded69dcf7cc79410d132d127b5b1aa80b71e351688a04f6ada57512151a96af7c2f51d6f36f717974e3de125c494ef36f738e388260a104d0b6c9e866225436c1871672be704c16662e787a02293dfcfa4ea79e5e24dcb5fe93e0eb0b2abcd976c7c6fe1fe30760e884b9a9406f2501f488e966fb03674bdff83485cd23a0bb9d83ade2f523f7910410119ff7a9a0836812fffb5c3e22316571f6594c63bee0e5795082fa0de2161ca3db00783eea84d0cb8d01f62fdeef0d0b52a47951152c8f44b45f5e263a1b558a95e4118c4f1bba65bfb7f9978447b78040000",
     ],
     [
       "ETag",
-      "4NzaJ2eXPIWpwcmWKWxvwA==",
+      "ZmZxsLkyzrLC0QxdK2wTqA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4635,7 +4694,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:34 GMT",
+      "Thu, 13 May 2021 15:17:46 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4654,7 +4713,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-31-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-31-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4673,11 +4732,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "dd6e82401085df657a0b89588b95c40bb55a4df0a788174d63cc0a036281c5dda5d618dfbdb3d4daa66dd2dec0ccf0cd72ce81233c2779080eac937857a2385cc5a81e74e1a12c5325e956f05c2218808ac544b6b03eb076c347c97aaf6a3015f16bb9dfecdb6d2264b0c18c81738428c13494e03c1d216719d25ac0d332cb575567803a147a38f7bdd1e49efa8c87ba9f2c5cb7d375fb70322e8b21536c55f1ff585b9e0cd8f2b587110acc03d45a0ac1b718a891b6295956a4684a5e8a00255470f52016bc2c98e0dca489796d99965daf35ed46ad65d7eb3681290f984a784eec624efa4071c5528fefc92568405425198eaaeb0b8d93b032a2cbd1c4b71b95beaf00498b9214577f83a477c3e8337c60e708be732ce365ae2ed4c09d767e3b8e32fd3ceaaee3f77f1052515217c41f8dfb73bf339e696e79f6de3d289433c12948893a43abd6b8bd69dab5f7587b5c474def719428d18080d1df314c1438114b259ede00ab02611d7b020000",
+      "41",
+      "6f82401085ffcbf48a0956a14ae201ad6d49d05ac45363cc0a836281a5bb4ba931fef7ce526b9bb6497b8199e19be5bd0707784a8b181c58a79be70ac5fe6283ea411701ca2a53926e252f248201a8d8864834f3d75ed2eba4753cab47bd38bf7723ab1e0c8890d1167306ce019214b35882f3788082e5486b11cfaabc58359d016a5feae13c0cbce92df5398f753f5df8be3bf4c77034ce8b31536cd5f0ff585b1e0dd8f17580090a2c22d45a4ac17718294fdb942c2f336c495e8908253470f36023785532c1798b26ad4ebbd5b62fcd7ebb6f762cdbea1398f188a99417c42ee6a40f14572c0b784d2ec126403425194e9aeb0b8dd3b831a24b6f1adadd46df5780a4256986abbf41d2bb65f4193eb05304df3996f3aa5067eac6bf777f3b8e32fd3ceada0dc73f08a928a933127a93f13c742733cd2d4fde877b8572263805295167d836bb3debca36df631d711d35bdc751a2420322467fc75daac0495826f1f806b419e99b7b020000",
     ],
     [
       "ETag",
-      "9e2F1qHYsaCxtFOrgxuwhw==",
+      "e0mx8f83iwdPwC8dmOAc5w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4689,7 +4749,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:34 GMT",
+      "Thu, 13 May 2021 15:17:47 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4726,7 +4786,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-32-1620764096226",
+      jobId: "grouparoo-job-32-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4735,19 +4795,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff8553fd4fdb3010fd5722ef1790fa91a625fd90102b25834e25853485b1696aede4120c691c6c0754a1feefbb2414e890408ae4d8efbdbb77e7f333b9e769480684f1f82107b9fe762718a911d034c6d330d0bddbdff1c3b13c7bfaf5333b3d0e3b2d767978880c5ea8145d6509d495c865006a309f356229f28c4a21ea18a8deb6ea2ddb32bb76c7ecdb9665a34e41124d787a8fea5bad33356836b7b91bb110710234e3aa1188d5eb79f3d16a6652dc41a05573376513b3a8e6e7498f121150cd457a389fa1815c815cc08af2042dbc2943f67d377483d3552346f2230f800681c8535dd8c2108148231ee7b28c4a06cfa4b4f9ee87cc9c8933f28dd174eefa7bcb906a58ee1b54198b85049527ba662cb1a28827b0e0e1b242b27be387373d4704f3df52056a695c9f399e63ec92c7ae31775d67e61b7b47fbc6a9379d5f18c7373b1cf41882d23c2d1dfa942550b87b69e2f8e3d51502aa3167052ebaa64d5b3db3cf22d60da25efb80452630d663dd03da6666d0ef4027644051a78be8a58aa6223de875c1ea98ac6b8614583bb459c78c8a25b018b52942fd16834e876c6ae449720d275c6542f1aa93e4da1bfbcec2f7e6ee68e83b651911c57e9d54e68a22defbd45824923ea96b53a05c60a6e25ac6aeef78c3913fbe72aa4998404c83f5ec016721a2890264534957a0419e8b109b462ea6b3b13f9ebac3092acaebbdd8321419fc797e13f8ebacecb22e5732f4bce10d6aa89474fd1f863e6c6cc1e65dba2b9ae425a5e497bb2afe63059016d6f2b6b3c8e6ef06bf1ac191afa293cbb9e3dd90eac8830824a4c1d7f78ee412f8f2e56e9f1172f121611aa5718f5316a8224920a19a36be2aed56ea56fbc0ecf7484996fa0366d9ad6d5b8b1845445841aa5f2aaa9e51d9a802cad52b09411c1277ec9e22fa0f208f9c50c6040000",
+      "8b08000000000002ff8553fd4fdb3010fd5722ef17d0da26fdfe9010eb4a60914adaa529884d536b2797e036894bec1475a8fffb2e09053a24902239f67befeeddf9fc44d63cf1c980301e3e6490eebeac042315028a8678faebebaa1efc5dc7f183bedd855383aff4cbdbc7b33364f05c2569bc89a02a45967a2007f3592d4c45b6a1a910550c546d36aaf54ec3e8d7fb46b3dd69f75127210ac63c59a3fa5ea98d1ce8fa21772d14228c806eb8ac79227e39d7b70d7d938a15784aeac72975cc22f58f939e47c2a38a8be46c3e43039984740131e5115a7855faecdb71e81aa7712d44f2967b403d4f6489ca6d61084f24010fb3b4884a064fa4b0f9e687ccccb13972b5d1646ebb274b9f2a589e6a546a8b450a328b54455b6245018f60c1fd65896cd6daa533b94604f3df530972a9ddfe301d533b265bb636b76d73e66a27e7a7da9533994fb5ef77471cf4e883543c291cba944590bb7b6ea2f5feea72015598b304175da343eb3da3cf02d6f5825eb3cd020318ebb16e9b3699e1f55bd0f21950d4a93c7aa1a28948dabd2e345a06eb1a3e05d6f43bac6504f9e23518ed5084fa7506ad16d957c863ca155c70b91192979d24b78ee59a0bd799dba3a16b16650414fb75519acb8b78eb53619148faa0ae7d8e728199f26bb16cd7748623d7ba31cb49184348bdddec016721a0910464d394c6a020bd163e368d4c2733cbb526f6708c8ae27aa707862483df4faf0277b729baac8a950c1d6778871a9aa674f71f863e3ad882fd9b743734ca0a4ac12f7665fc6d09903ad6f2ba6b90fd9f3d7e1582235f46273fe7a67347ca2307024821f13ebf772417c0a72ff7f08c908b0f09d348857b9c324fe649bc14ca69e37161f759dde9b65b4d529053f50eebf4fb87b6e631f2881043a29e2b2a9f51d1a81ccae40b09411c12dbb2af10fd07a14f703ec6040000",
     ],
     [
       "ETag",
-      "dct8hZgqBrHwXJpGBd41bQ==",
+      "Z+j1fzkmmq/vygP0ij/FWw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4759,7 +4811,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:35 GMT",
+      "Thu, 13 May 2021 15:17:47 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4778,7 +4830,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-32-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-32-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4796,13 +4848,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "8d",
-      "50",
-      "4d",
-      "6b023110fd2fd3eb2ed56d4da9e041455a41a4dd2a488b488ce3767577272659ad88ffdd492cc5632fc9e47d0cefe504dbbc5a411b9679b6abd11cef3274ef7e48d1d685b37c69aa2c4204e864c6caa9923f3dfdd9dd89fe4cc8fe7debd09c4d0e9d0e2bacfac65242fb04eb1c8b9585f6d7092a5922db160b1336b2cc1db54786e3c9e065903250d2ca03e3e968d4ed8d06708e6e6c7afb2fcbfc1cc1869629aed160a5d0a7d08636a8dcd017b4b2d405c6966aa3d04210072233546b69886246e287246e8aa4f1241e1bcf2249040b0b52d2e554f9ee1f9c0d1c3959a474e07e90b0c08491abaec3b967b8153aec83c047bbe5c41fd7f4dcfc7761efe8d0be19e274167db0c635649f7c70c7859ca9310225f9975f73777d9f2f957745b1c2010000",
+      "90",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ffcb786d23945203090731554910b5cac910b26ca7b5d076eaee1645d2ffeeec620c472fbbb36fbe99bcb747d815750a63d814f9478bea7091a379b64582ba2d8de6aba15a23788046e44ca69befdb5928aeda69f075993d3e84910c17f964c28496ef5809181f212bb04c358cdf8e508b0a796cbd566e2363e6d05865b6788defe284858a522b2c96f3f9f5741e43e79d8d35bb7f8dac3a0fb6b449304385b544eba251b445696636a0165553a2afa955123538d83572456d231491cf8a3f08fc7e14f446fd516f308c8623064b92c2145433bb7c616f60c88832a14fce070103ca951c3573e79ee5a1cbb07780b576de8bfe7a7ddb5bfd2e9c1e0cea2745ec4ea335d63b99bc216bdc7020a35af4400afee5fbc29cdedd0f9c2c7ba6c2010000",
     ],
     [
       "ETag",
-      "UcaxBpZAq6CX6aC/5w1XTw==",
+      "dbzFI4a7uB2x/fOM46c4Ng==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4814,7 +4871,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:35 GMT",
+      "Thu, 13 May 2021 15:17:47 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4832,10 +4889,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -4844,7 +4898,17 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff1dd04b7282300000d0bb642d0e5f81ee8c3f1444243a289b0c84f0ab40042540a777afd323bcf703224268d7e157f34d6bf005c64836e7646e3303e28c88e1545c9fed3a0d3cb8dd76fe39939f5e19f00b0c7b0b2f86a612466965717742ca9d1f4e68417de9104ffab04f5955e29d273be9a89f762633b263ac419c48e12bdfd865e59a0cf62e418522a8c63b136f8f9b9522af669cbfa5a05a8eefa96f8acb71a896c286cb46a273c771d3ccae362847bde347522baf5531571e531c84f5d0e1a39d104d3e5b64e544ea4ad1c9fd2a94fbbab599d5b84d86d5bd0866800eac6869878b0f57d14c7306feedf83532fa0980346a690b7eff007429f9cc1a010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "d1",
+      "96",
+      "42401800e07799ebea28d1d83b6c8876a31275e3307ec6b6c6ac41ec9e7df7edec237cdf0f4a09012192aeb903432f684a57da822c3c8e8da48426dfbd575febf43158af768b3f1c110873badc68385498d6897f5e6e70e7641bef3352709cadd49bdd4f2ac57eaf6f3b5514de44f7c738939cfa1a70f34264ede0952a756bd9b4b6fba811baefd515cb85aa38a5a3f9eb7500ae11b0ebe9385a9c9c0e6fe25b92231000991cef49b10c6e7326c55d95ba706c48efd088298490c10ae5f062e8b64a793f8ae6be2bac69c859c13d9f0d73c9e52448c2339a211879d58248aa275756346d86feed49377178061890b6d0a2df3f3b07ef761a010000",
     ],
     [
       "Content-Type",
@@ -4858,7 +4922,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:35 GMT",
+      "Thu, 13 May 2021 15:17:48 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -4877,7 +4941,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -4898,7 +4961,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-33-1620764096226",
+      jobId: "grouparoo-job-33-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -4912,25 +4975,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2b",
-      "c87b6d1212124222456b94d03552423a20ada66942c65ca85b822936adb22aff7d17d374ed26b54fd8bee7dc73ee07cfe49e1709999298670f3554872f772226670414cdf0b554e9f0f7f5fc8a0787916b8bf952c0ddfdd36c8608deb024dd973974a4a82b0672ba0bba5925ea925642743051c7b23a7d7b608eeda139b107031b7912f274cd8b7b64df2a55ca69af77d2ee66426439d092cb2e13fbd7f7dee3a05756e20e9892bdf7923d5491bd8f45bfe68251c54531db0568a0965045b0a73c470b7f99497cfe3e7597d37d3743f0236740191375a11a5b98828922e5595de9ac64fa4cb4cd370712b86b77111a4ce4f5be880aba873323a18a46ea508271e16f37c6cabbd8fa9b79b8da7a51b0b87437f3ee62bbde6dbcc0b8b9747dd75034ce41738d9971ae6f1e5e503f01a978a1d5c3e6b9517e69d0eaffb134049496d006a3b169d3be634ee2341eb3d4b146716a421c3bf17844add86493210c931828f2b4a866d14214d4b2c756bf3f8a1280341a8e1c1639cec489d8c0b21c1827f1209d90e31979aab8822597a590bced10b9f157a11b85fece5bcc43579790d23a57cbd65853c05b8f0a0b44d007351d9b2817a8d4b47be585ae3f5f84ab6bb79df01a32ca0ec103ce38a5b90444d30a9ba7a0da88041b46bcf9c65d22584fecea149464faf399343d6f5cbc69f92b3dc401367695fe9220f457de376de784b8a679ad218fed819468f9166b43d7c75f88c4256db390ef3bd7ff41da271f52a8a0609f4f13c13af0e9bf765a7cc4e2eaa38c5478c7dd61b2116115b43bc475b92fecbe3572fa43a2c195fa37669bfdc1a96b4d8e2623eca1502f15b58b8f85b662b57c056110c7efe96e1dff",
-      "0098f0bf9f78040000",
+      "000002ff8553db6e9b4010fd15b47d8daf180c96acc6b249e3cac62dc689aaaa42bbeb816c8259ca2ea9d2c8ffde6189d344919227b333e7cc3973f123b913c59e4c0813d9ef1aaa874fb7929133029a661895f6781857f4af33f4bcafd7ccb7e70bbe9a4da788100d4bd143994347c9bae2a026bb6d37ab645dd24aca0e16ead87667e00efbfec0efdb8eebf8c85390a72b51dc21fb46eb524d7abd9376379332cb81964275b93c3cc77bf7c35e59c95be05af55e4bf65045f5de17fd9c4b4eb590c574b74503b5822a810315395af8cfdcb3f3d7a5bb821eba1982ef0507cab9ac0bddd8c2125c16a9c8eaca54259347626cbef820db6015cc638bcbbc3e1449410f7066eda9a6897e28c1ba88366b6b195e6ca2f52c5e6ec2643bbf0cd6b3ee7cb3daadc3ad757d194481a529cbc170ada9756e5e213e507f0f4a8bc2a8c74db8517e1ad0f2ed5a1a024a2b6893c9b8efd281d7f759cac63cf56c87a57d60cc636387daaccffd118cf60c28f28ca861d14216dcf31c18ba69b21f709a8cec819b60c04dd8d8a7c07c1778cac9f18cfca984868550a554a29d10b98e967190c4d12e9ccfe2c0b490d23ad78bd658d3c04b8f1a1b44d03b3d1d9bac90a8d48c7b19c641349bc7cbaba0ddf00a32ca1fb6bf71c729cd15209a56383c0dd55aee7160249cad830582cdc6be9d928a4c7e3e9266e68d8b17237fa6c7b8c0c6ae36bf641b47cbf08bb173425cd1bc3690fbf6839468f9067b43d7c75f88c4236dab90efbb20fa41da5004295450f08fb7896093f8f0bf763a7cc4e2e9a38cd2f8c6dbe1aa11e115b437244cbb27b6ebd9f6801870a5dfe4468e739a5a53a3a9080728f45347ede163a3ad58ad9e4198c4f587665ac77f31957d1e78040000",
     ],
     [
       "ETag",
-      "ptf4zVAPiSy5E6oADoejkw==",
+      "o372Traz5288JWb93CDcLA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -4942,7 +4991,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:36 GMT",
+      "Thu, 13 May 2021 15:17:48 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -4961,7 +5010,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-33-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-33-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -4978,19 +5027,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "8d",
-      "92",
-      "dd",
-      "4e",
-      "c2",
-      "40",
-      "10",
-      "85",
-      "df65bc2d49f92bd2c48b820844448472650859da6929b49dbabbd510c2bb3b5b158d9ae84d3b33fd667bce698fb04ff2105cd824f15389f27011a37e30c51c55996ac5b782728560016a1133797b1865aadb1fc6ddb85dd06c3f13b61f7b57574ca8608b9900f708518269a8c07d3c422e32e4b580d232cbd75567813e1466b8f0e7e3e990fb8c42d34f979389d79b0ce0649d1743a1c5bae2ffb1b63a59b0a3cd1c2394980768b414927618e8b1b1a94456a4585354ca00155470f5209654164212d578526b366b75a761779c96dd751a0d87c19402a113ca995d2e581f68d2229dd30bbb0403c8aa64c351757de6711256464c399efa4eabd2f71560695192e2fa6f90f56e057f860fec3d82ef9cc8a8ccf599ba99dc7bbf1dc7997e1e75edf9831f84d29cd419f1c7778385efddcd0cb77af7de3b685433491ca4429361dd6e5db63b8efd166b9f4cd4fc1e57cb122d0804ff1da344831b8954e1e91512a36d7b7b020000",
+      "8d92614f82501486ffcbe92b2c4dc564f3039aa54dcd106bae3977850362c0c57b2f35e7fcef9d4b66addaea0b9c7378cee57d5fd8c3739c0560c32a8eb6058add5984ea5e172eca2251926e39cf248201a85844e463badd36abb7d6f96a1ee40fae53cbe6fd6ed46e1321fd35a60cec3d8431268104fb690f194b91d67c9e1469b62c3b03d42ed7c3a9e70ec637d4a73cd0fd78361c3a9d610f0ec66931608a2d4bfe1f6b8b83011bbe72314481998f5a4b2ef8067d35d036254bf3044dc90be1a384122e1f44821739139c9b34316b35b36a5d545ad556a5d6b01a2d0213ee3315f38cd8d994f481e28a252e7f2597601120ca920c87e5f585c671501ad1e560ec59f552df5780a4857182cbbf41d2bb66f4193eb06304df3996f2225327ea7a78e7fc761c65fa79d495e3f57e1052515227c41b8c7a53cf194d34b7387aefec14ca89e014a4449d61b552bf6c34adca7bac5daea3a6f7d84a146880cfe8efe8c70aec9025120f6f3063c5687b020000",
     ],
     [
       "ETag",
-      "KyHms9CGg9g5poPkPa0TgA==",
+      "Wmqq71J6/bYdpVRA3nYHCg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5002,7 +5043,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:36 GMT",
+      "Thu, 13 May 2021 15:17:49 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5039,7 +5080,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-34-1620764096226",
+      jobId: "grouparoo-job-34-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5056,11 +5097,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff85537f6fda3010fd2a91f74f2bf123044800a9ea589b75916868436885a6096cc7096e431c6ca715aaf8eebb24a52d9db44a48c17eefddbd3bdfbda0479e456884084fb60593bb6f0f82a006621a2770ab276b4cb7c9e2be9fe1f5f3c0b934e75b797b76060c5eaa14dee4296b2a5148cad4683e6b255214399642342150b3db6b766ccb74ec9e39b42dcb069d62693ce1d923a8d75ae76ad46e1f72b712219294e19cab16159bb7fbf693d5cea5786054abf671ca366451edff273d4f05c59a8bec6c3e0303856272c93698a760e15d1991efc7a15b1c6f5a09909f386598525164bab40521a8c8629e14b28a8a462fa8b2f9e10f9ab913f72234ae3dff641561cd56a70656c67229992a52dd3056504fcc53b6e4d1aa46f247e36730bd0604b2afb1626a65dcff7203d738267bbe31f77d77161a27e7a7c655309ddf183f16471c701831a57956f90b314959e9edb585debf0f570ab0869c35b8744c1b7706e690c4c4a1f1a0db27b1c9081910a78fbbc4a4c31eeb458461d0e9327aa5c299c8cc38729c38ee503cc49db8d3ef5ac4e9da66df8c31b3fac472884d0626eea37d033d4baed92557b950bcee23ba0fbcd05d86c1dcbf18876e55468ca15f97b5b9b2888f3e351409a4ffd4b52f512e2053f9289e1fbac1f822f4eedc7a0e262cc17437dbc224c438550cd858e20dd34c5e8b089a866ea6332ff4a6fe78028aea716f0e0c8546bf5fde05e12eafbaacab2f1a07c178011a2c25de7dc2c087dd43fbfd877477382d2a4ac5af4e75fca71a401da8e5fd64a1fd9f3dfc1a0806be8e8e6ee76eb040f555c062265946bf7e772057c0977b7b5822e0c21a411aa5e10c53465599844a564f1bdf54766b75a76b0f1c135564a93f638ed9750e6d2d639411d98665fab5a27a89aa469550a1de4800c290f89e7f05e85f523d612ac4040000",
+      "ff",
+      "85",
+      "53",
+      "7f",
+      "4f",
+      "a34010fd2a64ef1f4d6aa13f28a589f17a8a7724957a4035e672697761c155607177a9d733fdee3780557b269a34a1bbefbd9937b3334fe89e15319a20c2d2878a8acd973b4e5007518553b895c53acfce87591005eaefd5e34037f5fe9fe9f1313058ad92382f337a247925222a278ba09b0a5e9558707e04818e06c3a3dea86fd83ddb189823d3069da4593263c53da86f952ae544d777b9bb29e7694671c96437e2f9cbbdbeeeeba5e077345252df4fa94316a97f9cf424e311568c17c78b000c54928a25cd31cbc0c2ab32265ff7437719cebb2990d72ca2388a7855a8da1684887891b0b4124d543479428dcd377f50e0cc9cd350bb70bd83558c155d1d6a586acba5a0b2ca54475b413d09cbe892c5ab1629efb5737f7e010864bfc592ca9576fdc3f11d6d9fec7adac2f39c20d40e4e0eb5effe7c71a97dbbd9e380c3984ac58ac65f8849466b6fcf2d74df3f5c2dc00a72b6e0d23246b837366c92102b4ac60393240625644c2c130f8811d9433a8c09c5a05375f446850b5e18496c5949d28bb08d7b49cf1cf489351819a69160da3749df22233236b089b61df42898a2674c965cb2b68fe8da77436719fa0bef741a3a4d1909867e9db5e6ea22defa545024903ea86b5ba38c43a6fa515c2f74fce969e85e39ed1ccc688aa34df0009390e04c5260638173aaa8b8e031340d5dce033774e7de74068ae6712f770c8926bf9e5e05e1a66cbaac9a2f9afafef406345808bcf90f031fa321da6edfa4bbc259d5501a7e736ae3af5b00f5a096d7531f6d7f6fe1d74130f06d74f473e1f837a8bdf26942052da2cfdf1dc80df0e9deee9608b8b04690462a38c39445b24e1209da4e1bcb1bbbcfea916dda266ac842bdc3aca1bd6b6b1da38e48735aa8e78ada256a1a5543957c21010843e2b9de7740ff0116bd68e9c4040000",
     ],
     [
       "ETag",
-      "tLhacqgYW5nahw87D0UqrQ==",
+      "snvmlF4lScStzVw3/5/2xA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5072,7 +5118,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:37 GMT",
+      "Thu, 13 May 2021 15:17:49 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5091,7 +5137,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-34-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-34-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5104,21 +5150,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "6d",
-      "90",
-      "51",
-      "4f",
-      "c2",
-      "30",
-      "10c7bfcbf9ba25db20534978005d8464129df0a221a48cdbdcd876a3ed300be1bb7b2d467d2069dabbebefaeff7f4fb02f9a1d8c605be4870e657f93a37e354182aaabb4e2a3a5462138805ae44c26e5f32c39f877477f4ba11ebc97ab38eef3f19809957e622d607482acc06aa760f4718246d4c86d9b8db41319d37d6b2a8f9365c4594d3b932d78cc641a477076fef5b4fb3f7ebe58464f5172ad657d76a0a46d82194a6c5234125a4925a67a6edc2951b715ba8a3a99a2020bdb8b5c52d70a49e472c51d0c5d3f0cbcdb70e8dd8741103258512a74410db3ab37d6069ab4a812fa62731030206dc83e33bb1f4dd90b3cd70b785933b664355e85fc5fc837d0fae78969af51bd4862bd0a8d54ef22fb818c15cd16b5ecd08154f0a7cf0a7dc9cfdf95d09ccbd1010000",
+      "000002ff6d905f6bc23014c5bfcbdd6b0b6d5d05051ffc5336417456fb308648acd75a6d7b6b926e14f1bbef268e6d0f4248724f7e3739275738e7d51efab0cbb34b83b27dca502fcd2646d5145af15253a5101c402d3226e33c6c1793d53269927011ae8e171cbf67c3c18009951eb114d0bfc221c762afa0ff71854a94c86ddbadb43732a6dbda2893e13ae2aaa4bda9e6c96c361ccd22b839ff7aeaf31f3f9dafa397287ed4b2b93970a25d8c079458a5682cd4924e98eaa949a7445917e82a6a648a0a2c6c0f32494d2d2491cb8adb7976fd6ee0f5fc9ed709bb618fc18252a173aa984d56ec0d346951c4f4c5e1206040da2de73cd8f9d3c85ee0b95ec0c386b192f5f810f27f21df409b9f2746ad46f52689fd2a3456bdbbed3199289a236ad9a003a9e04f7fcdf5bdbe7d038787923bd1010000",
     ],
     [
       "ETag",
-      "RjMHRq18v1bo6t3ZjULLyg==",
+      "Ri5yODSQUuU5O5ShqeCYgA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5130,7 +5166,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:37 GMT",
+      "Thu, 13 May 2021 15:17:50 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5148,15 +5184,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
-      "1f8b08000000000002ff1dd04b7282300000d0bb646d1d908fd21d20e1a3a88808b8c90049f8a8100145e8f4ee757a84f77e409265a4eb50df5c490dbec1982c947936dfb09586728ab022374d968c4e15e6b8e2e14bae293329e5d8ce9890124d46fd552d533bb5a9459d77e97243b2ebbd6908a621169ff9f5a805c5823bfb89c57078b7a95b6dddfac42d973eaf59223e086c1fdc59f90825e7ecddcf7c919ebc4d08bda32ffb381227c854c50cdab8926ce40cc50e0a70f49e66bd1516301e06e1a9062bfeb49628d1dd208ee28b384697ee402c752f09b73577a3d8d6c506460f43ef750c6680bc59d9920e951fae2029ca0cfcdb513f32f209d048d29216fcfe019e0cd52a1a010000",
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00000002ff1dd0dd5682300000e077d9b57a408441770ee227d08a24d11bcea40d0918b829b8757af73c3dc2f7fd005c964488e2da3784812720f1d259948b78b05151d1b59f1f6f551b4499eeedd0764b5d23472c6116657e66f469fb2d8f56b79f46daee9ff3b6d1debdc435a9b8e30e8d7724d40d8d9e1820b1ed5084e1b983069cc789ba0478a5658e0a06729a5b906b59f915d3740393ec535ed9e10386fa86bda997baa2a35b4f53e9cb8eb46e8925a49618e2a94ed75180dd893bb0d157a9306ff01c5aa7ce8ea243a2693b865e55c0e7176a463d634abf2cf7caa6199801721f6a4e44513fb886e93833f06f2fae72208f004430271cfcfe01f9015ab01a010000",
     ],
     [
       "Content-Type",
@@ -5170,7 +5208,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:37 GMT",
+      "Thu, 13 May 2021 15:17:50 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -5189,7 +5227,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -5210,7 +5247,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-35-1620764096226",
+      jobId: "grouparoo-job-35-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5219,22 +5256,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d6fa24014fd2b64f6b52a2a2a9a98ad51ba25abb80bd8a6d96cc8305ce8b4c85066b0691afffb5e86da6dd3a47d6266ee39f79cfbc133b9e745426624e6d9430dd5d3b73b119333028a66f81ad8aba979f5f36eb976c5f581868bac886f1ee77344f08625e9becca123455d3190b35dd0cd2a5197b412a283893ac351a73f1e9893b1654ec783c1187912f274cd8b7b64df2a55ca59af77d2ee66426439d092cb2e13fbd7f7de61d02b2b71074cc9de7bc91eaac8dee7a2df73c1a8e2a298ef0234504ba822d8539ea385ffcc243e7f9fbacbe9be9b21f8c01950c6445da8c616a660a2487956573a2b993d136df3cd8104ceda5986061379bd2fa282eee1cc48a8a2917a2ac1b8f0b71bc3f52eb6fe6611ba5b2f0a9697ce66d15d6ed7bb8d1718d7978eef188ac63968ae3137cef5cdc30bea2720152fb47ad83c37ca2f0d723f8ea521a0b48436184dcc31eddbe6344ee3094bede1284e4d88633b9e8ce83036d9d4022b8981224f8b6a162d440196658de2c48e528ba691d5372791cd12339a0e87a33e1da4609903723c238f1557b0e2b21492b71d22d7be1b3a51e8efbce52274740929ad73b56a8d3505bcf5a8b040047d52d3b18972814a4dbb5d2f74fcc53274af9c76c26bc8287b0a1e70c629cd25209a56d83c05d54624d830e22d36ce0ac17a62bf4e4149667f9e49d3f3c6c59b96bfd2431c606357e92f0942dff57e683b27c415cd6b0d39b40752a2e55bac0d5d1fff221297b4cd427eef1cff86b44f3ea45041c1be9e268275e0cb7fedb4f888c5d54719a9f08ebbc36423c22a687788eb725fd8fde1643c9d120daed487983d364f5d6b723419610f857aa9a85d7c2cb415abe52b0883387e4f77ebf80f6188b30e78040000",
+      "8b08000000000002ff85536b6f9b3014fd2bc8fbb82610027949d11aa5748d94908d9056d33421e35ca813c0149b4e5195ffbe8b69ba5695da4fd8bee7dc73ee832772e0c58e4c48ccd3871aaae397bd88c9050145537c85f961d97387627fb0f3afaea4d7967ddca7d3292278c392342f33e84851570ce464bbe9a695a84b5a09d1c1449dbedbe90d6c6bdc1b5b7d77e08e9127214b96bc3820fb5ea9524e4cf3acdd4d854833a025975d26f29777f3d136cb4aec812969be953451459a1f8b7ecb04a38a8b62badda0815a4215414e798616fe3377f1e5dbd45d4ef36e8ae047ce803226ea4235b630051345c2d3bad259c9e489689baf0e64e32dbd79683091d579111534870b6347158dd4b104e33a58af8c857fbd0e56b370b1f6a3cdfcc65bcdbaf3f572bbf237c6dd8d177886a271069a6b4c8d4b7df3f182fa3b908a175a3d6c9e1be5e7062dde8fa521a0b48436180dad01ed8dac719cc443968cfa6e9c5810c7a378e8d27e6cb1b103ce2e068a3c2daa59b4100575d8c085d889ac218c2367d4ef4774e45a51ecec6c178390d0849c2ec8df8a2bb8e2b21492b71d2277c122f4a230d8faf359e8e912125a67eaaa35d614f0daa3c20211f4414da726ca052a35ed5ef8a117cce6e1e2d66b27bc8494b2e3e601679cd04c02a26985cd5350adc40e1b46fcd9cabb42b09ed88f735092c9ef27d2f4bc71f1aae52ff41007d8d855fa4b3661b0f0bf6b3b67c42dcd6a0d796c0fa444cbf7581bba3efd41242e699b85fcdc7ac12fd23e0590400505fb7c9a08d6814fffb5f3e22316571f65a4c23bee0e938d08aba0dd21aecb3db387963d18100daed4bb9863dbe7ae35399a8c9043a19e2b6a171f0b6dc56af902c2208edfd7dd3afd036a60ee2278040000",
     ],
     [
       "ETag",
-      "S8D90VKjCLIoWvaTAgnbYw==",
+      "eCkL157ojk2m+5saF02yjg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5246,7 +5272,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:37 GMT",
+      "Thu, 13 May 2021 15:17:50 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5265,7 +5291,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-35-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-35-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5286,18 +5312,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "92",
       "dd",
       "4e",
-      "c2",
+      "83",
       "40",
       "10",
       "85",
       "df",
       "65",
-      "bc",
-      "2d0920146dc205282009203f255e184296765a8aed4edddd6a08e1dd9dad88464df4a69d997eb33de7b407784a64081e6c92f8b940b5bf88d1cc6c31475da446f32d27a9111c4023624b4a6a657d7a98b566af7241d1209ffacdb8dd6642075bcc04780788124c430ddee301a4c890d7024a8b4caecbce01b3cfed70e1cf879301f71985b69f2c47a34e77d483a3735e0c8511eb92ffc7daeae8c08e36738c50a10cd06ac915ed3030436b538b2c4fb1a2a950016a28e1f241aca8c88522aaf0a472d9acd4dc7ab5e536aad76ebdee329852204c4292d9e582f5812123d239bdb24bb0802a4b361c95d7171e276169c496c389ef364a7d5f0196162529aeff0659ef56f067f8c04e117ce74446853467aa3fbaeffc761c67fa79d46dc7effd20b4e1a4ce883f1cf7167e673cb5dceae4bdbb37a8a78a38488d36c35ab571d56cb9d5f7586fc846cdeff18c2ad08140f0df719718f022916a3cbe0199e3b5db7b020000",
+      "bca509b5052d891755ab36a13f523431a669b630201618dc5dd4daf4dd9d45ad464df40666866f96730e6c6095953178b0ccd2871ae57a2f457d698a00559d6bc5b78a4a8560016a91324941a74843898ef48bc9cb4a3d5f2f6feccba3232654748785006f03498679acc0bbdd40290ae4b588f2ba28174d67815e5766380b83e1f89cfb8262d38faf7cbf7fec0f606bed1663a1c5a2e1ffb136df5a704fcb001394584668b45492ee31d243635389a2cab1a5a896112a68e0e6412aa9ae84246af1a4d5715a6d77dfeeb57b76c7719d1e833945426754327b35637da0498b3ca02776092e03b229d970d25c1f799cc58d11530ec7a1db6df47d05585a92e5b8f81b64bd77823fc307f61ec1774e1454977a479df993fe6fc771a69f479df6c3c10f42694e6a8784c3d16016f64753c3cddfbd1faf35aaa9240e52a1c9b06d770f9d03d77e8bf5844cd4fc1e4fcb1a2d8804ff1d1799062f11b9c2ed2b0d5116757b020000",
     ],
     [
       "ETag",
-      "bno7mFoWQ7QwnSofGpPT5g==",
+      "oR3mgTre5rLmOzksxVbY0Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5309,7 +5334,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:43 GMT",
+      "Thu, 13 May 2021 15:17:51 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5346,7 +5371,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-36-1620764096226",
+      jobId: "grouparoo-job-36-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5358,27 +5383,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "61",
-      "4f",
-      "e2",
-      "40",
-      "10",
-      "fd",
-      "2b",
-      "cdde174d104aa92d90180fb1e73581a2a5e899cb0576b7dbba5aba7577ab2186ff7ed35654cee44c48caee7b6fe6cdeccc0b7ae0798c8688f0f4b16472f3ed5e10d4424ce3146e4592cdce5272974fb3ced5c5e07a1cdbeef8f9e40418bc5229bc2e3276a444292953c3c5bc9d4a5116580a7104818e7ace51d7b14cd7b1cd8163590ee814cb9209cf1f407da775a1869dce2e773b1522cd182eb86a53b17ebbef3c599d428a7b46b5eaeca7ec4016d5f97fd2d34c50acb9c84f167330502a26976c8d790616de9531f9be1fbacdf1ba9d02f9895386291565ae2b5b10828a3ce16929eba868f8826a9b1ffea0b937f1c691311dfd3a58c558b3d5a18195b15c4aa6ca4cb78c15d493f08c2d79bc6a90e2c1f811cea68040f63bac985a19373fbdd033f6c97e602c82c09b47c6c1e9a17111ce1697c6d9ed1e071cc64c699ed7fe224c3256797b6da1fff9e12a01d690b30197aee9e06edf1c9084b834e9f78e49623242fac43dc63d62d281cdec98300c3a5d45af55381779ecda76374992d822b19bd89665f55dccbaaee510d78c4dd2a78e6d3bd444db167a965cb373ae0aa178d3477413fa91b78cc245301e455e5d4682a15fe78db9aa888f3e351409a4ffd4b5ad502e2053f5287e1079e1681cf9d75e3307139662ba993fc2242438530cd858e235d34c4e450c4d4397b3b91ff9b360340145fdb8973b8642c3df2fef826853d45dd6f5178dc270740b1a2c25defc83810fc746dbed8774d7382b6b4acdaf4f4dfca706405da8e5fd64a1ed9f2dfc5a0806be898eae165e788b9aab90254cb29c7efdee40ae812ff776b744c0853582344ac319a68caa2a0995ac9936beaeed36",
-      "eaaeddb31d0bd564a93f614eb7bf6b6b15a38ac8d62cd7af15354b5437aa824af54602108624f0830b40ff02d6e9938ac4040000",
+      "0000000002ff8553616fda3010fd2b91f7a5952884101240aa3a46c31609421742bb769ac0719cd46d8853dba14315ff7d97a4b465955a0929d8efbdbb77e7bb2774cfb2080d50c89287828aed973b1ea206a20a27703bf9ab5fdd909bc7e978334e786a8f47b9719b9c9e0283952a89d7794a4f242f04a172b0983713c18b1c0bce4f20d049c73a695b86de6ff7f54ed7eaf64127691a4f58760fea5ba5723968b5f6b99b09e7494a71ce6493f0f5cb7d6b63b472c1ef2851b27598b2055964ebe3a467292758319e9d2ee660a090542ce91ab3142cbc2aa3f0eb61e826c3eb6602e40d231413c28b4c95b62004e159cc92425451d1e0095536dffc417367e28c026d3afc75b48ab0a2ab630d4b6db9145416a96a682ba82766295db2685523f9bd36f667534020fb2d9654aeb4ab1f8eef688764d7d3169ee7cc03ede8ec58fbeecf1617dab7eb030e388ca8542cabfc05384c69e9edb985eefb872b055841ce1a5cdaba85db3dbd1fc6a14de25ea71bc63a0dc35e68777127d449dfa46614520c3a5546af5438e359649b663b8ee3c808233b360dc3e8d998b66dc30a6d3dd2c31eb14cd3223ada35d0a3608a9e339973c9ea3ea22bdf0d9c65e02fbcd13070aa32620cfd3aafcd9545bcf5a9a048207d50d7ae4419874ce5a3b85ee0f8c351e05e3af51c4c6882c976fe009310e35452606381d7545131e511340d5dcce66ee0cebce10414d5e35eec19120d7e3fbd0a826d5e7559555f34f4fde13568b01078fb1f063e2c13ed766fd25de2b4a82815bf3ad5f1373580da50cbebc940bb3f3bf835100c7c1d1dfd5c38fe35aaaf7c1a534133f2f9bb03b9023edddbfd120117d608d2480567983222cb2444d07adad8bab2fbacb6dba6596dbdc242bdc3ac6e6fdfd632461991ae69a69e2baa97a86a540915f28504200c89e77adf01fd07420d0477c4040000",
     ],
     [
       "ETag",
-      "oflOBgbhnMl/QG9VCd47Cw==",
+      "Lx0WZcZwMFvFgol7FCp2hg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5390,7 +5399,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:43 GMT",
+      "Thu, 13 May 2021 15:17:51 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5409,7 +5418,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-36-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-36-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5428,20 +5437,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "6d",
       "90",
-      "51",
+      "d1",
       "4f",
-      "c2",
-      "30",
-      "14",
-      "85",
-      "ff",
-      "cb",
-      "f5",
-      "754b4a353390f0003a054310c748348690322e63b0adb5ed2448f8efde16a33ef0d2de7bfaddf69c1e6157d42be8c0b2c83f1ad487ab1ced8b2b12344d690d6d4ad6062100b4222772f2c6d3c153f5503fabafcdb4886c6ffadade77bb44986c839580ce11d605962b039df723d4a2421a5b2cb4bf91307b504eb9efa53175955cb96e3c1b8d7afd510ca7e0df8cdafdf1c3711a3fc6c9a591f92980ad5c26b8468d7586ce82d2728b991dba744654aac4d0c8466768c0c3fe20d7b251424b1992125e47612be2ec36ba61ed88f388c05266c216b2267636256f60a5156522f7140e3801da979473edd74f2733ce42c6c356db87f192f77809e2ec176a3968fef344ff60d14cb424bf069d5576b67d275d144b11ad6e30804cd0a70f0a7bee4fdfdbb2b86ed1010000",
+      "c23010c6ff97f3754bb611d091f000ba28c94264824b348494719b836d37db4e2484ffdd6b31ea832fedddd7dfb5dfd713eccb660b43d894c57b87f27855a09e9b2241d5555af1d652a3101c402d0a267b69777db8c9d3a6f6d367d13fc42f69fd391f8d9850d91bd6028627c84bacb60a86af2768448d3cb65e4b7b2363fad81ae56ebc88b8ab696bbad9328ec7933882b3f367a6ddfff2d3d922ba8f92ff4656670776b4493047894d86c6422b6987999e9a744ad46d85aea24e66a8c0c2f6a090d4b54212b9acb8bd81eb0f022ff443afd71ff443062bca842ea96176f9c4de4093165542070e070103d2969c33b7eb8791bdc073bdc0f5431bc64ad6e37f50e0fd40be8156df4f4c8e1ad5a324f6abd058f52eb66fc944d11c51cb0e1dc8047ffa43a92ffdf90b7e59b3c1d1010000",
     ],
     [
       "ETag",
-      "PY2THJmFnOpzhSi6tASX9w==",
+      "3Wu7w8fWnm1WVa5wLZWmxQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5453,7 +5455,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:43 GMT",
+      "Thu, 13 May 2021 15:17:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5471,10 +5473,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -5482,14 +5481,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1dd04d7282301800d0bb642dce20894097828a48a5d80c5a364c800f1a548206f949a777afd323bcf783589e839469272ed0a03734b1853dcfe7fbd65aa51514c1b8b6bf07e26a605931f62f879ba96e469808e51b865cf6a6d55246f0b988b7a3c8c2ed7858e48e48485da84cedab5372e51fe535a9ad68c7bc40bbdb2014892ecfe77084982738aaa9f3451bea1f33c563d9847db5119ddcdca355551137581f1cac0bd794bb96e9e04ea597bf9f7da66ec472f358ef17dae079a1a2b4e9215a6ae214625eb86546d751580e4153748e8de380e3b3597d26e613cd108c2d7f804cf98b6b10db9ea17f7bda4d2dbc0256c01ef040bf7f12f530c21a010000",
+      "000000000002ff1dd0d19642400080e17799ebeab498327b9792862d3285dc388c49cc16860a7bf6ddd7d937f8bfff07c494b2a689da92b307f8047d2ca1199d5995aa4519abfc77f8a17281dd8dab0735a2da325bed792d5ff2f5a0844b9c06f556e157b34b6d552524c2811ddf7727c116c9de437cfeb65dd787fa11993addfa2f67ad58fc9615d695d0d31d127d339854840b6d283d09431c94ce76fef27b39f1e7aba2c53789789256bc98e05f8b30df2570f80e4be81c5cf9744135120133922e330cb383cbf489af4f723ec3c3ce8b15c9eea764ac2f0b9e07a6d2d6d1b47d203001acab72c19a281fb932446802feed51db576c1ca0b15830017eff00c447b1b41a010000",
     ],
     [
       "Content-Type",
@@ -5503,7 +5495,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:44 GMT",
+      "Thu, 13 May 2021 15:17:52 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -5522,7 +5514,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -5543,7 +5534,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-37-1620764096226",
+      jobId: "grouparoo-job-37-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5555,24 +5546,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd2b91f7da2424a11022456b94d23552423a20eda66942c65ca853822936d9a22aff7d17d374ad2ab54fd8bee7dc73ee074fe4811709999098678f3554872f5b119333028a66f8fac3dfdf6cddc7e53614d7d6a13683fa6fe865d3292278c3927457e6d095a2ae18c8c926e86595a84b5a09d1c544dd91dd1d5843c3b64cc3b186430b7912f274c98b0764df2b55ca49bf7fd2ee65426439d092cb1e13bb97f7fe7ed82f2bb105a664ffad641f5564ff63d1afb9605471514c37011aa8255411ec28cfd1c27f66125fbc4ddde374d7cb10bce70c2863a22e54630b533051a43cab2b9d954c9e88b6f9ea400277e9cec30e1379bd2ba282eee0ac935045237528a173e5af579d8577b5f657b370b1f6a2607eedae66bdf97ab9597941e7eedaf5dd8ea2710e9adb99762ef4cdc30bea2720152fb47ad83c37cacf0d5abc1f4b434069096d30b20d8b0ec68613a7b1cdd2f1e83c4e0d88e3716c9fd3516c30c704338981224f8b6a162d446132c34e9c3144a633a29169c55644e9308dcea9e124b6119b2603723c237f2aaee092cb5248de7688dcf98bd08d427fe3cd67a1ab4b48699dabcbd65853c06b8f0a0b44d007351d9b2817a8d4b47be185ae3f9b878b5bb79df01232ca0ec123ce38a5b90444d30a9ba7a05a89041b46bcd9cabd44b09ed8cd2928c9e4d713697adeb878d5f2177a88036cec2afd2541e82fbc6fdace09714bf35a43f6ed819468f91e6b43d7c7df88c4256db390ef1bd7ff49da271f52a8a0609f4f13c13af0e9bf765a7cc4e2eaa38c5478c7dd61b2116115b43bc475b9cfec81690e1c876870a5dec546867dea5a93a3c9083b28d47345ede263a1ad582d5f4018c4f17bba5bc77f178f0b1e78040000",
+      "0000000002ff85536b6f9b3014fd2bc8fbda3c204f22456b94d035534236421a4dd3848cb950b7802936a9b22aff7d17d374ad2ab59fb07dcfb9e7dc074fe49ee711999090270f1594c72f7722241704144df0b55c647fe5e6f17161c7fb397b38ee8be1f74d329d2282d72c49b32285961455c9404e76db76528aaaa0a5102d4cd4ea8d5ae6d0eadaa6dded0d86031b7912d278c5f37b64df2a55c849a773d66e27422429d082cb3613d9cb7be760758a52dc0153b2f356b2832ab2f3b1e8d75430aab8c8a7bb2d1aa82494016494a768e13f330a2fdfa66e739ab513041f3803ca98a87255dbc2144ce4314faa5267259327a26dbe3a90adb372e6bec1445a657990d30c2e8c882a1aa86301c695b7591b4bf76ae3ad67fe72e306dbf9b5b39eb5e79bd56eed6e8dfdb5e33986a2610a9a6b4c8d4b7d73f182fa1148c573adeed7cfb5f2738396efc75213505a42130c46dd2135c75d3b8cc3118bc7bd411877210cc7e168407b6197d97de8472150e46951cda2b9c8a3fed8ee8de338e832cb0cfa368520b44c33805ed8b7e8d034ada8474e17e4b1e40a165c1642f2a64364ef2d7d27f0bd9d3b9ff98e2e21a655aa168db1ba80d71e151688a00f6a3ad5512e50a96ef7d2f51d6f36f797374e33e11524941db70f38e398a612104d4b6c9e82722d226c1871676b6781603db11fe7a02493df4fa4ee79ede255cb5fe83e0eb0b6abf4976c7d6fe97ed376ce881b9a561a72680ea440cbb7581bba3efd41242e699385fcdc39de2fd23c7910430939fb7c9a08d6814fffb5f3e22316571f65a4c23bee0e93b5082ba1d921aecb3db347963518130d2ed5bb58df1a9ebb56e7a8334206b97aaea8597c2cb411abe40b0883387e5777ebf40fc05f144d78040000",
     ],
     [
       "ETag",
-      "XRvPjEqLjToH6yu4SuxTNg==",
+      "rDmzsOwwD9fWCcqyWp6JOg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5584,7 +5562,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:44 GMT",
+      "Thu, 13 May 2021 15:17:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5603,7 +5581,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-37-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-37-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5622,17 +5600,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "6f",
+      "41",
       "4f",
-      "82",
-      "50",
-      "14",
-      "c6",
-      "bfcbe92d6e6886c5e60b2cf3cfd44c70d59a73573820065cbaf75243e777ef5c326bd5566fe09cc3ef5c9ee7811d3cc5590036ace2e8b940519e44a86e75314359244ad22de799443000158b88bc670fa5b9dd6ecc49ebaedfb386fd7cb8759d769b08e9af316560ef208c310924d88f3bc8588ab4e6f3a448b365d519a0ca5c0f5d6f3698f4a84f79a0fbc97c34723aa32eec8de362c0145b56fc3fd6167b03367c35c31005663e6a2db9e01bf4d540db942ccd13ac495e081f255470f52012bcc899e0bc4693da69ab56b71a66cb6a9a1756a3611198709fa99867c4ce5dd2078a2b96ccf82bb9040d88aa24c361757da1711c54467439987856b3d2f7152069619ce0f26f90f4ae197d860fec10c1778ea5bcc8d491ba1edd38bf1d47997e1e75e578dd1f845494d411f106e3aeeb39e3a9e61607ef9d52a19c0a4e414ad419d6cde6f959cb32df63bde43a6a7a8fad448106f88cfe8e7eacc00e592271ff061baa47407b020000",
+      "83",
+      "40",
+      "1085ffcb78a509688b96a48756ab92b6585bf4624cb3c28054607077696d9afe776751ab5113bdc0ccf0cdf2de832d3c65650c1e3c64e9738d727390a2be36c50c559d6bc5b78a4a8560016a9132e9bc4434f24741e90683dbd5eda43db19787eb5e8f09153d6221c0db4292611e2bf0eeb6508a02792da2bc2eca45d359a0379519cec3991f5c705f506cfae0663cee0fc643d859fbc55868b168f87facddef2c58d2c30c1394584668b45492961869dfd854a2a8726c29aa65840a1ab879904aaa2b21895a3c691d1db71cf7d0ee3a5dfba8e376ba0ce614099d51c9eccd9cf581262df219add925b80cc8a664c349735df1388b1b23a6f483d06d37fabe022c2dc9725cfc0db2de47c19fe1037b8fe03b270aaa4bbda7cec757fddf8ee34c3f8f3aeb87c31f84d29cd41e09fdc9701ef62753c3ddbf7b1f6c34aaa9240e52a1c9d0b1db279d63d77e8bf5944cd4fc1e4fcb1a2d8804ff1d9799062f11b9c2dd2b85df567f7b020000",
     ],
     [
       "ETag",
-      "XaYy0zzj0N7WHG6JHpJzSA==",
+      "1xcoKIKNn6NBVvVM4M0j2w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5644,7 +5620,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:45 GMT",
+      "Thu, 13 May 2021 15:17:53 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5682,7 +5658,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-38-1620764096226",
+      jobId: "grouparoo-job-38-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5696,24 +5672,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "7f",
-      "4f",
-      "a3",
-      "40",
-      "10",
-      "fd",
-      "2a64ef1f4d6a5b28a53f92c6ab95f3482af528d598cba55d60c0556029bbd4f44cbffb0d60d5464f1312d89df7e6bd999de5893cb0342043e2b1685d40befd76cf3dd220206984bb9db3753fdaf85ac7eaae637e33ef6f82f5dfc7d10811ac64099a64319c085ee43e88e162de8c725e6434e7fc04139d74fa27aaa1b57b86de1e189a66204f401c4e59fa80ec3b2933316cb5f6dacd88f328069a31d1f479f2b2dfda68ad2ce7f7e04bd13a946ca18a687d2e7a1a739f4ac6d3d1628e060a01f91212ca62b4f0ca0cbcef87a99b8c26cd08c11be603f57d5ea4b2b485297c9e862c2af22a2b193e91cae69b0f3237a7e6c45526b385ed1ead68529257c70a15ca7299832862d950565853c86258b2605547b207e58733bbc4083ab8a302c44ab9f9693aa6a2ac4ad0483955c6f6b97248b56c6561dbe6dc558e4e8f950b67b6b852ce6e0f30e8390021595a3976a91743e9f6b9a9d6fba32c0954a2833ab8ecb50daaf6db032ff47a7ed8ef74bdb00d9ed7f77a5ddaf1dafe40073df080224f96d92b164d796a00a586d75141537b3a1d04da40f702e80e54d5875e07689f8641bbad03d935c863ce249c339171c1eace921bc772cda5eb2cecc9d835ab32428add3bafcd9545bcf529b148047d52d7ae8c328e4ae53159b66b3ae3896b5d9bf5644c21a2fe76bec6d908692c00d134a70948c82f79804d2357b3b9e55a337b3c454675dc577b8420c3df4faf04779b555d96d5bbd432f44a7f0fb8a671512136f50751bb64b76bfc3fc5d871c6b7284bf39c6e3f4eff61fe0a5fad6a8b2f7aa454dbaf34b2fbb3c3a741f016d5d9c9af85e9dc927acb81107248fdaf4707c155e0cb9fc1fe662216ef26ca08896b1c545f",
-      "94227e0ef5c0b2a4b25bb355bd8ba3482a702edfc53addc1fe64ca1c6546482095cf15d537b36a54192ac40b08833867b6655f60f41f3ef55c9f19050000",
+      "000002ff85547f6fa24010fd2a64ef9f36f107888a9a981e67698f9cc51e621b73b9e80203dd8aac65171bd3f8dd6f80dad6b4d72624b03befcd7b333bcb1359b1342403e2b3f821876cf7ed9efba44640d21877578f89674ca46a9ba63d56bd87f9d6fd75110f878860054bd0f52681bae079168018cca68d38e3f986669cd731515defd5b56e4bed6b7d55ef743b7de40948a2314b57c8be93722306cde641bb11731e2740374c3402be7ed96f6e5bcd4dc6ef2190a2792cd94415d1fc5cf42ce101958ca7c3d9140de402b205ac294bd0c22b33f4bf1fa76e30ba6ec408deb2006810f03c95852d4c11f03462719e9559c9e0899436df7c90a935b6469e329acc1cef6449d7057979aa50a12c1619883c9135658935452c81050b975564b3522edcc91546d0c11d152096caed4fcbb51465598086ca99623ae7ca31d5769499e358534f39393b552eddc9ec5af9313fc2a0e710846469e9d8a37e0285dbe7a6daef8fb22050890eaae0c250bb54eba97d3ff28d20eae91d3f52c1f77bbed1a1baaf06fd36b4431f28f26491bd64d194a75da0b4ebeb1ab434a34dfb61abdff643e8f4352d004307daa351a8aa6d20fb1a79cc98847326365cb0aab3e4d6b53d6be1b93367647a56594644b17be795b9a288b73e251689a04feada1751c651a93826dbf12cd71c79f68d554dc618621aeca60f381b114d04209a66740d12b22b1e62d3c8f5646a7bf6c431c7c8288ffbfa801064f0e7e995e0ed36659765f92eb4baed52ff00b8a1495e22b6d507d13a64bfaffd3f85e9bae61c656996d1ddc7e93fcc5fe2cb5565f1458f146a87558becffeef1a911bc455576f27b66b973526db910410669f0f5e820b80c7cf93338dc4cc4e2dd441921718d831a884224c8a01a58b62eed3eb30dbdddd34809cee4bb98a1e9879329721419610da97caea8ba9965a38a502e5e4018c439736ce712a3ff002f13247f19050000",
     ],
     [
       "ETag",
-      "3Bq8gvc23I5qloWS8vdqzw==",
+      "kwlT7Ot0IAAIL0TqYvRKFg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5725,7 +5688,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:45 GMT",
+      "Thu, 13 May 2021 15:17:53 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5744,7 +5707,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-38-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-38-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5763,14 +5726,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "90",
-      "c1",
-      "6e",
-      "83",
-      "301044ff657b0589908aa6483924156a23a128a54d2f158a1c5828c1b0d436a922c4bf774d72e8b117bc1eded8331ea0aeda1c423856e5778fea7257a279b54382ba9746f3d251ab111c40234a263f30daf92a6889b4948b20cea3733d5f2d974ce8ec0b1b01e100458532d7107e0ed08a06d97638a8e944c6cca5b3ca66fb1e3d47090b0de556d8eee378b58e23189d3fb6aefe97251d1d38d131c10215b619da149da2136666630b6ad174125d4dbdca50c3044f3f4a457d271491cb8a3b5fb8b3c0f71e827bef31f0fd804149993015b5cceedf381b18324226f4c3fd60c6809a46ae5a4cdff324db0eb7291dd39b697d31a8778a3881467bb9770df244369ce1d046f5e84026f8255f2a73dd8fbfbe2ffaa0a6010000",
+      "5f",
+      "6b",
+      "c23014c5bfcbdd6b0bed4499820f73745a2632bb153686488cd7dabfb74b524729fdeebba93eec712fcdcde9ef24e7a4833cad8e3083439a7c37a8dabb04cdd60e11eaa6309a979a2a8de0001a9130b9cc8a0f0c75bb52f253e5cf17fffcb28db7f339135a9eb11430ebe0946271d430fbeaa01225b26dbf57c3898c99b6b64ab8790f9641c44249472b6ce2f5fa71b10ea077fed8eafc5f965def404687084fa8b0926853d48a329426b405b528eb025d4d8d92a86180871f89a2a6168ac865c51d3db8fee4de9bfa536f349e8ca70c16248549a962367ee36c60c88822a21fee073e036a18b9ea69f85e06d976b84dbb7e77332d5a83fa551127d0682ff7ae419ec886331cdaa8061d90825f72959aebbeff05ed725c08a6010000",
     ],
     [
       "ETag",
-      "VeEP2r6noosll86LdEvk3A==",
+      "GjlXeIsyHrcYrkFv1hKQUQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5782,7 +5744,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:45 GMT",
+      "Thu, 13 May 2021 15:17:54 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5800,10 +5762,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -5815,9 +5774,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff1dd04b7282300000d0bb646d1d0ba492ee4401818218030a1b06d2f091af7c854eef5ea74778ef078494b2ae0bfa3a6715f80473c8a1355d1b8d2805099da68df9088b4e9361d3f1c251b5d8927b06afcc8d58a28ce0f77833415fdfc54b5de5a585dff2e79946d174b163d1f938de1f9a318894a407f314d65ecd43e26b9d33f3938d24a404d7a4f2778b64913dbddc82c89dbf21f992e22cb774233f69cce5088282c74d225f7a853b2c251ec7645f415d1d31ea75c6aee31647c4ad9224d565576e15dfd91a70b90be6010baaad0fa927dece4259947182390456803d9bac655d90bdb83c446805feed413f37ec1520b1b0652df8fd0391a444731a010000",
+      "0002ff1dd0497282401400d0bbf45a2c696280ec5a6689016488714341fb6550061b08432a778f9523bcf783124aa1ebe2beb9418dded09c60794dd7762bede28cc644c1a9e0dbfbfc312e759e66199f8f2062df21c54cb477cfc0c2d898c20e4793f4557c5f585c6613919c56d78f24104db61fcfbd6188ae2a59ddc5f23c621a8ebb193da5c22f52742f15ffc3f5b46bdd1a8d9fb991c6550cd7a91d54e4e11c98470f96e5cf909437ba8472484da806c7fe6470e28dbe6fa3610159a3ceed7e0e757225895ac0511d4a8e6796eef224d2071c0caff70d979db6c7a66cd00ac1d4160cbab8787285ad2cafd0bf3deee7169e013b481830f4fb0730c47f7d1a010000",
     ],
     [
       "Content-Type",
@@ -5831,7 +5788,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:45 GMT",
+      "Thu, 13 May 2021 15:17:54 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -5850,7 +5807,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -5871,7 +5827,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-39-1620764096226",
+      jobId: "grouparoo-job-39-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -5890,15 +5846,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "53",
-      "6b",
-      "4f",
-      "a3",
-      "4014fd2b64f6ab6da1a50f9a346badb83669e94aa9bad96cc8305c70141864064d63fadff732585763e27e6266ee39f79cfbe0853cf022265312f1f4b1866affed5e44e48480a229be669bd55572e1fafb72ddbfdd9d95f9f3edf8ec6a3643046f5892e665061d29ea8a819ceeb6ddb41275492b213a98a833703ad6a86f8e47b6e98cfafd11f22464c98a170fc8be53aa94d35eefa8dd4d854833a025975d26f2b7f7de53bf5756e21e9892bd8f923d5491bdaf45bf678251c54531db6dd1402da10a21a73c430bff987174fa317597d3bc9b22f88933a08c89ba508d2d4cc14491f0b4ae7456327d21dae6bb03d9ba2b7711184c64755e8405cde1c488a9a2a1da97605cf89bb5b1f42e36fe7a1e2c375eb85d5cbaeb7977b159edd6ded6b8b9747dd75034ca40738d9971aa6f1e5e503f06a978a1d583e6b9517e6dd0f2f3581a024a4b6883e1d81c516b623a51128d5932190ca3c484289a44e3211d4426736cb0e30828f2b4a866d14214f628199ba6638589e940680f2d2b8c0683381c8cfb5642130b204ec8e1843c575cc13997a590bced10b9f197811b06fece5bcc03579790d03a53e7adb1a680f71e151688a02f6a3a34512e50a969f7d20b5c7fbe0896d76e3be115a494edb78f38e3846612104d2b6c9e826a2d626c18f1e66bf71cc17a623f8f4149a6bf5f48d3f3c6c5bb96bfd1031c606357e92fd906fed2fba1ed1c11d734ab35e4a93d90122ddf616de8faf00791b8a46d1672b573fd5fa47df221810a0af6ff69225807fefbaf1d171fb1b8fa282315de7177986c445805ed0e715dee2bdbb28793fe906870a53ec59c897dec5a93a3c9083914eab5a276f1b1d056ac966f200ce2f83dddadc35f58584e6478040000",
+      "54",
+      "6b4fa34014fd2b64f6ab6da9f49d346b53716dd2d215688dd96cc8cc70c151ca2033d4a8e97fdfcb605d8d897e82997bce3de73ee085dc8b3c2613c244fa5041f9f4e34e32724240d3146ffd7cb8dd0f6fc2e7c738b09f61fb5cce37e26a3a4584a8598aee8a0c5a4a56250735d904edb49455414b295b98a8e58c5bddc1a93dee8e6da73fe88f91a7204b9622bf47f6add6859a743a47ed762a659a012d846a73b97bbbefec4f3b4529ef806bd5f928d94115d5f95af4672639d542e6d34d80062a0565043b2a32b4f09f19b3b38fa9db82eeda2982f78203e55c56b9ae6d610a2ef344a45569b292c90b3136dfbd90c05dbaf3d0e232ab767994d31d9c5831d534d24f055817fe7a652dbc8bb5bf9a858bb51705f34b77356bcfd7cbcdca0baceb4bd7772d4d5906866b4dad3373f2f080fa31282d72a31ed6d7b5f26b83169fc75213505a41138c86f6807647f698256cc89391d367890d8c8dd8b04f1d66f3710f7a31038a3c236a5834c79abb098b216611b71d887a03bb1b8d926e3f727a89338c93d1a00b8c1c4ec86329349c0b5548259a0e916b7f11ba51e86fbcf92c744d0909ad327dde18ab0b78ef51638108faa2a6431d151295ea762fbcd0f567f370b1759b092f21a5fc2978c01927345380685a62f334942b1963c388375bb9e7083613fb7d0c2a32f9f342ea9ed72edeb5fc8d1ee2006bbbda3c4910fa0bef97b173446c695619c8be7921055abec5dad0f5e12f2271499b2ce46ae3fa37a4b9f221811272fefd34116c02df7e6bc7c5472cae3eca288d67dc1dae6a115e42b343c2947b640f7bce78440cb8d49f62fdd1e9b16b758e3a23ec20d7af15358b8f853662957a03d5bf938de7996e1dfe014754587a78040000",
     ],
     [
       "ETag",
-      "lOLQfFERypM2XUBpmwX7BQ==",
+      "Rn7Vv7YTzwdS0zeVzrCUiQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5910,7 +5863,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:46 GMT",
+      "Thu, 13 May 2021 15:17:54 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -5929,7 +5882,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-39-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-39-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -5939,24 +5892,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "dd",
-      "6e",
-      "82",
-      "40",
-      "1085df657a5948d45aac245e60b54ae25f156f6c8c5961501458babbd8aaf1dd3b4bad6dda26ed0dcc0cdf2ce71c38c2364a03b06119ad9e7314fbab15aa475d8c51e6b19274cb782a110c40c556441e9cc1f430dc765b6b6796775e9b91b3bb9e398d0611d25f63c2c03e4218611c48b09f8e90b20469cde7719ea48ba23340ed333d9c786377d0a13ee181ee07d35ecf69f6da70322e8b01536c51f0ff589b9f0cd8f0e518431498faa8b564826fd057aeb6295992c5684a9e0b1f251470f16025789e31c1b94913f3a66e96ad4aa966554b75ab52b1088cb9cf54c45362a713d2078a2b168ff90bb9040d88a224c36171ddd1380a0a23ba74079e552df47d05485a18c5b8f81b24bd6b469fe1033b47f09d6309cf5375a11e7a43e7b7e328d3cfa35a8ed7fe414845495d10cfedb7279ed31f696e7ef6dedc2b9423c12948893ac372a97a775bb34aefb1de731d35bdc7562247037c467f47375260872c96787a033d4703b27b020000",
+      "000000000002ff8d92416f82401085ffcbf48a8956a585c4835a6c49942ae2a1698c5961402cb0b8bbb435c6ffde596a6dd336692f30337cb3bcf7e0004f6911810deb34d95528f61709aa992e7c9455a624dd4a5e48040350b18448dfe976369b91b72b462e269d87613a735e67bd1e1132dc60cec03e409c621649b01f0f50b01c692de4599517abba3340ed4b3d9c07beebdd529ff348f7de623cee0fc60e1c8df362c4145bd5fc3fd6964703b67ced638c028b10b59652f02d86cad53625cbcb0c1b9257224409355c3f4804af4a26386fd0a4d1b61a2df3b269b5ac66bb6b762d02331e3295f282d8c59cf481e28a653e7f2197601220ea920cc7f5f599c669541bd1a5eb0566a7d6f7152069719ae1ea6f90f46e187d860fec14c1778ee5bc2ad4991a8deffbbf1d47997e1e75d30f9c1f845494d41909dc89330ffa93a9e69627ef83bd4239159c8294a8336c353bd7dd2bb3f91eeb90eba8e93db612151a1032fa3bee520576cc3289c737c4a94b307b020000",
     ],
     [
       "ETag",
-      "zANUzOkHDhAZuGxBiAv+ZA==",
+      "RE54hhFNqnFIeg4YCiQExQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -5968,7 +5908,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:46 GMT",
+      "Thu, 13 May 2021 15:17:55 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6009,7 +5949,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-40-1620764096226",
+      jobId: "grouparoo-job-40-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6030,12 +5970,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "85",
       "54",
       "7f",
-      "6f9b3010fd2ac8fba795f283100a49a4a8cb52d631a5a425a45d374d892186ba2198da265356e5bbef304dd3ac5b2b21817defdd7b773ef38896345ba01e0a69f25010bef970cf42544344e20476bb4bbebcbe4f5a0ff46bf1fb42c8eef7e9fadb55bf0f085ab2045ee529a90b56f08888de74d248382b72cc19ab43a2baa9d75b96a1db96a9772dc3b08027481a8f68b604f69d94b9e8359b3bed46c25892129c53d188d8ea79bfb9369a3967f72492a27928d90415d17c5bf4346511969465fde9040c1482f01959619a82853d73117e3c4cdda078d54800bca611c151c48a4c96b62045c4b2982605575951ef11299b2f3ed0c41939c3401b8ea75e7034c7ab923c3fd6b0d066334e4491ca9a36879a629a92195dccab48bed43efbe30b8880833b2c88986b375f1cdfd1f65b73adaf9d6a03ef4c3b4ce07adad4f39c49a01d9d1e6be7fe787aa97dba3dc080f305119266ca7780c394949e9f5aebbe3ed09280258856c199ad5bb8d5d1bb611cda51dc699f84b14ec2b013da27b81dea51d724e622241878b2ccae583863996eb475d2b6e139314c33320d6c7781d7eec4ed8ede89bb7ac72076a765a16d0dfde25492332a722668d55f74e3bb81330bfca9371c048e2a23c6d0c3b3ca5c59c44b9f128a04d01b756dcb2865a0541e96eb058e3f1806eeb553cdc7882438da4c1e6042629c0a0268ccf18a48c22fd8029a862ec7133770c7de60040c75e8973b8440bd1f8f7b42b0c95597a57aa349e0bbdeb932b0435ce3b4509075f58106397845db6dedff6906be3fb80569cc39defc1583722cb3a4ff4342e1d5aab2b9936ca1526db732d0f6e7169e1a82fb5465475753c7bf45d5964f62c24916bd3f3e005681777f0bbb3b0a58b8a5202324ac615823518a449c54434b57ca6ec56e9996ad1b4881b97c15eb421b6afbbb5966242b92c9a78aaa3baa1a55860af10c8220cc9aa70e6afb07",
-      "9053511623050000",
+      "6f",
+      "9b",
+      "3010fd2ac8fba7d5f2832484904851c752da654b490b2455344d892186ba2598daa65354e5bbef304ddbac5b2b21817defdd7b773ef388ee68b6460314d2e4be207cfbe99685a88688c409ec4e7d1ecf474934f9617c4f178e39bfa2679fede11010b46409bcc9535217ace011118399df48382b72cc19ab43a2baa1d75b665befb7fa7aa76b76fbc013248d2734bb03f68d94b918349b7bed46c25892129c53d188d8e679bff9d06ee69cdd92488ae6a164135444f37dd19394455852960d673e182804e14bb2c134050b2fcc75f8e5307583e24d2301f0038d088e225664b2b405292296c53429b8ca8a068f48d97cf5817c67e28c026d349db9c1d10a6f4af2ea58c3425b2e3911452a6bda0a6a8a694a9674bdaa22f99d76e64d2f20020e6eb02062a55d7f733c477bd95a6943ed44b3dd53ed30c1d8d566aeebf881767472ac9d7bd3d9a5f675718001e76b2224cd94ef008729293d3fb576fcf6404b0296205a05973dddc42d4bef8771d88b62abd30d639d84a115f6bab813ea51df20c63a241878b2ccae58386399deeee8a4d383a7db368cc868e35e1f781d2bee58ba15f775ab4d7a56cb44bb1afacda924a754e44cd0aabfe8da1b07ce32f066eec80e1c55468ca187a795b9b288d73e251409a077eada9551ca40a93cacb11b389e3d0ac673a79a8f094970b4f5ef6142629c0a0268ccf18648c22fd81a9a862ea7fe38184f5d7b020c75e8977b8440839f8f2f84609bab2e4bf5467ee08ddd7365608f98e3b4509087ea03d9397845bb5dedff696ccfb317208d39c7dbbf62508e6994f47f4828bc5a5536f7922d54aaed576db4fbb583a786e03e55d9d1d5ccf116a8daf2484c38c9a28fc707c02af0e16f617f47010bb714648484350c6b244a9188936a68e946d97d62f7ba66a7851498cb3731ab6dee",
+      "4fa7cc5166241b92c9a78aaa3baa1a55860af10c8220cc9aab0e6af707ada2c51123050000",
     ],
     [
       "ETag",
-      "9krkVjg1qiJuzMst9ZUvXQ==",
+      "OSrfVCgcLK4JlYE6VQiF+A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6047,7 +5989,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:47 GMT",
+      "Thu, 13 May 2021 15:17:55 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6066,7 +6008,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-40-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-40-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6074,30 +6016,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "dd",
-      "6a",
-      "c2",
-      "40",
-      "10",
-      "85",
-      "df",
-      "65",
-      "7a9b408c9a52c18b5a422b5aa9a916da22b2c6491a4d32717f1411dfddd9b5142f7bb33b7be69be19c3dc1b6a8d7d0835591ef0ccae35d8e7a6a8b049529b5e2aba15a2178805ae44c1acaabee74987ded32f33a1b75ab8ff6e8f3d0ef33a1d21fac04f44e901558ae15f4be4f508b0a796cb9946e2363fad858653899c5cf71c242456b2b4ce6e3f1e3601cc3d9bb196bb6ff1a599c3dd8d02ac10c25d6295a178da40da67a68032a513525fa8a8c4c5181835d2397641a21897c56fc4ee0b7a230b88f3ac1431486118325a5421754333b7f676fa0498b32a103e7839001e94a8e9ab973cf72db65d83bc05abbed857fbd96ed2d7e170e8e1ad59b2476a7d01a0bae269fc81ad71c484b831ea4827ff9a5d0d7f7f902e9e94063c2010000",
+      "8b08000000000002ff8d90416bc2401085ffcbf49a408cd53682076d830988d8b4164a1159e3248d269974776315f1bf3bbb96e2b197ddd937df0cefed097645bd8101ac8bfcbb4579bccb51bf982241d5965af1d550ad101c402d72263f1ea2f961f2fefcb8ef66f1dc5751501ea2d170c8844abfb0123038415660b95130f83c412d2ae4b1d54ada8d8ce963639478f6164ec284858a3646982da6d3d1781ac2d9b9196b76ff1a599e1dd8d23ac10c25d6291a178da42da63a360195a89a125d45ad4c5181856d2397d4364212b9acb8f79edbe9fb5ed009bc6eafdf0b182c2915baa09ad9c52b7b034d5a9409fd703ef01990b6e4a8993df72c776d86bd058cb5db9effd7eb98def277e1f8a851cd25b13b85c6987735f944c6b8e6405ab6e8402af897a3425fdfe70b648b7c0cc2010000",
     ],
     [
       "ETag",
-      "uogm5QIfZqfuMTK5mV3KYw==",
+      "Y7HPxGVD8v3fIP2sH9lxHA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6109,7 +6032,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:47 GMT",
+      "Thu, 13 May 2021 15:17:56 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6127,10 +6050,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -6139,7 +6059,16 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff1dd0516e82300000d0bbf45b0c9d48607fa010672d110743fc6948298a48415ab1c5ecee333bc27b2f5050ca8420b26b18079f40171fee9cce51eff8e44c7384efd7d45477cf4c264f4d3747c89fc818f4a96f22ade543f389d807f808131f3e7992da115c35ee909f6477895504bbaaddecf1b641a918fd60778a6f70637d7b6be48d4b4293afa3a7782bf9c25bac332310d660895a656d13c3da5f29a28f23657670500edd76a57341617e0b23551d52b549f1f99167823b16dfa99d9dd0126374b5a19984e33ece9b2a338e13c3638944fb3450e476cb3e0033c0545f0f4c90facd5d2c5d7706feed44ea9ebd037c560c6c00bf7fe560e9991a010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4d",
+      "7282301800d0bb64ad4e1502d21df8533bc9b46011ab9b0c81af104b20069060a777afd323bcf783d22c83b6655df30d357a4663baf066d98ca865c08a5ce106fa9a05d82face32025eb2fd48edeaaf6029d69dc53e3eeaacc4f0a325c55e62c9b727195735c19e2dceebbf3e67d755c2565b9ed43f7557666af2a9ac7ee61c02b1ee0ed005e4e9f8a829b5144cc5551c005fbacfa7b40e3bd4e2c1e0a1b87757ff1e1b0a1ce3a69f5d7501be71ecb28947c2ae2799c9e985bda7629750e37fec2657a36899ed6d6b89dc71921addff375443e281111ac738a26088c121a5a261e5c0b7bde04fddb59372a780404906ad0e8f70f1510a9801a010000",
     ],
     [
       "Content-Type",
@@ -6153,7 +6082,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:47 GMT",
+      "Thu, 13 May 2021 15:17:56 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -6172,7 +6101,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -6193,7 +6121,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-41-1620764096226",
+      jobId: "grouparoo-job-41-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6201,24 +6129,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .reply(
     200,
     [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f9b3014fd2bc87b6d1292924022456b9ad2152d211b21ada66942c65ca85bc0149b4c5595ffbe8b69ba5695da276cdf73ee39f7832772cfcb84cc48ccb38706eac72f772226270414cdf0755c9e9fb3b1baab93e1f4f23e48fd9befeb65369f2382b72c498b2a879e144dcd40ce76db7e568ba6a2b5103d4cd4b386bde16464da13cb9c4e46a309f224e4e98a97f7c8be55aa92b3c1e0a8ddcf84c872a015977d268a97f7c17e34a86a71074cc9c15bc901aac8c1c7a25f73c1a8e2a29cefb668a091504750509ea385ffcc243e7b9bbacf69d1cf10bce70c2863a229556b0b533051a63c6b6a9d95cc9e88b6f9ea40b6eeca5d86061379539451490b383112aa68a41e2b302e83cddaf0fccb4db05e84dec68fb6cb2b77bde82f37abdddadf1a37576ee01a8ac63968ae3137cef4cdc70bea2720152fb57ad83eb7cacf0df2de8fa525a0b4842e18d9e6840e1d731aa7b1cd52e7741ca726c4b113db637a1a9b6c6a8195c44091a745358b96a2b41dc71c0f4710514659644d2d2b72ecf1343a4d868cc514281dc5e47042fed65cc105979590bceb10b909bcd08dc260e72f17a1ab4b486993ab8bce585bc06b8f0a0b44d007351dda2817a8d4b6dbf34337582c43efdaed26bc828cb2c7ed03ce38a5b90444d31a9ba7a05e8b041b46fcc5dabd40b09ed88f635092d9ef27d2f6bc75f1aae52ff41007d8da55fa4bb661e0f9dfb49d23e29ae68d86ecbb03a9d0f22dd686ae0f7f10894bda65213f776ef08b744f01a45043c93e9f268275e0d37fedb8f888c5d54719a9f08ebbc3642bc26ae87688eb729fd943cbb6cc11d1e05abd8b4d2ce7d8b536479b110a28d57345dde263a19d58235f4018c4f1fbba5b877fe6a330cf78040000",
+      "1f8b08000000000002ff85536b4fa34014fd2b64f6ab7db7409b346bd3e25ad3d25d4a359bcd860cc3054781416650abe97fdfcb605d8d897e6266ee39f79cfbe099dcf23c221312f2e4ae8272ffed4684e48480a209bece65f4b4ef5ff81799256fad355f3c3dda4f0fd3292278cd92342b52684951950ce464b76d27a5a80a5a0ad1c244ad61afd533fbdd716fdc1d8cccd1187912d278c5f35b645f2b55c849a773d46e27422429d082cb3613d9eb7be7bedf294a71034cc9ce7bc90eaac8cee7a2df53c1a8e2229feeb668a092500690519ea285ffcc283c7d9fbacd69d64e107ccf1950c64495abda16a660228f7952953a2b993c136df3cd816c9d9533f70d26d22acb839c6670624454d140ed0b30cebccdda58ba671b6f3df3971b37d8cecf9df5ac3ddfac766b776b5c9d3b9e63281aa6a0b9c6d438d537172fa81f81543cd7ea7efd5c2bbf3468f9712c3501a52534c1c0ea9ab46777c7611c5a2cb607a330ee4218daa135a283b0cbc64318462150e46951cda2b9c8a3d8b22318f582011b8f8261dc8f021bfa66600dcc31b3067168db8c1c4ec843c9152cb82c84e44d87c895b7f49dc0f776ee7ce63bba849856a95a34c6ea02de7a545820823ea9e95047b940a5badd4bd777bcd9dc5f5e3acd84579050b6dfdee18c639a4a40342db1790acab588b061c49dad9d0582f5c47e1e83924cfe3c93bae7b58b372d7fa5fb38c0daaed25fb2f5bda5fb43db39222e695a69c87d7320055abec6dad0f5e12f2271499b2ce4d7cef17e93e6c983184ac8d9d7d344b00e7cf9af1d171fb1b8fa282315de717798ac455809cd0e715dee916d9943734834b8541f6266bf77ec5a9da3ce0819e4eaa5a266f1b1d046ac92af200ce2f85dddadc33fbf0e549d78040000",
     ],
     [
       "ETag",
-      "5nBBc5tjrd19FkRfNWKMCg==",
+      "Csdzy2JTJm7sk7MiDzx8zw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6230,7 +6145,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:47 GMT",
+      "Thu, 13 May 2021 15:17:56 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6249,7 +6164,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-41-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-41-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6262,25 +6177,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "41",
-      "4f",
-      "83",
-      "40",
-      "10",
-      "85",
-      "ff",
-      "cb",
-      "78a5b1ad884ad243ab55892dad2df5624cb3c240d185c1dd45d334fdefcea256a3267a8199e19be5bd071b78cccb047cb8cfb3a71ad57a2f43736d8b19ea5a1acdb78a4a8de0001a91317930b90a6fdc15ad3bfbdd500ce7c140e64f59afc7848e575808f03790e628130dfeed064a5120afc524eba25c369d03665dd9e13c9a05e105f70525b60f17a3517f301ac2d6d92d26c28865c3ff63ed6eebc003ddcf304585658c564ba5e8016313589b5a1495c496a65ac5a8a1819b0799a2ba128aa8c59396db6975bc6efbc873db275eb7eb3128291626a792d9c59cf5812123e48c5ed825584035251b4e9beb338ff3a43162cb208c3cb7d1f7156069692e71f937c87a57823fc307f61ec1774e14549766479d8f26fddf8ee34c3f8f3aeb47c31f84369cd40e8982f1701ef5c753cbddbd7b1fac0deaa9220e52a3cdb0d3768f0f8fbcf65baca764a3e6f7f846d5e8402cf8efb8cc0df8a9901ab7af671845717b020000",
+      "000002ff8d92d153824010c6ff97ed1567b01493191f30ad984133c4971ac73961410c38ba3b2cc6f17f6f8fcc9a6aa65e6077f9edf17d1fece1292d22b0619d26cf158afa2c4175af0b1f65952949b7921712c100542c217286a37c3b725ee2c0dbf45e1f5c55ef42950c0644c8708339037b0f718a5924c17edc43c172a4b59067555eac9ace0055977a380f7c777a437dce23dd4f179ee70cbd311c8cd362c4145b35fc3fd6960703b67ced638c028b10b59652f02d86cad53625cbcb0c5b92572244090ddc3c4804af4a26386fd1a4d569b7dad6b9d96ff7cd8baed5ed1398f190a99417c42ee6a40f14572cf3f90bb9048b00d19464386eae3b1aa751634497ee34b03a8dbeaf00498bd30c577f83a477c3e8337c60c708be732ce755a14ed4b577e7fc761c65fa79d4c809c63f08a928a91312b893f13c702633cd2d8fde87b54239139c8294a8336c9b9dcb6ecf32df63bde23a6a7a8fad448506848cfe8edb54811db34ce2e10dccdd28857b020000",
     ],
     [
       "ETag",
-      "3OKNV4hoy1/2NaESIBliqg==",
+      "PeDmjDAwfTLh7xZItyvctg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6292,7 +6193,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:48 GMT",
+      "Thu, 13 May 2021 15:17:57 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6333,7 +6234,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-42-1620764096226",
+      jobId: "grouparoo-job-42-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6343,11 +6244,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08000000000002ff8554fd6f9b3010fd5790f74b2be50b924012a9ead286754829690969d54d53621c43dd02a6b6491555f9df7798a61febb64a4860df7bf7de9dcf3ca17b96afd108452c7928a9d87eb9e3116a20aa7002bbd39e73eede896c7242a4b7497e5c3ab762fc7874040856b124ce8a9436252f05a172b498b712c1cb020bce9b90a8d9b39aa66d751cbbd719da9665034fd2349eb2fc1ed8b74a1572d46eefb55b09e7494a71c1648bf0ec65bfbdb1da85e0779428d97e2fd90615d9febfe871ca09568ce7478b39182825154b9a6196828557e63afafa3e758be1ac950078c308c584f03257952d4841781eb3a4143a2b1a3d216df3cd079abb53f734344e670b3f3c58e1ac22af0e0d2c8de5525059a6aa61aca0a698a574c9d6ab3a52dc1bdf82d93944c0c12d9654ae8cebef6ee01aaf5b2be3c83836c6fec4789fc0f38d85efbbf3d038383e34ce82d9e2c238b9798701e76b2a15cbb5ef104729ad3c3fb7d6fb78a015012b10ad834ba7636373d0194671e49078d0ed47718746d12072fab81b75c8b0477beb8862e0a92abb66e19ce710b03a18d36e6c0d2cc732fb66af6bda6bb3ef5876d78962d271065dd237d1ae811e055374c264c125abfb8bae032f749761b0f04fc7a1abcb8831f470529bab8a78eb53419100fa4f5dbb2aca38285587e5f9a11b8c4f43efcaade7634a134cb6f307989018a792021a0b9c5145c5395f43d3d0c56cee85decc1f4f81a10ffd628f9068f4f3e995106e0bdd65a5df681e069e7fa60dec1157382d3564537f205c8057b4db35fe9d661c04e31b90c642e0ed1f3128c7ee55f4bf4868bc5ed536f79255e75f5716dafddac1d340709feaece872e10637a8de0a684c05cdc9e7e303601df8f4b7b0bfa380855b0a3252c11a8695c84a84085a0f2dcbb4dd9a6df6067d7b803458a80f31c71cee4fa7ca5165a419cdd57345f51dd58daa42a57c01411066cdd707b5fb0d3747c0c423050000",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "fd6f9b3010fd5790f74babe5838f0492485197a574454a494b48ab6c9a12430c750b9862d329abf2bfef304dd3ac5b2b21817defdd7b773ef384ee69b6460314d0f8a124c5e6d31d0b5003118163d8357fe7e5b9d5b7acb3dbefd3ce822facbbcffc6a380404ad581ca779429a9c954548f8603e6bc5052b735c30d68444cd8eded44c5ded6b7dd5e89add3ef03849a209cdee817d2b44ce07edf64ebb1533162704e794b74296beecb71ff5765eb03b120ade3e946c830a6fbf2f7a92b0100bcab2e17c06064a4e8a2549314dc0c29eb90ebe1ca66e519cb662003fd290e0306465262a5b9022645944e3b29059d1e009499baf3ed0cc9ed8635f194fe7ae7fb4c269455e1d2b982bcb654178998886b2829a229a90255dafea487eaf9c79d30b8880835bcc095f2937e7b6672bfbad9532544e94917baa1c26705c65eebaf6cc578e4e8e956fde747ea97c5d1c60c0f99a704133e9dbc741422acfcfad75de1e6845c00244ebe0d2524dacf5d47e10055618f58c6e10a924087a81d5c546a086fd0ee9ac03828127aaec92853396414057312646a4f7744bd7ba5ac7d0ccb5d6b574d3b0822854ad9e117635b46da05f0515e494f29c715af717dd788e6f2f7d6fee8e47be2dcb8830f4f0b4365715f1daa7802201f44e5ddb2a4a19285587e5b8beed8dc6be736dd7f33121310e37b307989008279c001a1738258214176c0d4d4397d399e33b53773401863cf4cb1d82a3c18fa73dc1dfe4b2cb42bed1ccf71cf79b34b0435ce3a49490c7fa03e11cbca2edb6f1ff3423cf1b2d401a1705defc158372cc4e45ff8784c4cb556d732759757ebfd2d1f6e7169e0682fb5467475773db5ba07acb23112948167e3c3e0096810f7f0bbb3b0a58b8a520c305ac6158435e898405a98796a6d2ee33dbb20ca38324b8106f621dcbdc9d4e95a3ca48529289e78aea3b2a1b55854afe028220cc9a2b0f6afb07567d51ac23050000",
     ],
     [
       "ETag",
-      "L47MEjrmDBcsIvgZQ7hrAw==",
+      "6zpuH7977FhZO4YsY7j+sQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6359,7 +6270,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:48 GMT",
+      "Thu, 13 May 2021 15:17:57 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6378,7 +6289,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-42-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-42-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6398,12 +6309,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8d",
       "90",
       "41",
-      "4f",
-      "83401085ffcb788504498b91a487b612c56063519226c634db658ab40b83bb4b9410febb03f6e0d1d3eebcf9e6ed9bede15cd6398470288bcf16757755a0dd8e97144dabace1a3a1da20388056144ccad89fef4c7bb7dcd54ae9c779fcfd94adb78b0513467e602520ece158a2ca0d846f3dd4a2421edbeff5e4c898ed9a518937afd17d94b250513e0a9b2c4996ab2482c1f933d69cff35f23e3870a2438a47d4584b1c53349a4e286d3c2e6844d528740db55aa281099e1a85a6b6119ac865c59df9ee75e07b37c1ccbb0d7c3f60509114b6a49ad9ec85b381252b544a5fbc1f7870a9579d45f3ac89cd0de6970e3bae697cd7721eab5b74400afea487d2fed6c30f0bf14aba81010000",
+      "6b",
+      "83",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb",
+      "f4aa60520d24904352240d58496d84422861b34eac893a7677a488f8df3ba639f4d8d3eebcf9e6ed9bede15ad4192ce054e45f2d9aee21477e1d2f09dab6642b4743b545700059e5426e3477fbd4536d10beec2aff3d8d4bdfae964b21acfec44ac1a287738165666171e8a15615cad8f1686e8e8271d78cca36de879b3011a1a26c14e2348a56eb2884c1f933d65cff35f2313870a153826734586b1c5334862ea8793b2e6855d594e85a6a8d460b37f8d6c80db58d3244ae28ae3f7527b3a9379fccbdc76016cc052c492b2ea816367d936cc0c4aa4ce85bf6030feef5ba63b43b43626e31bb77c4f189c67759f2b069d101ade4939e0bfead871f88179d1e81010000",
     ],
     [
       "ETag",
-      "cI25XsuDAXnllrJ5IxMUCQ==",
+      "GctyTU0au5EMPm4XUNl4sA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6415,7 +6332,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:48 GMT",
+      "Thu, 13 May 2021 15:17:57 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6433,10 +6350,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -6453,8 +6367,15 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "db",
-      "6e82300080e177e9b5184519b03b2b0727e2246c03b96968295858a51c8650b3771fd90bfcc9f73f414a08ed3ad4d715bd835730a5aab9244b4f181015c47082a89f2cdb277cbdbe55d0ee8536d2709f0d22fcc2578ba8d6196a282b4f1c1e2e377da5a9617e657cb38f8db9941f576c500a96209b49e5fbae8830aa70899c68e7dbea91b95d8aef126fe373e779657e3270369c1ad158fd6827fae5c021f6db56366f2f72a4626756d1073242afe0b917e83fc14109e4f43e29faba3a0ebe88eb44c7f2e19a3b12970f27959c3bd9cade1211ba75e47c5a8f188105a0a3602ded109bb91bcd3417e0df8efa49d07900a4694b5bf0fb073d56f8dd1a010000",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00",
+      "d0",
+      "bb",
+      "64ad8e52d0d01d90d260041d3001564cc080f2110444a0d3bbd7e911defb013c4944d7457d5d883bf8041397d455b2220dd4a32cad0e3e5ca6973a6047cb486747a40e2774a007097fb74fbeae9ee6e80ef54bb3c28ecac8f5902dd570d2362782474bbb22a11a70b3b39763e9a1c8cc778e618ba2251327d751877e1857488d951da32cd4978f0bd9247b92f5836ceb2e3d8db9e50e5f32cf1aac1ddbf57c3e3f1e7ee96f0f46bdedf346c19c99e59dcd551a040cd7c149e1101d9dfdbdc785543979a9d1397af558f1504c5d96146e0816408ccdad155d747b733f14555d807f7bd44f8d7807e882b7a205bf7fdc2bd03a1a010000",
     ],
     [
       "Content-Type",
@@ -6468,7 +6389,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:49 GMT",
+      "Thu, 13 May 2021 15:17:57 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -6487,7 +6408,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -6508,7 +6428,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-43-1620764096226",
+      jobId: "grouparoo-job-43-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6530,14 +6450,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "53",
       "6b",
       "6f",
-      "9b",
-      "30",
-      "14",
-      "fd2bc8fbda2440c8538ad62ca52b52423620ada66942c6b950b704136cd25555fefb2ea6e95a556a3f61fb9e73cfb90f9ec83d2fb6644a129eed6ba81ebfdc89849c115034c3d7ebf06ff0c0fdf17eeff1851d6c8bcd8df7ed613643046f5892eeca1c3a52d4150339dd84ddac1275492b213a98a8e3f43bd6d0364743c79c0c6d7b883c0979bae4c53db26f952ae5b4d73b69773321b21c68c9659789ddcb7bef60f7ca4adc0153b2f756b2872ab2f7b1e8d75c30aab828669b100dd412aa187694e768e13f739b9cbf4ddde574d7cd107ce00c2863a22e54630b533051a43cab2b9d954c9f88b6f9ea404277e92e228389bcde1571417770666ca9a2b17a2cc1b80cd62bc3f32fd7c16a1e796b3f0e1757ee6ade5dac979b951f1a37576ee01a8a263968ae3133cef5cdc70bea6f412a5e68f5a8796e949f1be4bd1f4b434069096d301e99436a8dcd49922623968efb8324352149c6c96840fb89c9260e38db0428f2b4a866d142140360ce646c5bf1b86f8f62270116d3813d89fba6c58656c26c6b6492e31979a8b8820b2e4b2179db21721378911b47c1c65fcc23579790d23a5717adb1a680d71e151688a00f6a3a36512e50a969b7e7476e305f44deb5db4e780919658fe11e679cd25c02a26985cd5350adc4161b46fcf9cabd40b09ed88f535092e9ef27d2f4bc71f1aae52ff40807d8d855fa4bc228f0fcefdace09714df35a430eed819468f9166b43d7c73f88c4256db3909f1b37f845daa70052a8a0609f4f13c13af0e9bf765a7cc4e2eaa38c5478c7dd61b2116115b43bc475b9cf6ccb9958ce886870a5dec5ec897dea5a93a3c9083b28d47345ede263a1ad582d5f4018c4f1fbba5bc77f3d6a55fe78040000",
+      "9b3014fd2bc8fbda2414f28048d11a2574899490959056db3421e35ca85b82a96d3a5555fefb2ea6e95a55ea3e61fb9e73cfb90f9ec93d2ff7644c529e3fd4209fbedc89949c11d034c7d795adebbb85d43f838d1c56e515bb992faae9648208deb0143d54057494a8250335de6dbbb9147545a5101d4cd4e9bb9df3a163fbe7beed0e86031f790a8a6cc5cb7b64df6a5da971af77d2eee642e405d08aab2e1387d7f7dea3d3aba4b803a655efbd640f5554ef73d1af85605473514e765b34502b90091c282fd0c23fe63ebd789fbacbe9a19b23f89133a08c89bad48d2d4cc14499f1bc96262b193f1363f3cd816c8355308b2d268afa5026253dc099b5a79a26faa902eb32daacad6578b989d6d378b90993ed6c11aca7ddd966b55b875beb66114481a5695a80e15a13ebc2dc42bca0fe1e94e6a5518f9be746f9a541cb8f63690828ada00d26237b48cf3ddb4fb374c432cf1da4990d69eaa5a30175539bf97de8ef53a0c833a286454b51da34a50c5c48f674e0247dd7f312df71dcc485e1c8f501fa7dcf23c733f247720d73ae2aa178db2172132de32089a35d389bc6812921a375a1e7adb1a680b71e351688a04f6a3a36512e50a969f7328c83683a8b97d7413be115e4943d6d1f70c6192d14209a4a6c9e06b9167b6c1809a7eb608e6033b1efa7a022e35fcfa4e979e3e24dcb5fe9310eb0b1abcd976ce368197e33764e886b5ad406f2d81e4885966fb136747dfc8d485cd2360bb9da05d10fd23e4590818492fd7f9a083681fffe6ba7c5472cae3eca288d77dc1da61a1126a1dd216eca3db1479eedd8c480a5fe10739cfea96b4d8e26231ca0d42f15b58b8f85b662b57a056110c71f9a6e1dff02c52b7b7978040000",
     ],
     [
       "ETag",
-      "VSxRwiN8qqIiC2RdnUWIBw==",
+      "L0tujHrtZEOr6pnQcWDHpA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6549,7 +6466,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:49 GMT",
+      "Thu, 13 May 2021 15:17:58 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6568,7 +6485,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-43-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-43-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6584,11 +6501,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff8d92d14ec2401045ff657c2db120146dc203086213408462620c214b3b2dc56db7ee6e250de1df9dad88464df4a59d999ed9de7bdb3d3c2759082eac93f8a540599ec5a8ef4d31435570ade8968b4c2158809ac544b6d6d1e3d566527778ff61d80acb1d3fb7cb5da743840a36983270f71025c84305eed31e329622ad05821769b6aa3a0b74999be1dc9f799321f5a9084d3f598c46ddde680007ebb41832cd5615ff8fb5e5c182ad58cf3042895980464b2ec51603ed199b8aa539c79a12850c504105570f62298a9c49216a34a9352f6a75a761b79da67de5341a0e815c044c2722237631277da085667c2676e4120c20ab920c47d5f595c649581931a537f19d66a5ef2b40d2a284e3ea6f90f46e187d860fec18c1778ea5a2c8f489ba19dd757f3b8e32fd3caadff5073f08a529a913e27be3c1dcef8ea7865b1ebdf74a8d6a2a0505a9d06458b79b97adb663bfc77a2d4cd4f41e57cb022d0818fd1db7890637625ce1e10d09b13a5f7b020000",
+      "ff",
+      "8d",
+      "92dd6e82401085df657a5948fcc54ae285b6b662d42a62d2a431668501b1c0d2dda5d618dfbdb3d4daa66dd2dec0ccf0cd72ce81033cc5590036ace3e8b940b1bf8850cd74e1a22c1225e996f34c2218808a45443e0cfbcabd6c45eeec7ef8bacb07d5c166518b3a1d22a4bfc194817d8030c62490603f1e206329d29acf9322cd56656780dae77a38f75c6772477dca03dd4f16a351b737eac3d1382f064cb155c9ff636d793460cbd72e862830f3516bc905dfa2af1c6d53b2344fd094bc103e4a28e1f24124789133c1b94913b35137ab56add2aeb62bf5a6d56c1398709fa99867c42ee6a40f14572c71f98e5c824580284b321c96d7171ac741694497cec4b31aa5beaf00490be304577f83a477c3e8337c60a708be732ce545a6ced4ede8befbdb7194e9e751375dafff83908a923a239e33eecfbdee78aab9e5c97b6faf504e05a72025ea0cab95c655b36555de63bde63a6a7a8fad448106f88cfe8e41acc00e5922f1f806a32fdca07b020000",
     ],
     [
       "ETag",
-      "5bfY9hN16lDVG5dywl/0yw==",
+      "XJEtR+7gRQOJxwpH1HhU2g==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6600,7 +6519,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:49 GMT",
+      "Thu, 13 May 2021 15:17:59 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6641,7 +6560,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-44-1620764096226",
+      jobId: "grouparoo-job-44-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6656,23 +6575,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "eb",
-      "6e",
-      "9b",
-      "30",
-      "14",
-      "7e",
-      "15e4fd69a55cb8855ca4a8cb12d651a5a423a455344d893186ba259860d32daaf2ee3b40d336ddd64a91023edfedd8c73ca27b9686688002166f0b9aef3eddf1003510953886d5dd45b8fd7d777131d992e5181789abb9763c1a0e01c14a96c09b2ca14dc18b9c503158cc5b71ce8b0ce79c3741a8699a4dcdd2d5ae65aa7d4bd72de0099a445396de03fb56ca4c0cdaed83772be63c4e28ce986811be795e6f3fe8ed2ce7779448d13eb66c838b68bf6f7a96708225e3e97031870085a0f98a6e304b20c20b330c3e1f4bb718deb462003f30423121bc4865190b24084f23161779a58a068fa88af9ea01cdeda93df695f16ce1fa276bbc29c9eb53050b65b5caa92812d950d6d053c412ba62e1baae64f7ca576f76091548708b05156be5e69bedd98ab20eb1a46b65a89c292377a21c931d5759b8ae3df79593b353e5dc9b2dae942fcb230ca40ea9902cad32fb38486899f7695b9dbf0fb324600919eae2aaab5a58eba9fd200aba24ea199d20526910f4826e071b814afa2635c38062e0c952bd62e194a73d2d328cc03208ed1906b10cdab3fa8474ba41370c75ac19a6199951a71fa27d03fdca99a41326322e58bdb7e8c6737c7be57b0b773cf2edaa8d0826514eea706513af734a681240eff4b52fab8c835379508eebdbde68ec3bd7763d1b531a63b29b6f613a229c080a689ce30d9534bfe4216c1aba9acd1ddf99b9a32930aa03bf3a20041afc787c21f8bbacda6559fda349d9c0fe95e0354e8a0af0503f205dd5d5a6aa37b50edaef1bff571a79de6809ee38cff1ee4d0d3ab2cc92fe0f9f0a5fbdd5490fbe1a2add9e53a0fdcf3dfc1a08ae53ad8ebe2f6c6f89ea258f4634a729f97882005c153efc2a1cae2860e19282",
-      "8d90f00ef34a446942725acf2ddb54716bb666f6fbbdea9b22712edfd43aaa665987032a354a45baa1a97ceaa8bea2d54695a5423c83a008e3e63aee3954ff00c1380c0522050000",
+      "0002ff8554fd6f9b3010fd5790f74b2be583847c1129ead294754c29e90869544d5362cc91ba054cb1c91455f9df7740d336ebb64a4860df7bf7de9dcf3c91079e0464487cbe79cc21db7dba173ea911507483bbb96d34732fccbf2d8365eeb3ddf9396cedf16884085eb0248dd308ea52e41903395ccc1b9b4ce429cd84a863a27aa7536ff5dabad93275a3dbeb9ac8931085539e3c20fb4ea9540e9bcd83766323c426029a72d960227ed96f6edbcd3413f7c0946c1e4b36514536ff2f7a1609461517c968314703b9846c0531e5115a786506fee7e3d40d4ee3c606c15bce803226f24415b630051349c83779566625c32752da7cf341e6d6d49a78da64b670bc93358d0bf2fa54a3525bad329079a46ada1a6b0a79042b1eacab48faa07d7167571841077754825c6bcbaf966b69da3aa00ad6da483bd3c6ce85764cb61d6de138d6dcd34ece4eb54b77b6b8d6ce6f8f30e83a00a978527af6a81f41e1f7b9adf6fbc32c0854a1872ab8eaeb3dda1ae8a61ffa7d160e8cae1feae0fb03bfdfa586af33b3039dc0078a3c55642f593411c9a0151a86df33180c0c83f50c18f44cc6ba7dbf1f046dda323a9db01376cd80ec6be457c6155c70990ac9abde92a56b7bd6ca7317ce64ec59651921c5fe5d54e68a22defa54582482fe53d7be8872814ac541d98e67b9e38967df58d56c4c6143d96efe88d311d24802a269466350905d89009b46ae6773dbb367ce788a8cf2c0af0f0849863f9e5e09de2e2dbbacca37b9280ad8bf497843a3bc046cab0fd2d6db7a5d6fd75b5db2dfd7fe9d69ecbae35b54a75946777fc4b0a25ea7a0ff45a7c497abcae941b7450ab5171764ff738f4f8de075aab293ef0bcbbd25d5960b216490b08f2708c165e0c3bfc2e18a22162f29ca48856b9c57260b11964135b73c2eed3eb3fb26368c94e04cbd8b0dfac6e1808a1c4546882151cf155557b46c5411cae50b0883386e8eed5c62f437c788fac722050000",
     ],
     [
       "ETag",
-      "yJdqxjJJDqcYCaulN1NEgA==",
+      "uI3/uTfuJWdWubcyBBevIA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6684,7 +6591,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:50 GMT",
+      "Thu, 13 May 2021 15:17:59 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6703,7 +6610,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-44-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-44-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6719,11 +6626,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff8d90416f82401085ffcbf40a891aa52989076d4935215aa136260d312b0c14050677973668f8ef9d450f3df6c2ce3ebeb7fbde5ee1945709b870c8b37383b27dc8506fcc10a06a0aad78a9a9520816a0161993bbdd62b2b9842feb70928b8ff3da5b5c1c7f369d32a1e22f2c05b85748732c1205eee7152a5122dbf67bd99fc8986e6ba32c57efdeab17b050526284d5d6f76773df83cefa63ab4fffb2449d05473a0498a2c42a4693a29674c4582f4d4125caba405b51236354d0c3fd8f4c52530b4964b3628fc7f6d0190d1e9df1e0c9198d1c060b8a85cea962761b7236d0a44511d00ff7832103b21fb96ada7fbf7bd974b84f5117dd4df356a37a93c409149acb07b720cf64c2690ead658316c4825f7291ebdbbefb05d2e421dda6010000",
+      "ff",
+      "8d",
+      "90",
+      "4f",
+      "4f",
+      "83",
+      "40",
+      "10c5bfcb781492524b234d7ab00dd15ad2285a63344db38501297f0677170969f8eeced21e3c7a61671fbfb7fbde9e20cfaa186670c8d2ef06657795a27e364388aa29b4e2a5a64a2158805aa44cae6f13e9a55eb076afd78fed5b1ebf7f8c97ed7cce848abeb014303b419261112b987d9ea01225b26dbf97c3898ce9ae36ca6af3eadffb210b25c546d86c83e06e11f8d05b7f6c75fe2fcbaeb7e0488710139458456852d4928e18e99529a8445917682b6a64840a0678f8914a6a6a21896c56ecc9c476a6e391e778a31b77ea7a0c1614099d51c5ecf685b381262d8a905aee070e037218b96a327c7f06d974b84cbb7e77312d3a8dea49122750682e1f9d832cc984d31c5acb062d8804bfe443a6cffbfe17c4f76f9ba6010000",
     ],
     [
       "ETag",
-      "XXH5QzSDOS5iaVqOEHz6LA==",
+      "K8fr9g9LK5+KJwVkdXZ2Cw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6735,7 +6649,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:50 GMT",
+      "Thu, 13 May 2021 15:18:00 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6753,10 +6667,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -6773,15 +6684,8 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4b",
-      "72",
-      "82",
-      "30",
-      "00",
-      "00",
-      "d0",
-      "bb",
-      "64ad8e0151d31dd8f2119000750ad964421a3e2288115b62a777afd323bcf70318e7e276a3e3a5153d78018a6968c117feb0b56825548dbaa994198fa9bbac34bcb444957f40376f5acf9bae328f83b9a1c8dd81b278dd9938fdcade87d414578acf91dc4cce672c1032ed1d5f8f8fcd78257a62abf6a1537a5f93ae65a78beed79d85487f5cd5e1d1de4009e3c3c176e6ec141cea9e9fb02af01e3253e541bdd46448efdbec5132423c1e3a7e1624c17ed5c8b3a9557c17901416151cbca825721e8d117e73cb21eb0d9c7c9b4deaaf740466404c4323c58d364fae6e203403ff763aaa413c032cc1a490e0f70f20c831541a010000",
+      "41",
+      "7282301400d0bb64ad4e85524877c44109ad5629069b4d26c81714a110920ae3f4ee757a84f7ee481e8fd0f7427f57d0a057344a0bcf8eb3b7d623a2c8fda72d78dd682ecf3a1072bedfb785bb4a97b42c58c187e080df43cbee2a666abf88767c84a85ece3f9b25cfbc536ce656a36d2bb8f925619ac8040c65ddcaba5a533bb733fcc189db2826babef6dd0526eb4e9bcd949d48b897eb0b6ca268156509850aa0bcca36763674985293e930ec14bf45754ccf2c508237e0e74e82e3c561eb620eceae5a972fa99bfce40de9d59747d3213603c6897f411304437b56d08bf3836b3b184fd0bf5de8b185470001a940a1df3f694f16431a010000",
     ],
     [
       "Content-Type",
@@ -6795,7 +6699,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:50 GMT",
+      "Thu, 13 May 2021 15:18:00 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -6814,7 +6718,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -6835,7 +6738,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-45-1620764096226",
+      jobId: "grouparoo-job-45-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -6855,20 +6758,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "5d",
-      "4f",
-      "db",
+      "6b",
+      "6f",
+      "9b",
       "30",
       "14",
       "fd",
-      "2b",
-      "91",
-      "f74adbb44d9bb45235aa1246259a6e690a62d314d9ee4d302471881d5085fadf77e350064282a7d8bee7dc73ee479ec9bd2876644a98481f6aa8f6dfee24232704344df1f5e6a660bfe94568df83bfc8ebbd7b3e2caf9e6633448886a5685e66d051b2ae38a8e976d34d2b5997b492b283893acea8d31f0f6c77ecd893f16030469e822cb914c53db26fb52ed5b4d73b6a775329d30c68295497cbfcf5bdf738e89595bc03ae55efbd640f5554ef73d1ef99e4540b59ccb61b34502ba862c8a9c8d0c27fe68e9dbe4fdd1534efa6087e141c28e7b22e74630b5370592422ad2b93954c9f89b1f9e64036fea5bf882c2eb33a2fe282e67062eda8a6b1de97609d87eb95b50cced7e16a1e2dd741bc595cf8ab7977b1bedcae828d757de187bea529cbc070ad99756a6e015e507f074a8bc2a847cd73a3fcd2a0e5c7b134049456d00663d71ed3be674f58c25c9e78c3114b6c60cc63ee880e99cd270e383b06147946d4b068218b816b33db7126b163bb5eec781e8bbdb167c7c3fe9061b2be934cc6e470429e2aa1e14ca8522ad176885c87cbc88fa3701b2ce6916f4a48689de9b3d65853c05b8f1a0b44d027351d9aa890a8d4b47b19447e385f44cb2bbf9df025a494ef370f38e384660a104d2b6c9e866a2577d83012cc57fe1982cdc47e1e838a4cff3c93a6e78d8b372d7fa54738c0c6ae365fb289c265f0c3d83922ae68561bc8637b20255abec5dad0f5e12f227149db2ce4d7d60f6f48fb1442021514fceb6922d804befcd78e8b8f585c7d94511aefb83b5c3522bc8276878429f785dd1fd9ae3d22065ce90fb1c96078ec5a93a3c9083914faa5a276f1",
-      "b1d056ac56af200ce2f803d3adc33fa217a14278040000",
+      "2bc8fbb82690077949d11a2574654ac80aa4d53a4dc83686ba054cb0c95455f9efbb98a66b55a9fd84ed7bce3de73e78420fbc88d10c119eee6b563d7eb917049d21a6700aafeaba7f7b2896fbd5c5ae1f5e25c1adfafa637d359f0382372c89f332631d29ea8a3239db05ddb41275892b213a90a833b43bbd51df9af6a6d6c01ed953e04996256b5e3c00fb4ea952ce4cf3a4dd4d854833864b2ebb54e42fefe6a16f9695b8675449f3ada4092ad2fc58f45b2628565c14f35d00066ac9aa88e5986760e13f3326e76f537739cebb29800f9c324ca9a80bd5d882145414094feb4a6745b327a46dbe3aa0c0593bcbd0a022abf3222a70cece8c182b1ca9c7921917fe7663b8dec5d6df2c4277eb45c1f2d2d92cbacbed7ab7f102e3e6d2f11d43619231cd35e6c6b9be797001fd9849c50bad1e36cf8df27383dcf7636908202d591b8cc6d608f726d69424644c93c9c02689c5089990b18d07c4a2d3211bc68461e06951cdc2852806fd64d4eb0dec08db937134b4891d1142fbd1049a3cb587e3e1c88ad1f10cfdadb8622b2e4b2179db2174e3bba11385fece5b2e42479790e03a53abd65853c06b8f0a0a04d007351d9b2817a0d4b4dbf542c75f2c43f7da6927bc6629a68fc11e669ce04c3240e30a9aa758b51131340c798b8db302b09ed8cf5350a2d9ef27d4f4bc71f1aae52ff41006d8d855fa8b82d077bdefdace09718db35a430eed019560f90e6a03d7c73f8084256db3a0ab9de3ff42ed93cf1256b1827e3e4d00ebc0a7ffda69f1010bab0f3252c11d7687ca468456acdd21aecb3db127963de8210daed4bbd8c81e9dbad6e46832b29c15eab9a276f1a1d056ac962f2008c2f83dddade33f68d1",
+      "289878040000",
     ],
     [
       "ETag",
-      "YYnbZaHR0keECmuy7F3pVw==",
+      "tV2ZvnCqDFU2TQfSZt+JLQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6880,7 +6781,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:50 GMT",
+      "Thu, 13 May 2021 15:18:00 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6899,7 +6800,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-45-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-45-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -6918,18 +6819,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "d1",
-      "4e",
-      "c2",
-      "40",
-      "10",
-      "45",
-      "ff",
-      "657c2db11228da840740542220d062420c214b3b8562dba9bb5b0921fcbbb315d1a889be7467b66776efbded1e9ee32c041796f1eaa540b93b5ba11e9b6282aa48b4e225a74c2158805aac988cbba38ebd2595cf3c4f9fab47ed84f7b371b3c9840ad6980a70f710c598840adca73d6422451e0b2829d26c517616e85d6e363d7fd21bde729f5268fae1b4df6fb5fb5d3858a7c15068b128f97f8ccd0f166c6839c1082566011a2db9a40d06ba676c2a91e609561415324005255cbe58492a7221892abc53a9d52b174ed56e3835fbcaa9561d06130a848e296376eab13ed0a44532a12dbb0403c8b264c351f97c355185a51153f686be532bf57d05585a1427b8f81b64bd6bc19fe1033b46f09d132915993e5137fd87d66fc771a69f475db7fcee0f42694eea84f8bd41d7f35b8391e1e647efed9d463592c4412a34195ed8b5cb7ac3b1df63ed90899aef71b52cd08240f0df71176b702391283cbc01919a74de7b020000",
+      "6f",
+      "4f",
+      "82",
+      "50",
+      "14",
+      "c6bfcbe92d6e5048cae60b2d4d37ff85d86acdb90b1c14032edd7bc999f3bb772e99b56aab3770cee1772ecff3c01e9e923c02178264f55ca2d89dad50ddeac24359a64ad2ade0b9443000155b116907dddecebc7f0d26b796d9081ea475e7f7b7ad1611325c63c6c0dd439c601a49701ff790b30c692de46999e5cbaa3340ed0a3d9cf9de607c437dc623dd8fe7c361bb33ecc2c1382d464cb165c5ff636d713060c3030f63149887a8b514826f3054036d53b2ac48b1267929429450c1d58395e065c104e7359ad4ec7acd72cecda6d5342fea4ebd4960ca43a6129e133b9f913e505cb1d4e35b72090e01a22ac9705c5d5f689c4495115d0ec6be6357fabe02242d4e525cfe0d92de35a3cff0811d23f8ceb18c97b93a51bde1a4fddb7194e9e751d76dbffb83908a923a21fe60d49df9edd154738ba3f7ce4ea19c0a4e414ad4195aa6dda85f3ae67bac575c474def719528d18090d1dfd14f14b8314b251ede00b7bff4547b020000",
     ],
     [
       "ETag",
-      "iEPC0wospYSSt/sVt6dKYQ==",
+      "4bEFy0XzbOQ108bYs1VTHw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -6941,7 +6840,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:51 GMT",
+      "Thu, 13 May 2021 15:18:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -6982,7 +6881,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-46-1620764096226",
+      jobId: "grouparoo-job-46-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7002,18 +6901,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "54",
-      "7f",
-      "6f",
-      "da",
-      "30",
-      "10",
-      "fd",
-      "2a91f74fabf1c3092150a4aa6334eb2241a021b4eba6099c70a16e9398c64e2b56f1dd77494a3bd6ad959048fcdebb7b77becb23b9e5e992f448c0577739649b0f37222035028aadf0540edbdf28fcca93c18377167fec0c6726cdcf8f8f91c10b9564c93a86ba14791682eccda68d5526f235cb84a863a0ba69d575cba01dcba447966158a8931047439edea2fa5aa9b5ec359bbbdc8d9510ab18d89acb462892e7f3e6bdd15c67e20642259bfb299b984536df4e7a128b90292ed2e3d9140de412b239248cc768e145b90c3eed876e7096345648bee721b0301479aa0a5b18221469c45779564625bd4752dafce3814ceda13df0b5c178e6fa070b9614e2c5a1c6a4369f6720f358d5b405d614f118e67cb9a890f5adf6c51b8f104107d74c825c68975f6dcfd6b48554e86ea11d6b275adf3dd5f6d58eabcd5cd79efadac1c9a176e68d6713edf3d51e076d2f412a9e96a67d16c450187eeaabf3fa360b015368a202e71d6a31bd4b8f8228e88451b7d50e220a41d00d3a6dd60a68786482b90c80a14e15d14b154b45da093b5da09db665991040642c4dd6d681eaeda815842d4b37ba10b5ba6c49b635f2907105a75cae85e45573c9a5e7f8f6dcf766eea0efdb651911c3069e56e68a22fef4a9b04824bd51d7b640b9c04cc54d39ae6f7bfd81ef5cd8d5700c61c5c2cdf40ec72362b10464b38c25a0201b8925368d4cc653c777c66e7f888af2c6273b8624bd1f8f2f027fb32ebbacca7fe23b23bca3fe68527ad8912e589c97acfbea8118d4a0756ad4f5b6af1b3dbdd5d3cd06a5f43bd96e6bff0fdef7bcfe151a6259c6367f6158a46516f27f642df9e55b657ee7422745b6674f64fb738bbf1ac115aba293",
-      "f399ed5d91eac883083248c3f7870ac925f0ee9762b7b6c8c5c5c534b8028ae30887b2481266508d324f4abb955a6f1b7af59d512c53afb09641777756c428224202a97aaaa85adbb2510594cb6712823881aee39e21fa1b21d7403a36050000",
+      "6b",
+      "4f",
+      "db",
+      "40",
+      "10fc2bd6f50b4849fc8a9d8784681a0c580a0e751c10adaae4ecacc381e30b77676884f2dfbbb6098fd28264c9cecdcceeecde6e1ec92dcb17a44f62b6bc2b406cbedcf098340828bac453189d5abf4f7b5331d17b6ea63f1c7b2e840f0707c860a54ad2d53a83a6e4854840f6a793d652f0624d05e74d0cd46cbb4dd3b58c9ed9336cc7757aa89390a52396dfa2fa5aa9b5ecebfa2e776bc9f93203ba66b295f0d5f3b97e6fe96bc16f2051527f9b52c72c52ff38e961c613aa18cf0fa6133450481033585196a18517e522fefa36748bd1556b89e47b96004d125ee4aab48521129ea76c59882a2ae93f92cae6ab0f32f146de30d286e36910edcde9aa14cff7352ab5d94c802c32d5d0e65853ca3298b1c5bc46d6b7da71383e43041d5c530972ae5d9e7aa1a76973a9d0dd5c3bd00eb54170a4bd55fb81360d026f12697b87fbda49389e9e6bdfaede70d0f602a46279653aa27106a5e1a7befaef6fb3145085266a70d6315c6a768d5e9cc69d24edda4e9c1a10c7ddb8e3503b36925e1bda8b1828ea5419bd52d19ce79da4d305a3e3b86e1b6248ad459b3a2618a693da7162bba6d585d4eed205d936c883600a8e985c73c9eae692cbd08fbc59144e83e120f2aa32528a0d3caacd9545bcf6a9b048247d50d7b64419c74ce54df941e4858361e45f78f5708c604993cde40ec723a5990464534157a0409cf105368d9c8f277ee48f83c10815d58d9fef1892f47f3ebe08a2cdbaeab2aade24f2cff08e0667e795871de9826645c5baaf3f88655846d3b09aa6139956dfb4fb66bb6518c60fb2dd36fe1f7c1086832b344485a09bbf302cd26d97f27f64adf8d5afdafcce8549ca6ccf9ec8f6d7169f06c115aba393ef532fbc22f551082908c893cf870ac915f0e93fc56e6d918b8b8b69700514c311",
+      "4e64992411508f325b55769fd45dd3366c5291857a8739a6bdbbb3324619115690aba78aeab5ad1a5542857c2621881318f8c109a27f0089fd0b7a36050000",
     ],
     [
       "ETag",
-      "sL5X0ezumCwRGl+7LU40uQ==",
+      "eLH2xH9UrS/96l/wFE6eRw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7025,7 +6922,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:52 GMT",
+      "Thu, 13 May 2021 15:18:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7044,7 +6941,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-46-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-46-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7058,19 +6955,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "51",
-      "6f",
-      "82",
-      "301485ffcbdd2b24e80c66263ec8429c8951c766966531a6c085a1d05bdbe2620cff7db7e8c31ef7426f0fdf69cfe9158e95cc610269559e5ad4978712edab1b12346d6d0d2f8aa441f000ad2899fc90731546a754aed7261a3c9e679bc5f873369d3261b26f6c044cae505458e706265f5790a241b6edf7ba3f91317b514e59acdee3799cb0d050ee84d576b99c45cb183aef8f4d1dff65d9751e1c284db0408d32439742693a606617aea0118daad137d4ea0c0df470ffa3d4d42aa1897c56fc51e80fc261300e47c153381c860cd694095b916476fbc6d9c0921575423fdc0f060ce87ee4aa45ff3df7b2eb709f76ddee6e8a2e16cd46132730e82e0f6e419ec985b31cdaea163dc804bfe44b656ffbee1769c8417aa6010000",
+      "0002ff8d90416f82401085ffcbf40a09b69544120fd5d8d684988aa51763cc0a034581d9ee2e1242f8ef9d450f3df6c2ce3ebeb7fbdef67029ea14023815f94f83aa7bc8d16ced10a16e4aa37991546b0407d0889c492f95d35dd566f1f52b8dfc70132fb7afd7763e674227df5809087ac80a2c530dc1be875a54c8b6e3518d2732663a6995f5e673f5b68a58a828b5c2260ec39745b882c1f96393977f590e8303673a4598a1c23a419b422a3a6362d6b6a016952cd1d5d4a804358cf0f82357d448a1885c56dc67df9df88fde6c32f39ea6fe74c66049893005d5ccc63bce06868c28236ab91f4c1850e3c855b3f17b1d65dbe13e1d86c3ddb4e80cea0f459c40a3bddcbb0559920d6738b4510d3a90087ec9f7c2dcf6c32fa92bbc0ca6010000",
     ],
     [
       "ETag",
-      "WnGp6BqbnOOsB13vAPI7YA==",
+      "0dp5SmwfUvVdR6LNUCQFvw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7082,7 +6971,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:52 GMT",
+      "Thu, 13 May 2021 15:18:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7100,10 +6989,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -7118,7 +7004,17 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "1dd0c97282300000d07fc9591d05d1d01b4b51400a042aca858921c3a62c21cad2e9bfd7e927bcf7033021b4ef13de54b4061f60c282bc222bbb856a92d17b468cb0820c5de679c0a63648f2eeb8469e35a3c35892e0d139c43d1e523b4f793e176abd0ca22c1c3516079ac4dd8a71ef59c456e17dbd6ea8362357a1b7d2121e5dea220f2a9db81504e66c9c412a89989f2f96f27d9a8ca5b2673d8c847024f940944edfe83ddfebf635331dc3f771353bbbcff229f063976297acc30679f4e05fa994cdecf43a473513351894c905d6e47c67326ac2d8b030da32b000746c0b46fba4787345499617e0df9ef0a9a5ef0095624619f8fd03c1ec1ef71a010000",
+      "1d",
+      "d0",
+      "db",
+      "6e",
+      "82",
+      "30",
+      "00",
+      "00",
+      "d0",
+      "7f",
+      "e9b318a0abb37be3161014461074bc34501bed10e905f1b2ecdf67f609e7fc808652a63519878e5dc0077834369ed37922962e3952db34d936cf0b985695c4ded9b15c2f299f70e0fdf61edf1a7a365787763b9ac7401f2fc409bf2c4c51addac0b23b15cbbc9b0ece144d590b55192de05857a71b9275c1afa62cb45fc8b673974976f59ffd2e1c2c6f239c3ee13aaf8c89ef08dc4044fd1532906c8b55e518f7f780c4622d58101a37343e83ef93341a52edca38f4530f4792a7eb4d48b1b283480b161b535eefdd3afb7cc3e162e8f76006d85d70c534e12f2e4418cfc0bf9d8c0fc15e012e6b1453e0f70f429ac85b1a010000",
     ],
     [
       "Content-Type",
@@ -7132,7 +7028,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:52 GMT",
+      "Thu, 13 May 2021 15:18:02 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -7151,7 +7047,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -7172,7 +7067,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-47-1620764096226",
+      jobId: "grouparoo-job-47-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7184,26 +7079,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2bc8fbda04421e9048d11a2574454ac84648ab6a9a90712ed42dc1149b6c5d95ffbe8b69ba5695da4fd8bee7dc73ee832772cf8b1d999084670f35548f5fee4442ce08289ae1abbf58adfbf67898fce9dde41777dbb5993efc9d4da788e00d4bd27d9943478aba622027db4d37ab445dd24a880e26ea0c9c4e6f645bce68608d47b63d429e843c5df2e21ed9b74a9572629a27ed6e264496032db9ec32b17f79370fb65956e20e9892e65b491355a4f9b1e8d75c30aab828a6db0d1aa8255431ec29cfd1c27fe62e397f9bbacbe9be9b21f8c01950c6445da8c616a660a2487956573a2b993c116df3d5816cbca5378f0c26f27a5fc405ddc399b1a38ac6eab104e3225caf0c3fb85887ab59e4af837833bff456b3ee7cbddcae828d717de9859ea1689283e61a53e35cdf02bca0fe0ea4e285568f9ae746f9b941fefbb134049496d00663c71ad19e6b8d93347158eaf687496a4192b88933a4fdc462e3010c760950e46951cda205d6dcb35cb70ffdd84e611c0f1c80d875522b0687b9c96e00fd9e9b90e319f95d71050b2e4b2179db21721dfa911747e13698cf224f9790d23a578bd65853c06b8f0a0b44d007351d9b2817a8d4b4db0f222f9ccd23ffca6b27bc848cb2c7cd03ce38a5b90444d30a9ba7a05a891d368c04b395b740b09ed8f7535092c9cf27d2f4bc71f1aae52ff40807d8d855fa4b3651e807dfb49d13e28ae6b5861cda0329d1f22dd686ae8fbf10894bda66213fb65e7843daa71052a8a0609f4f13c13af0e9bf765a7cc4e2eaa38c5478c7dd61b2116115b43bc475b9cfecded076ed1ed1e04abd8b8d07fd53d79a1c4d46d843a19e2b6a171f0b6dc56af902c2208e3fd0dd3afe03e558bb1c7804",
-      "0000",
+      "0000000002ff85536b4fdb3014fd2b91f79536e98bb495aa5195302ab52924296c4c5364bb37c190c669ec7442a8ff7d370e652024f814dbf79c7bce7de4993c8a7c43c68489745741f9f4ed4132724240d3145fabbbdb2b9def7e2a37bd1b74b3fdcdd55d7f713d992042d42c45b745062d25ab92831aafc3765acaaaa0a5942d4cd4eabbadce69d71975464e6f703a18214f41962c44fe88ec7bad0b35b6eda3763b9532cd801642b5b9dcbebedbfbae5d94f201b856f67b491b5594fdb9e8f74c72aa85cc27eb100d540aca18b6546468e13f73c3cedea76e0bba6da708de0b0e947359e5bab68529b8cc139156a5c94ac6cfc4d87c7320a1b7f06691c565566df338a75b38b13654d3583f15605d04aba535f72f56c1721acd577e1cce2ebde5b43d5b2dd64b3fb46e2fbdc0b334651918ae35b1cecccdc70bea6f4069911bf5a87eae955f1a34ff38969a80d20a9a60ec3aa7b43374462c612e4f86bd014b1c606cc8dc01ed31878ffad0df30a0c833a2864573ac39717b0324c709a2e27eafefc4b4cb783ce22337d980c39c64480e27e46f29349c0b5548259a0e91db601e797114acfdd934f24c0909ad327dde18ab0b78eb51638108faa4a6431d151295ea76cffdc80ba6b3687ee335135e404af953b8c31927345380685a62f334944bb9c186117fbaf4ce116c2676750c2a32fefd4cea9ed72edeb4fc951ee1006bbbda7c49180573ff87b17344dcd0ac32907d7320055abec7dad0f5e10f2271499b2ce47aed05bf48f314400225e4fceb6922d804befcd78e8b8f585c7d94511aefb83b5cd522bc8466878429f7c81e763bae4b0cb8d41f62fd8e73ec5a9da3ce085bc8f54b45cde263a18d58a55e4118c4f1fba65b877f79e52e7878040000",
     ],
     [
       "ETag",
-      "IDMO3295bx1YlFjUO/fqzA==",
+      "uZWPtnqXs7gZ52lvVPZ4LQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7215,7 +7095,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:52 GMT",
+      "Thu, 13 May 2021 15:18:02 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7234,7 +7114,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-47-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-47-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7248,11 +7128,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8d925b4f83401085ffcbf84a93b6566a49fa402f2ab1574a7d314db385815281c5bd689aa6ffdd59acd5a889bec0ccf0cd72ce81033ca545040e6cd2e459a3d85f24a8e6a6f051ea4c49ba95bc900816a0620991fd30bfef77a6897f99a88ef6268307bd1bcebb5d2264b8c59c81738038c52c92e03c1ea06039d25ac8339d17ebaab340ed4b335c04be37b9a53ee791e927cbd1c8ed8d8670b4ce8b11536c5df1ff585b1d2dd8f18d8f310a2c42345a4ac177182acfd8942c2f33ac49ae4588122ab87a9008ae4b2638afd1a4d66ad71a76b3deb65bf58edd6cda04663c642ae505b1cb05e903c515cb7cfe4a2ec100a22ac9705c5d5f689c469511537a93c06e55fabe02242d4e335cff0d92de2da3cff0819d22f8ceb19ceb429da99bd1d4fded38caf4f3a8811b0c7f105251526724f0c6c345e08e67865b9dbcf7f60ae54c700a52a2c9b0516f5d5fb5edfa7bac7d6ea2a6f7384a68b42064f477dca50a9c9865128f6fd08c944d7b020000",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "dd",
+      "4e",
+      "c2",
+      "401085df65bc2db1201469c2455154c28f58aa8931862ced14aa6da7ee6e4542787767aba25113bd6967a6df6ccf39ed161e933c021716c9f2a944b93958a2be32858faa4cb5e25b41b942b000b55832e9df603b99be34c82b8be1ead63e5c4f86fd75b7cb840a57980970b7102798460adcbb2de422435e0b292db37c5e7516e84d6186b3c01f4cceb9cf2832fde47a34f27aa33eecacfd6224b49857fc3fd6ee77163cd0c2c71825e6211a2d85a4070cf5c0d854222b52ac292a65880a2ab87ab09454164212d578526bb66b75a76177ea1dfba8e5b43a0ca6140a9d50ceecf58cf581262d529fd6ec121c066455b2e1b8ba3ef338892a23a61c4c02a759e9fb0ab0b4384971fe37c87a57823fc307f61ec1774e6454e67a4f9d8d2ebddf8ee34c3f8f3af582fe0f42694e6a8f0483717f1678e3a9e1eedfbdf7361ad5541207a9d06458b79bc7adb663bfc57a42266a7e8fab6589168482ff8e8b44831b8b54e1ee15b0fdead97b020000",
     ],
     [
       "ETag",
-      "CcmKC9OgR3gt9uINDVujEQ==",
+      "RVe7iPx2oAupKhY0/wNKEw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7264,7 +7152,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:53 GMT",
+      "Thu, 13 May 2021 15:18:03 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7305,7 +7193,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-48-1620764096226",
+      jobId: "grouparoo-job-48-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7324,11 +7212,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "54fd6f9b3010fd5790f74b2be58bf0111229ead284766829490969154d5362c0502f04a7d8748daafcef3b4cd336ebd64a4860df7bf7de9dcf3ca135cd22d443014dee0b92efbefc6201aa21227002bbdf35f6b8184c47ecd218cf77dee3fa66786e5df7fb80a0258be3cd362575ce8a3c24bc379f35929c155b9c3356874475ddaaab66bbd531f556d76cb74de07192c6639aad817d27c496f79acd837623612c4909de52de08d9e665bff9d06e6e73f68b8482378f259ba0c29b1f8b9ea52cc482b2ac3f9f818182937c493698a660e19519055f8f533728de3412003fd090e0306445264a5b902264594c9322975951ef09499b6f3ed0cc1edb435f194ee6ae7fb2c29b92bc3a55305796cb9cf0221535650535c534254b1aadaac876ad5c78932b8880833bcc095f29b7df6ccf5694430ea5af9c290377a41cd31d5799bbae3df39593b353e5d29bcca7caf9e20803be23c205cda46b1f0729291d3f37d6797f9c25010b705105979d968955abd50de2a013c6966604718b048115740cac05adb0ab133d0a08069e28b34b16ce5866697a171b6d233454d550a36eab15aa7a60624debe846d48e3ba44bd4c0b0d0be867ee7549011e55bc669d55d74eb39bebdf4bdb93b1cf8b62c23c6d0c15165ae2ce2ad4f014502e883baf6659432502a8fca717ddb1b0c7de7c6aea6634c121cee66f7301f314e390134cef18608925fb1089a86a69399e33b13773006863cf2e901c151efc7d32bc1df6d6597857ca38bf164e09bba747080dce0b4909887ea03a90d0310fbdaffd30c3c6fb000699ce778f7570cca3125fd1f0a122f5795cd174554aa1d566db4ffb987a786e03655d9d1f5dcf616a8daf2484c7292859f8f0f8065e0d39fc2e1860216ee28c870016b18d6909722614eaaa1a51b69b762ab86666a5d24c1b97817b354eb703a658e3223d9904c3c5754dd50d9a83254f017100461d65cc7bd84e81f1f2131be21050000",
+      "547f6f9b3010fd2ac8fba795f20342482052d46509ed9052d211d2ae9aa6c41843dd129c62d32daaf2dd7798a66dd6ad9590c0bef7eebd3b9f7944772c8fd100452cbd2f69b1fd74cb23d44054e21476af6ec5fd59e7776f3e2e3b93d8f7a2f23bc9d2e11010ac6209bcde64b4297859102a068b792b2d78b9c105e74d48d4ecda4da3d7d11dc3d14dab6739c013344ba62cbf03f68d941b3168b7f7daad94f334a378c3448bf0f5f37efba1d3de14fc961229da87926d5011edf7454f324eb0643c1f2ee660a014b458d2356619587861c6d1e7c3d42d86d7ad14c00f8c504c082f7359d9821484e7094bcb4265458347a46cbefa407377ea8e436d3c5bf8e1d10aaf2bf2ea58c3425b2e0b2aca4c36b415d494b08c2e59bcaa239b3bed34989d43041cdc6041c54abbfaea06aea6ed736843ed441bf913ed90eef9dac2f7dd79a81d9d1c6b67c16c71a17db93ec080ef980ac972e53ac451462bc74f8df5de1e6745c0125cd4c1655fef61c3d69d2889fa24b14d2b4a741a4576d4b7b019e9c4e9d26e1c510c3c5965572c9cf3dc36bb0eb63a16b10cc3326247d789d18d7ad834fb5d2bee247dea5023b26cb46ba05f059374c2c4860b5677175d055ee82ec360e18f47a1abca48307470529bab8a78ed534291007aa7ae5d15651c94aaa3f2fcd00d46e3d0bb74ebe998d21493edfc1ee623c199a080c6055e53498b731e43d3d0c56cee85decc1f4d81a18efc628f1068f0e3f185106e37aacb52bdd1e974360a7b5de5600fb9c459a9300ff507325a1620768dffa71905c1e81aa47151e0ed5f3128a7a7e8ff505078b5aa6d3e2ba24a6dbfeaa0ddcf1d3c0d04b7a9ce8ebe2ddce01ad55b014d684173f2f1f80058053efc29ec6f2860e18e828c90b0866125a2122105ad8796ad95dd27b66d9aba8d14b8906f625ddbdc9f4e95a3ca48d734974f15d5375435aa0a95e21904419835dff3cf20fa0767304be621050000",
     ],
     [
       "ETag",
-      "K3oxYAPDoG5LUyRxkVCB8Q==",
+      "WjsqG2x6SCu2DdNIbuXclg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7340,7 +7228,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:53 GMT",
+      "Thu, 13 May 2021 15:18:03 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7359,7 +7247,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-48-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-48-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7374,14 +7262,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "505d4fc23014fd2fd747b704260e25e1410c2a094e99e28b21a4747773b0ed96b6d310c27fe7b618c3a32fededf9b839a77bd8944d06035895c5b645bdbb28d0cedc90a2692b6bf852d4188400d08a8295bd5cf5e5c365925d7d3c6faf930dbea8d96a361cb2c2c82fac050cf69097586506069f7b68448d6c5b2eb5dfc832bb530e9924efe3c771ca404d990392f9747a379a8ee1109cd9d4e65f96c5218035ad52cc516323d1a5509ad628edc41534a2561586865a2dd180177ba2d0d42aa1894246c2de4dd88da34e3fee756ee3288a59589114b6a486b5f337ce0696aca852fae17e10b140fb91abe6fefcf6b0ebe0a6ae8f76ce75ffb8c8718bdf85a39d45f3aa89d31974c13aa790f7e4825b2e64758b0148c1bffc54dad3fb7004251f1f55c2010000",
+      "02ff8d504d4fc24010fd2fe3b58d148408090741623184488593216429432dfd98ba3b5591f4bf33bb18c3d1cbeeecfb98bcb727c8d2720703d8a6c9478dfa7893202fec10a1a973367255541a040f905522ca1f5ae2f363b8c874f69d73686ec79d5e980c87a230f13b160a0627d8a798ef0c0cde4e50aa02c5b6d968b751647cac2c329d2f274f93488082761698af66b387d16c028d7765abb27f59d68d0707da46b8478d658c3645a5e980314f6d41a38a2a47df50ad6334e0c48e4834d595d244be20feddbd1ff4daad7ed06f75babd6e5f8439c58a532a45bb7a956cc0c42a8fe84bfa415b04da8d5275efce4f07db0e760a5cb46b2ef8e3da965bff2e1c1d19cd8b264967d0066b5d428ec9066729c4ba460f6225bf1ca67c793767b6cab3e8c2010000",
     ],
     [
       "ETag",
-      "4fp7cF+Nd3VMq5NkeOpQbQ==",
+      "zoTeJDHQkrkxltHs/C36Hg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7393,7 +7278,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:54 GMT",
+      "Thu, 13 May 2021 15:18:03 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7411,16 +7296,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
-      "8b08000000000002ff1dd0db7243400000d07fd9e7c88422f42da9b824c8a26478d941166b4536969674faefcdf413cef901795962ced178a7b807ef60c9257d5dae4f4cdba3ba2402872db20de9a03e1491993b519de0143feb9ec18ec9db5e23272590d54dfb3497c6884da82bd207441bddcd8f4dfc543a735177dfde19b609952a3f4f8debce7369e6568ee5df9d735bf517a1de3a6e945893f7653971e044db917bbcf5180c0383f86ab28cb3f0e86759cd0bab618d9179e2a927b7b02bcce96a6b36315811f2cf833c8437772c0a84329685471a11d1a1174d49ed14d38ed391cf6005f0ccc88039222fee9ba2eb2bf06f47e3c2f02b608ff3010fe0f70f210029981a010000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff1dd0d95283300040d17fc973edb0d4427c030c8885b214a4f092811814d9494b1b3afebb8cf70fce7d809c10ca18bef435edc00be0b904b7647b18541d7f912ef14bc460ab2f12b5c7e63d33dd51b849544caecc1cb95192942268d5ddd0b0002b9a8ed2503f89fd935ca0faad7cf5187205c7bd66f201861666029f6f82cbd46aaf35160de35121f4838f3b2f52447f6d868b62f9cbb99c6dd538c2bc8871f9999abecd933edfa9ea376685d7a4c96ce62d6ab9ed2b419709fa29464eb2e79a3d43a431dfec836e3a9ad9cf3247f82e91c5718de47c456313810da0f7a19a28c3d5ca959f21dc807f3bbef081ae03749a4f7402bf7f13aef6361a010000",
     ],
     [
       "Content-Type",
@@ -7434,7 +7324,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:54 GMT",
+      "Thu, 13 May 2021 15:18:03 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -7453,7 +7343,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -7474,7 +7363,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-49-1620764096226",
+      jobId: "grouparoo-job-49-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7494,15 +7383,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "6b",
-      "4f",
-      "db",
-      "30",
-      "14fd2b95f7953ed2a64d5aa91a55095089a65b9282a6698a1ce72635a471163b2040fdefbb76280321c1a7c4bee7dc73eec3cfe48e9729999184e77f1ba81fbfdd8a849c105034c7dbedd3f9c568b4bbc89e1ed8361f5a7598eedc87f91c115cb324dd570574a5686a0672b60d7b792d9a8ad642743151d79e76adc970e04cecc174321c4e9027a1c8ae787987ec9d52959cf5fb47ed5e2e445e00adb8ec31b17fbdefdf0ffb552d6e8129d97f2fd94715d9ff5cf47b2118555c94f36d88061a09750c7bca0bb4f09f9926a7ef53f738ddf77204df73069431d1944adbc2144c9419cf9bda6425b367626cbef921a177e52da30e1345b32fe392eee1a493524563f55841e73cd8ac3b2bff7c13ac17d16ae3c7e1f2d25b2f7acbcdd576ed879d9b4b2ff03a8a2605186e67de3935271f0fa89f8254bc34ea91bed6ca2f0d5a7d1c8b26a0b48436183b8309b5dcc134c9128765ee689c640348123771c674940cd8d4063b4d8022cf881a162d45e9ba9643eda9158333b663db72a6f1d4013b76d23475689abaae9391c30979a8b982332e2b2179db217213ac222f8e82adbf5c449e2921a34da1ce5a63ba80b71e151688a04f6a3ae82817a8a4dbbdf2232f582ca3d5b5d74ef80a72ca1ec3bf38e38c1612104d6b6c9e827a2d526c18f1176bef0cc166623f8e414966bf9f89eeb976f1a6e5aff40807a8ed2af3256114acfc0b63e788b8a6456320f7ed0fa9d0f20e6b43d7873f88c4256db3909f5b2ff845daab0032a8a1645f4f13c126f0e55b3b2ebe7ec9a196910acfb83b4c6a115643bb43dc94fbc2b6c6b63d362f55d15a7d884d26d6b16b3a87ce087b28d54b45ede263a1ad58235f4118c4f1fba65b877f475d19d578040000",
+      "6b4fa34014fd2b64f6a3b6d0373469d6a6e25a6de90a5463361b32330c384a1964866a63fadff732585763a29f98997bce3de73e78410f3c8fd118119e3e56acdcfdb817041d23a6700aafcfc1e5dd457e71746b5f1f3df7ecedd36515df5c4d2680e0354be24d91b196145549991caf83765a8aaac0a5102d48d4ea3badceb06b391dc7ea0d860307789265c982e70fc0be53aa9063d33c68b75321d28ce182cb36159bb77773db358b52dc33aaa4f951d20415697e2dfa3313142b2ef2c93a0003956465c436986760e13f3326271f53b739deb453006f3965985251e5aab60529a8c8139e56a5ce8ac62f48db7c774081bb7067a14145566df228c71b766cc458e148ed0a669cf9aba531f7ce56fe721ace575e14cccedde5b43d5b2dd64b2f306ece5ddf35142619d35c63629ce89b0717d08f99543cd7ea61fd5c2bbf3668fe792c3501a4256b82d1c81ae28e6d392421239ad8bd01492c46884d4603dc231675faac1f138681a745350be72227ac6fd956124771dfe946fd247122a74bed8858c3381992c1d0a643b43f464f2557ec94cb4248de7408ddf8f3d08d427fedcda6a1ab4b487095a9d3c6585dc07b8f0a0a04d01735edeb2817a054b77bee85ae3f9d85f36bb799f082a598ee824798718233c9008d4b689e62e552c4d030e44d97ee2980f5c47e1f82128dffbca0bae7b58b772d7fa38730c0daaed25f1484fedcfba5ed1c10d738ab3464db1c500196efa03670bdff0b4858d2260bba5abbfe2d6a9e7c96b092e5f4fb69025807befdd70e8b0f58587d90910aeeb03b54d622b464cd0e715dee816df7ad51076970a93ec57a83cea16b758e3a23dbb05cbd56d42c3e14da8855f20d044118bfa7bbb5ff076429100578040000",
     ],
     [
       "ETag",
-      "UzFG33hGfzwcUg21rSdh8w==",
+      "xSKhJnJ+Y8V+x38vwKudWQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7514,7 +7399,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:54 GMT",
+      "Thu, 13 May 2021 15:18:04 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7533,7 +7418,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-49-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-49-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7552,12 +7437,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "d1",
-      "6e82401045ff65fa8aa91a8b95c407b4d49aa8b580896963cc0a834281c5dd45638cffde596a6dd336695f606638b3dc7be108af711e8205ab78bd2d511caed6a89e74e1a22c5325e956f05c2218808aad89ec4f709e24f3edf376178eafbd3d2b064ec7ee768990c1063306d611a218d35082f572849c65486b014fcb2c5f569d01ea50e8a1e7bbc3c980fa8c87ba9fcc4623bb3772e0645c1643a6d8b2e2ffb1b6381990f0958b110acc03d45a0ac1130cd450db942c2b52ac495e8a00255470f5602d785930c1798d26b556a7d6309bf5b6d9aa77cc66d32430e5015331cf899d79a40f14572c75f99e5c8206445592e1a8baee681c8795115d0e27bed9aaf47d05485a14a7b8fc1b24bd1b469fe1033b47f09d63192f7375a1ee478ff66fc751a69f47ddd9bef383908a92ba20fe70ec78be3d9e6a6e71f6de3b289453c12948893ac346bd757bd336ebefb1f6b98e9ade632951a20101a3bfe3215660452c95787a03a923c48b7b020000",
+      "dd",
+      "4e",
+      "c2",
+      "401085df65bc2d0928b4d2848ba2a0447e14ca952164d94ea1b8edd6ddada412deddd98a68d4446fda99e937db734ebb87a7248bc08755b27e2e5095676b340fb698a22e84d174cb65a6111c40c3d644aabedb77bd57ef2e2d4534e17dafe41eee3a1d2234df60cac0df439ca08834f88f7bc8588ab4c6a528d26c59750e9832b7c359381d8c6fa84f6564fbf17c380cbac31e1c9cd362c40c5b56fc3fd6160707b67235c51815661cad965cc92d7233b036354b7381352d0bc5514305570fd64a16395352d668526bb66b0df7bcde6eb4eb172db7d5265048ce4c223362e733d207461a26a672472ec125405525198eabeb0b8d93a83262cbc138749b95beaf00498b1381cbbf41d2bb61f4193eb06304df3996ca223327aa3f9c04bf1d47997e1e751d84bd1f843694d4090907a3de2c0c46f7965b1cbd774b83fa5e490a52a3cdb0516f5eb63cb7fe1eeb95b451d37b7ca30a748033fa3b6e13037ecc84c6c31bbff390317b020000",
     ],
     [
       "ETag",
-      "CNeXjjXqZqvdM/SwapGE9A==",
+      "rF6F67z7KmyldOcF7yc7ew==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7569,7 +7456,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:55 GMT",
+      "Thu, 13 May 2021 15:18:05 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7607,7 +7494,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-50-1620764096226",
+      jobId: "grouparoo-job-50-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7626,11 +7513,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "54fd4fa34010fd57b8bd5f34e907209f4d1aaf56f4482aed51aa31974bbbc0826b298bece2a531fddf6f00ab367a9a90c0eebc37efcdec2c4f684df3180d5048d3878a94dbeff72c441d44044e6137bff7afce042ef1357e38f12fa299b6d6ec74380404ad591c6f8a8c7439abca88f0c162de4b4b5615b864ac0b89babadc550c55360d4db60d553580c749964c68be06f69d10051ff4fb7bed5eca589a115c50de8bd8e665bfffa8f68b92dd9348f0fea1641f5478ff73d1d38c455850960f1773305071522ec906d30c2cbc32e3f0c761ea1ec59b5e0ae0471a111c45acca456d0b52442c4f685a954d563478428dcd371f68ee4c9c71208da70b2f385ae14d4d5e1d4b984bcb65497895898eb4829a129a91258d576da4584b17fef40a22e0e00e73c257d2cd4fc77724695583be0da55369e49d4b875cd793169ee7cc03e9e8f458baf4a78b9974767b8001d331e182e68de5008719a9ed3e77d57d7f9635010bb0d00697a66c60c592ed3009cd28b14ef4309149185aa1a9e393508e6c8d68714830f0449dbd61e19ce5566c99aa1963dd4c6c5db36543b3345b314dc5526d5333151b2b36d1ed18ed3ae86f490539a7bc609cb6ad4537be1b38cbc05f78e351e034652418da77de9aab8b78eb53409100faa4ae5d1da50c94ea7372bdc0f147e3c0bd76dad198901447dbf9030c4782334e000de3bf218294572c86a6a1d974ee06eed41b4d80d19cf76c8fe068f0fbe995106c8ba6cba279d75a86d6e8ef01d738ab1ac463fb81141ded769dffa718f9fee816647159e2edc7e93fccdfe09b556bf1450fd56afb958a767f76f074105ca3363bfab570fc5bd46ef9242125c9a3af4707c04de0cbbfc1fe6a02162e27c870016b18d488d7225149da81a59bc66ecb5674ddb06cd4804bf12e66abeafe64ea1c7546b221b978aea8bd9a4da3ea50c55f40108439f35cef12a2ff0097f339c01a050000",
+      "54",
+      "7d",
+      "4f",
+      "a3",
+      "3018ff2a5cef1f8d7b810d062c59bcdde43ce264ca9866b95cb60205ab409116cd62f6ddef019cbae869b26494e7f7f6b44f794277340bd110f934be2f49b1f97ecb7cd44244e018de2ef9d134bc5c527ce69d45e4d13f5265c6e2d10810b462719ce6096973561601e1c3c5bc1317accc71c1581b84da9adc56063dd9544cb9af0d3413789c24d1946677c0be1122e7c36e77e7dd89413c2138a7bc13b0f4e57df7a1d7cd0b764b02c1bbfb965d70e1ddcf4d8f1316604159365acc2140c949b12229a60944786586fe8f7de90ec5692706f0030d080e025666a28a051201cb221a9745ad8a864fa88ef9e601cdada935f1a4c96ce178076b9c56e4f5a184b9b45a1584978968496be829a20959d170dd54f23be9973b3b870a24b8c19cf0b574fddb722d495a57a06f23e9581a3b27d23ed776a485e358734f3a383e944eddd9e242fab9dcc340e8907041b33ab287fd8454719f77d57e7f9615010b88d01457ba3cc08a219b7ee4eb4164f4353f9289ef1bbeaee1be2f07a64ad4d0271878a252af59386399111a7a4f0fb1a647a6a69af240355453d175c5e899baaa2b26564ca29921dab6d063410539a13c679c365b8bae5ddbb3569ebb702663cfaadb88306cdf4913ae6ae26d4e014d02e893beb655953270aacec9763ccb1d4f3cfbca6a46634a621c6ce6f7301c114e3801342e704a0429ce59089b862e6673dbb367ce780a8cfabc2f76088e867f9e5e09de26af7759d4ff95d740adfd77802b9c9435e2a179408a86b6dbd6ff25c6ae3b5e822d2e0abcf958fe43fd1a5faf9a882f7ea872dbad7a68fb770bbf16826bd4a8a3cb85e52e51f3ca25112948167c3d3a00ae0b5f7e0d765713b07039c1860b58c3a006bc32090ad20c2c4debb8cf6c43eb37df12810bf1aea61983ddc9541a95224949269e3b",
+      "6aae66bd5155a9e42f2028c29c39b6730ad57fba6b1c6d1a050000",
     ],
     [
       "ETag",
-      "njRMBtaraVaq3RFcP4k49g==",
+      "Ys+LdQYiaKTKfewb+40oog==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7642,7 +7534,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:55 GMT",
+      "Thu, 13 May 2021 15:18:05 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7661,7 +7553,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-50-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-50-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7677,11 +7569,23 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff8d90416f82401085ffcbf4584890284d493ca8252d89b12dd55363cc02034581a1bb8b8618ff7b67570f3df4d0cbeeec9b6f26efed190e559b430869557ef72887bb12f5bb2912547dad155f1db50ac101d4a264723dc487d7384d83797e3f5b9c92a76a1c27a7e99409957d6123203c4351619d2b083fcfd08a06796cb7937623637ae88c12afd6d17394b0d0506e84d566b99ccd97115c9c5f63dde15f23db8b037b4a132c50629ba171d149da63a663135089a6abd155d4cb0c1558d8364a497d272491cb8a3bf1dc51e07b0fc1d87b0c7c3f60b0a64ce88a5a66371fec0d3469512774e27ce033206dc9510b7b1e599ed80c470b186b7ff746a6b7bd2d9c0f1ad59b2476a7d018f3ae2617648c6b0ea4658f0e64827ff9a5d2d7f7e5070b8b2bd9c2010000",
+      "ff",
+      "8d",
+      "90",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb",
+      "78",
+      "6d93a22906120e6010890d42916830842c65a80b6d67dddda20de1bf3bbb78f0e0c1cbeeec9b6f26efed090eb2da42173632ffa851375739da992b523475610d5f8a2a8310005a9133f9f57a9c37f2b6ff285f46cba52a66f74fc934eff59830d93b9602ba27d8492cb606ba6f27a844893cb65e6bbf9131db28a78c27cfc3d13065a1a4ad13268b24e90f92219c835f63eaf0af91d539803d6d52dca1c62a43e74269da6366c72ea011a52a303454eb0c0d78d837724db5129a2864258ca3b0d5be8e3aad4e7413b7e30e830565c24aaa985dccd91b58b2a248e993f3c13503da971c75e7cf23cbb1cf70f480b3f677afe57aab9f8583c6a2996a6277069db1e862f28e9c71cb81acae31804cf02f3f487b799fbf0115bf1952c2010000",
     ],
     [
       "ETag",
-      "TyIkOIbb6Bd+ACwRDi4IRw==",
+      "xXvSyi7AKiWGZZplQFOLPg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7693,7 +7597,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:56 GMT",
+      "Thu, 13 May 2021 15:18:05 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7711,10 +7615,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -7723,7 +7624,18 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff1dd0d16e82301400d07fe9b3310282746f038b4b700311adf8d260e9c001a5708121cbfe7d669f70ce0f4a391700ac6f4a21d10b7aa43a5ef2a5af6c87e5a231cb83cdb8c4e71da7967255660214da36cc933c2988917ed3a4d3766ea7415384305cca281b431e87f3f553b295b90ae855249b4d05afdb1b2107abf68ea347671567ba65047aebbbb4be54767a4943d5f42795dfc6ebc4aa528810fb4d454eda49a76b49f168c7aebdc75603ebc892ce140d99acf600c3c73bff8a66eaf1c16f6fdee868ad76ac3dd72567f276d687b90cb8c162d6073d9011d0028949dd3b01ecfee41a26c60bf46f67fd4389678023d24e74e8f70f73d425271a010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "51",
+      "6e",
+      "82",
+      "300000d0bbf45b0c5041d89f5051298a38a6939fa6e9aaab80148a81baecee333bc27b3f8032c695227d53f23b78039adafe944db1f40272658f0f75507bc3a4797c2fcef064da1b91291d478d75d0dd678cbe4c170fdef63ddce50b3cafdd448f8681b69cdd89a09b74d6c1f97a8c244cacf691580ecaf6e6135ec9c673f0992e7dd7ac8f296c350a582abdefc78e56991d5e7015894ab9b6d8a34b9d9ed01191eb21bb452bc26fecb92e90d518b9191842ce97c36d1c86a2aca88605eee5a0ea7ca1a91374a1139768415b075f8ea52f5334ab572198003e4ad17145c48b0b1ddf9f807f3be9b5e4af8080d38e77e0f70f706b65441a010000",
     ],
     [
       "Content-Type",
@@ -7737,7 +7649,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:56 GMT",
+      "Thu, 13 May 2021 15:18:06 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -7756,7 +7668,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -7777,7 +7688,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-51-1620764096226",
+      jobId: "grouparoo-job-51-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7796,15 +7707,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "3014fd2bc8fbda8457802452b446295d9112b211d26a9b26641c43dd02a6d8a48baafcf75d4cd3b59bd47ec2f63de79e731f3ca17b56edd014a52c7f686973f874c7537486a8c439bc56abc3529ffcb01eb9512ed6777b8a8bdff67c360304eb58029775410782b70da162badd0cf386b7356e381f40a281630e4cd7323c77644c5ccb72812768912d59750fec5b296b31d5f593f630e73c2f28ae9918125ebebceb7b4baf1b7e478914fa5b491d5484febee8e782132c19af66db0d1868056d125a62568085bfcc5d7afe36f590e172980378cf08c584f0b6929d2d48417895b1bc6d5456347d42cae6ab03daf84b7f116b84176d5925152ee999b6c31227f25053ed325aafb420bc5c47ab791cacc364b3b8f257f3e162bddcaec28d7673e547be26715a50c5d566dab9ba857001fd1d1592554a3dee9e3be5e70605ff8fa52380b4a07d30f10c179b63639266a947b2b1eda49941d3749c7a0eb653834c4674b44b29069e12552c5cf1caf46cd7194d70e28e5d271939239260cbb512d3b46ddb20a96d620b1dcfd063c324bd60a2e682f51d42375110fb491c6dc3c53cf65509196e0b79d11beb0a78ed514281007aa7a66317651c94ba760761ec47f3451c5cfbfd849734c7e4b079801967b81014d0b881e649daacf80e1a86c2f9cabf00b09ad8d75350a0e9cf27d4f5bc73f1aae52ff41806d8d995ea8b367114845f949d13e21a17ad82ecfb03aac1f22dd406ae8fbf00094bda6741dfb67ef41df54f11cd68432bf2f13401ac021ffe6ba7c5072cac3ec8080977d81d223a11d2d07e87982af7996d3a305e0f297023ff8d79e6c83b75adcbd165a425ade47345fde243a1bd582b5e401084f187aa5bc73fc531777878040000",
+      "535d4fa34014fd2b64f6555b2ab49426cddaadb876d35205aa319b0d19860b8e528632831b63fadff732585763a24fcccc3de79e733f78260fbc4cc984243cdf35503f7dbb17093922a0688eaf3b33b2cfc10977970fbfaccd8fd16d3150c1d5748a08deb224dd56051c4bd1d40ce46413f6f25a3415ad8538c644c7c3c1f1607462ba03d7b486a3a18b3c0945b6e4e503b2ef94aae4a4df3f68f77221f20268c5658f89edeb7bfff1a45fd5e21e9892fdf7927d5491fdcf45bf178251c54539dd8468a09150c7b0a5bc400bff996972fa3e758fd36d2f47f023674019134da95a5b98828932e37953ebac64f24cb4cd3707127a4b6f1e194c14cdb68c4bba852323a58ac6eaa902e33c58af8c857fbe0e56b368b1f6e3707ee1ad66bdf97ab959f9a17173e1059ea1685280e61a53e354df7cbca07e0a52f152ab47ed73abfcd2a0c5c7b1b4049496d00563c71cd1c1d874932c715836b686496642928c136748adc464ae0d769a00459e16d52c5a8a92a626e21d3bceb213886d70589cb8ae1b3b76ea38d66860d9ce88ec8fc8df9a2b38e3b21292771d2237c122f2e228d8f8f359e4e91232da14eaac33d616f0d6a3c20211f4494dfb36ca052ab5ed5ef89117cce6d1e2daeb26bc849cb2a7708733ce682101d1b4c6e629a85722c586117fb6f2ce10ac277679084a32f9fd4cda9eb72edeb4fc951ee1005bbb4a7f4918050bffa7b673405cd3a2d190c7ee402ab47c87b5a1ebfd1f44e2927659c8d5c60b6e49f71440063594eceb69225807befcd70e8b8f585c7d94910aefb83b4cb622ac866e87b82ef7c01e8f06438b6870ad3ec42cdb3a74adcdd166842d94eaa5a26ef1b1d04eac91af200ce2f87dddadfd3fc3ec463a78040000",
     ],
     [
       "ETag",
-      "nMyL/9Z2wo0mCOjvealx3A==",
+      "q0T4Fe7SqPkJ3UB6Yl1tRQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7816,7 +7723,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:57 GMT",
+      "Thu, 13 May 2021 15:18:06 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7835,7 +7742,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-51-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-51-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7845,21 +7752,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "dd",
-      "6e82401085df657a8b091ac596c40bb4b625c19f2a7ad318b3c280d885c5dda58d31be7b67a9b54ddba4bd8199e19be59c034778ce8a185cd864e9be4279b84a513f9a6286aae25ad1ad148542b000354b891ca47cbc40598cf6cb473f5f0ed2f6c41e79bd1e112ada62cec03d4292218f15b84f4728588eb416095ee5c5baee2cd087d20ce7e1cc1fdf539f8bd8f4e3451078fd600827ebb21833cdd635ff8fb5d5c9829dd8cc3041894584464b29c50e23ed1b9b8ae525c78612958c50410dd70f5229aa9249211a3469749a8da6d3b2bb4edbbe715a2d87402e22a6335110bb98933ed042333e13afe4120c20eb920c27f5f585c6595c1b31a53f0e9d76adef2b40d2928ce3fa6f90f46e197d860fec1cc1778ee5a22af485ba0b26de6fc751a69f47dd7ae1f007a134257541427f349c87de686ab8d5d97bffa0514da5a020159a0c9b76fbbad375ecf75807c2444def71b5acd08288d1dff190697013c6159ede00634deb717b020000",
+      "000000000002ff8d925153824010c7bfcbf518ce600926333ea0993a8366882f358e73c28218b07477d498e3776f8fcc9a6aa65e8edde5b7cb7fffdc9e3da645c41cb64e93a70ac4ee2c0175a7031f649529498f120b09cc60a07842a43decab597b3e7b2d477df7beb73bc7ab18936e9708196e20e7ccd9b338852c92cc79d8b382e7406d2166555eaceacc606a57eae23cf0c7d321e539463a9f2e3ccfed790376304e8d11577c55f3ff685b1e0cb6c5b50f31082842d05a4a815b08d558af29795e66d09058891024abe1fa4522b02ab9406c50a561351b4dfbc2ec343be6a5655b1d02330cb94ab1207631277d4ca1e2998f2f527b4280a8435a38aecf672aa751bd880ec7d3c06ed5fabe02242d4e3358fd0d92de0da7dff0811d2df8cef11cab429da81befd6fd6d1c79fa39eada0d063f08a9c8a913128c278379e04e669a5b1e77efed14c89940325282f6b069b6aeacb66dbedbda476d357dc751a20283859c6ec72855cc897926e1f006ef9931cb7b020000",
     ],
     [
       "ETag",
-      "CglNUernMqVQImVCg4O0MA==",
+      "6GCtP7SPzpHCAZBy+o8fog==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7871,7 +7768,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:57 GMT",
+      "Thu, 13 May 2021 15:18:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7912,7 +7809,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-52-1620764096226",
+      jobId: "grouparoo-job-52-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -7926,13 +7823,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02ff8554fd4fdb3010fd5732ef1790fa997ea612625dc9b64a90429ac2aa696a6de7520c691c620754a1feefbb381428db408a94d8f7debd77e7731ec9ad484232204cacee72c8369f6f242315029aae70f7a72bd261eba6cfc01d3d2476de0e36f3d9c5d1112244c152749dc6505532cf38a8c16c5a5b65324f6926651513553b76b5d9b51bbd6ebbe1746dbb8b3c0571742a925b645f6b9daa41bdbed3aeada45cc54053a16a5cae9ff7ebf7763dcde40d70adeafb92755451f5f7458f63c9a91632399a4dd140ae205bc09a8a182dbc3043f6653f754dd0756d85e07bc181722ef34417b63005974924567966b292c12331365f7d90a97bea8e026b349979c1c192ae0bf2f2d0a2ca5a2c325079ac2bd6126b8a440c0b112ecb487a6b7df32767184107d754815a5a573f5cdfb55eb696d6a723ebd81a7a27d67e86b167cd3ccf9d06d6c1f1a1f5dd9fccceadaff33d0c5a0f41699118e301653114a69f7a3bfefb440b02d5a85a0617bd469736fb0d8745acc7a37eabc3a20630d667bd0e6db10677dad00e1950e4e922bb61d144268c8521755acce9874e87375afda81386ddb01552e88534b4c1e6c0b8e3906d853c6442c38950a954a26c30b9f2c781bb08fc99371a06ae2923a2d8c493d25c51c46b9f1a8b44d03b756d8ba890a8549cd6d80b5c7f380ac6976e3920a7b0a27c33bdc3118968ac00d134a36bd0909dc9109b46ce27d371309e78c3536498533fdf211419fc7a7c21049bd474599b379906fed8fb6e0cec109734ce0de4befc20c314bd92edb6f2ff3443df1fce519a6619ddbc896139dd7641ff8784c19b55697327d92485da6e6593edef2d3e158217aacc4e2e66ae3f27e5960f116490f08fc707c126f0e17f617749118bd7146594c6350e2b578508cfa01c5ab136764b76b3d3739c2631e04cbf8df5edb6bd3b9d22479111d690e8a78aca4b6a1a558472f50cc220ce9a670e6afb07a7237ab724050000",
+      "000002ff8554fd4fdb3010fd5732ef17d0fa917e37952ad6958c452a292429a89aa6d6719c6048e3603b4c15eaffbe8b43818e0da448897defdd7b773ee711ddb12c422314b2e4bea062fbf99687a886a8c209ecde79a688f22f72bb4d3a4b99dc775b893fbf1c8f01c14a96c49b3ca575c90b41a81c2dfc4622789163c1791d12d57bed7aabdf36ad9665767afd9e053c49d378c6b23b60df2895cb51b3b9d76e249c2729c539930dc237cffbcd87763317fc9612259b87924d5091cdf7454f524eb0623c1b2f7c3050482a567483590a165e9851f8f5307583e14d2301f003231413c28b4c95b62005e159cc9242e8ac68f488b4cd571fc8b767f63430a6f3851b1cadf1a624af8f0d2c8dd54a5059a4aa66aca1a698a574c5a27515c9ef8cefdefc1c22e0e0064b2ad7c6f50fdbb38d97adb5f1696c9c1813f7d438cce0b8c6c2756d3f308e4e8e8d336fbeb830be2d0f30603da252b14c1b0f7098d2d2f4536f9db7275a12b002d52ab81a987ddc1a9a56188703120f3bbd303669180ec3410f774293585dda8d428a81a7caec9a85339e85611461ab135ac3c8ea11b3338c7b51d48f3a11a68308476dda26342496857635f45b30454f99ccb9645583d1b5e704f62af016ee7412d8ba8c1843134f2b736511af7d2a281240efd4b52ba38c8352795a8e1bd8de641a3857763520339a60b2f5ef6144629c4a0a682cf0862a2ace79044d431773df099cb93b9901439ffac51e21d1e8e7e30b21d8e6bacb4abf911f788e7ba60dec1157382d34e4a1fa40931cbca2ddaef6ff3413cf9b2c411a0b81b77fc5a09c7eb7a4ff4342e3f5aab2b9976ca1526dbf6aa3ddaf1d3c350417aaca8e2e17b6b744d59647632a68463e1e1f00ebc087ff85fd25052c5c5390910ad630ac44962244d06a68d946db7d620f071d73803458a837b1eeb0b73f9d324799916e68a69e2aaa2ea96e54192ae4330882306bae3ea8dd1f4915562624050000",
     ],
     [
       "ETag",
-      "XEipA3j8beECwn2u4TyYUQ==",
+      "kR0rdp+syyg3Ysgq41gSOQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -7944,7 +7839,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:58 GMT",
+      "Thu, 13 May 2021 15:18:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -7963,7 +7858,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-52-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-52-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -7982,13 +7877,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "50",
-      "5d",
-      "6b",
-      "c23014fd2f77af2dd4e0ba29f8304799b2225ae7180c9118af5db5eded92d44dc4ffbe9b38868f7b496ecec7e59c9c605fd41be8c3bac83f5bd4c79b1cedcc0d199ab6b486af866a8310005a99b3f2beab9edf46e3f2605e4d2bb379359df5bef3c18015467d6025a17f826d81e5c640fffd04b5ac906dab95f61b59668f8d43c69397e429c918a868e380c9224d1f866902e7e0cad6ecff65599e03d8d13ac32d6aac15ba148da61d2a3b76058dac9a124343ad5668c08b3d916b6a1ba9894246c25b11766211ddc5dda8170b11b3b024256d41356b1773ce0696ac2c33fae27e2058a0fdc855b7fe3c30dcf51ddcd4f1d1ae39f1c709c72d7f170e8f16cd5413a733e8824597908fe4825b2e64758b0128c9bf3c2aece57dfe0178e35358c2010000",
+      "4d",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "fd",
+      "2f",
+      "e3d1368122c49270104525a9a815f060085996692db49db2bbd5340dffddd9c5188e5e7667dfc7e4bd6d619f955b18c2264b0f35aae62245f36a8718759d1bcd5745a546f0008d485999c8eb657417df37efc2844f4bf53cbf3cf4d2d188155a7e622160d8429261bed530fc68a11405b26dbd566e23cb4c5359643a9b4f1e263103056d2d305b44d1cd389ac0d13bb355fb7f5956470f76b489314185a5449ba252b44369a6b6a0164595a3afa956123538b123524575251491cf88df0ffcee20e884ddb0d3eb0ffa210b7392c26454b276f1c6d9c09011794cdfdc0f0216283772d5c49d5f0c5fb90e76eaba68e75cf0c705965bfd2e1c3706f58b224ea7d106eb9c42de920d6eb89051357a2005fff263664eefe30f97a3c679c2010000",
     ],
     [
       "ETag",
-      "84cKXHIlvsVsuaRSmPQ9xg==",
+      "fc8VLDRFyWat9MVrOT+q3g==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8000,7 +7900,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:58 GMT",
+      "Thu, 13 May 2021 15:18:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8018,30 +7918,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "cb",
-      "72",
-      "82",
-      "301400d07fc95a1c29a8d01d0805ab2010a3e82603f4f2a83c6240043afdf73afd84737e509424d0b6b46b6e50a37734466fea3c99ef98a2d32c55b0793096d88e7abfb11a06a5f2f08cfba59db2218122716aa3c471e71179c3fcde90ae82b163e3ddb4a7d83d9741650d8517953c74b0082e76a2ecbbe4eb42d6b52f8d06843847433a51ebe8e087b0709b715169ec14e7d70fbb130f17724acd9b4f7bea9e2d90c976a3fbcf4f76096a92a60b6d6b77fbe0ccf952566a9192a1daa881106a028e7b61c5bcbd2bf7a6e090290ff90d5c3fcc57bb5a5a039a211858c1a1a5c58b2b2d557586feedb41b19bc0274883870f4fb07c273ebcf1a010000",
+      "8b08000000000002ff1dd0db7243400000d07fd9e7c89420f48d90a94b1b62bb212f3b8b951a715dc1caf4df9be9279cf30424cb2863786c2bda8077c089a46fb3add76926be154654da573c4cfe41d3584f6764e17db24a47e911a353013912c59f24b0d0b29f1c1eae3562dd053bb3d773216feef58ccebed584699a93ea103aba2cf37ae85b6bf9fe587bb731c5315dd75d3d15158c6cae869fad9227d8f702125d199166174ff223b2174203278ead5c21dadbd14de0494e441f32b1b92c025d15da08f1392a2438de4703aafa3441b7eef26ec8ea48350af70bf15b6612479c4bb00174e9ca81325cbeb83b45d737e0df8e47ded1578049c94007f0fb07099c46641a010000",
     ],
     [
       "Content-Type",
@@ -8055,7 +7938,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:58 GMT",
+      "Thu, 13 May 2021 15:18:07 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -8074,7 +7957,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -8095,7 +7977,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-53-1620764096226",
+      jobId: "grouparoo-job-53-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8111,12 +7993,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff85536b6f9b3014fd2bc8fbb82610f2208914ad514ad748096981a4daa6091973a16e09a6d8b4aaaafcf75d4cd3b59bd47ec2f63de79e731f3c933b5e24644a629eddd7503d7db915313921a06886afa2f246eed760a74024f7667cf5d33cefef1e673344f08625e9becca123455d3190d36dd0cd2a5197b412a283893ac37ea737b22d6734b02623db1e214f429eae787187ec1ba54a3935cda376371322cb81965c7699d8bfbe9b0fb65956e2169892e67b491355a4f9b1e8b75c30aab82866db000dd412aa08f694e768e12f33894fdfa7ee72baef66087ee00c2863a22e54630b533051a43cab2b9d954c9f89b6f9e6400277e52e428389bcde175141f770622454d1483d95609cfb9bb5b1f4ce37fe7a1e2e375e142c2edcf5bcbbd8acb66b2f30ae2f5cdf35148d73d05c63669cea9b8717d44f402a5e68f5b0796e945f1ab4fc7f2c0d01a525b4c1c8b146b437b626711a3b2c1df787716a411c8f636748fbb1c5260318243150e46951cda28528c6ce6008966347603bfd68900e5934b126fdc87158ecd809b3c736238713f2587105675c9642f2b643e4da5f866e14fa5b6f310f5d5d424aeb5c9db5c69a02de7a545820823ea8e9d044b940a5a6dd4b2f74fdf9225ceedc76c22bc8287b0aee71c629cd25209a56d83c05d55a24d830e2cdd7ee1982f5c42e8f4149a6bf9e49d3f3c6c59b96bfd2431c606357e92f09427fe97dd7768e881dcd6b0d79680fa444cb37581bba3efc46242e699b855c6d5dff07699f7c48a182827d3e4d04ebc0a7ffda71f1118bab8f3252e11d7787c9468455d0ee10d7e5beb07bc3f1646c130daed4bfb149cfee1dbbd6e46832c21e0af55251bbf858682b56cb57100671fc9eeed6e10fd6f25eb478040000",
+      "02ff85546b6f9b3014fd2bc8fbda24e4452052b446295d9112b211d26a9b2664cc85ba054cb1695755f9efbb98a66b55a9fd04f63de79e731ff0446e79999039897976d740fdf8e546c4e48480a219de0681b72a4227995dfe552ab79deb5fd3d2592e1688e02d4bd2a2caa12745533390f3fdae9fd5a2a9682d440f13f5a6e3ded01a99ced031c7536bea204f429eae79798bec6ba52a391f0c8edafd4c882c075a71d967a278b91fdc8f06552d6e802939782b39401539f858f46b2e18555c948bfd0e0d3412ea080aca73b4f09f99c4a76f53f7392dfa1982ef3903ca98684ad5dac2144c9429cf9a5a6725f327a26dbe7a213b77edae428389bc29caa8a4059c18095534528f1518e7c1766378fef936d82c436feb47bbd585bb59f657dbf57ee3ef8cab0b37700d45e31c34d75818a7fae4e301f513908a975a3d6caf5be5e70679efc7d212505a42178c66a64587b6e9c4693c63a93d9ec6a909716cc7b3291dc7267326304962a0c8d3a29a454b510e87636ab261124dc6c9289a58132b72d299154d590af16c36b28139e470421e6aaee08ccb4a48de75885c055ee84661b0f757cbd0d525a4b4c9d55967ac2de0b547850522e8839a0e6d940b546adbedf9a11b2c57a177e976135e4346d9e3ee0e679cd25c02a2698dcd53506f44820d23fe72e39e21584fecfb3128c9fcf713697bdeba78d5f2177a88036ced2afd24bb30f0fc6fdace117149f34643eebb1752a1e56bac0d5d1ffe201297b4cb427eecdde027e9ae0248a186927d3e4d04ebc0a7dfda71f1118bab8f3252e1197787c95684d5d0ed10d7e51ed9b66d5a36d1e05abd8b0d1debd8b536479b110a28d57345dde263a19d58235f40edef64effbba5b877f6f4c7ec378040000",
     ],
     [
       "ETag",
-      "orN6E+SVteodq/bQZ/F3Vw==",
+      "RRICmT9d7Vxttl89hZ5n9A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8128,7 +8009,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:59 GMT",
+      "Thu, 13 May 2021 15:18:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8147,7 +8028,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-53-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-53-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8161,15 +8042,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92dd4e83401085df65bc9426585b54925e50adb509ad95d21b8d69561828edc2e2fe686ad3777716b51a35d11b9819be59ce39b0857551a5e0c343913f1a949b831cf58d2d2254866b45b75a540ac101d42c27323087c30b1e26ab02cdd573d4bd75f39775d0eb11a19225960cfc2d6405f254817fb7858a95486b89e0a6ac164de780ded476388ba3d164487d2952db4fe66118f4c301ec9cfd62ca345b34fc3fd6ee770eacc44384194aac12b45a6a295698e891b5a95859736c296164820a1ab879904b616a268568d1a4d53d6e1d796df7c4ebb8675ebbed11c845c274212a62e733d2075a68c623f14c2ec102b229c970d65c9f685ca48d115b8e26b1d769f47d05485a56705cfc0d92de25a3cff081bd47f09d63a53095de5397e175f0db7194e9e75117413cf841284d49ed9178341ecce2603cb5dcfdbbf7fe46a39a4a41412ab4191eb99dd3ee89e7bec57a2e6cd4f41e5f4b830e248cfe8eab42839f31ae70f70a0fe177f07b020000",
+      "0002ff8d92614f82501486ffcbe92b6c984ac9e60734354bcd10b7b6d6dc150e8a0297eebd98e6fcef9d4b66addaea0b9c7378cee57d5fd8c33ace4270601e2f9e0b14bbb305aa7b5d78288b4449bae53c930806a0620b4dd6bccdb65b79b869ac6f37d66bafe5b78baddb6c12218325a60c9c3d443126a104e7710f194b91d6029e1469362b3b03d42ed7c389eff5473dea531eea7e341d0cdcd6a00307e3b41832c56625ff8fb5a783012b3ef730428159805a4b2ef80a03d5d736254bf3044dc90b11a084122e1f2c042f722638376962d6ab66c53eb71a958655addbf50681090f988a7946ec7442fa4071c5128fbf904bb00910654986a3f2baa1711c964674d91ff976add4f7152069519ce0ec6f90f42e197d860fec18c1778ea5bcc8d489ea0eeedcdf8ea34c3f8fba72fdce0f422a4aea84f8fd6167e2bbc3b1e69e8ede5b3b85722c380529516758b16a97f50bdb7a8fb5cd75d4f41e4789020d0818fd1dd7b102276289c4c31b3545af867b020000",
     ],
     [
       "ETag",
-      "Au+GDlLcjieuHwR5Z0gzkA==",
+      "b4RvxF1XJ9kKv0zGBTCuxA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8181,7 +8058,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:15:59 GMT",
+      "Thu, 13 May 2021 15:18:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8222,7 +8099,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-54-1620764096226",
+      jobId: "grouparoo-job-54-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8234,24 +8111,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "eb",
-      "6e",
-      "da",
-      "30",
-      "147e95ccfbd3aa5c120a2120a18e41d665a2818550544d1338c101b7499cda0e15aa78f79d38a52debd64a48243edfed1cdb794477345da12e0ae8fa3e277cf7f99605a88288c46b58fdb13deb6cfc87dd66e2eecee6c3d0985fdae943af07085ab0044eb2985405cb7948447736adad39cb33cc19ab8250b5d5ac1a66436f9b4dbd63361a26f00489a3114def80bd913213dd7afde05d5b33b68e09cea8a8852c795eaf6f1bf58cb35b124a513fb6ac838ba8bf6f7a11b3104bcad2de6c0a017241f8822498c610e185b90abe1c4bd7284e6a6b006f69487018b23c95452c9008591ad175ce952aea3e2215f3d5039ada237be06b83f1ccf54f963829c8cb530d0b6db1e044e4b1ac684be829a23159d0d5b2ac6477da376f7c051548b0c18288a536ff6e7bb6f6b2b4d43ef5b40badef0eb56305c7d566ae6b4f7dede4e254bbf4c6b389f6f5e60803d15744489aaae03e0e6252847e9aadf376470b0296e05a16176dddc486a577822868879175de0a229d048115b45bf83cd0c34e93345701c1c09385ba62e194a5e78434db4d0b0756d46ee820b032f50e0635cb0c2ccb6c04968189159a685f410f9c4a32a422638296034673cff1ed85efcddc41dfb7551b1186210ecb704513af734a681240eff4b52faa948153b15b8eebdb5e7fe03bd776794046648dc3ddf41e8e48846341008d394e8824fc8aad606868329e3abe3376fb2360a85d9f1c1002757f3dbe10fc5da6a62cd53f9afa9ee35eaa0007c4358e7305d9960f08679015edf795ffcbf43daf7f03d69873bcfbab06ed98cd82fe0f0b85576f65cc83a5810ab7c35b03ed7fefe1574170a14a75f473667b37a85cf248443849c38f8f0f8055e1c3efc2e1920216ae29d80809ef7058435198849c948796262a6ec9365a1d",
-      "cbd0910273f9a6d6691b87dd29340a459290543e75545e5235a8a2948b671014e1acb96aa3f67f0018b1d36224050000",
+      "0000000002ff85547d6f9a4018ff2aecf64f9bf98256114d4ce72ceb582c5ac436ddb2e80107bd1638bc3b5c4ce377dfc351dbda6d6d6222dcf37b7b9ebbe301ddd32c4403e4d3785d10befd78c77c544344e218562f9dab73b6fe7159e0cee6d3f5f7d93ac4ac1f0f8780a0254be0344f485db08207440c16f346cc599163ce581d84eadd4ebd65b4f57eabaf9f748d6e1f788224d18466f7c0be953217836673efdd88198b1382732a1a014b9fd69b9b7633e7ec8e0452340f2d9be0229a6f9b9e262cc092b26cb89843804210be2429a60944786686fee743e906c5692306f086060407012b3259c602898065118d0bae54d1e001a9982f1ed0dc9a58634f1b4f178e77b4c269495e1d6b5868cb2527a248644d5b414f114dc89286abaa92df6b5fdde9055420c12d1644acb4eb6f966b69cf4b2bedc3503bd546ce9976a8603bdac271acb9a71d9d1e6be7ee7431d3bedc1c60207a4884a4990aee613f2165e8c7d9da7fef6849c0125cabe2b2a71bb865ea7d3ff27b41649e74fd4827be6ffabd2e3ef1f5a0df219dd0271878b254572c9cb1ec84904eaf6362df8c7a6d1d044243ef6350330ddf348db66fb630310303ed6ae837a7929c51913341ab01a36bd7f6aca5e72e9cf1c8b3541b1186219e55e1ca265ee694d02480dee86b57562903a772b76cc7b3dcd1d8b3afacea804c488c83ed7c0d4724c2892080c61ca744127ec142181a9a4de7b6674f9dd104186ad7677b8440839f0fcf046f9bab294bf58fe69e6b3be72ac01e718593424136d503c2396445bb5dedff3223d71ddd8035e61c6f5fd5a01da353d2ff61a1f0eaad8ab9b76ca1d26dffd646bb5f3bf8d5105ca84a1d5d2e2cf706554b2e89082759f0fef101b02abcfb5dd85f52c0c235051b21e11d0e6b204a938093ead0d254c57d649ba6d933910273f9bad6d75bddfdee941aa5224949261f3baa2ea91a54592ac413088a70d61cb551bb3f95640a4e24050000",
     ],
     [
       "ETag",
-      "Jv+9hTwyhPNy+WDc1WGEnw==",
+      "QNVGoqZQua4v+WJPqdao9g==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8263,7 +8127,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:00 GMT",
+      "Thu, 13 May 2021 15:18:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8282,7 +8146,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-54-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-54-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8301,20 +8165,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "90",
-      "41",
-      "4f",
+      "dd",
+      "6a",
       "c2",
       "40",
       "10",
-      "85",
-      "ff",
-      "cb",
-      "78",
-      "6d93d24011120e621a45094a917830842cedb416da9dbabb8520e1bf3bbb18c3d1cbeeec9b6f26efed0976a5cc60089bb2f86a511d6f0a34735b24a8dbca68be1a921ac10334a26072100dfaedd3ed7e210ff14bfe5e3ee7dff1fc301a31a1d34fac050c4f909758651a861f2790a2461e5baf95dbc89839365699ccdee2873861a1a6cc0ab3e5747a379ec670f6aec69addbf4656670fb6b4493047853245eba251b4c5d44c6c402deaa6425f53ab52d4e060d72814b58d50443e2b7eafeb77a230e847dd60108561c46045a930254966970bf606868ca8123a703e081950aee4a8b93bf72cf75c86bd03acb5eb5ef4d7ebd8deea77e1f86850bf2a62771aadb1e062f29eac71c3818c6ad18354f02f3f96e6f23eff0080beb40ac2010000",
+      "85df657a9bd0c43601035ed412aa10c4c64aff1059e3248d2699b8bb51447c7767d752bceccdeeec996f8673f604dbb2594304abb2d875288f7705ea5753a4a8ba4a2bbe5a6a148203a845c1e4cc97f3fcfeebf37d320d463b1c87f147521e06032654f683b580e8047989d55a41f47d8246d4c863cba5b41b19d3c7d628e3c95bfc12a72cd4b436c2649e244fc32486b37333d66eff35b2383bb0a1558a394a6c32342e5a491bccf4d80454a26e2b74157532430516b68d4252d70a49e4b2e2068fae1ff6bcbedff71e8230e83358512674490db3f3197b034d5a54291d381ff41890b6e4a8b93df72c0736c3de02c6da6d2ffcebf9a6b7f85d383c6a545349ec4ea131e65d4d3e9331ae3990961d3a9009fee551a9afeff30596d7448fc2010000",
     ],
     [
       "ETag",
-      "9697uJ8vSnwEOfWiKfzEQw==",
+      "S1rUf/ZYWNP5HqeI6EXLiw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8326,7 +8186,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:00 GMT",
+      "Thu, 13 May 2021 15:18:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8344,10 +8204,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -8356,13 +8213,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1dd0516e82300000d0bbf45b0d53a7657f74328353814e0ce187b4b522125a6c2950ccee3eb323bcf7048431ae75deca8a0bf0012c99bb3336fb6e20ca0b1e6e6b4302bc894d901b7d764a39ed2fcadf9f645624f5fe6b3dadb3f3d40f48b3ad84606a5cc27b95b00dca0ea76a77f39d8020f859da1e5a980c1aaf6ca49472867b6d58e21d1086bb8bb0b73a92380e3b334a3ea7d5d50c94a29580e54225e961bc0e5ddaa980ca87657c59ac7f0653f5304850d80a271557223cbe7e2cf25576ec257fa47e7cccbc7447ddbea60a175d7cd7e1a8de324c22074c001f9a52719d972feee2dd7527e0df9eb7b6e1af00c489e20afcfe01ce040f701a010000",
+      "0000000002ff1dd04b7282300000d0bb64ad8e7c85eef8478152448461935188881408e163b0d3bbd7e911defb01973cc7c380c6aec62df800cb855737f9c6258a8ecac2b47398f142b55be746bd95219ad6dfb3edd0a2721fc5416a02df749fcb4b886f44d6845147a491b545a39da15ca538617de8a49eb52be12b39dfa5b2b947c76330b2078cfa64a6bb93716b69700d14a763d533e45ace63a7b4f09fa9782ec47b7d2c8bb9899343638fc1e7c120725425dbf035a90977d2227d0f17d572fc057a22ef9ad8f662cbcfa23df184fdba9c10135167f761aa3ebeb6a1ee9a90cbae6005302315c503aade5c4152d515f8b7a37121f81da0e30bc514fcfe01adfa14d61a010000",
     ],
     [
       "Content-Type",
@@ -8376,7 +8227,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:00 GMT",
+      "Thu, 13 May 2021 15:18:09 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -8395,7 +8246,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -8416,7 +8266,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-55-1620764096226",
+      jobId: "grouparoo-job-55-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8433,24 +8283,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2b",
-      "c8",
-      "7b",
-      "6d0249130291a2354ae98a94908d9056d33421e35c885bc0149b545595ffbe8b69ba5695da276cdf73ee39f7836772cfcb1d999284670f0dd44fdfee4442ce08289ae1eb9df95814c9fe7e5cedcf2b5879d92853ec713643046f599216550e3d299a9a819c6e37fdac164d456b217a98a8371ef706f6d09ad823cbb587431b7912f274c9cb7b64ef95aae4d4344fdafd4c882c075a71d967a2787d370f43b3aac51d3025cdf79226aa48f373d1efb960547151ceb61b34d048a8632828cfd1c27fe62eb9789fbacf69d1cf107ce00c2863a229556b0b533051a63c6b6a9d954c9f89b6f9e64036ded25b44061379539471490b38337654d1583d55605c85eb95e10757eb70358ffc75106f16d7de6ade5fac97db55b0316eafbdd033144d72d05c63665ce85b8017d4df8154bcd4ea51fbdc2abf34c8ff38969680d212ba603cb16c3a702c374993094b9df371925a90244e3219d3f3c462ee0846bb0428f2b4a866d1126b1e38eed849693c485c2b1e4d864eec308bc5cec8b62cd7da8d310d399e91c79a2bb8e4b21292771d22b7a11f7971146e83c53cf27409296d7275d9196b0b78eb51618108faa4a6631be50295da76fb41e485f345e4df78dd84979051f6b479c019a7349780685a63f314d42bb1c3869160bef22e11ac27f6f3149464fae799b43d6f5dbc69f92b3dc201b67695fe924d14fac10f6de784b8a179a32187ee402ab4bcc7dad0f5f12f227149bb2ce4d7d60b7f93ee2984146a28d9d7d344b00e7cf9af9d161fb1b8fa282315de7177986c45580ddd0e715dee0b7b605b23774234b8561f62",
-      "137778ea5a9ba3cd080594eaa5a26ef1b1d04eac91af200ce2f803ddade33fd3b54a7d78040000",
+      "ff85535d6fda3014fd2b91f75a2001020409ad88a66b24086b08ada6698a6c7393ba0d711a3b4c55c57fdf8d53ba5695daa7d8bee7dc73ee479ec9832876644a98c81e6ba89ebedd4b46ce08689ae1eb4d05c1f6dea571c14a7ba1afa234d077d7b3192244c352745fe6d051b2ae38a8e976d3cd2a5997b492b283893aaedb71467ddb733c7be08e5c0f790af274298a0764df695daa69af77d2ee66526639d052a82e97fbd7f7dea1df2b2b790f5cabde7bc91eaaa8dee7a2df73c9a916b2986d3768a0565025b0a722470bff993b76fe3e7557d07d3743f04170a09ccbbad08d2d4cc165918aacae4c56327d26c6e69b03d9f84b7f115b5ce6f5be480aba87336b47354df45309d665b45e594178b98e56f3385887c96671e5afe6ddc57ab95d851bebf6ca8f7c4b539683e15a33ebdcdc42bca0fe0e941685518f9be746f9a541c1c7b134049456d00693b13da2cec4f658cac63c9d0c5c96dac0d8848d5d3a6036f78630dc31a0c833a286450bacb9cfbc31676962bbe3413274683fa15edf4d6c98385eea8c1c67ccc9f18cfcad84860ba14aa944db21721b05b19fc4d1365ccc63df9490d23ad717adb1a680b71e351688a04f6a3a36512151a9697710c67e345fc4c18ddf4e780919e54f9b479c714a730588a615364f43b5923b6c1809e72bff02c166623f4f4145a6bf9f49d3f3c6c59b96bfd2631c6063579b2fd9c45110fe30764e881b9ad70672680fa444cb77581bba3efe41242e699b855c6ffde817699f2248a182827f3d4d049bc097ffda69f1118bab8f324ae31d7787ab468457d0ee9030e59ed813cfed0f890157fa436c32724f5d6b723419610f857ea9a85d7c2cb415abd52b088338fed074ebf80f62f2d05b78040000",
     ],
     [
       "ETag",
-      "j/wmmbhk5ph3peMEg4gtcw==",
+      "VreIUj5aTnbp0CtHRfIthQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8462,7 +8299,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:00 GMT",
+      "Thu, 13 May 2021 15:18:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8481,7 +8318,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-55-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-55-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8499,11 +8336,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "8d",
-      "92416f82401085ffcbf48aa91ac196c403b66a49905ac45363cc0a036281a5bb4b1b62fcef9da5d6366d93f60233c337cb7b0f0ef0949531d8b0cdd2e71a457391a27ad04580b2ce95a45bc54b8960002a9612d94c9b593a0c7a95ef14f5a5796545d9c27746232264b4c382817d8024c33c96603f1ea06405d25ac4f3ba28376d67806a2a3d5c8681ebcfa82f78ac7b7fe579ced89bc0d1382fc64cb14dcbff636d7d3460cfb7012628b08c506ba904df63a45c6d53b2a2cab123792d2294d0c2ed8354f0ba6282f30e4d3aa6d9e959fdeed01a74afad7edf2230e71153192f895d2d491f28ae581ef05772091a106d498693f6fa42e32c6e8de8d2f5436bd0eafb0a90b424cb71f337487a778c3ec307768ae03bc70a5e97ea4c4dbd7be7b7e328d3cfa36e9d70f283908a923a23a13b9f2c4367bed0dcfae47ddc28940bc12948893ac35e7770650eadee7bac375c474defb195a8d18088d1df719729b013964b3cbe01f43b95f47b020000",
+      "92",
+      "dd",
+      "4e",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "df",
+      "65",
+      "bc",
+      "6d13105ba5091745418905f92989c610b2b453286cbb6577ab21847777b6221a35d19b7666facdf69cd3ee6193e63178b04897db12e5ee6c897a648a31aa926b45b742e40ac102d46c4964516e9ed6d37677d8481632dd6d0be7d1bd1fb55a44a8688519036f0f498a3c56e03def216719d25a247899e5f3aab340ef0a339c84e3dee096fa4cc4a61f4c83c06f071d3858a7c5986936aff87faccd0e16acc5628c094acc23345a0a29d618e99eb1a9585670b4952865840a2ab87ab094a22c9814c2a689ed3876dd3daf35ebcd5ac3719d26815c444ca72227763a217da085667c2c5ec925b804c8aa24c349757da1711a57464cd91b84ee45a5ef2b40d29294e3fc6f90f4ae187d860fec18c1778e65a2ccf589ea060ffe6fc751a69f47ddf861e707a134257542c25ebf3309fdfed070b3a3f7f64ea31a4a41412a3419d66b1757cea55b7b8ff55a98a8e93d9e96255a1031fa3bee520d5ec2b8c2c31b280831747b020000",
     ],
     [
       "ETag",
-      "yFyGg7R1pNAmu/586ciPNA==",
+      "pukYjUBFP3fbriyqp5X6KQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8515,7 +8362,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:01 GMT",
+      "Thu, 13 May 2021 15:18:10 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8556,7 +8403,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-56-1620764096226",
+      jobId: "grouparoo-job-56-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8567,11 +8414,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff8554fd4fa34010fd57b8bd5f34e907a5a55f49e3f55af49a54aa946a9acba55d60a8abc022bbe835a6fffbcd82d57ade694202bbf3de9b37b3b33c913b9604a44f3cb6b9cf21db7ebde51ea910907483bb10c797b33c6c73fe7b9988f3f4d4f296e3c7c100114cb1048dd308aa82e7990fa2bf98d73619cf539a715e45a1aad9ae36da86de69b7f45edb30dac81310855396dc21fb46ca54f4ebf57deeda86f34d043465a2e6f3f865bffe60d4d38cdf822f45fd6dca3a6611f58f939e44dca792f164b098a3815c40b68298b2082dbc3203efdb5be91aa3716d83e007e603f57d9e2752d942099f2721dbe459a14afa4fa4b079f041e6d6d41ab9da68b6b0dda3358d15797dac51a1ad5619883c92156d8d35852c82150bd66524bdd34e9dd93946d0c10d1520d6daf50fcbb1346d1d50096bedcb403bd186f6587bcb9ed8dac2b6adb9ab1d9d1c6b67ce6c71a17d5fbec1a0ed0084644961daa55e04caf0735f27ef4f5311a844136570d5d1dbb4d1d57b5ee875fcb0db34bd5007cfeb7a1d93363dddefb5a01578409127957ac1a2094f8cae6906a1d9ecf420d09bd06c34bd86e9e941c70fa0d5f21bcd100c9d9a0db2ab90c78c4918339172c1cae6926b67e25a2bd759d8a3a16b156584141b382ecda9220e7d4a2c12411fd4b55351c631933aa989ed5ace70e44eaeac7238a6b0a1fe767e8fe311d24800a269466390909df3009b462e66f3893b99d9c329328a13bfd82304e9ff7c7a25b8dbb4e8b22cde64ac0ad81d085ed1282f000fe507317443afea46b56192ddaef27fa5a1e30c97989d6619ddfe15c38ada2d45ff479e025fac4aa7fbbcaaf9072ec8eed70e9f0ac1fb54aa93cb85e52c49b9e540081924fee71384e022f0e96f617f47118bb714d308896b9c575fa8247e06e5dcb2b8b05bb2d50be7a60067f25dacd931f607a4349422c490c8e78aca3b5a344a8572f102c2208e9b3db1cf30fa0748ab755823050000",
+      "00",
+      "00",
+      "00",
+      "000002ff8554fd539b4010fd57e8f5179dc9078490af998c4d152d35122544eb743ac9712c784ab8c81db6a993ffbd0bf815dbea4c6602b7efed7bbbb7cb3db9e169480624e0f16d0ed9fae3b508488d80a2319e76cddf5f27bfbe45f2e4f8d8b20fe3b32e3b8b46c3212278c19274b94aa02e459e319083d9b41167225fd14c883a26aa5b9dbad169e97da3af9b56c7ea234f42128d797a83ec2ba55672d06c3e6a376221e204e88acb0613cba7f3e65dabb9cac43530259bdb924d5491cdb745f712c1a8e2221dcea668209790cd61497982169e9961f0693b7583d3652346f01d6740191379aa0a5b98828934e2719e9559c9e09e94365f3c90a93db6f77d6d7f3273fd9d055d16e4c5ae46a5369f6720f344d5b405d614f104e63c5c5491d58d76e84d4e30820eaea804b9d02ebed89ead698b902a58681f86da9e36720fb46db6e36a33d7b5a7beb6b3b7ab1d7993d9a9f6f9720b83b643908aa7a5699f060914861ffaeafc7d9b05812a345105e75dbd438d9ede0fa2a0cba29e6905910e41d00bba1635039df5dbd00e03a0c85345f692455391b67a96154696d9ed43a89b601a666058811e765908ed3633cc085a3ab50cb2a9919f195770c0e54a485e35975c788e6fcf7d6fe6ee8f7cbb2c23a2d8c083ca5c51c44b9f0a8b44d01b756d8a2817a854dc94e3fab637daf79d73bb1a8e31c494ada7b7381e114d24209a6674090ab2131162d3c8e964eaf8cec41d8d9151def8e9234292c1f7fb6782bf5e955d56e53f39280ad8bc48784e93bc04dc550fa4a5b7f4badeaa1b16d96c6affcf34f2bcd125aad32ca3eb5731aca8d32ee8ffd029f1e55be5f451b768fe0b1764f36383bf1ac17daab293b399ed5d92eac883083248d9fb1384e032f0ee67e17147118b5b8a3252e13bce2b938508cba09a5bbe2ced3eb0fb7aaf6b91129ca9d731c3c499aa3def6691119690aa878aaa1d2d1b558472f904c2208e9bebb84718fd032e6cfe7923050000",
     ],
     [
       "ETag",
-      "emmQOuf6ooxYnsMpFEbYDw==",
+      "73zJOxXfsMKK5EFgQ7cQfA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8583,7 +8433,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:02 GMT",
+      "Thu, 13 May 2021 15:18:11 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8602,7 +8452,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-56-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-56-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8611,21 +8461,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "4f6fc2300cc5bf8b775c2b41358a40e200036d8c0a6d1d3d218442714be91f67490a4288ef3e27ecb0c30ebb24cef3cfd67bb94259347b18c2aec8bf5a5497871ccd872d62d46d65345f921a8de0011a9133991f26fdc7a9a472952c166fd34a0ca8398f472326747ac05ac0f00a5981d55ec3707d8546d4c863dbad721b1933176995f972357b99c52cd4b4b7c23289a2f1249ac1cdfb3526cb7f8d6c6e1e1c691763860a9b14ad0ba9e888a999db805ad4b2425f53ab52d4e060d7c815b55228229f15bf17fadd30e8f4c3a7ce200c8290c18a52610a6a984d3ed91b1832a28ae9ccf9206040b992a366ee3cb1dc73194e0eb0d6feee756d6ff3b3707231a8df15b13b8dd658e76ef299ac71c3818c6ad18354f02fbf16e6febe7d03a39ec66cc2010000",
+      "08000000000002ff8d904f4fc24010c5bfcb78b44d0ada1a483888a90543885489898690a54c6ba1edd4fd0321a4dfddd9c583070f5e7667dffc66f2de9e615f365b18c2a62cbe0ccad355817a618b1495a9b4e2aba5462178805a144c0673612626c145f4747d7b878bb7f7e4f0781c8d9850d927d6028667c84bacb60a861f6768448d3cb65e4bb791317d6aad329dbfc6499cb250d3d60af3e56c763f9ec5d079bfc6dafdbf46569d073bdaa498a3c42643eba295b4c34c4f6d4025eab6425f9191192a70b06b14924c2b2491cf8a1f467e2fea0783de20b809a370c0604599d02535cc2e5fd81b68d2a24ae9c8f9a0cf80742547cddd79603974190e0eb0d6feeef56c6ff5b3707cd2a89e25b13b85d6587031f940d6b8e6405a1af42013fccb93525fdedd37225e0d25c2010000",
     ],
     [
       "ETag",
-      "ghB7+DpokTUKKJDla9onwA==",
+      "0NauHuGeQ6J+47eQWZGvFw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8637,7 +8477,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:03 GMT",
+      "Thu, 13 May 2021 15:18:11 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8655,10 +8495,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -8668,7 +8505,19 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff1dd04b7282300000d0bb646d1d4590a43b13c8a844ab1dd1c286811015f9c5846f3bbd7b9d1ee1bd1f10732eb48e9a3a17157807636ca0299f7a12e2e8764ddbab43b5db6fb6bb9eb02c11d6f8d5d9f7e51a8551c756adbe0fa5bf6a0b775bd1656dc0e2e409ff31e763dde1c38ccd38363a7d3bacc3c3f35ea7a8de8b92f90896193693232de0e5a9fa2a86b49eab6fef03138189bd7e1b501ef844e59eb3646ed9709a37d24a76ce2d44ad64bd8907339405e9ede7455bfc735cc8874eb3997fa64e4156fb0a0e2ac84d483776726686f9e8905f34013e6ec8094c801864a6848eb2177761213401fff6a819a5780560112ba1c0ef1f2f6ad6971a010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00d0bb64ad0e4544d29d54050105fc64c44d0642204ac5107e814eef5ea74778ef07c484d0bac6cdaba025f80443acc21999b9dc30714e2c2d9c16e1ca714dc750f90d695f07db1af4936606b227a575390e6db9bb25d9e1a521a342f596fa6e6567468af657d4666c4c37575b89d683751ee935f184f84070cdf7c9c982bd1c227c621d7fe8aefbc8f96e85f79b65d57e17081f75c15a2f3a17b1af3841984311bcbc5b44db5a9684ddd9f8f4bb8e2d54ec2d64b5e687a7dc6e61952685ba9465368d1ea4d772bfef143ce6ac992bce6579de293a07134025bf0b5ae3fb9b3b5f403801ff76dc0c9cbe034c1a0b2ac0ef1fc9374b351a010000",
     ],
     [
       "Content-Type",
@@ -8682,7 +8531,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:03 GMT",
+      "Thu, 13 May 2021 15:18:11 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -8701,7 +8550,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -8722,7 +8570,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-57-1620764096226",
+      jobId: "grouparoo-job-57-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8740,11 +8588,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "85535d4fa34014fd2b64f6716da19552daa4596b8b2bd996ae946acc664386e905472983cce0c635fdef7b19acab31d12766e69e73cfb91f3c913b5e6cc998243cbbafa17afc722b12724440d10c5fab1fa7d7c129bb4fce2b77f6d7b7adaf77cefc623241046f5892eeca1c3a52d4150339deacbb5925ea9256427430516730ecf49cbe35746c6be4f4fb0ef224e4e9821777c8be51aa9463d33c68773321b21c68c9659789ddcbbbf9d037cb4adc0253d27c2b69a28a343f16fd960b461517c564b34603b5842a861de5395af8cfdc26276f537739dd7533043f700694315117aab185299828529ed595ce4ac64f44db7c75206b6fe1cd228389bcde1571417770646ca9a2b17a2cc1380b574bc30fce56e1721af9ab205ecfcebde5b43b5b2d36cb606d5c9d7ba167289ae4a0b9c6c438d1b7002fa8bf05a978a1d5a3e6b9517e6e90ff7e2c0d01a525b4c1786839b4e75aa3244d862c758f07496a4192b8c970408f138b8d6cb0b70950e46951cda285285c7b9432cbedc7f6b69fc4b6d373e3d1c06531751c1b860e00a436d91f913f155730e7b21492b71d2257a11f7971146e82d934f2740929ad73356f8d3505bcf6a8b040047d50d3be8972814a4dbbfd20f2c2e92cf22fbd76c20bc8287b5cdfe38c539a4b4034adb0790aaaa5d862c348305d7a7304eb89fd3c042519ff7a224dcf1b17af5afe428f70808d5da5bf641d857ef05ddb39202e695e6bc8437b20255abec1dad0f5fe37227149db2ce462e385d7a47d0a21850a0af6f93411ac039ffe6b87c5472cae3eca488577dc1d261b115641bb435c97fbccee39c783418f6870a5dec55c7b70e85a93a3c9083b28d47345ede263a1ad582d5f4018c4f107ba5bfb7ffe71f68678040000",
+      "85",
+      "53",
+      "6b",
+      "6f",
+      "9b",
+      "3014fd2bc8fbb82690070422456b94d03552425620adba6942b631d41dc1149b765595ffbe8b69ba5695da4fd8bee7dc73ee8327f48797299a22c2f3bb86d58f5f6e05412788299cc3eba5bcbeb2cb7373f9d7fe5a35c5c35d4ed73f2f663340f09625f1be2a584f8aa6a64c4e77513faf4553e15a881e24ead993dec0195adec0b346b6637bc093acc8d6bcfc03ec1ba52a3935cda3763f17222f18aeb8ec53b17f7937ef8766558b5b469534df4a9aa022cd8f45bf158262c54539db4560a091ac4ed81ef3022cfc67a6e4f46dea3ec7fb7e0ee07b4e19a65434a56a6d410a2aca8ce74dadb3a2e913d2365f1d50e4affd456c505134fb3229f19e9d18295638518f1533cec2edc6580567db70338f57db208916e7fe66de5f6cd7bb4d101957e77ee81b0a938269ae31334ef52d800be8a74c2a5e6af5b87d6e959f1bb47a3f969600d29275c164623978e05a1ec9c88466eec82699c50871c9c4c62362516fccc6296118785a54b370294a32a62332c8acc41bb95932b627a3c465433771b1e70c0713ec3829418713f45073c5965c5642f2ae43e82a5cc57e1287bb60318f7d5d42869b422d3b636d01af3d2a2810401fd47468a35c8052dbee5510fbe17c11af2efd6ec26b9663fa18ddc18c335c4806685c43f314ab37228586a160bef19700d613fb710c4a34fdf584da9eb72e5eb5fc851ec3005bbb4a7f511487abe0bbb673445ce2a2d190fbee802ab07c03b581ebc36f40c2927659d0c5ce0faf51f714b28cd5aca49f4f13c03af0e9bf765c7cc0c2ea838c547087dda1b215a135eb7688eb728f6c6f68d90ed2e05abd8b8d2ce7d8b536479b91ed59a99e2bea161f0aedc41af90282208c3fd0dd3afc037904c22c78040000",
     ],
     [
       "ETag",
-      "rKBYNBcqbHr8CzI40+k6DQ==",
+      "VsYW5nH/Dx5+pulwqgcLZQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8756,7 +8609,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:03 GMT",
+      "Thu, 13 May 2021 15:18:12 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8775,7 +8628,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-57-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-57-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8794,13 +8647,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "41",
-      "4f",
-      "c2401085ffcb786d132058b4898722084d1011ca418d214b3b8562bb5377b71842f8efce5645a3267a6967a6df6cdf7bed1e9e3299800fcb6cf55ca1da9dacd0dcda628abaca8de65b495223388046ac980cee77dedd7030d03d895b195697e7090d5e2e2e98d0f11a0b01fe1ed20cf34483ffb007290ae4b598f2aa908bba73c0ec4a3b9c45d3703ce0bea0c4f6e3f9681474477d3838c7c54418b1a8f97fac3d1e1cd8d0728a292a94315a2da5a20dc626b436b528ca1c5d4d958a51430dd70f568aaa5228229727ee69c76d7aad46c76b37cebd56cb6330a758988c24b3f319eb034346e4537a6197600155976c38adaf5b1e67496dc496e138f2dab5beaf004b4bb31c177f83ac772df8337c60ef117ce74441953447ea6a7413fc761c67fa79542f88fa3f086d38a9231285d7fd59145c4f2cf7f8eebdbb33a8278a38488d36c366a37d76daf11a6fb15e928d9adfe31b55a103b1e0bf639819f053916b3cbc0282257ac67b020000",
+      "61",
+      "5382401086ffcbf55198c1144a66fc8065c684a688ce348de39cb020061cdd1d39e6f8dfdb23b3a69aa92fc7eef2ecf2eecbedc9535a44c426ab3479ae80efce12901315f820aa4c0a7c94ac104034029226485a775673366f3cb4e683d630705e1b51633b9974bb4888700d3925f69ec429649120f6e39e1434076c0b5956e5c5b2ce342277a52a4e03df1d0d30cf59a4f2d1ccf39c9ed72707edd41851499735ff8fb6c541231bb6f221060e45084a4bc9d90642e9aa3505cdcb0c74c12a1e8220355cbf4838ab4aca19d3b1a29b177ad33a373acd8ed1322db38360c6422a5356203b9ba23e2299a499cfb642798200af435c38aecf172ca751bd880add5160b56b7d5f019416a7192cff0651ef9ae26ff8c08e167ce768ceaa429ea81befdef96d1c7afa39eada09fa3f0821d1a91312b8c3fe34708663c52d8ebbf77612c49833345280f2b069b42fcd0bcb78b7f58a29abf13bb6e4156824a4783b6e5349ec9866020e6f251bad957b020000",
     ],
     [
       "ETag",
-      "AZy6YHGGsDnevnIuC9doGw==",
+      "6K61UV+Y3VG3MTAz+d+wQQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8812,7 +8664,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:04 GMT",
+      "Thu, 13 May 2021 15:18:13 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8853,7 +8705,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-58-1620764096226",
+      jobId: "grouparoo-job-58-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -8863,11 +8715,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08000000000002ff85546b6f9b4010fc2bf4fa2591fc00cccb96acd475688bea6007e3444955d97770389700e77047222bf27fef02711e4d9b48960c3733bbb37bbb3ca01b96c76880085bdf96b4d87ebee604b51095780da7f6cf7471716fa6bc9f9c8eedcbd4f2eeaec6f7c3213058a51238dba4b42d785944540c16f3cebae0e506179cb72150db74da9aa5abb665a87d4bd72dd0099a261396df80fa4aca8d1874bbfbdc9d35e7eb94e20d139d88674fe7dd3bbdbb29f8358da4e8be4ed9852ca2fb7ed2a3944758329e0f177330500a5a2c6986590a169e9531f9f23a7487e1acb306f21d8b288e225ee6b2b20521229e276c5d167554347840b5cd170f68ee4edc71a88ca70b3f3c58e1ac12af0e152c94e5b2a0a24c654b59414d094be992c5ab06d9dc28df82e90920e0e00a0b2a56caf90f377015652524b85b299f86ca9132f28f95d772cf5716beefce43e5e0e850f91e4c1733e5ebc52b0ef88ea9902caf5d8798a4b472fcd858efed7556022cc145032e6dd5c29aa3f64942ec28717a2649544a88436c13f7881af50d6ac48462d0c92a7aadc239cfe3d8d04cbb6f6bb86f3831767a16e96bc4504dc7ec39a447f45823766262b46ba1fb82497accc4860bd674179d075ee82ec360e18f47a15b979160e8e07163ae2ae2a54f094502e99dba7615ca3864aaaecaf34337188d43efcc6da66342d738dace6f613e129c0a0a6c5ce08c4a5a9cf0189a8666d3b9177a537f3401457de5b33d43a0c1af876741b8ddd45d96f53f0abd13b8a3d1c9acf6b0279de1b4ac5977cd03d2555d6dab7a5b33434d1f68bd8166745455bd44bb5debffc1474130ba0043b828f0f62f0c8ab48c4afe8fac35bf7e6bccef5d68a8caf6e409ed7eefe0d742b0634d7474ba70830bd41c0534a105cda38f870ac835f0e1a762bfb7c085cd8534b00392c10847a24a1215b4196596d5761bb566194ef3a191b8906f3098c2fd9d5531aa8834a3b97caca8d9dbba5115548a2712803081bee77f07f40f224a6a5c37050000",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "547f6fa24010fd2adcde3f6de20f505031313d6bb91e39458bd8a677b9e82e2c762bb0945dda338ddffd06a86dbddeb50909b8efbd9937b3333ea20d4b02d44784adef729a6d3fdf72826a884abc86d3dfd3a1669c27ce26b4bf8f6e160f34bd3d4d2f060360b04225709c46b42e789ef954f417f3c63ae3798a33ceeb10a86ef4ea5aa7a59a9aa9b68d8e61824ed0281cb36403ea1b2953d16f36f7b91b6bced711c529130d9fc7cfe7cdfb5633cdf82df5a5681ea66c4216d17c3fe949c47d2c194f068b3918c805cd9634c62c020b2fca807c390cdd60386eac817ccf7c8a7d9fe7892c6c41089f27215be7591915f51f5169f3d5079a5b636be429a3e9c2f18e56382ec4ab63050b65b9cca8c8235953565053c822ba64c1aa42d28df2d59d4e000107375850b152aebe59aea5282b21c1dd4af934504e94a173a61cca6d4759388e35f794a39363e5dc9d2e66cae9f501077c0754489694ae3d4c225a387e6aacfdf63a0b0196e0a202975db583b59e6a929074fdb0d73648a852427aa46be036517d53a77a4028069d2ca2972a9cf0240874cde89a5d0d9b7a2fc0bd7687981ad155a367b47ba44d5a8146baa181d1ae861e3226e919132917acea2eba726dcf5a7aeec2190d3dab2c23c4d0c1b3ca5c51c46b9f128a04d23b75ed0a9471c8545c95ed78963b1c79f6a5554dc798aeb1bf9ddfc17c84381214d838c33195349bf0009a8666d3b9edd9536738064579e5b33d43a0fecfc71781b74dcb2ecbf28d3c7b0277349ccc4a0f7bd2258ef292755f7da096da52eb6aabae199ed6ea6bedbea6375455fd8176bbdaff830f5d77780d867096e1ed5f1814d9d10bf93fb296fcf257657eef424345b6674f68f76b074f0dc18e55d1d1c5c272af5175e4d2906634f13f1e2a2097c0877f15fbbd052e6c2ea4811d900c46d81745123fa3d528b3b8b4fba436db86de412539936fb0aeaeeeefac885144a4314de45345d5de968d2aa05c3c93008409746ce71c",
+      "d03f070edd4237050000",
     ],
     [
       "ETag",
-      "7KlUYw5lo9fQC7Zl6IvhCw==",
+      "xOA15GnNkfIKChUwepjBpQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8879,7 +8741,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:05 GMT",
+      "Thu, 13 May 2021 15:18:13 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8898,7 +8760,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-58-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-58-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -8907,28 +8769,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "4f",
-      "4f",
-      "c2",
-      "40",
-      "10",
-      "c5",
-      "bf",
-      "cb786d6369a46a130e60409b140255f4600859cab496fe99babbc53484efeeece2c183072fbbb36f7e33796f4f5016cd1e42d815f96787b2bfca51af4c91a0ea2aadf86aa951080ea0163993af112d67917cc372b7cacad975335fcbf978346242a51f580b084f901558ed1584ef2768448d3cb6dd4abb9131ddb74689162fd3c769c2424d7b232cd6713c9ec453383bbfc6daf25f239bb30307da2598a1c42645e3a29574c0544726a012755ba1aba893292ab0b06de492ba56482297157778e70e02dfbb0d6ebcfbc0f703062b4a852ea86176fdccde40931655425f9c0f7c06a42d396a66cf23cb439be1680163edefdec0f4363f0b27bd46b594c4ee141a63dec5e40319e39a0369d9a103a9e05f7e2af4e57dfe0652ffea28c2010000",
+      "08000000000002ff8d90414fc2401085ffcb78b44d5ab00448388041c110d42a2743c8b20cb5d076eaee142584ffeeece2c183072fbbb36fbe99bcb727d8e7d506fab0ceb38f06cdf12a437e76458ab629d8ca555365110240569990cf193f60947d4dae1ff33bddeeb6e2fde86638180861f53b960afa27d8e6586c2cf4df4e50a912656cb5327ea3607cac9d329dbf8eefc7a908256d9c305fcc66c3d16c0ce7e0d758bdffd7c8f21cc08ed6296ed160a5d1b9a80ded50f3d405b4aaac0b0c2d3546a3050ffb4666a8a995210a4509936e18775a512fee45eda493f4042c482bcea91276f122de80895591d2a7e4839600c6971275ebcf83c889cf70f080b3f6772f76bde5cfc2d191d13e191277169db1e862f2969c7196406c1a0c402bf9e549ce97f7f91b3365a6fdc2010000",
     ],
     [
       "ETag",
-      "VIoPFIrWekbQfkF/nMUrMA==",
+      "QgtJe0gxH+OiFc3821kB4A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -8940,7 +8785,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:05 GMT",
+      "Thu, 13 May 2021 15:18:14 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -8958,10 +8803,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -8971,12 +8813,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1dd05b7282301840e1bde4591d291548dfb8e824a6057440b02f9934fdd118c5948b153add7b9deee07ce7070929a16d7977d550a3173488273c933366bc801faa283806ade584e6c24ee6433476f6e917cb57eae9bcef635d5f7aed3372b6eb39658667e5d756b36835ddb8bc004fae13801a4730ee16893ae73c9419f723f66d2d8fe4de4412ac18cfb5aac4750cb6efa338a84c12707625edf2363839ca75f12659d8dd34f5705e72672049087325e8fd12a98c6a19e7fbdb7ee95ad3f4c0d6e2449bc26892c79da50da32908d1bf5596533e939579549b5b8a2608ee4635d072f5e0da0b8c27e8dfcebbc1c0634000a28106fdfe0182c09bc01a010000",
+      "00000002ff1dd0db6e82300000d07fe9b318eb40cbdeb88d056c8bd7082f0d966294151ad0d1b2ecdf67f609e7fc809273310cecd135a205efc0944b77cee7a9423ebb56e71a228599ae53398a45f794d3aedf9af5847c35258628ba78a045b35d617b0aa0e41b4bb5b861471287907bbb3442f2792103b1ba5c7a31aaa8ffe9d3954f5d5f5e0839c00f127221e2b246d998e7ce97577443aee1d884869d0ec3194f99bdf7f446c368d57c17511ea789d4c1c52a4c7614665c9b0426912dcb02d7f6c9614b17063a6ea9c25566f02dbcef55cbafd53dba5b94a6c8a90a300342ab5b2f06767b71df1cd79d817f3b7b18255e01be287bd183df3f0c4fb4e51a010000",
     ],
     [
       "Content-Type",
@@ -8990,7 +8827,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:05 GMT",
+      "Thu, 13 May 2021 15:18:14 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -9009,7 +8846,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -9030,7 +8866,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-59-1620764096226",
+      jobId: "grouparoo-job-59-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -9042,21 +8878,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b3014fd2bc8fbda2424e191448ad628a51d5a423620eda66942c6b950b704536c5a5555fefb2ea6e95a556abf00f63de79e731f3c915b5eeec88ca43cbf6ba07efc722352724240d11c6fc7d1f798f25fac629bdb617e99c9ba762f1ee67344f09625e9be2aa02745533390b36dd4cf6bd154b416a287897af6b4377446a6eb58e6d4198d1ce44928b2152f6f917dad54256783c151bb9f0b9117402b2efb4cec5fee07f7a341558b1b604a0ede4a0e50450e3e16fd5a08461517e57c1ba18146429dc09ef2022dfc67eed2d3b7a9fb9ceefb3982ef3903ca98684ad5dac2144c9419cf9b5a6725b327a26dbefa2091b7f296b1c144d1eccba4a47b38317654d1443d56609c879bb5e107e79b70bd88fd4d9044cb6fde7ad15f6e56db75101957dfbcd033144d0bd05c636e9cea538007d4df8154bcd4ea717bdd2a3f37c87f3f969680d212ba60e29a0e1d4ecc699aa52ecb26633bcd4c48d349eada749c9a6c6a81b54b81224f8b6a162d45e9da63970e0112db657662517c4c2c6626cc86d435ad298033228713f2507305675c5642f2ae43e42af4632f89c36db05cc49e2e21a34da1ce3a636d01af3d2a2c10411fd47468a35ca052db6e3f88bd70b18cfd4baf9bf00a72ca1ea33b9c71460b0988a635364f41bd163b6c1809166bef0cc17a623f8e4149667f9e48dbf3d6c5ab96bfd0631c606b57e93789e2d00f2eb49d23e292168d86dc771fa442cbd7581bba3efc45242e699785fcdc7ae16fd25d8590410d25fb7c9a08d6814fffb5e3e22316571f65a4c233ee0e93ad08aba1db21aecb7d660f1ddbb2c644836bf52e663b9363d7da1c6d46d843a99e2bea161f0bedc41af902c2208e3fd0dd3afc037a98bbde78040000",
+      "0000000002ff85536b4fa34014fd2b64f6ab6da9945a9a346b5371ad69e92e0fdd473664182e384a1964064d63fadff732585763a29f98997bce3de73e782277bc4cc994243cbf6fa0de7db915093922a0688eafd7d15d7ee95f8643f99b2d86bb88a682fdcc673344f09625e9b62aa02745533390d328e8e7b5682a5a0bd1c3443ddbe90dc7c7a633744ccb1edb0ef22414d98a9777c8be51aa92d3c1e0a0ddcf85c80ba015977d26b62fef8387e341558b5b604a0ede4a0e50450e3e16fd5a08461517e52c0ad04023a18e614b798116fe33d3e4f46dea3ea7db7e8ee007ce8032269a52b5b630051365c6f3a6d659c9f489689baf0e247057ee223498289a6d1997740b47464a158dd5ae02e3dcdfac8da577bef1d7f370b9f1e26071e1aee7fdc56615adbdc0b8be707dd750342940738d9971aa6f1e5e503f05a978a9d5c3f6b9557e6ed0f2fd585a024a4be882f18939a6c389e9245972c2b289652799094932494e6c6a25267346304a13a0c8d3a29a454b51326a52c734599c8263c5a3c44963c7b226f1646c8d183d069bd109d91f91c79a2b38e3b21292771d22d7fe3274e3d08fbcc53c747509196d0a75d6196b0b78ed51618108faa0a67d1be50295da762fbdd0f5e78b7079e576135e414ed92eb8c71967b49080685a63f314d46b9162c388375fbb6708d613fb7e084a32fdf344da9eb72e5eb5fc851ee2005bbb4a7f4910fa4bef9bb673405cd1a2d19087ee402ab47c83b5a1ebfd5f44e2927659c88fc8f57f91eec9870c6a28d9e7d344b00e7cfaaf1d161fb1b8fa282315de7177986c45580ddd0e715dee81ed8c2c6b4834b856ef62b63d3a74adcdd166842d94eab9a26ef1b1d04eac912f200ce2f83dddadfd3fea82c97c78040000",
     ],
     [
       "ETag",
-      "3SKTaiXcpcOk1gVfsrr7Gw==",
+      "WUkgJRJT1sZcC1yUadocXg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9068,7 +8894,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:05 GMT",
+      "Thu, 13 May 2021 15:18:14 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9087,7 +8913,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-59-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-59-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -9099,11 +8925,25 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff8d92414fc2401085ffcb782d11081469c2a1202a0650a09c0c214b3b8562dba9bb5bb112febbb315d1a8895eda99e937dbf75ebb87c7280dc08155b47eca5116676bd413534c51e5b1567ccb28550816a0166b2693cdb6412fb7bbdaa608e54e77cfbdbcf73ae9749850fe061301ce1ec208e34081f3b0875424c86b3ec579922ecbce025d646638f3a683f135f70905a61fcf8743b73becc3c13a2d06428b65c9ff636d71b0604bab29862831f5d168c9246dd1d703635389248bb1a228973e2a28e1f2c15a529e094954e149a5d9aed4ec7ab56537aa6dbb5eb7198cc9173aa294d9f98cf581262de229edd825184096251b0ecbeb338fa3a03462cac1d8b31ba5beaf004b0ba318977f83ac7723f8337c60c708be7322a13cd527ea6a78e7fe761c67fa79d4a5ebf57f104a735227c41b8cfa33cf1ddd1b6e71f4de2d34aa7b491ca4429361addab868b6ecea7bac3d3251f37b1c2d73b4c017fc77dc441a9c50c40a0f6fad1607c97b020000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb782d1110aa6dc2a1086813402de5600c214b3b2dc56db7ee6e3548f8efce5644a3267a6967a6df6cdf7bed0e1eb32206175659fa54a1dc9ea4a8ef4c11a0aab856742b45a1102c40cd522223d5f69d51dac9425e9df65f87036fbdb9f77a3d2254b4c69c81bb8324431e2b701f7650b01ccd9ae0555e2cebce02bd2dcd701606fef48afa5cc4a69fcec763af3f1ec2de3a2ec64cb365cdff636db1b7602356012628b188d06829a5d860a47d6353b1bce4d850a292112aa8e1fa412a455532294483268daed368d9eda6d3729a675dbbeb10c845c474260a62e733d2075a68c603f1422ec12640d625194eeaeb338db3b836624a7f1ada9d5adf5780a42519c7e5df20e95d33fa0c1fd82182ef1ccb4555e823351adf78bf1d47997e1e35f0c2e10f42694aea8884fe64380bbdc9ade11607effdad46752b0505a9d064d86a762ebae776f33dd64b61a2a6f7b85a566841c4e8efb8ce34b809e30af76f9fae5e847b020000",
     ],
     [
       "ETag",
-      "mhj4oxJw1hyfrwtB/TuCzQ==",
+      "cs2I9Fg4iTlu/BzEDAhjYA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9115,7 +8955,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:06 GMT",
+      "Thu, 13 May 2021 15:18:15 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9156,7 +8996,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-60-1620764096226",
+      jobId: "grouparoo-job-60-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -9175,11 +9015,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "54fd6f9b3010fd5798f7cba6a509a4847c485197b5ac8b94928e9055d53425c61ccc2dc1d43699aa2afffb0ed3b4cd3e2524b0efbd7befce671ec82d2f12322231cfee2a90f7af6f444c5a0434cd7037b15397792abab9589657db7777f278e2f4b3f11811bc6629ba29733852a2920cd468b9686752542595421c61a223cf3e72bcaeddf75c7be875bb1ef214e4e98c17b7c8feae75a9469dce5ebb9d0991e5404baeda4c6c9ef63bdb6ea794e20698569d43c90eaaa8cebf454f72c1a8e6a2182f1768a0522057b0a13c470bcfcc247e7f98bacde9a69d2178cb1950c64455e8da16a660a24879564993958c1e88b1f9e2832cfc997f1a59a7f36510bd59d34d4d5ebfb5a8b2562b09aaca75cb5a634d29cf61c5937513296fad8fe1fc0223e8e03b55a0d6d6d5273ff42d6b9fc37a35b64eac4970661df2a781b50c027f11596f4ede5ae7e17c79697db83ec0a0f10494e685b11dd13887daf26367a7bf9f674da01a6d34c155dff6a833b087711af7593a38eec5a90d713c88fb3d7a1cdb6ce8829bc44091a7ebec86450b5178e079f660d877bb8edd4d7be0f5286509f3060e1d80e3409cc4bd61e20ec8ae457e48aee18cab5228deb4975c85d3c85f45e132389d44be2923a5d8c2b3c65c5dc44b9f1a8b44d03feadad5512e50a93eab6910f9e1e4349a7ef19bf1984146d9fde20e0724a5b90244534937a0415e88049b462ee78b69349d07931932cc995fee118a8cbe3e3c13a2fbd274599b37f9389b4f22cf350ef6902f34af0c66db7c10a7dd43c4aef5f73493309c5ca3349592deff12c3723c43ff8382c19b5563f34991d46afb5597ecbeedf06911bc4e4d76f279e987d7a4d90a21050905fbfff820d804fefb57d85f51c4e2254519a5718dc3ca542dc2243443cb37c66ec3763caf7b6cfe299a4afd5bcc75dcfde9d439ea8cb081423f56d45c51d3a83a54a927100671d68269708ed19fa825c39022050000",
+      "547f4fa34010fd2adcde3f9af407d4424b93c6ab8a5e73957a946acce5d22e30e02ab0955dbcf44cbffb0d8b557bde694202bbf3debc37b3b33c923b964764400296dc9750ac3fdff2803408489ae0eeefdb6fe2f2f4bcddb94a8fbc20d3a351308364384404ab588266ab149a8297450862309fb59282972b5a70dec4444d4b6f1a5647b70d5b3f302dd3469e80349eb0fc0ed93752aec4a0ddde6ab712ce9314e88a8956c8b3e7fdf643a7bd2af82d8452b47725dba822daef8b1ea63ca492f17c389fa1815240b1808cb2142dbc30a3e0cb6eea16a3592b41f0030b8186212f7359d9c21421cf63969485ca4a068f44d97cf54166cec439f6b5e3e9dcf5f79634abc8cb7d8d0a6db1284094a96c684bac2966292c58b4ac23ab3bedd49b9e63041ddc500162a95d7d753c47d3b639b44f43ed501bb927da2e7fec6a73d77566beb677b8af9d79d3f9857674bd8341e31108c97265dba7410a95e5a7ce8edf9e6745a0126dd4c1454fb7a8d1d7ed200e7a61dc3f3083588720e8073d931e047a6877a11b05409127abec8a45739e5b60597adfee753b86de894db04c4ac328b4fa06ed8361401005a61d75fb64d320bf0a26e184891517ac6e2fb9f2c6beb3f0bdb97b3cf21d55464cb18527b5b9aa88d73e251689a077eada5451c651a93aabb1eb3bdee8d81f5f3af5784c20a1e17a768f0312d35400a269413390509cf3089b462ea6b3b13f9ebaa30932d4995f6c11820c7e3cbe10fcf54a7559aa37399d4c47bed5550eb6904b9a960af3507f10a3652262d3f87f9a91e78dae519a16055dff15c3722c45ff8782c2ab556df35991546adb55876c7e6ef06910bc4e7576f27dee78d7a4def2208602f2f0e3f141b00a7cf857d85e51c4e225451921718dc31a8a4a242ca01e5a9629bb4f6cdbecd82651e042be89754d637b3a558e2a236490cba78aea2baa1a55854af10cc220ce9a3b76cf30fa07e42c281d22050000",
     ],
     [
       "ETag",
-      "d0f4c6sTjMUpWv+qr3A17g==",
+      "zjKsVFM/2WlBRbm0dAbSeg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9191,7 +9031,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:06 GMT",
+      "Thu, 13 May 2021 15:18:15 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9210,7 +9050,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-60-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-60-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -9222,11 +9062,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff8d904f4fc24010c5bfcb786d93d2608d241cc420121b902a24c610b2b4d35a683bebee166908dfddd9c583070f5ef6cf9bdf4cde9b13eccb2683016ccbe2b345d55d156816f691a06e2ba3f992d468040fd08882c9fe5b709c774779fdd0ce9793a755b46ae2f962386442a71f580b189c202fb1ca340cde4fd0881ab96db3516e2263a6935699ce5ec79371c2424d991566cb38be1bc563387bbfdae4fe5f2debb3073bda2698a3c22645eb422ada616aa636a016b5acd0d7d4aa143538d8150a45ad148ac867c58f02bf1785c14dd40f6ea3308c18ac2815a6a486d9e50b7b03434654097d713e081950eec95173771eec925c868303acb5bf6b3d5b5bff0c1c7506f5b32276a7d11a0b2e26efc91a371cc8a8163d48056ff9b13497fff91b790b9dd8c2010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "90",
+      "4f",
+      "6f",
+      "c2",
+      "30",
+      "0cc5bf8b775c2b95312a81c4614c6c20101a1d9c268442704be91f7789cb8410df7d4ed861871d76499ce79fadf7728122aff730805d9e7db668ce7719f2d21509dab6642b5743b5450800596542da974937e619ad46bbfb993eadf3435a14cbe15008ab0f5829185c20cdb1dc5b187c5ca05615cad8766bfc46c1f8dc3865ba588d5fc7890815ed9db058cfe74fa3f918aec1afb1a6f8d7c8e61ac0917609a668b0d6e85c34868ea879ea025a55352586965aa3d182877d2333d436ca1085a284711476e287a8dfe947dd5edceb0b5892569c532decfa5dbc0113ab32a12fc9070f02185f4ad4d49f27911f7d8693079cb5bf7b1dd7dbfc2c1c9d19ed9b217167d1198b6e269fc9196709c4a6c500b4925f9ee47c7b5fbf015374c391c2010000",
     ],
     [
       "ETag",
-      "4Y0xOyxp5FuOUGKV6VnLOQ==",
+      "sFH36tKoTBb+KcvUihfkkQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9238,7 +9089,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:06 GMT",
+      "Thu, 13 May 2021 15:18:15 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9256,10 +9107,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -9275,7 +9123,15 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "1d",
-      "d04b7282300000d0bb646d1d40d2427746f96952042a8a9b0c86f0111584c8afd3bbd7e911defb013163bc6da9a84a7e079f608c157dcee6db5a4334e37888c734d2f7d1da8a90f25e7a8d2f522d573206376c1590b54a1c37c0616290803861a6e1732b4f575484ee114fc336e27b4a1277d7481df6119135f501ad53854df144df1d779424962df3645671782950ee6b5546fba986c66db710cda3579ec9e017d63d7cab1c9c4b178884f971141711b9ab53005ba22cb57b7134ece060a7a1cfba51455f9667e9f6d5abca4d7aa387ed005bd69f55283dca340533c087ba68784b8b177701757d06feed548c357f05201e37bc01bf7ffbc363ee1a010000",
+      "d0",
+      "cb",
+      "72",
+      "82",
+      "30",
+      "14",
+      "00",
+      "d0",
+      "7fc95a1d480a98ee4a952a0ef29a8a749381782329159087119cfe7b9d7ec2390f94710e5dc7faba840abda231c374c117bb6669b3b3a8bfda300abbc1966ea2f9dfbaa2f4a439ebc0763d2a5ecc008c5b2783d5a76318c7bd2270fcb89cd2a0106f413db7cbe466096201215ba2a234ea98765d8d6a185c0c491329e792150968d3e54e7b9d336fa8611af1e1ca9910a399c5d34f9ce6d41a42a926b289f25cba623739cc3d57de814bc8ce45fc8eddaa396ce6a585f7b40a63ff269c7eabfcf590726cea6daeca18132b1f4dba94f951a219827b235be8987c728941e90cfddb593f36f00cb0216ba145bf7fe920b8d91a010000",
     ],
     [
       "Content-Type",
@@ -9289,7 +9145,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:06 GMT",
+      "Thu, 13 May 2021 15:18:16 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -9308,7 +9164,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -9329,7 +9184,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-61-1620764096226",
+      jobId: "grouparoo-job-61-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -9341,15 +9196,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff85535d4fdb3014fd2b91f738da266d49da4a6874256c95da7424290c4d5364bb37c190c669ec8010ea7fdf8d43196c123cc5f63de79e733ff244ee44b12113c244b6aba17afc742b193922a06986af0f0395c9151f9ffffc7c7c1dc1eeebae3f585e9c9c2042342c45b7650e1d25eb8a839aaca36e56c9baa495941d4cd4719d8ee3f66dcf1dda63b7df7791a7204f17a2b843f68dd6a59af47a07ed6e266596032d85ea72b97d79efddf77b65256f816bd57b2bd94315d57b5ff44b2e39d5421627eb080dd40aaa04b654e468e12f73c34edfa6ee0abaed6608be171c28e7b22e74630b537059a422ab2b93954c9e88b1f9ea40227fe1cf628bcbbcde164941b770646da8a6897e2cc13a0f574b6b1e9cafc2e5349eaf82249a7df797d3ee6cb5582f83c8bafaee87bea529cbc170ad13ebd4dc02bca0fe06941685518f9be746f9b941f3ffc7d210505a411b4c3cdba5cec81eb394793c1d0d8e596a036323e61dd301b3f97808c30d038a3c236a58b49005789e4b696a272ce5c36438f29c84f6d341c2061bd7761cca6c6f44f647e4a1121ace842aa5126d87c855388ffd240ed7c16c1afba68494d6b93e6b8d3505bcf6a8b14004bd53d3be890a894a4dbbe741ec87d3593cbff4db092f20a3fc31dae18c539a2b4034adb0791aaaa5dc60c348305dfa67083613fb71082a32f9f5449a9e372e5eb5fc851ee3001bbbda7c491487f3e09bb173405cd2bc3690fbf6404ab47c83b5a1ebfd6f44e292b659c8c5da0faf49fb14420a1514fce36922d8043efcd70e8b8f585c7d94511aefb83b5c3522bc8276878429f799edb8eed8f3880157fadf98e70c8687ae35399a8cb085423f57d42e3e16da8ad5ea0584411c7f60bab5ff03416dffdd78040000",
+      "0000000002ff85536b4fdb3014fd2b91f7953ed2d0472a55a36ac3e8d6a65b9a82a6698a1cf726189238d80e50a1fef7dd38948190e0536cdf73ee39f7912772cb8b1d199398a77715c8fd971b119313029aa6f8fa38df5ebadffb523dca0bf923dfe705383a9d4c10c16b96a27999414b894a3250e3eda69d4a5195540ad1c244ad81ddb207bdae6bbb5da73fe8bbc85390254b5edc22fb5aeb528d3b9da3763b1522cd80965cb599c85fde3bf7bd4e29c50d30ad3a6f253ba8a23a1f8b7ecd04a39a8b62b2dda0814a818c20a73c430bff99bbf8ec6dea36a7793b45f03d6740191355a16b5b98828922e169254d56327e22c6e6ab03d9784b6f165a4c64555e4405cde1c4da514d23bd2fc13a0fd62b6be19faf83d5345cacfd6833bbf056d3f66cbddcaefc8d7575e1059ea5699c81e15a13ebccdc7cbca0fe0e94e685510febe75af9b9418bf763a90928ada00946c3ee80daa3ae1b27f1902523a71f275d88e3513cec5327ee32f7144e773150e41951c3a28528c066c364b4838875934184182772597c1ab9ce28b17bb4d74b9c01399c9007c935ccb92a85e24d87c855b008bd280cb6fe6c1a7aa6848456999e37c6ea025e7bd45820823ea8e95047b940a5badd0b3ff482e92c5c5c7acd84979052b6dfdce18c139a29403495d83c0d722576d830e24f57de1cc166623f8f4145c67f9e48ddf3dac5ab96bfd0431c606d579b2fd984c1c2ff66ec1c119734ab0ce4be3990122d5f636de8faf01791b8a44d16f26beb05bf49f3144002120af6f934116c029ffe6bc7c5472cae3eca288d77dc1da66a1126a1d9216eca3db2dd81dd1b110396fa5dac37748e5dab73d4192187423f57d42c3e16da8855ea0584411cbf6fba75f8070dc8d00278040000",
     ],
     [
       "ETag",
-      "w3sgoOc9FX+5YSeqBq23MQ==",
+      "xDUV9J5rsxrHrKmymne3tg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9361,7 +9212,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:07 GMT",
+      "Thu, 13 May 2021 15:18:16 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9380,7 +9231,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-61-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-61-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -9399,13 +9250,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "d1",
-      "4e",
-      "c2401045ff657c2d492158b4090fa0a8108a584a62620859b6d352dc76ebee564208ffee6c45346aa22fedccf4ccf6dedbeee1392b62f06195a52f15aadd598ae6c11621ea4a184db752161ac101342c25b2688d7847c5f9631010c957c9681b6cd36e9708cdd79833f0f7906428620dfed31e0a9623ad7129aabc58d69d036657dae12c0a87935bea7319db7e321f8f7bfdf1000ece693166862d6bfe1f6b8b83031bb90a3141850547aba5547283dc0cad4dcdf2526043cb4a71d450c3f58354c9aa644aca064d1a5eb3d1f45a6ec76bbb975eabe511282467269305b1f319e903230d13a1dc924bb080aa4b329cd4d7571a67716dc496c349e4b56b7d5f0192966402977f83a477cde8337c60c708be732c9755614ed4cdf8bef7db7194e9e751d7bd68f083d086923a21d13018cca25e30b5dce2e8bdbf33a8a74a52901a6d864db77d71def1dcf758afa48d9adee31b55a1039cd1df719719f01326341ede006c7e8bb27b020000",
+      "41",
+      "4f",
+      "c2401085ffcb782d4951a9d28403282a11104af5620859db2916b73b7577ab41c27f77b62a1a35d14b3b33fd66fbde6b37f090ab1442b8cb978f15eaf5de12edd415119a4a5ac3b7929441f000ad5832e99bf4293abdf42fdad307f53292ea86569369a7c38449eeb110106e20cb51a606c2db0d285120af2524ab422deace03bb2edd70164783f139f705a5ae1f5f0f87dddeb00f5b6fb7980a2b1635ff8fb5f9d68315dd4598a14695a0d3526a5a616207cea6114529b161a8d2091aa8e1fac15253550a4dd4e0492368369ac1bedf6eb6fd8356d06a332829113627c5ecf58cf581252b6444cfec120206745db2e1acbe3ef1384f6b23ae1c8ce3e0b0d6f7156069592e71f137c87aef057f860fec3d82ef9c28a85276479d0dafbabf1dc7997e1e75da8dfb3f086339a91d120f46fd59dc1d4d1c377ff7de5b5b34134d1ca4419761d33f3c6e1d05fe5bac27e4a2e6f7845657e84122f8efb8c82d84999006b7afe5298ed37b020000",
     ],
     [
       "ETag",
-      "n2Jc7rdmXMMtQucbfJwMwg==",
+      "0sdvRDK0H9QknzMlnVojPQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9417,7 +9268,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:07 GMT",
+      "Thu, 13 May 2021 15:18:16 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9458,239 +9309,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-62-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "0002ffc5547f4fdb3010fd2a96270468fd41bb124425c44ac9b668252d6902eb26d4b8891b4c9338d84eb70af5bbefec505805637f4e8a149fefdd7bcf774e1ef082e531eee2194bee4b2a56efeef80cd730552481dd79ff82fdca0fdfafc8f2eadbedf7e2de6697cecf931340305d254956a4b42e7929222abbc1b891085e1644705e07a2bad5aeb7acf6c191d53938b6da6d0bea244de703962fa0fa56a942769bcd8d7623e13c492929986c443c7bda6f2edbcd42f03b1a29d9dc966c828a6cbe2d7a9af28828c6f393600c064a49c5946684a560e1b9329e7ddca66e30923512002f59444914f13257da1650443c9fb3a4148615771fb0b1f9c7028fed81ddf7517f18b8fe5e48325d1cee2322d1742aa82c535543219c69ce523a657158658a05fae40d2f20030e6e89a43244d75f6ccf466830bcb6bdbd10a0fb68e07cb5d129eab9e7689bc47151e0baf6d8477ba7fbe8b3370c46e86cb28501f7319d1330704e142828ed3aae968e1ea9a25201e8b1dfcecb29e3b5ce322e98d227755cdff67a7ddfb9b2abe60e6842a2d5f81eda3b27a9a480268264545171c1630a25a3e1d8f19da1db1b4085e9d8688390b8fbe3e1b9c05f15541b54e6adb5ac8ed1df00ae485a1ac4b25ae09dd6e10e5eaf6b7f27e9795e6f02c24408b27a5de055058337516572a3d8c25a6d13b5f1fa660d4f0dc355acd8f165607b135c6d79744e05cd2343f946930dd824fef9456dae3760e182838c54104bc522a94522414dda6799b15b55b7aca3e3f6013660a15ee63e74f45f208f5fcd3c6a94869f0ac18567eeb40e414d1a2f2c879ec05fa286332a2549344d90c3492425b394223378f4d467148688e5480f0285fe64644fcd30c21a3a23316494d541a6c95da467bc59efea60573b323eaad1fc270f37555bb4c8f9d0b5e11efd061d2071495f050000",
-    ],
-    [
-      "ETag",
-      "fCMixn5+yavVXhZpqEiQIw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:08 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "0000000002ff1dd04b7282300000d0bb64ad8ef251e98e5014442b28e1b761520c11e3840841c04eef5ea74778ef07e0a2206d9bcb9a110e3ec088156356cc3cb186392dcf6a5c05925e908fea7e7e609d0f73689ee857ca09fd148ed092dd0b93d386b2d7ddb078e6c727771f8dd9b64dd72b96dc1d967866c76d5be04d38c0f110d0a510d7a96a95647191bc48fdc1255db208d974a9985ae86f9f5009a5b0028e1fd6d9a6ba978c771630299d6c854ab66e87141d6f5d83e88023dd7b1c9cdedcc7b07fd6aed67f1fa317beeabeaac43b24f3a2ac6f9bc44de7d52d46866c3998003288aa216d5ebdb9aa6e1813f06fcfe528c83b0012dc9006fcfe01abff5fbf1a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:08 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-63-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "0000000002ff85536b6fda3014fd2b91f77185044879496845345de9206c215055d31439ce4dea36c469ecd07615ff7d370e745495da4fb17dcfb9e7dc475ec83dcf223224214f1e4a289ebfdc89909c105034c1d7bf6be9ccaebdaf70f5f4b4bdbdba8bafd63f6e1e472344f08a25e9264fa12145593090c3d5b29914a2cc692144031335ba9d46abdbb67a5ddb1a74dbed2ef224a4f18c67f7c8be552a9743d33c68371321921468ce659389cdebbbb96d9b7921ee802969be953451459a1f8b7e4b05a38a8b6cb45aa281524211c086f2142dfc6746e1d9dbd44d4e37cd04c15bce803226ca4c55b630051359cc93b2d059c9f085689b4707b27466cec4379848cb4d16647403274644150dd4730ec685b7981b53f762e1cdc7fe74e106cbc9a5331f37278bd96aee2e8deb4bc7730c45c31434d7181967fae6e205f523908a675addaf9e2be57d83a6efc75211505a421d0c7a5697b6fad6208cc31e8bfb9dd330b6200cfb61ef9476428b0d6cb0a31028f2b4a866d14c6476bb65f5ed980510c510d8ac6d07143a7610590c069d30eaf76d8bec4ec863c1159c73990bc9eb0e916b6fea3b81efaddcc9d8777409312d53755e1bab0a38f6a8b040047d50d3ae8a72814a55bba7aeef78e3893f5d3bf584679050f6bc7cc019c7349580685a60f31414731161c3883b9e3be708d613fb79084a32fcfd42aa9e572e8e5afe4af77180955da5bf64e97b53f7bbb67340ac695a6ac8b63e901c2ddf626de87af70791b8a47516f26be57837a47ef220860232f6f93411ac039ffe6b87c5472cae3eca488577dc1d262b115640bd435c97bb67b7bafdfd9faa68a1dec53aa7ad43d7aa1c5546d840a6f615d58b8f85d662a57c056110c7efea6eedfe0130660def78040000",
-    ],
-    [
-      "ETag",
-      "zVsELWR+eJxxvhJjfJVKYw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:08 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-63-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "000002ff8d92dd4e83401085df65bc8548ffa892f4826ab54ddaaa94c618d3345b18281558dc5dda90a6efee2cd66ad4446f6066f86639e7c01e5e923c04075649fc5aa2a8ce62540fbaf05096a992742b782e110c40c56222ad61ec36779d75d7f62a193d3eb5dcad7b1ef77a44c8608d1903670f51826928c179de43ce32a4b580a765962febce0055157a38f3bdd1f496fa8c87ba9fcec763b73f1ec0c1382d864cb165cdff636d713060c3571e4628300f506b2904df60a046daa6645991a2297929029450c3f58358f0b26082739326a6dd321b76d3eada6debd26e366d02531e3095f09cd8f98cf481e28aa51edf914bd080a84b321cd5d72d8d93b036a2cbd1d4b7dbb5beaf00498b9214977f83a477cde8337c60c708be732ce365ae4ed4cdf8cefded38caf4f3a86bd71ffc20a4a2a44e883f9a0c66be3bb9d7dce2e8bd5f2994f78253901275860dab7dd1e9dad67bac575c474def719428d18080d1df314c1438114b251ede0092ae56017b020000",
-    ],
-    [
-      "ETag",
-      "0HgA2w5h76RysfWY3AvA/g==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:08 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
-        types: ["STRING", ["INT64"]],
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "positional",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "%app%" },
-          },
-          {
-            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
-            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-64-1620764096226",
+      jobId: "grouparoo-job-62-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -9708,16 +9327,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "85",
+      "c5",
       "54",
-      "8d",
-      "4f",
-      "a33014ff57482f269aec93313696186f6e9c724ee631a6672e97ad948255469116cd62f6bfdfa33875e79d2624d0bedfc77bafaf3ca13b968668800216df17345f7fb9e501aa212a710cbb9de3b39f1e6e9ff6bf8fb17f6b9dc4fd79683c1e1e0282952c81575942eb821739a162309f35e29c1719ce39af8350dd34ea6d536ff54ca36599ba6e024fd0249ab0f40ed837526662d06c6ebd1b31e7714271c64483f0d5cb7ef3416f6639bfa5448ae6ae65135c44f363d3a384132c194f0fe73348a010345fd0156609a4f0ca0c83afbbd20d86578d18c00f8c504c082f5259a6051284a7118b8b5ca9a2c1135269bef940337b628f7c6d349dbbfefe12af4af2f240c3425b2c722a8a44d6b425d414b1842e58b8ac22d99df6cd9b9e430432b8c1828aa576756a7bb6a64da657b6b7ff1200ad8973666b47dad01d6bbb528eabcd5dd79ef9dafed18176e24de717daf1f50e066a08a9902c5515f838486899fd73939df7475b12b004e32ab8e8b54cdceeb7ac200a7a24ea77ba41d4a241d00f7a5ddc095ac432a8110614034f96ea8a85539ef6ba61440cbd63f530b1c2408fda563fd0694bc716253dd3b43add28c2c4449b1a7acc99a46326322e58d56974e539bebdf0bdb93b1afab62a23c2d0cd71955c59c4db3c251409a00feada9451c6c1a93c36c7f56d6f38f29d4bbb9a94098d3159cfee6156229c080a689ce31595343fe721340d5d4c678eef4cdde10418eaf82fb6088106bf9e5e09fe3a535d96ea8d66bee7b8272a812de2122785823c541f680f67d91eda6c6aff97197adef01aac719ee3f55f3128c7344afa3f2c145eadaa34b7966d54ba6d573adafcdec0534370b32a75f4636e7bd7a8daf26844739a92cfc707c02af0e90f627b5b010bf7156c8484350c2b11a509c96935b46ca5d2add86dd36a191da4c0b97c17d33bc6f6744a8d5291ae682a",
-      "9f2baa6eab6a54192ac40b0882306bae3aa8cd1f9d2df0af2d050000",
+      "61",
+      "4fdb3010fd2b962704686dd3165ad64a8815c8b68c9274690aea26d4b8899b1a9238d80e5285fadf777628ac82b18f9322c5e77bf7def39d93477cc7f218f7f19c25f72515ab0fb77c8e6b982a92c0eecfe5c7c355b3e81cd847d25aadbe5f8865de191c1f0382e92a49b222a575c94b1151d99f8c1b89e0654104e77520aa77dbf556b7ddecb57acd834eb7d3833a49d3c590e57750bd54aa907dcbda683712ce93949282c946c4b3e77deba16d1582dfd248496b5bd2021569bd2f7a92f28828c6f3e3c9180c94928a19cd084bc1c24b653cffbc4ddd60246b24007e60112551c4cb5c695b4011f17cc192521856dc7fc4c6e61f0b3cb687f65980cebc891bec8524d3c5e13e2212cd6682ca32553514c299162ca533168755a6b8435f7cef1232e06049249521bafe66fb364243efdaf6f74280eea3a17361a3133470cfd13689e3a289ebdae300ed9deca3afbe3719a1d3e91606dcc77441c0c03951a0a0b4ebb85a3a7aa48a4a05a0a77e3bafa78cd73acbb8604a9fd47103db1f9c05ce955d3577481312adc6f7d0de05492505341124a38a8a4b1e532819796327703c7730840ad3b1d1062171ffd7e34b41b02aa836a8cc5b6b750f8dfe067045d2d2201eaa05de697576f07a5dfb3bc9c0f7075310264290d5db026f2a18bc892a931bc516d66a9ba88dd7376b786a18ae62c58e7f4c6c7f8aab2d9f2ea8a0796428df69b2019bc43fbfa8cdf5062c5c7090910a62a95824b54824a849072c33769faa7b47cd4e0b1bb050af739f9afa2f90c76f669e344ac34f85e0c237775a87a0268d1796434fe02f51c3199592249a6692c3492425f394223378f4dc67148688e5480f0285c17464cfcc30c21a3a25316454f7109926f7919ef166bdab835dedc8f8a846f39f3cdc546dd122e79e6bc33dfa0d014c07e25f050000",
     ],
     [
       "ETag",
-      "3BKXRa1H8JDaTj9Gg8Ud4w==",
+      "Zh+4y0p53E7s/yyJKrhn5A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9729,57 +9346,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:09 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-64-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff8d90416b83401085ffcbf4aa34b162692087a684362026b50985961056335a8d3a76773548c87fefeca6941c7bd99d7df3cdf0de9ee050347b984052e4df1dcae12647fd6a8a18555769c5574b8d427000b5c8995c26eba68faa59a44a7fb95aad6fb3fee3fd389d32a1d22fac054c4e901558ed154c3e4fd0881a796cb7937623637a688db288d6f3e779cc424d7b23449b307c9c8573383b5763ede15f23dbb3032525316628b149d1b868259598ea8509a844dd56e82aea648a0a2c6c1bb9a4ae1592c865c50d7c771c78a3fbc01f3d049e173058512a74410db39b37f6069ab4a8623a723ef01890b6e4a8993d7b96ef6c86de02c6da75cffbeb8d4d6ffbbb703668542b49ec4ea13136ba987c22635c73202d3b742015fccb2f85bebccf3f3adfcd91c2010000",
-    ],
-    [
-      "ETag",
-      "ObTnvNlBNsj4OPPT/fvZWw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:09 GMT",
+      "Thu, 13 May 2021 15:18:17 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9797,10 +9364,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -9817,16 +9381,11 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "41",
+      "4d",
       "72",
       "82",
       "30",
-      "14",
-      "00",
-      "d0",
-      "bb",
-      "64",
-      "ad4e83834277064101658a08081b2686101111fac188747af73a3dc27b3f8832c6bb2eeb9b8adfd1277a51459fb199db6a24132cd1be86fae47432f6544c8d9d276c88f0e1ccf206b01d44cfa533788aaf396a7b9e5f7292c7cd68a54dfd146175fa48d4cab10a916eb51bec13500ce51adad2374e8d69edeae216e380df0280c4952c78e00db14220d50a845b92a9c82f7b9717a35cd4c4c49991d6c9d8d36d5656d44fad058e74699221ac228fae579677940ff32eafd306cebdad6e8870fdf6b0e6c5d5f91e692d56502ed963734413c487b604de65e59b3b57757d82feed59ff6af93b80700a1cd0ef1f76e029ad1a010000",
+      "1800d0bb642d4e8802a63b547e43c53aa0c286414cd150e58320163abd7b9d1ee1bd1f9417059732ebea8adfd11b1a7242a7c594c1629995050d124cdcc729ac9368b0f6a597babacae6c6681f1cdf58d167c9fa4bacf4490ef799697e26958e19e020b5b67b7103e14579b1197ba237956b96d5a95f6d4345ed8814ef44b8db66581bf83c9a1084b1d891d661a74063d6c665c2315300c0ca62f9947238c6cdce8a708add2378cfb3127dac77f41e16fea63b3e6eb9c6bc2a8aeb56ae6acb9e8f8e2dc49725714c9db90ab54fb4d8808b67f7e9014d10ff866bcb65767d71671aa513f46fcfba01f82b60c9f396b7e8f70f2f7d48961a010000",
     ],
     [
       "Content-Type",
@@ -9840,7 +9399,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:09 GMT",
+      "Thu, 13 May 2021 15:18:17 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -9859,7 +9418,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -9880,7 +9438,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-65-1620764096226",
+      jobId: "grouparoo-job-63-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -9889,26 +9447,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b",
-      "30",
-      "14fd2bc87b6d02844048a4688d52daa64ac806a4d5344dc81843dd0266d8a48aaafcf75d4cd3b59bd43e61fb9e73cfb91f3ca34756a568861296ff6e6973f8f2c0137486a8c439bcbae48ad93757079996ec904d85a9dfc8fdd37c0e08d6b1042eeb820e046f1b42c56c170ef386b7356e381f40a281630f4c67644c9cb13175462307788216d99a558fc0be97b216335d3f690f73cef382e29a8921e1e5ebbbbe1fe975c31f2891427f2fa9838ad03f16fd5a708225e3d57c17828156d026a625660558f8cb4c93f3f7a9870c97c31cc07b46282684b795ec6c410ac2ab8ce56da3b2a2d9335236df1c50e8adbd65a4115eb4651557b8a4675a8a258ee5a1a6da65b0dd682bff721b6c16d16aebc7e1f2dadb2c86cbed7ab7f143edeeda0b3c4de2a4a08aabcdb57375f3e102fa291592554a3dea9e3be59706adfe1f4b47006941fb603c311c6cbac634c99209c95ccb4e328326899b4c6c6c2506998ee9384d28069e12552c5cf10aa7896db9a615dbc4a5f1d8728c383153339ed896636696050d27e878869e1a26e905133517acef10ba0b56911747c1ce5f2e224f9590e1b69017bdb1ae80b71e251408a00f6a3a7651c641a96bf7ca8fbc60b18c56b75e3fe135cd313984bf61c6192e0405346ea07992361b9e42c390bfd87817005613fb760a0a34fbf98cba9e772edeb4fc951ec1003bbb527d5118052bff4ad939216e71d12ac8be3fa01a2cdf436de0faf80b90b0a47d16f47de7053f50ff14d08c36b4229f4f13c02af0e9bf765a7cc0c2ea838c907087dd21a213210ded7788a9725fd8a63375c753a4c08dfc273631469671ea5a97a3cb484b5ac9978afac587427bb156bc822008e3f755b78e7f009875f8d478040000",
+      "8b08000000000002ff85536b6fda3014fd2b91f7b54078241024b4229aae48104608adaa698a6c7393ba0d711a3b4c5dc57fdf8d53ba5695da4fb17dcfb9e7dc479ec983c877644c98481f2b289fbedd4b46ce08689ae2eb3a729ddb9bbff7999bae17535f85620bb09e4c10216a96a2fb2283969255c9418db79b765acaaaa0a5942d4cd472fbadaedbb3bdae67f71dd7f190a7204b16227f40f69dd6851a773a27ed762a659a012d846a73b97f7def1c7a9da294f7c0b5eabc97eca08aea7c2efa3d939c6a21f3c97683062a05650c7b2a32b4f09fb963e7ef53b705ddb753041f0407cab9ac725ddbc2145ce68948abd26425e367626cbe39908dbff06791c56556edf338a77b38b37654d3583f15605d86aba5350f2e57e1721acd5741bc995df9cb697bb65a6c97c1c6bab9f243dfd2946560b8d6c43a37b7002fa8bf03a5456ed4a3fab9567e69d0fce3586a024a2b6882f1d0766977647b2c61439e8cfa0e4b6c606cc4860eed339b7b0318ec1850e41951c3a2b9cc1d7bd8636ce8c65d6fd48b0714784c19e531a3ae87945d7fd075c8f18cfc2985860ba10aa944d3217213ce233f8ec26d309b46be2921a155a62f1a6375016f3d6a2c10419fd474aca342a252ddee7910f9e17416cdaffd66c20b48297fda3ce28c139a2940342db1791acaa5dc61c348305dfa17083613fb790a2a32fef54cea9ed72edeb4fc951ee1006bbbda7cc9260ae7c10f63e784b8a659652087e6400ab47c87b5a1ebe36f44e2923659c87aeb87b7a4790a21811272fef534116c025ffe6ba7c5472cae3eca288d77dc1dae6a115e42b343c2947b627bc3be6b13032ef58798d3ed9eba56e7a833c21e72fd5251b3f858682356a957100671fc81e9d6f11fee06037478040000",
     ],
     [
       "ETag",
-      "8cGi5JGytdmiyf9s1/Jtvw==",
+      "QT65YWzjl6gQLAEsRiUeeQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -9920,7 +9463,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:10 GMT",
+      "Thu, 13 May 2021 15:18:17 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -9939,826 +9482,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-65-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "41",
-      "4f",
-      "c2401085ffcb782d492150a40987a2a84da020142e8690a59d4271dbadbb5bb521fc77672ba25113bdb433d36fb6efbdf6008f691e830b9b74fb54a2ac2eb6a8ef4d31435572ade856885c2158809a6d89e42c58facd656f1fbc0eed72126b158795d7ef13a1a21d660cdc032429f25881fb70809c65486b91e06596afebce025d1566380f677e704b7d2662d3078bd1c81b8c8670b4ce8b31d36c5df3ff585b1d2dd88bcd0c1394984768b41452ec31d2beb1a95856706c2851ca0815d470fd602b455930294483260da7d3683a2dbbebb4ed9ed36a39047211319d8a9cd8c59cf481169af199782197600059976438a9afcf344ee3da8829fd2074dab5beaf00494b528eebbf41d2bb63f4193eb05304df39968932d767ea6634f17e3b8e32fd3ceada0b873f08a529a93312fae3e13cf4c653c3ad4ede079546359582825468326cdaedcb4ed7b1df63bd12266a7a8fab658916448cfe8ebb54839b30aef0f806d39949867b020000",
-    ],
-    [
-      "ETag",
-      "laNVI1V9jNxE0uOdtsdTyA==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:11 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
-        types: ["STRING", ["INT64"]],
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "positional",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "%app%" },
-          },
-          {
-            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
-            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-66-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "540b6f9b3010fe2bc853a556ca93242444aa3a96b20e2d250921edaa694a8c63a85bc0d43699a22aff7d07346db36ead8404f67d8fbbf3994774cfd2351aa280450f3915db4f773c403544158e60f7feeea1f3c3caa2d9465ccef24e1b5fc9e9cc3a3d05042b581227594ceb92e78250395ccc1b91e0798605e77510aa1b46bd6de8adbed16d9986ae1bc093340ec72cbd07f6ad52991c369b7bef46c47914539c31d9203c79de6f6ef46626f81d254a360f2d9be0229bef9b9ec59c60c5787aba984302b9a4624913cc6248e185b90e3e1f4a37184e1a1180378c504c08cf5355a4051284a7218b7251aaa2e1232ad37cf581e6f6d81ef9da68b270fde3154e0af2ea44c3525b2e059579ac6ada0a6a0a594c976cbdaa22d9bdf6d59b5c420432b8c592ca9576fdcdf66c4d1b4fae6deff839005a63e7bbad9d69967bae1d4a39aeb6705d7bee6bc76727da8537594cb52f370718a8614da5626959818f839816d93f35d9797bb405012b30ae82cb7ecbc0ed41cb0cc2a04fc241a717842d1a0483a0dfc39da045cc2eedae038a81a70af59285539ef67beb9074f58ed9c7c45c077ad83607814e5b3a3629e91b86d9e985212606dad5d06fc1143d6732e392559d46d79ee3db4bdf5bb823cbb7cb32420cdd3caf922b8a789da7822201f44e5dbb22ca383815c7e6b8beed5923dfb9b2ab4919d30893edfc016625c4b1a480c60227545171c9d7d034349dcc1ddf99b8d61818e5f14ff70889863f1f5f08fe362bbbacca379afb9ee35e9409ec115738ce4bc8a6fa404738cb8ed06e57fbbf8ce579d60d586321f0f6af189463740bfa3f2c4a7cb9aad2dc5bb651e1b65fe968f76b074f0dc1cdaad4d16c617b37a8daf26848054dc9c7e303e032f0e10f627f5b010bf7156ca482350c2b91850911b41a5a9694e956ec76bffdf47b5158a837b14e77b03f9d42a350a4094dd55345d56d2d1b558472f90c8220cc9a5b1ed4ee0f82ce5fa02d050000",
-    ],
-    [
-      "ETag",
-      "kjq3XApgQvrMQu31aVsPQA==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:11 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-66-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "d1",
-      "6b",
-      "c2",
-      "30",
-      "10",
-      "c6",
-      "ff",
-      "97db6b0bb593ca041fe6904d2832ebecd886484caf5db5ed7549ea70e2ffee258ee1e35e92cb77bf3bbe2f47d8954d0643d894c55787ea7053a099db2241dd5546f3d552a3113c40230a26b55ac8f2ad9fa6cdcf6690a5ef6117bca6f3d188092d3fb116303c425e629569187e1ca11135f2d87aaddc46c6cca1b5ca74f632799c242cd4945961b68ce3fb713c81937735d6eefe35b23a79b0a54d82392a6c245a17ada22d4a33b501b5a8db0a7d4d9d92a8c1c1ae5128ea5aa1887c56fc28f27b51180ca27e70178561c460455298921a66970bf606868ca812fae67c1032a05cc9517377ee59be7519f60eb0d6ae7be15faf677babdf85e38341fdac88dd69b4c6828bc907b2c60d0732aa430fa4e05f7e2acde57d3a0322f73b21c2010000",
-    ],
-    [
-      "ETag",
-      "srSciY4VVnzb7dVZ2u0WVQ==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:11 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "000002ff1dd0db7243400000d07fd9e7c8688c5bdf8ab02e1151d2f06264ad7b318b65a7d37f6fa69f70ce0fc811c2f39c2d638707f00e587e528fe8e84e8a9655787f9ece647f18a1b4ad1b5e1ddea454ae90637ca7eb47175e7d7ad99c015511b30bafde68cde66b519634de6b14b8d18cd6b5b707ea994547399a34e73cd13ccc07a362f984234ffea248b224570a22772134c7a919206babdb02d33737afefa128eac90e35bf6c4bbee8ad1dc3720a8d60347a596ad997a6f3fc56c4b26ec1888c69fd6973b78c3201b314ea86d82e0f7775829823b6ae44268a377000789f1a82e7ac79710551550fe0df9e2d6cc2af000de70413f0fb07d6cd3dcb1a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:11 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-67-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2bc8fbda24e44912295ab394ae4c09d90869b54d13b2cd85ba2598629329aaf2df77314dd7aa52fb09dbf79c7bce7df048ee451e932961227da8a03c7cba938c9c11d034c5d7eac0ee99974ee6e3f2dbaf58f51dfa657848673344889aa5e8aec8a0a564557250d3eda69d96b22a6829650b13b5464eab3bead9ce68604f46bdde08790ab26429f27b64df6a5da869a773d26ea752a619d042a83697bbe7f7cebed7294a79075cabce6bc90eaaa8cefba29f33c9a916329f6d3768a0525046b0a322430bff99313b7f9dba2de8ae9d22782f3850ce6595ebda16a6e0324f445a95262b993e1263f3c5816cdca5bb082d2eb36a974739ddc19915534d237d28c0ba0cd62bcbf32fd7c16a1e7a6b3fda2caedcd5bcbd582fb72b7f63dd5cb9816b69ca32305c6b669d9b9b8f17d48f4169911bf5b07eae959f1ae4bd1d4b4d4069054d3072ec11ed8eed094b98c393717fc8121b181b336748fbcce693010c6206147946d4b0682ef378304c98dd1d447d1ad36830716834b6fb3c4a867438ee423776867d723c237f4ba1e142a8422ad17488dc045ee84661b0f517f3d0352524b4caf44563ac2ee0a5478d0522e89d9a8e75544854aadbedf9a11bcc17a177ed36135e424af961f380334e68a600d1b4c4e669285732c686117fbe722f106c26f6fd145464fafb91d43daf5dbc68f9333dc401d676b5f9924d1878fe5763e784b8a6596520fbe6400ab47c8bb5a1ebe31f44e2923659c88fad1bfc24cd5300099490f38fa7896013f8f05f3b2d3e6271f5514669bce3ee70558bf0129a1d12a6dc2776d7e93a930131e052bf894d7ae353d7ea1c7546d841ae9f2a6a161f0b6dc42af50cc2208edf37dd3afe030abe362a78040000",
-    ],
-    [
-      "ETag",
-      "uybkbIg9A8rJZds37aB5yg==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:11 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-67-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "0002ff8d92dd6e82401085df657a0b095a454be205b6b625f11731696c8c5961502cb0b8bbb4b1c677ef2cb5b6699bb43730337cb39c73e0004f491e8103ab64bd2b51ec2fd6a826baf05196a992742b782e110c40c5d644b6a70fd9e4327ef5e6f3a289e568b51b0c5fdc4e8708196e3063e01c204e308d24388f07c85986b416f2b4ccf265d519a0f6851e4e03df1bde519ff148f7c359bfef76fb3d381ae7c58829b6acf87fac2d8e066cf9cac71805e6216a2d85e05b0c95a76d4a9615299a9297224409155c3d580b5e164c706ed2c4b45b66cdae5b2dbb615dd9f5ba4d60ca43a6129e133b9b923e505cb1d4e72fe4123420aa920cc7d5f599c6495419d1a5370cec46a5ef2b40d2e224c5e5df20e9dd30fa0c1fd82982ef1ccb7899ab3375db1fb9bf1d47997e1e75e306bd1f845494d41909bc416f1ab883b1e61627efddbd4239169c8294a833ac598d76b3655befb15e731d35bdc751a2440342467fc77da2c089592af1f806655673517b020000",
-    ],
-    [
-      "ETag",
-      "8SXmQ3fzIZZp5euObqMNwA==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:12 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
-        types: ["TIMESTAMP", ["INT64"]],
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "positional",
-        queryParameters: [
-          { parameterType: { type: "TIMESTAMP" }, parameterValue: {} },
-          {
-            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
-            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-68-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "d5",
-      "53",
-      "6b4fdb3014fd2b96f705a4be41053a2156da8c65b4694952a042a83589130c491c6ca75385fadf77edb474651bfb3ca95263df73ce3df7e157fcccb21077f0038b5f0a2a969f9ef803ae60aa480cb727bdfe854a27b74e1c794d87dd4e2fbf5f2f7e9c9e0282699624699ed0aae48508a8ec4cbc5a2c789113c1791584aaede36ab3dd6a1cb50f1b27ed56ab0d3c499368c0b267603f2a95cb4ebdbec95d8b398f134a72266b014fdfeeeb8b563d17fc89064ad67753d6218bac7f9cf42ce101518c67a7130f0c14928a194d094bc0c296193e7cd995ae3192d662002f58404910f02253da1648043c8b585c08a38a3bafd8d8fce5037bd6c0eaf9a8379a38fede9ca49a3cdf4744a2d94c505924aa82e65053c4123a63e1bc8ce4cfe8ab3b1a42041c3c1249e51cdd7cb35c0ba1c1e8c672f7e6528147101ad897163a435da78f76756c074d1cc7f27cb477b68f2edcd1648ccea73b182820a411010f7da22089d2c6c3f2d3d65355542a00ad5b6eff3e68bcd251c60553ba58dbf12db7dbf3ed6babecef80c624587a2fd0e1882492029a08925245c590871428e39167fbf6c8e90e80619a36de2024eedcbd6e09fe32a7daa032ffd8b787505c7738c6ab55e5efb0aeeb76a7204d8420cb7731b0db3ed4f42dfb9a24858118bc39953616650037b1ceb639b5f0ea7e05bf0a867d2bd5f1d5c472a7b8bc72694405cd0223f9411b0dd804fef96c363b0c58d86248039ba098542c903a4920a809fb2c35764b76f3a87572d0c4062cd4fbd841a3d9d04f3d0bff1859e7288c3e15820bd72cae3e423669bcb00c7ac2c22bb3f63b2e5fd657299592c45adee128252a7864598c248b33d01614455ca0a8c8024d2bb7dc5c11111729cd14d243931df436f71af28a3ce742d170ab0280f28178be6b3b17fb9fd7c7f3a96f79f0ec14ba6b768e5bf7ba28534a39ddffb78cfb7238da4f7fe458b0cd3f01a3939ac0ca050000",
-    ],
-    [
-      "ETag",
-      "9CDGtmUXNgfS1NiXYKJVvw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:13 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0cb7282300040d17fc95a1c4444e8ce0720a1808c410a1b26c4905250208916edf4dfcb747d57e7fe004c0815a2905d436fe00d3cb166cdc9dcefcd6dc1a8baed347885ea5d67b9408d9da88d351ebcdc4f4f021ac443efcc76ce915e65e6f9160f5a30bc7818c445f599b8cdf239540df39468e85445f53cbe8c172d5d23aebb7b1c5e4d1cc1f651b5953c7ca09deb9caedf129569aaed772c837cdce05897eba3ebbcda8194a22c615485be2f1a4efd35e71be867ad6917ca91dd0d7cc129c221913df5f25756731a8fabfe4c16fbc7d7253064628aba765606013340c77eeaa2a827ee72655933f06f2fe4b3a7d3802dc59c72f0fb077d3097111a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:13 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-69-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b3014fd2bc87b6d4242521222456b96d21535211b9056d33421632ed42dc1149b545595ffbe8b69ba5695ba17c0bee7dc73ee07cfe49e9729999184e70f0dd44f5fee44424e08289ae3edf29ae57bea4c36757235f6f8e369feedea2e9fcf11c15b96a4bbaa809e144dcd40ceb6613faf4553d15a881e26ead94e6f685b83893d1e38b665d9c89350642b5ede23fb56a94ace4cf3a8ddcf85c80ba015977d2676aff7e6de32ab5adc0153d27c2f69a28a343f17fd5a08461517e57c1ba28146421dc38ef2022dfc63a6c9d9fbd47d4e77fd1cc17bce8032269a52b5b630051365c6f3a6d659c9ec99689b6f3e48e8aedc6564305134bb322ee90e4e8c942a1aaba70a8c8b60b3363cff6213ac1791b7f1e37079e9ae17fde566b55dfba17173e906aea1685280e61a73e34c9f7c3ca07e0a52f152ab47ed75abfcd220efe3585a024a4be882f16460d3e174e024593261d974749a64034892693239a5a364c09c318cd30428f2b4a866d15294d61426ccb286f1d81966f8a056ec8ca62cb69d945a56c6326625e470421e6baee09ccb4a48de7588dc045ee4c651b0f5978bc8d52564b429d47967ac2de0ad47850522e8939a0e6d940b546adbedf9911b2c969177ed76135e414ed953f88033ce682101d1b4c6e629a8d722c586117fb176cf11ac27f6e3189464f6fb99b43d6f5dbc69f92b3dc201b676957e93300a3cffbbb673445cd3a2d1907df7412ab47c8bb5a1ebc31f44e2927659c8cfad1bfc22dd550019d450b2ff4f13c13af0df7fedb8f888c5d54719a9f08cbbc3642bc26ae87688eb725fd8c3c9c81aeb3f55d15a7d888d1cfbd8b536479b117650aa978abac5c7423bb146be823088e3f775b70e7f016c12705678040000",
-    ],
-    [
-      "ETag",
-      "CVcgva97OrbK4Iiw5gBKjg==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:13 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-69-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "dd",
-      "4ec2401085df65bc2d492158a48917a0a8184028c5680c214b3b85e2b65bf60725847777b6221a35d19b7666facdf69cd3eee039cd63f0619e2ed606e5f664817a648b0095e15ad1ad10b9427000355b10b97c5c175e7f33b96d3fdcab1137ae794d1aa3f3732254b4c48c81bf8324451e2bf09f7690b30c692d12dc64f9acec1cd0dbc20ec761d01d5c539f89d8f68349afd76af73ab0778e8b31d36c56f2ff589bee1d58897980094acc23b45a0a295618e9aeb5a9585670ac286164840a4ab87cb090c2144c0a51a149c56b56aa5ecd6d7875b7e9d56a1e815c444ca722277632267da085663c102fe4122c20cb920c27e57543e3342e8dd8b23b08bd7aa9ef2b40d29294e3ec6f90f42e197d860fec10c1778e65c2e4fa485df5ee5abf1d47997e1e75d90a3b3f08a529a9231276fb9d71d8ea0f2d373d786f6f35aaa11414a4429b61d5ad9f9d363cf73dd60b61a3a6f7f85a1a742062f477dca41afc847185fb373e998c2e7b020000",
-    ],
-    [
-      "ETag",
-      "hYqp6MvUJBXVsQlu0uxf7Q==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:14 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
-        types: ["TIMESTAMP", ["INT64"]],
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "positional",
-        queryParameters: [
-          { parameterType: { type: "TIMESTAMP" }, parameterValue: {} },
-          {
-            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
-            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-70-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08000000000002ffd5536b6fda3014fd2b96f7a595788bd195a9ea28645b34083409ed505581499c609ac4a9ed744215ff7dd70e94b16edde74948c4bee79c7beec3cff8816521eee2258b1f0b2a36efd67c892b982a12c3addd914be67aca5d0dc2f3a4ff7dbd5ea6ce8f8b0b4030cd9224cd135a95bc100195dda9578b052f722238af8250f5ac516d765a8db34ebb71de69b53ac0933489862c7b00f64aa95c76ebf57dee5acc799c509233590b78fa725f7f6ad573c1d73450b27e9cb20e5964fdeda497090f88623cbb987a60a09054cc694a5802160ecc70f9e958bac6485a8b01fcc4024a82801799d2b64022e059c4e2421855dc7dc6c6e62f1fd8b38656df47fdf1d4f14f1624d5e4c5292212cde782ca225115b4809a2296d0390b1765247f409fddf10822e0604524950b74fbd5722d8486e35bcb3d5948051e4168687fb3d025ea390374ac633b68ea3896e7a393cb53f4c51d4f27e86a76848102421a11f030200a92286d3c2c3f6d3d5545a502d0aee5f6eb41e3ad8e322e98d2c5da8e6fb9bdbe6fdf58657f873426c1c67b840e47249114d04490942a2a463ca440998c3ddbb7c74e6f080cd3b4c91e2171f7eef940f03739d50695f9c7be3d82e27aa309de6e2b7f87f55cb73703692204d9fc1603bb9db6a61fd83724290cc4e0cda9b4f154067013eb6cfb530b6fefb7f0ab60d8b7521d5f4f2d7786cb2b974654d02c30926fb4d1804de09fcf66bfc380852d8634b0098a49c502a99304829ab0cf5263b76437cfdaadf76d6cc042bd8ab51b4dfdd4b3f08f915d8ec2e85321b870cde2ea236493c60bcba0272cbc366b7fe4f2717795522949ace51d8e52a28215cb6224599c81b6a028e202454516685ab9e5e68a88b84869a6901e9aeca297b9d79057e439178a86071500940fc4f35ddbf972fa7177bc9af99607cf4ea1bb66f743eb5e17654a29a7fbff96715f0e47fb198c1d0bb6f927a01117f6ca050000",
-    ],
-    [
-      "ETag",
-      "I6sbiRStRhDd9lCXjjbmNw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:14 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "51",
-      "6e",
-      "82300000d0bbf45b8c0854d9df141966a00561083f0d2d9d56ea0aa551d0ecee333bc27b4f5051cafa1e6bd9b01ff006c66aee4ee9f4b35daef089c1eedb7cf46a8329bd275eb488b3f362c19c1219814f86a553e56a1f27338f54a96f0d10918614c4f2bfb2344189dcfb87f15023b1bfef1c663bb379d85e308ac220b85ecfdacea40e35367b6ede0a669ecc9c722b1eb1e6d08ebc46058fe38acfa264e82e757a7cf449b9f36ababe7c8444183223bacb2837b428d6e2dd906eaa46632ba8234a0bc612de36f95cdef22dce38127687206a0a98d76002d8d072c57acc5f5ccb71dd09f8b7633db6ec15b06295620afcfe01379697371a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:14 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-71-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff85536b4fa34014fd2b64f6ab6d0169699b346b53712569e90a54f7910d19e082a3c02033d418d3ffbe97c1ba1a13f7133373cfb9e7dc07cfe49e5529999398e50f2d344f5fee784c4e08489ae3ebaf53795ffe081a579f3eda93d578b32bf7edd5628108d6b1042deb020682b74d0262be0b8679c3db9a369c0f30d1c03606c6c4d4ed89a5cf26a639419e80225bb3ea1ed9b752d6623e1a1db58739e77901b4666298f0f2f57db4374775c3ef209162f45e72842a62f4b9e8d7822754325e2d76011a6805341194941568e11f338dcfdea71e325a0e7304ef59023449785bc9ce16a6487895b1bc6d5456327f26cae69b03099cb5b30ab584176d5945152de1444ba9a4917caa41bbf0b71bcdf52eb6fe6619ba5b2f0a5697ce66395c6dd7bb8d176837978eef6892c60528aeb6d0ced4cdc30beaa72024ab947ad83d77ca2f0d723f8ea523a0b4803e18d9fa841a537d1667b19d64d3d3719ce910c7d3d81ed3d3584f661658690c14794a54b168c5ab298c67c62c8d23cb32279105d48ca89e599165ceecd830a7c6d848c9e1843c364cc239133517acef10b9f1ddd089427fe7ad96a1a34ac8685bc8f3de5857c05b8f120b44d027351dba28e3a8d4b5dbf542c75fae42f7dae927bc869c264fc103ce38a3850044d3069b27a1d9f0141b46bce5c63947b09ad8f7635090f9ef67d2f5bc73f1a6e5aff41007d8d995ea4b82d077bd6fcace11714d8b5641f6fd81d468f9166b43d7873f88c425edb390ab9de3ff24fd930f19345025ff9f268255e0bfffda71f1118bab8f3242e21d7727119d48d240bf434c95fbc2366ccbb64da2c08dfc109b99d6b16b5d8e2e239450c9978afac5c7427bb156bc823088e3f754b70e7f0146c4fbee78040000",
-    ],
-    [
-      "ETag",
-      "Z3tkmXSrI08w76C5MUmvuQ==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:15 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-71-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-63-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -10784,11 +9508,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "10",
       "85",
       "df",
-      "65bc859436955a925e50ad4a427f6ca9311ad36c61a0b4c0e2eea2364ddfdd59acd5a889dec0ccf0cd72ce811d6cd22202079669f254a1d89e24a86e74314559654ad2ade485443000154b886cc8d7f6daabc4a611de8efdee7da2cabbc4edf58890e10a7306ce0ee214b34882f3b08382e5486b21cfaabc58d49d016a5beae12c987aa32bea731ee97e34f77db7ef0f606f1c1723a6d8a2e6ffb1f6b83760cd97538c516011a2d6520abec65079daa6647999a1297925429450c3f58344f0aa648273932666a76936ed96d5b1db56d76eb56c02331e3295f282d8f98cf481e28a6553fe422e4103a22ec9705c5f9f699c46b5115d7aa3c06ed7fabe02242d4e335cfc0d92de15a3cff0811d22f8ceb19c57853a5297fed8fded38caf4f3a80b3718fc20a4a2a48e48e00d07b3c01d4e34f778f0dedf2a9413c12948893ac3a6d53e3bedd8d67bace75c474def7194a8d08090d1df719d2a70629649dcbf01c18f990b7b020000",
+      "65bca509558b96a417a0559bb4a894c644639a2d0c485d58dc1f9bdaf4dd9d45ad464df40666866f96730e6ce0b1ac33f06151164f06e57aaf407d6d8b1895e15ad1ad11b5427000352b88bc0c4f9661bc9a98176ea268bab8756fb2b3d56040844a1fb062e06f202f91670afcbb0dd4ac425a4b0537553d6f3b07f4bab1c369128fa273ea2b91d93e9a8dc741381ec2d6d92d664cb379cbff63ed7eebc0522c62cc51629da2d5d248b1c4548fac4dc5aa86634709235354d0c2ed83420ad330294487261defa0d3f5f6dd7eb7ef1ef4bc5e9f402e52a64b51133b9b923ed042331e8b15b9048f00d99664386fafcf342eb3d6882d4751e21db6fabe02242d2f39ceff0649ef03a3cff081bd47f09d639530b5de5167e3cbe0b7e328d3cfa34e8364f883509a92da21c968329c26c1e4ca72f7efdec3b54675250505a9d066d8750f8f7b479efb16eb89b051d37b7c2d0d3a9032fa3b2e4a0d7eceb8c2ed2b013b3cd77b020000",
     ],
     [
       "ETag",
-      "/sx4jIurk/cVOL9ZgtpXgA==",
+      "OBCjBRwMuzluNNSbZ0WdFw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -10800,7 +9524,1152 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:15 GMT",
+      "Thu, 13 May 2021 15:18:18 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+        types: ["STRING", ["INT64"]],
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "positional",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "%app%" },
+          },
+          {
+            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
+            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-64-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "0b",
+      "4f",
+      "db",
+      "30",
+      "10",
+      "fe",
+      "2b",
+      "91",
+      "272490fa7ea44d25c44a092ca24d599a82d034b58ee304431207db0155a8ff7d1787f2181b489112fbbec7ddf99c2774c7b2108d50c0e2fb828acdb75b1ea01aa20ac7b07b1e84e3e2f134f2e7a1338cf9ecf87496cac7c34340b09225719a27b42e79210895a3e5a2110b5ee458705e07a1bad9abb7cd4ecb6a5bad6edfec5bc0933489a62cbb03f68d52b91c359b3bef46cc799c509c33d9203c7dd96f3e749ab9e0b79428d97c6fd90417d9fcdcf428e1042bc6b3c3e502122824152b9a6296400aafcc30f8fe5ebac170da8801fcc008c584f02253655a20417816b1b8105a158d9e904ef3cd075ad8537be21b93f9d2f5f7d7382dc9eb03034b63b512541689aa196ba82962095db1705d45f23be3d49bcf200219dc6049e5dab8fa617bb6614ce757b6b7ff1200ada9736e1b47c6d83d31de4b39aeb1745d7be11bfb4707c699375f5e18c7d7ef30504348a56299aec0c74142cbec9f9bec7c3cda9280151857c1d5a065e2f6b06505513020d1b0db0fa2160d826130e8e36ed022568ff6c28062e0a9525db370c6b3413f8c48afd3b506985861d089dad630e8d056075b940c4cd3eaf6a30813136d6be85130454f98ccb96455a7d195e7f8f6caf796ee64ecdbba8c0843374faae4ca22dee6a9a048007d52d7b68c320e4ee5b139ae6f7be389ef5cdad5a44c698cc966710fb312e1445240638153aaa898f1109a862ee60bc777e6ee780a0c7dfc173b8444a35f4faf047f93eb2e2bfd460bdf73dc339dc00e71899342431eaa0fb487f37c0f6db7b5ffcb8c3d6f7c0dd65808bcf92b06e598bd92fe0f0b8dd7ab2acd9d651b956ebb55076d7f6fe1a921b8",
+      "59953afab9b4bd6b546d7934a28266e4ebf101b00e7cf983d8dd56c0c27d051ba9600dc34a64694204ad8696a53add67b635ec985da4c1427d88f57beddde9941aa5224d69a69e2baa6eab6e54192ae40b0882306bae3ea8ed1f3a532e4b2d050000",
+    ],
+    [
+      "ETag",
+      "KbdAuwFfTOdI8goMBFMmsw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:18 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-64-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8d90416fc2300c85ff8b776da5520613481cc654b14a151b659c1042a1b85d4b5b8724654388ff3e274c13c75d12e7f9b3f55e2e7028db3d8c615716c70ed5f9a140b3b0458abaab8de64b52ab113c40230a26974112e54f7195ca6a17c6c7d972f676f85e4c264ce8ec131b01e30be425d67b0de3f5055ad1208f6db7ca6d64cc9ca555e2f947348b52161ada5b61be4a92e76912c1d5bb1b93877f8d6cae1e54b44b3147856d86d68554546166621b508b46d6e86bea54861a1cec1a85a24e0a45e4b3e20f1ffdde300c46bd51d01f0c0723066bca8429a96576b5646f60c8883aa52fce072103ca951c3577e789e5becb707280b576df0bff7a3ddbdbfc2e9c9e0dea7745ec4ea33516dc4cbe90356e3890511d7a9009fee5d7d2dcded71ffc32b9b7c2010000",
+    ],
+    [
+      "ETag",
+      "S0LEf7IjRpjb2IqGSGOkxQ==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:18 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "db",
+      "6e",
+      "82",
+      "30",
+      "0080e177e9b531e0406477a2dd3819a888386e9a5abb4241cee765ef3eb317f893efff018452d6b6b82b3356807730938dbea66ba7da19983f9670cb75f445fdf641d4c98291e879be2f6a2756fdcb614271299fa7de2445d252e106c93993ae7bfe6a8d96a7d8cb2517e838deba656b4672050397b172849b6bfd619d94744a149b79e814efefaebcbd4bb67510fec3d0acdbcee1441562e108636f9c9ffdac2378f9f4c22e34fd2755c41945a5ed0f4a2fd91a548ec8eb4c0725d4c550e2b4a3573640a1b5ae350f7120d59e9657e31c9ae43b032bc0a62a6d588bd317f74dd5f515f8b7e36eaed86b80c148c31af0fb07e84817621a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:18 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-65-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "5d",
+      "4f",
+      "a3",
+      "4014fd2b64f6d5b6b40a2d4d9ab5a9b8926de90a5463361b324c2f380a0c32836b63fadff732585763a24fcccc3de79e733f7826f7bcdc92294978f6d040bdfb762712724440d10c5f9d9fcc5feefcfbcadf2463f70a6e6ee8d3d3e56c8608deb2242daa1c7a5234350339dd84fdac164d456b217a98a8675bbda13d329da1631e5bb6e5204f429e2e79798fec5ba52a391d0c0edafd4c882c075a71d967a2787d1f3c8e06552dee802939782f39401539f85cf47b2e18555c94b34d88061a09750c05e5395af8cfdc26a7ef53f7392dfa19821f3903ca98684ad5dac2144c9429cf9a5a6725d367a26dbe3990d05dba8bc860226f8a322e690147c6962a1aab5d05c679b05e199e7fbe0e56f3c85bfb71b8b87057f3fe62bddcacfcd0b8be7003d75034c941738d9971aa6f3e5e507f0b52f152ab47ed73abfcd220efe3585a024a4be882f1d8b4e970623a499a8c593a39b692d484249924638b1e2726734ee0649b00459e16d52c5a62cd943a8e6d5bb133b22631a2c631c2cdd81a4e86d41cd9136659647f44fed65cc119979590bceb10b90ebcc88da360e32fe691ab4b486993abb3ce585bc05b8f0a0b44d02735eddb2817a8d4b6dbf32337982f22efcaed26bc848cb25df880334e692e01d1b4c6e629a857628b0d23fe7ce59e21584fecd72128c9f4f733697bdeba78d3f2577a84036ced2afd25611478fe0f6de780b8a279a3218fdd815468f9166b43d7fb3f88c425edb290cb8d1bdc90ee2980146a28d9d7d344b00e7cf9af1d161fb1b8fa282315de7177986c45580ddd0e715dee81ed608221d1e05a7d888d4eac43d7da1c6d4628a0542f15758b8f8576628d7c056110c7efeb6eedff0122ced6d978040000",
+    ],
+    [
+      "ETag",
+      "9KcNLyNkpNUb7EVeYYaxxQ==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:19 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-65-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92414fc2401085ffcb782d49515aa50987a2a8248808e5640859da692db49db2bb0509e1bf3b5b118d9ae8a59d997eb37defb57b58a545041e2cd2645da1dc9d25a89f4c314655655af1ada4422158805a244c3ac3627569bf26eb5b5a2f9dd174d5ed6dfc6da7c3840a5f3017e0ed214e318b1478cf7b28448ebc165256e5c5bcee2cd0bbd20c27c1b83fbce33ea7c8f4c3e960e077073d3858a7c5486831aff97faccd0e162c6931c6182516211a2da5a42586ba6f6c2a919719361455324405355c3f482455a590440d9e345ca7d174cfed76b36d5f38aed36630a350e8940a66a713d6079ab4c8c6b46597e03220eb920dc7f575c3e334aa8d98b23f0cdc56adef2bc0d2e234c3f9df20eb7d11fc193eb06304df39915355e813753b78f47f3b8e33fd3ceac60f7a3f08a539a91312f41f7a93c07f18196e76f4dedd695423491ca4429361d36e5d3997aefd1eeb3599a8f93d9e96155a100afe3bee530d5e2c328587375c544cc67b020000",
+    ],
+    [
+      "ETag",
+      "5Nnk70xgqFoqj5PUkBEvAw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:20 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+        types: ["STRING", ["INT64"]],
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "positional",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "%app%" },
+          },
+          {
+            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
+            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-66-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "8d",
+      "4f",
+      "a3",
+      "30",
+      "14",
+      "ff",
+      "57482f269a6c837dc15862bcdd440f6f328f318db95cb6520a5619455a348bd9ff7e8fe2d49d779a9040fb7e1fefbdbef284ee5816a1210a59725fd262fde59687a881a8c409ec0e8c3c7cd4b3b3707ec22e65909e7527ba991c1e0282552c8157794a9b829705a162389fb5928297392e386f8250d3349b6db363d86ddbe8f6cdbe0d3c41d378c2b23b60df48998ba1ae6fbd5b09e7494a71ce448bf0d5cbbefed0d1f382df522285be6ba9838bd03f363d4a39c192f1ec703e83044a418b055d6196420aafcc28fcba2bdd6278d54a00fcc008c584f03293555a20417816b3a42c942a1a3e2195e69b0f347326ce38d0c6d3b917ec2ff1aa222f0f342cb4c5a2a0a24c65435b424d314be98245cb3a92df6927fef41c2290c10d16542cb5abef8eef68da647ae5f8fb2f01d09ab83f1ced481b79c7daae94eb6973cf736681b67f74a09dfad3f985f6ed7a07033544544896a90a021ca6b4cafeb9c9eefba3ad085882711d5c588689db03c30ee3d022f1a0db0f638386e120b4fab81b1ac4eed15e14520c3c59a92b16ce7866f5a398f43a5ddbc2c48ec24edcb60761871a1d6c536299a6ddedc7312626da34d063c1243d6622e782d59d4657be1b388bc09f7be351e0a832620cdd3cae93ab8a789ba7842201f4415d9b2aca383855c7e67a81e38fc6817be9d49332a10926ebd93dcc4a8c5341018d0bbca29216e73c82a6a18be9cc0ddca9379a00431dffc51621d0f0d7d32b2158e7aacb52bdd12cf05def5425b0455ce2b4549087fa03ede13cdf439b4de3ff3223df1f5d83352e0abcfe2b06e598bd8afe0f0b8557ab3acdad651b556edb55076d7e6fe06920b859b53afa3977fc6b546ff934a605cdc8e7e3036015f8f407",
+      "b1bdad8085fb0a3642c21a869588ca8414b41e5ab652e9d6ecb66174071652e042be8bf5fbd6f6742a8d4a91ae68269f2baa6fab6a54152ac50b0882306b9e3aa8cd1f4ce932ce2d050000",
+    ],
+    [
+      "ETag",
+      "80pbw/nJbUFiVtTlJ3L/6g==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:20 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-66-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "0002ff8d90dd6ac2401085df657a9b803f1850f0428b5841ac4d2b9696226b3289d12493ee4e222abe7b67d752bceccdeeec996f8673f60287ac8c6100db2cfdae519f1e52e4175b8468ea9c8d5c159506c10364950af93c3d37fc3e5a8ed7f1b9099378f7b1d6741c0e8530d10e0b05830b2419e6b181c1e7054a55a08c6d36da6d148c4f9555668bb7c974128a50506c85c56a3e1f8de713b87a7763d5e15f235f570ff6b40d31418d6584d645a5698f11cf6c40a38a2a47df50ad2334e060d74835d595d244be287e10f8eda0d3eab7fbad6e2fe8f505cc29529c5129ecea55bc0113ab3ca4a3e4838e00da95123571672372d765681c60adddf73a7fbdb6ed7dfd2e1c9f18cd5293b833688db56e261fc91a6709c4ba460f2225bffc94f1ed7dfd01f469042fc2010000",
+    ],
+    [
+      "ETag",
+      "OGzvtXAPBWdzvRfdhZWrow==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:20 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b08000000000002ff1dd0dd6e82300040e177e9b51807dac2ee04411107c2a6c26e1a848e9606ad94bf6ed9bbcfec054ef29d1f901705911277774e6ee015a85cb7e6c53c10a68dab92ca7e40f6885d78ef767a72520fdf7a312e8eef5d3974385699b639973bc954883da46564a5b7073fdd9d1174975fb61d2d8775d90f8b53ad718ea9fb40a648e3c1a11bf7b830218a8bf72292aa5b18a8d9de54ff4c4c0c5e45d0186d5de0b432cbb419cc1ce7a3e55da2b1a20cc7723d8642b807130a2dd33c6b6a3c52f1a0dec7741f8e8db33d7ef6df705325b4446f09cceac860bcf4a8ca3e2898013209d61289d9936bac2c6b06feedb853823c07d8246f490b7eff003267280a1a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:20 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-67-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "6b",
+      "6f9b3014fd2bc8fbda2410f22252b446096d9112d20169374d1332e642dc129c61d3adaaf2df77314dd7aa52fb09dbf79c7bce7df044ee799992294978febb86eaf1cb9d48c8190145737c9de4cb4956ec2e8b9db7b0cdbebafe3e0fffce673344f08625e9fe5040478aba6220a7dbb09b57a23ed04a880e26ea8cc61d6bd4371dcb31ede168e8204f4291ad78798fec9d520739edf54edadd5c88bc007ae0b2cbc4fee5bdf7d0ef1d2a71074cc9de5bc91eaac8dec7a25f0bc1a8e2a29c6d4334504ba862d8535ea085ffcc34397f9bbacbe9be9b23f88133a08c89ba548d2d4cc14499f1bcae7456327d22dae6ab0309dd95bb880c268a7a5fc625ddc39991524563f57800e322d8ac0dcfbfd804eb79e46dfc385c5cb9eb7977b1596dd77e68dc5eb9816b289a14a0b9c6cc38d7371f2fa89f8254bcd4ea51f3dc283f37c87b3f968680d212da603c3647d49a984e922563964dec619299902493643ca476623267008334018a3c2daa59b414e5600ca9ddcf9238b52c271e58c3514c9dcc8c87d63861b6ed3860dbe47846fe545cc192cb8390bced10b90dbcc88da360eb2fe691ab4bc8685da8656bac29e0b547850522e8839a8e4d940b546adaedf9911bcc179177e3b6135e414ed963f81b679cd14202a26985cd5350ad458a0d23fe7ced2e11ac27767d0a4a32fdf9449a9e372e5eb5fc851ee1001bbb4a7f4918059e7fa9ed9c1037b4a835e4a13d90035ade616de8faf80b91b8a46d16f26deb063f48fb1440061594ecf3692258073efdd74e8b8f585c7d94910aefb83b4c3622ac827687b82ef7996d9996399c100daed4bb587f649dbad6e46832c21e4af55c51bbf858682b56cb17100671fcbeeed6f11f6d40b88b78040000",
+    ],
+    [
+      "ETag",
+      "8gD8flhGlhIC302tPXASxA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:21 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-67-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8d92414fc2401085ffcb78b42445a195261c40513180d8162f8690a59d4261dbadbb5b0821fc77672ba25113bdb433d36fb6efbd760feb348fc18379ba782d51eece16a89f4ce1a32ab956742b44ae102c40cd16443e070d37f3b118ab876893962b37599f6fb6ed36112a5a62c6c0db4392228f15782f7bc85986b416095e66f9acea2cd0bbc20c83d0ef8feea8cf446cfad16430e874073d3858a7c5986936abf87fac4d0f16acc4dcc70425e6111a2d85142b8c74dfd8542c2b38d6942865840a2ab87ab090a22c9814a246939ae3d6eace85ddaab7eccba6d36c11c845c4742a72622701e9032d34e3bed8924b70089055498693eabaa1711a57464cd91f854ea3d2f715206949ca71f637487a978c3ec307768ce03bc73251e6fa44dd0e1e3bbf1d47997e1e75d3097b3f08a529a91312f687bd20ec0cc7869b1ebd77771ad5580a0a52a1c9b06e37ae9aae63bfc77a2d4cd4f41e4fcb122d8818fd1df7a9062f615ce1e10d96ec53467b020000",
+    ],
+    [
+      "ETag",
+      "VS47mRepPsJcviuj7fk+vw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:22 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+        types: ["TIMESTAMP", ["INT64"]],
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "positional",
+        queryParameters: [
+          { parameterType: { type: "TIMESTAMP" }, parameterValue: {} },
+          {
+            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
+            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-68-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "d5",
+      "53",
+      "6b",
+      "4f",
+      "db",
+      "30",
+      "14",
+      "fd",
+      "2b96f705b43e68191ded84588100d1daa42429ac42a835891b5c9238b59d4e15ea7fdfb5d3d2756cecf3a44a8d7dcf39f7dc875ff033cb22dcc18f2c9e17542c3fccf823ae60aa480cb7cecdf2fa72e1b8bd6e7bf9f1b2f979f67dd69aff38390104d32c49d23ca155c90b1152d919fab558f0222782f32a08555bc7d546ab79d06eb40f0e8f5a476de0499a4c7b2c7b06f69352b9ecd4eb9bdcb598f338a12467b216f2f4f5bebe68d673c1673454b2be9bb20e5964fdfda4a7090f89623c3b19fa60a090548c694a580216b6cce8f1ebae748d91b4160378c1424ac2901799d2b64022e4d994c58530aab8f3828dcd5f3eb06ff5acf3009dbb4327d89b90549327fb8848341e0b2a8b4455d0046a9ab2848e59342923f933baf4dc3e44c0c11391544ed0ddb5e55908f5dc3bcbdb9b48051e41a8677fb3d029ea3a176857c776d0d0712c3f407ba7fbe8ca7387037436dac14001119d12f07041142451da78547eda7aaa8a4a05a075cbedb783c62b1d655c30a58bb59dc0f2bae7817d6b95fdedd198844b7f0e1d9e92445240134152aaa8e8f3880265e0fa7660bb4eb7070cd3b4c1062171e7fe654b089639d50695f9c781dd87e2bafd015ead2a7f87753daf3b0269220459fe1603bbad4f9abe65df92a430108337a7d2c6a20ce006d6d936a7265e3dace057c1b06fa53abe195ade0897571e9d5241b3d048bed3460336817f3e9bcd0e0316b618d2c0262826150ba54e120a6ac2014b8ddd92dd38687e6a1e620316ea4deca8a163348bfe1859e7288c3e15820bcf2cae3e423669bcb00c7ac2a21bb3f63b2ee7ebab944a49622def709412153eb12c4692c519680b8aa65ca06991859a566eb9b922222e529a29a48726",
+      "3be875ee35e41779ce85a2d1560500e503f103cf76aef6bfac8f67a3c0f2e1d92974dfe81c371f7451a69472baff6f190fe570b49f0bd7b1609b7f0238c00f40ca050000",
+    ],
+    [
+      "ETag",
+      "NQyHFvNOLA9y+F27jXj6qw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:22 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00",
+      "d0bb646d1d3e06a53be260a3628314ebe026134204441402844fa777afd323bcf70318e7a26968fb2cc403bc839119f69ccff7d50ad1947737535c3cfd5eeb9ef4830986cf94e0f2127f5b15bc16a88dda913e4683b2052f8c5dbcd978ce22c6b7c8e5ce601c7cd674468a7104e10a8e96ac74a85dc9a396304fa6c9fcecd26383b44e1cf8327ccb54b9546e790bea10313f3b6db38f4983e21c92164f76e8580121dad08b03317b77598fd02009a647a87d2d7c8f9d56a25c477b85a27ee8cf55ac63752f92946fcfc1bd59e7f14ec12e462a073320862a97a2a1f98b6b42db9e817f3b6dc74abc0290605248f0fb070fa7b73d1a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:22 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-69-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "5d",
+      "6f9b3014fd2bc87b6d0224210991a2354ae9ca96900d48bb699a90710c750b98629329aaf2df776d9aaedda4f609dbf79c7bcefde011ddb36a87662865f9434b9bc3873b9ea2334425cee1757bb5fd7e28c3e166e59b4ddcdeede3cf832f8bf91c104cb1042eeb82f6046f1b42c56c1bf5f386b7356e38ef41a2ded8edd9e381e5daae3574c68e0b3c418b6cc5aa7b60df4a598b99699eb4fb39e7794171cd449ff0f2f9dddc0fccbae177944861be96344145986f8b7e2c38c192f16abe8dc0402b6893d012b3022cfc65eed2f3d7a9fb0c97fd1cc07b46282684b79554b62005e155c6f2b6d159d1ec11699b2f0e28f256de3236082fdab24a2a5cd2336387254ee4a1a6c665b8591b7e70b909d78bd8df0449b4bcf2d68bfe72b3daae83c8b8b9f242cf90382da8e61a73e35cdf02b880fe8e0ac92aad1eab67a5fcd420ffffb12802480bda05938935c6f6d472d32c9d906c3a74d2cca2693a4d270e1ea616714774b44b29069e16d52c5cf1ca725c6787273871acd13819d9033b495d679438f6c4990e327b349d0cd1f10cfd6e98a4174cd45cb0ae43e826f4632f89c36db05cc49e2e21c36d212f3a63aa80971e251408a0376a3aaa28e3a0a4daed07b1172e96b17fed75135ed11c9343f40033ce702128a07103cd93b459f31d340c058bb57701603db1afa7a040b39f8f48f55cb978d1f2677a0c035476a5fea2280efde093b673425ce3a2d5907d77403558be85dac0f5f117206149bb2ce8dbd60b7fa0ee29a4196d6845de9f268075e0dd7fedb4f8ea4f8e948c907087dd2142899086763bc474b94f6cdb1a4c4736d2e046fe1b1b5aae73ea9acaa132d29256f2a9a26ef1a1d04eac15cf2008c2f803ddade31fd184460c78040000",
+    ],
+    [
+      "ETag",
+      "UHUXymR3OLI/rTujvTJ2KA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:23 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-69-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "41",
+      "4f83401085ffcb78a509554b2d490f54ab9250d496f6624cb385a1a502437717b569fadf9d45ad464df40233c337cb7b0f76f0989509b8b0c8969b1ae5f66889face14635475ae15df2a2a158205a8c592c9d9ecece5b92bedf07a1dd0c61e0e9eb2cdccebf79950f10a0b01ee0ed20cf344817bbf835214c86b31e57551ce9bce02bdadcc70128dfdf08afb8212d387d320f006c110f6d66131115acc1bfe1f6b0f7b0bd6b418638a12cb188d964ad21a63ed1b9b4a14558e2d45b58c514103370f9692ea4a48a2164f5a4eafd5768eed5ebb679f749c4e8fc19c62a1332a999d4e581f68d2221fd333bb048701d9946c386dae4f3cce92c68829fd30724e1b7d5f0196966639ceff0659ef4af067f8c0de23f8ce8982ea521fa8cbe0c6fbed38cef4f3a80b2f1afe2094e6a40e48e48f8693c81bdd1aeee1ddfb60ab51dd4ae220159a0cdbf6e959a7ebd86fb19e93899adfe36a59a305b1e0bfe33ad3e0a62257b87f055cffac977b020000",
+    ],
+    [
+      "ETag",
+      "VV8xw7r0NHjLoq0EBviqVA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:24 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`stamp`) LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+        types: ["TIMESTAMP", ["INT64"]],
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "positional",
+        queryParameters: [
+          { parameterType: { type: "TIMESTAMP" }, parameterValue: {} },
+          {
+            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
+            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-70-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "d5",
+      "53",
+      "6b",
+      "4f",
+      "db",
+      "3014fd2b96f705b4be798d4e88b590b168695af2007508b5267182471207db61aa50fffbae9d96ae63639f27556aec7bceb9e73efc8c1f5811e33ebe63e96345c5e2dd777e871b982a92c2adf56df8def1d5c12076166e389c54bd78f2233d390104d32c49f232a34dc92b1151d90ffd562a785512c17913849a479d66f7b0d739ee1e77f60e0e0f8e8127699638ac7800f6bd52a5ecb7dbebdcad94f334a3a464b215f1fce5befdd46b97827fa79192eded946dc822db6f273dcd784414e3c549e883814a5231a339611958d830e3bb4fdbd22d46f2560ae02716511245bc2a94b60512112f129656c2a8e2fe3336367ff9c0bee55867013a1b876eb03327b926cf7711916836135456996aa039d494b08cce583caf23e503faec8d47100107f744523947d75f2ccf42c8195f5bdece5c2af008428efdd542a768e09ea36d1ddb45a1eb5a7e80764e77d185370e276838ddc24001314d087838270a92286d3cae3f6d3d5545a502d0aae5f6eb41e3a58e322e98d2c5da6e607983b3c0beb2eafe3a3425d1c27f840e27249314d044909c2a2a463ca640998c7d3bb0c7eec0018669da648d90b87ff3bc21048b926a83cafce3c01e417183d1042f978dbfc3069e3798823411822c7e8b81ddc37d4ddfb0af48561988c19b536de3a90ee02ed6d9d6a71e5ede2ee1d7c0b06fb53abe0c2d6f8aeb2b8f2654d02232926fb4d1804de09fcf66bdc380852d8634b0098a49c522a99344829a70c07263b766773bfbddbd236cc042bd8aed773afaa917f11f23ab1c95d1a74270e199c5d547c8268d1756404f587c69d67ecbe5e3ea2aa7529254cbbb1ce54445f7ac4891646901da82a2840b945445a469f5969b2b22d22aa785427a68b28f5ee6de427e55965c281a6f5400503f103ff06cf762f7e3ea389c06960fcf4e",
+      "a19b6eff43ef5617654aa9a7fbff96715b0f47fb391fbb166cf34f4e790f8bca050000",
+    ],
+    [
+      "ETag",
+      "EZB+LSt5AdLyNUBPu2dPwg==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:24 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff1dd04b7282300000d0bb642d0e2022744714a85aa158089f0d13432c1f956820089ddebd4e8ff0de0fc08450cef3ae6de80dbc8111abe69cccf7cc80f93759215126dd578a68ac15efeea977b7c3d4d6f5e148b99b555a81c2eb5024aa9b44c8b23c7920f74012f6a5f260506e9cc90f5976f602abe7b96f2f4f8b69ed05b1c994203a96186233b546ad94f54e39ab3bae49e13ecbf58d88a7be155c1002a55e1b76ebd4d3f4c3019e4d7471b793434af1192d5c3fbc22e648210f3f58819b22d2eb8b4cac7b6713e1dfe05a8281baaa1a621bfdb5a9cbbd825a038319a04f563d28cfab1777b134cd19f8b7e7ddc8e82b0052fca00ff0fb07805585001a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:24 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-71-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "5d",
+      "6f",
+      "9b3014fd2bc87b5c134842208914ad11a51b524256425a4dd3846c63a85bc0049b4e5595ffbe8b69ba5695da276cdf73ee39f7832774cfab142d10e1f9a165cde3973b41d019620ae7f07ae5daeed783e71d48b8379da6cddd360c57cb252078c792b8ac0b3690a26d28938bfd6e9837a2ad7123c400120ddcd160e48cadf9686e4da6ce740e3cc98a6ccdab7b60df2a55cb85699eb487b91079c170cde5908af2e5dd7c189b7523ee1855d27c2b69828a343f16fd56088a1517d572bf0303ad644dc24acc0bb0f09f9992f3b7a9871c97c31cc00f9c324ca9682bd5d98214545419cfdb4667458b27a46dbe3aa09dbff6bdd8a0a268cb2aa970c9ce8c142b9ca8c79a1997d1766304e1e536daace2601b263bef87bf590dbded7abf0977c6cd0f3ff20d8549c134d7581ae7fa16c205f4532615afb47adc3d77cacf0d0ade8fa52380b4647d30712d078f66d69c64c4a5d96c322599c5089911778a27c4a2739bd9296118785a54b37025aa994da694dae3c49d3a93c49ea4764248e626e92c9b1027cd2c9b3ae87886fe365cb10b2e6b2179df21741305b19fc4d13ef456b1af4bc8705ba88bde5857c06b8f0a0a04d007351dbb2817a0d4b53b08633f5a797170edf7135eb31cd3c7dd01669ce1423240e3069aa758b31129340c85ab8d7f01603db19fa7a0448bdf4fa8eb79e7e255cb5fe8310cb0b3abf417ede22808bf6b3b27c4352e5a0d79e80fa806cbb7501bb83efe01242c699f055dedfde817ea9f2296b18655f4f3690258073efdd74e8b0f58587d90910aeeb03b547622b461fd0e715dee337b64d9cecc461adca877b1d9787cea5a97a3cbc84a56a9e78afac587427bb156be802008e30f75b78eff001e43347178040000",
+    ],
+    [
+      "ETag",
+      "Q747+qCCqbNU/6rug7uNNA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:24 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-71-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "dd",
+      "4e",
+      "c2",
+      "40",
+      "1085df65bd2db1281469c24551d4c682fc146234842ced148a6da7ee6e250de1dd9dad88464df4663b33fd667ae67477ec39ce4266b365bc7a294094272b50231d8c41168992f4c83193c00c068aaf88b47a969c9d9adb12e5e32cb86b3dccc47d63d4e910218335a49cd93b16c5908492d94f3b96f114a82dc0a448b34595194c95b92e4efcb13bb8a13cc550e783a9e7395dafc7f6c6b131e48a2f2afe1f6df3bdc136b81c430402b200b4965ce00602e5ea35254ff3046a120b118064155cbd58092c722e106b54a9b5eab5ba7566b6eb6df3bc6935db04261870156346ec7442fa9842c593316ea5f684005185b470549daf548ec36a111dba03df6a54fabe02242d8a1358fc0d92de35a7dff0811d2cf8cef1148b4c1da96befdef96d1c79fa39eacaf17b3f08a9c8a923e2bbfddec477fa43cdcd0fbb774b057228908c94a03dac9b8d8b66cb32df6dbd446d357dc756a20083059c6ec76dac981df144c2fe0dfc6a35307b020000",
+    ],
+    [
+      "ETag",
+      "6E6sV/0wyosZVcK7XVrO4Q==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:25 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -10841,7 +10710,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-72-1620764096226",
+      jobId: "grouparoo-job-72-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -10851,29 +10720,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "c5",
-      "54",
-      "fd",
-      "4f",
-      "db",
-      "30",
-      "10",
-      "fd",
-      "57",
-      "2c4f0826f58356fd1895102b10b68c9074690aeb26d4b8891b5cd238d84eb70af57fdfd9a14007633f4e8a149fefdd7bcf774eeef12dcb62dcc35396dc1554acdecdf9145730552481dde01b3bfeb274aec6f3bcddf86575be07f373faf3f010104c5749b2c8535a95bc101195bdd1b096085ee444705e05a26ab7596d749afbdd4e6bffa0d36c76a04ed274e6b0ec16aa6f94ca65af5edf68d712ce9394929cc95ac4178ffbf565b39e0b3ea79192f56dc93aa8c8fadba247298f88623c3b1c0dc14021a998d00561295878aa8ca71fb7a96b8c2c6a0980972ca2248a7891296d0b28229ecd585208c38a7bf7d8d87cb6c043cbb14e0274e28ddc602f240b5d1cbe4744a2c9445059a4aa824238d38ca574c2e2b0cce4b7e8ccf72e20030e6e88a43244579f2ddf42c8f1ae2cff1993639f5be808f5dd53b44d64bb68e4bad630407b47efd127df1b0dd0f1780b032788e98c808953a2404569e771b9b4f55815950a400f3db75f4e1aaf759671c1943eaded0696df3f09ec4bab6cb0431312ad8677d0e219492505341164411515173ca65032f08676607b6edf810ad3b5c1062171efc7fd5341b0caa936a8cc1b9f395e3fe8b48c830de492a485c12ccb05de69d4daad1dbc5e57fe4ed4f7fdfe18c4891064f5470e0ea4255ed53078139546379a0dacd5365113afafd7f054305cc9921d7f1d59fe18975b3e9d5141b3c850bed1680336897f7e599b6b0e58b8e8202315c452b1486a914850930ed8c2d82dab1bddf68756171bb0502f73ed03fd37c8e257330f1a85e1a74270e19bbbad435093c60bcba027f0b7a8e0059592249a6694c1492425d39422337cf4d867148688",
-      "65480f0285c178604d1e261e56d0318951cc0b5d65fadc43e5a037d16e19ee6a63c64e39a1ff6be5ba6c92d63af55c0b6ed56fe5010b4875050000",
+      "08000000000002ffc5547f4fdb3010fd2a96270468fd414bcba01262a5849111929226a06a428d9bb8c190c4c576902ad4efbeb343810ec6fe9c14293edfbbf79eef9c3ce17b5624b887a72c7d28a9587cb9e3535cc354911476c9d9ae675da55f7f7692161d76af6783e9f9e8f2f010104c574992cf335a97bc143195bd70d448052fe744705e07a2fab776bdb5d7de39681decec76f7ba07502769367358710fd5b74acd65afd95c693752ced38c9239938d98e72ffbcdc776732ef81d8d956cae4b364145363f173dca784c14e3c561380203a5a4624273c232b0f05a994cbfaf533718c91b29801f594c491cf3b250da1650c4bc98b1b4148615f79eb0b1f966814796630d0234f04237d88a48ae8ba36d44249a4c049565a66a288233cd5846272c89aaccfc1e9dfade0564c0c12d915446e8faccf22d841cefdaf2df3039f6b9858e50df3d41eb44b68b42d7b54601da3ada463f7c2f1ca2e3f11a064e90d01901132744818ad2ce936a69ebb12a2a15809e7b6ebf9f345eea2ce382297d5adb0d2cbf3f08ec2bab6ab04353122f460fd0e219c92405341124a78a8a0b9e5028197a233bb03db7ef4085e9da708590b8f7ebe9b52058cca936a8cc1b9f3a5e3fd8eb18072bc815c94a8379ac1678a3d5e87636f07259fb3b51dff7fb6310274290c51f39389096f850c3e04d54195d69b6b0565b456dbcbc59c253c370252b767c195afe18575b3e9d51418bd8507ed2680336897f7e59ab6b0e58b8e8202315c452b1586a915850930e586eec56d5ad9dee7e77171bb050ef73fb1dfd3728920f33cf1aa5e1a74270e19bbbad435093c60b2ba027f0b7a8e19c4a49524d1316701249c934a3c80c1fbdf41945116205d2834051301e5a93e7894735744c1294f05257993ef75035e855b459859bda98b1534de8ff5ab9a99aa4b54e3cd7825bf51bf22325fc75050000",
     ],
     [
       "ETag",
-      "TXiBJvLWYjp51xE6ZTjKew==",
+      "aH3OEVg+J4d1eP5WfCbKSQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -10885,7 +10736,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:15 GMT",
+      "Thu, 13 May 2021 15:18:25 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -10903,10 +10754,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -10922,7 +10770,16 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "1d",
-      "d04b7282300000d0bb642d8e85a498eee4a70245404b4a379980a18055fe4ca2d3bbd7e911de7b0096e77c18e8d85cf80dbc01c954bccc975ebb36e87721b1e3215c4c5bb91174b6fc34ec206e476116fe3e54aea3964c0457c23fcacb4bd67b67d19451e09824b68fe70c6e60bc8bf03d5a7b663725fa4074d993a43ebdeaf52a2510dad921328ac9ddc220de7799a290da6e90e7eba7498c2725957c0eab324172de8f84a5ee27a40d3a0c375353afb82c7e769877c190ab28a92aa234ba63d11d5b155f1f87784ea56e79f6367b0f342452771d337aa731030bc0455bf57ca0d593ab218c17e0df4e47d9f26780c159cf7bf0fb0786d2831d1a010000",
+      "d0",
+      "4d",
+      "72",
+      "82",
+      "30",
+      "18",
+      "00",
+      "d0",
+      "bb",
+      "646d1d4d8a92ee802a1451a422081b26e0a785587e428c309ddebd4e8ff0de0f6245017d9fc986438dded0c8309d16d34dab9bd915c086b4de2bafd6b6ada12f1863efe6236492e0448a70733f14e549e11057d6da99f9cce4173e57fecddd9ff388beea6b37eeca613e90263e3873b2eb74b53a512f253c90c45a6dd4cd8a0d7b1915db9dc5a4161b5625dac4f3f35572b40f63a8cdaaf43bb23e8f300eaa482e461eca054eeb17dccc3885ccbbf611d777cbdce04d2662bfab5c22827377c4ee7d54955186c1d9769c8f6a6dc3e28b51c7461304435b0ae8b3f2c9251aa513f46fcfe4d8c233c0042640a0df3f6cf86cbd1a010000",
     ],
     [
       "Content-Type",
@@ -10936,7 +10793,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:16 GMT",
+      "Thu, 13 May 2021 15:18:26 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -10955,7 +10812,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -10976,7 +10832,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-73-1620764096226",
+      jobId: "grouparoo-job-73-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -10996,18 +10852,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "5d",
-      "4f",
-      "a3",
-      "40",
+      "db",
+      "4e",
+      "e3",
+      "30",
       "14",
-      "fd",
-      "2b64f6d5b6b4b4509a346bb7a276d352a554e36e3664985e701418640637c6f4bfef65b0aec6449f98997bce3de77ef04cee79b1231312f3f4a186eae9db9d88c9110145537c3d933fee2ef8e06759bafd8b9bf17dfecb2e7e5e4ea788e00d4bd2bccca023455d319093eda69b56a22e6925440713751cabd3b707a6630f4dd71e0c6ce449c892252fee917dab542927bdde41bb9b0a9166404b2ebb4ce4afefbdc741afacc41d30257bef257ba8227b9f8b7ecf04a38a8b62badda0815a4215414e798616fe3377f1f1fbd45d4ef36e8ae047ce803226ea4235b630051345c2d3bad259c9e499689b6f0e64e32dbd79683091d57911153487236347158dd45309c669b05e190bff741dac66e162ed479bf9b9b79a75e7ebe576e56f8ceb732ff00c45e30c34d7981ac7fae6e305f57720152fb47ad83c37ca2f0d5a7c1c4b434069096d30724c9bf6c7a61b27b1c392b1358a1313e2781c3b236ac526738730dcc54091a745358b16a28847b13b70c08a76a6c3a2215849344e683f4a2c3731ddc466d6a84ff647e46fc5159c70590ac9db0e91eb60117a51186cfdf92cf4740909ad3375d21a6b0a78eb51618108faa4a67d13e502959a762ffcd00b66f37071e5b5135e424ad9d3e601679cd04c02a26985cd5350adc40e1b46fcd9ca3b41b09ed8c52128c9e4f733697adeb878d3f2577a88036cec2afd259b3058f867dace017145b35a431edb0329d1f22dd686aef77f10894bda6621975b2fb821ed5300095450b0afa789601df8f25f3b2c3e6271f551462abce3ee30d988b00ada1de2badc1776dfb1fbd6886870a53ec42c7370e85a93a3c9083914eaa5a276f1b1d056ac96af200ce2f87dddadfd3f215e6a",
-      "dd78040000",
+      "fc",
+      "95",
+      "c8",
+      "fb4adb5c9adea46aa9da0091da14d214b45aad22db7582218d43ec1421d47fdf6387b2ac90e029b6cfcc993997bca2475eeed004119e3f35ac7ef9f120083a434ce11c5e23195f0ec3abe79cf2834dae17abcbea6978339d02826b96c4fbaa601d299a9a3239d96eba792d9a0ad74274205167e8759c816b8f9db1edf9037f0c3cc98a6cc9cb4760df2b55c949af77d2eee642e405c315975d2af6efefbd83dbab6af1c0a892bdff257ba0227b5f8bfe2c04c58a8b72badd808146b23a657bcc0bb0f08fb923e7ffa7ee72bcefe6003e70ca30a5a22995b60529a828339e37b5c98a26afc8d8fc70409b6019cc138b8aa2d9976989f7ecccda618553f55231eb225eafac30ba58c7ab5912aea37433bf0a56b3ee7cbddcaea28d757715c481a5302998e15a53ebdcdc22b880fe8e49c54ba39ee867adfcd6a0f0f3583401a4256b83e9d01e6067648f494686341b793ec96c46c8880c7dec119b8efbacbf230c03cf881a162e45497cdf76478e978ec7cc4dfb64e8a5c4c36eea0e7c6760f7b1eb131b1dcfd073cd155b705909c9db0ea1bb384c823489b7d17c9604a6840c37855ab4c674011f3d2a2810405fd474d4512e4049b73b8c92209ecd93f0366827bc6439a62f9b279871860bc9008d6b689e62f54aec985eedd92a5800d84cecfa149468f2fb15e99e6b171f5afe4e4f6080daae325fb449e230ba34764e885b5c340672680fa802cbf7501bb83efe01242c699b05dd6c83f8176a9f6296b19a95f4fb6902d804befdd74e8b0f58587d90910aeeb03b546a115ab37687b829f78dedd803d7759001d7ea53acef7aa7aee91c3a23dbb352bd55d42e3e14da8a35f2",
+      "1d0441187f64ba75fc0b7a7ed94978040000",
     ],
     [
       "ETag",
-      "GsBjPi2Jpp91PY8kmZ6nJQ==",
+      "NsRG7IHwgciv0bPDMGpq7Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11019,7 +10877,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:16 GMT",
+      "Thu, 13 May 2021 15:18:26 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11038,7 +10896,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-73-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-73-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -11052,11 +10910,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8d925f53825010c5bfcbf68a139a6131e3039615336a8ad84be338575810052edd3f368ee3776f2f9935d54cbdc0eef2dbcb3907f6b0c9ca185c5866e98b46b13b4b514d4c11a0d4b99274ab7829112c40c55222fdedf5728c6cb37d9a64bd2438d7852af5a4db2542462b2c18b87b4832cc6309eef31e4a5620ad453cd745b9a83b0bd4ae32c36918f8a37bea0b1e9b7e341b0cbcdea00f07ebb41833c51635ff8fb5f9c182355f0698a0c03242a3a5127c8d91f28d4dc98a2ac786e45a4428a186eb07a9e0ba6282f3064d1a9d8b46d369d91da76d5f3bad964360ce23a6325e123b9b923e505cb13ce0afe4120c20ea920c27f5754be32cae8d98d21f854ebbd6f71520694996e3e26f90f4ae187d860fec18c1778e155c97ea44dd0d1ebddf8ea34c3f8fbaf5c2fe0f422a4aea8484feb03f0dbde1d870f3a3f7de4ea11c0b4e414a341936edf6d565c7b1df63bde1266a7a8fab84460b22467fc743a6c04d582ef1f0064b9230307b020000",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "41",
+      "4f",
+      "c2401085ffcb782d11040a34e150b46a1340847232842cdb2914b7ddbabbd520e1bf3b5b118d9ae8a59d997eb37defb57b784cf3183c58a5eba712d5ee6c8de6de1653d4a5309a6e85cc35820368d89ac8f63829c273a15f833210a1bbe9068a73bfdf2742f30d660cbc3d24298a5883f7b0879c65486b5c8a32cb9755e780d91576388ba6e1f886fa4cc6b61fcf87437f300ce0e09c166366d8b2e2ffb1b63838b095ab2926a830e768b5144a6e919bd0dad42c2b04d6b42c15470d155c3d582b59164c4959a349add3ac35dc8b7aafd1ab37db6ebb47a0909c9954e6c4ce67a40f8c344c4ce50bb904970055956438a9aecf344ee3ca882dc371e4b62a7d5f019296a402977f83a477c3e8337c60c708be732c93656e4ed4f5f0ceffed38caf4f3a82b3f0a7e10da505227240a47c12cf24713cb2d8ede073b837aa22405a9d166d8a8b7baed8e5b7f8ff552daa8e93d9e51253ac019fd1db7a9012f6142e3e10d2e08930f7b020000",
     ],
     [
       "ETag",
-      "Iv9bPeakvVQiBfR/umtnuQ==",
+      "5NfpI/lszEuElI6h8ErccA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11068,7 +10933,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:17 GMT",
+      "Thu, 13 May 2021 15:18:27 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11109,7 +10974,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-74-1620764096226",
+      jobId: "grouparoo-job-74-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -11128,11 +10993,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "c5",
-      "547f4fdb3010fd2a96270448fd414b69a11262810616ad245d9a82ca841a377183218983ed3055a8df7d6787c22a18fb7352a4f87cefde7bbe73f28c1f581ee33e9eb3e4b1a462f9e59ecf710d534512d8ed1c15dd1b35f8757369b5aeadabf3fd838138b48e8f01c17495245991d2bae4a588a8ec4fc68d44f0b22082f33a10d57b9d7aabdbdeeb753b7b47dd76bb0b7592a68b21cb1fa0fa4ea942f69bcdb57623e13c492929986c443c7bdd6f3eb59b85e0f73452b2b929d90415d9fc5cf424e511518ce7c7933118282515339a11968285b7ca78fe7593bac148d64800fcc4224aa28897b9d2b68022e2f98225a530acb8ff8c8dcd3f16786c0fedb3009d791337d80949a68bc35d44249acd049565aa6a2884332d584a672c0eab4cf180ce7def1232e0e08e482a4374fdcdf66d8486deb5edef8400dd45ae17a0a1f3dd4627c872076893c871d1c475ed7180764e76d185ef4d46e874ba818113c47441c0c480285051da795c2d1d3d5645a502d04bcf9df793c62b9d655c30a54febb881ed5b67817365570d1ed28444cbf123b478415249014d04c9a8a2e292c7144a46ded8091ccfb5865061ba365a2324eeff7c7e2b089605d50695796bad6ec7e8af0157242d0de2a95ae0add6c1165ead6a7f27b17cdf9a823011822c3f16f850c1e04d54995c2bb6b0565b476dbcba5dc153c3701d2b76fc6362fb535c6df9744105cd2343f949930dd824fef955adaf3860e192838c54104bc522a94522414d3a6099b15b55b77abdfdc3363660a1dee78e3afa4f90c71f665e344ac34f85e0c237f75a87a0268d1796434fe04f51c3199592249a6692c3492425f394223378f4da67148688e5480f0285c17464cfcc30c21a3a25316454b7834c93fb48cf78bdded6c1b676647c54a3f94f1e6eabb6689181e7da708f7e032f0565be63050000",
+      "54",
+      "7f",
+      "4f",
+      "db",
+      "30",
+      "10fd2a962704486dd396fe1895102b908d6825e9d214d44da87113371892b8d84ea50af5bbefec105805637f4e8a149fefdd7bcf774e9ef003cb633cc00b963c16546c3eddf305ae61aa4802bbc34bc6baa3e0e7cdd1572fef77c6eb451e89e1c9092098ae92245ba5b42e7921222a07d3492311bc5811c1791d88eafd4ebdd56b378f5bc7cda36eaf7b0c7592a6cb11cb1fa0fa4ea9951c5856a5dd48384f524a564c36229ebdec5bebb6b512fc9e464a5abb9216a848eb63d1d3944744319e9f4c2760a09054cc6946580a165e2be3c5975dea0623592301f09a459444112f72a56d0145c4f3254b0a6158f1e0091b9b7f2cf0c41ed9e7013af7a66e7010924c1787878848349f0b2a8b54d55008675ab294ce591c9699d503faea7b5790010777445219a29b4bdbb7111a7937b67f1002f410b95e8046ce771b9da2a17b8176891c174d5dd79e04e8e0f4107df3bde9189dcd76307082982e0998b8200a5494761e974b478f5551a900f4dc73e7eda4f1566719174ce9d33a6e60fbc3f3c0b9b6cb068f6842a2cde4115abc24a9a480268264545171c5630a25636fe2048ee70e475061ba36ae10120f7e3dbd16049b15d50695796bad5ec7e857806b921606b12e1778afd5ddc3db6dedef2443df1fce4098084136ef0bbcab60f0262a4d568a2dacd5aaa88db7b75b786a18ae63c98e7f4c6d7f86cb2d9f2ea9a07964283f68b2019bc43fbfaaea8a03162e39c84805b1542c925a2412d4a4039619bb6575abd96f7fee630316ea4deea8d9d27f823c7e37f3ac51187e2a0417beb9d73a043569bcb01c7a027f8a1acea89424d134d31c4e222959a41499c1a3973ea330442c477a10280c66637b6e8611d6d0198921a37a1d649a3c407ac6d57a5f07fbda91f1518ee63f79b8",
+      "2ddba2452e3cd7867bf41b5d2ff47d63050000",
     ],
     [
       "ETag",
-      "49p6ZtDwZMA1WAVF35Dr8A==",
+      "AHii5LTZW3FOn74PvbncrA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11144,7 +11015,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:17 GMT",
+      "Thu, 13 May 2021 15:18:27 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11162,10 +11033,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -11182,11 +11050,9 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4b",
+      "49",
       "72",
-      "82",
-      "30",
-      "0000d0bb64ad8e8202e92e4184421c45060137198434fc2c7f4a747af73a3dc27b2f102709eb7b3ad425fb061f40c4125c252ba7d130e5e913e1f5c362fc9025ba541c779fe359f5b707641ea35b761d47e4923c96edd1886ab745433934cd25e89c5b74c8833db169bddc583b4f263e57f683354b32a974e96854edb3b492506b2733439b28cd4e6e51d648a1da892d5bf596f23ec0a7a542e4b5388b70521e7853659ce280bbc2b13b784530105f5bd5506b3f14e412dcb9f4487f8aad73f7bab6cee37da3e3011a139be0ec41477eaa849a1a116001d8dce41deb69fee6ca3b0817e0df4e07d1b077006671c73af0fb07dbeec78b1a010000",
+      "82401400d0bbf45a2d2320747636718200299066d850083f0c8d80cd24a672f75839c27b3f284e12e8baa86f18d4e81dcdf106af9295de2a24caa0fc0255a8662950245f10c2e624cdf6b7e157dbce9444833924d08eedc9c06aaee4eb482784eef678d974fd72d2ce4140cbe193ccaec5c33101e6859e3d0e8309729aa47eb6d5af4fb1cc8baa7c2bc3f110f4549105c733f1c6b95b47f0b62560e230eb23648eb6a357f19cebc29418e355e68f3da4b948386ffadabe176b9a2d71d653ddb5864a6517fba6ab1df65dfb70642127d3c9a4625ddd2ea98316081e6dc1a18b8a175790305ea07f7bd4cf2dbc0208c41c38fafd03a32e65b31a010000",
     ],
     [
       "Content-Type",
@@ -11200,7 +11066,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:17 GMT",
+      "Thu, 13 May 2021 15:18:27 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -11219,7 +11085,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -11240,7 +11105,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-75-1620764096226",
+      jobId: "grouparoo-job-75-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -11262,11 +11127,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "53",
       "6b",
       "6f",
-      "9b3014fd2bc8fbda24e4412091a2354ae91a2d908d9056eb3421db31d42d608a4daaaeca7fdfb569ba5695da2f807dcfb9e7dc074fe88e973b34458467f70dab1fbfdc0a824e10533883db3bda0fbfdbe3fd75b1becc8373e2fd95d7bb87d90c105cb3242eaa9c75a4686acae474bbe966b5682a5c0bd181441dd7e9f4c703db1d8fecc9783018034fb23c5df1f20ed8374a5572daeb1db5bb991059ce70c565978ae2e5beb71ff4aa5adc32aa64efad640f5464ef63d1afb9a0587151ceb61b30d0485627acc03c070bff993b72fa367597e3a29b0178cf29c3948aa654da16a4a0a24c79d6d4262b9a3e2163f3d507daf82b7f115b54e44d5126252ed889b5c30a27eab162d679b40eac6578be8e8279bc5c87c96671e107f3ee62bdda06e1c6babaf023df5298e4cc70ad99756a4e211c407fc7a4e2a5518ff5b5567e6ed0f2fd583401a4256b83896b8f71dfb32724252e4dbda143529b11e211d7c14362d3c9888d768461e01951c3c2a528c70e75532f1d25932176921119ba09f19c7ee2b8d419d9e964e00d06e870821e6aaed819979590bced10ba8a96b19fc4d1365ccc63df9490e2265767ad315dc06b8f0a0a04d007351d74940b50d2ed5e86b11fcd17f1f2d26f27bc6219a68f9b7b98718a73c9008d6b689e62752076d03014ce03ff0cc066623f8e4189a6bf9f90eeb976f1aae52ff41806a8ed2af3469b385a86df8c9d23e212e78d81ecdb0f5481e51ba80d5c1ffe001296b4cd827e6efde8176aaf2296b29a95f4f36902d8043efdd78e8b0f58587d90910aceb03b546a115ab37687b829f799dd77f5031970addec5bc9177ec9acea133b28295eab9a276f1a1d056ac912f2008c2f843d3adc33fe4751e2678040000",
+      "9b",
+      "30",
+      "14",
+      "fd",
+      "2b",
+      "c8",
+      "fb",
+      "d826401e3c22456b94d21529212b9056d33421630c750b9861d3adaaf2df77314dd7aa522b3e807dcfb9e7dc074fe89ed5195aa09415bf3bda3e7eb9e3293a4554e2026e4f8a2ab0eff76baf312fff3627eec62a1aff6ab90404eb5902574d494782772da162b18fc645cbbb06b79c8f20d1c89e8f4c6b62b8a66b4ce7d6dc059ea065be61f53db06fa56cc442d78fdae382f3a2a4b861624c78f572af3f4cf4a6e5779448a1bf95d44145e81f8b7e2d39c192f17ab98fc04027689bd00ab3122cfc6766e9d9dbd46386ab7101e0074628268477b5ec6d410ac2eb9c155dabb2a2c51352365f7da0c8db78eb5823bcecaa3aa971454fb50c4b9cc8c7866a17e16eabf9c1c52edcae627f1724d1fad2dbaec6ebdd66bf0d22ede6d20b3d4de2b4a48aab2db533750ae000fa191592d54a3deeaf7be5e706f9efc7d213405ad02198d886854dc770d33cb549ee4ce7696ed03475527b8ea7a941dc199d6529c5c053a28a856b5e67d67462cf9c59e2b8a695cc2cd34c5c623889e1cc2981678267193a9ca23f2d93f49c89860b367408dd847eec2571b80fd6abd85325e4b82be5f960ac2fe0b547090502e8839a0e7d947150eadbed07b117aed6b17fed0d13ded00293c7e837cc38c7a5a080c62d344fd276cb3368180a565bef1cc06a62df8f4181163f9f50dff3dec5ab96bfd06318606f57aa378ae2d00fbe293b47c4352e3b0579183e5003966fa136707df8054858d2210bbada7be10f345c8534a72dadc9e7d304b00a7cfaaf1d171fb0b0fa2023249c617788e845484b871d62aadc67b669d89635410adcca7731db768e",
+      "5deb73f41969456bf95cd1b0f850e820d68917100461fc81ead6e11f9eca481e78040000",
     ],
     [
       "ETag",
-      "kc1NK06vZmOVlMFb8zsZdw==",
+      "+gmN7kUCEp1Hxp+9L6gpIQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11278,7 +11151,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:17 GMT",
+      "Thu, 13 May 2021 15:18:27 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11297,7 +11170,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-75-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-75-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -11305,11 +11178,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8d92d153824010c6ff97ed152662148d191fb0b42c3543eca1c6714e5814038eee8ecc1cfff7f6c8aca966ea057697df1edff7c1161e933c0217e6c9e2a944b1395aa0bad5858fb24c95a45bc1738960002ab620f25a76e7ddd5bded39f2aef95ad8572ff5ec78dd6a1121c325660cdc2dc409a69104f7610b39cb90d6429e96593eab3a03d4a6d0c371e0f78617d4673cd2fd70d2ef7bed7e0776c66131628acd2afe1f6bd39d012b3ef731468179885a4b21f80a43d5d33625cb8a144dc94b11a2840aae1e2c042f0b263837696236eae689635b0da7669d3ab6ed1098f290a984e7c44ec6a40f14572cf5f99a5c8206445592e1b8ba3ed338892a23baec0d03a756e9fb0a90b4384971f637487a978c3ec307b68fe03bc7325ee6ea4075fb37de6fc751a69f479d7b41e707211525754082dea0330ebcc14873d3bdf7f646a11c094e414ad4199e58b566bde158efb19e711d35bdc755a2440342467fc765a2c08d592a71f706bce845d37b020000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02ff8d92dd4ec2401085df65bc2d09081469c205206893f2239418630859da69296ebb75778b41c2bb3b5b118d9ae84d3b33fd667bce690ff094642138b04ee2e702e5fe22467d678a19aa826b45b75c640ac102d42c2672c2eaf1ce1b46eee4d55eacfbf71cb7970f71a743840a369832700e1025c84305cee301329622ad05821769b62a3b0bf43e37c3b93f73c737d4a72234fd78e179dd9e3780a3755e0c9966ab92ffc7daf268c156ac6718a1c42c40a32597628b81768d4dc5d29c6345894206a8a084cb07b11445cea410159a545acd4acdbeacb66bed6abd6937db047211309d888cd8c59cf481169af199782197601320cb920c47e57547e3242c8d98d21dfb76a3d4f715206951c271f537487a378c3ec307768ae03bc7525164fa4c0dbd49f7b7e328d3cfa3aebbfee007a1342575467c773498fbddd1d470cb93f7de5ea39a4a41412a3419d6aa8dab66cbaebec7da17266a7a8fa3658116048cfe8edb44831331aef0f806764431817b020000",
     ],
     [
       "ETag",
-      "KsFbFjZ2A6sV8zp2Jx5m/w==",
+      "Oa3gvLFfIOz6UbCWlej2Yg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11321,7 +11201,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:18 GMT",
+      "Thu, 13 May 2021 15:18:28 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11362,7 +11242,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-76-1620764096226",
+      jobId: "grouparoo-job-76-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -11373,16 +11253,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff85540b4fdb3010fe2b9127242695364ddf9510eb68c6a29584a5290ca6a9b55d27352471b11da60af5bfefe2501e6303295262dff7b83b9f738f6e78be44434478725b30b9f9702d08aa21a67102bbedd975e04eaf243d5905ab71ffc7dde6aad3480e0f01c14b96c2d93a65074a149232359c4deb8914c51a4b210e40e8a0d73d68761dbbd76ddb83aee37481a7581a4f787e03ec95d66b356c3476def54488246578cd559d8aec71bf71e734d6525c33aa55e3a565035c54e36dd3a35450acb9c80f675348a0504cce5986790a293c3197e4d34be93ac7593d01f01da70c532a8a5c976981041579cc93421a5534bc4726cd671f68ea4edce3c83a0e667eb4bfc059495e7cb4b0b2e673c95491ea9ab5809a629eb2395f2eaac8fac6fa1206a710810c565831b5b02ebebaa16b5993e0c20df71f03a0e5079135f1beb9d69135f2c7d64b39cfb766beef4e236bffe8a3751206b333ebf3e50b0cd4b1644af3dc54116192b2b28287467baf8fb724600de65570deb3bbb8d9b70724263d1af75b1d12db8c903ee975708bd874d066ed25611878ba54372c9c8b7cd019601ac77da7435bb61313bbd78997b6c30825a4d5740684e056cb6e63b4ada1df926b36e66a2d14afba8d2e422f72e75138f38f47916bca883174745c255716f13c4f0d4502e88dbab665940b702a8fcef323371c1d47deb95b4dcb8425986ea6b7302f314e1503349638639ac953b184a6a1b360ea455ee08f26c0302370b6432834fc79ff4488366bd3656dde681a859e7f6212d821ce715a18c85df581f684c4f91eda6e6bffd71985e1e812bcb19478f3570ceae9b64bfa3f3c0cdeacaa3c779e4d54baed560edafedac2534370bd2a75f47de68697a8da0a59cc24cbe9fbf303601378f72fb1bbb280854b0b364ac31aa695aad2844a564d2dcf4cba15bbd9ebb7073d64c052bf8a75fbfdddf1941aa522cb58ae1f2aaaaeac6954192ad4230882306cbe39a9ed1fbeee319532050000",
+      "000000000002ff85540b4fdb3010fe2b91272490fa481fe94b42ac2b19cb565296a6a06a9a5adb758221898bed802ad4ffbe8b43818e0da448897ddfe3ee7cce23bae5d90a0d10e1f15dcee4e6d38d20a88298c631ecfe9ca5e3ef3732c65cdabc39bf6ef7b83f7e383e06042f580aa7eb845595c825656a309bd66229f23596425441a8daed541b9da6dd6ff4ed96d371fac0532c89c63cbb05f6b5d66b35a8d777deb55888386178cd558d8af479bf7edfacafa5b86154abfabe651d5c54fd7dd3934450acb9c88e67534820574c2e588a790229bc3057e4f3be748de3b41603f89e5386291579a68bb440828a2ce2712e8d2a1a3c2293e6ab0f3475c7ee28b44693991f1e2e715a9097471656d6622199ca135db1965053c413b6e0ab651959df5a5f83c9394420836bac985a5a57dfdcc0b5acf1e4ca0d0e9f03a0e54f426becfd70ad136be89f5afb729e6fcd7cdf9d86d6e1c99175164c6617d697f91e06ea5831a57966aa0831495851c153a3bdb7c75b10b006f332b8e8da1ddce8d97d12912e8d7a2d87443623a447ba0e6e119bf6dbacbd220c034f17ea86853391f59d3ea651d46b3ab465372362779d68653719a184b41acd3e21b8d5b2db186d2be84172cd4eb95a0bc5cb6ea3abc00bdd4518ccfcd130744d1911868e9e96c91545bcce534391007aa7ae6d11e5029c8aa3f3fcd00d86a3d0bb74cb6919b318d3cdf40ee625c2896280c612a74c33792e56d0347431997aa137f18763609811b8d821141afc7a7c21849bb5e9b2366f340d03cf3f3309ec109738c90de4befc400742e2ec006db795ffeb0c836038076f2c25defc15837a3aed82fe0f0f8337ab32cf9d6703156ebb55136d7f6fe1a920b85ea53afc19dc608ecaad80454cb28c7e3c3f0036810fff12bb2b0b58b8b460a334ac615aa92a4ca864e5d4f2d4a45bb21b76afdd7390014bfd26d66938bbe329340a4596b24c3f55545e59d3a82294ab67100461d87c7352db3faaf1ff6232050000",
     ],
     [
       "ETag",
-      "4UjOESZrcGhOhD8XvyZ5/g==",
+      "QUmLJjrgair0i2Yh48iNLw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11394,7 +11269,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:18 GMT",
+      "Thu, 13 May 2021 15:18:28 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11413,7 +11288,306 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-76-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-76-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b08000000000002ff8d90dd4ac3401085df65bc4db0a9a692422f8c8436108a460ba294b24d273f6d9289bb9b4a287d7767b722bdf46677f6cc37c3397b8243d5ee600adbaaf8ea510e3705ea1753a4a8fa5a2bbe3a6a158203a845c16452067a1f79877219e7617cfb3e1f3e1679319b31a1b2121b01d313e415d63b05d3cf13b4a2411edb6ca4ddc8981e3aa3c4cbb7681ea52c34b433c27295248f6112c1d9b91aeb0eff1a599f1dd8d336c51c25b6191a179da43d663a36019568ba1a5d45bdcc5081856da390d4774212b9acb80f13d79b8c4781178ceefc891f3058532674452db3ab57f6069ab4a853fae67c306640da92a3e6f63cb2ecdb0c470b186bd7bdfbbf9e677aebdf85e1a0513d4b62770a8db1d1c5e41319e39a0369d9a30399e05f5e54faf23eff009cde3cb0c2010000",
+    ],
+    [
+      "ETag",
+      "Lh9tjE1khNIfBI/XGyZHfg==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:28 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff1dd04b7282300000d0bb64ad0e5a0aa43b02c8277ca422bf4d868941535bc84050d1e9ddebf408ef3d4143291b4722fb0bebc007989b0d5cd115160622a7e3a10ec5e48ca56a888db84c94a664474def3197fefed833952736eeb83e5648787104b3e9d19a318a064741decd77a49259d7ee60cdb5911595a608d7292b9728a8850fcdfcd1e2996e0b1de27b15b838a902b2fe2eee4b8e74cf266987f74e988436b6a0d549fe1975cbdab45ddfcdfb8c97db405777a93f6039ce3b191b695d8644accf457e8a0e2d09a49f7d39e7c1cd5ba5efafd736615c4bbd1b580076177c6023e12feedb3b840bf06f277216ec15805833b001fcfe015e8b2bf51a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:29 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-77-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "000002ff85535d6f9b3014fd2bc87b6d0224908448d19a25748d94900d48ab6a9a90ed18ea1630c5a65554e5bfef629aae55a5f609dbf79c7bcefde019ddf3728fa688f0eca161f5e1db9d20e80c318533788dd7cbc36e7b63faf7373f227b62295a8dc97c3603046f59121755ce7a5234356572ba8bfa592d9a0ad742f420516f3ceed9a381e5d99e357447ae073cc9f274cdcb7b60df2a55c9a9699eb4fb991059ce70c5659f8ae2f5dd7c1c98552dee1855d27c2f69828a343f17fd9e0b8a1517e56c17818146b23a6105e63958f8cfdc93f3f7a9fb1c17fd0cc08f9c324ca9684ad5da8214549429cf9a5a6745d367a46dbe39a0c85ffb8bd8a0226f8a322971c1ce8c3d563851878a1917e17663ac828b6db899c7ab6d90448b4b7f33ef2fb6ebdd26888ceb4b3ff40d8549ce34d79819e7fa16c005f4f74c2a5e6af5b87d6e955f1ab4fa38969600d29275c1646c8d30ccd2232919d3743274496a31422664ece221b1a8e730674f18069e16d52c5c8ad24bdd9133b2ed043b9e9338138724c4b2260975dca10b79acc978808e67e8a9e68a2db9ac84e45d87d075b88afd240e77c1621efbba841437b95a76c6da02de7a545020803ea9e9d846b900a5b6ddab20f6c3f9225e5df9dd84d72cc3f4103dc08c539c4b06685c43f314ab37620f0d43c17ce32f01ac27f6eb149468fae719b53d6f5dbc69f92b3d8601b67695fea2280e57c14f6de784b8c279a3218fdd015560f9166a03d7c7bf808425edb2a0df3b3fbc41dd53c85256b3927e3d4d00ebc097ffda69f1010bab0f3252c11d7687ca5684d6acdb21aecb7d61db963718e93f55e15a7d883943fbd4b536479b9115ac542f15758b0f8576628d7c054110c61fe86e1dff012eeec70978040000",
+    ],
+    [
+      "ETag",
+      "TLDyUOY/EkYBS180tcp7bA==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:29 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-77-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb78b4242050a00987a2556a00a1948331842ced148a6db7ee6e2148f8efce5644a3267a6967a6df6cdf7bed019ee32c040b96f1eaa540b1bf58a19ae8c24359244ad22de799443000155b11d95ebaaf595fddf7264bafbe7546c2993e5eeeba5d2264b0c69481758028c62494603d1d206329d25ac09322cd16656780dae77a38f53d7774477dca43dd8f668381dd1b387034ce8b21536c51f2ff589b1f0dd8f0a587110acc02d45a72c137182857db942ccd13ac485e8800259470f96025789133c17985269556ab5233afaa9d5aa75a6f9acd0e81090f988a7946ec6c4afa4071c5128fefc825980488b224c35179ddd2380e4b23ba7447bed928f57d05485a1427b8f81b24bd6b469fe1033b45f09d63292f3275a66e070ff66fc751a69f47ddd8bef383908a923a23be3b74a6be3d1c6b6e7ef2dedb2b9463c12948893ac35ab5d16eb6ccea7bacd75c474defb19428d08080d1dfd18f1558114b241edf00d97d78c57b020000",
+    ],
+    [
+      "ETag",
+      "8bIznHtJBQbR3vENrESY+w==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:29 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
+        types: ["STRING", ["INT64"]],
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "positional",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "%oran%" },
+          },
+          {
+            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
+            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-78-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "0b",
+      "4f",
+      "db3010fe2b91272490fa4853fa4825c4ba1246b692b234e5a1696a6dd7092e695c6c87ad43fdefbb3894c7d8408a94d8f73deecee7dca31b9ecd510f119edce64cae3f2c044115c4344e6077f1fbcb8573793467c7bf2eedf3c1e0e474b15824070780e0054be1e52a655525724999ea4dc6b5448a7c85a5105510aa76bad546dbb1dd866b375bed960b3cc5d278c8b31b605f6bbd52bd7a7deb5d4b84485286575cd5a8583eeed7ef9cfa4a8a05a35ad55f5ad6c145d5df363d4c05c59a8bec6032860472c5e4942d314f218527e69c7c7c295de378594b007cc729c3948a3cd3455a20414516f324974615f5ee9149f3d9071a7b436f105983d124887667785990677b1656d6742a99ca535db1665053cc5336e5f3591959dd58c7e1e8142290c135564ccdac8b132ff42c6b38baf0c2ddc7006805a3c81afa5f3debd0ea0747d64b393fb02641e08d236bf770cffa1c8e2667d6a7ab1718a863ce94e699a922c2246545050f8df65f1f6f41c01acccbe0b463b771a36bbb24261d1a779b2d12db8c902ee9b47093d8d4dd67fb73c230f074a16e58381399db72318de3aed3a24ddb8989dd69c573db618412d26c382e21b8d9b4f731da54d04fc9353be26a25142fbb8d2e423ff2a651380906fdc83365c4183a7a54265714f13c4f0d4502e88dba3645940b702a8ece0f222fec0f22ffdc2ba765c8124cd7e35b989718a78a011a4bbc649ac9533187a6a1b3d1d88ffc51d01f02c38cc0d916a150effbfd13215aaf4c97b579a37114fac16793c016718ed3dc40eeca0fb42324ce76d06653f9bf4e3f0cfb57e08da5c4ebbf62504f7bbfa0ffc3c3e0cdaacc73ebd94085db76e5a0cd8f0d3c1504d7ab5447df265e7885caad90c54cb28cbe3f3f00368177ff12db2b0b58b8b460a334ac615aa92a4ca864e5d4f2a549b764371ab6dde9200396fa55cc",
+      "69dadbe329340a45b664997ea8a8bcb2a6514528578f2008c2b005e6a4367f009883c0a532050000",
+    ],
+    [
+      "ETag",
+      "jzJW2XDdeFxX0VCCHMjjjg==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:30 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-78-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -11432,18 +11606,133 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "90",
+      "41",
       "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb",
+      "78b44d0ab648493808215ad310ad9098184296765a0b6da7ee6e5124fc77671763387ad99d7df3cde4bd3dc2ae6c3218c1a62c3e3a9487ab02f5b32912545da5155f2d350ac101d4a26032faf2620c96cadfbe86d7913ffc7ed4d3ac188f9950e93bd6024647c84bac3205a3b72334a2461e5bafa5ddc8983eb44689e68bd9fd2c61a1a6cc08f3651cdf4de2199c9c8bb176f7af91d5c9812d6d12cc516293a271d14ada62aa23135089baadd055d4c9141558d8360a495d2b2491cb8a7b3b747b83be17f642ef261804218315a54297d430bb7c616fa0498b2aa14fce077d06a42d396a6ecf3dcb81cdb0b780b176d9f3ff7a3dd35bfd2e9c1c34aa2749ec4ea131e69d4d4ec918d71c48cb0e1d4805fff243a9cfefd30f19900b32c2010000",
+    ],
+    [
+      "ETag",
+      "Ix0Le5Us4jX9+I48zJtCdg==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:30 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b08000000000002ff1dd0dd9642400000e07799eb74ec48b17751243f4972ac1b67306311263389f6ecbb6f671fe1fb7e00ca73cc58cafb0677e013cc08aacb7c6953454bcbdc5d6fa2a414c448971b8c088a4465ec438f0f7acfced9f561947523174e4536fb9541e6262e039dba93c4327a684d42ac677014d6fc78dd2999205ce45df7a02cbc98f2a5f72756728326cc0ad8f9db2271ec7121697d0625779ec75b68d043534cd9bd96beeef7ec0acd828f6e5da01724f628aad0db6e538f0e45e2a3b11a9c06ca5a154c9d1ac7a79b6f5463f05a097efdf00dbc85ecc376f6f389b46001f044ab01b3b47a7325595517e0df9ef299e2778086d18007f0fb0716be09c01a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:18:30 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "purchases" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-79-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
       "6b",
-      "c2",
-      "40",
-      "10",
-      "c5",
-      "bf",
-      "cbf49a80061b51f05035b442108df55444d6649246934cba7f2c41f2dd3bbb96e2b197ddd937bf19dedb1b5cca2683299ccae2cba0ec9e0ad45b5b24a84ca5155f2d350ac103d4a26032df149365161b13a94574dd2dc5dc44c3ed6cc6844a3fb11630bd415e629529987edca01135f2d8f128dd46c674d75a65b57e8f5ea384859a322bacf771fc328f23e8bd87b1f6f2af9143efc1994e09e628b149d1ba68259d31d52b1b5089baadd05764648a0a1cec1a8524d30a49e4b3e28f437f18068371381a4cc2200819ac2815baa486d9fd8ebd81262daa84be391f040c485772d4dc9d57969f5d86ab03acb5c7dee8af37b4bdc3efc279a7516d24b13b85d6d8e06e7241d6b8e6405a1af42015fccb6fa5bebffb1f8a3982e2c2010000",
+      "4fa34014fd2b64f6ab2d60ed8326cddab4b892b4d405aad96c3664182e384a196406d7c6f4bfef65b0aec6443f3133f79c7bce7df04cee799992294978fed040bdff762712724240d11c5fd3a7bc5c2fcd7de5b2e180dfdc7b97e2e96a3e9b2182b72c497755013d299a9a819c6ec37e5e8ba6a2b5103d4cd41b3b3d7b746a39b6630d86a3a1833c0945b6e2e53db26f95aae4d4348fdafd5c88bc005a71d96762f7fa6e3e9e9a552dee802969be973451459a9f8b7e2f04a38a8b72b60dd14023a18e6147798116fe33d3e4fc7dea3ea7bb7e8ee047ce8032269a52b5b630051365c6f3a6d659c9f499689b6f0e247457ee223298289a5d1997740727464a158dd5be02e322d8ac0dcfbfd804eb79e46dfc385c5cbaeb797fb1596dd77e68dc5cba816b289a14a0b9c6cc38d7371f2fa89f8254bcd4ea51fbdc2abf34c8fb38969680d212ba603cb646d49e584e922563964d06c324b3204926c978480789c59c33384b13a0c8d3a29a454b510e1cb0e8c462f184594e7c969e2631c247719a596c623b0ef6da228713f2b7e60a965c5642f2ae43e426f022378e82adbf9847ae2e21a34da1969db1b680b71e151688a04f6a3ab4512e50a96db7e7476e305f44deb5db4d78053965fbf001679cd14202a2698dcd5350af458a0d23fe7ced2e11ac2776750c4a32fdfd4cda9eb72edeb4fc951ee1005bbb4a7f4918059eff43db3922ae69d168c8637720155abec5dad0f5e10f227149bb2ce4e7d60d7e91ee29800c6a28d9d7d344b00e7cf9af1d171fb1b8fa282315de7177986c45580ddd0e715dee0bdbb6adf1784834b8561f62cec43e76adcdd166841d94eaa5a26ef1b1d04eac91af200ce2f87dddadc33f2343a6f278040000",
     ],
     [
       "ETag",
-      "fPg9DdLuuEsCEvSDaBuE1Q==",
+      "dxgnMD/ypEc53iWkIHoxPA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11455,133 +11744,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:19 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f8b08000000000002ff1dd0d97282300040d17fc9b33ac822a46f32b8005251402c2f0c09c1a60159826c4effbd4c7fe0ce9cfb0609c684f3b82d1979820f3026225ce1955d697afc48113ee7a9626e271d25578cfcc36465210fcf41306efa47cdce6bc8bed45c42bd5ec1bb93dbc74d231682cd8db5d67c8b47defbcecbd952a1dd49cb42f1556d7fb37397f36eb058f6bcb8b7418efa030d526a081ec1ec828b9f75866af9e9977e22967c8e218f9a3b83622d16edb6df1ff2b666b43b45d7b2b42fb9faf2cc237487e2ce43224f5e24a6525aa7a7a072378dc73e3babebfd2e9c0c813b4b0e16800c156d088fe9cc95140817e0df1eb76345e6013a491ad280df3fb5522cd11a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:19 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-77-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "a2",
-      "40",
-      "14",
-      "fd",
-      "2b",
-      "64",
-      "f6",
-      "b52aa2829a98adb1b42551dc22b6d96c3664182e745a645866b06b1afffb5e86da6dd3a47d6266ee39f79cfbc13379e44542a624e6d99f1aaac3b707119333028a66f8ea0c1efcbf4ffb2a3ff40757d913af1dbf1edecc6688e00d4bd25d9943478aba6220a7db4d37ab445dd24a880e26ea384ea76f5ba6630fcd896d5936f224e4e992178fc8be57aa94d35eefa4ddcd84c872a025975d2676afefbdbdd52b2bf1004cc9de7bc91eaac8dee7a2df73c1a8e2a2986d3768a0965045b0a33c470bff99497cfe3e7597d35d3743f09e33a08c89ba508d2d4cc14491f2acae7456327d26dae69b03d9b84b77111a4ce4f5ae880aba833323a18a46ea50827119ac5786e75fae83d53cf4d67eb4595cbbab7977b15e6e57fec6b8bb7603d75034ce41738d9971ae6f3e5e503f01a978a1d5c3e6b9517e6990f7712c0d01a525b4c1c8316dda1f9b93388d1d968e07a33835218ec7b133a283d86493210c931828f2b4a866d14214b14dc729c466e48c476634a4298d26663a8a46094d466ce83896cdc8f18c3c555cc10597a590bced10b90bbcd08dc260eb2fe6a1ab4b48699dab8bd65853c05b8f0a0b44d027351d9b2817a8d4b4dbf34337982f42efd66d27bc848cb2c3e60fce38a5b90444d30a9ba7a05a89041b46fcf9cabd40b09ed88f535092e9af67d2f4bc71f1a6e5aff41007d8d855fa4b3661e0f957dace09714bf35a43f6ed819468f91e6b43d7c7df88c4256db3909bad1bfc24ed5300295450b0afa789601df8f25f3b2d3e6271f551462abce3ee30d988b00ada1de2badc1776df9958964534b8521f62",
-      "83c1e4d4b5264793117650a8978adac5c7425bb15abe823088e3f775b78eff00ba0f44ec78040000",
-    ],
-    [
-      "ETag",
-      "73jNxwvrly13Ggwiu7Nu4Q==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:19 GMT",
+      "Thu, 13 May 2021 15:18:31 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11600,7 +11763,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-77-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-79-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -11615,16 +11778,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "d1",
-      "4ec2401045ff657c2d09606db1090f4550480a22141334842ced148adb6edddd6a08e1df9dad88464df4a59d999ed9de7bdb3d3ca5790c1eacd2f573897277b6467d678a09aa926b45b742e40ac102d46c4d6471df6dcc1acd79303f0ffa0f36efbac3d685df6e13a1a20d660cbc3d2429f25881f7b8879c65486b91e065962fabce02bd2bcc701a4e06a31bea33119b7e340b02bf13f4e0609d1663a6d9b2e2ffb1b63858b015ab092628318fd06829a4d862a407c6a66259c1b1a64429235450c1d583b51465c1a410359ad45cb7d6709a75d7b1eb974eb3e910c845c4742a72626753d2075a68c627e2955c8201645592e1a4babed0388d2b23a61c8c42c7aef47d05485a92725cfe0d92de0da3cff0811d23f8ceb14c94b93e51d7c1adffdb7194e9e7515d3fecfd2094a6a44e483818f6a6a13f1c1b6e71f4ded96954632928488526c346dd6e5db84efd3dd62b61a2a6f7785a966841c4e8efe8a71abc84718587378d42523d7b020000",
+      "02ff8d92dd4ec2401085df65bc6d23201469c245415412fe298989216469a7a5b8ed96ddad4a08efee6c45346aa237edccf49bed39a73dc0539285e0c23a897705cafd458c7a6a8a19aa826b45b75c640ac102d42c269277bde92eafbea8796d1bbca697c3f8613cf4da6d2254b0c194817b8028411e2a701f0f90b114692d10bc48b355d959a0f7b919cefd597f74477d2a42d38f168381d719f4e0689d1743a6d9aae4ffb1b63c5ab015eb194628310bd068c9a5d862a0fbc6a66269ced156a290012a28e1f2412c45913329844d13bbd9b2ab4eadd2aab62a570da7d122908b80e94464c42ee6a40fb4d08ccfc40bb9048700599664382aafcf344ec2d28829fb23dfa997fabe02242d4a38aefe0649ef86d167f8c04e117ce7582a8a4c9fa9dbc1d8fbed38caf4f3a81bcfeffd2094a6a4ce88df1ff6e6be379c186e79f2ded96b54132928488526c36aa57edd683a95f758bbc2444def71b52cd08280d1df719f687023c6151edf00a33f84747b020000",
     ],
     [
       "ETag",
-      "pVD1U12YLY3LHZ4lD7M85A==",
+      "lCAQqp1wsS2jcxm/MgXOMA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -11636,325 +11794,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:20 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT COUNT(`amount`) as __result, `profile_id` as __pk FROM `purchases` WHERE  LOWER(`purchase`) NOT LIKE ? AND  `profile_id` IN UNNEST (?) GROUP BY `profile_id`",
-        types: ["STRING", ["INT64"]],
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "positional",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "%oran%" },
-          },
-          {
-            parameterType: { type: "ARRAY", arrayType: { type: "INT64" } },
-            parameterValue: { arrayValues: [{ value: "1" }, { value: "2" }] },
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-78-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff85540b4fdb3010fe2b91272490fa4893be25c4ba12b66825853405a1696a6dd7694dd3b8d84e5185fadf777128d0b1811429b1ef7bdc9dcf79424b9ece5017113e7fc898dc7eb917049510d3780ebbfe22715a0317f72ea24d35b117a1785caaebd35340f09ca5f06a9db0b21299a44c75c7a3ca5c8a6c8da51065102ab7dae55ad3b15bcdbadd693a4e13788a25f180a74b602fb45eab6eb5baf7aecc8598270cafb9aa50b17ad9af6e9cea5a8a7b46b5aa1e5a56c145553f363d4b04c59a8bf4743c820432c5e484ad304f208557e68c7c3d94ae70bcaacc01bce194614a4596ea3c2d90a0228df93c934615759f9049f3cd071a7903af1f59fde138888ea7789593a7271656d6642299ca125db2a65053cc1336e1b36911592fad8b70780911c86081155353ebf687177a963518de7ae1f14b00b48261640dfc9f9e7566f58273eb50ce0fac711078a3c83a3e3bb1be87c3f195f5edee000375cc98d23c35554498242cafe0b9d1fefbe3cd09588379119cb4ec26aeb5ed0e89498bc66db741629b11d226ad0676894d3b75569f118681a77375c3c2a9483b8d0ea671dc761ad4b59d98d8ad463cb31d4628216ecde910825dd7ae63b42ba147c9353be76a2d142fba8d6e433ff22651380efabdc83365c4183a7a5e249717f1364f0d4502e883ba7679940b70ca8fce0f222fecf523ffc62ba665c0e6986e470f302f314e1403349678c534939762064d4357c3911ff9c3a03700861981ab3d42a1eeafa75742b45d9b2e6bf346a328f483ef26813de2062799816c8a0f7424244e8fd06e57fabf4e2f0c7b77e08da5c4dbbf62504fb39ed3ffe161f06655e4b9f7aca1dc6dbf72d0eef70e9e1282eb55a8a3ebb117dea1622b6431932ca59fcf0f804de0d3bfc4feca02162e2dd8280d6b9856aa72132a5931b57c65d22dd8308c8e5d43062cf5bb98ebb6f6c7936be48a6cc552fd5c5171654da3f250a65e401084610bcc49edfe00c99bbef732050000",
-    ],
-    [
-      "ETag",
-      "Ihl27L3aAFTv/l0hRowksQ==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:20 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-78-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b08000000000002ff8d90dd6ac2401085df657a9b400c36b682172ad20a41342af4079135196334c96c7737162bbebbb36b295ef66677f6cc37c3397b86435167d0854d917f35a84e0f399a992d12d44d69345f926a8de0011a9133791cf7a7fa6347e5f07d3a7f5bfcc47b59cdfabd1e133add6125a07b866d8165a6a1fb79865a54c863ebb5721b1933276995f164317a19252c54945961b28ce3fe201ec1c5bb1b93877f8dac2e1eec6993e01615d6295a1752d11e5333b601b5a86489bea646a5a8c1c1ae912b6aa450443e2b7ee7c96f4561d089dac1731486118325a5c2145433bb9cb33730644499d037e7839001e54a8eba75e791e54797e1e8006bedbed7feebb56c6ff5bb707032a8a78ad89d466b2cb8991c92356e3890510d7a900afee5d7c2dcde972b39c035fec2010000",
-    ],
-    [
-      "ETag",
-      "vIAPsZholCYPSXTzLjpmQA==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:20 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "c9",
-      "72",
-      "82",
-      "30",
-      "00",
-      "00",
-      "d0",
-      "7fc9591db0b2a43740180613169161b930942618a8c812d0b4d37fafd34f78ef0754754de6b9e4f78ef4e01d886a0f77f5ee34e866d9d4a6df6bdfa7fe7a4e1e5a21b32a7a7c685e68c5164eca9b3d6639f7216ab01075772b69ccfb91c243869fa9c857da54b775eb62bbeb8315a3877f28169669ad688b93faa5649735703e67d6857e95b832e4b26899a2687a74dec3c935b678c047924c1e5f9146afb219f1308f86d4706cfb525312926c8aa4b3be5d246121d51d628fa686628f3a822d9216fd18d0366148f64813c80cde1d95f2006c00790e6c2273c95edc3705c20df8b7975c0ce41560926a2213f8fd03e9918cdc1a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:20 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "purchases" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-79-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "a2",
-      "40",
-      "14",
-      "fd",
-      "2b64f6b52a454534315bab744ba2b88b58d36c3664182f745a642833d8b88dff7d2f43edb669d23e3133f79c7bcefde0993cf07c4b4624e6e96305e5e1dbbd88c9190145537cfdfb70b9119be5e564e6d95797dede739f6ef793f11811bc6649ba2b32684951950ce468bd6aa7a5a80a5a0ad1c244adc1b0756e5be6c0ee9943dbb26ce449c89239cf1f907da75421479dce49bb9d0a9166400b2edb4cec5edf3b7bab5394e21e98929df7921d54919dcf45bf678251c5453e5eafd04025a18c6047798616fe33b7f1c5fbd46d4e77ed14c17bce803226aa5cd5b630051379c2d3aad459c9e899689b6f0e64e5cedd6968309155bb3ccae90ece8c2d55345287028cab60b9303cff6a192c26a1b7f4a3d5f4da5d4cdad3e57cbdf057c6e6da0d5c43d13803cd35c6c685bef97841fd2d48c573ad1ed6cfb5f24b83bc8f63a909282da1094603d3a6e78e398c9378c012a7db8f1313e2d889077dda8d4d36ec416f1b03459e16d52c9a8bdc02c7a65b0ba23ec030ea0d00a2b8efd0c801ab0f7632e8f62d931ccfc853c915ccb82c84e44d87c826f042370a83b53f9d84ae2e21a155a6668db1ba80b71e151688a04f6a3ad6512e50a96eb7e7876e309986de8ddb4c780e296587d523ce38a1990444d3129ba7a05c882d368cf893853b43b09ed8cf535092d1ef6752f7bc76f1a6e5aff4100758db55fa4b5661e0f93fb49d13e286669586ec9b0329d0f21dd686ae8f7f10894bda6421bfd66e704b9aa700122821675f4f13c13af0e5bf765a7cc4e2eaa38c5478c7dd61b2166125343bc475b92f6c5c0dc7ec130d2ed587d8b0db3b75adce5167841de4eaa5a266f1b1d046ac92af200ce2f87dddade33fb69d2a5678040000",
-    ],
-    [
-      "ETag",
-      "zkBWoWOBADI6FBIvIEwYvA==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:20 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-79-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "dd",
-      "4e",
-      "c2",
-      "40",
-      "10",
-      "85",
-      "df",
-      "65bc2d49412cd0848b22556bf813ca95216469a750dc76ebee5624847777b6221a35d19b7666facdf69cd31ee029cd63706195ae9f4b94fb8b35ea07534c51955c2bba1522570816a0666b228bcbbe1fcd7bc37e70df1e2b0c8a21e3afbb6e9708156d3063e01e204991c70adcc703e42c435a8b042fb37c597516e87d6186b3701a8c6ea9cf446cfad17c30f07a031f8ed67931669a2d2bfe1f6b8ba3055bb19a628212f3088d96428a2d463a303615cb0a8e35254a19a1820aae1eaca5280b2685a8d1a4d6ead4ea4ec36e394dbbe3341a0e815c444ca72227763e237da085667c2a76e4120c20ab920c27d5f585c6695c193165300a9d66a5ef2b40d29294e3f26f90f46e187d860fec14c1778e65a2ccf599ba198cbddf8ea34c3f8fea7ba1ff83509a923a236130f467a1379c186e71f2dedb6b54132928488526c3badd6c5fb51cfb3dd66b61a2a6f7b85a966841c4e8efb84b35b809e30a8f6f45df5f6f7b020000",
-    ],
-    [
-      "ETag",
-      "p3DEcUBMDIJ8OseIpMalxw==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:21 GMT",
+      "Thu, 13 May 2021 15:18:31 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -11992,7 +11832,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-80-1620764096226",
+      jobId: "grouparoo-job-80-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12009,11 +11849,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ffd5536b4fdb3014fd2b96f70534e84b505827c44ac9b66c258124857508b526b94d0d491c6c0709a1fef75d3bedba8e8d7d9e54a9b1ef39e79efbf033bde745427bf496a70f15c8a73777e296ee50d02cc5db6f65d8fd127eafdefafefedc3f50733598b7fb474788e086a5585e66b0ab44256350bd51d848a5a84a2685d845a1ddc3d66ebbdb691d74f75aefba9d4e17790ab2d99017f7c89e6b5daa5eb3b9cadd488548336025578d58e43fef9b8f9d6629c51dc45a35375336318b6abe9ef4381331d35c1447a3100d540ae40472c633b4b06626b71f36a51b9ce58d14c18f3c0616c7a22ab4b18512b128663cada455a5bd676a6dfef2414367e80c2232f0475eb43565b9214fb70953643291a0aa4cef9029d634e3194c7832ad23e53df918f86718410773a6404dc9d56727700819fa574eb0354d9806d4f1fc880cddaf0e39267def946c4ab91e19799e134664eb789b7c0afcd13939196f60b08604660c6d9c328d79b4f19ed49fae19ac06a511b4ecbafb72d67461a25c48ae4dbdae1739417f10b9974edde221a42c7e0a1fb0c93396294034932c070df24c248094733f7423d7f7fa4364d8be9daf108af6ae9fd784e8a9046350db7f7ada8f1cba58ecfc1dd10f82fe18559994ece9b7183aedee19fa9a7dc9b2ca422cde9e6a078f7580b6a9c9b63a75e8e26681bf1d8adb56abd38b91138c697d15c00c2414b1957ca583166c03ff7c34ab0d462cee30a6511acf4af3589924b1041b8e786eedd6ecf661bbdb6a510b96fa45ec60df284391fc31b2cc51597d9052c8c0aead39623665bdf0027bc2930bbbf41b2e1f96573928c55223ef0992331dcf799112c5d302b525909990645615b1a1d53b6eaf984cab1c0a4dccd0548f989137485895a5901a92b500c6ea97114681eb7dda7ebf3c9e8c2327c4f7a6c975bb77d8b931f5d82aeac1fe9715dcd423b14fc0f7cc13f8010f7df766be050000",
+      "ff",
+      "d5",
+      "53",
+      "ef",
+      "4f",
+      "db",
+      "30",
+      "10",
+      "fd572cef0b48a5bf800a3a215620b0b0924092823a845a935c82471207db4162a8fffbce4e192bdbd8e749951afbde7bf7eecef74cef7999d021bde5d9430df2e9c337714b5b1434cbf096f52bfff4feb8bbb5351da45f63f8ce4aef34dbdb4304372cc58a2a870d256a19831a4ec27626455d3129c4060a6dec74377a837e77b7b7dbdddc1e6cef224f419e8e79798fec3bad2b35ec745e72b73321b21c58c5553b16c5cffbce63bf5349f10d62ad3aab293b984575de4fba9f8b98692ecabd4988066a05720605e3395a786526b79f56a5db9c15ed0cc18f3c0616c7a22eb5b18512b128539ed5d2aad2e133b5367ff9a0a133760e2372e84fbc686dce0a439eaf13a6c86c2641d5b96e9139d694f21c663c993791ea9e1c07fe1946d0c11d53a0e6e4eab31338848cfd2b27589b274c03ea787e44c6ee1787ec9391774456a55c8f4c3ccf0923b2b6bf4e4e027f724e0ea62b18ac218194a18d23a6318f36de93e6d33583d5a03482965d777f9f355d982817926b53afeb454e303a8cdc4ba769f11832163f850fd8e494e50a10cd242b40833c130920e5dc0fddc8f5bdd11819b66fe72f084587d7cfaf84e8a9026350db7f7a348a1cba58b4fe8e1805c1688aaa4c4af6f426864e075b86fecabe64796d21166f4f8d83c726407bd4647b39f5e9e26681bf16c5d7d6a8d38b89134c697315400a12cad84abed3410bb6817f2ecdcb0b462cbe614ca3349e95e6b132496209361cf1c2da6dd8bd5e6f777b875ab0d46f63fd6e7fd32c7a99fc31b2cc515b7d9052c8c03e5b73c46cca7ae125f6842717f6d1afb87c585e15a014cb8cbc2748c1747cc7cb8c289e95a82d81a44292b42e63436bdeb8bd6232ab0b2835314353436246de26615d55426a48",
+      "5e0530d66c461805ae77b2fe71793c98464e88fba6c9756fb8d3bf31f5d82a9ac1fe9715dc3423b12be07b66057e00d1481748be050000",
     ],
     [
       "ETag",
-      "XpS6JSZu+OO5hO7shsCh1A==",
+      "a2pOJkF044Y6fZcezanNJg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12025,7 +11874,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:21 GMT",
+      "Thu, 13 May 2021 15:18:32 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12043,10 +11892,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -12062,9 +11908,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "1d",
-      "d0",
-      "4b",
-      "7282300000d0bb642d8ea0207427202d1f4144a164c38410a81327fc31e0f4ee757a84f75e00614cfa3e1b6a4a18f8003392b4355ebb8daa6755c9fc7c8e127e42b14d9c45eabfa6ae3d4051a29e118b980e817bf10cf7ae8e900acb60628e2f792bcf6ce3474fe3291a1133ca43c81e957bd56ec9b18ebffdc5e6672957bcb9b04c65bfe98a364d2bb32afccf7299f0a9bcd5c24e38195c77b4a47edabaa6c212e5b6ec98ecd15939b3da89ee134585bba6fed98c541528b42e7341c473e0bbc2f698402fa281c3651d4d69d4482989c3902165a4fe15821520bcb977a4cfee6fee56d6b415f8b767c3dc9077804e50473af0fb07aeb8a2901a010000",
+      "d0c97282300000d07fc9591c45a0d21bc81251114116b964520c9bc892a0084effbd4e3fe1bd37c0494218437d732335f80623e6e57932dfb56b156549d458947b5e68d0225c2a8df61ae23c322bef88c7d27220ea2243ba0961f0f5c3ab24ef65c3e57505fb1b232ce36a8beac62d7209a607d2f0e335de3bfa5211179281ce9ea6591072c27d5a1eed2eb3157ed02bf3f42c26bfb26c7ab1760bf37c0d93f4eebc865dabf7357b1ea1e7730a3232a13b6cc36cdaf8d0661d8df7a3f2801de70a227b9cf4209792475a3bacb47479d548d2e8ade51c472e99b69a0a6680bcda8212868a0f7725caf20cfcdb513fb6e413a0124c0905bf7f8e8958e61a010000",
     ],
     [
       "Content-Type",
@@ -12078,7 +11922,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:22 GMT",
+      "Thu, 13 May 2021 15:18:32 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -12097,7 +11941,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -12118,7 +11961,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-81-1620764096226",
+      jobId: "grouparoo-job-81-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12127,11 +11970,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff85535d4fa34014fd2b64f6d5168a14da26cddab4b836dbd29552cd66b32133c380a3c0203368aae97fdfcb605d8d89be0033f79c7bcefde019ddf1324113447876dfb07affed5610748298c219dcdac5d3e5eeeafe91fd342ffd851084ef7d3e9b4e01c15b96c44595b39e144d4d999cecb6fdac164d856b217a90a8371af406ae6d79ae638d5ddb768127599eae787907ec1ba52a3931cda3763f1322cb19aeb8ec5351bcde9b0fb659d5e2965125cdf79226a848f373d1efb9a05871514e775b30d04856c7acc03c070bff9909397b9fbacf71d1cf00fcc029c3948aa654ad2d48414599f2aca97556347946dae69b0fb4f557fe3c32a8c89ba28c4b5cb01323c10ac76a5f31e33cdcac8d6570be09d7b368b909e2edfcc25fcffaf3cd6ab70eb6c6f5851ffa86c224679a6b4c8d337d0ae000fa09938a975a3d6aaf5be597062d3f8ea52580b4645d30f62c170f46d698a4c4a3e9e87448528b113222de109f128b8e1de6248461e06951cdc2a52887c364341edb34764ebd041e5612132771e3843ac4b3bc51eab8093a9ca0c79a2bb6e0b21292771d42d7e132f2e328dc05f359e4eb1252dce46ad1196b0b78eb51418100faa4a6431be50294da762f83c80f67f36879e577135eb10cd3fdf61e669ce25c3240e31a9aa758bd1609340c05b3b5bf00b09ed8af6350a2c99f67d4f6bc75f1a6e5aff40806d8da55fa8db651b80c7e683b47c415ce1b0d79e83e5005966fa036707df80b4858d22e0bbadcf9e16fd45d852c65352be9d7d304b00e7cf9af1d171fb0b0fa2023159c6177a86c4568cdba1de2badc17f660640f5c0f6970ad3ec4ecb173ec5a9ba3cdc80a56aa978abac587423bb146be822008e30f74b70eff00eb3a93d578040000",
+      "8b",
+      "08000000000002ff85536b4fa34014fd2b64f6ab7d97429b346b5351c9b67417a8c66c3664182e380a0c3283c698fef7bd0cd6d598b89f98997bce3de73e7821f7bc4cc882c43c7b68a07efe762762724240d10c5fcbb4500f617e39bbc86ee885fde4263fb2ec69b944046f599216550e3d299a9a815cec837e568ba6a2b5103d4cd4b347bdd16c3c9c8fe6c3893933e7c89390a71b5ede23fb56a94a2e0683a3763f1322cb81565cf69928dede078fe341558b3b604a0e3e4a0e50450ebe16fd9e0b461517e5721fa08146421d4141798e16fe3193f8f463ea3ea7453f43f023674019134da95a5b98828932e55953ebac64f142b4cd770712381b671d1a4ce44d5146252de0c448a8a2917aaec038f7775bc3f5ce77fe7615ba3b2f0ad697ce76d55fef36fbad1718d7978eef188ac63968aeb1344ef5cdc30bea2720152fb57ad83eb7caaf0d723f8fa525a0b4842e1859c3191dd9c3799cc6164bed8919a74388633bb64c3a89876c3e85691203459e16d52c5a8ad2b6633381741a4dad491c4d676047b1655951321b836526cc4c128b1c4ec853cd159c715909c9bb0e916bdf0d9d28f4f7de7a153aba849436b93aeb8cb505bcf7a8b040047d51d3a18d72814a6dbb5d2f74fcd53a74af9c6ec21bc8287b0e1e70c629cd25209ad6d83c05f55624d830e2adb6ce1982f5c47e1e83922c7ebf90b6e7ad8b772d7fa38738c0d6aed25f1284beeb5d683b47c415cd1b0d79ec0ea442cbb7581bba3efc41242e699785fcda3bfe0de99e7c48a18692fd7f9a08d681fffe6bc7c5472cae3eca488577dc1d265b115643b7435c97fbca1e8dc6d3b14934b8569f62a6353c76adcdd16684024af55a51b7f8586827d6c837100671fc9eeed6e12f767b7f2878040000",
     ],
     [
       "ETag",
-      "2mzQUVqweK/QEDoobiyEiA==",
+      "nfmtqTlH6GgYaG8wIdKggw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12143,7 +11987,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:22 GMT",
+      "Thu, 13 May 2021 15:18:32 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12162,7 +12006,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-81-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-81-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -12182,11 +12026,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8d",
       "92",
       "dd",
-      "6e82401085df657a0b09188b96a417586d4b833f558c178d312b0c8a028bbb4b8d31be7b67a9b54ddba4bd6167966f76cf3970846d5ac4e0c2325ded2a1487ab15aa675d8c51569992b494bc900806a0622b22d3a0bbb367b3e1522453cbde867e1c3c79fbdb5b2264b4c69c817b8424c52c96e0be1ca16039d258c4b32a2f167567803a947a73128efdc103f5398f753f980681d7097a70322e8331536c51f3ff189b9f0cd8f0e51813145844a8b594826f3052beb629595e66684a5e890825d470fd6225785532c1b9493b66db366da761b59ca675e3341a0e81198f984a7941ec7442fa4071c5b231df934bd080a84b329cd4cf571d555c1bd1a53f089d66adef2b40d29234c3c5df20e95d33fa0c1fd83982ef1ccb7955a80b751f0cbddf8ea34c3f8fea7a61ef07211525754142bfdf9b845e7fa4b9f9d97be7a0508e04a72025ea0c6dabd9be6e39d67bac775c474df7b84a546840c4e8ef784c15b809cb249ede00ed9dc20c7b020000",
+      "4e",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "df65bcb42445a042132e405149f851280989216469a7a5d876eaee5621847777b6221a35d19b7666facdf69cd3eee129ce0270611547cf05cadd5984fac114135445a215df72ca148205a845c4a43ddfd2bcd7c49df066e7d3f1d6e9b66a5ed46e33a1fc35a602dc3d8431268102f7710f994891d77c4a8a345b969d057a979be1d49bf447b7dca714987e341b0c3add410f0ed66931105a2c4bfe1f6b8b83051b5a4d304489998f464b2e6983beee1b9b4aa47982154585f4514109970f2249452e245185279566b552752eec56b565d71a4ea3c56042bed03165cccea6ac0f3469914ce8955d82c3802c4b361c96d7171ec74169c494fd91e7d44b7d5f019616c6092eff0659ef5af067f8c08e117ce7444a45a64fd4cd60dcf9ed38cef4f3a8eb8ed7fb4128cd499d10af3fec4dbdcef0de708ba3f7ee4ea3ba97c4412a341956ed7ab371e9d8efb15e91899adfe36a59a005bee0bfe32ed6e08622517878039ad452a37b020000",
     ],
     [
       "ETag",
-      "iLDq1WWObrfU01kTIdLJAw==",
+      "0XxoXE8eyaTU+SOx6B93Tg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12198,7 +12047,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:22 GMT",
+      "Thu, 13 May 2021 15:18:33 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12236,7 +12085,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-82-1620764096226",
+      jobId: "grouparoo-job-82-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12247,28 +12096,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "d5",
-      "53",
-      "5d",
-      "6f",
-      "da",
-      "30",
-      "14",
-      "fd",
-      "2b",
-      "96f7d26a054a563160aa3ada665b34486812a8505581494cea92c4a9ed30a18affbe6b07cae8b6ee791212b1ef39e79efbe167bc64798cbb78ce92a7928af5bb473ec727982a92c0ed70e477f8aa1df5fdf19a384b6f387f3f1efd383f0704d32c49b222a535c94b1151d91d05f544f0b22082f31a08d5da56add9b24e3fb6ce4e3b2dcb6a014fd274d167f912d80f4a15b2db68ec72d713ce93949282c97ac4b397fbc6ca6a14823fd248c9c661ca0664918db7935ea43c228af1fc7c148081525231a519612958d833e3f9e743e93a23593d01f08a459444112f73a56d8144c4f3054b4a615471f7191b9bbf7ce0c0eedb5721baf2466e7834239926cf8e1191683a155496a93a4133a869c1523a65f1ac8a144bf4c5f7061001070f44523943b7df6cdf46a8efdddafed14c2af00842ae17a2bef3dd4617a8e75ea3432dc74523d7b583101d5d1ca3afbe371aa2cbc901068a88e982808f6ba22091d2e6e3ead3d19355542a006ddbeefc3e6cbcd151c60553ba60c70d6dbf77153a63bbea719f26245a074fd0e505492505341124a38a8a018fa95e2e2f7042c7737b7d6098c60d770889bb77cf7b42b82ea836a8cc3f0e9d0114d71b0cf16673f27758cff77b1390264290f5ab18d86d9d69fa9e3d26696920066f4e958d5515c04dacb3ed4e16dedc6fe0778261e72a757c33b2fd09aeae7cbaa082e691917ca38d066c02ff7c3abb3d062c6c32a4816d504c2a16499d2412d484439619bb15bbd9b63a56071bb050af631f4e8d32cde33f46b6394aa34f85e0c237cbab8f904d1a2f2c879eb0f8c6acfe81cba7ed5546a52489967739ca888a1e589e20c9921cb405450b2ed0a2cc",
-      "234dab36dd5c11919419cd15d243935df432f73a0acaa2e042d178af0280ea9104a1efb85f8f3f6d8f9793d00ee0e92974d7ecb6ad7b5d9429a59aeeff5bc67d351cede7da736dd8e69f369211bbce050000",
+      "000000000002ffd5535d6fda3014fd2b96f7d24a4080ae8832551d6db32e2b2434096d5155819b98e0358983ed744215ff7dd74e2963ddbae74948c4bee79c7bee879ff123cb63dcc30f2c599654ac3e7ce70fb886a92209dcde46c9cdb279abbe258b8b2e257e9bfa97d68fe3634030cd92242b525a97bc141195bd71d048042f0b2238af8350bddbaeb73aede651eba87970d8393c029ea4e97cc0f247602f942a64cfb236b91b09e7494a49c16423e2d9ebbdf5d4b60ac1bfd348496b37a50559a4f57ed293944744319e1f8f0330504a2aa634232c050b5b66fcf07957bac148d64800fcc4224aa28897b9d2b64022e2f99c25a530aab8f78c8dcd5f3e70600fecb3109d796337dc9b914c9367fb8848349d0a2acb54d5d00c6a9ab3944e593cab22c523fae27b43888083059154ced0cd57dbb7111a7837b6bf37930a3c8290eb8568e05cdae804f5dd73b4abe5b868ecba7610a2bd937d74e17be3113a9dec60a08898ce09f838270a12296d3eae3e1d3d5945a502d04bdb9db7c3c66b1d655c30a50b76dcd0f6fb67a1736d573d1ed08444ab60095d9e93545240134132aaa818f2980265e4054ee8786e7f000cd3b8d1062171efee794b085705d50695f9c7a13384e2fac3115eaf6b7f87f57dbf3f0169220459fd1603bb9d8f9abe655f93b434108337a7cac65315c02dacb36d4e6dbcbe5fc3af8661e72a757c35b6fd09aeae7c3aa782e691917ca78d066c02ff7c3a9b3d062c6c32a4816d504c2a16499d2412d484439619bb15bbd53a38e836b1010bf52676d8eee8e79ec77f8cbce4288d3e15820bdf2caf3e423669bcb01c7ac2e22bb3fa3b2e972f57199592245adee528232a5ab03c41922539680b8ae65ca07999479a566dbab9222229339a2ba487267be875ee0d149445c185a2f1560500d5230942df712ff63fbd1c4f27a11dc0d353e8aed5ebb6ef7551a6946abaff6f19f7d570b49f73cfb5619b7f02debd59e1ce050000",
     ],
     [
       "ETag",
-      "PUR9ov8cLRVyaIkOPb+VUw==",
+      "XcgWq0XtJghG8eaR2eRK/w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12280,7 +12112,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:23 GMT",
+      "Thu, 13 May 2021 15:18:33 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12298,16 +12130,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
-      "8b08000000000002ff1dd04b7282300000d0bb642d8e50b1a43b2320a0443ed5229b0c9f8014462221f2e9f4ee757a84f77e4092659473d2b735bd830f30250a5c66cb03d3102973d4c8993efb9bf7a9d90763229f60343bf2b9762a5db8475f6342e5535b4eb0961ecd5c2ba1a49c9d2087a648e090ca156e7808a924bc7b49d46cd0ed08fb3c3054db68a15f22f3d99336cd7b543551788d8d78b3ef86e92104a928dced6477ddad383c85b57ebb1a21be31b3786224b0f9c946e48e92352a98518d6c59afe8f7efcb57e05917352dd2a2b6d263bc923cfbe0e59619cf96e25b0674d76001e8c8aa8e7252bdb86f2a840bf06f27fdc4e82b00d1a4a31df8fd03b45b9ff41a010000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00000002ff1dd0516e82300000d0bbf4db194a07c2feaca04114956da2fe34c05aa836e05aa49465779fd911defb01795952a548d7de6803de80c96d7f5a4ee3bb8749c54ef0f4cd5f44cddd8788f7c7b09f4914acb14ada43e3699765c78fa275020513a3fa34ba9ce9d6ae2a4b714fcc460d35f11b571465efe66819b683144b12193c0b2d23f7cb9a429f5c11a9a159859d6273cd7aa85d4434b59dd53cca122e518950a2f390acf7f9d53838b0db0d8e6f51fa100bafc4c17b6dc68c6fe0ae58ef7a61155f9fc978e843ed559e7b3912e66ce3077b15115f642c3dd70398003adcb9a48af0271739be3f01ff76d2993b7d06609a4b2ac1ef1f906c381f1a010000",
     ],
     [
       "Content-Type",
@@ -12321,7 +12154,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:23 GMT",
+      "Thu, 13 May 2021 15:18:33 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -12340,7 +12173,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -12361,7 +12193,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-83-1620764096226",
+      jobId: "grouparoo-job-83-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12381,11 +12213,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "5d6f9b3014fd2bc87b6d1242289048d11a51ba464ac80aa4d5364dc82617ea96608a4da7aaca7fdfc5345dab4add13b6ef39f79cfbc133b9e7d58ecc08e3c5430bcdd3973bc1c80901450b7c8dd760fff44fefc637706f5119e60e6cfcabf91c11bc6349baaf4b1848d13619c8d9361e168d686bda0831c044036f32183b96e93ab639752ccb419e84325ff1ea1ed9b74ad572361a1db58785104509b4e6729889fdebfbe8d11ad58db8834cc9d17bc911aac8d1e7a25f4b9151c54535dfc668a095d0a4b0a7bc440bff983b76f63ef590d3fdb040f023cf806699682bd5d9c21499a8725eb48dce4a66cf44db7c732071b00afcc4c844d9eeabb4a27b38317654d1543dd5605c449bb5b10c2f36d17a912c37611afb97c17a31f437abed3a8c8d9bcb200a0c4559099a6bcc8d337d0bf182fa3b908a575a3de99e3be597062d3f8ea523a0b4843e98baa643c79e39653973b3dc9b9cb2dc04c63ce69ed20933b3a90df68e01459e16d52c5a89cab4d9d89c7a90bab6bb4bed699ea78c3a790a536bcc3c779233cb258713f2a7e10aceb9ac85e47d87c84db44c823489b6a1bf48025d424edb529df7c6ba02de7a545820823ea9e9d045b940a5aeddcb3009a2859f2caf837ec22b2868f6143fe08c735a4a40346db0790a9ab5d861c348b85807e708d613fb7e0c4a32fbf54cba9e772edeb4fc959ee0003bbb4a7f499c44cbf09bb673445cd3b2d590c7fe406ab47c8bb5a1ebc36f44e292f659c8d536887e90fe29821c1aa8b2ff4f13c13af0df7fedb8f888c5d54719a9f08ebb93c94e246ba0df21aecb7d618fbd896d7944831bf521e67aceb16b5d8e2e23eca1522f15f58b8f85f662ad7c056110c71fea6e1dfe02387abc0678040000",
+      "6b",
+      "6f",
+      "9b",
+      "30",
+      "14",
+      "fd",
+      "2b",
+      "c8",
+      "fbda8410f28048d11aa5748d94900d48ab6d9a90712ed42d608a4da6aaca7fdfc5345dbb49ed276cdf73ee39f7c113b9e7e59ecc48c2b38706eac74f772221670414cdf015ee8af0c7831b9957f75365995b7b6a2e77d97c8e08deb2242daa1c7a5234350339db85fdac164d456b217a98a8e7d83d6b321cb8963bb0c793b18b3c0979bae6e53db26f95aae4cc344fdafd4c882c075a71d967a27879370f43b3aac51d3025cdb79226aa48f37dd1cfb960547151ce77211a6824d4311494e768e12f739f9cbf4ddde7b4e867083e70069431d194aab585299828539e35b5ce4a664f44db7c7520a1b7f69691c144de14655cd202ce8c3d5534568f151897c17663acfccb6db05944abad1f87cb2b6fb3e82fb7ebddc60f8d9b2b2ff00c45931c34d7981be7fae6e305f5f720152fb57ad43eb7cacf0d5afd3f969680d212ba603c1d4ca8e50cdc244da62c75ec71920e20499c643aa6763260ee0846fb0428f2b4a866d1529483896b51eab278e84c927864b94eec32b0e2fdc876c76c32b56c3624c733f2bbe60a2eb8ac84e45d87c84db08abc380a76fe721179ba849436b9bae88cb505bcf6a8b04004bd53d3b18d72814a6dbb577ee4058b65b4baf6ba09af21a3ec317cc019a7349780685a63f314d41bb1c786117fb1f12e10ac27f6f5149464f6f389b43d6f5dbc6af90b3dc201b67695fe92300a56fe176de784b8a679a32187ee402ab47c8bb5a1ebe32f44e2927659c8b79d177c27dd530029d450b28fa789601df8f05f3b2d3e6271f551462abce3ee30d98ab01aba1de2badc67b665d98e6b130daed5bfb191654d4f5d6b73b419a180",
+      "523d57d42d3e16da8935f20584411cbfafbb75fc0315ae713d78040000",
     ],
     [
       "ETag",
-      "SMe4ZC5j1Wek2asNf6eOCQ==",
+      "ejmSZq9T/Hk7t1/O37/CUg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12397,7 +12238,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:23 GMT",
+      "Thu, 13 May 2021 15:18:34 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12416,7 +12257,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-83-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-83-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -12424,18 +12265,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02ff8d925f53825010c5bfcbf68a139aa132e3039626336a06f8d438ce1516c5804bf74f8de3f8dddb4b664d35532fb0bbfcf672ce81033c6565022eacb3cdb346b1bfd8a07a30458052e74ad2ade2a544b00015db10998c9dcb71d2eb2df46857947ad70bd769ecf5fb44c8788b0503f70069867922c17d3c40c90aa4b598e7ba2857756781da57661846813fbba3bee089e9678bc9c41b4c8670b4ce8b09536c55f3ff585b1e2dd8f17580290a2c63345a2ac177182bdfd894aca8726c48ae458c126ab87eb0115c574c70dea049a37bd5683a2dbbe3b4ed9ed36a3904e63c662ae325b18b90f481e28ae5017f2597600051976438adaf2f34ce92da8829fd59e4b46b7d5f0192966639aefe0649ef96d167f8c04e117ce758c175a9ced46872effd761c65fa79d4ad170d7f105251526724f2a7c330f2a673c32d4fde077b85722e380529d164d8b4dbddeb8e63bfc77ac34dd4f41e57098d16c48cfe8e71a6c04d592ef1f80611c9a5b07b020000",
+      "8b08000000000002ff8d92416f82401085ffcbf48a8956a14ae2412d5613b516f1d418b3c280d885c5dda5c618ff7b67a9b54ddba4bdc0ccf0cdf2de8313bca479042e6cd2645fa23cde24a89f4ce1a32ab956742b44ae102c40cd12220f23bedfd91e2be6ed623498b6679e3dd449b74b840ab79831704f10a7c82305eef309729621ad85829759beae3a0bf4b130c345e08f670fd4672232fd6c3999f4fa130fced67531629aad2bfe1f6babb3053bb1f13146897988464b21c50e433d363615cb0a8e35254a19a2820aae1e245294059342d468526b376b0de7b6de6974ea4ddbb13b047211329d8a9cd8e582f481169a715f1cc8253804c8aa24c371757da5711a55464c399e054eabd2f715206971ca71fd37487ab78c3ec3077689e03bc73251e6fa4a0d278fbddf8ea34c3f8fbaef05de0f42694aea8a04e3a9b7087ad3b9e15617effda346359782825468326cd45b6dfbcea9bfc73a10266a7a8fab658916848cfe8e51aac18d1957787e037c868e6b7b020000",
     ],
     [
       "ETag",
-      "dH6/Hd99UuFjmnuj9SbfcA==",
+      "wHlqj5EapP8pHCM8NE5Ftg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12447,7 +12281,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:24 GMT",
+      "Thu, 13 May 2021 15:18:34 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12488,7 +12322,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-84-1620764096226",
+      jobId: "grouparoo-job-84-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12499,20 +12333,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "c5",
-      "54",
-      "7f4fdb3010fd2a96270448fd414be9ba4a881508235a49ba3429ab26d4b8891b4c93b8d80e5285fadd777608d0c1d89f9322c5e77bf7def39d9347bc64798cfb78ce92fb828af5a73b3ec7354c15496097bbd924bebcf20fdb97f9cfdef53a995ef426c9f1312098ae92245ba5b42e7921222afbc1b891085eac88e0bc0e44f55ea7deeab60f3e773b075fbaed7617ea244d1743962fa1fa56a995ec379b957623e13c49295931d98878f6bcdf7c68375782dfd148c9e6b664135464f363d193944744319e1f07633050482a6634232c050b2f95f1fceb36758391ac9100f881459444112f72a56d0145c4f3054b0a615871ff111b9baf16786c0dad331f9db981e3ef8524d3c5e13e2212cd6682ca22553514c299162ca53316876566b544179e7b051970704b249521babeb43c0ba1a17b6d79af981cd74743fbbb854ed0c03947db64b68302c7b1c63eda3bd947df3c3718a1d3e916064e11d3050123e7448192d2eee37269ebd12a2a15809efa6ebf9d36dee82ce382297d62dbf12d6f70e6db13ab6cf29026245a8fefa1cd0b924a0a682248461515573ca6503272c7b66fbbce600815a673a30a2171ffd7e34b81bf5e516d509937be18ba03bfdb310e2ac884a485c13c940bbcd36a1c7576f06653fb3bd1c0f3065310274290f51f393890967857c3e04d541aad345b58ab55511b6f6e36f0d4305ccb921dff082c6f8acb2d8f2ea8a07964283f68b4019bc43fbfaeeaaa03162e3bc84805b1542c925a2412d4a47d9619bb6575abd739ea1d620316ea4daedbeee83f421ebf9b79d2280c3f15820bcfdc6f1d829a345e580e3d813f460d67544a92689a208793484ae6294566f8e8b9cf280c11cb911e040afde9c89a3d4d3caca15312a39817bacaf4b98fca4157d16e19ee6a63c64e39a1ff6be5a66c92d63a771d0b6ed56f14c00a6079050000",
+      "000000000002ffc5547f4fdb3010fd2a96270448fd41a12db4126285069651922e4d61d5841a3771834b1207db41aa50bffbce0e053a18fb7352a4f87cefde7bbe73f284ef5916e12e9eb1f8a1a062f965c167b882a92231ec5ecc6fdaad9fa219f7cf2fafefbea7fe82f8a4777c0c08a6ab2449f38456252f444865773caac5821739119c5781a87ad4ac36dafb7b9d4667efa0d56e75a04ed2643e60d93d54df2995cb6ebdbed6aec59cc709253993b590a72ffbf5c7fd7a2ef882864ad63725eba022eb9f8b9e243c248af1ec783c020385a4624a53c212b0f05a19cdbe6e52d718496b31801f59484918f22253da1650843c9bb3b8108615779fb0b1f9668147d6c03af3d1993b76fc9d80a4ba38d84544a2e954505924aa820238d39c2574caa2a0cce4f7e8dc73af20030eee88a4324037df2ccf4268e0de58de1b26c7f5d1c0beb4d009ea397db449663b68ec38d6c8473b27bbe8c273c743743ad9c0c029223a2760a44f142829ed3e2a97b61eada25201e8b9eff6fb69e395ce322e98d227b61ddff27a67be7d6d954d1ed09884cbd103b4794e1249014d0449a9a2e28a47144a86eec8f66dd7e90da0c2746eb84648dcfdf5f45ae02f73aa0d2af3c6e703b7e7b79bc6c11a724d92c2601ecb05de6ad45acd2dbc5a55fe4ed4f3bcde04c4891064f9470e0ea4253ed43078139546d79a0dacd5d6d13e5eddaee0a960b896253bfe31b6bc092eb73c3aa78266a1a1fca4d1066c12fffcbad6571db070d941462a88a562a1d422a1a026edb3d4d82dab1b8d66e7f0001bb050ef734787fa8f90451f669e350ac34f85e0c233f75b87a0268d1796414fe08f51c1299592c49a669cc1492425b38422337cf4d26714048865480f0205fe64684d9f271e54d0298950c40b5d65fadc45e5a0d7d176196e6b63c64e39a1ff6be5b66c92d6eabb8e05b7ea37d61bc99379050000",
     ],
     [
       "ETag",
-      "oOmVdHMT32HnX8WygYF8Vg==",
+      "GfW65Xr4gDFKVhJmTjaTaA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12524,7 +12349,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:24 GMT",
+      "Thu, 13 May 2021 15:18:35 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12542,10 +12367,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -12559,7 +12381,10 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff1dd04b7282300000d0bb64ad0e5af97567a412818ae368f86c32102206102140443abd7b9d1ee1bd1f9050caba8ef48f92d5e013bc9295b9a00bb73120c9af2c77e080e7cfb656d38defdfe2423ff848ca4659ee31ea0a5a3751e0ecf456637817235aabf73c5a32beb22ff9cae266ab9d2b3b93416756ea29d42feb3683a3591db7ba368d3dcebec2cd8eb496b1cf498ae8945fa6c457078a5dced3f108cba437907c6e658135cd70ec28e04ae091528d21f976b0a3a0d1123e3a1b73b71ed65e7be8a167857aa808ef61f43cd56eb28b86adb88a409ee23bdcbb6006d8d870c13ac2dfdc0fd53467e0df4efa57c3de0190258209f0fb0752a8b1361a010000",
+      "ff",
+      "1d",
+      "d0",
+      "4b7282300000d0bb642d0e847f77a0d508a9681444370c92103ee5d3805aecf4ee757a84f77e409a656c1892b1ab590bdec094427b9ecdfdde72134e631736ded443281ebda9495c3fc5ad725c754a1c87a7d1fa8216628e4c60686c8984225eebc362e7538ed0c650a8e0f7e7c7936a4faa1ef465c70f9d06b54d14e065469c7385c7ded9e25afab4ccc318387bcc726cc917bcbbda48457223b807334fb9b60ba27a2d399222a7e56eb33693ad99eee3cb714252be96172b5d6ae81d3b8511e0c032caf7a80c12d6dcec9b5f909cc34a84553406e7db25146006d8775f0a3624e58babeab63d03fff6649c7af60a70592a9800bf7f7192e2cf1a010000",
     ],
     [
       "Content-Type",
@@ -12573,7 +12398,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:24 GMT",
+      "Thu, 13 May 2021 15:18:35 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -12592,7 +12417,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -12613,7 +12437,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-85-1620764096226",
+      jobId: "grouparoo-job-85-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12632,11 +12456,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "535d6f9b3014fd2bc87b6d1292104822456b94d29529900e48ab699a903186ba25986293aeaaf2df776d9aa8dda4f609dbf79c7bcefde0053db02a437394b2e2b1a5cdf3977b9ea23344252ee0b588feac7cbfdd3bfbefcda5dd5ad7b371f6f0b45800822996c0bbbaa43dc1db865031df46fda2e16d8d1bce7b90a8379df486f6c8746ccb9cd9a3910d3c41cb7ccdaa0760df49598bf96070d4ee179c1725c535137dc277a7f7c17e34a81b7e4f891483f792035011838f45bf969c60c978b5d84660a015b449e80eb35215786266e9f9fbd47d8677fd02c07b46282684b79554b62005e155ce8ab6d159d1fc05699b6f0e2872d7ee2a36082fdb5d95547847cf8c0c4b9cc8e79a1a97e1c637bce07213facbd8db0449b4ba72fd657fb5596ffd20326eafdcd035244e4baab9c6c238d7b7002ea09f512159a5d563f5ac945f1be4fd3f1645006941bb60e298361e4ecd599aa70ec9a7e3499a9b344da7a933c1e3d424338b5a594a31f0b4a866e18a57569ea7d6644a130bdb4e624dc824c143d34c2043660eb13533ed0c1dced053c324bd60a2e682751d42b7a117bb491c6e83d532767509396e4b79d1195305bcf528a140007d50d34145190725d56e2f88dd70b98abd1bb79bf09a16983c478f30e31c9782021a37d03c491b9f67d030142c7df702c07a62d7c7a040f35f2f48f55cb978d3f2133d86012abb527f5114875ef04ddb39226e70d96ac8be3ba01a2cdf416de0faf01b90b0a45d16f463eb863f51f714d29c36b4229f4f13c03af0e9bf765c7cc0c2ea838c907087dd2142899086763bc474b9afece1d49a8d2da4c18dfc3736319df1b16b2a87ca4877b492af15758b0f857662ad38812008e30f74b70e7f01e7595e3d78040000",
+      "53",
+      "5d6f9b3014fd2bc87b5c939010128814ad5942d74809690969554d13b28da16e00536c325555fefb2ea6e95a556a9fb07dcfb9e7dc0f9ed19e17319a20c2d3c79a554fdf1e04416788299cc2eb901cdc3df9b9fffe30e3578fa3eb6a71e9dea5d3292078c392382f33d691a2ae289393ddb69b56a22e7125440712751cbbd31f0d4cb7ef9a963db25de04996252b5eec817daf542927bdde49bb9b0a91660c975c76a9c85fdf7b8741afacc403a34af6de4bf64045f63e17fd91098a1517c574b70503b56455c472cc33b0f09f1993f3f7a9bb1ce7dd14c0074e19a654d4856a6c410a2a8a84a775a5b3a2c933d236df1cd0d65b79f3d0a022abf3222a70cece8c182b1ca9a7921917c1666d2cfd8b4db09e85cb8d1f6de797de7ad69d6f56bbb5bf356e2fbdc033142619d35c636a9ceb9b0f17d08f9954bcd0ea61f3dc28bf3468f9712c0d01a4256b83d1d81ce1be63ba2421639a38964d129311e290b18d2d625277c886316118785a54b370210a2b2634b62c3722f1c88a8603c78cdc7ee244e678e462920cdcd8b5d1f10cfdadb8620b2e4b2179db21741b2c432f0a839d3f9f859e2e21c175a616adb1a680b71e151408a04f6a3a36512e40a969f7d20fbd60360f97375e3be1154b317dda3ec28c139c4906685c41f314abd6228686217fb6f61600d613bb3a05259afc7e464dcf1b176f5afe4a0f61808d5da5bf681b064bff97b67342dce0acd690437b402558be87dac0f5f10f206149db2ce87ae70577a87d0a58c22a56d0afa709601df8f25f3b2d3e6061f541462ab8c3ee50d988d08ab53bc475b92fec7edf1e8c1da4c195fa101b3af6a96b4d8e2623cb59a15e2a6a171f0a6dc56af90a82208cdfd7dd3afe03b852c3df78040000",
     ],
     [
       "ETag",
-      "gSxCMMuv7vJrF6u4P93dkw==",
+      "4bv9kbBk+jAiPq6QrDH9Yg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12648,7 +12473,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:25 GMT",
+      "Thu, 13 May 2021 15:18:35 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12667,7 +12492,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-85-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-85-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -12686,11 +12511,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "dd6e82401085df657a0b891a454be2855a5b69f0a782bd698c5961502cecd2dda5c618dfbdb3d4daa66dd2dec0ccf0cd72ce81233ca73c0617d6e9e6a54479b8daa07e30c51c55996945b742708560016ab621329ac48fe3b2cdf3019fde6f991c35a6416bdfed12a1a22de60cdc23242966b102f7e9089ce568d64456e67c557516e84361864138f72677d4e72236fd64e1fbbdbe3f849375598c9966ab8affc7daf264c14eace798a0441ea1d15248b1c3487bc6a6627991a1ad4429235450c1d5838d1465c1a410364dec4ecbae3b8d5adb69d6ae9d46c321301311d3a9e0c42e02d2075a6896cdc59e5c8201645592e1a4babed2388d2b23a6f426a1d3acf47d05485a9266b8fa1b24bd5b469fe1033b47f09d63b928b9be50b7feb4f7db7194e9e75137bd70f883509a92ba20a1371e06616f3c33dcf2ecbd7fd0a8665250900a4d86f55ab3d36a3bb5f75807c2444def71b52cd18288d1df314a35b809cb149ede0015ab985d7b020000",
+      "41",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "85",
+      "ffcb782db1285468c2a1202a11b040890743c8d24e4b71dbadbb5b9510febbb315d1a8895eda99e937dbf75ebb83c7348fc085559a3c9528b72709ea8929a6a84aae15dd0a912b040b50b384c8c6e9ebd8e789cd1bdd046ffddebda3fd70d2e910a1c235660cdc1dc429f24881fbb0839c65486ba1e065962fabce02bd2dcc70164c07e36bea3311997e3c1f0ebdeeb00f7bebb81831cd9615ff8fb5c5de828d584d3146897988464b21c506433d303615cb0a8e35254a19a2820aae1e245294059342d468526b356b75e7cc6ed7dbf679d369b609e422643a1539b1f319e9032d34e353f1422ec121405625198eabeb338dd3a83262cac138701a95beaf00498b538ecbbf41d2bb66f4193eb04304df39968932d747ea6a78e7fd761c65fa79d4a517f47f104a53524724188cfab3c01bf9865b1cbc77b71a952f0505a9d06458b71bade68563bfc7da13266a7a8fab658916848cfe8e9b54831b33ae70ff06c8e8e5ad7b020000",
     ],
     [
       "ETag",
-      "cNdVMu7nmCnOJharH2OS5w==",
+      "4/xNPlg0l4BgeKPCW6tPcQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12702,7 +12533,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:25 GMT",
+      "Thu, 13 May 2021 15:18:36 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12740,7 +12571,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-86-1620764096226",
+      jobId: "grouparoo-job-86-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12761,17 +12592,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "85",
       "54",
       "fd",
-      "4f",
-      "a3",
-      "40",
+      "6f",
+      "9b",
+      "30",
       "10",
       "fd",
-      "57c8de2f1afb41bfa06dd278b5e53c72957a4035e672691718ea2ab0c82e358de9ff7e0358b5d1d3840476e7bd796f66677922f72c09c890786cfd9043b6fd76c73d522320e91a774ff25f77e6667ee64c1f55676ec583b9a79f8c472344b08225689c4650173ccf7c10c385d358673c4f69c6791d13d5fb5abda5b5555debaa03adddd69027200a672cb947f6ad94a918369b7bedc69af375043465a2e1f3f865bfb96937d38cdf812f45f350b2892aa2f9b9e869c47d2a194f460b070de402b225c4944568e1951978df0f5337188d1b6b046f980fd4f7799ec8c216a6f07912b2759e9559c9f0899436df7c10c79819135799cc17967bb4a271415e1d2b5428cb6506228f644d59614d218b60c982551549ef951ff6fc0223e8e0960a102be5faa7611b8ab22a4023e554195b53e5906a5acac2b20cc7558e4e8f95737bbeb854ce6e0e30e839002159523a76a91741e1f6b9a9e6fba32c0854a2832ab8d4558db6faeac00b3ddd0ffb9d9e17aae0797d4fefd18ea7fa832e74030f28f26491bd64d184271a50aa799d16b45b7a970e82f6a0eb05d01bb45a3ee81da07d1a06aada05b2ab91c78c4998329172c1aace926bdb748da56b2facc9d835ca32428add9b56e68a22defa945824823ea96b57441947a5e2984ccb35ecf1c435af8c6a3266b0a6fed679c0d908692400d134a33148c82e78804d239773c774cdb9359e21a33ceecb3d4290e19fa75782bb4dcb2ecbf25d6869dd527f0fb8a2515e2236d50769f5c86e57fb7f8ab16d8f6f50966619dd7e9cfec3fc25be5c55165ff448a1b65fb5c9eeef0e9f1ac15b546527bf17867d43aa2d1b42c820f1bf1e1d0497812f7f06fb9b8958bc9b282324ae7150",
-      "7d5188f8195403cbe2d26ec56ef57b7aa74d4a7026dfc5fa5a7f7f32458e2223c490c8e78aaa9b5936aa08e5e20584419c33cbb4ce31fa0f9052c5fc19050000",
+      "57",
+      "90",
+      "f74babe503f24142a4a8cb12b632a5a423a455344d898123750b9862d32eabf2bfef80a66dd4ae9590c0bef7eebd3b9f7920372c09c880786c739b43b6fd74cd3d522320e906772797be6cdd4cf23fe6e8f38f531bfe76cdd9f27e3844042b5882c6690475c1f3cc073158cc1b9b8ce729cd38af63a27a5faf6b7a4b3534436d77f5ae813c01513865c90db2afa44cc5a0d9dc6b37369c6f22a029130d9fc74ffbcdbb5633cdf835f852340f259ba8229aef8b9e44dca792f164b898a3815c40b68298b2082d3c3303efcb61ea06a3716383e03be603f57d9e27b2b085297c9e846c93676556327820a5cd171f646e4ecdb1ab8c670bdb3d5ad3b820af8f152a94d52a039147b2a6acb1a69045b062c1ba8aa437ca37677686117470450588b572796a3aa6a2ac0bd050395146f64439a45ab6b2b06d73ee2a4727c7ca7767b63857be2e0f30e839002159523a76a91741e1f6b1a9d6eba32c0854a2832ab8eaa93ad5faaae1855ecf0ffbedae17aae0797dafd7a56d4ff58d0e74020f28f26491bd64d184273a50aa7b6d0d5a5aaf438da06574bc00ba86a6f9d06b03edd33050d50e905d8ddc674cc28489940b5675965c3a966bae5c67618f47ae59961152ecdea4325714f1d2a7c42211f44e5dbb22ca382a15c764d9aee98cc6ae7561569331850df5b7f35b9c8d904602104d331a8384ec8c07d834723e9b5bae35b347536494c77dbe470832f8f5f04c70b769d96559be0b2dbd53eaef011734ca4bc45df541b42ed9ed6aff4f31729cd112656996d1eddbe9dfcc5fe2cb5565f1498f146afb558bec7eeff0a911bc455576f273613a4b526d3910420689fff1e8",
+      "20b80c7cf833d8df4cc4e2dd441921718d83ea8b42c4cfa01a581697762bb6a6e9384ba40467f255ac6da8fb93297214192186443e5654ddccb2514528174f200ce29cd996fd1da3ff004ba424d719050000",
     ],
     [
       "ETag",
-      "+uKjIvOBSDw0SONm9Ob7+A==",
+      "DWct2kDuxEA+JHNez5EOYw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12783,7 +12616,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:25 GMT",
+      "Thu, 13 May 2021 15:18:36 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12802,7 +12635,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-86-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-86-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -12811,11 +12644,26 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08000000000002ff8d90414fc2401085ffcb78b44d0ac12a241c401b2512d4225e0c214b3b2d85b65377a7924afadf9d2d1c3c7ae9cebe7e6ff7bd3dc1212b6318c1364bbf6ad4cd558afc6687104d9db391a5a2d2203880ac52216f82ebddea61c047efa7299e3ff68b6dfd329c8cc7429868878582d109920cf3d8c0e8f304a52a506c9b8dee4e148c9bca2ab3c57bf018842214145b61b19acf27d37900adf3c7561dfe6559b70eec691b62821acb086d8a4ad31e239ed9824615558eaea15a4768a083bb1fa9a6ba529ac815c5bdf3dd9edff76efd8137f4fb7d5fc09c22c51995c2ae96920d9858e5211da51ff404d0dd285593eefbddc9b6c3655ab7eb8b69da309a574d92c0a0bddc3b07b9271b8e2534eb1a1d8894bce453c6e77dfb0be02943cca6010000",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "90",
+      "41",
+      "6f",
+      "82",
+      "40",
+      "10",
+      "85ffcbf40a89d8488a89876ab09a125a69bdd818b3c2802830dbdda5c618fe7b67d1438fbdb0b38fefedbeb75738954d0663d897c5778beaf250a059d92141dd5646f322a9d1080ea0110593c3f92690d16696e5af87d562eec743f526ce9309133a3d602d607c85bcc42ad330feba42236a64db6ea7fa13193317699565fc19be84090b35655688d751f43c8d42e89c3f3679fa9765db3970a47d82392a6c52b429a4a223a666690b6a51cb0a5d4dad4a51430ff73f0a45ad148ac865c57df25dcf1f0e022f183c8efc51c06045a9302535ccae3f381b1832a24ae8ccfdc06340f52357cdfbef4f2fdb0ef769db6defa6e9c5a07e57c40934dacb07b72033b2e10c8736aa450752c12fb928cd6ddffd023bbb3ad6a6010000",
     ],
     [
       "ETag",
-      "5E+hUD4tw0zymKVjNbuO9A==",
+      "2FZ9pLZCdfKhQHF6N2rOaw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12827,7 +12675,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:26 GMT",
+      "Thu, 13 May 2021 15:18:36 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12845,10 +12693,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -12862,17 +12707,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "1d",
-      "d0",
-      "4d",
-      "72",
-      "82",
-      "30",
-      "18",
-      "00",
-      "d0",
-      "bb642d0ee22fdd81808a6230061436190c9f8a8062044be8f4ee757a84f77e50c239bc5eac7ee470475f48269adee7fd753533d905c687c7d0dfe4d1b19887f44ad4b73f383e8d93d02966b313cf5ba5c1cd45138e46f2b05d4d46ae57faa4a1cedc0415b67624f3da7bcea194292bb8b8af6516ebf76f824b18f9a1745c9aa487b336d12cf23494591a4ce395c947d64add9f3267d9aae17b1136d10d632f945b1154a511939bfb80a1cba706b55c3bd8d413120d163b8b2a5db10db4bd47afb16be365f566913eedcefcd6c5bbb5d3e2b43015d443d056998017cb3edce158d77be8dfce6a59c127c084448040bf7fc60969631a010000",
+      "ff1dd04b5283300000d0bb645d3ab4e113dcf1295fd152a8a09b0cd0486305d22452d0f1ee763cc27b3fa06e5b220496e3850ce0012cf5d65ab7eb842107772d2c3bfc14779df4182bd426120a8c90eef58c28093678bf77dcabae1e6fee8dc9d40b0c82bf0fa7f6ec620cb7143679bc49d5bd1dd53b191fb8ab8920a372b4ed49098bcadebe9cd1809691aa4229a6b2ec8d86f2c427d672f94aa1153996ffa1849ffa4e4be639eb1a2d22c7009a65fee67565acbb6335ea13b48534054a4dafd9d4c5a3bb5c39d2880f93749cb2e519c2d73c1c2a49e7294027f51dac009919e544607ae742ddb256e0df8ee5c2c83dc02135271cfcfe01101543581a010000",
     ],
     [
       "Content-Type",
@@ -12886,7 +12721,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:26 GMT",
+      "Thu, 13 May 2021 15:18:36 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -12905,7 +12740,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -12926,7 +12760,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-87-1620764096226",
+      jobId: "grouparoo-job-87-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -12941,17 +12775,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f9b3014fd2bc87b6d4242089048d11aa5b4454ac84648aa699a906d0c754b30c5265354e5bfef629aae55a5f609dbf79c7bcefde0193df23245534478fed4b0faf8ed4110748198c239bcee768ee766c33159063e31712e6e0a7e98cf6680e02d4be27d55b09e144d4d999c6e37fdbc164d856b217a90a8e7b9bda1630d5cc71e4c1ccb72802759912d79f908ec7ba52a3935cdb3763f17222f18aeb8ec53b17f7d370f9659d5e2815125cdf79226a848f373d1ef85a0587151ceb61b30d04856276c8f790116fe335372f93e759fe37d3f07f081538629154da95a5b90828a32e37953ebac68fa8cb4cd3707b4f197fe2236a8289a7d999478cf2e8c142b9ca863c58ceb68bd3282f07a1dade671b00e93cde2d65fcdfb8bf572bb0a37c6ddad1ff986c2a4609a6bcc8c4b7d0be102fa29938a975a3d6e9f5be59706051fc7d212405ab22e98b803070fbdc18464c4a599371a936cc008f1883bc62332a0139bd9296118785a54b370294ac74abdb16b8f12e2794e62d3114e2616c549e6ba940c46e9d862363a5da0bf3557ec8acb4a48de7508dd4541ec2771b40d17f3d8d72564b829d45567ac2de0ad47050502e8939a4e6d940b506adb1d84b11fcd1771b0f3bb092f598ee971f30433ce702119a0710dcd53ac5e89141a86c2f9cabf02b09ed88f7350a2e9ef67d4f6bc75f1a6e5aff41806d8da55fa8b3671148437dace19b1c345a32187ee802ab07c0fb581ebd31f40c2927659d0cfad1ffd42dd53c43256b3927e3d4d00ebc097ffda79f1010bab0f3252c11d7687ca5684d6acdb21aecb7d610f3d6764d948836bf52136b6ad73d7da1c6d46b667a57aa9a85b7c28b4136be42b088230fe5077ebf40f2c9b2d2178040000",
+      "0002ff85536b6f9b3014fd2bc8fbb8e6415e8448d11aa5748dd4908d9056db3421db5ca83bc0149b565995ffbe8b69ba7693da4fd8bee7dc73ee8347f24b1431991126d2bb1aaafd875bc9c809014d537cfd7df131dff3d2f14ae6c4cef7a10f37bbd1c37c8e08d1b014cdcb0c3a4ad6150735db6dbb6925eb92565276305167ea74ecc9a0efda6e7f389e8c5de429c8924b51fc42f68dd6a59af57a47ed6e2a659a012d85ea72993fbff7ee07bdb292b7c0b5eabd96eca18aeabd2dfa29939c6a218bf96e8b066a0555043915195af8cb8cd9e9ebd45d41f36e8ae07bc181722eeb4237b63005974522d2ba3259c9ec91189b2f0e64eb5d7acbd0e232abf3222a680e27564c358df4be04eb3cd8acad957fbe09d68b70b5f1a3edf2c25b2fbacbcde56eed6fadeb0b2ff02c4d5906866bcdad5373f3f182fa31282d0aa31e36cf8df2538356ff8fa521a0b482361839fd09b5a77d9725cce1c9743866491f189b32674c87accfdd118c6206147946d4b068218b41c238b8d48eec78d88f46a30144cc9df2c886643286219d3a8311399c90874a683813aa944ab41d22d7c12af4a230d8f9cb45e89912125a67faac35d614f0d2a3c60211f4464d87262a242a35ed5ef9a1172c96e1eaca6b277c0929e5fbed1dce38a1990244d30a9ba7a15acb181b46fcc5da3b43b099d897635091d98f47d2f4bc71f1a2e5cff41007d8d8d5e64bb661b0f23f1b3b47c415cd6a03b96f0fa444cb37581bba3efc44242e699b857cdd79c137d23e05904005057f7f9a08368177ffb5e3e22316571f6594c63bee0e578d08afa0dd2161ca7d62dbf6c4c5391a70a5ff8d39f6607aec5a93a3c9083914faa9a276f1b1d056ac56cf200ce2f87dd3adc31f22d51fb478040000",
     ],
     [
       "ETag",
-      "VV687f15bLIEb/agoGlivA==",
+      "zH+mycp7Epb7d7Z3NehU4w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -12963,7 +12791,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:26 GMT",
+      "Thu, 13 May 2021 15:18:37 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -12982,34 +12810,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-87-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-87-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
   .reply(
     200,
     [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "41",
-      "4f",
-      "c2",
-      "40",
-      "1085ffcb782d492558b08987a2a8240511cac910b2b453286c3b75770b2184ffee6c45346aa2977666facdf6bdd71e60931509f8b0c896af15aafdc512cdb32dc6a82b6934df4a2a34820368c492c960bddd6432f0b68372f34451d875770b0a6e6e98d0f10a7301fe01d20c65a2c17f39402172e4b598649517f3ba73c0ec4b3b9c44e3fef081fb9c12db0fa7611874c31e1c9df362228c98d7fc3fd6664707d6b418638a0a8b18ad9652d11a63d3b736b5c84b890d4d958a51430dd70f968aaa5228a2064f1a9d76e3d26bba6dafe55e7bcda6c7a0a458988c0a66a713d607868c9063dab14bb080aa4b369cd6d72d8fb3a43662cbfe30f25ab5beaf004b4b3389f3bf41d6bb12fc193eb05304df399153559833751f3e05bf1dc7997e1e751744bd1f84369cd41989fa83de240a0623cbcd4edebb7b837aa48883d46833bc745b9dabb6e7bec77a4b366a7e8f6f54850ec482ff8ec7cc809f0aa9f1f8064e0d5b647b020000",
+      "1f8b08000000000002ff8d92d14ec2401045ff657c2d09281468c24311541410a1441343c8d24e4b71dbadbb5b1009ffee6c45346aa22fedccf4ccf6dedbeee0294e0370601147cf39caed4984face14635439d78a6e9948158205a85944e4fdeba013bdd8c3d5f2e67ae3f2ea649d3d2c37ad1611ca5f62c2c0d94118230f14388f3b485982b4e60b9e27e9bce82cd0dbcc0c27deb837bca43e1181e987d37edf6df7bbb0b78e8b01d36c5ef0ff589bed2d5889c518439498fa68b46452acd0d73d6353b124e3585222973e2a28e0e24124459e3129448926a546bd54b14fcbcd4ab37c56b36b4d02b9f0998e454aec7442fa400bcdf8586cc825d804c8a224c361715dd3380e0a23a6ec0d3dbb5ae8fb0a90b430e638ff1b24bd4b469fe1033b44f09d6389c8537da42efab7ee6fc751a69f47755caffb83509a923a225e6fd09d78ee6064b8d9c17b7bab518da4a020159a0c2be56aa356b7cbefb19e0b1335bdc7d132470b7c467fc755acc1091957b87f03e0dcf7607b020000",
     ],
     [
       "ETag",
-      "AjvkilA6vMpkOoTLB0wboA==",
+      "WzMDgx6NjhKJwAl4SvpXhw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13021,7 +12833,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:27 GMT",
+      "Thu, 13 May 2021 15:18:37 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13062,7 +12874,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-88-1620764096226",
+      jobId: "grouparoo-job-88-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13071,11 +12883,27 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff85547f6f9b3010fd2ac8fba795f283101248a4aa63096b9152d211d22e9aa6c41043dd124c6dd32aaaf2dd7798a66dd6ad9590c0bef7eebd3bfb784277345fa3218a687a5f12befd72cb22d44044e21476835e520a3ccac617e7dc6486f5e85fff5c38272780a0154be04d9191a660258f8918ce67ad94b3b2c09cb126246ada76b3d33774ab6fea83be61f4812748964c687e07ec1b290b316cb7f7daad94b13423b8a0a215b3cdcb7efbc168179cdd92588af6a1641b5444fb63d1d38cc55852969fcc6760a014842fc906d30c2cbc32d7d1d7c3d42d8a37ad14c00f3426388e5999cbca16a488599ed0b4e42a2b1a3e2165f3cd079ab91377146aa3e9dc0f8f5678539157c71a16da72c9892833d9d05650534233b2a4eb551d29eeb4efc1f40222e0e0060b2256daf5b91bb8daebd64a3bd14e35c71f6b87093c5f9bfbbe3b0bb5a3d363ed2c98ce2fb56f8b030c385f132169ae7c8738ca48e5f9b9b5defb03ad085882681d5c5a7a1f776c7d102591152776b717253a89223bb27ab81be9f1c024e63a221878b2caae583867b96e7475d2b5e0e919a6199b06b606c0ebda49d7d6ed64a0db06b1ec4e1fed1ae8915349c654144cd0babfe83af042771906737fe484ae2a23c1d0c3716dae2ae2ad4f094502e883ba7655943250aa0ecbf343377046a177e5d6f76342521c6f67f77043129c090268ccf18648c22fd81a9a862ea7332ff4a6be3301863af4cb3d42a0e1afa75742b82d5497a57aa3591878fe9932b0475ce1ac549087fa0339057845bb5de3ff699c207016208d39c7dbbf62504edface8ff905078b5aa6dee253ba852dbaf0cb4fbbd83a781609eeaece8c7dc0d16a8de0a484238c9e3cfaf0f8055e0d3dfc27e46010b530a3242c21a2e6b2c2a919893fad2d28db25bb33bb665ea1da4c05cbe8bf54c7b7f3a558e2a23d9905c3e5754cfa86a54152ac50ba8faf3c130a983dafd01bfcfff7c23050000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "61",
+      "6f",
+      "9b",
+      "30",
+      "10fd2bc8fbd24a694280242452d4b1946d4829c980b48aa62931c450b70453db748aaafcf71da6699b756b2524b0efbd7befce671ed11d2d366884629add5784ef3eddb218b510913883dd2b9bcdddde7d141a8e6fa76584bd25df38e3312068cd12785be6e44cb08a27448c16613be3ac2a3167ec0c129dd9f659b76fe8c3ee50377bfdde107882e4e9941677c0be91b214a34ee7a0ddce18cb72824b2ada09db3eef771e8c4ec9d92d49a4e81c4b76404574de173dcf59822565c5781182814a10be225b4c73b0f0c2dcc49f8f53b729deb633003fd084e0246155216b5b902261454ab38aabac68f48894cd571f2874a7ee24d226b3851f9dacf1b626af4f352cb4d58a1351e5b2a5ada1a694e6644537eb2652de695f83d92544c0c10d1644acb5ebef6ee06a2f5b6b6dac9d6b8e7fa11d27f07c6de1fb6e186927e7a7dab760b6986b5f96471870be2142d242f98e709c93daf3536bbdb7075a13b004d126b81ae87ddcb5f5619cc68324b5cd5e9cea248eed78d0c366ac27438b589b9860e0c93abb62e18215ba61eac41cc0d3332c2bb10c3c1802cfb453d3d6ed74a8db0619d8dd3edab7d06f4e25b9a0a2648236fd45d78117b9ab2858f8132772551929861e5e34e6ea225efb94502480dea96b5f472903a5fab03c3f7203671279576e331f5392e16417dec384a4381704d098e32d91845fb20d340dcd67a1177933df9902431dfafc801068f4f3f18510ed4ad565a9de288c02cfffa60c1c105738af14e4a1f9404e095ed17edffa7f1a27089c254863cef1eeaf1894d3b76afa3f24145ead1a9b07c92eaad50e2b03ed7fede16921b84f4d76f463e1064bd46c0524259c14c9c7e3036015f8f0b770b8a380855b0a3242c21a863511b548c24933b474abec36ec6e3d8c16",
+      "52602edfc4ccae75389d3a479d916c49219f2a6aeea86a541daac4330882306bbe3aa8fd1ffdcd2a2123050000",
     ],
     [
       "ETag",
-      "R5fusaClDMHr4o27wNWXYA==",
+      "V8oPE5qTS2AN8fpTaIYrdA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13087,7 +12915,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:27 GMT",
+      "Thu, 13 May 2021 15:18:38 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13106,7 +12934,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-88-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-88-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13115,22 +12943,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "41",
-      "6b83401085ffcbf4aa546db036904353a40904696c038512c2c64cac893a66778d48f0bf7776534a8ebdeccebef966786f2f702cea1d8c615be4a716657f97a35e9a2245d5965af1d550ad101c402d72269351177b27ef5efa9f2af1a34e1caad976399930a1b26fac048c2fb02fb0dc29187f5da01615f2d86623ed46c674df18659e7cc4af71ca42453b2324abc5e279ba8861706ec69ae3bf46d6830307daa6b847897586c64523e980999e9b804a544d89aea25666a8c0c2b6914b6a1b21895c56dc2872fd30f01ec391f7140641c8604999d005d5ccaeded91b68d2a24ca9e37c1030206dc951f7f63cb3fc60339c2d60acddf682bf9e6f7aebdf85d35ea37a93c4ee141a63ded5e40b19e39a0369d9a20399e05f9e15fafa1e7e008d552ceec2010000",
+      "08000000000002ff8d504d4fc24010fd2fe3b54d2804429b70106db40941ad7232842cedb4967e4cd9dd824dc37f77763186a397ddd9f731796f07288b268500f6457eec50f67739ea3733c4a8ba4a2bbe5a6a148203a845cecacdf74b2f64f45856a23c46b94fd4f7de79b160854abeb016100c901558a50a82cf011a5123db763b6937b24cf7ad41a2f547f814c60cd4941a60bd59adee97ab102ece8dad2dff65d95e1c38d03ec60c2536099a14ada403263a320595a8db0a5d459d4c5081155b2297d4b54212b98cb8f3b9ebcdc623dff34793e96ceab3b0a244e8821ad3fd9db381262daa98cedc0fc62c9076e4aa993d4f0c4f6c8793159868b7dcf88ff30cb7fd5db8ec35aa57499c4ea10936ba867c20135c73212d3b742011fccbcf85bebe2f3f915c5b52c2010000",
     ],
     [
       "ETag",
-      "N4wE0q0/r1XsN18wajmHbQ==",
+      "UxOyarIDklakqIg9ooyy1w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13142,7 +12959,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:27 GMT",
+      "Thu, 13 May 2021 15:18:38 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13160,10 +12977,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -13172,21 +12986,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b",
-      "72",
-      "82",
-      "30",
-      "00",
-      "00",
-      "d0bb64ad8e4883a63b28fe810a44826c32810904b088442780d3bbd7e911de7b0196655c4afab8d5bc019f60600b34cb66c77665d1822f4524982aca659d2fa76bbc13b488cc983ca189ecd6d5dc4118f22cbf2f305819525a22a654e79132b50a356a4b74db4b8db19fdbecb8c3377220a74d6c7861ff5062bfb73eaeb1be5994a768ed3ad7ea4261301f6be8d73e99e6b19654b5755f7f796690f7679b52d2e4c998d84d9be29486ce45dd7055a911291642afd7f0fdc9fd504b8bc316a28035cc743c8778f3048f19fa3116bbdced88d88009e07d5b765cd2f2cdd5214213f06fa78fa1e5ef008bb38e77e0f70f00a7e2581a010000",
+      "0000000002ff1dd0db9243300000d07fc973dba1c5ac7da3ab4331a158cb8b090d154ac4654867ff7d3bfb09e7bc002a0a3c8ed9d437b8039f604347f5501c6cfaa16755b128ada8f1fd3e8c6a06b5648130d74bc9e4ebd0a3f5792a8d9f7cf12451d9e230a5516ef033bd92509e137b995d635e51eab5c473f25abf34a595b5e965f21d91dd2541bcf2a7ac0f9b15c5c7874b3cb74fcda4cbf598b301267eac36b3da4dd903f9a51dd09bc94552dd5a389f5949e004cb9ea89a2f2a491aacdf5f896722c1ecb6c145e41e58754f7db3b3dc76193b81b8411a2ab46aa88379007600afb46678ccea37f724abea0efcdbb369a3f81da063c43003bf7f477a57ba1a010000",
     ],
     [
       "Content-Type",
@@ -13200,7 +13000,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:27 GMT",
+      "Thu, 13 May 2021 15:18:38 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -13219,7 +13019,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -13240,7 +13039,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-89-1620764096226",
+      jobId: "grouparoo-job-89-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13251,11 +13050,25 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff85535d4fdb3014fd2b91f74adbb4b44d52a91a550990a94d479ac2a6698a6cf72618d238c40e1343fdefbb7128834d82a7d8bee7dc73ee479ec89d28b6644298c8ee6ba81e3fdd4a468e08689ae1eb793a0cdce0388fb2df5fbe7c735719752f57b3e91411a26129ba2b73e82859571cd464b3ee6695ac4b5a49d9c1441dd7ebf4c703db190f6d6f3c188c91a7204f17a2b843f68dd6a59af47a07ed6e266596032d85ea72b97b79ef3d0c7a65256f816bd57b2bd94315d57b5ff4732e39d54216d3cd1a0dd40aaa047654e468e12f73cb4edea6ee0abaeb66087e101c28e7b22e74630b537059a422ab2b93954c9e88b1f9ea40d6fec29fc7169779bd2b9282eee0c8da524d13fd58827516ad9656109eada2e52c0e5661b29e5ff8cb5977be5a6c96e1dababef023dfd294e560b8d6d43a31b7102fa8bf05a54561d4e3e6b9517e6e50f0ff581a024a2b688389638f69dfb53d963287a7eef188a53630e63267448f99cdbd210cb70c28f28ca861d1421600301c8f464ec21c8727439a8e12176c96608e21776c977a6c4cf647e45725349c0a554a25da0e91eb2888fd248e36e17c16fba68494d6b93e6d8d3505bcf6a8b14004bd53d3be890a894a4dbb8330f6a3d93c0eaefc76c20bc8287f5cdfe38c539a2b4034adb0791aaaa5dc62c348385bfaa7083613fb7a082a32f9f1449a9e372e5eb5fc851ee3001bbbda7cc93a8e82f0dcd83920ae685e1bc8437b20255abec1dad0f5fe27227149db2ce472e347df49fb14410a1514fce36922d8043efcd70e8b8f585c7d94511aefb83b5c3522bc8276878429f799dd771dcf337faaa695fe37e6f63dfbd0b5264793117650e8e78adac5c7425bb15abd803088e30f4db7f67f0043f81d1478040000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "6b",
+      "4f",
+      "a3",
+      "40",
+      "14",
+      "fd2b64f6ab6dc1bea049b33615b59b96ae946acc664386e182a3944166e8c698fef7bd33585763e27e82997bce3de73ee0853cf232251392f0fca981faf9db8348c809014573bc0d076b180e2fefe4238cf63fd6b7fb7b8f5e5d4fa788e09a25e9ae2aa0234553339093eda69bd7a2a9682d440713755cafe38c4e6dcff1ecfe7034f49027a1c896bc7c44f6bd52959cf47a47ed6e2e445e00adb8ec32b17bbbefed4f7b552d1e8029d9fb28d94315d9fb5af47b2118555c94d3ed060d3412ea1876941768e11f334dce3ea6ee72baebe608de73069431d1944adbc2144c9419cf9bda64259317626cbe7b211b7fe9cf238b89a2d9957149777062a554d1583d57605d84eb95b5082ed6e16a162dd641bc995ff9ab5977be5e6e57c1c6babdf243df523429c070ada975664e011e503f05a97869d4237dad955f1bb4f83c164d4069096d301edb23eab8b69764c998656e7f98643624899b8c87b49fd8cc1bc0204d8022cf881a162d45d94f07fd51e2d1d8190f9378c04649eca6991d67e9d886b1e3d8de78440e27e44fcd159c735909c9db0e91db7011f971146e83f92cf24d09196d0a75de1ad305bcf7a8b040047d51d34147b94025ddee4510f9e16c1e2d6efc76c24bc8297bde3ce18c335a484034adb1790aea9548b1612498adfc73049b89fd3c062599fc7a21bae7dac5bb96bfd1231ca0b6abcc936ca270115c1a3b47c40d2d1a03d9b72fa442cbf7581bba3efc46242e699b855c6ffdf08eb45721645043c9fe3f4d049bc07fbfb5e3e22316571f65a4c233ee0e935a84d5d0ee1037e5beb21dc775fbe64b55b4569f629ee71dbba673e88cb08352bd56d42e3e16da8a35f20da47f27db2030dd3afc05df06bebe78040000",
     ],
     [
       "ETag",
-      "Gf4I8I3lRgzJJX8Oga8QOA==",
+      "R4Oe55GYske6vJOWvh9aHQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13267,7 +13080,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:28 GMT",
+      "Thu, 13 May 2021 15:18:39 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13286,7 +13099,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-89-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-89-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13294,11 +13107,20 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8d92614f82501486ffcbe92b2c344365f303a6259b9a216e6dcdb92b1c10032ede7ba939e77fef5c326bd5565fe09cc3732eeffbc2019ed3220207d669b2ab50ec2f12540fbaf051569992742b7921110c40c512225d7fd75f6cf79d46988f7c7730b96457e563d2eb1121c30de60c9c03c429669104e7e90005cb91d6429e5579b1aa3b03d4bed4c379e07bd33bea731ee97eba188fddfe780847e3bc1831c55635ff8fb5e5d1802d5ffb18a3c02244ada5147c8ba1f2b44dc9f2324353f24a8428a186eb0789e055c904e7264dcc4ed76cd84dab6db7acaedd6cda04663c642ae505b18b39e903c515cb7cfe4a2e4103a22ec9705c5f5f689c46b5115d7ad3c06ed5fabe02242d4e335cfd0d92de0da3cff0819d22f8ceb19c57853a53b7e37bf7b7e328d3cfa3066e30fc414845499d91c09b0ce7813b99696e79f2dedf2b9433c12948893ac386d5ea5cb76deb3dd61baea3a6f7384a546840c8e8ef18a50a9c9865128f6fda16bf797b020000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d92414fc2401085ffcb782d11140a6dc20114b511104bf1620859da69296ebb65772b2184ffee6c45346aa2977666facdf6bdd7eee125cd23706199269b12e5ee2c41fd680a1f55c9b5a25b21728560016a9610196c66ded379a748da7e63c3ee9d22629c6dbb5d2254b8c28c81bb8738451e29709ff790b30c692d14bcccf245d559a07785194e03df1bdf529f89c8f4e3d970d8eb0f0770b04e8b11d36c51f1ff589b1f2c588ba58f314acc43345a0a29d6186acfd8542c2b38d6942865880a2ab87a904851164c0a51a349ade3d41af645dd6938f5cb96dd7208e422643a1539b1b329e9032d34e3bed8924bb00990554986e3eafa4ae334aa8c98d21b0776b3d2f715206971ca71f137487a578c3ec307768ce03bc73251e6fa44dd0c1f7abf1d47997e1e75dd0b063f08a529a9131278a3c134e88d26869b1fbdf7771ad5440a0a52a1c9b0516f765a6dbbfe1eeb953051d37b5c2d4bb42064f477dca51adc9871858737c7175b137b020000",
     ],
     [
       "ETag",
-      "ARqBUjy81cmHRADM/a3pXg==",
+      "TqUIV/8pg7R1qaK9pdalaw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13310,7 +13132,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:28 GMT",
+      "Thu, 13 May 2021 15:18:39 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13351,7 +13173,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-90-1620764096226",
+      jobId: "grouparoo-job-90-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13360,11 +13182,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff85547f6f9b3010fd2ac8fba7d5f20348022452d46529eb9052d212d2ae9aa6c480a16e01536c3a4555befb0ed3344db7b51212d8f7debd77e7334fe89ee6111aa180260f1529379fee58805a88089cc0eec6a7dae7583f2f7ef42ee7b7d1b57d5544a7c9780c085ab338ce8a94b439abca90f0d172d1494a5615b864ac0d89da43b5ad19ba6a1a7d7568e8ba013c4ed27846f37b60df0a51f051b7bbd3ee248c2529c105e59d90652ffbdd47bd5b94ec8e8482770f25bba0c2bbef8b9ea42cc482b27cbc5c80818a937245324c53b0b06746c197c3d41d8ab34e02e0471a121c86acca456d0b52842c8f695295322b1a3d2169f3d5075ad8337bea2bd3f9d2f58fd638abc9eb63057365b52a09af52d152d650534c53b2a2d1ba8914f7ca376f7e0e1170708b39e16be5fabbedd9ca7e6bad8c951365e29e2a87091c5759baaebdf095a39363e5cc9b2f2f94af370718701e112e682e7dfb384849edf9b9b5cedf075a13b000d126b83255036b963a0ce2c00c63ab370862950481159803dc0bd470d827fd28201878a2ce2e5938673904741563d28b754b37756da0f57b9a11690353377a661087aa69f5c28186b62df4bba4829c525e304e9bfea26bcff1ed95ef2ddde9c4b7651931861e9e36e6ea225efb14502480dea96b5b472903a5fab01cd7b7bdc9d477aeec663e6624c1e166f1001312e3941340e312674490f29c45d03474315f38be3377273360c843bfd821381afd7cda13fc4d21bb2ce41b2d7ccf71cfa4811de20aa795843c361f0817e0156db7adffa79978dee406a47159e2cd9b189463f46bfa3f24245eae1a9b3bc9baf3fb958eb6bfb6f0b410dca7263bba5cdade0d6ab63c129392e4e1c7e3036019f8f0b7b0bba380855b0a325cc01a8635e4b548589266686926ed366ccdb2ac818924b8146f6343b5dfdf9d4e9da3ce4832928be78a9a3b2a1b55872afe028220cc9a2b0f6afb07c444a09923050000",
+      "8b",
+      "08",
+      "00",
+      "0000000002ff85547f6f9b3010fd2ac8fba795f203480849a4aacb12da21a5a425a455364d890143dd02a6d8648aaa7cf71da6699a756b2524b0efbd7befce679ed123cd4234443e8d9f4a526cbf3c301f35101138865d3dc97f5c2c4d239d4cba79686c7c6c7af8e6ec0c10b462719ce6096972561601e1c3c5bc1517accc71c158131235076a53ebe9ea401ba81da3670c80c749124d69f608ec7b21723e6cb7f7daad98b1382138a7bc15b0f475bfbdd1db79c11e482078fb58b20d2abcfdb1e879c2022c28cbce167330507252ac488a6902160eccd0ff7a9cba4571da8a01bca101c141c0ca4c54b62045c0b288c66521b3a2e1339236df7ca0b935b5c69e329e2d1cef648dd38abc3e55305756ab82f032110d650d354534212b1aaeeb48fea85cb8b32b8880837bcc095f2b77df2dd7520e5b6be54c395746ce44394e603bcac271acb9a79c9c9f2a97ee6c71ad7c5b1e61c07948b8a099f4ed613f2195e797d6daef0fb4226001a2757065aa3dacf5d5811ff96610f53b861fa9c4f7fbbe69e08eaf06832ee9863ec1c0135576c9c219cb20a0ab18934ea4f77553d70caddbd17aa166987aaf63fa51a09afd4e606868d740bf0b2ac884f29c715af717ddb9b667ad3c77e18c479e25cb8830f470529bab8a78eb53409100faa0ae5d15a50c94aac3b21dcf724763cfbeb5eaf998921807dbf9134c4884134e008d0b9c12418a2b1642d3d0f56c6e7bf6cc194d81210ffd7a8fe068f8f3f940f0b6b9ecb2906f34f75cdbb99406f6885b9c9412b2a93f10cec12bdaed1aff4f3372ddd112a47151e0ed5f3128a7d7ade8ff909078b9aa6dee25abce1f563adafddac1d340709feaece86661b94b546fb9242205c982cfc707c032f0e96f617f47010bb71464b880350c6bc02b91a020f5d0d254daadd99aaeaa9a8e24b810ef623069fbd3a9725419494a32f152517d4765a3aa50c95f4110845973e441edfe00fb2707b823050000",
     ],
     [
       "ETag",
-      "yTi1+f2MpX3QOhdWEVpdDg==",
+      "2lpZFY75mDD4pd5vba7TaQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13376,7 +13201,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:29 GMT",
+      "Thu, 13 May 2021 15:18:40 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13395,7 +13220,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-90-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-90-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13410,15 +13235,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "414fc2401085ffcb78b44d6a833534e1004890041ba97230c690653bd496b6b3ec4e6348c37f775a3978f4b43b6fbe79fb663b38164d0631ec8bfcd4a23ddfe4c89bfe92a26b2b7672186a1c8207c82a17725a26f3f9fb33dfde6f4fc751edf4d2448f9bc94408a7bfb05610777028b0ca1cc41f1d34aa4619dbedece028189f4dafac92b7c572918a5053d60bc976bd9eced60bb8787fc6ccf15f239f170f4adaa778408b8dc63e85b154a2e655bfa053b5a9d077d45a8d0e067868e4965aa32c912f8a3f0efcbb280c1ea251308ec23012b022adb8a046d8edab64032656554adfb21f0470ad676746f76249cc1d66d78e38cea97f97250fdb163dd04a3ee9a9e0dffaf203a1d1f7f681010000",
+      "02ff8d90416f82401085ffcbf428446ca304120f5a496b424c4bf5d434665d460a02b3ee2e3184f0df3b500f3df6b43b6fbe79fb663bb8e4750a219cf2ecdaa06e1f32b4efc32541d394d6f0a1a836080ea0151993c5c69feca7d7663ff1a3a99f67d56de315abe5920923bfb112107670ceb14c0d849f1dd4a2421e3b1ef5e8c8986dd5a06c77fbe8254a58a8281d84dd218e57eb3882def933a62eff1af9ea1d28e894e01935d61287144a5381d26e87058da85489aea1464b3430c26323d3d428a1895c56dcc073678b472f9805ded37c310f182c490a9b53cdece183b381252bca846ebc1f7870afd7ad45f3a689cd0da6f70e3b3ed3f0aee53c5637e88014fc49afb9fdadfb1fc65d89f381010000",
     ],
     [
       "ETag",
-      "AjNCCYMt+5Uqk4mscGp6DQ==",
+      "jD7+T/quT+7E/7igmwD0jA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13430,7 +13251,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:29 GMT",
+      "Thu, 13 May 2021 15:18:40 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13448,10 +13269,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -13468,14 +13286,11 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "c9",
-      "72",
-      "82",
+      "dd",
+      "76",
+      "43",
       "30",
-      "00",
-      "80",
-      "e1",
-      "77c9591c642bf4e6060c050591f5922131b20a3480063b7df732bdff97efff0119c66418e0d8d5a4059f60ce046d8dd75fbdba83f95d294cab31ee9dc03e9aefea8c4a3d95d4c336321a27b9be87983c9e45121617c9b8ede7f4784c4f754ca651682cab974a25d5d480973b2ff46dec84e2a1123755d0417e1f151b37506081f49bcf5c88a600474b973914b586efda31a5e75e8a4c3551f2997a468a0833b9896c5915b164c4b3ee9471eb3c9b5a91a49e9de4294755c779bc9b77d3a5881fa187dfb659ef84da7778ee9871a80e5ed635012b40585f5232c072e18ab2a6adc0bf1d8e734f96013b925142c1ef1fad804f401a010000",
+      "0000e077c975dba38ddfddd176365194947193836446432d8cdacede7d3d7b84effb017959b26120e3edca3af004967c676cca0dea758b54a5cea6a63827f151476921652dbed046c6816636bce8de3e856d84a9277725753f883ae0e8806cdb7e4db7f57b4f4b746ca13a277cacafc199c4d8299e63b3d88e7e101b17ef547d457ec895567aa14d2b54d2ad5940f3acd2a45382d3bd2bafddf014ed7d98574546e05a47a314a1494b68029781ca937a1750e535ac66d7f42e9d3285c14e59f6f8b8e4366fb7d872a45b306568febeb9981f9c46c807b002ecded7820da47e70a162182bf06f27e3d2b34780c572c104f8fd03666b26411a010000",
     ],
     [
       "Content-Type",
@@ -13489,7 +13304,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:29 GMT",
+      "Thu, 13 May 2021 15:18:40 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -13508,7 +13323,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -13529,7 +13343,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-91-1620764096226",
+      jobId: "grouparoo-job-91-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13550,13 +13364,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "85",
       "53",
       "6b",
-      "6f",
-      "9b",
-      "3014fd2bc8fbd82681bc0891a2354ae99a29211b21ada66942c65ca85b822936e9a22aff7d17d364ed26b59fb07dcfb9e7dc07cfe481e731199388a78f1594fb4ff72222e704144df1d59e0653d729ce1cb53f5b26feef3e5d7dbd7a9a4c10c16b96a4db2283961455c9408e37eb765a8aaaa0a5102d4cd472ac9635ec9af6b06f3ac36e77883c0959b2e0f903b2ef942ae4b8d3396ab75321d20c68c1659b89ede9bdb3eb768a52dc0353b2f356b2832ab2f3bee8e74c30aab8c8279b351aa82494216c29cfd0c25f661c5dbc4ddde674db4e11bce30c2863a2ca556d0b533091273cad4a9d958c9f89b6f9ea40d6eec29d05061359b5cdc39c6ee1dc88a9a2a1da17605cf9aba531f7ae56fe721acc575eb89e5dbbcb697bb65a6c96dedab8bd767dd75034ca40738d8971a16f1e5e503f06a978aed583fab9567e69d0fcffb1d4049496d00443db1c526b643a5112d92c19f506516242148d227b407b91c99c3ef4e30828f2b4a866d15ce483419c44bd110b59622561df1a3a218dec38ec75bb903866dfeadb037238274f255770c96521246f3a446efd79e08681bff166d3c0d52524b4cad46563ac2ee0b547850522e89d9a0e75940b54aadb3df702d79fce82f98ddb4c78012965fbf523ce38a1990444d3129ba7a05c8a181b46bce9d2bd44b09ed8b7635092f1cf6752f7bc76f1aae5277a8003aced2afd25ebc09f7b5fb49d23e286669586ec9a0329d0f21dd686ae0fbf10894bda6421df37aeff83344f3e245042ce3e9e268275e0c37fedb8f888c5d54719a9f08ebbc3642dc24a687688eb725fd8d6c8195a3da2c1a5fa27e698a68e9d16bece085bc8d54b45cde263a18d58254f200ce2f83dddadc31ffd9853de78040000",
+      "4fa34014fd2b64f6ab6da12fa049b33615d76e5aaa403566b321c3f482a394a1cca031a6ff7d2f83753526fa8999b9e7dc73ee8317f2c08b2d99908467fb1aaae71ff72221270414cdf075cfa291b875fc27b8ccefdddf37d593f2f757d3292278c3927457e6d091a2ae18c8c926ec6695a84b5a09d1c1441dd7ea58e3bee95aae39188d472ef224e4e992170fc8be53aa94935eefa8ddcd84c872a025975d26766fefbdc77eafacc43d30257b1f257ba8227b5f8bfecc05a38a8b62ba09d1402da18a6147798e16fe33b7c9e9c7d45d4e77dd0cc18f9c01654cd4856a6c610a268a946775a5b392c90bd136df1d48e82dbd79643091d7bb222ee80e4e8c2d553456cf2518e7c17a652cfcf375b09a458bb51f87f30b6f35ebced7cbcdca0f8d9b0b2ff00c45931c34d7981aa7fae6e305f5b720152fb47ad43c37caaf0d5a7c1e4b434069096d30b6cd31b51cd34dd2c466a9331825a90949e224f6880e1293b943186e13a0c8d3a29a450b51509bd1be39b6637b6cdaf1d076d2d861961bdbae930e5dcbea6f6d208713f2547105675c9642f2b643e42658445e1c051b7f3e8b3c5d424aeb5c9db5c69a02de7b54582082bea8e9d044b940a5a6dd0b3ff282d93c5a5c7bed84979051f61cee71c629cd25209a56d83c05d54a6cb161c49fadbc3304eb895d1e83924cfebc90a6e78d8b772d7fa34738c0c6aed25f1246c1c2ffa5ed1c11d734af35e4b13d90122ddf616de8faf01791b8a46d1672b5f1825bd23e0590420505fb7e9a08d6816fffb5e3e22316571f65a4c23bee0e938d08aba0dd21aecb7d655b7dd3760644832bf529e63ae6b16b4d8e2623eca050af15b58b8f85b662b57c036110c7efeb6e1dfe0169d2283f78040000",
     ],
     [
       "ETag",
-      "7ATAE9p+9ty+MfRx4aOJFw==",
+      "qcT5oY8NwePlj9JWrwtNqQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13568,7 +13380,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:30 GMT",
+      "Thu, 13 May 2021 15:18:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13587,7 +13399,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-91-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-91-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13600,11 +13412,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff8d92414fc2401085ffcb78b44da0c1024d381405250144281e34842cedb414daddb2bbd510c27f77b6221a35d14b3b33fd66fbde6b0fb04d79041eacd26457a2dc5f24a81f4c314555665ad1ad105c2158809a25443e6e67dba77e8ba77576b9e3ce3ce8ae1b93d74e870815ae3167e01d204e318b1478cf07e02c475a0b4556e67c597516e87d6186b3603a18df529f8bc8f4e3f970e877873d385ae7c58869b6acf87fac2d8e166cc46a8a314ae4211a2d85141b0cf5c0d8542c2f32b4952865880a2ab87a904851164c0a61d3c46ed7edbaebd49a6ea3d6761dc725301321d3a9e0c4ce67a40fb4d02c9b8a5772090690554986e3eafa42e334aa8c9872300edc46a5ef2b40d2e234c3e5df20e95d33fa0c1fd82982ef1ccb45c9f599ea0feffddf8ea34c3f8fbaf183de0f42694aea8c0483516f16f8a389e11627efddbd4635918282546832acd71aadaba65b7b8ff55a98a8e93d9e96255a1032fa3bee520d5ecc3285c73703cbd1d07b020000",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "5f",
+      "53",
+      "825010c5bfcbf60a93a45230e303969933fe0bb11e1ac7b9c2a21870e9de4bea387ef7f6925953cdd40bec2ebfbd9c73600fcf491e810b8b64f952a2d89d2d51ddebc24759a64ad2ade0b9443000155b1239d8fa5977b27592f376b179b0a2c76ddd1f79ad1611325c61c6c0dd439c601a49709ff690b30c692de46999e5f3aa3340ed0a3d9c047e6fd8a53ee391ee87d37edf6bf73b70304e8b11536c5ef1ff589b1d0c58f3858f310acc43d45a0ac1d718aa9eb6295956a4684a5e8a10255470f56029785930c1b94913d3b14ccbbea8399653ab37eda64360ca43a6129e133b9d903e505cb1d4e71b72093601a22ac9705c5d5f699c4495115df68681dda8f47d05485a9ca438ff1b24bd2b469fe1033b46f09d63192f7375a26efb23efb7e328d3cfa36ebca0f383908a923a21416fd09904de60acb9d9d17b7ba7508e05a72025ea0cad5ae3aa7969d7de63bde63a6a7a8fab448906848cfe8ebb44811bb354e2e10d898bc4147b020000",
     ],
     [
       "ETag",
-      "VkSkZF8ni1a+qn2UTBh4Pw==",
+      "MxRmGSx9i/BpwV1dWx3ROA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13616,7 +13436,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:30 GMT",
+      "Thu, 13 May 2021 15:18:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13657,7 +13477,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-92-1620764096226",
+      jobId: "grouparoo-job-92-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13666,11 +13486,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff85547f6f9b3010fd2ac8fba795924020213fa4a84b13d621a52425a455374d893186ba2138b54da7a8ca77df014ddbac5b2b21817defdd7b773ef384d62c8b501f852c79c8a9d87db9e721aa21aa7002bbfaa43dfb711e8b8bab7132bb6a59ebec7a4c8683012058c19278b34d695df25c102afb8b7923113cdf62c1791d12d57b66bd699b46c76e193ddb346de0499ac61396ad817da7d456f675fda0dd48384f528ab74c3608dfbceceb8fa6be15fc9e1225f563491d54a4feb1e859ca09568c6783c51c0ce4928a25dd609682855766147e3d4edd6078d34800fcc808c584f03c53852d48417816b324176556d47f42a5cd371f68ee4c9c51a08da60b2f3859e14d415e9d6a586acba5a0324f554d5b414d314be99245ab2ab25d6bdffce92544c0c11d9654aeb49bef8eef68da2ac28aaeb48176a60dbdb1764c763d6de179ce3cd04ece4eb50b7fba9869e7b74718701d51a958567a0e7098d2c2ef735bddf7875910b0020f5570d9316cdcec1abd300e3b24ee5aed3036681876c34e1b5ba1417a2dda8a428a81a78aec250b673ceb3663cb0a6d8bd0ae6511dba25dbb4748bb1376a2c8c44dabd58a5b71bb17a17d0dfd164cd131935b2e59d55b74e3bb81b30cfc85371a064e59468ca17fe3ca5c51c45b9f0a8a04d00775ed8b28e3a0541c94eb058e3f1c05eeb553cdc6842698ece60f301d314e2505341678431515973c82a6a1d974ee06eed41b4e80511ef8ec8090a8fff3e99510ecb6659755f946e3a280fd9b84d738cd4bc063f5814cc334ea06cc6f1bedf7b5ff671afafef016d4b11078f7570c2ab25b05fd1f3a25be5c554e0fba4d54a8bdb840fb5f7b786a08ae53951d5d2d1cff16555b3e8da9a019f97c82005c063efd2b1cae2860e192828c54b0867925b21021825673cb36a5dd8addec19b665a1122cd4bb58c7ee1e0ea8c85164a41b9aa9e78aaa2b5a36aa08e5f20504411837cff52e20fa07989a35fa22050000",
+      "8b",
+      "08000000000002ff8554fd4fdb3010fd5722ef1710fd489a7ea552c5ba92b14a25853485a1696a1de7520c695c620754a1feef3b2714e8d8408a94d8f7debd77e7739ec81d4f23d223215fdee7906dbedc8a90540828bad4bbd1630097eecfd6f0ca999a9b23f3e8c2bcbde8f711c1354bd2d53a81aa1479c640f666d3da3213f99a6642543151d56954ad76c3742cc7b45bed96833c09493ce6e91db26f945acb5ebdbed3ae2d85582640d75cd69858bdecd71f1af575266e812959df97aca38aac7f2c7a9c08461517697f364503b9846c0e2bca13b4f0ca8cc2affba96b9cae6a4b043f7006943191a74adbc2144ca4315fe6599195f49e4861f3cd0799ba63771818c3c9cc0b0e1674a5c98b43834a633ecf40e689aa180bac29e609cc79b42823eb3be3bb3f39c3083ab8a112e4c2b8fae1faae612c22aa6061f48d6363e09d18fbe49167cc3ccf9d06c6c1f1a171ea4f66e7c6b7eb3d0cba8e402a9e169e031a26a0fd3eb775f4fe3035812af45006e71db34dadaee98471d86171d76e85b10961d80d3b2d6a8726739ad08c42a0c8533a7bc1a2a948bb566cdb61db66d0b56dd6b6a1db76186b75c24e1435a865379b71336e3911d956c863c6159c70b9169297bd2557fe2870e7813ff38683c02dca8829f6efa434a78b78eb53619108faa0aead8e72814afaa0465ee0fa836130ba74cbd918c392b2cdf41ea723a6890444d38cae40417626226c1a399f4c47c168e20dc6c8280efc7c8790a4f7ebe995106cd6459755f12627ba80ed9b849734c90bc043f9411a66c3ac9a38bf2db2dd56fe9f69e0fb836b54a75946377fc5b0a27653d3ffa153e08b55e974a76b11adf6e2826c7f6ff1a910bc4e6576723173fd6b526ef910430629fb7c82105c043efd2becae2862f192a28c54b8c67965528bb00ccab9e5abc26ec9b61a56c7ea90029ca977b16edbde1d90cea133c20a52f55c5179458b46e9502e5f4018c471f346de2946ff00a4db466322050000",
     ],
     [
       "ETag",
-      "/L5PZBfrGQDgPQ43knVDcA==",
+      "bdwTeVEX5CW9S0y+0+Q0jQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13682,7 +13503,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:30 GMT",
+      "Thu, 13 May 2021 15:18:41 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13701,7 +13522,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-92-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-92-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13715,20 +13536,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "5f",
-      "4b",
-      "c3",
-      "30",
-      "14c5bfcbf5b5c5ad4875833d38295a2c43eb0a828c9175b7b57f6f4cd28d52faddbde9f6e0a32fcdcde9ef24e76480aa688fb0844391ff74a8fa9b1ccdbb1d62d45d6d342f925a8de0001a913329f055dece4f8bf02149d6fad3abb625c5e7d58a099d7e632360394056607dd4b0fc1aa0150db26dbf57d3898c995e5a25dc6c83e72066a1a1a3153649143daea30046e78f4d56ffb2ec46074a3ac498a1c236459b422a2a3135a12da845236b7435752a450d133cfdc81575522822971577e1b973df9bddfb77b385ef793e8335a5c214d4329b7c70363064441dd399fbc19c01358d5c359bbea749b61daed36edc5d4debdea07e53c40934dacb6797204f64c3190e6d54870ea4825ff2a53097fdf80b7e17248ba6010000",
+      "0002ff8d90cd6ec2301084df657b2491f8114841e2002d6a91106d5368a5560899b0490d89d7d80e5514e5ddbb0e1c7aecc55e8fbfb167b78693540718c35e66e7124d7597a17bf5458cb6cc9de54d93b20801a0131993bdd96747d1407e5cce368ddfb3cdf343673d9d4c98b0c9371602c635a412f38385f1570d4a14c8b6ddceb42f32e62aed95c56a3d7f9cc72c1474f0c26ab35c4e67cb3934c11f9b3efdcbb26d0238d23ec6140daa047d0a6de888895bf806ad28748ea1a5d22468a185db8bcc50a985210a5909a37ed81bf5bb512fea0e86a361c4604e89709214b39b37ce068e9cc863fab17e1a0c98b6e456d376bdb4b2efe1566d9bedcd34ab1cda17439cc0a2ffbc7b0d724f3e9ce3d0ce9418402278924fd25dcfcd2f783328e3a6010000",
     ],
     [
       "ETag",
-      "aeKp/1v9I8UUBsX2kTjoRw==",
+      "1BZ+no3iWvqsfRVgUOD+TA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13740,7 +13552,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:31 GMT",
+      "Thu, 13 May 2021 15:18:42 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13758,10 +13570,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -13770,9 +13579,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "000002ff1dd0c95283300000d07fc9b9e9208b0dde58266513a805042e0ca4115022c82210c77fb7e327bcf7034a42e8341573ff413fc113d84b513d92a33b20bda86fb27ccd58a5ec11ac97d085eb3677ee69149e61aaf64e08e5d3865cdee61d9dedab7191de781f1178fe4604ce56522d8805554a92baaf30f5495aad417b335dac8fb18505b1fb3a4b51a6250d7664070f8cc39ae2dc4b3791e5d965b1ecc820fa90b3a8b1f700cd8922144d16cbb1d9bd7a8ebf696aff12971c87cc6c19ab2551f390f72eb96ba779e123eaf47229b1da5cf883e16311c585df781c1c00dd8676a453d1deb992a2aa07f06f2fe67da0f7009d96231dc1ef1fba6125c31a010000",
+      "0000000002ff1dd0dd7243400040e177d9ebc80451f42e24a25dbb0d45c88d51962276d74f12d2e9bbd7f409ce7ce707a459468621195943287805732ae9eb6c0db96624650e391c42b5408d64d09061f913213d3f15d7da9a8474c8ece8a9692758c51f1771bf11749af5b08fe5b6e94cd5e101f6c5d2bef951547fe532babc6cdc681c995fcdb2751acf8f5b1c0fdebb55d214da59dd4682bf57729515b9648641252af0e0747b96e329419d641d6dcabc0a3b22e76f14974f393cee9874d6ddbb98a2b648b69ed05f0d0c5940bacbb931bf91bfa48598d2c7fde9b85b0f1f4a5e83152013af7a3224d5c295155d5f817f7b32ce9c2c030c92f6a407bf7f09fabc541a010000",
     ],
     [
       "Content-Type",
@@ -13786,7 +13593,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:31 GMT",
+      "Thu, 13 May 2021 15:18:42 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -13805,7 +13612,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -13826,7 +13632,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-93-1620764096226",
+      jobId: "grouparoo-job-93-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13837,25 +13643,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "5d",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd2bc87b6d1242121222456b94923552423620adb66942c65ca85b8229369dd22aff7d17d374ad2ab54fd8bee7dc73ee074fe48e170999929867f73554872fb72226670414cdf0f5d763113c8258d6bb43394a1ecd5d61b165369b2182372c49f7650e1d29ea8a819cee826e5689baa495101d4cd471069dbe6d99637b683ab665d9c89390a76b5edc21fb46a9524e7bbd9376371322cb81965c7699d8bfbcf71eac5e59895b604af6de4af65045f63e16fd9a0b461517c56c17a0815a4215c19ef21c2dfc6726f1f9dbd45d4ef7dd0cc10f9c01654cd4856a6c610a268a946775a5b392e913d1365f1d48e0aedd45683091d7fb222ae81ece8c842a1aa94309c6d2df6e8c95b7dcfa9b79b8da7a51b0b87437f3ee62bbde6dbcc0b8be747dd75034ce41738d9971ae6f1e5e503f01a978a1d5c3e6b9517e6ed0eafd581a024a4b6883d1d8b4697f623a711a8f593a198ce2d484389ec4e3111dc4267386304c62a0c8d3a29a450bacd9b2e2344dcc2831138886a36410d12449a2a46fa513ea60b3539b1ccfc8df8a2bb8e0b21492b71d22d7fe2a74a3d0df798b79e8ea12525ae7eaa235d614f0daa3c20211f4414dc726ca052a35ed5e79a1ebcf17e1eaca6d27bc868cb243708f334e692e01d1b4c2e629a83622c186116fbe712f10ac27f6fd149464fafb89343d6f5cbc6af90b3dc401367695fe9220f457de376de784b8a279ad210fed819468f9066b43d7c73f88c4256db3901f3bd7ff49da271f52a8a0609f4f13c13af0e9bf765a7cc4e2eaa38c5478c7dd61b2116115b43bc475b9cfecbed31f3803a2c1957a17b3edfea96b4d8e2623eca150cf15b58b8f85b662b57c016110c7efe96e1dff01f6d35a5578040000",
+      "000000000002ff85535d6f9b3014fd2bc87b5c134848428814ad514ad74881ac84b49ba60919e742dd114cb1c91655f9efbb98a66b55a97dc2f63de79e733f7824bf79b1251392f0eca186eaf0e95e24e48c80a219be829f25fb83f53714fefde7ab6b73f95dbae5f5748a08deb024dd953974a4a82b0672b25977b34ad425ad84e860a28e6b777aa3bee5f65ccb1e8e862ef224e4e99217bf917da7542927a679d2ee66426439d092cb2e13bbe77773df37cb4adc0353d27c2d69a28a34df17fd920b461517c574b34603b5842a861de5395af8cfdc26e7af537739dd753304ef3903ca98a80bd5d8c2144c1429cfea4a67259347a26dbe3890b5b7f4e691c1445eef8ab8a03b3833b654d1581d4a302ec3956f2c82cb55e8cfa2c52a88d7f32bcf9f75e7abe5c60fd6c6ed95177a86a2490e9a6b4c8d737d0bf082fa5b908a175a3d6a9e1be5a7062dde8ea521a0b48436183bd688f6c6969ba489c3d2b13d4c520b92649c38436a2716730730d8264091a745358b16a2009b51b73f84980e474e3cb0fb033c0d686cd9e3be6303a4ce78448e67e44fc5155c70590ac9db0e91db70117971146e82f92cf2740929ad7375d11a6b0a78e9516181087aa7a66313e502959a762f82c80b67f36871e3b5135e4246d961fd80334e692e01d1b4c2e629a87cb1c5869160e67b1708d613fb760a4a32f9f9489a9e372e5eb4fc991ee1001bbb4a7fc93a0a17c1576de784b8a179ad21fbf6404ab47c87b5a1ebe32f44e292b659c8f5c60b7f90f62984142a28d8c7d344b00e7cf8af9d161fb1b8fa282315de7177986c445805ed0e715dee13bbd7ef0f070ed1e04abd898d46eea96b4d8e2623eca0504f15b58b8f85b662b57c066110c71fe86e1dff0170c3331778040000",
     ],
     [
       "ETag",
-      "ZznSzeoFuUyp5dz0Un2cFg==",
+      "eMgbvy0xRoMj+HQ/LXs9pQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13867,7 +13659,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:31 GMT",
+      "Thu, 13 May 2021 15:18:42 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13886,7 +13678,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-93-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-93-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -13897,11 +13689,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff8d92d153824010c6ff97ed1566900c93191fb42c69d00af1a9719c13164481c3bba3721cfff7f6c8aca966ea057697df1edff7c11e365919830bcb2cddd628766729aa475d0428eb5c49ba55bc940806a062299123899bd5d616e80d037b7cf76a09598cd35e8f0819adb060e0ee21c9308f25b84f7b285981b416f1bc2eca45d319a076951e4ec3c09bdc525ff058f79399eff707fe100ec66931668a2d1afe1f6bf383016bbe0c30418165845a4b25f81a23e5699b9215558ea6e4b588504203370f52c1eb8a09ce4d9a98dd73b3e5d856c7695b5dc7b61d02731e3195f192d8d994f481e28ae5017f2197a001d194643869aecf34cee2c6882ebd49e8b41b7d5f01929664392efe0649ef8ad167f8c08e117ce758c1eb529da81bffbeffdb7194e9e751d7fd70f883908a923a21a1371e4ec3fef84173f3a3f7c14ea17c109c8294a8336c59edcb8b8e63bdc77ac575d4f41e57891a0d8818fd1da34c819bb05ce2e10d3642fce87b020000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8d92416f82401085ffcbf48a2956a585c483b66a49d05ac4f4d018b3c28028b07477a931c6ffde596a6dd336692f30337cb3bcf7e000dbb488c081559abc5428f61709aa475df828ab4c49ba95bc900806a06209912d6bbdbd0cec9dffb4554377e445b9390f936e970819ae3167e01c204e318b2438cf0728588eb416f2acca8b65dd19a0f6a51ece02df9d8ca8cf79a4fbc9dcf37a7d6f0047e3bc1831c59635ff8fb5c5d1800d5ff918a3c02244ada5147c83a172b54dc9f232c386e4950851420dd70f12c1ab9209ce1b3469d8ad46d3ba32eda66db63a56c72630e32153292f889dcf481f28ae58e6f31db9048b0051976438aeafaf344ea3da882edd4960b56b7d5f019216a7192eff0649ef9ad167f8c04e117ce758ceab429da9a1f7d0fbed38caf4f3a8bb5e30f8414845499d91c01d0f66416f3cd5dce2e4bdbf5728a78253901275864db37dd3b9b6ccf7586fb98e9adee32851a10121a3bfe33e55e0c42c93787c0395b134417b020000",
     ],
     [
       "ETag",
-      "Hsekhq2reIER2MJx0rsmMg==",
+      "36hk/T9wRWktFIGLdm0Ucg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13913,7 +13710,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:32 GMT",
+      "Thu, 13 May 2021 15:18:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13954,7 +13751,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-94-1620764096226",
+      jobId: "grouparoo-job-94-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -13963,11 +13760,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8554fd739a4010fd5798eb2fc98c1f80881f334e6a139a32553488496da7a3072ee612e0943b6c9d8cff7b1788496cda648619f0de7bbb6ff7767d20f72c59922ef1d96a9341bafb70c77d522120e90a4fbfce7e9bdfbcdb0d30166d06a14547db29bfeaf590c17295a0f13a82aae0591a80e84e27b555cab3354d39af62a06ac7a86aa6aeb64c43ed98ba6ea24e40140e58728fea5b29d7a25baf1f72d7569caf22a06b266a018f9fceeb5bbdbe4ef91d0452d48f53d6318ba8bf9df42ce201958c27bde9040d6402d239c4944568e159b9f43f1e87ae311ad75648deb2006810f02c91b92d0c11f02464ab2c2da292ee03296cbef820136b609d7bcaf968ea78270b1ae7e2c5a94285329fa720b248569405d614b208e66cb92891f5bdf2d91d0d114107b754805828375f2cd752948590e86ea1f49433a5ef5c28c76adb51a68e634d3ce5e4ec54b97447d3b1f26976c441db4b10922585698ffa11e4861ffb6abfbecd5c40259a28c1794b35a9d6563b7ee8b782b0dd68faa10abedff65b4ddaf0d5a06380b1f481a24ee6d10b154d78d20a5a6d505b4dd334c087505f1ab4a981aa35c3861f344c4d6f43d868d325d957c8af9449b86062cd052b9b4b6e5cdbb3e69e3b75cefb9e559411526ce045692e2fe2a54f894522e98dbaf639ca3866ca6fca763ccbed9f7bf6b5550ec7005634d84d36381e218d04209ba6340609e9902fb169643c9ad89e3d72fa035414373e3e3004e9fe78781678bb75d16559bc89670ff18efac371e1e140baa65156b0b6e507d1555dadaa7a556b7a9aded51a5dcda8a9aafa9decf795ff07efbb6e7f8686689ad2dd5f1816691ab9fc1f590b7ef1ab347f70a1913cdb9327b2ffb9c7a74270c5cae8e46a6ab933521eb910420a49f0fe5021b900defda738ac2d727171310dae806438c281c893042994a3cce2c26ea9d63a7a436b91829cca5798d1d40f7796c7c823420c897caca85cdba25139948927128238818eed5c22fa07b75ea7dc36050000",
+      "8b",
+      "08",
+      "000000000002ff8554fd4fe24010fd579abd5f34c7473f801612e271d0d32650b0148d77b9c0b64c71b174b1bbd510c3ff7ed35654ce3b4d4868f7bd37f36676a64fe48e254bd221015bdd6790eebeac79402a04245de1a9808b6466f6a3e957e3520ed6eb814eaddd63b78b0c96ab04dd6c63a80a9ea52188ce6c5a5ba53cdbd294f32a06aab61b55ada5ab6dadad1acd56b38d3a01713464c91daa6fa5dc8a4ebd7ec85d5b71be8a816e99a8857cf3725e7fd0ebdb94af2194a27e9cb28e5944fde3a467310fa9643ce9cea668201390ce6143598c165e95cbe0db71e81aa39bda0ac90f2c041a863c4b646e0b43843c89d82a4b8ba8a4f3440a9b6f1ec8d41eda7d5fe98f67ae7fb2a09b5cbc3855a850e6f3144416cb8ab2c09a2216c39c2d1725b2bd537e78e31122e8e0960a100be5fac2f66c45590889ee164a5739537aee4039563bae32735d7bea2b2767a7cab9379e4d94ef37471cb4bd0421595298f66910436ef8b9afcefbdbcc0554a289129c9b6a8b6a96da0ea2c00c23cb6806910a41600566931a811ab61bd05806405127f3e8858a263c3143d302d56cb65a0d0820d2970ddad440d59a911184464bd32d880c8b2ec9be421e532661c0c4960b5636975c7b8e6fcf7d6fe6f67bbe5d9411516ce0a0349717f1d6a7c42291f4415dfb1c651c33e537e5b8beedf5fabe736597c33184150d77d37b1c8f88c602904d53ba0109e9882fb16964329e3abe33767b435414373e393004e9fc7a7a15f8bb6dd16559fc13df19e11df54693c2c3817445e3ac603d940f445775b5aaea55ade96b7a47333a5aa3a6aaea4fb2df57fe1fbce779bd1b3444d394eefec2b0c8562397ff236bc12fde4af307171ac9b3bd7822fbdf7bfc5508ae58199d5cce6cef8694471e449042127e3e54482e804fbf1487b5452e2e2ea6c115900c473814799230857294d9a6b05baa35dd68e9c57746d254bec34cab7db8b33c461e113690c8e78acab52d1a9543997821218813e83aee39a27f00d5e7725636050000",
     ],
     [
       "ETag",
-      "KYx6XThqeiilqLfEaOvUoQ==",
+      "seHnU7CfS+3QtDjjD2a8yw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -13979,7 +13778,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:32 GMT",
+      "Thu, 13 May 2021 15:18:43 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -13998,7 +13797,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-94-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-94-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14006,24 +13805,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "41",
-      "6b",
-      "c2401085ffcbf49a808aa455f0a045ac2052d34aa94564938ce9ea2693ee4e5a82e4bf77367ae8b197ececcbf776dfdb0b9c7599c118129d7fd5689bbb1c79e387185d6dd8c95251e910024056b99066d3648e1ff4e28df426a162a733f33e9d4c8470e927160ac617386a349983f1c7054a55a0d80e07db9d281837955796ebd7f9621e8b5050e685f576b59ace567368833fb6eafc2fcbbe0de044498c47b458a6e85354964e98f2d21774aaa80c868e6a9ba2830eee7ee496ea4a59a2509470340cfbd1a0771f0d7ba36830880434942ad6540abb7d916cc0c4cac4f423fda02f80ed46a97aecbedf9dec3bdca67dbbbf99660da37bb624091cfacb7bd7208fe4c3b184665b6300a992977cd27cddb7bf20e38795a6010000",
+      "8b08000000000002ff8d905f4bc33014c5bfcbf5b5854edda0833d58193a28533b0bc218234b6f6bd63fb726a9524abfbb37dd1e7cf4a5b939fd9de49c0c50aa2683259c54f1d5a1ee6f0ab46f6e48d0749535bcb4d418040fd08a824959a55d94671f91aa1727d5042fc9ae54c56ac584919f580b580e902bac3203cbfd008da8916dc7a39e4e64ccf6ad5336dbf7f5d33a61a1a6cc09db348e1fa2780da3f7c7d696ffb21c460fce744a30478d8d4497a2d574466937aea011755ba16fa8d3120d4cf0f4a3d0d4b54213f9acf8e1bd3f5bdc06e12c0ceee68b79c860455258450db3e98eb381252baa847eb81fcc18d0d3c855f3e9fb3dc9aec3753a8c87ab29ea2d9a574d9cc0a0bb3cb804792417ce7268ab3bf4400a7ec967652ffbf117e42c513aa6010000",
     ],
     [
       "ETag",
-      "lQydst8iGWoiQbomZidlYA==",
+      "clUuBfdXBim6bin0ORSkig==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14035,7 +13821,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:32 GMT",
+      "Thu, 13 May 2021 15:18:44 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14053,10 +13839,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -14071,16 +13854,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "1d",
-      "d0",
-      "4b",
-      "72",
-      "82",
-      "30",
-      "00",
-      "00",
-      "d0",
-      "bb642d0e42a9d09dfc11ab2896df26032160aa92f031029ddebd4e8ff0de0fc811c27d0f077ac50df800532e694bb4f499aac31a257bda06f4803899dcf83b7c0601339f7cfe62a2e68c3872e0fd3c8497d1d7d45573690798c596b776fb3e9967a208959ab905ddc5e549209be8e6b31c6b841c46b531e8fbc331b24e5643bb60450ab7d93d4f132f1a26fa108ed7102948a095df4ec4eeaedc65e9acbe05dbba281b7e33695125b6ee645cd71b6e9c03af4e2d22ad4704652f96da153fc93b69b2accde7a01b3b2245e5bcda9b47d1172bb0007864a4c33d242faeac68da02fcdbe13031fc0ad071dee10efcfe017e793af31a010000",
+      "1dd04d6f82300080e1ffd2b39a01b2c86e141461111a0a547621582bb04628d4cac7b2ff3eb3fb7b79de1f5052caa42c1e1d672df80073a95b1bbaf9143b5854545bd6f4aa875cf06bea44e419d6092e51d2f6679f6639a43687ca8bf174806f68d677378f248eda2670285817adef95e19f4bf7d15d2f64f10f64bff69f4aab65a45e6d7eaf831035081e2bdc74de98ef08b65dad09faaa539abc2ca629a631b2f9e564047e7b8b4988396ee57e5e5cb404d96826f5d87fb9f49d97014ab99790f4744f433160cc6de6e85648acefa847e95146d9562919a78e002bc026d10c4c16cd8b6b9896b502fff6e2310bf61a005939b001fcfe011a8346791a010000",
     ],
     [
       "Content-Type",
@@ -14094,7 +13868,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:32 GMT",
+      "Thu, 13 May 2021 15:18:44 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -14113,7 +13887,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -14134,7 +13907,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-95-1620764096226",
+      jobId: "grouparoo-job-95-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14148,11 +13921,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff85536b6f9b3014fd2bc8fbb82610f22452b546295d9112b20269b54d13b28da1ee08a6d8a4aaaafcf75d9ba66b37a9fd84ed7bce3de73e7842bf7995a13922bcb86f59f3f8e94e10748298c205bc86ee5acd2ebd1f0ff63ebefb8cedab3a20abe2f414105cb324ded525eb49d13694c9f936ee178d686bdc08d183443d6fdc1b4c5c673a1939dec47527c093accc57bcfa0dec5ba56a39b7eda376bf10a22819aeb9ec53b17b79b7f7ae5d37e28e5125edb79236a848fb7dd12fa5a05871519d6e6330d04ad6a46c87790916fe323372f636759fe35dbf00f09e538629156da5b42d48414595f3a26d4c56347f42c6e6ab038afd95bf4c2c2aca7657a515deb1132bc30aa7eab166d645b4595b4178b189d68b24d88469bcbcf4d78bfe72b3daaec3d8bab9f423df529894cc70ad53ebccdc42b8807ec6a4e295514ff4b3567e6e50f0ff583401a425eb82e9d499e0c1ccf1484ea6349f0dc72477182133321de32171a83762a38c300c3c236a58b812d598382e198c67e924cb9c7444f22cc553324c099dbaaec7bccc194fd0e1043d345cb1732e6b2179d721741305899f26d1365c2e12df9490e3b654e79d315dc06b8f0a0a04d03b351d74940b50d2ed0ec2c48f16cb24b8f6bb09af5881e9637c0f33ce712919a07103cd53ac598b8ce9d55eacfd73009b897d3b06259aff7c42bae7dac5ab96bfd01318a0b6abcc17c54914845f8d9d23e21a97ad81ecbb03aac1f22dd406ae0fbf00094bda6541575b3ffa8ebaa788e5ac6115fd789a0036810fffb5e3e20316561f64a4823bec0e955a8436acdb216eca7d660f3cd71b79c8801bf56f6ce84cdd63d7740e9d91ed58a59e2bea161f0aedc45af90282208c3f34dd3afc01ef9e9c7978040000",
+      "00",
+      "0002ff8553ef4fa34010fd57c8de476d29b4d4d2a4399b8a27494b3d4a3597cb852ccb80ab944576f134a6fffb0d8bf53426faa9eccc7bf3defce833b9e3654aa624e1f97d03f5d3b75b919063028ae6187d3c9a483fbf1109c8bbcb4501f6e35191cf673344f09625e9ae2aa02745533390d3eda69fd7a2a9682d440f0bf55ca7678ded816bb983a133765ce44928b2252fef907da35425a7a679d0eee742e405d08acb3e13bbd7b8f9609b552d6e812969be973451459a9f8b7e2f04a38a8b72b6dda08146421dc38ef2022dfc67a6c9e9fbd27d4e77fd1cc10f9c01654c34a56a6d610926ca8ce74dadab92e933d136df7c908db7f41691c144d1eccab8a43b383652aa68ac9e2a30cec3f5caf083f375b89a47fe3a88378b0b6f35ef2fd6cbed2ad818d7175ee8198a260568ae31334ef52bc007eaa720152fb57ad4865be59701f91fd7d212505a42978c4f06636a4d066e9225272c9b0c9d241b40924c9213870e93017347304a13a0c8d3a29a454b518e27d9c87659165b6e96c6237768c5c9206131b51d960e31665b0ed91f93bf355770c6652524ef2644ae433ff2e228dc068b79e4e91632da14eaac33d636f0d6a3c20611f4494ffb36cb052ab5e3f683c80be78bc8bff2ba0d2f21a7ec69738f3bce682101d1b4c6e129a85722c5819160bef2ce10ac377679484a32fdfd4cda99b72ede8cfc951ee1025bbb4aff924d14fac10f6de780b8a245a3210fdd07a9d0f20df686aef77f108947da55213fb75ef88b74a11032a8a1645f6f13c13af1e57fed70f888c5d34719a9f08db7c3642bc26ae86e88eb765fd8963db26d876870ad3ee446967b985a5ba3ad083b28d54b47dde163a39d58235f4198c4f5077a5afb7f1f44324d78040000",
     ],
     [
       "ETag",
-      "N2Mt8H9Zw/vSj+a/QpIbLg==",
+      "x+8sIghobeskPCle2x+lgA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14164,7 +13938,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:33 GMT",
+      "Thu, 13 May 2021 15:18:44 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14183,7 +13957,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-95-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-95-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14202,11 +13976,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "dd6e82401085df657a8b091ac54ad20bacb692e01fe24d1b635618100b2cee2e6dacf1dd3b4bad6dda26ed0dcc0cdf2ce71c38c2535a4460c3264df6158ac355826aae0b1f65952949b7921712c100542c21723a1f260ff1de7f4567b4e95bb1b7c0e6607e7343840cb79833b08f10a7984512ecc723142c475a0b7956e5c5baee0c5087520f1781ef4eeea9cf79a4fbc9d2f39cbe37849371598c9862eb9affc7daea64c08e6f7c8c516011a2d6520abec350b9daa66479996143f24a8428a186eb0789e055c904e70d9a347a9d46d36a995dab6df6ac56cb2230e32153292f885d2e481f28ae58e6f31772091a10754986e3fafa4ce334aa8de8d29d0456bbd6f7152069719ae1fa6f90f46e197d860fec1cc1778ee5bc2ad485baf3a6ce6fc751a69f470d9c60f883908a92ba20813b1e2e02673cd3dceaecbd7f5028678253901275864db37ddde95ae67bacb75c474defb195a8d08090d1df314a15d831cb249ede0045d337347b020000",
+      "41",
+      "6f",
+      "82",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb",
+      "f40a095aa195c4835a8b2668ade2a1698c5961401458babbd418e37fef2cb5b6699bb4179819be59de7b70845d5a44e0c23a4d5e2a1487ab04d5a32e6628ab4c49ba95bc900806a0620991cdf1de2ba5e7ad7bfeeec96915fd7cb8db269d0e1132dc60cec03d429c621649709f8f50b01c692de4599517abba33401d4a3d9c07b3d1c4a33ee791ee270bdfeff6fc019c8ccb62c4145bd5fc3fd6962703b67c3dc3180516216a2da5e05b0cd548db942c2f333425af4488126ab87e90085e954c706ed2c46cdb66c3695aed46dbbab61dbb4d60c643a6525e10bb98933e505cb16cc6f7e4121c02445d92e1b8bebed2388d6a23ba1c4d02a755ebfb0a90b438cd70f537487a378c3ec307768ee03bc7725e15ea42ddfb0fdddf8ea34c3f8fbaeb06831f845494d4050946e3c13ce88ea79a5b9ebdf70e0ae554700a52a2ceb061b56eed1bc77a8fb5cf75d4f41e57890a0d0819fd1dc354811bb34ce2e90dc4b420be7b020000",
     ],
     [
       "ETag",
-      "OQEgZfqRzeAHbB6fLSe1DQ==",
+      "2MwGpsGGbBLkY64nCmHkjg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14218,7 +14000,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:34 GMT",
+      "Thu, 13 May 2021 15:18:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14259,7 +14041,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-96-1620764096226",
+      jobId: "grouparoo-job-96-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14271,11 +14053,26 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff85547f6f9b3010fd2ac8fba795f20312202152d4d194b699529211b2aa9aa6c41843dd129c62d329aaf2dd7798a66dd6ad9590c0bef7eebd3b9f7942f72c8fd100452c7d2869b1fd72c723d44054e21476fd598289e5dccddcd3cb7b42bb59f92d99a4c3212058c51278bdc96853f0b220540c16f3565af072830bce9b90a8e9d84dc3eee83ddbd41dbbd3b1812768964c587e0fec5b293762d06eefb55b29e76946f1868916e1eb97fdf663a7bd29f81d2552b40f25dba022da1f8b9e649c60c9783e5cccc1402968b1a46bcc32b0f0ca8ca3af87a95b0caf5b29801f19a198105ee6b2b2052908cf13969685ca8a064f48d97cf381e6dec41b85da68baf0c3a3155e57e4d5b18685b65c165494996c682ba82961195db278554736f7da7930bd820838b8c5828a95767de9059ea6ed736843ed4473fd33ed903ef6b585ef7bf3503b3a39d62e82e962a69dde1c60c0774c8564b9721de228a395e3e7c68edf1f6745c0125cd4c1654fb7b1d1d79d28897a24e977ad28d16914f5a39e85bb914e1c939a714431f064955db170cef37ed774b0d5b188651896113bba4e0c33b271b7db33adb893f4a8438dc8eaa35d03fd2e98a4674c6cb8607577d175300ebd65182cfc911b7aaa8c044307cf6a7355116f7d4a2812401fd4b5aba28c83527554633ff40277148e7f78f5744c688ac976fe00f391e04c5040e302afa9a4c5158fa16968369d8fc3f1d47727c050473edb23041afc7c7a2584db8deab2546f743e99baa16d2a077bc80f9c950af3587f20a3650162d7f87f1a3708dc1b90c64581b77fc5a01c5bd1ffa1a0f06a55db7c514495da7ed541bb5f3b781a086e539d1d7d5f78c10daab7029ad082e6e4f3f101b00a7cfa53d8df50c0c21d051921610dc34a4425420a5a0f2d5b2bbb35db704c5337910217f25dccd2fbfbd3a9725419e99ae6f2b9a2fa86aa4655a152bc802008b3e68ffd0b88fe01c29b482421050000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "7f",
+      "6f",
+      "9b",
+      "30",
+      "10",
+      "fd",
+      "2ac8fba79592f023210991aa2e4de98a94928c40bb6a9a120386ba2598629329aaf2dd7798a66dd6ad9590c0bef7eebd3b9f79420f348fd10885347dac48b9fd72cf42d44244e01476fd697e699ccd43acea5eb0b1aaccfb71f9989e9c0082d62c8ed74546da9c556544f8285874d29255052e196b43a2b6d56feb7d43b3744beb9a7dd3021e275932a5f903b0ef8428f84855f7da9d94b13423b8a0bc13b1f5cbbeba31d4a264f724125c3d94544185ab1f8b9e662cc282b2fc245880818a937249d6986660e19519875f0f5377285e7752006f68447014b12a17b52d4811b13ca16955caac68f484a4cd371f68614fed89af4c6681eb1fadf0ba26af8e15cc95e5b224bcca444b59414d09cdc892c6ab26523c2817deec0a22e0e00e73c257cacda5edd98ab2cfa19c28a7cad83d570ee98eab04ae6b2f7ce5e8f458f9e6cd82b972767b8001df31e182e6d2b58fc38cd48e9f1bebbc3fce9a8005b86882cb81d6c7fa50b3c2241c44c9b06b868946c270180e4cdc0db5c8ea915e1c120c3c5167972c9cb37cd8ed59d834ccc8d475538f2d4d8bf45ed8c7ddeea067c646322016d1437388762df4bba4829c535e304e9beea21bcff1eda5ef05ee64ecdbb28c044307cf1b7375116f7d0a2812401fd4b5aba39481527d548eebdbde78e23bd776331d5392e268bb7884f94870c609a07189d74490f28ac5d034349f2d1cdf99b9e32930e491cff7088e463f9f5e09feb6905d16f28d2ea6b3b1dfef49077bc835ce2a89d9341f48ef9880d8b5fe9f66ec79e35b90c66589b77fc5a09cbea4ff4341e2e5aab1f9a2886ab5fdca40bb5f3b785a086e53931d7d0f6cef16355b1e494849f2e8f3f101b00c7cfa53d8df50c0c21d05",
+      "192e600dc31af15a242a4933b4742ded366cdd308de100497029dec57a436b7f3a758e3a2359935c3c57d4dc50d9a83a54f117100461d65cc7fd06d13ffed0b21c21050000",
     ],
     [
       "ETag",
-      "NPfac59jPABHkce3luJfLg==",
+      "TLnH2BPba/1RUv9ulRXHqg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14287,7 +14084,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:34 GMT",
+      "Thu, 13 May 2021 15:18:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14306,7 +14103,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-96-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-96-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14321,11 +14118,24 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ff8d50c16ac24010fd97e9b1099850520c78d0d65641a44d150f22b22693349a64b6bb9bb641f2ef9d5d4bf1d8cbcecc7b6f86f7f60ca7b2c9208643597cb4a8ba9b02cdab6d12d46d653417498d46f0008d2858f9bd7aba9d3f6e6625cf914c7231a937723c1ab142a7ef580b88cf909758651ae2ed191a5123afedf7ca5d6499e9a445e6cbd5f4799a3050536681e57ab1184f1653e8bdab3579fad7caaef7e04887047354d8a4685d4845474ccddc06d4a29615fa9a5a95a206277644a1a8954211f98cf8c3c80fa270701fdd0d865118462cac2815a6a486b5eb37f606868ca812fae27c10b240b996a3e6eefd74b0cd60bbc059bbe6823f2eb4dceef7e0a433a85f14b13b8dd6d8e062f281ac71c3818c6ad18354f02fcf4a7399fb1fe1229f3ac2010000",
+      "02",
+      "ff",
+      "8d",
+      "50",
+      "4d",
+      "4f",
+      "c2",
+      "40",
+      "10",
+      "fd",
+      "2f",
+      "e3",
+      "b5",
+      "8d1402494938886914528914b9680859da692d6c3b75772b2984ffeeec620c472fbbb3ef63f2de9ee150d6198c6157165f2daaeeae40b3b44382ba9546f3d550ad113c40230a569ee6efdda9d5f3fb17b9a2582e936c904f8f93092b74fa899580f119f21265a661fc71865a54c8b6ed56b98d2c335d6391d9e22d7a8a12062aca2cb058c7f1c3348ee0e2ddd89ac3bf2c9b8b077bda2598a3c23a459ba251b4c7d4cc6c412daa46a2afa955296a706247148ada4628229f113f1cf9c1a8df0b83b037188e86210b25a5c29454b376bde26c60c80899d091fb419f05ca8d5c3577e7b7836d073b052eda2d17fc717dcb6d7e174e3b83fa5511a7d36883f5ae211fc906375cc8a8163d4805fff27369aeefcb0fb9a6aa77c2010000",
     ],
     [
       "ETag",
-      "xTF+IDWHieta6pRfaBmWpA==",
+      "zJZyzusJ/MlSoLlQRd3fBw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14337,7 +14147,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:34 GMT",
+      "Thu, 13 May 2021 15:18:45 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14355,30 +14165,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b",
-      "72",
-      "82",
-      "300000d0bb64ad0e08087427108ba54168c45a360c42b0088440f8443bbd7b9d1ee1bd1f906619e13c19da8a50f002eee9da5c652b8f1956722ddad1dec2ee60d804159ef31937959e874ad41fa2abead52e7237e4b196e2ba375c93d6fa5c3858a91ba74d593fbd425cb2191edf2d7fed4cd907ecfcd338b65b6940b1cc82066d3a918b4a04fcc86f5cb2f15917973d0bf91e5a190a1aba0c6d67e4ba8165f9b14397ea6bd0eb021acb9ddc05b809a819352395d52981f05a59423d13af3cd2bdfa38bcc53841f8a42937a1f873eaeada3754d352a33958002258d9139e944faea299e602fcdb93e1cec833c022694f7af0fb076eaa74ff1a010000",
+      "1f8b08000000000002ff1dd0c97282300000d07fc9591d2052426f0504d94a3ab2954b266090ad4883c4a5d37fafd34f78ef07d0aa62f34c2ee79e8de015dca9a26faa8d3f21839cd80d3207d3aa20f1b6f9d827c29508317bff2ae487e4975e669b9975867df51e1ade8346df36a1d6e8cbe5f14d0b0f2e5533b35da7575e42a4a707358cf1929f5f94acce97b20bb1aad45665ef700703856cf5c693ca4bba772872326f27691089a6f852fc088d5addb1213846eb936f205a58299cd4b22e8a6450e231178bb04574f85cc25b5b139e0445365b040f365a63939bb3ab8a56f678d3193a5801769b5ace66d23eb950d5f515f8b793cb7d62cf008351ce38f8fd03cebd0f1f1a010000",
     ],
     [
       "Content-Type",
@@ -14392,7 +14184,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:34 GMT",
+      "Thu, 13 May 2021 15:18:45 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -14411,7 +14203,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -14432,7 +14223,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-97-1620764096226",
+      jobId: "grouparoo-job-97-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14442,12 +14233,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "000000000002ff85535d6fda3014fd2b91f75a20d0841024b4229aae68247421b49aa629b28d93ba0d71881d5055f1df77ed94aedda4f629b6ef39f79cfb9167f4c8cb0d1a23c2f35dc3eaa72f0f82a033c414cee1d5e6a3e1cdf71d5fec0e53cfa3f6ed3eacbcc3640208ae59126fab8275a4686acae478bdeae6b5682a5c0bd181441ddfebf48703db1b3ab63f1c0c86c093acc816bc7c04f6bd52951cf77a27ed6e2e445e305c71d9a562fbfadedb0f7a552d1e1855b2f75eb2072ab2f7b1e8d74250acb82827eb15186824ab53b6c5bc000b7f991b72f13e7597e36d3707f09e538629154da9b42d48414599f1bca94d56347e46c6e69b035a058b6096585414cdb64c4bbc6567d6062b9caaa78a5957f132b4e6d1d5320ea7c97c19a5abd975104ebbb3e5621d462bebee3a88034b615230c3b526d685b9457001fd0d938a97463dd1cf5af9a541f3ffc7a209202d591b4c3d7b88fb23db2719f168363a774966334246c473f139b1a9ef30674318069e11352c5c8a928e9c81c6a5c4a17eeaf8de26f56d4ad2be3dc27dd7717d97b8e878860e3557ec92cb4a48de7608ddc5f3244893781dcda649604ac87053a8cbd6982ee0ad47050502e8839a8e3aca0528e976cfa32488a7b3647e1bb4135eb01cd3a7d50e669ce1423240e31a9aa7581d8a0d340c45d330b804b099d8cd2928d1f8d733d23dd72edeb4fc959ec000b55d65be6895c4f3e89bb17342dce2a231907d7b401558be87dac0f5f137206149db2ce8c73a887fa2f6296619ab59493f9f26804de0d37fedb4f88085d50719a9e00ebb43a516a1356b77889b725fd87ddff1dd0132e05afd1b73fb76ffd4359d4367645b56aa978adac587425bb146be822008e38f4cb78e7f0002cc767878040000",
+      "08000000000002ff85536b6f9b3014fd2bc8fbda2490070991a2354be98694901548bb6a9a903117ea96608a4da7aaca7fdfc5345dbb49ed276cdf73ee39f7c113b9e3654ae624e1f97d03f5e3a75b919013028ae6f89a7da97f8c66c21d49117ad67d115c672bf362b140046f5992eeab027a5234350339df85fdbc164d456b217a98a8e74c7b963d341dcb3147137be2204f4291ad797987ec1ba52a391f0c8edafd5c88bc005a71d96762fff23e78180eaa5adc025372f05672802a72f0bee8e74230aab82817bb100d3412ea18f6941768e12f334d4edfa6ee73baefe7087ee00c2863a229556b0b533051663c6f6a9d95cc9f88b6f9ea404277edae228389a2d9977149f77062a454d1583d56609c07db8de1f9e7db60b38cbcad1f87ab6fee66d95f6dd7bb8d1f1a57dfdcc035144d0ad05c63619cea9b8f17d44f412a5e6af5a87d6e959f1be4fd3f969680d212ba603c356d6acd4c27c99229cb66a34992999024b3643aa1a3c464ce18c6690214795a54b368294a668e13c71ab2381933168f6d0be2c41e3a718a4918a493d4b667e470427ed75cc119979590bceb10b90abcc88da360e7af9691ab4bc86853a8b3ce585bc06b8f0a0b44d03b351dda2817a8d4b6dbf3233758ae22efd2ed26bc869cb2c7f01e679cd14202a2698dcd53506f448a0d23fe72e39e21584fecfb3128c9fce713697bdeba78d5f2177a84036ced2afd25611478fe576de788b8a445a3210fdd815468f9066b43d7875f88c425edb2908b9d1b5c93ee29800c6a28d9c7d344b00e7cf8af1d171fb1b8fa282315de7177986c45580ddd0e715dee33db1a4e9cee4f55b456ffc66c6b363a76adcdd166843d94eab9a26ef1b1d04eac912f200ce2f87dddadc31f06b3ef5b78040000",
     ],
     [
       "ETag",
-      "0i86PKqiLqwA77c0VvMp7w==",
+      "fBrX38oE3soSI1qlRYfC0Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14459,7 +14249,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:35 GMT",
+      "Thu, 13 May 2021 15:18:46 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14478,7 +14268,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-97-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-97-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14494,19 +14284,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "8d",
-      "92",
-      "5b",
-      "6f",
-      "82",
-      "40",
-      "10",
-      "85ffcbf41512351695c407b55649d07ac1171b635618140b2ceea5c618ff7b67a9b54ddba47d8199e19be59c03677849f2085cd824db834671badba29a9a628652a74ad2ade0b944b00015db12398cbb614f1681f26b87a6d35c2ef5c09f1edb6d2264b8c38c817b8638c13492e03e9f216719d25ac8539de5ebb2b3409d0a339c07336f3ca03ee391e9c70bdfef74fd3e5cacdb62c4145b97fc3fd656170bf67c33c31805e6211a2d85e07b0c95676c4a961529da926b11a284122e1f6c05d705139cdb34b15b0dbbead42a0da75e6939b59a4360ca43a6129e13bb98933e505cb174c68fe4120c20ca920cc7e5f595c649541a31a5370e9c7aa9ef2b40d2e224c5f5df20e9dd31fa0c1fd83582ef1ccbb8ced58d7af49f3abf1d47997e1ef5d009fa3f08a928a91b1278a3fe3ce88c26865b5dbd774f0ae544700a52a2c9b05aa937ef1b4ee53dd61e3751d37b5c25345a1032fa3b8689023766a9c4cb1b5a8c73cc7b020000",
+      "ff8d92414f83401085ffcb78a509d5422d490f54abd6d05a5b8c07d3345b18280a0cdd5d344dd3ffee2c6a356aa2179819be59de7bb083a7ac8cc18355966e6a94dba314f5ad2966a8ea5c2bbe55542a040b508b94c9fbf5da3e1e4c0272c61ba70c57d1f5e5d4f7fb7d2654b4c64280b78324c33c56e03deca01405f25a44795d94cba6b3406f2b339c87b3d1e492fb8262d34fee82c01f0443d85b87c55868b16cf87fac2df6163cd26a86094a2c23345a2a498f18e991b1a94451e5d85254cb08153470f3209554574212b578d2ea755b6df7d8eeb57bf689e33a3d06738a84cea864f66ecefa409316f98c5ed825b80cc8a664c349737de6711637464c399a846ea7d1f71560694996e3f26f90f5ae057f860fec3d82ef9c28a82ef581ba086efcdf8ee34c3f8f3af7c3e10f42694eea8084a3f1701efae3a9e116efde075b8d6a2a89835468326cdb9d53a7ebda6fb19e91899adfe36959a30591e0bfe32ad3e0252257b87f0558e8565a7b020000",
     ],
     [
       "ETag",
-      "HfBcCspTtL2q868ZZuGLQw==",
+      "Whh02BNLo5Mq5nTbcJGPAA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14518,7 +14300,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:35 GMT",
+      "Thu, 13 May 2021 15:18:47 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14556,7 +14338,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-98-1620764096226",
+      jobId: "grouparoo-job-98-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14576,14 +14358,21 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "54",
+      "7f",
+      "6f",
+      "9b",
+      "30",
+      "10",
       "fd",
-      "4f",
-      "a34010fd57c8de2f9ad496968f9626c6ab16bd26952aa51a73776997ed80abc022bb688ce9ff7e03583fee3c4d486077de9bf76676962772cbb335199290c77725148fdf6e44485a04148d71f7cace7bf1f1388bfd1fe7ac37181b905a870ffbfb88e0154bd2344f604f8ab26020878b793b2e4499d342883d4cb4e70cf6ba764fefdba6eed8bd9e8d3c094934e5d92db2af95cae5b0d3d96ab76321e20468ce659b89f465bf73dfebe485b801a664e7bd64075564e773d1834430aab8c8f6177334504a289690529ea08557e63afcfe3e759bd3b41d23f89e33a08c893253952d4cc14416f1b82ceaac64f8446a9b6f3ec8dc9dba478176345b78c1ce8aa61579b5ab51a92d9705c832512d6d8535453c81255faf9a487eab1dfbb3538ca0836b2a41aeb4cb1faeef6adaaa02fd2a75dd00ed401b7963ed3d7fe2690bcf73e781b673b0ab9df8b3c5997678f50e83c6d72015cf6adb010d13a82c3f7776f2ef795604aad046135cf6759b7607ba1346619f4503c30a231dc27010f62d6a843a734c30d72150e4a92a7bcda299c80cb0227bb0d6c350771cabcb2cc3e999a645ed08d6a6417573601bacdf37c8a6451e0aae60cc652e246fda4b2efd49e02e037fe11d8d02b72e23a2d8c27163ae2ae2ad4f854522e893ba3655940b54aace6ae205ae3f3a0a26176e331e5388297b9cdfe18044349180685ad0141414a7628d4d2367b3f92498ccbcd11419f5999f6d11920c7f3ebd1282c7bceeb2aadf95966dd6fa5bc0054dca1a71df7c90ae45369bd6ff538c7c7f7485b2b428e8e3c7e93fcc5fe3eb5563f1458f546adb558f6c7e6ff06911bc4a4d7672be70fd2bd26cf910410119fb7a74105c07befc236caf2762f182a28c54b8c64165b21261053403cbd3da6ec3ee3a9663f5490d2ed4df315b77ccedc95439aa8c9042a69e2b6aae67dda82a54ca",
-      "17100671cebc897782d13f5c9de8a91e050000",
+      "2a",
+      "c8",
+      "fb",
+      "a795f283849084485597a56c434a494748bb6a9b12638ed40de0149b545995efbe039ab651bb564202fbdebbf7ee7ce681ac781a920109f8f22e876cfbe95604a44640d125eec278cc26e73ffdf1d5d0db84ad1593d7f77f87272788e0054bd2641d435d8a3c632007b3696399897c4d3321ea98a86ef5ebad6e5bb75a966e985dd3429e84381af37485ec1ba5d672d06ceeb51b4b219631d035970d2692a7fde6a6dd5c67e2169892cd43c926aac8e6fba2a7b1605471919ecca668209790cd21a13c460bcfcc30f87c98bac169d2582278c31950c6449eaac216a660228df832cfcaac64f0404a9b2f3ec8d41edb235f1b4d66ae7fb4a049415e1c6b546af37906328f554d5b604d118f61cec3451559afb4afdee41c23e8e0864a900bedeabbedd99ab62840bf735d37403bd586ee9976c8775c6de6baf6d4d78e4e8fb56fde6476a17db93ec0a0f110a4e26969dba7410c85e5c7ce3aafcfb320508536aae0bca77769abaf5b4114f458d437cc20d22108fa41cfa446a033ab039d30008a3c55642f593415a90166d4ed877a10e89665b6986958ed4ec7a4dd08c28e41f54ebf6bb05ecf20bb1ab9cfb882332ed742f2aabde4ca737c7bee7b337734f4edb28c88620bcf2a7345112f7d2a2c1241efd4b52ba25ca05271568eebdbde70e43b9776351e635852b69ddee18044349680689ad1041464e722c4a6918bc9d4f19d893b1c23a33cf38b3d4292c1af876782bf5d975d56e5bbd0ea764afd3de092c67989d8541fa46592ddaef6ff1443cf1b5ea32ccd32ba7d3bfd9bf94b7cb9aa2c3ee991426dbf6a93",
+      "dd9f1d3e358257a9ca4e7ecc6cef9a545b1e449041ca3e1e1d0497810fff08fbeb8958bca0282315ae7150992c445806d5c0f2a4b45bb15bed5ebb55fe4f14cdd4ab986119fb93297214192181543d56545dcfb2514528974f200ce29cb98efb0da3ff00c8237d941e050000",
     ],
     [
       "ETag",
-      "Y6p2gFDngRHQc28D3em5Bw==",
+      "eLLcOMXTLWARvd1kcsYwzA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14595,7 +14384,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:36 GMT",
+      "Thu, 13 May 2021 15:18:47 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14614,7 +14403,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-98-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-98-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14626,11 +14415,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff8d50cb6ec23010fc97ed3551435a8587c4a1205490102d299c2a844cb2a401271bec4d5184f8f7ae03871e7ae8c51ecfceac667c81635ea630805d9e9d6a34cd4386bc7420465b6bb67255545a040f905526caeeb8a7d3ac33e5c7371d9d9ee2b42e56cbf370280a9b7c61a16070817d8e3ab530f8bc40a90a14db766bda8d22e3a672cc6cb19abc4e62210a4a1db158cfe72fa3f904aede2f5b75fc976573f5e040bb18f768b04cd0a5a80c1d30e1992b68555169f42dd526410badb81d6486ea4a19225f18bfdff33b511874a3e7a01f856124424d89e29c4ad1ae3f241b30b1d2319da51f8422302d94aafbf6fc6e69d7e18e360eff35ebb8d9e6be70d430da774392cea20b16dc428ec9056729c4a6460f1225bf3ccdf9f6befe00f050ff7ac2010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8d50cb6ec23010fc97ed3511af8208128712451489229a16f550216492250d24d9d4deb4a2887f676d38f4d0432ff678766635e3131cf22a85116cf3ecb3417dbccb909f2d88d134051bb96aaa0c8207c82a13653a1d86bc6ffd84837cf2d45b52bf95bddd67e3b1284cf281a582d109763916a981d1fb092a55a2d8361bed368a8c8fb565668bd7681ac54294945a62b19acf1f26f308cede2f5b7df897657df6604fdb1877a8b14ad0a6a835ed31e1992d68545917e81b6a7482069cd80d324d4dad34912f8c1f0cfdcea0db0e3a41bbd71ff40311169428cea912edea45b20113ab22a66fe9075d116807a5eace9d5f8eb61d6e686df15fb38e9dad6f0b274746b3d424e90cda60ed6bc8906c709642ac1bf42051f2cb8f395fdfe70b43f37452c2010000",
     ],
     [
       "ETag",
-      "7C8ldg1Ht/Ol6q3RdumTQw==",
+      "dG8Ctj/zC6iBM3Po5/gW4g==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14642,7 +14435,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:36 GMT",
+      "Thu, 13 May 2021 15:18:48 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14660,10 +14453,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -14672,10 +14462,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "0002ff1dd04b7282300000d0bb642d8e80d4a43bf1932aa80505c10d1331a108864050214eef5ea74778ef05489a522993b62a28079fa027061aa64347403bc9d826469c4a86541c400647eee1a3bf3069ad7dcd74b8f7a3b26c3d5f7a55d0fb0fb615c7ed2e3f37ab39f1fcf2845a9b2a144dd0325acbdb7dba67852e73881fb04e7753436139beb514ea4f7d7f7435eb682cda34743d91cf0a838c1d523f9dd1d55d5d7b3eab22bdb60e7b7cefbe36955d98bcc2318bbeeb5d8716e1c528a35116949dc5791274d8114ad7081a1b67339da8133a614d2de3809459282b0a068076226fa84cf237d7b4101a807f7bd2f682be036c4a1ada80df3f45fe88b11a010000",
+      "0000000002ff1dd0d97282300040d17fc9b338b880a46f42d9458b2c95be64080d9046110841d1e9bfd7e917dc39f709f2a2209ca3e1ca4803dec0942fe1bc98fbada6a3aadc3bd9c2472112a950ed6272d64ceedc8dfc99dc25135fd4d21e59850d4f5dc85ecb63c389c7f7639d1a3028be4d41363ff2233a869bb5cd44bc8cdcbea91f8a82a56cb063753cab979bef63eaf18b1094e0fc7a0f4f1a0d684f5654461fe9d993f6d6ae83ba08604706aee514ee22e7d464a58f7b6a5570c7f096df2a776b258bfda149cec8693a29a809de06759798a6965c43162829e1baf1b5628709cc00b9b7af0447f4c55d2910cec0bf1d0d534b5e037492f7a407bf7faba5b99c1a010000",
     ],
     [
       "Content-Type",
@@ -14689,7 +14476,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:36 GMT",
+      "Thu, 13 May 2021 15:18:48 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -14708,7 +14495,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -14729,7 +14515,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-99-1620764096226",
+      jobId: "grouparoo-job-99-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14738,26 +14524,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "ef",
-      "4f",
-      "ab",
-      "30",
-      "14fd5748df5737609b30962ccf65e273c9c67c8c69cccb0b694bc12aa38c168d31fbdfdf6d718b2f26fa89b6f79c7bcefdc11b7ae255862688f062dfb2e6f5c7a320e80c31850b782deee77b19d297c6dddf543caaee570f8ff66c3a0504d72c897775c97a52b40d6572b2ddf48b46b4356e84e841a25e10f45c6fe0f8dec809bcc1c0039e6465bee4d513b01f94aae5c4b68fdafd4288a264b8e6b24fc5eef46e3f0fecba118f8c2a69ff2f69838ab4bf16fd590a8a1517d574bb0103ad644dca769897bac013332317ffa7ee73bceb17007ee694614a455b296d0b525051e5bc681b93154dde90b1f9e18036e1329c27161565bbabd20aefd89995618553f55a33eb2a5eafac4574b58e57b364b18ed2cdfc3a5ccdfaf3f572bb8a36d6dd75188796c2a464866b4dad0b738be002fa19938a57463dd1cf5af9bd418bcf63d1049096ac0ba6bee36177ec0424273ecdc7c373923b8c9031f1cff190383418b1514618069e11352c5c896ae80cb391ef0cd2311ef9e9c80b4629760392bab99b31c28601c9c6e870865e1aaed82597b590bceb10ba8b17499826f1369acf92d09490e3b654979d315dc0478f0a0a04d017351d74940b50d2ed5e444918cfe6c9e236ec26bc6405a6af9b3dcc38c7a56480c60d344fb166253268188a66abf012c0666237c7a044933f6f48f75cbbf8d0f2133d81016abbca7cd1268917d12f63e788b8c5656b20cfdd01d560f9016a03d787bf808425edb2a0dfdb30be47dd53cc72d6b08a7e3f4d009bc0b7ffda71f1010bab0f3252c11d76874a2d421bd6ed1037e5beb3ddc0f3fc2132e0467d8a8d87feb16b3a87cec876ac52ef15758b0f857662ad3c812008e38f4cb70eff00a26ea50978040000",
+      "8b08000000000002ff85535d6fa24014fd2b64f6b52aa85830315ba3b86ba2b845ac69361b320c173a2d309619da6d1afffb5e86da6dd3a47d6266ee39f79cfbc133b9e36542c624e6d97d0dd5d3b75b119333028a66f8fa77b558ccddbd6bd5fbc72b7b5d5fabe27e7439992082372c498b430e1d29ea8a811cefb6ddac12f5815642743051c7753bd6a86fba966b0eec91ed224f429eae787987ec1ba50e72dceb9db4bb9910590ef4c0659789e2f5bdf7d0ef1d2a710b4cc9de7bc91eaac8dee7a2df73c1a8e2a29cecb668a096504550509ea385ffcc24be789fbacb69d1cd10fcc01950c6445daac616a660a24c7956573a2b193f136df3cd816cbd95370b0d26f2ba28a3921670662454d1483d1dc058049bb5b1f4179b603d0d971b3fdace7e7aeb6977b659edd6fed6d8fff402cf5034ce41738d8971a16f3e5e503f01a978a9d5c3e6b9517e69d0f2e3581a024a4b6883d1b939a29663ba711a9fb3d419d8716a421c3bf1b94d07b1c9dc210c931828f2b4a866d15294b66d398e0969940c06341a326b183914cc68e858710aa384f5cd981ccfc863c515ccb93c08c9db0e917db00cbd280c76fe6c1a7aba8494d6b99ab7c69a02de7a545820823ea9e9d844b940a5a6dd4b3ff482e92c5c5e79ed84579051f6b4bdc719a7349780685a61f314546b9160c3883f5d7b7304eb89fd3a052519ff7e264dcf1b176f5afe4a0f71808d5da5bf641b064bff87b673425cd1bcd69087f6400e68f9066b43d7c73f88c4256db390cb9d175c93f62980142a28d9d7d344b00e7cf9af9d161fb1b8fa282315de7177986c445805ed0e715dee0bdbea3bb6e3100daed487d8b9eb9cbad6e468324201a57aa9a85d7c2cb415abe52b0883387e5f77ebf80ffb48f44878040000",
     ],
     [
       "ETag",
-      "gYCqsEcwr1qPniNnYMhj/A==",
+      "xLFFD9W91uWwV5MuYtmq6Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14769,7 +14540,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:36 GMT",
+      "Thu, 13 May 2021 15:18:48 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14788,7 +14559,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-99-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-99-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14808,11 +14579,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8d",
       "92",
       "41",
-      "4fc2401085ffcb782d09905aa0890740d09a8250ca4543c8d24e4b71dbadbb5b0d21fc77672ba25113bdb433d36fb6efbdf6004f5911830b9b2c7dae50ee2f52d4735304a82aae15dd4a5128040b50b394c8e103a63dbee1dd3b7fdcb2f3bcb0d34132bfba2242455bcc19b8074832e4b102f7f10005cb91d622c1abbc58d79d057a5f9ae1220cbce90df5b9884d3f5dfa7e7fe08fe0689d1763a6d9bae6ffb1b63a5ab0139b001394584468b49452ec30d29eb1a9585e726c2851c90815d470fd2095a22a9914a2419346afd76839ed66c7b19b3da7dd7608e422623a1305b1cb05e9032d34e381782597600059976438a9af2f34cee2da8829bd69e8d8b5beaf00494b328eebbf41d2bb65f4193eb05304df39968baad0676aecdff77f3b8e32fd3ceaba1f8e7e104a53526724f426a345d89fcc0cb73a791fec35aa991414a4429361ab69772f3b4ef33dd6a13051d37b5c2d2bb42062f477dc661adc847185c737908146847b020000",
+      "4fc2401085ffcb786d1340586d130e455049a062292743c8d24ea1d076ebee162584ffee6c45346aa2977666facdf6bdd71e609b1631b8b04c57cf15cafdc50af5a329025455a615dd4a5128040b50f315917e9ba90d4bb76cbbe4afb2dfda57bbc9abd7ed12a1a235e61cdc03242966b102f7e90005cf91d622915579b1a83b0bf4be34c369180cfd3bea73119bde9f8d465e6f3480a3755e8cb9e68b9affc7dafc68c1462c034c506211a1d1524ab1c1480f8d4dc5f332435b894a46a8a086eb072b29aa924b216c9ad88e633759abe1349dc66587751c023311719d8a82d8d994f481169a6781782197c0089075498693fabaa3711ad7464c39f443d6aef57d05485a9266b8f81b24bd6b4e9fe1033b45f09de3b9a80a7da66e470fde6fc751a69f47f5bd70f083509a923a23e1703c9886de7862b8f9c97b6faf514da4a020159a0c9b8df675e78a35de63bd11266a7a8fab658516449cfe8efb54839bf04ce1f10d326631507b020000",
     ],
     [
       "ETag",
-      "CZeg9lbl8JLF14mmn4gBfQ==",
+      "N46sj6ik6kbaxrD2yuvPxA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14824,7 +14595,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:37 GMT",
+      "Thu, 13 May 2021 15:18:49 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14865,7 +14636,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-100-1620764096226",
+      jobId: "grouparoo-job-100-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -14885,14 +14656,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "54",
-      "7f",
+      "fd",
       "6f",
-      "9b3010fd2ac8fba7d59200f90149a4aacb5ab6a1a62405d22adaa6c480a16e01536c324555befb0ed3b4cdbaad1212d8f7debd77e7338fe89ee6111aa380260f1529b71fee58805a88089cc0aee958cb8d36f0aee6822dd50bd6bfb8f838ba3a390104ad591c67454ada9c556548f878e175929255052e196b43a2b6ae696ddde86aa6d1d74646b76b009193349ed2fc1ee8b742147cacaa7bf14ec25892125c50de0959f6bcaf6eba6a51b23b120aae1e6aaa20c3d577544f53166241597eb2f0c041c549b92219a6297878a146c1a7c3dc1d8ab34e02e00d0d090e4356e5a2f605294296c734a94a99158d1f91f4f9ea0379d6d43af395b3d9c2f18fd638abc9eb63057365b52a09af52d152d650544c53b2a2d1ba8914f7ca177776091170708b39e16be5e69be55acacbd65af951695a8f28a7cac439570eb3d88eb2701ccbf395a3d363e5ab3b5bcc95cfcb030cd88f08173497e67d1ca4a436fed460fbedb9d6042c40b909ae4ccdc0fa501b05716086f1b03708628d04c1303007b81768e1a84ffa514030f0449d5db270ce72136b861e75c1bb1ef58816e87d0c8d1d9aa3381cf4b56114197a6c1a461fed5ae857490539a7bc609c364d4637aeed5b2bdf5d386713df9265c4181a79de98ab8b78ed53409100fa4f5dbb3a4a1928d527663bbee54ece7cfbda6a86644a121c6ebd07189318a79c001a9738238294972c82a6a1f9ccb37d7be64ca6c090273fdf23381a7f7f7c21f8db427659c837f27cd776be4a037bc4354e2b09d9341f68528057b4dbb5fe9d66e2ba932548e3b2c4db3f62504eddc9bf4a48bc5c3536f7923aaad5f6ab2edafddcc1d34270ab9aece86a61b94bd46cb9242625c9c3f7c707c032f0fedf617f53010c771574b880354c6bc86b95b024cdd4d24cfa6dd8fac8ec1b4324c1a57813337ac6fe78ea1c754692915c3c95d4dc54d9a93a",
-      "54f167100461d81c7952bbdfe6a2d4422b050000",
+      "9b",
+      "30",
+      "10",
+      "fd",
+      "57",
+      "90f74b272501f2413ea4aa4b53d621a52425d0aadaa6c48049dd00a6b6699555f9df7798a66dd66d9590c0bef7eebd3b9f79421b9ac7688442babe2f09df7eba63216a2022f11a7689959f467af9ab174cacfcf2716ebac2de5c1e1f0382562c81b322254dc14a1e11310a16ad3567658139634d48d4340da3695a6d63680e8d4ecfea0d8128489a4c69be01faad948518e9fa5ebcb5666c9d125c50d18a58f6b2af3fb4f582b33b1249a11f6aea2023f40f544f52166149597e1c2cc04129085f920cd3143cbc52e3f0cb61ee16c5596b0de0071a111c45accc65e50b52442c4fe8bae42a2b1a3d21e5f3cd075ad8537be26b9359e0fa472b9c55e4d5670d0b6db9e44494a96c682b282aa12959d27855478a8df6d59b5d40041cdc6241c44abbfe667bb6f6bab5d27e9486d121da893676cfb4c32c8eab05ae6b2f7cede8e4b376eecd82b9767a738001fb311192e6cabc8fc39454c69f1becbc3fd78a802528d7c165dfb0b03930866112f6a364d0e9858941c27010f67bb8131ad1b04bba714830f064955db170cef23e362c336e837733ee102334bb181a3be80f93a8d73506716c9949dfb2ba68d7408f9c4a724645c104ad9b8cae3dc7b797be17b893b16fab32120c8d3cabcd5545bcf529a14800fda7ae5d15a50c94aa13735cdff6c613dfb9b2eb219992358eb68b7b189304a782001a739c1149f8058ba169683e5b38be3373c75360a8939fef11028dbe3fbd12fc6da1ba2cd51b2d7ccf71cf95813de20aa7a5823cd41f685c8057b4db35fe9d66ec79e31b90c69ce3ed1f3128a7eae45f25145ead6a9b7b4913556afb551bed7eeee06920b85575767419d8de0daab73c92104ef2e8e3",
+      "f101b00a7cfc77d8df5400c35d051d21610dd31a894a25e2a49e5a9a29bf35db6c0f7b6d13293097ef627dabbd3f9e2a479591642497cf25d5375575aa0a95e20504411836579dd4ee37e169b5e32b050000",
     ],
     [
       "ETag",
-      "7NEYv05SQPtoY/Ko4KK+9Q==",
+      "e6nBc/uz5UC6nQwP1NsEkQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14904,7 +14680,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:37 GMT",
+      "Thu, 13 May 2021 15:18:49 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14923,7 +14699,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-100-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-100-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -14938,23 +14714,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "50",
-      "5d",
-      "6b",
-      "c2",
-      "30",
-      "14",
-      "fd",
-      "2f",
-      "77",
-      "8f6b591ba4a2e0838eb2c944b49b2f1b22b1bd66d5b6b74bd28988ff7d37710c1ff792dc9c8fcb3939c3a16c0a18c2b6545f1dead39d42bb744386a6abace1aba5c6200480562a56564a9977152fdb45fffe28a693e2e5a11b8c47235698fc136b09c333ec4aac0a03c38f3334b246b66d36da6f64993db50e99cedfd2a73463a0a6c201f3d56c369ecc52b80437b6f6f02fcbfa12c09eb619ee506393a34bd16ada636ea7aea091755b6168a8d3391af0624f284d5d2b3551c848184751182722ea27bd68900891b0b2a25cda921a16af5e391c58b2b2cae8c80541b040fb91bbeefcf9cd70cf977053ecb3dd72e28f138e5bff2e9c9c2c9a85268e67d0258bae291fc925b7dcc8ea0e03c8257ff37369afefcb0f6ba1dc61c3010000",
+      "02ff8d505d6bc23014fd2f77af2db4dd9429f8a04336a588eb148663488cd75a6d7bb3249d14f1bfef268ee1e35e929bf3713927673816f516fab029f2af06757b97a37d754386a629ade14b516d1002402b7256ae4eabf747db46723adde7f542edd3749e0d07035618b9c74a40ff0cbb02cbad81fec7196a5121dbd66bed37b2ccb6ca2193d962fc3cce18a868eb80d9324d87a3740c97e0c6a68effb27c5e0238d026c31d6aac25ba144ad301a59db8824654aac4d050a3251af0624fe49a1a253451c848184751187793a817f7a2fb4eb7d363654952d8826a162fdf381c58b2a2cce8c405216181f62377ddf9f39be1075fc24db1cf76cb257f5ce2b8cfdf85a3d6a2996be278065db2e89af2895c72cb8dac6e300029f89b5f0a7b7d5f7e00ccbc5a26c3010000",
     ],
     [
       "ETag",
-      "lggsZg1QpP7+w2IBdK/u9A==",
+      "ZwZX8ty0cJJhgnTphLLPRA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -14966,7 +14730,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:38 GMT",
+      "Thu, 13 May 2021 15:18:50 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -14984,10 +14748,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -14999,7 +14760,17 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff1dd04b7282300000d0bb64ad8e05334a77444b55840808453799408260828d84964fa777afd323bcf703689e73ad49fb29f81dbc82811ad62c9fb96a85c8b5486ad436977538a6f9c140d129d2d95bda5653a6f0c919eff6f6fb06b95d463e692d0392717d58dae9a61718aa78b17fc97d1c9a3b8de1870e44a7867575fcf2374d263daf368bc13c3fb2007bd059adea0ef1452fe38191ade1c0f13ad7759488409cd9d1f5a5222e74e2102ff13db9c18094fe3c89ca91e85250f4b0a8daa9f0dda3cc3642c3928bc3834e637dbc5e7a8f7625934d61b62e62727f0613c07b55355c93eac935a1654dc0bf9db483e2cf00c469c31bf0fb072dc444581a010000",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "c9",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00d07fc9d93a4265496fac65a9c8522278611043266584c8524c3afdf73afd84f77e40dd34789aaa79e8700fde00af65b86db621d3cd8ae0402f747537f2583d1a06b5dd8464dfa67280d0a0e764baeea27c0d1acd81dd27a60b133d1f43e2c6ab48a18b64eab7a58c7a2bddab6478a0759911afb3f6245d482c44a87908c937ad1854cf2186b333ee83bb4f33ef14cc2a11d77351cec6bb735efad01593332d2c2e5e22c9ed6c72a8a2dc5c9882a3d2b23e6afc75e79274f7d83eef8bd10f6cefe21f8f66235afb7aa3fae94194640d511a943d071b801f8c8e78aae893fbaa40b801fff66ae60c3f034c5c8f7804bf7f063d4b261a010000",
     ],
     [
       "Content-Type",
@@ -15013,7 +14784,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:38 GMT",
+      "Thu, 13 May 2021 15:18:50 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -15032,7 +14803,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -15053,7 +14823,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-101-1620764096226",
+      jobId: "grouparoo-job-101-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15075,11 +14845,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "53",
       "5d",
       "6f",
-      "9b3014fd2bc87b6d1242684222456b96d215a9212b21adaa6942c65ca85b82996d3a4555fefb2ea6e95a555a9fb07dcfb9e7dc0f9ec923af323223292f7e3720f75f1e444a4e08685ae06b194e97dfec87f4c29791746e82cbbbbdbabd9ecf11c15b96a2bbba849e128d64a066db4dbf90a2a9a914a287897a437bd81b8e1d7b3276ede9d871c6485450e657bc7a44fabdd6b59a0d0647f17e21445102adb9ea33b17b7d1f3c39835a8a07605a0dde6b0e50460d3e51fd5a0a463517d57cbb41078d0299c08ef2123dfca366e9d9fbdc7d4e77fd02c14f9c01654c34956e7d610a26aa9c178d3459c9ec99189f6f0e64e35ff9cbd862a26c765552d11d9c5819d534d1fb1aac8b68bdb282f0621dad1671b00e93cdf2d25f2dfacbf5d576156eacdb4b3ff22d4dd3120cd79a5b67e616e205f533509a57463d6e9f5be5970e051f07d312505a41174c26f6980e3d7b9ae6e984e5dee834cd6d48532f9d9cd2516ab3a90b6e9602459e11352c5a89caa34366c3d04edccc85c475bd718234274947b9ebb16ce478e311399c903f926b38e7aa168a771d22b75110fb491c6dc3e522f64d09396d4a7dde196b0b78eb51638108fa4f4d8736ca052ab5ed0ec2d88f16cb38b8f1bb095f4141d97ef31b679cd35201a2a9c4e669902b9161c348b858f9e7083613fb710c2a32fbf94cda9eb72edeb4fc951ee3005bbbda7cc9268e82f0bbb17344dcd0b23190a7ee406ab47c8fb5a1ebc32f44e2967659c8f5d68fee48f714410e122af6f934116c029fff6dc7cd4730ee3eea288d775c1ea65a1526a15b226eea7d610fa79e638f88014bfd21363a9d1cdbd6e66833c20e2afd5252b7f9586927d6a857100671fea169d7e12f8c3a65c47b040000",
+      "9b",
+      "30",
+      "14",
+      "fd2bc87b6d1228490891a2354a691b2d211d9056d33421632ed42dc1149b565195ffbe8b69ba7693d6276cdf73ee39f78317f2c0cb944c49c2f3c706eafd977b919013028ae6f8bad8db57557e99a6a15704ebc9b7526eb3fa793643046f5992eeaa027a5234350339dd86fdbc164d456b217a98a8679956cf1a9f9aaee59af6683c729128a1c856bc7c40fa9d52959c0e0647f17e2e445e00adb8ec33b17b7b1f3c9d0eaa5adc035372f05173803272f089ead74230aab82867db101d3412ea18769417e8e10f354dce3ee6ee73baebe7087ee20c2863a22955eb0b533051663c6f6a9d954c5f88f6f9ee40426fe52d228389a2d9957149777062a454d158ed2b302e82cdda58fa179b603d8f961b3f0e1757de7ade5f6c56dbb51f1ab7575ee0198a260568ae3133cef4cdc70beaa720152fb57ad43eb7caaf1d5afe3b989680d212ba60ec98636a4d4c37c9128765137b94642624c9247146d44e4ce60e6198264091a745358b96a24cc10177688fe2341bb218514e3c715327b62c2773274e92a6594a0e27e4b9e60aceb9ac84e45d87c86db08cbc380ab6fe621e79ba848c36853aef8cb505bcf7a8b04004fda7a6431be50295da762ffdc80be68b6879e375135e414ed93e7cc41967b49080685a63f314d46b9162c3883f5f7be708d613bb3e062599fe7c216dcf5b17ef5afe468f7080ad5da5bf248c82a57fa9ed1c1137b46834e4a93b900a2ddf616de8faf00b91b8a55d16f27deb053f48f71440063594ecf3692258073effdb8e9b8f60dc7dd4910aefb83c4cb62aac866e89b8aef7956dd9e6c41d130daed5df31cbb2ed63dbda1c6d46d841a95e4bea361f2bedc41af906c220cedfd7ed3afc068f0d8e717b040000",
     ],
     [
       "ETag",
-      "lN9CB0jbFErRr2VIHYysWQ==",
+      "Cy3HpgGddSElRM8KnsUfrw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15091,7 +14864,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:38 GMT",
+      "Thu, 13 May 2021 15:18:51 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15110,7 +14883,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-101-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-101-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15127,11 +14900,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "8d925b4f83401085ffcbf84a135a5bb0243eb45a9584d65e303e18d36c61a82830742f9aa6e97f7716b51a35d1179819be59ce39b083a7bc4a218055bede1894dba335ea992de6a84ca115df6aaa148203a8c59ac9bedf73bb155d6cc667c7d2dc1a15f9c3edecf49409953c602920d8419663912a08ee76508912792da1c294d5b2e91cd0dbda0e17f13c9c5c725f526afbc94d140d86d108f6ce6131155a2c1bfe1f6bf77b071e6935c70c2556095a2db5a4474c74686d2a51d605b6141999a082066e1eac25995a48a2164f5a6db7dd6a7b1dd7f7ba6edfeb743c260b4a84cea962f866c102419316c59c5ed826584036253bce9aeb338ff3b47162cb70127bdd46e05780b5657981cbbf4116fc20f83b7c60ef197ce74449a6d207ea22ba1efc761c87fa79d4f9201efd2094e6a80e481c8e478b78309e5aeefeddfb70ab514d2571920a6d886db77bd2f33df72dd733b259f37b022d0d3a9008fe3dae720d41260a85fb57447f52a67c020000",
+      "8d",
+      "92",
+      "5f53825010c5bfcbf60a13949032e3039a95939a7ff0a9719c2b2c880197eebd648ee3776f2f9935d54cbdc0eef2dbcb3907f6f094161178b04a93e70ac5ee2c4135d1c51465952949b7921712c100542c21d2e936e2b03929bbf2dcb95ff5fc328decd76dbb4d840cd79833f0f610a7984512bcc73d142c475a0b7956e5c5b2ee0c50bb520f67c1b43fbaa53ee791ee47f3c1c0ef0c7a70304e8b11536c59f3ff585b1c0cd8f0d51463145884a8b594826f30547d6d53b2bcccd094bc12214aa8e1fa4122785532c1b94913d3b66cd3762fac96ddb22e1dd7691199f190a9941704cf67241014572c9bf22dd90497005197e438aeaf2f344ea3da892efba3c06dd402bf02a42d4e335cfe0d92e035a3eff0811d33f8ceb19c57853a51378307ffb7e328d4cfa3aefda0f783908aa23a21417fd89b05fe70acb9c5d17b67a7508e05a72425ea106dabd174ae5ceb3dd72ed759d37b3c252a342064f47bdca50abc9865120f6f6732f4f87c020000",
     ],
     [
       "ETag",
-      "97504noFqMC3ruWusL7ByQ==",
+      "5C4fc8QpCs/5KbEApid1xw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15143,7 +14918,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:38 GMT",
+      "Thu, 13 May 2021 15:18:51 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15184,7 +14959,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-102-1620764096226",
+      jobId: "grouparoo-job-102-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15194,11 +14969,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08000000000002ff8554fd6f9b3010fd5790f74babe50348423ea4aa4b5bd6454a494748ab689b129b1cd42bc1149b4c5195ff7d8769daa6fba88404f6bd77efddf9cc23b9e7e98a0c08e3f14301f9f6c34fc1488d80a231ee7af6c70d9cdd75fc66f190b1a9b82cc66c1e9f9c2082972c49d7590275298a3c0439984d1b712e8a8ce642d43151dd32edbae5d866d7699b7dc7b61d244a48a2314fef917ea7542607cde65ebc110b112740332e1ba1583fef37377633cbc54f08956c1e6a36514636df513d4d44481517e9c96c8a0e0a09f902d69427e8e185ba629f0e7337385d3762046f7808340c4591aad217a608451af1b8c87556327824dae7ab0f3275c7ee79609c4f665e70b4a4eb92bc3c36a834168b1c6491a89ab1c4a2229ec082af965524bb373efb932b8ca0833b2a412e8ddb2faeef1a2f5b4be37b619a2d304e8da177611c661979c6ccf3dc69601c9d1e1b97fe64766d9ccd0f30687f0552f1549b0f284ba034fed4e0d19fe75a12a842e52ab8e89a0eb57a669f45ac1b46bd5687452630d663dd0e6d3133ecb7a1bd624091a7caec9a4553915a6697861d8b81e5006d53e6f4ac15f45a8c42cbe9336883dd8f4cbb05645723bf72aee082cb4c485e3599dcfaa3c05d04fecc3b1f06ae2e23a2d8c88bca5c59c46b9f0a8b44d07feada95512e50a93cb19117b8fef03c18ddb8d5908c21a6e176fa806312d14402a2694ed7a020bf122b6c1ab99e4c47c168e20dc7c8d0277fbd474832f8f6f84208b699eeb2d26f320dfc9177a90dec113734293464537d109aa157b2dbd5fe9d66e8fbc3394ad33ca7db37312cc76997f4bf4868bc5e5536f7921629d5f62b9bec7eecf0a911bc555576f275e6fa73526df910410e69f8fef8205807deff3bec6f2a82f1aea28e54b8c6690d65a912e6504d2d5f6bbf15dbeaf7faad2ed1e05cbd8df54da7b73f9e32479911d690aaa792aa9baa3b55860af90cc2200e9ba74f6af71b6fe734512b050000",
+      "08",
+      "00",
+      "00",
+      "00000002ff85546b4fa34014fd2b64f68b267df068e923316eadac4b52a94ba9c6ec6eda815eea28309419dc34a6ff7d2f8355eb3e4c4860e69e73cfb977eef0441e58b6224312b2f5a68462fbe99e87a44140d235eea6679d8d7e365959e97d5a6e2c2b4ba8198d4e4e10c12a96a0699e4053f0b288400ce7b3d6bae0654e0bce9b98a869e866d3b04d7d600c74ab6b7707481490c413963d20fd4eca5c0cdbedbd786bcdf93a019a33d18a78fab2df7e34db79c1ef2192a27da8d94619d1fe40f534e111958c6727f3193a2805140b48294bd0c32b75157e3eccdd62346dad11fcc822a051c4cb4c56be3045c4b398adcb426525c327a27cbef9203367e28c036d3c9d7bc1d192a6157979ac51a12d16058832910d6d8945c52c81055b2deb48fea07df1a797184107775480586a375f1ddfd15eb796da8f52d72dd04eb59177ae1d66713d6dee79ce2cd08e4e8fb50b7f3abfd2ce6e0f30687f0542b24c990f68984065fcb9c1ee9fe75a11a844e53ab8e8e93635fafa208cc35e14f7ad6e18eb1086fdb0d7a556a847830e74562150e4c92abb62d18c6786dea351d708c1b081766868f78d15f4ad9082650f42e880398875d302b26b905f059370ce44ce05ab9b4c6e7c377016813ff7c6a3c05165c4141b795e9bab8a78eb53629108fa4f5dbb2aca382a5527e67a81e38fc6817bedd4433281358db6b30d8e494c130188a6054d414271c957d83472359db9813bf5461364a893bfda2304197e7f7a2504db5c7559aa379905beeb5d28037bc4354d4a0579ac3f08cdd12bd9ed1aff4e33f2fdd12d4ad3a2a0db77312cc7ee54f4bf4828bc5ad536f79206a9d4f62b93ec7eeef06910bc557576f26deef8b7a4def2218602b2e8e3f141b00a7cfc77d8df5404e35d451d21718dd31a894a252aa09e5a962abf35dbb08c816d10052ee4fb986998fdfdf15439aa8c9042269f4baa6faaea54152ac50b0883386c9e3aa9dd6f4daa46b92b050000",
     ],
     [
       "ETag",
-      "N2+veBh5R/uqpbSoGuLbYg==",
+      "mB4q0BLd3mjmuq33nla2cA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15210,7 +14988,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:39 GMT",
+      "Thu, 13 May 2021 15:18:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15229,7 +15007,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-102-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-102-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15244,15 +15022,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "414f83401085ffcb7814120a0623490fad526d42aa523126c6340b4c911698edee92a612fe7b07ecc1a3a7dd79f3cddb37dbc1be6c7208202d8b438bea7455a0791d2e31eab6329a0f498d46b0008d28987cf859e7e82d169e7e4e0ed7947e1cbd779a4da74ce8ec1b6b014107db12ab5c43f0d941236ae4b1cd468d8e8c99931c94e5ea2d7c0c63166aca07619544d16c1e85d05b7fc6e4fe5f235fbd053b4a63dca2c226c3218554b4c3cc2c8705b5a86585b6a65665a86184c746a1a8954211d9acd813c7b527beebdcfa37ce9defba3e931565c294d4309cac391c1832a28ae9c80b8203977a7e32a85f14b1bbc6fcd261cb7b1a1e361cc8a8162dc804ffd253697eebfe0c143afb6482010000",
+      "02ff8d904f6b834010c5bfcbf4aa605292622007934a2bd8d0da86044a09ab4ed4f867b6bb2b2504bf7b674d0e3df6b43b6f7ef3f6cd5ea0aeba1c169056c5778fea7c57a079b3970475df18cd87a44e23388046144c967bfdf2905210ad8275b9d9758fbbaade17cb25133a2bb115b0b8c0b1c226d7b0f8bc40275ae4b1c3418d8e8c99b3b44ab4f9089fc2848596722b6cb6711cace21006e7cf98acff35f2353870a234c1232aec32b429a4a2136626b20b6ad1ca065d4dbdca50c3088f8d42512f852272597127ded49dcca79e3ff1bdfbd97ce633d950264c451dc3db770e07868c6812fae105c1835bbd3a1bd4af8ad85d637eebb0e59aecc3860319d5a30399e05f7aaeccb51e7e01a4f9f32e82010000",
     ],
     [
       "ETag",
-      "DzSde3FF3sOUq+obXw3VoA==",
+      "hXsM7boAIBAChNWnDWikXg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15264,7 +15038,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:39 GMT",
+      "Thu, 13 May 2021 15:18:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15282,10 +15056,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -15302,12 +15073,8 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "db",
-      "72",
-      "43",
-      "40",
-      "00",
-      "00d07fd9e7c804a1f42d96ba8594a07831662d558bb554229dfe7b33fd84737e4089109ee762193b3c8057b09582ba477b972a5ad1d4a92f9e8fcd407bf3c41daacada0e2e092b2ee7b7b23244b2ad3e9356d15edbe6dad1a6d42d68f2c7b794c097a99710b38c363d2d398994a10f54987949624cbc2e309dd6fead66d2fc29e116290571b8c5249517c5d6ea0723adcce1da8b4b4227d3561af7d64274ceccafb8ce93c84197ec82c57ed573f6311482c3e018e4db220b1d83726927fa34f15398c68f20541f9d9cb16fd5a6c4e824eddd033b80efb465782eda275794547507feedc5b251fc0cd070c93003bf7faff361891a010000",
+      "4b",
+      "7282300000d0bb642d8e0215e80eb0e1e32806285036991462f9098100a24eef5ea74778ef09489651cef1d8d5b405efe04e446d9dad0f4c35f04f8e7009fd32253b94584b7f982d57c6e1e10ca36b3dd9a6802ce53b0a3e443f425f4c8ea28b8c1535f31fe206b642cd79bc8f3c0de6b62d1f25ccf4527c6c4f7658a817a2c62611607af36e6eef78cc33167e744e8da47079d64cfdbadfc6e1f059b84baf551baf1b0834ba566a4aba73503192ca9708c92d3970bc16f997bce1f9549dab764c7a48a48443de05d33d6c8a791ef55d67d618d7294b2707ac005d5839508ecb17577ad3b415f8b7e3f1cee82bc0a064a003f8fd03774e88821a010000",
     ],
     [
       "Content-Type",
@@ -15321,7 +15088,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:39 GMT",
+      "Thu, 13 May 2021 15:18:52 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -15340,7 +15107,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -15361,7 +15127,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-103-1620764096226",
+      jobId: "grouparoo-job-103-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15377,11 +15143,17 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02ff85535d6f9b3014fd2bc87b5c1348484212295aa394ac4c09590969354d1332e642dc124cb1695555f9efbb98a66b55697dc2f63de79e733f782677bc48c894c43cbbafa17afa722b62724640d10c5fc3f5be77bd5fa64bfbc6fe3a7cac53ef87995fcd6688e00d4bd2439943478aba6220a7bb6d37ab445dd24a880e26eaf42cbbd31bf52d6734b026a37e7f84440979bae2c51dd2f74a95726a9a27f16e264496032db9ec3271787d371ffa6659895b604a9aef354d9491e627aadf72c1a8e2a298edb6e8a096504570a03c470fffa8497cfe3e7797d3433743f0036740191375a11a5f98828922e5595de9ac64fa4cb4cf3707b27557ee223498c8eb431115f400674642158dd45309c632d8ac0dcf5f6e82f53cf4367eb45d5cbaeb7977b159edd6fed6b8b97403d75034ce41738d9971ae6f3e5e503f01a978a1d5c3e6b9517ee990f771300d01a525b4c1c8b146b437b626711a3b2c1ddbc338b5208ec7b133a4766cb1c90006490c14795a54b368218ac44a9c74348688a640a341cfb1a398da83c871acd46296958cec841ccfc863c5155c70590ac9db0e919bc00bdd280c76fe621ebaba8494d6b9ba688d3505bcf5a8b04004fda7a66313e502959a767b7ee806f345e85dbbed84579051f6b4bdc719a7349780685a61f314546b9160c3883f5fbb1708d613fb790a4a32fdfd4c9a9e372edeb4fc951ee2001bbb4a7fc9360c3cffbbb673425cd3bcd69087f6404ab4bcc7dad0f5f10f22714bdb2ce46ae706bf48fb14400a1514ecf3692258073effdb4e9b8f60dc7dd4910aefb83c4c362aac827689b8aef785dd9b4c86639b6870a53ec41ccb3ab5adc9d164840314eaa5a476f3b1d256ac96af200ce2fc7dddaee35f746357757b040000",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "6b",
+      "6f",
+      "9b3014fd2bc8fbda24109a0791a2354a688b16c806a4d5364dc83686ba054cb1695555f9efbb98a66b5569fd147cef39f79cfbc833bae3558a1688f0fcbe65cdd3975b41d009620ae7103d9781e7fa56b1a3de656c979b5ffefdc5b77cb90404ef58129775c10652b40d6572b18f867923da1a37420ca0d0c032ed81351d9b8ee598f6643a71802859916d797507f41ba56ab9188d8ee2c35c88bc60b8e6724845f91a1f3d8c4775236e195572f45e73043272f489ead74250acb8a896fb081cb49235092b312fc0c33f6a4aceded71e725c0e73003f70ca30a5a2ad54e70b4a5051653c6f1b5d152d9e91f6f9e60345eed65dc70615455b5649854b7662a458e1443dd5cc380f77bee105e7bbd05fc5de2e48a2f5a5ebaf86ebdd76ef0791717de986aea1302998e61a4be34cbf0278807ecaa4e295568fbb70a7fc3221efe3623a02484bd627939939c5d6dc74484666349bdb1392998c9039994db04d4cea9cb2d394300c3c2daa59b812152533dbb14d9298d9c44e4e8993253835a7894520486d878eed393a9ca0c7862bb6e1b21692f71342d7a117bb491cee83f52a76750b196e0bb5e98d750dbcf5a8a04100fda7a74397e50294ba717b41ec86ab75ec5db9fd86b72cc7f429ba871d67b8900cd0b881e129d6f8228581a160e5bb1b00eb8d7d3f26255afc7e46ddcc3b176f46fe4a8f61819d5da57f5114875e70a1ed1c1157b86835e4a1ff403558be81dec0f5e10f20e14afb2ae8c7de0d7fa23e14b28c35aca29f6f13c03af1f9bfed78f90086db071da9e00dc74365a7421bd61f11d7fdbeb02d7b3c9d8c910637ea436e3e9e1cc7d6d5e82ab29255eaa5a5fef2a1d35eac95af2048c2fe033daec35facafa0b67b040000",
     ],
     [
       "ETag",
-      "TMh1VhFfF3W3+5wufIJ/lQ==",
+      "FsNIEM1lOcIHT3mDZMqGKg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15393,7 +15165,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:39 GMT",
+      "Thu, 13 May 2021 15:18:52 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15412,7 +15184,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-103-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-103-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15424,27 +15196,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "61",
-      "4f",
-      "82",
-      "50",
-      "14",
-      "86",
-      "ff",
-      "cb",
-      "e9",
-      "2b2c544263f30396a50dcd14b75673ee0a07c5808bf75e72cef9df3b97cc5ab5d51738e7f09ccbfbbeb08797248fc08545b2dc942876674b540fba18a32c5325e956f05c2218808a2d89ec782dbfd1db4ceeecf5e3e07c3828174f8dfab6dd2642862bcc18b87b88134c2309eef31e729621ad853c2db37c5e7506a85da1879360dc1fde529ff148f7c3a9ef7b1dbf0b07e3b41831c5e615ff8fb5d9c180355f8c31468179885a4b21f81a43d5d73625cb8a144dc94b11a2840aae1e2c052f0b2638376962d6ac865973ea56d3b1ad4ba75e77884c79c854c27382a71312088a2b968ef9966c8206445592e3b8babed238892a27baec0f03c7ae047e05485b9ca438ff1b24c12b46dfe1033b66f09d63192f7375a26efc7befb7e328d4cfa3aebda0fb83908aa23a21417fd09d04de60a4b9d9d17b67a7508e04a72425ea106b96ddba683ad67bae575c674def719528d18090d1efd14b14b8314b251ede00de6dc3c47c020000",
+      "00000002ff8d92dd6e82401085df657a594cb02a2a8917d86a4b823f55bc681a635618100bbb7477d118e3bb77a0d6366d93f60666866f96730e1ce125e121d8b04ee2d702e5e12a46fd5816335445aa15dd72c1158201a8594ce4a46d369e76d7d66854702b1e469d438eed7daf47840a369831b08f102598860aece723709621ad05222d32beaa3a03342dd170eecfdcf13df59908cb7ebcf03ca7ef0de0645c1643a6d9aae2ffb1b63c19b015eb1946289107586ac9a5d862a0ddd2a662599e624d894206a8a082ab07b11445cea410359ad4ea66a356b76ecc6ebd6b365a56ab4b642a02a613c1095ecc492068a1593a137bb2091601b22ac971545d77344ec2ca4959ba63df6a5602bf02a42d4a525cfd0d92e00da3eff0819d33f8ceb14c145c5fa8a137717e3b8e42fd3ceacef1073f08a529aa0be2bba3c1dc7746d3925b9ebdf70f1ad5540a4a52611962dd6c765a6dcb7ccff5569459d37b6c2d0b342060f47b3c241aec88a50a4f6f40b1cc717c020000",
     ],
     [
       "ETag",
-      "BA8L3HqSJ4jXM/NMubZ32w==",
+      "O703Yv+6MMun6gFf8ype7w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15456,7 +15212,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:40 GMT",
+      "Thu, 13 May 2021 15:18:53 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15497,7 +15253,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-104-1620764096226",
+      jobId: "grouparoo-job-104-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15507,20 +15263,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54eb6e9b30147e15e4fd69a55c0c81dca4aacb52b621a5a423a4557751628c49dd024e6d932aaaf2ee3b40d336ebb64a91023edfed1cdb3ca23b9ec7688822beba2f98dc7eb815116a20a6c90a564532ee4dc30df62f039171f9fd7e636ea387931340f092a548b64e5953894252a686f3596b2545b12652882608354d6c37cdae857b5d1b0fba96d505a2626932e1f91dd06fb45eab61bbbd376fad8458a58cacb96a51913dafb737567b2dc52da35ab50f3ddb60a3daefb89ea68212cd457e329f41824231b96019e1296478a1c6d1c743ed1627596b05e00da78c502a8a5c97b940828a3ce1ab4256aa68f888aa9caf1ed0cc9db8e3d0184fe77e78b42459495e1e1b44198b8564aa4875c3584253094fd982c7cbbab2be333e07d373a840821ba2985a1a575fddc0358c654c345b1a3f0b8c3bcc383546fe9971a8e0f9c6dcf7dd59681c9d1e1b5f82e9fcc2f8747d8081e831539ae755f09044292b433f0dd77bbba7258168085217173ddc25661f0fa224ead1a4df71a204b328ea473d8774224c0736b3e38811e0e952bd62915ce4b66df63b66dc31ad2e717a0eed24566231738031ed75b013c7f1c031298dd1ae811e24d7ec8cabb550bc1e30ba0abcd05d84c1dc1f8f42b76a232130c4b33a5cd9c4eb9c1a9a04d07ffada95552ec0a9dc2dcf0fdd60340ebd4bb73e2013b622743bbb87239290543140134932a6993c17310c0d5d4c675ee84dfdd10418d5ae5fec110a0d7f3cbe10c2edba9ab2aefed159d9c0ee95e025498b0ab0a91f90852ddcc456d374d06ed7f8b7d2280846d7e04ea424db3f6ad051d72ee97ff1a9f0d55b9d74ef6ba2d2ed3905dafddac1af81e052d5eae8dbdc0dae51bd14b0844996d3f74f1080abc2fb1f87fd4505305c55f0511adee1c05255ba50c9ea83cbb32a6fcdb630b61d1b5560a9dfd49c4177bf43a546a9c83296eba796ea8b5a4daa2c15ea190445386fbee77f81ea6f49c33fda2a050000",
+      "08000000000002ff8554694fdb4010fd2bd6f60ba8397cc4b92444d3c4a59182038e038ada2a59afc761c1f11aef9a2a45f9ef1ddb0448698b1429f6ce7b6fde1ceb4772c79390f449c0d7f73964db0fb7222035028aaef174046757d6c285e9c75f53d708dadd905ad6e5c9092278c1927493c6509722cf18c8fe7cd65867224f6926441d85ea86deaa1b6d53ef193dddb2db760f8912e268c2933ba4df2895ca7eb3b94fde580bb18e81a65c3698d83c9f371fcc669a895b604a360f7336318d6cbe93f534168c2a2e9293f90c1de412b2256c288fd1c30b350c3e1d6a3738dd34d6087ee00c2863224f54e10b25984822beceb35295f41f49e9f3d50399391367e86bc3e9dcf58f5674539057c71a95da729981cc6355d3565854c46358f2705545d23bed8b373dc7083ab8a112e44abbfeea788ea6ad42aa60a57dcf75dd02ed541bb823ed5061ec6a73d77566be76747aac9d79d3f985f679718041eb2148c593d2b84f83180ad34fcd1dbf9d6941a00a8d54c165476f53a3abf78228e8b0a86bd941a4431074838e4dad4067bd16b4c20028f254a15eb268229256cbe85a466819669bda1d9b599119998013d259c7d2ed300c7bb6c158487635f233e30a465ca642f2aac1e4da1bfbced2f7e6ee70e03b651911c5268e2a734511af7d2a2c1241ffa96b5744b9c04cc5b4c6aeef7883a13fbe72aa0599c09ab2edec1e5724a2b10444d38c6e4041762e426c1ab998cec6fe78ea0e26c828a77eb14748d2fff6f842f0b769d96555fe935151c0ee95e0158df312f0503d105337f5ba6ed60d9bec76b57f2b0d3c6fb0c0ec34cbe8f68f1856d46e15f4bfe429f1e55be5749fd72045b6671764f76387bf1ac14b55a993cbb9e32d4875e441041924ecfd0d42701978ffe3b0bfa808c6ab8a79a4c2775c58268b2c2c836a71f9a6f45bb10dcbea583629c1997a13ebf68cfd840a8d42113690a8a792aa8b5a76aa08e5f2198441dc3777ec9e61f437786706552a050000",
     ],
     [
       "ETag",
-      "ofC7OTv0NVRomirZqv1ybw==",
+      "DeGV3YNeO+zON1b68da33Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15532,7 +15279,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:40 GMT",
+      "Thu, 13 May 2021 15:18:53 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15551,7 +15298,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-104-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-104-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15561,27 +15308,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "50",
-      "c1",
-      "6a",
-      "c2",
-      "40",
-      "10",
-      "fd",
-      "97",
-      "e935a13148a482872ad25a446c5aa120226b3289894966dd9d5444fcf7ce460f3df4d0cbeedb37ef0defed050e4593c21076457e6cd19c1f72e4770762b46dc5562e4d8d45f00059e5a25cec0fc7d3dbe3242d347f55e5321af497793e1a89c2267bac150c2f901558a51686eb0b34aa46b16db7a6db28323e6bc7cc169fd397692c444da92316abf9fc793c9fc2d5fb65d3877f5936570f4adac598a1c1264197421b2a31e1992b6855ad2bf42db526410b9db81be4865aad0c912f8cdf0bfa7e2f0a8341d40f9ea2308c445951a2b8a046c4ab0f09074cacaa984e52104211980e4ad7ac3bbf3bda95b8a38dc37fcd7a6eb6b92f1c9f19edd290c4b3e89205b7941372c9591ab169d18344c937bf167c7b5f7f00c87cce6fc3010000",
+      "000000000002ff8d50c14ec24014fc97e7b58d2d0a09241ca469144388542146d390a57dd485b6afee6e6bb0e9bffbb670f0e0c1cbeeecbc9997996de128cb1426b093d9678dea7495a1595910a1ae73a3f9aaa8d4080ea011192bc58cde827c78fdfa5837b299cb28d87c8f56d3292b74f2818580490b7b8979aa61f2de42290a64db76abfa8d2c33a7ca32f3e54b781f464c14945a62b95e2cee668b103ae797ad3afecb12770e1c6817e11e159609da1495a20326666e0b6a515439ba9a6a95a0865edc0f324575251491cb8ceb7bb7ae3f1a78637fecdd0c47c3312b734a849154b278fdcce1c0901179445f5c10062c503de4aefbfe6c7ada96b8a0d8e2bf66be9dc59785b39341fda488e369b4c9bc73ca806c72c38d8caad18144f0373f48737e773f911e8a39c3010000",
     ],
     [
       "ETag",
-      "NhkqwJ/CdiptXljP674Pgg==",
+      "aBoZCl5/XJuvivIiRCVz6Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15593,7 +15324,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:40 GMT",
+      "Thu, 13 May 2021 15:18:54 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15611,29 +15342,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "d9",
-      "72",
-      "82300040d17fc9b338a8c3d637c512968cb8b52c2f0c901483802401049dfe7b997ec19d73df20cd732244d23deea4011f604ad7c6325f7aadbe4b0aecd2dab9143973e4c614fde788fc72fbac0de912296125289c7c547368e373536e75ad0a14ecb13264818d22f5f5baf5a75862944b23ce861b35f7dee0bb3fcf8df5b8d38d5a247b9b3906ff8e4897758186f060ac15bbb234b95cb54fdec3dc34b1eb5fc39356c0601ced06b273856fd40dd1d16492220b4bd86d7cb1c2d8f3e4d5a9385ebbbb9acdcd9d1fa394e147a50b0487739fa82b7c80ced7012c00195bca8948e8ccdd2886b100fff6a49b5a320fd89194130e7eff00d1fe2dfc1a010000",
+      "08000000000002ff1dd04d7282300040e1bb646d1cd19186eeca5f510123820537190841200a184101a7772fd303bcc5f7de20a6943d1ea4ad39abc02718e2a532a7f35d835472a1693ae2619416bae86b64fa8e62195bb159a3bcbf392c5d0da894dd44fc345f3bdc0b1b62e4c7f2e2e99f487e8e2de9105419d78e74d519f8c33eaa03fb368bb3ccbb0e274ad496978c5fbdbabd65c3498feea4ecae54c19e4a97fb9b7b0f30a75d1dec61cae1d32d0c53f85394db3ad5248985ad58a3202baac36b2357ae51c13267cc5986d8ba24b86934bcf55e471e4670534087248635e234abee600658df14823d483171576b4599817f3b6987864d0354160b26c0ef1fcec01bb61a010000",
     ],
     [
       "Content-Type",
@@ -15647,7 +15363,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:40 GMT",
+      "Thu, 13 May 2021 15:18:54 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -15666,7 +15382,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -15687,7 +15402,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-105-1620764096226",
+      jobId: "grouparoo-job-105-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15695,30 +15410,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .reply(
     200,
     [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2bc8fbb82640de8914ad694a57a4846c84b49aa6091973a14e01536c5a4555fefb2ea6e95a555a3f61fb9e73cfb90f9ec93d2f623223114f1f6aa80e5ff622226704144df175e25ea4fbfe3eb97a825d2d1d37bf38f0afe97c8e08deb024cdcb0c3a52d4150339db6dbb6925ea925642743051c7b6861d7bd4b3c6a381351df57a23244ac892152fee917ea7542967a67912efa642a419d092cb2e13f9ebbbf9d833cb4aec812969bed73451469a9fa87ecb04a38a8b62bedba2835a4215424e79861efe51e3e8fc7dee2ea7793745f0236740191375a11a5f98828922e1695de9ac64f64cb4cf3707b27556ce323098c8eabc080b9ac399115345437528c1b8f2376bc3f5ae36fe7a11b81b2fdc2eaf9df5a2bbdcac766b6f6bdc5e3bbe63281a65a0b9c6dc38d7370f2fa81f8354bcd0ea41f3dc28bf74c8fd38988680d212da6038b646d49e58d32889c62c99f487516241144da2f190f6238b4d07308823a0c8d3a29a450b5158341e8eacf1341c4da77638e80ffb6134e85ba18589faf184819d00399e91a78a2bb8e4b21492b71d22b7be1b3861e0efbce52270740909ad3375d91a6b0a78eb51618108fa4f4dc726ca052a35ed76bdc0f117cbc0bd71da09af20a5ecb07dc01927349380685a61f314546b1163c388b7583b9708d613fb710a4a32fbfd4c9a9e372edeb4fc951ee0001bbb4a7fc936f05defbbb67342dcd0acd690c7f6404ab47c87b5a1ebe31f44e296b659c8cf9de3ff22ed930f095450b0cfa789601df8fc6f3b6d3e8271f751472abce3f230d9a8b00ada25e2bade1776cfb26d7b4834b8521f62bd49efd4b6264793117228d44b49ede663a5ad582d5f4118c4f97bba5dc7bf68ca53317b04",
-      "0000",
+      "1f8b08000000000002ff85535d6fda3014fd2b91f75a2029040a125a11a46ba412d6105a6dd31439e626759bc469ec50a18affbe6ba7a05695d6a7d8bee7dc73ee475ec9132fb76442129e3d3750efbf3d8a849c115034c3d76c2456bb47761fa8dbf96a3f58f8b2707ebf4ca788e09a256951e5d091a2a919c8c966ddcd6ad154b416a283893a8eed769ce1b93d76c676df1dba63244ac8d31b5e3e21fd41a94a4e7abda378371322cb81565c7699284eefbddd79afaac52330257b1f357b28237b5fa87ecf05a38a8b72ba59a38346421d434179ae4b3c51b7c9e5c7dc5d4e8b6e86e01d674019134da9b42f4cc14499f2aca94d56327925c6e7bb03597b37de3cb298c89ba28c4b5ac099b5a58ac66a5f817515ae96961f5cadc2e52cf25741bc9e5f7bcb5977bebad92c83b5757fed859ea5689283e15a53ebd2dc02bca0fe16a4e2a5518ff4b3567eeb90ff79309a80d212da603cb287d4b9b0c7499a8c587ad17793d48624b948462eed27361b0f60b04d8022cf881a162d45e9f4c1765dc7c60cce361e8cfa6e4c47308c91391a2669ea401fc8e18cbcd45cc182cb4a48de7688dc877ee4c551b809e6b3c83325a4b4c9d5a235a60b78ef51618108fa4f4d071de5029574bbfd20f2c2d93cf2efbc76c2379051b65f3fe38c539a4b4034adb1790aeaa5d862c348305b7a0b049b89fd3c062599fc7925bae7dac5bb969fe8110e50db55e64bd651e8073f8c9d23e28ee68d81ecda03a9d0f203d686ae0f7f11895bda6621b71b2ffc45daa71052a8a1645f4f13c126f0f5df76dc7c04e3eea38e5478c7e56152abb01ada25e2a6de37b6d31fb8e70362c0b5fa141b8e9d63db740e9d110a28d55b49ede663a5ad58234f200ce2fc03d3aec33f83a5da137b040000",
     ],
     [
       "ETag",
-      "8IBgj3jfFweUusEImByi+g==",
+      "g7oOvjcWNtQCOy4DIsm1Zw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15730,7 +15426,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:41 GMT",
+      "Thu, 13 May 2021 15:18:54 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15749,7 +15445,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-105-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-105-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15757,11 +15453,30 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8d92dd6e82401085df657a8b291a8b2d8917f8d39614ad55bcb08d312b0c88024b77178d31be7b67a9b54ddba4bd8199e19be59c0307d8247908362c93f8b544b1bf88513de9628cb24c95a45bc1738960002a1613b9d9c55677b66db24dc37c789e5d2e7b66a19c769b0819ac3063601f204a300d25d82f07c85986b416f0b4ccf245d519a0f6851e4efcb13bbca33ee3a1ee8753cf733a5e1f8ec67931648a2d2afe1f6bf3a3016bbe1c638402f300b59642f03506cad53625cb8a146b9297224009155c3d88052f0b2638afd1a45637af6a75ab61b6aca67963351a1691290f984a784ef07442024171c5d231df914dd080a84a721c55d72d8d93b072a24b77e85bcd4ae05780b445498a8bbf4112bc62f41d3eb05306df3996f1325767ead67b747e3b8e42fd3caae7f8fd1f845414d519f1dd417fe23b8391e6e627ef9dbd4239129c9294a843ac9bcdebab9665bee7dae53a6b7a8fad448906048c7e8ffb44811db154e2f10db14d8dbb7c020000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "92",
+      "41",
+      "6f",
+      "82",
+      "40",
+      "10",
+      "85",
+      "ff",
+      "cb",
+      "f48a09b48295c483b66a4dd05a440f6d8c5961402cb07477a931c6ffde596a6dd336692f30337cb3bcf7e000cf6911810beb3479a950ec2f12540fbaf051569992742b7921110c40c5122283643a5c7856806cb0be799cb79c85bddb259d0e1132dc60cec03d409c621649709f0e50b01c692de4599517abba3340ed4b3d9c05fe6832a43ee791ee2773cfebf6bc3e1c8df362c4145bd5fc3fd6964703b67ced638c028b10b59652f02d866aa46d4a9697193624af4488126ab87e90085e954c70dea049c332ed86e55c9a6dab6d5ed98edd2632e32153292f089ecf482028ae58e6f31dd90487005197e438aeafaf344ea3da892e4793c069d602bf02a42d4e335cfd0d92e00da3eff0819d32f8ceb19c57853a5303efbefbdb7114eae751b7dda0ff83908aa23a23c168dc9f05ddf15473cb93f7de5ea19c0a4e494ad4215a66f3da6e39e67bae375c674def7195a8d08090d1ef71972a706396493cbe01221059637c020000",
     ],
     [
       "ETag",
-      "kwg6CYv4ak20KZY/bD0ptA==",
+      "TgPGVL1TeaFbCZU76V5wwg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15773,7 +15488,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:42 GMT",
+      "Thu, 13 May 2021 15:18:55 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15814,7 +15529,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-106-1620764096226",
+      jobId: "grouparoo-job-106-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -15825,27 +15540,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "69",
-      "6f",
-      "da",
-      "40",
-      "10",
-      "fd",
-      "2bd6f64ba270ac0d98438a524a9cd615186a4ca2f410accd1836182ff1ae8950c47fefd80e4968da46b264b3f3de9b37c7f248563c9e930ef1f9e23e8564f7e14ef8a44440b1059e7ea5ab5eba1d547b672d70aef8d9cdb2bfbc7e383f4704cf5892ad371194a5489300646732ae2c12916e5822441985ca3a35cbba69d0a659a76dd3304c244a88c23e8f57485f2ab5919d6af590bcb210621101db705909c4faf9bcba35aa9b44dc41a064f5386715d3c8ea3b592f221130c5457c3e19a3835442328535e3117a78a1cefd8fc7da15ced6950582b73c001604228d55e60b250211877c9126b92ae93c92dce7ab0f32b6fa56cfd37ac389e39dccd83a23cf4e3526b5e934019946aaa4cdb0a8904730e5f35911d9acb42b7738c0083a58320972a6dd7cb15c4bd36652a1bb99f633a5b406da85d6752eb56309dbd1268e638d3dede4e254fbec0e2723edd3ed1106bdcf412a1ee7ce3de64790b97eeaaefd76a8198129745204a74d6a32bd45db7ee83783b0556bf82105df6ff9cd06abf93468d7a13ef781214f65ea398bc5226e860db3c19a3a9de3681a50831a359bedb96e988dd06c856100619d99ed16d997c843c2155c72b91192171d2637aeed5953cf9d38bdae67e565840cbb785998cb8a78ed53619108fa4f5dfb2cca0566cac6653b9ee5767b9e7d6d151bd287050b76e37bdc9190451210cd12b60605c940ccb16964341cdb9e3d74ba7d64e4631f1d1092747e3cbe10bcdd26efb2cadfc4b30738a3ee60947b3880ae5994e6a86df1410c6ad03235ca7ac3d38d8e5eebe8f50aa5f43bd9ef4bff16efba6ef7160db12461bb3f6258a459cfe87fc99ae3f35f85f9830b9d64d99e3d91fdaf3d3e258217ad5027df26967b4b8a",
-      "23174248200ede5f2a04e781f7ff300e9717c1787d310f5e04c571870399650912287699af73bf051b9b67d4db240727ea4dac418dc3d0328d4c11d610aba7928acb9b772a0ba5f21984415c41c7763e63f437008eb9223e050000",
+      "000000000002ff85546b4fa34014fd2b64f68b267d0c7dd04762dc6e6595a4a595528dfb483bd00b8e520699a16e63fadff70256edbabb2624d0b9e79c7bee63fa44ee79bc227de2f1f0218374fbe94e78a44240b1104f21bc4cf8d69f5c9c0f2eadee26ba9effca82c7931344f09c25d93a89a02a4596fa20fbf3592d4c4596b054882a0a55756a5475a3417b7a8f36db46bb8744095130e2f13dd26f954a64bf5edf27af85428411b084cb9a2fd62fe7f54da39ea4e20e7c25eb8739eb9846d63fc87a1a099f292ee293f90c1d6412d205ac198fd0c32b75e57d3ed4ae71b6ae8508de701f98ef8b2c56b92f94f0451cf0304b0b55d27f2285cf371f64668ecca1ab0d2773db3d5ab2754e5e1e6b4c6a8b450a328b54455b6251018f60c157cb3292dc6b5f9dc91823e8e09649904bedfac2744c4d5b4a85ee96da8f8cd22668a7dac03ed30e252c5b9bdbb63973b5a3d363eddc99cca7da979b030c7a5f81543c2e9cbbcc8b2077fddc5debfd50730253e8a40c2e3ad4607a97f6bcc0ebf841b7d9f6020a9ed7f53a6dd6f4a8df6b416be501439ecad50b168b45dc097014aca3d3158ea60d4d6852a3d35be90da31d18dd20f0216831a3d725bb0a794cb982332e132179d96172ed58aeb9709db93d1cb8665146c0b08b67a5b9bc88b73e151689a0ffd4b5cba35c60a67c5c96ed9ace60e85a5766b921230899bf9d3de08e042c92806896b2352848c762854d23d3c9cc72ad893d1821a318fb748f90a4fffde995e06e93a2cbaa7813d71ae38c06e369e1610fba625156a036e50769d006add246556fbb7aa3af37fb7aab4629fd4676bbcabfc5078e33b841432c4dd9f68f181669b472fa5fb216f8e257697eef422779b6174f64f773874f85e0452bd5c9e5dc746e4879e4400029c4fec74b85e022f0f11fc6fef22218af2fe6c18ba038eeb02ff32c7e0ae52ef375e1b764ebc8ee1aa400a7ea5dac478dfdd0728d5c11d610abe792cacb5b742a0f65f20584415c41dbb2cf31fa1b8e0c619a3e050000",
     ],
     [
       "ETag",
-      "J0kCuvM/C+8eNFi+WhLhVw==",
+      "egQpiycOHGAQI8vlWUxufw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15857,7 +15556,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:42 GMT",
+      "Thu, 13 May 2021 15:18:55 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15876,7 +15575,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-106-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-106-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -15895,11 +15594,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "50",
-      "4d4fc24014fc2fcf6b9bb4d594d884831062491ab44534d110b294d75afaf1caee565209ffddb78583070f5e7667e7cdbcccec09caa2d94100db223f7428fb9b1c756c4082aaabb4e2aba5462158805ae4ac7c3df4cbe5fb687a4b93f2edb80ae3f8fb298cc76356a8f4136b01c109b202ab9d82e0e3048da8916d9b8d1c36b24cf7ad61e68b97d9e32c61a2a69d2116ab287a984433385bbf6c6df92fcbfa6cc19eb6096628b149d1a46825ed31d573535089baadd056d4c914150ce261904bea5a21896c666cd7f16dd7f79c917fe7dcfb9ee7b3b2a254e8821a16af961c0e3469512574e482e0b1400e90bb66c3f935d0a6c415ad0dfe6be69ad9faba70d26b54cf92389e4293ccb9a49c9249aeb991961d5a900afee6b0d097f7f90708e0fd39c3010000",
+      "c1",
+      "4e",
+      "83",
+      "40",
+      "14fc97e75148a006629bf4d02a69314d559483314db3c003698187bb8ba636fc7bdfd21e3c78f0b23b3b6fe665668fb02f9b0c269094c56787f27055a07e362042d5555af1d552a3102c402d0a5612a97b2fac6771b658de960f8f3f71f2763d9b4e59a1d20fac054c8e909758650a26ef4768448d6cdb6ee5b09165fad01a265cbf068b2062a2a6cc10eb78b59acd5701f4d62f5bbbff9765d35bb0a324c21c2536299a14ada41da63a340595a8db0a6d459d4c51c1201e0685a4ae1592c866c6761ddf76fd913376c7ce8de77b635656940a5d52c3e2f885c381262daa88beb9208c582007c85df3e1fc1a6853e2823606ff3573cd6c7359383f68544f92389e4293cc39a7bc23935c73232d3bb42015fccdcb529fdffd09c97a487fc3010000",
     ],
     [
       "ETag",
-      "VqySSZ7C3oBkWwUHQQzOHQ==",
+      "oosD5ImAUdGH8iJOzUbY+A==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -15911,7 +15614,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:42 GMT",
+      "Thu, 13 May 2021 15:18:56 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -15929,10 +15632,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -15948,11 +15648,17 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "1d",
-      "d0",
-      "db",
-      "6e",
+      "90",
+      "d9",
+      "72",
       "82",
-      "300000d07fe9b3180474ebde28182e2aae8a4e9e9a821d5622f44204baecdf67f609e7fc005a554c6bd2770d6bc10798a803e7d57c23de11a92b78af451e5c6f867f7503d9c2fb7058b7cb5290aa5999d84b1ef6ae68bf098f42a9dd6211de0e5c4ea3c2ab7b9deea8b4acc4a0d6f4f658c447740bba7d842e7ca3849b92c28fe19a1fcf4c89d2ce2e85dfa805c5720a70fe44850861e2207c6e3f13e2537d3263f8cca2d0f503acf6a9633b62c4740b3d2b1f1f97fe6a0e963fc9e1ad7134d5038fa845087ab8f2590eb5b73ce54d8a26225394811960a3e08a69c25f5c7709e10cfcdb493f09f60a408c2aa6c0ef1fe2ff4cc61a010000",
+      "30",
+      "00",
+      "00",
+      "ff",
+      "25",
+      "cf",
+      "e2a086ab6f62b92fc728425f322984436c888023e0f4dfcbf4077676f70d4896d1bec743db50063ec044b6da3a5b7b5cd571994fd09ece2c7ceddc9f5b9e365e6ef8a87d3298caf2510c95604f37b6da4c776e9c86e2bb62c6f11e0766fb54e6eaf692840026c8be3412814e6687d788b949da7ba5ef198f520e04d67897ba2733b4fcb47cd587f9ecb4b2509fbf904a3f113c1aa21ac9cca1a3b8eb86877532318af9408a6d3ad8615c668bb6c946518f8483f774dd2be27ba355300a930582c76a1f6f2dad8822471436896efa07a88015a023af3bdae37ac9dd499ab602ffed7898385d06e89474b403bf7f2c9d4e011a010000",
     ],
     [
       "Content-Type",
@@ -15966,7 +15672,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:42 GMT",
+      "Thu, 13 May 2021 15:18:56 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -15985,7 +15691,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -16006,7 +15711,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-107-1620764096226",
+      jobId: "grouparoo-job-107-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16016,31 +15721,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd",
-      "2b",
-      "c8",
-      "fb",
-      "da24e4d11022456b94d03653201d21ada66942c65ca81bc0149b545595ffbe8b69ba7693d64fd8bee7dc73ee8317b2e7454ca624e2e9630dd5f39707119133028aa6f87afda45c7bf82897f9dcfeb6f4f77bffeac64f673344f08625695e66d091a2ae18c8e96edb4d2b5197b412a283893a7dd3eaf4c703d31a8f4c7b3c188c9128214bd6bcd823fd5ea9524e7bbd9378371522cd80965c7699c8dfde7b8741afacc40330257b1f357b28237b9fa87ecd04a38a8b62b6dba2835a4215424e79861efe50e3e8e263ee2ea7793745f08133a08c89ba508d2f4cc14491f0b4ae7456327d21dae7bb03d93a6b6711184c64755e8405cde1cc88a9a2a17a2ec1b8f437aeb1f22e37be3b0f561b2fdc2eae1d77de5d6cd63bd7db1a77d78eef188a461968ae31332ef4cdc30beac720152fb47ad03c37caaf1d5afd3b988680d212da60689963da9f98769444164b26c3f32831218a2691754e8791c9ec118ce20828f2b4a866d1421434c67e2671128e2c1bc21142c3c8ead3d06216503c4c2c3b22c733f25471054b2e4b2179db2172e7af02270cfc9db798078e2e21a175a696adb1a680f71e151688a0ffd4746ca25ca052d3ee951738fe7c11ac6e9d76c26b48297bde3ee28c139a494034adb0790a2a57c4d830e2cd5d6789603db19b535092e9cf17d2f4bc71f1aee56ff40007d8d855fa4bb681bff2aeb49d13e29666b5861cda0329d1f23dd686ae8fbf10895bda6621df778eff83b44f3e245041c13e9f268275e0f3bfedb4f908c6dd471da9f08ecbc364a3c22a689788eb7a5fd90373608ff5bfaa68a5fe8e0dfbe3c9a96d4d",
-      "8e2623e450a8d792dacdc74a5bb15abe813088f3f774bb8ebf01a6368db57b040000",
+      "08000000000002ff85535d6f9b3014fd2bc87b6d1208019248d11aa574654b4807a4dd344dc81843dd02a6d8b4caaafcf75d4cd3b5aab43e61fb9e73cfb91f3ca13b56a5688e1296dfb7b4d97fbae5093a4154e21c5ef7ec8f7139b6cdc0b8fe5195b7f75fcb487c7b5c2c00c13a96c0655dd081e06d43a898efc261def0b6c60de703483430746760d8637d66cc74d3b2ad1910052db235abee807e23652de6a3d1517c98739e1714d74c0c092f5fde470fe351ddf05b4aa418bdd51c818c187da0fab9e0044bc6abc52e0407ada04d4c4bcc0af0f08f9a26a76f730f192e8739801f18a19810de56b2f3052908af3296b78dca8ae64f48f97c7540a1bb7657914678d196555ce1929e6829963896fb9a6ae7c176a379fef936d82c236febc7e1eac2dd2c87abed7ab7f143edfac20d5c4de2a4a08aab2db45375f3e102fa291592554a3dea9e3be5e70e79ef07d311405ad03e183bba8d8da93e4bb2c421d9d4b4924ca749324d1c0b9b894e66133a49138a81a744150b57bc9ad1699666ba13133d35e389ad9b31b609898d896ee9638b8e2dc7408713f4d83049cf98a8b9607d87d075e0456e1c053b7fb58c5c554286db429ef5c6ba025e7b94502080fe53d3a18b320e4a5dbb3d3f7283e52af2aedc7ec26b9a63b20fef61c6192e0405346ea07992361b9e42c390bfdcb867005613bb3c06059aff7a425dcf3b17af5afe428f60809d5da9be288c02cfffa2ec1c1157b86815e4a13fa01a2cdf406de0faf01b90b0a57d16f47de7063f51ff14d08c36b4221f4f13c02af0f1df76dc7c00c3ee838e907087e521a253210ded9788a97a9fd986695b8e8914b891ef628e611fdbd6e5e832d29256f2b9a47ef3a1d25eac152f2008c2fc7dd5aec35f3af955207b040000",
     ],
     [
       "ETag",
-      "HwtM93qsDmA9JDRkkRGPRg==",
+      "yiz1P263R1WXnmjqJmTsKw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16052,7 +15737,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:43 GMT",
+      "Thu, 13 May 2021 15:18:56 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16071,7 +15756,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-107-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-107-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16083,11 +15768,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff8d92dd4ec2401085df65bc2db120146de205082211104bfd498c216b3b2dc5b65377b72a21bcbbb315d1a889de7467b6dfec9e73da353c2679082e3c24f1538972b517a3be348587aa4cb5e2a5a05c2158805ac44c26b7ada31b6f705e775e69bcdf3bf0f2eb9e8e8f8f9950c1023301ee1aa204d350817bb7865c64c86301a56596cfabce02bd2acce6ccf7869301f71985a69f5c8d469deea80f1b6b37180a2de615ff8fb1fb8d054b7af03042897980464b216989811e1a9b4a64458a3545a50c504105572f6249652124518d776a75bb5dab3b0dbbed34ed23a7d170984c29103aa19ce1ab190b044d5aa41ebdb04d3080ac4a761c55cf679355583931e570e23bcd4ae05780b545498af3bf4116bc10fc1d3eb06d06df39915199eb1d753abae8fc761c87fa7954afe3f77f104a73543bc41f8efb33bf339e1aee7eebbdbbd2a8a69238498526c4badd3c6cb51dfb3dd7133259f33dae96255a1008fe3dce120d6e2452859b3762037d477c020000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8d92416f82401085ffcbf4584cd02a56120f686d4ba256110f4d63cc0a03a2c0e2ee62638cffbdb3d4daa66dd25e6066f86679efc111b6491e820dab24de95280e5731aaa92e3c9465aa24dd0a9e4b040350b198c89d6836ace9e6b0595d47db76d47ff61bee7edaed12218335660cec234409a6a104fbe50839cb90d6029e9659beac3a03d4a1d0c399efb9e307ea331eea7e3c1f0e9dde700027e3b21832c59615ff8fb5c5c9800d5f7918a1c03c40ada5107c838172b54dc9b222c59ae4a508504205570f62c1cb8209ce6b34a9d5cd76ad6e35cc4ebd63deb4ac5687c894074c253c27783e2381a0b862a9c75fc926580488aa24c75175ddd338092b27ba74c7bed5ac047e05485b94a4b8fc1b24c16b46dfe1033b67f09d63192f7375a1ee874fce6fc751a89f47dd39fee00721154575417c773498f9ce68a2b9c5d97befa0504e04a72425ea10eb66f3b6d5b6ccf75cfb5c674defb19528d18080d1eff19828b023964a3cbd018121e4e27c020000",
     ],
     [
       "ETag",
-      "iX59WRGK16xoM/D3RnVDtg==",
+      "qr426Qjyjb+fk7fCYT2IvQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16099,7 +15788,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:43 GMT",
+      "Thu, 13 May 2021 15:18:57 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16140,7 +15829,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-108-1620764096226",
+      jobId: "grouparoo-job-108-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16151,11 +15840,28 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff85547f4fdb3010fd2a91f70f48fd91a66d9a5642ac6b03eb5452481310daa6d6769c6048e3123bb00af5bbefe250a0631b52a4c4bef7debd3b9ff384ee7816a101223cb92f58bef9742b08aa21a67002bb2ddeb9b0bb57f1ed6c1ede8fdbbf9a19fff6f5f1e80810bc6449bc5aa7ac2e4591532607e1bc91e4a258e35c883a08d55ba6536fd996d9b33b66dfb62c1b8892a5f194677740bf516a2d07cde62e7923112249195e73d9a062f5b2df7cb09aeb5cdc32aa64733f6713d2c8e607598f5341b1e2223b0ae7e0a0902c5fb015e6297878a546e4f3be7683e3552301f003a70c532a8a4c95be40828a2ce649916b55347842dae79b0f3477a7ee283046b3d00b0e9678559297870696c662913359a4aa662ca1a898a76cc1a3651559df1927feec0c22e0e0064b2697c6d557d7770d63a761fc284cb3cd8c6363e88d8d7d8d8967849ee7ce03e3e0f8d038f567e1b9f1e57a0f03e6232615cfb4f500939495b69fdb3b797faa25012bb05205173dd3c62dc7ec9398f468ecb4bb243619210ee975719b98b4df619d88300c3c55aa6b16ce44462da74dbac4618e15d93189ba26e9c5adbe45ccc871689bb28edd337bad086d6be831e78a8db95c0bc9ab16a32b7f12b88bc00fbdd1307075193186368e2b7365116f7d2a281240ffa96b5b46b9804ce5794dbcc0f587a36072e95623326509a69bf93d0c498c53c9008d73bc628ae5672282a6a1f3d97c124c66de700a0c7deee73b844483ef4faf8460b3d65d56fa8d4ea6b3616077b4831de412a785c63c541fa8d5e802625bfbb7ccd0f787d7901ae739defc1183726c4dff4b068dd7abcae64b465466dbad2cb4fdb985a786e04e55eae82274fd6b546df92c6639cbe8c7e303601df8f8dfb0bba700869b0a79a482354c2b9565169ab36a6af94afbadd896d9311d0b6970aedec52ccbdc1d4fa9512ab215cbd47349d53dd59d2a43857c01411086cd9b78a710fd0dc450876e29050000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "7f",
+      "4f",
+      "db",
+      "30",
+      "10",
+      "fd",
+      "2a",
+      "91f70f68a54d7f26ad84582981452b294b5310daa6d6769c6248e2623ba00af5bbefe250a0631b52a4c4bef7debd3b9ff384ee781ea301227c795f30b9fe742b08aa21a6f11276d7d9b8d1f7cf3e8f8fef3bdf1eef2e0219f1d6e3e1212078c952385ba5ec40894252a606b3697d2945b1c2528803103a68daee41b3d7b2fbcdbeddeef6ba7d202a9626639edf01fd46eb951a341adbe4f5a510cb94e11557752ab297fdc643abb192e29651ad1abb391b9046353ec87a940a8a3517f9e16c0a0e0ac5e49c6598a7e0e1951a932fbbda758eb3fa12c00f9c324ca928725dfa02092af2842f0b6954d1e009199f6f3ed0d41b7ba3c81a4d6641b4b7c059495eec5b5859f3b964aa4875cd5a4051094fd99cc78b2ab2bab34ec3c93944c0c10d564c2dacabaf5ee859d656c3fa59d8769b5947d63038b17635fcc09a0581378dacbda37deb2c9ccc2eace3eb1d0c988f99d23c37d6234c5256da7e6eaffffe544b02d660a50ace1dbb879baedd27097168e2b6bb24b119212e71bab84d6cdaefb04e4c18069e2ed50d0be722a72db74dbac4656e2bee2524eedac4499afd16b163d7a56dca3a3dc7769a31dad4d0a3e49a9d70b5128a572d4657a11f79f3289c05a361e49932120c6d3ca9cc9545bcf5a9a14800fda7ae4d19e5023295e7e50791170e47917fe9552332664b4cd7d37b189204a78a011a4b9c31cde4b988a169e86232f5237f120cc7c030e77eb1452834f8f1f44a88d62bd3656ddee8743c1946bd8e71b0855ce2b4309887ea0335eb5d406c6aff961986e1f01a526329f1fa8f1894d333f4bf643078b3aa6cbe644465b6edaa8536bf36f0d410dca94a1d7d9f79e135aab642",
+      "9630c972faf1f800d8043efe376cef2980e1a6421ea5610dd34a5599854a564d2dcf8cdf8add6c3b1da7870c58ea7731a76d6f8fa7d4281559c672fd5c52754f4da7ca50a15e401084610bfce00ca2bf0151223e5829050000",
     ],
     [
       "ETag",
-      "1i4Q65WfjOSUqD3x/niJHw==",
+      "ymL/9IG+LBq4KwkPNrTi2w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16167,7 +15873,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:44 GMT",
+      "Thu, 13 May 2021 15:18:57 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16186,7 +15892,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-108-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-108-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16201,15 +15907,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "8d",
-      "50",
-      "c14e834010fd97f128249454d4263d5883daa46994ca45439a2d9d525a607077b021847f7796f6e0c18397ddb76fde9bbcb71d1cf36a0b13d8e4d95783babdca90df2c88d034051bb96aaa0c8203c82ab34afdc14fad5a857178735d8edba0d887de693a158549f7582a9874b0cbb1d81a987c7650a912c5b65eeb61a3c8b8ad2d335fbe87cf612444495b4b2ce3c5e261b608a1777ed9eae3bf2c49efc0813611ee506395a24d516b3a60ca735bd0a8b22ed035d4e8140d0ce26190696a6aa5895c61dc9177e78e02dfbb0dc6de7de0fb81280b4a15e75489385e493860625544749282e08b400f50baee86f37ba06d890b4a2cfe6b36b2b3e4b270d6329a574d12cfa04de69d533e924dced28875830ea44abef925e7f3bbff010c2463d7c3010000",
+      "02ff8d50c16e824014fc97d72b2460a3a9261e6a635b136a04a597c698151f08026fbbbbd858c2bff72d7ae8a1875e7667e7cdbccc6c0ba7bc3ec004f679f6d9a0badc6568420b22d44d69345f926a8de0001a91b1328de4faf81cca95889b4df1fd1ebe05b373389db2422747ac044c5a48732c0f1a261f2dd4a242b6ed76aadfc832739196592c37f39779c44445074b2ce320789c0573e89c5f3679fa9765db3950d03ec21415d609da145251818959d8825a54b2445753a312d4d08bfb41a6a8914211b9ccb8bef7e0faa38137f6c7defd70341cb3b2a444989c6a16c76b0e07868c2823fae282306081ea21774dfbf3dcd3b6c40d6d2dfe6be6dbd9f6b6707631a8578a389e469bccbba67c229bdc7023a31a742011fccdafb9b9bebb1f62ba68eac3010000",
     ],
     [
       "ETag",
-      "brZtFyaSEUE5+m4y6lhE0w==",
+      "fRpShFQpPaUuTjzVQMLBvQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16221,7 +15923,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:44 GMT",
+      "Thu, 13 May 2021 15:18:58 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16239,10 +15941,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -16265,7 +15964,9 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "30",
       "00",
       "00",
-      "d0bb64ad0ee123a43b62a70a685a0135b06102440dc8a7a018e8f4ee757a84f77e00cb32def7c9bd29790ddec0c854b4c8165e6be1e492b174df9b1c1e6d55f1b89597084266d8df83e21c9156d7daa43b54a59bbd9e54fbc3e0bdaf3623cf0cbf25a9ee84944dd90d1fa3f83cbf7dae2be37cd6d5a51f3e641e60f774177d00052da3c46e2acdd89adba241989417b9ac57a8295cd31dd289e63b0695c378bb3ae584aa25b91245e6789a878fc2ca9f5c73636f3c61127b44168cf2e10b766467314b09820fbf11024666e7b7c282e5632d2f2698012e5bd1f13e112fae66203403fff6e43eb6fc158039eb78077eff0054423b4f1a010000",
+      "d0",
+      "bb",
+      "646d1d2418a03bc028f251fc40914d062140001503d660a777afd323bcf703d22ca37d4f865b43afe0138ca9ac4fb3a9db69262973328fdb0c2d657fff4a5ff0a0973a93e14723493b4731ccad26147a4a2ef622161bcc0eb5e94496bf58236c9315ec365fce53e2cd59d41aaa6fe12bc809b352c9501f174e1ff72098f124aa5c8e51605964286926eaa7d39690e3c0aec53143c568a5e5c9576ce956b1ad7d4cc26bc1e07ac4bd9454553108aeb1c2f0ce5b43155e8ebd7e1473b98e9877872d1d56f98cefd1320c54f61d77e1eee9fa184c00151de3b427eccd85735d9f807f3b19c68ebe034c9a72cac1ef1f764c33041a010000",
     ],
     [
       "Content-Type",
@@ -16279,7 +15980,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:44 GMT",
+      "Thu, 13 May 2021 15:18:58 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -16298,7 +15999,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -16319,7 +16019,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-109-1620764096226",
+      jobId: "grouparoo-job-109-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16337,11 +16037,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "02",
       "ff",
-      "85536b6f9b3014fd2bc8fbb8262184908714ad514ad768095981b49aa6091973a16e01536c5a5555fefb2ea6e95a555a3f61fb9e73cfb90f9ec91d2f13322731cfee1ba89fbedc8a989c105034c3d747615dd5e7fb342c57d58ff8c60abf5e26e3c7c50211bc65495a5439f4a4686a0672be0ffa592d9a8ad642f430516f68ce7a43c732278e6dce1ccb729028214f37bcbc43fa8d52959c0f0647f17e26449603adb8ec3351bcbe0f1eac41558b5b604a0ede6b0e50460e3e51fd960b461517e5621fa08346421d4141798e1efe5193f8f47dee3ea7453f43f003674019134da95a5f98828932e55953ebac64fe4cb4cf370712b81b77151a4ce44d5146252de0c448a8a2917aaac038f7775b63ed9deffced325cefbc28585db8db657fb5dbecb75e605c5fb8be6b281ae7a0b9c6c238d5370f2fa89f8054bcd4ea61fbdc2abf7468fd71302d01a52574c168623a74383567711a4f583a1d8de3d484389ec693311dc5269bd960273150e46951cda2a52847337b6a9b661c25ce388dec89ed4498641c39330b6ca0294dc68c1c4ec863cd159c715909c9bb0e916b7f1dba51e8efbdd532747509296d7275d6196b0b78eb51618108fa4f4d8736ca052ab5ed5e7ba1eb2f57e1facaed26bc818cb2a7e01e679cd25c02a2698dcd53506f45820d23de72eb9e21584fece73128c9fcf733697bdeba78d3f2577a88036ced2afd2541e8afbdefdace117145f346431eba03a9d0f20dd686ae0f7f10895bda6521977bd7ff45ba271f52a8a1649f4f13c13af0f9df76dc7c04e3eea38e5478c7e561b2556135744bc475bd2f6ccbb427c311d1e05a7d88cdece1b16d6d8e36231450aa9792bacdc74a3bb146be823088f3f774bb0e7f019d769f687b040000",
+      "85",
+      "53",
+      "6b",
+      "6f",
+      "9b",
+      "3014fd2bc8fbda04421e9048d19aa574654ac84648ab6a9a90712ed42d608a4dabaaca7fdfc5345dab4aeb276cdf73ee39f7c133b9e3e59ecc48c2b3fb06eaa72fb72221270414cdf0d5b928ddf3ebcb6fd623ab38bf516af5a3a1d97c8e08deb2242daa1c7a5234350339db6dfb592d9a8ad642f430516f604d7b83896d4d07536b389e8ca7489490a72b5ede211d135672669a47f17e26449603adb8ec3351bcbe9b0fb659d5e2169892e67b4d1365a4f989ead75c30aab828e7bb2d3a6824d4311494e7e8e11f759f9cbecfdde7b4e867087ee00c2863a22955eb0b533051a63c6b6a9d95cc9e89f6f9e640b6deca5b46061379539471490b3831f654d1583d55609c879bb5e107e79b70bd88fc4d106f9717de7ad15f6e56bb75b035ae2ebcd033144d72d05c636e9cea5b8017d4df8354bcd4ea51fbdc2abf74c8ff38989680d212ba60ec58133a70ad6992260e4bdde138492d48123771c67498586c3a82d13e018a3c2daa59b4c49a29b55d2761b1bd9f403ca2691253cb19c5ee9451668fc643db9d90c30979acb982332e2b2179d7217215fa911747e12e582e224f9790d22657679db1b680b71e151688a0ffd47468a35ca052db6e3f88bc70b18cfc4baf9bf00a32ca9eb6f738e394e612104d6b6c9e827a2df6d830122cd6de1982f5c47e1e8392cc7e3f93b6e7ad8b372d7fa54738c0d6aed25fb28d423ff8aeed1c1197346f34e4a13b900a2ddf606de8faf00791b8a55d16f26be785d7a47b0a21851a4af6f93411ac039fff6dc7cd4730ee3eea4885775c1e265b155643b7445cd7fbc21e0c5d7be8100daed587d8d0991cdbd6e668334201a57a29a9db7cacb4136be42b088338ff40b7ebf017786b8b8c7b040000",
     ],
     [
       "ETag",
-      "wo2VrFUfTnCpKbh2T+Qd5w==",
+      "7Hn8FYVB0wcpiihttLJuag==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16353,7 +16058,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:45 GMT",
+      "Thu, 13 May 2021 15:18:58 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16372,7 +16077,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-109-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-109-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16388,14 +16093,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "8d",
-      "92",
-      "dd4ec2401085df65bc6d632158a0091720a8457e4b511343c8d24ea1d876ebee564308efee6c45346aa237edccf49bed39a7ddc3539c85e0c02a5e3f172876676b54535d78288b4449bae53c930806a0626b221fc4b8dbddfa597f7b7feb35fa93f33bb7594c5b2d2264b0c19481b38728c62494e03cee216329d25ac09322cd96656780dae57a38f33d77744d7dca43dd8fe68341bb33e8c1c1382d864cb165c9ff636d713060cb571e4628300b506bc905df62a05c6d53b2344fd094bc10014a28e1f2c15af022678273932666c56a9a15bb6ad5ed9ad5b4ab559bc884074cc53c23783e2381a0b86289c75fc92668409425398ecaeb0b8de3b074a24b77e4dbb552e05780b4457182cbbf4112bc61f41d3eb06306df3996f2225327ea6a306eff761c85fa7954b7edf77e1052515427c47787bd99df1e4e34b7387aefec14ca89e094a4441d62c5aa352eeab6f59eeb25d759d37b1c250a342060f47bdcc40a9c8825120f6f975b87ab7c020000",
+      "ff8d92dd4ec2401085df65bc2da12854db840b1054c28fd8962b43c8d24ea1b8edd6dd2d8410deddd98a68d4446fda99e937db734e7b8097348fc18365ba7a2d51ee2f56a89f4ce1a32ab956742b44ae102c40cd56440ec3619cb80ab7bd89cf839d5d7793babb6bb78950d11a3306de01921479acc07b3e40ce32a4b548f032cb17556781de17661884fe60724f7d2662d34f66a351a73beac3d13a2fc64cb345c5ff636d7eb46023963e2628318fd06829a4d860a407c6a66259c1b1a64429235450c1d583951465c1a410359ad41ab65b6b3897b6db70edab96d37289e422623a1539c1b3800482169a715fecc8263804c8aa24c74975ddd2388d2b27a61c4c42a75909fc0a90b624e5b8f81b24c16b46dfe1033b65f09d639928737da6ee468f9ddf8ea3503f8fea75c2fe0f42698aea8c8483713f083be3a9e1e627efddbd46359582925468426cd8cd9bd6b563bfe77a2b4cd6f41e4fcb122d8818fd1e0fa9062f615ce1f10dab2a74817c020000",
     ],
     [
       "ETag",
-      "XrODDjTnJjWKR8JP/VI9uQ==",
+      "KTKdf9sevDNRlSw0/9f/9w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16407,7 +16109,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:45 GMT",
+      "Thu, 13 May 2021 15:18:59 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16445,7 +16147,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-110-1620764096226",
+      jobId: "grouparoo-job-110-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16459,24 +16161,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "54",
-      "fd",
-      "6f",
-      "da",
-      "30",
-      "10",
-      "fd",
-      "5722ef9756e3237c858054758c661d120d5d0865d53681e35ca84b8853dbe9862afef75d92d216b55ba548897defdd7b773ee781ac7912923e09f8ea2e03b9fd702b025221a0e90a77f504267c2ee7374d33faf37d1df08f5cf1c1c9092278ce527493c6505522930c547f36adada4c8522a85a862a26aa361561b56d3ec5a6db367359b161215c4d198276ba4df689daa7ebdbe17afad8458c54053ae6a4c6c9ef6ebf7cd7a2ac52d30adea879a759451f577544f63c1a8e62239994dd141a6402e6043798c1e9ea961f0e930778dd34d6d85e07bce803226b244e7be30051349c457992cb292fe03297cbef8205367ec0c7d633899b9fed1926e72f2f2d8a0ca582c24a82cd615638945453c86050f9765245d1b5fbcc90546d0c10d55a096c6fcabe33986b1cc413f33d36c31e3d418b867c6217fe41a33d775a6be71747a6c9c7b93d9a5f1f9fa0083c643509a27856d9f0631e4961f5b3b7a7da239816ab45106175dd3a20ddbec0551d06591ddea049109416007dd0e6d0526ebb5a11d064091a7f3ec058b262209ecc836c316588dd08646d4b229b09e65d9766421dcee5a11b35b5d68915d85fc965cc31957a950bc6c2f997b23df59f8decc1d0e7ca72823a2d8c2b3d25c5ec44b9f1a8b44d07feadae5512e50293fab91eb3bde60e88fae9c723cc6b0a26c3bbdc3018968ac00d154d20d68901722c4a691cbc974e48f26ee608c8ce2cc2ff70845fa3f1e9e09fe362dbaac8b77ae65b50bfd3de08ac65981b82f3f48a34376bbcabf530c3c6f708db2544aba7d3bfd9bf90b7cb12a2d3ee9915c6dbf6a92ddaf1d3e158277a9cc4ebecd1cef9a945b1e44202161ef8f0e828bc0fbff84fdfd4430de50d4511ad738a94ce5",
-      "2a4c4239b17c53f82dd94db3d3e99aa4004bfd2a86b3ba3f9a3c479e113690e8c792cafb59742a0f65ea0984411c3477e49e63f42facbb741721050000",
+      "000002ff85547f4fdb3010fd2a91f70f88d22684a66925c43a082c1aa490a630d8a6d6712fc590c6c5764008f5bbef9c507e0836a448897defdd7b773ee791dcf0624a7a24e5b3db12e4c3976b919206014d6766777479721fee6f5cfd3cdeb83c3e0862f9e3f6e074670711dcb0149d2f72d854a2940c546f346ccea42817540ab18989361dc7de74bc2dbbeb746db7edb5bb4854906747bcb841fa95d60bd56bb556e2cd9910b31ce882ab2613f3e7fdd6dd566b21c53530ad5a6f355b28a35a9fa8eee68251cd45b1331aa28352811cc39cf21c3dbc50a7e9d7b7b99b9cce9b3304df710694315116daf8c2144c14199f95b2ca4a7a8fa4f2f9ea830c83a3602fb1f606a328599bd0b9214fd62daaacf158822a73ddb0265854c67318f3e9a48e2c6eac8378708c1174704515a88975fe3d8803cb9a18d0efd2b65d66ed5afd68df7acb0f236b1445c130b1d676d7adc378303ab1be5dbcc1a0f12928cd8bca7642d31c8ce5a7d686ef4fd410a8461b7570dcb13deaf87637cdd20ecb7cb79d6636a4a99f76dad44d6dd6dd86ed690a1479da64af58b41045ea67be3d75c173a63e3899eb53605dcff3fdcc43b8dff132e6bb1d70c9b241ee25d7b0cfd542285eb7979cc761128c937814edf593a02a23a3d8c2fdda9c29e2b54f8d4522e83f752d4d940b54326715464910f7f792f02ca8c7e30866943d0c6f7140329a2b403495740e1ae4b19862d3c8c9601826e120ea1f21a33af393154291deafc71742f2b0a8baacabb7d1f2b62bfd15e08ce66585b8ab3f88d326cb65e3df29fa71dcbf40592a257df838fd87f92b7cb5aa2d3eeb11a3b65a6d91e59f253e0d8277a9ce4e4e47417c41eaad18329050b0cf4707c155e0f37fc2ea7e22186f28ea288d6b9c54a68c0a93504f2c9f577e6bb6e376b71d975460a9dfc53c776b75342687c9087328f45349f5fdac3a6542a57a066110072d0aa3438cfe057fcdab8321050000",
     ],
     [
       "ETag",
-      "tOeOiWrWh20fxXkbi+isiA==",
+      "bUZPwID+hXM+ZMFERrKqFQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16488,7 +16177,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:45 GMT",
+      "Thu, 13 May 2021 15:18:59 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16507,7 +16196,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-110-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-110-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16521,11 +16210,22 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "0002ff8d90414fc2401085ffcb786d635b4cd5261cc4102521048a1c8c216469a7b5d07696dd2da669f8efce2e1e3c78f0b23bfbe69bc97b3bc0b16a7348605f95a70e557f53a259d92245ddd546f325a9d5081ea0112593fdacbc3dada37cf25e3ca8e5285e05b90c56e331133afbc44640324051619d6b483e066845833cb6db29b79131d34babcc166fd39769ca4243b915169bf9fc69329fc2c5fb35268fff1ad95e3c38d03ec50215b6195a1752d1013333b301b568648dbea64e65a8c1c1ae512aeaa450443e2b7e18067e1847c17d7c173cc65114335953264c452dc39b359b034346d4297d7140881850aee4ac853bcf2c8f5c88b303acb7bf7ba1ed6d7f164e7a837aa988ed69b4ce82abcb67b2ce0d2732aa430f32c1dffc5a99ebfbf20d690edbffc3010000",
+      "00",
+      "02",
+      "ff",
+      "8d",
+      "90",
+      "41",
+      "6f",
+      "c2",
+      "30",
+      "0c",
+      "85",
+      "ff8b776db516045291388cadda90108332364d134221b85da1adb3240521c47f9f1376d861875d12e7f9b3f55eceb02f9b2d0c6053165f2dead34d8176ee8a0c4d5b59c397a2c620048056144cf677325d2e660ff931bb4d5e9f5591be99f7f970c884919f580b189c212fb1da1a187c9ca11135f2d87aadfd46c6ec4939653c7d491fd38c859ab64e982e2793bbd124854bf06b4cedff35b2ba04b0a34d86396a6c243a174ad30ea51dbb8046d4aac2d050ab251af0b06f149a5a253451c84a18c75118f73b51122751b7d7ef254c5624852da96178b9607360c98a2aa32307840e03da979c35f7e781e5ae0f71f080f3f6772f76bdd5cfc2d1c9a29969627b069db3e8eaf29e9c73cb89ac6e310029f89b9f4a7b7d5fbe014e8ffb35c3010000",
     ],
     [
       "ETag",
-      "yIg/qS2dBYf8rP36Q0dp0Q==",
+      "6jcEUSPDfwR/9VOpgEWsYQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16537,7 +16237,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:45 GMT",
+      "Thu, 13 May 2021 15:18:59 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16555,10 +16255,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -16572,7 +16269,17 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff1dd0cb7282301400d07fc95a9c0056a03bf1011d011105c40d13c295478504828cd8e9bfd7e9279cf38308a520443ab06f68d1279a8862cce97ccf75332d6e261ebcb504412102f54cad54dec571fcc2c5c856634ca03fb49468971701f96a61c8abcab94a39d3ca7653e6b9caeac677335a9b7af745cc953871b5b3861ac2fdf8a099bae17119be26e5d4288e9488ade9629e2ca4634ece77170337b4848593b7c4369b0ecdc58e1a0f170bff99445bff5614cc3adfa72c3ab4cb5a389ee73f701c66b03fb6aebaeda4dd3df1f496ae757be36842564ee439ae8308cd103c79d58348ab3757fd308c19fab7a7c3c4e11d6002e9a147bf7f6d84b0051a010000",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82",
+      "30",
+      "00",
+      "00",
+      "d0",
+      "bb642d0ef28be90e4a28d4a60854a4d9303144c0a27c55c0e9ddebf408ef3d00e35cf47d3ad43fe2025ec0c414b4e4cb4db3b6d23cdbfa7d92987bf81618fe6d8c710c19f9c821b961bbf83c0c540a8b5291abca6e8ec4399d2319d2c33bcc487e1563b2ce569652efb2864512bf6b3898748c5d6424570722a9a46ae7f1aacb745250bd72a3adc5a0c889355e6acc4eaa71844a51b6e7164f5cc6ad999aed7df60a7f25be79a0c5b65479f6b8de6b74a61be6c0e66accafdba36c873ed1ca9de798fde49a5f3484ee98f37658a16970831a2c80189bb2137d5a3eb9aa8ed002fcdbd3616ac433c012ac131df8fd03a72693fe1a010000",
     ],
     [
       "Content-Type",
@@ -16586,7 +16293,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:46 GMT",
+      "Thu, 13 May 2021 15:19:00 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -16605,7 +16312,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -16626,7 +16332,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-111-1620764096226",
+      jobId: "grouparoo-job-111-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16637,20 +16343,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85",
-      "53",
-      "6b6f9b3014fd2bc8fbda2490077948d11a2574cd94901548ab6a9a903117ea1630c5265555e5bfef629aae55a5f513b6ef39f79cfbe0853cf022263312f1f4b186eaf9dbbd88c8190145537cbda5c1e0a2f0b8e35edf3b57f267e5ae12789acf11c11b96a4799941478aba6220677bbf9b56a22e6925440713752ccbea5876df1cdb43736af7fb36122564c986170f48bf53aa94b35eef24de4d854833a025975d26f2b7f7dea1df2b2b710f4cc9de47cd1ecac8de17aadf33c1a8e2a298ef7d74504ba842c829cfd0c33f6a1c9d7fccdde534efa6083e700694315117aaf185299828129ed695ce4a662f44fb7c7720beb3719681c14456e74558d01cce8c982a1aaae7128c0b6fb735d6eec5cedb2e82f5ce0dfde5a5b35d7497bbcd7eebfac6cda5e33986a251069a6bcc8d737d73f182fa3148c50bad1e34cf8df26b87d69f07d310505a421b0cc7a64dad89398d9268cc92c96014252644d1241a8fe82032d97408c338028a3c2daa59b4c09a2ddbb262ab1f4ea6741a0e47630829b071381a0f4c36b2cd880e29399e91a78a2b5871590ac9db0e911b6f1d3861e0eddde52270740909ad33b56a8d3505bcf7a8b04004fda7a66313e502959a76afddc0f116cb607dedb413de404ad9b3ff88334e682601d1b4c2e629a8b622c6861177b1755608d613fb750a4a32fbfd429a9e372edeb5fc8d1ee0001bbb4a7f891f786bf787b673425cd3acd690437b20255abec3dad0f5f10f22714bdb2ce46aef78b7a47df220810a0af6f53411ac035fff6da7cd4730ee3eea4885775c1e261b155641bb445cd7fbcaee9bb6659b44832bf52936b007a7b635399a8c9043a15e4b6a371f2b6dc56af906c220cedfd5ed3afe05d68021e97b040000",
+      "000000000002ff85536b6f9b3014fd2bc8fbda24409e448ad628a56ba484b484b4aaa609d9e642dd12ccb0c95455f9efbb98a66b5569fd84ed7bce3de73e78214fa248c8943091fdaea17afef628193923a06986aff5e1eeba7fcbf24b1bae64541e142deeaf6f6633448886a5e8becca1a3645d7150d3ddb69b55b22e6925650713751cc7e93823d7f61ccfee0f47430f890af274258a27a43f685daa69af7712ef66526639d052a82e97fbb7f7dec1ed95957c04ae55efa3660f6554ef0bd5efb9e4540b59cc765b74502ba862d85391a3877fd4849d7fccdd1574dfcd107c101c28e7b22e74e30b537059a422ab2b93954c5f88f1f9ee40b6feca5f44169779bd2fe282eee1cc4aa8a6b17e2ec1ba0c376b6b195c6ec2f53c5a6e8278bbb8f2d7f3ee62b3daad83ad7577e587bea529cbc170ad99756e6e015e503f01a54561d4a3e6b9517eedd0f2f3601a024a2b6883f1d81e5167627b2c65639e4efa4396dac0d8848d87b4cf6cee0d609030a0c833a286450b595044250397c6e3893b8c07036f107b0e67b1c7123e76199fd87d971ccfc89f4a68b810aa944ab41d2277e132f2e328dc058b79e49b12525ae7faa235d614f0dea3c60211f49f9a8e4d5448546adabd0c223f9c2fa2e5addf4e780519e5cfdbdf38e394e60a104d2b6c9e866a2d136c1809e66bff02c16662d7a7a022d39f2fa4e979e3e25dcbdfe8110eb0b1abcd976ca37019fc30764e885b9ad70672680fa444cb0f581bba3efe42246e699b85dcecfcf09eb44f21a45041c1bf9e26824de0ebbfedb4f908c6dd471da5f18ecbc355a3c22b689748987a5fd9cec076dc0931e04a7f8ab9a3d1a96d4d8e2623eca1d0af25b59b8f95b662b57a036110e71f98761dff0238d6e3d87b040000",
     ],
     [
       "ETag",
-      "YaT3FnRiENVjEQsJrNDfew==",
+      "uvWP3VblF0eHoTpvsanYPQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16662,7 +16359,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:46 GMT",
+      "Thu, 13 May 2021 15:19:00 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16681,7 +16378,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-111-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-111-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16695,13 +16392,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "02",
-      "ff8d92614f82501486ffcbe92b6ee2088bcd0f58a62c3413dcda9a73573820065cbcf76273ceffdeb964d6aaadbec03987e75cdef78503bc64650c0eacb2745ba3d85fa4a81e75314359e74ad2ade2a5443000154b890ccc2288b6856995f6b0b6aaeeee7ef4344a7b3d2264b4c68281738024c33c96e03c1fa06405d25ac4f3ba28974d6780da577a1884336f32a4bee0b1ee2773df77fbfe008ec67931668a2d1bfe1f6b8ba3011bbe9a618202cb08b5964af00d46cad336252baa1c5b92d72242090ddc3c4805af2b26386fd1a4659a66cbb43bedae6db5afed4ec72632e71153192f099e07241014572c9ff157b2091a104d498e93e6baa37116374e74e94d42db6a047e05485b92e5b8fc1b24c16b46dfe1033b65f09d6305af4b75a6eefc07f7b7e328d4cfa36edd70f083908aa23a23a1371e04a13b9e6a6e71f2dedf2b9453c12949893a44b36d5d5d76edf67bae375c674def7194a8d18088d1ef31ca143809cb251edf004116fbf67c020000",
+      "0002ff8d92d14e83401045ff657ca549d1162d491fa85625c1aa2d1aa331cd16064a05067717b536fd7767b156a326fa0233c399e5de0b2b78c8ca185c9865e9638d72b993a2be34c518559d6bc5b78a4a8560016a913219dceed2cdedcbc27f75d26baf53ceaf9f66e8f5fb4ca8688e85007705498679acc0bd5b41290ae4b588f2ba28a74d67815e56663809c7fee884fb8262d38fae82c01b0443585bdbc55868316df87facddaf2d58d06c8c094a2c23345a2a490b8cb46f6c2a515439b614d53242050ddc3c4825d59590442d9eb46cdb6ed9ce6ebb67f7da7b5da7db6332a748e88c4a86af262c103469918fe9996d82c3806c4a769c34d7271e6771e3c494fe28743a8dc0af006b4bb21ca77f832c782ef83b7c609b0cbe73a2a0bad45bea3838f77e3b8e43fd3ceac80b873f08a539aa2d12fa67c349e89d5d18ee7ee37db0d4a82e2471920a4d8876bb73d0dd77daefb91e92c99adfe36a59a30591e0dfe334d3e0262257b87e03a08ac0fe7c020000",
     ],
     [
       "ETag",
-      "S1mScqm14n6Gu4p7vKHXHg==",
+      "LZ2oXZxjIz6gVA4nhVvbeA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16713,7 +16408,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:47 GMT",
+      "Thu, 13 May 2021 15:19:00 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16754,7 +16449,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-112-1620764096226",
+      jobId: "grouparoo-job-112-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16763,11 +16458,18 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8554eb6eda30147e95c8fbd34a5c42800490aa8ed2ac43a3a10ba115da26701c87ba4de2d476a850c5bbefc4296d59b7554290f87cb7631ff384ee5916a1010ad9faa1a062fbe98e87a886a8c26b58759cded4b7da8bb66925379bd159577cbb508f27278060254be2344f685df242102a07f359632d789163c1791d84eaad96556fd996e9d81db36f5b960d44499378c2b27ba0df2a95cb41b3b9376fac395f2714e74c36084f5fd69b1bab990b7e478992cd43cf26d8c8e607aea7092758319e9dcc6790a090542c698a5902195ea951f8f950bbc170da580378c308c584f02253652e90203c8bd9ba105a150d9e90cef9e601cddc893b0a8cd174ee05472b9c96e4d5b181a5b15c0a2a8b44d58c153415b3842e59b4aa2af9bdf1c59f5e420512dc6249e5cab8f9eafaaef1bab4327e16a6d926c6a931f4ce8d4395b167cc3dcf9d05c6d1e9b171e14fe757c6d9e20003f1232a15cb74f80087092d833f6ff0f8fdb99604acc0b92a2e1dd3c6ad9ed90fe3d02171afdd0d639386612f74bab81d9aa4dfa19d28a41878aa54d72c9cf1ccb1c228220e2656d48b6c12f54da76b99968d63029abd4e07d4ecb0d545bb1a7a144cd17326732e59b5c9e8c61f07ee32f0e7de6818b8ba8d18c3469e57e1ca26dee654d02480fed3d7aeac320e4ee5898dbdc0f587a3607ced564332a16b4cb6b3071893182792021a0b9c5245c5258f60d3d0d574360ec6536f3801863ef9ab3d42a2c18fa75742b0cdf52e2bfd8b66813ff62e74803de21a2785866caa0734cc212bdaed6aff9619fafe7001d65808bcfda306edd89d92fe170b8dd76f55ccbd650b956efb370bed7eede0534370ab2a75f47deefa0b542df934a68266e4e3f101b02e7cfcefb0bfa90086bb0a3e52c13b4c2b91a50b11b49a5a96eabc151bbe2cd3441a2cd4bb5abbdfdd1f4fa9512ad29466eab9a5eaa6ea9d2a4b857c01411186cdd327b5fb0d64151be02b050000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02ff8554796f9b3014ff2ac8fba795720049c821555dd6b00ea9252d21edaa6d4a8c31d42d606a9b1eaaf2ddf7304daf1d952205fc7ed77bb67944d7ac88d104452cbda9a878f874c523d44254e11456f3ecfed4ea5d39df7d67ee09713e4beeed9bbbbd3d40b09a25715e66b42d7925089593e5a2930a5e955870de06a1b665d96dcbb1cdb135367b03673006a2a45972c48a6ba05f2a55ca49b7bb35efa49ca719c525931dc2f3e7f5eeaddd2d05bfa244c9ee5bcf2ed8c8ee07aefb192758315eec2d1790a09254ac688e5906195ea871f4f9ad7687e1bc9302f896118a09e155a1ea5c20417891b0b4125a154d1e91cef9ea012ddc23f720340ee64b3fdc59e3bc26af770d2c8dd54a505965aa65aca1a9846574c5e2755329af8dafc1fc182a90e0124b2ad7c6f93737708d97a5b5f1b332cd1e31f68da93f33deaa78beb1f47d77111a3bfbbbc661305f9e185f2ede60207e4ca562850e1fe228a375f0a7017b7fee6b4dc00a9c9be26a683ad81a99e32889862419f5065162d2281a45c301ee452619f7693f8e28069eaad5350b17bc18da511c932126763c8a1d128fcde1c0366d0727043447fd3ea8399135409b16ba134cd119932597ac19323a0fbcd05d85c1d23f9886ae6e23c130c85913ae6ee2754e054d02e83f7d6dea2ae3e054ef98e7876e303d08bd33b739244734c5e4617103c724c199a480c602e7545171cc63181a3a992fbcd09bfbd32360e89d3fd922249afc787c21840fa59eb2d2ff6811069e7fa8036c116738ab34e4b67940d312b2a2cda6f56f9969104c2fc01a0b811fded5a01da75fd3ff62a1f1faad89b9b5b450edb67db3d1e6d7067e2d04b7aa5147a74b37b840cd5240132a68413e3e3e00d6858fbf0edb9b0a60b8abe02315bcc36925b276218236a796e53a6fc3b6fae6d83691060bf5be6659bde1767b6a8d5a91e6b4504f2d3537554faa2e55f2190445386cbedea9cd6f5234dd122b050000",
     ],
     [
       "ETag",
-      "778OR23Y302lWvCB5rKGtw==",
+      "mlxQ13j6XN6OIrrWDfx2qw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16779,7 +16481,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:47 GMT",
+      "Thu, 13 May 2021 15:19:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16798,7 +16500,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-112-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-112-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16811,11 +16513,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "000002ff8d904f4fc3300cc5bf8bb9b6525ba1029376607f60436582c21002a1294bbdae5b5b87c4d5544dfbeeb865078e9c123ffffcf29c23ec8b3a8301ac8bfcbb41db5ee4c8cfdd2545d794ece430543b040f90552ee447f8fe361e13dfed1f67899e84dbc9c3b5390c874238bdc54ac1e0089b02cbccc1e0f308b5aa50c6562bdb3b0ac6ade994f9e2757a3f4d45a828eb84c532496e47c9144ede9f31b3ffd7c8d7c9831dad53dca0c55a6397c258daa1e679b7a0539529d177d4588d0e7ab86fe4961aa32c912f8a1f86911fc65170155f06377114c54296a41517540bbc7c9170c0c4aa4ce9200b4200e77ad432ba274be2ee303b77c4724cddc32c81d836e88156f24bb3827febd30f7f81335182010000",
+      "00",
+      "00",
+      "02",
+      "ff8d90416f82401085ffcbf4584800a3a9261ed4184b42acc56a93368d5961a42830dbdd210d21fcf70ed6438f3dedce9b6fdebed9162e7995c2048e79f655a369ee32e4e7fe12a3ad0bb67268aa2c8203c82a1352ef576fe93ef45e9f1e02afbedf2cb6039e65d3a91036f9c452c1a485538e456a61f2de42a54a94b1c3c15c1d05e346f74ab87e59ae96b10825a5bdb0de45d16c1e2da173fe8ce9cbbf463e3a07ce748cf18406ab04fb14dad019130efb05ad2a7581aea5da2468e10a5f1b99a15a2b43e48ae2fa7ee0faa3c01bfb636f301c0dc742169428cea91278b79570c0c4aa88e95b16040f6ef5bc61b41b43e26e31bd75c47241fdc32c81d8d4e840a2e4971e73feadbb1f0680e8fd82010000",
     ],
     [
       "ETag",
-      "Z1XVCCotFkMHLcD1hDJ8pw==",
+      "pVGZdVI0WO820u+PCS3tAg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16827,7 +16532,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:47 GMT",
+      "Thu, 13 May 2021 15:19:01 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16845,10 +16550,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -16858,7 +16560,15 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00000002ff1dd04b7282300000d0bb64ad8e8040e80e14e4572db6087593213104844124413e9ddebd4e8ff0de0fc808a19c2371af6803dec094c9c68aac82165a88e530f18aa03667df711b738d53a48c6154dbc617de1fe0b27ae04a635bd7505d899d2bbc1401243ca71b4db29f46a58f3d8dd7ecc0307434cc4538db8fe33ed9d04fccb771446425590a7f489356ca9f5ed2a770c33d52681f763ca30b528a3818a352a6423e9c2b88bad21cea460aa39e2526fb26eeae50afba37f5966dbdf7b7304be34ef14ebb3b1d4b24f0356c2e0e2c763eaf6f7c6ef4213aea1d010b40c7b6ec2847e58baba886b100ff7624a696be022c9a75b403bf7fc817a4031a010000",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "7282300000d0bb64ad0e030992ee04195ab160952ab8c944081f058c099a60a777afd323bcf703689e3329c970bdb01ebc81919a7896cf42eeb8a4cac9a25e2d477b8310f1bf8f78481ae54b445d0fc1b690dc0be9d7f46e59d5c2f043333b394f58a1865eb69b2bbde0a252a76a6c6daf5c1da254411b87d3b3b9467547773ad2696177b8e7cba9f1944ee23941af51398703136ae5af19bc7989f0b9ab3f3885fb7d4b237b5ef766f128e236d0c9e7f69dc5c43199b46cf2b86fa0a4e276c85265c4b548d5f971181b182b1994fa98ed83aecb6ed1517030014cf34630499a17d742184fc0bf9d0c2367af009751c104f8fd032fbef01b1a010000",
     ],
     [
       "Content-Type",
@@ -16872,7 +16582,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:47 GMT",
+      "Thu, 13 May 2021 15:19:01 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -16891,7 +16601,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -16912,7 +16621,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-113-1620764096226",
+      jobId: "grouparoo-job-113-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -16925,16 +16634,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "85536b6f9b3014fd2bc8fbdabc9a8440a4688d52d2644b484748ab699a906d2ed42dc1149b565d95ffbe8b69ba5695d62f807dcfb9e7dc07cfe44ee431191326d2fb0acaa72fb7929113029aa678fbedf2da592c20bf983faebfcf9d380cfe8c168f93092244cd52745f64d052b22a39a8f16edb4e4b5915b494b285895abd5ebfd5b34fbb237bd075edd3531b890ab26425f23ba4df685da871a773146fa752a619d042a83697fbd7fbcec369a728e52d70ad3aef353b28a33a9fa87ecd24a75ac87cb2dba2834a4119c19e8a0c3dfca3c6ecec7deeb6a0fb768ae007c181722eab5cd7be3005977922d2aa3459c9f899189f6f3ec8d65b79b3d0e232abf67994d33d9c5831d534d24f0558f360b3b696fe7c13aca7e172e347dbd9c25b4fdbb3cd6ab7f6b7d6f5c20b3c4b539681e15a13ebcc9c7c3ca07e0c4a8bdca887f575adfcd2a1e5c7c1d4049456d004a351d7a63da7ebb2848d78e2f4872ce902630e1b0d699f75b93b8041cc8022cf881a16cd65cea90b43dba55162831d0d287323ca5d16d96e3fb6478c0dc11992c309792c858673a10aa944d321721d2c432f0a839d3f9b869e2921a155a6cf1b6375016f3d6a2c1041ffa9e950478544a5badd4b3ff482e92c5c5e79cd84579052feb4bdc71927345380685a62f334946b1963c3883f5d7be7083613bb3c061519ff7a2675cf6b176f5afe4a0f7180b55d6dde641b064bffc2d83922ae685619c843f3410ab47c83b5a1ebc36f44e2963659c88f9d17fc24cd5500099490f3cfa7896013f8fc6f3b6e3e8271f75147693ce3f27055abf0129a2512a6de17363e1ca7470cb8d41f62ae333ab6adce5167843de4faa5a466f3b1d246ac52af200ce2fc7dd3aec35f4c021b087b040000",
+      "00000002ff85536b6f9b3014fd2bc8fbda2490900791a2354ae88a94900e48ab699a90712ed42dc1149b545195ffbe8b69ba5695d64fd8bee7dc73ee8317f2c88b1d999284674f3554c76f0f2221170414cdf0d5bf79489dabe5c41b6c6c3176ece3215cf59f673344f08625e9becca123455d3190d36dd8cd2a5197b412a283893a9635e858a3bee9588e39188e860e1225e4e98a178f48bf57aa94d35eef2cdecd84c872a025975d26f66fefbd43bf5756e2019892bd8f9a3d9491bd2f54bfe78251c54531db86e8a09650c5b0a73c470fffa8bbe4f263ee2ea7fb6e86e0036740191375a11a5f98828922e5595de9ac64fa42b4cf770712ba2b7711194ce4f5be880bba870b6347158dd5b104e32ad8ac0dcfbfda04eb79e46dfc385c5cbbeb7977b1596dd77e68dc5dbb816b289ae4a0b9c6ccb8d4371f2fa8bf03a978a1d5a3e6b9517eed90f779300d01a525b4c1786c8ea835319d244dc62c9d0c86496a42924c92f1900e12933936d8bb0428f2b4a866d142140327351dc71ac5a94d9dd84e6d88e9909a714aedb133e9270cfa949c2ec873c5152cb92c85e46d87c85de0456e1c055b7f318f5c5d424aeb5c2d5b634d01ef3d2a2c1041ffa9e9d444b940a5a6dd9e1fb9c17c1179b76e3be11564941dc3279c714a730988a615364f41b5163b68967bbe769708d613bb39072599fe7e214dcf1b17ef5afe468f70808d5da5bf248c02cfffa1ed9c11b734af35e4d01e488996efb136747dfa8348dcd2360bf9b975835fa47d0a20850a0af6f53411ac035fff6de7cd4730ee3eea4885775c1e261b155641bb445cd7fbcab66c6b341c120daed4a7d8c4999cdbd6e46832c21e0af55a52bbf958692b56cb37100671febe6ed7e92fdbace6447b040000",
     ],
     [
       "ETag",
-      "JPW8HHenGFwMKF8dTRz7Hw==",
+      "NPjf9FD8I3O4o794yvSL2w==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -16946,7 +16650,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:48 GMT",
+      "Thu, 13 May 2021 15:19:02 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -16965,7 +16669,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-113-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-113-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -16984,12 +16688,12 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "dd",
-      "4ec2401085df65bc2d9122146de24541509282fcd4c4680859da2956db4ed9dd6208e1dd9dad88464df4a69d997eb33de7b43b7849f2085c5826ab7589727bb2423d31c51455996ac5b782728560016ab162f2f4bebf2ec207ea765a7ddf5ed2b6d834ba93cb4b2654f88499007707718269a4c07ddc412e32e4b590d232cb17556781de1666380ba683d135f71945a61fddf9bed7f17bb0b78e8b91d06251f1ff589bef2d78a6e5146394988768b414929e31d403635389ac48b1a6a894212aa8e0eac14a5259084954e349cdb6cf6ab6d3a8b79d66fdc269341c26530a854e2867f86ec602419316e9945ed926184056253b8eabeb86c749543931e5601438cd4ae05780b5c5498a8bbf4116fc24f83b7c60870cbe7322a332d747aaefdf7abf1dc7a17e1e75e505bd1f84d21cd5110906c3de2cf08663c3cd0fde3b5b8d6a2c8993546842b4ebcdf356dba9bfe7da259335bfc7d5b2440b42c1bfc74da2c18d45aa70ff06d98ff9517c020000",
+      "5b",
+      "6f82401085ffcbf41513f04295c407add704ac457c6a8c5961502cb07477a9b1c6ffde596a6dd336695f6066f86639e7c0099e923c020736c9f6b94471bcd9a27ad0858fb24c95a45bc1738960002ab62572e08d169b6c609aedc164332ee46bfdb5e91dba5d2264b8c38c81738238c13492e03c9e206719d25ac8d332cbd75567803a167ab808fce96c4c7dc623ddcf96aedbebbb43381bd7c58829b6aef87facadce06ecf9c6c71805e6216a2d85e07b0cd554db942c2b52ac495e8a10255470f5602b785930c1798d2635cb6ad42cbb6e76ac8ed968d9ad0e91290f994a784ef07241024171c5529f1fc826d80488aa24c771757da17112554e74399d0576b312f815206d7192e2fa6f9004ef187d870fec92c1778e65bcccd5951ab9f7bddf8ea3503f8f1af482e10f422a8aea8a04536fb8087ade5c73ab8bf7fe51a19c0b4e494ad4215a66b3ddbab5cdf75cefb8ce9adee32851a20121a3df6392287062964a3cbf0153e35c977c020000",
     ],
     [
       "ETag",
-      "/XFqpcZoCB5FL1boypv2CQ==",
+      "DMFSbmD008DHbGpsz2z4Mw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17001,7 +16705,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:48 GMT",
+      "Thu, 13 May 2021 15:19:02 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17042,7 +16746,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-114-1620764096226",
+      jobId: "grouparoo-job-114-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17059,22 +16763,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "85",
-      "54",
-      "fd",
-      "6f",
-      "9b",
-      "30",
-      "10",
-      "fd",
-      "57",
-      "90f74babe58310423ea4aacb12ba464a494748ba689b12630c750b9862d32dabf2bfef304ddbacdb2a21817defdd7b773ef3806e591aa001f2597457d07cfbee86fba886a8c411ecaea2feecfdb2db5e1489f1733e3bff355e7e398b4e4e00c14a96c04916d3bae0454ea8182ce68d28e7458673ceeb90a8de6a99f59665e85dcbd4fb9661584014340ea72cbd05fab5949918349b7bf146c47914539c31d1203c79da6fde1bcd2ce7379448d13cd46c828c68bea17a1a738225e3e9c9620e0e0a41f3354d308bc1c33335f03f1ce66e309c342200df33423121bc4865e90b52109e862c2a7295150d1e90f2f9e203cdeda93df2b4d16ce178471b9c94e4cdb18685b65ee75414b1ac691b282a64315db3605345b25bedcc9d5d40041c5c6341c546bb3ab75d5b7bdeda68df0a5d6f13ed541b3a63ed30cbc4d1168e63cf3dede8f458fbe4ce1697dac7d50106ec075448962af31ef6635a1a7f6cf0e4f5b996042c41b90aaebbba855b3dbdef877e9784bd76c70f75eafb3dbfdbc16d5f277d939a814f31f064995db170cad3be8ff54e37a0240054273089619a56df377cb36fb4b1d5e91add5e2b3428dad5d08f9c493a6622e382554d4657eec4b3d79ebb704643cf566584181a39aecc9545bcf429a14800fda7ae5d19651c94ca139b389eed0e47de6469574332a51126dbf91d8c49886341018d739c5049f30b1e40d3d0e56c3ef12633673805863af9cb3d42a0c1d7876782b7cd5497a57aa3b9e74e9c4fcac01eb1c471a120f7d507c2197845bb5deddf6986ae3b5c8134ce73bcfd2306e5586649ff8b84c2ab5565732fd942a5da7e65a0ddf71d3c3504b7aaca8e3e2f6c7785aa2d978634a729",
-      "797b7c00ac026fff1df63715c0705741474858c3b41251aa909c5653cb12e5b7621b7acfeaa87f8bc4b97c15eb19c6fe78ca1c65469ad0543e9654dd54d5a932548827100461d81c7552bbdf9383517b2b050000",
+      "ff8554fd6f9b3010fd5790f74b2be58310f229555d96b09629252921adaa6d4a8c31d40d608a4da7b4caffbec3346db36eab8404f6bd77efddf9cc13dab0344043e4b3e8bea0f9f6d31df7510d518923d89d3eda23326f5f4ee2f34df392751fe3f41b8d4e4e00c14a96c04916d3bae0454ea8182e178d28e7458673ceeb90a8de6a99f556d7d007ad81deee743b03200a1a8753966e807e2b652686cde65ebc11711ec514674c34084f5ef69b0f4633cbf91d2552340f359b20239a1fa89ec69c60c9787ab25c808342d07c4513cc62f0f04a0dfccf87b91b0c278d08c00f8c504c082f5259fa821484a7218b8a5c6545c327a47cbef9400b6b6a8d3d6d3c5b3aded11a2725797dac61a1ad563915452c6bda1a8a0a594c572c5857916ca37d756717100107b75850b1d6aecf2dd7d25eb7d6da8f42d7db443bd546ce443bcc623bdad271ac85a71d9d1e6b67ee6c39d7bedc1c60c07e408564a932ef613fa6a5f1e706dbefcfb5246009ca5570d5d3bbb8d5d7077ee8f748d86f77fc50a7bedff77b1ddcf6753230a919f814034f96d9150ba73c1df858eff4024a024075029318a6d91df8866f0e8c36ee767a46afdf0a0d8a7635f42b67924e98c8b8605593d1b56b7bd6ca7397ce78e459aa8c1043232795b9b288b73e251409a0ffd4b52ba38c83527962b6e359ee68ecd957563524531a61b25ddcc39884381614d038c7099534bfe001340dcd670bdbb367ce680a0c75f2f33d42a0e1f7a75782b7cd5497a57aa385e7dace9932b0475ce1b8509087ea03e10cbca2ddaef6ef3423d71ddd8034ce73bcfd2306e574cd92fe17098557abcae65eb2854ab5fdca40bb9f3b786a086e55951d5d2e2df706555b2e0d694e53f2f1f80058053efe3bec6f2a80e1ae828e90b0866925a2542139ada69625ca6fc56e996dbdab2305cee5bb98d133f7c753e62833d284a6f2b9a4eaa6aa4e95a142bc802008c3e6a893dafd06899bbcfa2b050000",
     ],
     [
       "ETag",
-      "Yg9O+V73Uum2xSOHzDVXFg==",
+      "LzIAcP3QDlHk/Qi6zlnJeg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17086,7 +16779,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:48 GMT",
+      "Thu, 13 May 2021 15:19:03 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17105,7 +16798,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-114-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-114-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17116,25 +16809,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "d1",
-      "4f",
-      "c2",
-      "30",
-      "10",
-      "c6",
-      "ff97f3d12d6e73d448c20318a2240475484c30849472ccc1b69b6d8712c2ffeeb51ac3a32fedf5bbdf5dbeaf47d815f51abab02af28f16f5e12247fbec8a0c4d5b5ac35743b5410800adcc1d29be44e7713e4bcb295e5e5f454abeced37eafc78451ef5849e81e615360b936d07d3b422d2be4b1e552fb8d8cd943e394d1e465783fcc58a868ed84c96c3cee0fc64338056763cdee5f238b53005b5a65b8418db542e7a2d1b44565472ea09155536268a8d50a0d78d837724d6d233551c84a18c769188b24ba1169742b924430599292b6a09ae1d994cd81252bcb8c3e3920240c685f72d68d3ff72c777c88bd079cb7f39ef8ebc5aeb7f85d383858344f9ad89e41e72cfa717947ceb9e54456b7188092fccd0f85fd799fbe01c297b82dc3010000",
+      "0000000002ff8d90d14fc23010c6ff97f3d12dd9d0815bc283188210b2c8946834849471ccc1d69b6d872184ffdd6b3186475fdaeb77bfbb7c5f8fb02be51a125895c5578bea7055a099d92243dd5646f3d590d4081ea01105934a5e8feae87524de2693224def7ae93bf566fd3e133affc45a4072844d89d55a43f27104296ae4b1e552b98d8c9943639571fa321c0d33166a5a5b219d4fa7f783e9104edec558b3fbd7c8e2e4c19656196e50a1ccd1ba68146d3137631b508bbaa9d0d7d4aa1c3538d8350a456d231491cf8a1f86b77ed8ed047118073751378a99ac2817a624c9f0fc99cd812123aa8cbe3920741850aee4ac1b77ee598e5c88bd03acb7cb5ef7af17dadee277e1e060503f29627b1aadb3e0ecf281ac73c3898c6ad1835cf0373f96e6fc3efd00c4aed1d9c3010000",
     ],
     [
       "ETag",
-      "b6x65OZU4lSe+3/0caWZ4A==",
+      "rn+Gm5WGaXJJgNN87NZo7Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17146,7 +16825,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:49 GMT",
+      "Thu, 13 May 2021 15:19:03 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17164,10 +16843,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -17175,7 +16851,13 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff1dd04b8e82300000d0bb746d8c53446076201abe021310c3a629d850e44ff9d6ccddc7cc11de7b039c65843134b62569c037d83054f6d9deee640de5c4e0bcee6afe340fb5917bcbd81c7181e1544bb9506257173cead3d478c25a9f2b1d2d320bdbbcb866c2014158b339f06462e830fec26a25ba3c5ad8abb14dea741985942a617fdfc4880f5270e2a998b0c65f12afe1f2eaae56a2a5953f47a77eb005c7917039c9dc4c953ecc5ed4be2ce83cdb341ae3ab7e1eee623b59725bbabdea5aebad732af5722c8e11351d14baf0c163feb845db8f924f01d801b276c540182a3e5c4154941df8b7a371ebc8274023782003f8fd03c67d20ee1a010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff1dd0497282401400d0bbf45a2d1099b20395310e485071d3459adfcc834090d6cadd63e508efbd504408f43d1e9a026af48158b4541764e1b68a8e13fab5d6c740916d7bce4bda74c54a9bec7267bf4ef6ad65ac39ee507a7414382c7447380fc79f1d319852a6552e47c4712e0f6bb7ec93edd61ecb8758b378655653c379725a73b42b4e53d03cc54057b5db438aa5fb408ab0b759e2db313900a5a326eb37dfb4f696a91a9ba0e2e9e5aac9279d95e1737e78e6a35f32ed067cf3895d4b584e2beefc3dda0a84392d27c303560c1b8d1a96db77ab5494f37b06219a2198daac831e676fae20aaea0cfddbf1c05a7807e81075d0a1df3ffb509b771a010000",
     ],
     [
       "Content-Type",
@@ -17189,7 +16871,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:49 GMT",
+      "Thu, 13 May 2021 15:19:03 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -17208,7 +16890,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -17229,7 +16910,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-115-1620764096226",
+      jobId: "grouparoo-job-115-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17243,12 +16924,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "00",
-      "0002ff85536b6f9b3014fd2bc8fbda2484900791a2354ae89a2a211b21ada66942c65ca853c0149b765595ffbe8b69ba5695d64fd8bee7dc73ee836772c78b984c49c4d3fb1aaaa72f07119133028aa6f87a654f6ed88197f3fcca5f46921efe3cde1d1e673344f08625695e66d091a2ae18c8e97ed74d2b5197b412a283893afdfeb0d31f59e678649bcec8b246489490256b5edc21fd56a9524e7bbd9378371522cd80965c7699c85fdf7b0f56afacc4019892bdf79a3d9491bd4f54bf668251c54531dbefd0412da10a21a73c430fffa87174fe3e7797d3bc9b22f88133a08c89ba508d2f4cc14491f0b4ae7456327d26dae79b03d9b96b7711184c64755e8405cde1cc88a9a2a17a2ac1b8f0b71b63e55d6cfdcd3c586dbd70b7b87437f3ee62bbde6fbc9d7173e9faaea1689481e61a33e35cdf3cbca07e0c52f142ab07cd73a3fcd2a1d5c7c134049496d006c3b139a2fd89e944493466c964308c1213a268128d87741099ccb1c18e23a0c8d3a29a450b5138f130726218855192d8a16d2734a4d68485c960e080655b430b62723c238f1557b0e4b21492b71d2237fe2a70c3c0df7b8b79e0ea12125a676ad91a6b0a78eb51618108fa4f4dc726ca052a35ed5e7981ebcf17c1eada6d27bc8694b2a7dd3dce38a1990444d30a9ba7a0da88181b46bcf9c65d22584fecfb2928c9f4d733697adeb878d3f2577a80036cec2afd25bbc05f79dfb49d13e29a66b5863cb40752a2e55bac0d5d1f7f2312b7b4cd427eec5dff27699f7c48a082827d3e4d04ebc0e77fdb69f3118cbb8f3a52e11d9787c9468555d02e11d7f5beb02dd3b11c936870a53ec46cdb3eb5adc9d164841c0af55252bbf958692b56cb57100671fe9e6ed7f12ff8cc3c1f7b040000",
+      "000002ff85536b6f9b3014fd2bc8fbda84771222456b94d23552423620edaa6942c618ea1630c5a65d55e5bfef629aaedda4f513b6ef39f79cfbe019ddb13a437394b2e2bea3edd3a75b9ea21344252ee055e4d2cdc8febbbe24b65dfe6aaeaff568f5b8580082f52c81aba6a423c1bb965031df47e3a2e55d835bce479068649aeec89c5886677a86ed4e5c0f888296f986d57740bf91b211735d3f8a8f0bce8b92e2868931e1d5ebbbfe60e94dcb6f2991427fafa9838cd03f50fd5c728225e3f5621f81834ed036a115662578f843cdd2d3f7b9c70c57e302c00f8c504c08ef6ad9fb821484d7392bba566545f367a47cbe39a0c8dff8ab5823bcecaa3aa971454fb40c4b9cc8a7866ae7e16eabad83f35db85dc6eb5d9044ab0b7fbb1caf769bfd3688b4ab0b3ff43589d3922aaeb6d04ed52d800be8675448562bf5b87fee955f3ab4fe77303d01a4051d82c9d49860736678699e4e493eb3dd3437689aced2a98bedd4209e439d2ca518784a54b170cd6b975a56663b5e6219a69338869d25a9eb5a896519993171ac7ce2ccd0e1043db64cd233261a2ed8d0217415ae633f89c37db05ac6be2a21c75d29cf06637d016f3d4a281040ffa9e9d0471907a5beddeb20f6c3e52a5e5ffac38437b4c0e429ba8719e7b81414d0b885e649da6e79060d43c172eb9f01584deceb3128d0fcc733ea7bdebb78d3f2577a0c03eced4af545511cae832fcace117189cb4e411e86036ac0f20dd406ae0f3f01095b3a6441dff67e788d86a790e6b4a535f9789a0056818fffb6e3e60318761f7484843b2c0f11bd0a69e9b0444cd5fbc2361d7be6cd9002b7f2ef98634ced63dbfa1c7d465ad15abe94346c3e543a8875e2150441987fa0da75f80d8bb4d2407b040000",
     ],
     [
       "ETag",
-      "J48WcjipAmJRDbsajxwkjw==",
+      "sft5dcUX/Ac33lxpYY/SCw==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17260,7 +16940,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:49 GMT",
+      "Thu, 13 May 2021 15:19:04 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17279,7 +16959,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-115-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-115-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17295,14 +16975,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "02",
-      "ff",
-      "8d",
-      "92",
-      "416f82401085ffcbf428266a152b89076cb525556b112f6d8c5961402cb0b8bbd810e37fef2cb5b6699bb4179819be59de7b708097380bc082751ced0a14e54584ea51172eca2251926e39cf248201a8584464cddf458ba217dfbb72efa5bd51edb2c4a7a8df2742fa1b4c19580708634c0209d6f301329622adf93c29d26c557506a832d7c3b9e73ad35bea531ee87eba188fedc1780847e3bc1830c55615ff8fb5e5d1802d5fbb18a2c0cc47ad25177c8bbe72b44dc9d23cc1bae485f0514205570f22c18b9c09ceeb34a9379b9d7ad36c35ba66bbd1335b2d93c884fb4cc53c2378312781a0b86289cb5fc92668405425390eabeb9ec6715039d1a533f5cc7625f02b40dac238c1d5df2009de30fa0e1fd82983ef1c4b7991a933351a3fd8bf1d47a17e1e75637bc31f845414d519f19cc970eed99399e69627ef8352a19c094e494ad421361bedab4ed76cbce77acd75d6f41e4b89020df019fd1e77b1022b6489c4e31b654a4f2c7c020000",
+      "ff8d92dd4e83401085df65bc9426455bb424bde8bf44acb5a5de98a6d9c240a90b8bbb8bda347d7767b156a3267a0333c337cb390776f098e611b8b04a93a712e5f624417d678a29aa926b45b742e40ac102d42c2132c97bf7c360d33f2dc6d7bdd7c443eef9a3a4dd2642856bcc18b83b8853e49102f7610739cb90d642c1cb2c5f569d057a5b98e12c987ae311f599884c3f9efb7ea7eb0f606f1d1723a6d9b2e2ffb1b6d85bb011ab29c628310fd16829a4d860a83d6353b1ace05853a294212aa8e0ea412245593029448d2635db6ed66ce7acdeb25bf5f3a6d36c11c945c8742a7282e73312085a68c6a7e2856c824380ac4a721c57d7671aa751e5c494de38701a95c0af00698b538ecbbf4112bc66f41d3eb04306df39968932d7476ae8df767e3b8e42fd3caadf09063f08a529aa231278378359d0b999186e71f0dedd6a5413292849852644bbdeb86c5e38f5f75c7bc2644def71b52cd18290d1ef71956a7063c615eedf009f8106197c020000",
     ],
     [
       "ETag",
-      "+cqgUu9iKRsvTm9F+3yeZg==",
+      "gnCVFTjD+pNKCxgIelILGg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17314,7 +16991,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:50 GMT",
+      "Thu, 13 May 2021 15:19:04 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17355,7 +17032,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-116-1620764096226",
+      jobId: "grouparoo-job-116-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17374,11 +17051,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "54ff4fda4014ff579adb2f9a00fd02144a621c42a74db068293ab32d703d5ef1b4f4b077d510c3ffbed75654e6361312da7b9f6fefdd5d9fc93d4f17a44722be7cc821db7cb91311a911507489ab77cdcb93b376673330fbf05d3f1d08c6aea2a7a32344f08225e96a9d405d8a3c63207bd3496399897c4d3321ea2854374dbb6eda96d1b15b86635b968d4409493ce2e93dd26f955acb9eaeefcc1b4b219609d035970d2656afebfaa3a5af3371074c497ddf53471ba97fe27a9c08461517e9d17482097209d90c56942798e18dba88beee6b37385d3596087ee40c2863224f55910b25984863beccb35295f49e4999f3dd0399b82377106a83f1d40f0fe6745590e7871a95da6c9681cc1355d3e6d854cc1398f1c5bcaaacefb56fc1f81c2b98e0964a9073edfacc0d5c4d9b2fa882b9f633378c26d38eb5be3fd4f6153c5f9bfabe3b09b583e343ed34184f2fb4939b3d0c465f80543c2d8387344aa008fd325cefe39e1604aa3048559c750c9b9a5dc389e2a8c3e26eb31dc506445137eab469333298d382d622028a3c55a8972c9a8a94d9a60386c39c66c4ba0e7423ab0b76336a755a2d1357bbd44219d364645b234f195730e4722d24af064cae032f74676130f507fdd02ddb88290e7158852b9a789f53619308fa4f5fdba2ca053a15bbe5f9a11bf407a177e5560764044bca3693073c22314d24209a6674050ab273b1c0a1918bf1c40bbdb1df1f21a3dcf58b1d4292de8fe73742b859975356e53f19160d6cdf095ed1242f018fd503b10ccba81b56dd6c93edb6f66fa57e10f46fd09d6619ddfc51c38eec5641ff8b4f892fdfaaa43b5f93146eaf29c8f6d7167f358297aa5227975337b821d55200316490b2cf4f1082cbc2e71f87dd4545305e55f4910adff1c03259b8b00caa83cb5765de8a6d9946d3e990129ca90fb5b665ec76a8d028146105a97a69a9baa8e5a48a522e5f4158c4f3e67bfe29567f03035feb092a050000",
+      "54",
+      "79",
+      "6f9b3014ff2ac8fba79572003989547559caba4829e90869951d4a8c7950b704a7b6c91455f9ee7b40d363dd562952c0ef77bd679b0772c7b3880c48c893fb1ce4eec3ad08498d80a609aede4bd1bce697364c86bb6924be2da260b24d4e4e10c10b96a2eb4d0a752572c9400de6b3462245bea152883a0ad52dab5bb7bab6e9588ed9ea743b0e1215a4f184677748bfd17aa306cde6c1bc910891a440375c3598583fad37b7767323c52d30ad9aaf3d9b68a39aefb89ea68251cd4576329f61825c815cc29af214333c53a3f0e36bed06a7eb4682e02d6740191379a68b5c28c14416f32497a52a193c9032e78b07327327ee283046d3b9171cade8ba20af8e0daa8ce55282ca535d3356d854cc5358f26855553677c6677f7a81154c704315a89571fdc5f55dc3584554c3caf8919b668b19a7c6d03b335e2b8c3d63ee79ee2c308e4e8f8d737f3abf343e2d5e61307a044af3ac0c1ed0308522f4e370c76ff7b420508d41aae2b26776a9d5379d300e7b2ceeb73a616c4218f6c35e87b64293396d68472150e4e942bd64d14c64ac6b39603acc6985acef403fb4fbd06d85ed5ebb6de16a9fda2863598cec6be497e41aceb8da08c5ab01936b7f1cb8cbc09f7ba361e0966dc414877856852b9a789953639308fa4f5ffba2ca053a15bb35f602d71f8e82f1955b1d90092494ed66f77844629a2a403495740d1ae485887068e4723a1b07e3a9379c20a3dcf5cb034291c1f7876742b0db9453d6e53f392b1ad8bf10bca2695e02b6d503b14ddbac9b76ddea90fdbef66fa5a1ef0f17e84ea5a4bb3f6ad851b75dd0ffe253e2cbb72ae9c1d72285db530ab2ffb9c75f8de0a5aad4c9d7b9eb2f48b5e4430c1232f6fe0942705978ffe370b8a808c6ab8a3e4ae33b1e58a60a1726a13ab87c5de6add856bb63f63ba4044bfda666f7ba871d2a340a455843a61f5baa2e6a39a9a294ab271016f1bc",
+      "7963ef1cabbf019af0e16d2a050000",
     ],
     [
       "ETag",
-      "j3QBH57yC1AeX/GCoccVbw==",
+      "qro/WiP2eLAyOdoZYdTLvg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17390,7 +17070,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:50 GMT",
+      "Thu, 13 May 2021 15:19:05 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17409,7 +17089,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-116-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-116-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17429,16 +17109,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8d",
       "90",
       "41",
-      "4f",
-      "c2",
-      "40",
-      "10",
-      "85",
-      "ffcb78b44d682535927010838a2920050ec610b294692db49dba3bc510c27f7776f1e0c18397ddd937df4cdedb13ec8b7a0b3dd814f9678bfa789523cf6c91a0694b367235541b040f90552ee4643135d3c5e3cb75f2d6e5f138473d3fcc66fdbe1026fdc04a41ef045981e5d640effd04b5aa50c6d66bed360ac6c7c62aa3c962f8344c44a8686b85c9328eef07f110cedeafb166ffaf91d5d9831d6d12cc50639da275d168da61ca231bd0a8aa29d137d4ea140d38d835724d6da334912f8a1f04911f4461e736ea76eea2308c842c29555c502df0722ee680895599d09704845000ed4ac99ab9f320f28d0b717080f5f6772fb0bdd5cfc2c191d1bc6a127b06adb3cec5e50359e72c8958b7e841aae49b9f0bbebccfdf91b294fbc3010000",
+      "6f",
+      "82",
+      "401085ffcbf40a894824d1c48336d49a505bb1d6a48d312b0c88024377171b62fcef9d5d7be8a1875e7667df7c33796f2f702aea1446b02ff2cf16657797a35e9a2246d5965af1d550ad101c402d7226437a7e7f382f9f569b191d36f4a6fc81e826e331132a396025607481acc0325530fab8402d2ae4b1dd4eda8d8ce9ae31ca7cf11acec298858a52232cd651349946215c9d5f63cde95f23dbab0347dac798a1c43a41e3a29174c444cf4d4025aaa64457512b13546061dbc825b58d90442e2baee705ae17f47b436fd8f307c160c8644989d005d50caf576c0e346951c6f4c501a1cf80b42567cdec7966d9b721ce1630defeee79a6b7fd5938ed34aa17496c4fa171d6bbb9bc27e35c73222d5b742011fccd8f85bebdafdfabf10907c3010000",
     ],
     [
       "ETag",
-      "NTOsOTFJ+RY4tMMgerSvQQ==",
+      "EoOZFvQMSWGohWoVs35ayA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17450,7 +17127,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:50 GMT",
+      "Thu, 13 May 2021 15:19:05 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17468,10 +17145,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -17481,20 +17155,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "08",
       "00",
       "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "db",
-      "72",
-      "43",
-      "40",
-      "00",
-      "80",
-      "e177d9ebc864c4b177a8b2414c682adcecb0bbce412d2d3a7df79a3ec07ff1fd3f20c5983286a6bea11d78016bcaab477c7406454705d162c8f766e71111ca5b82a23785e9f7b50bdcba41dfefcbf5963f06fe9cf69c55cdf2e80a247914e68c1c0567975edc62a2850663c49026c312b842d64a85cdb2cbc88db7a324bdd28f7980d6b3b6ef5189b01087a5640b3ed9c3d70c06d057235d54b6af3c47d232b7c88327f7c4f595c010a2aeb965f5161649116849664abdefe3164f5ac4e5c6a73a28993779b4db9c6a21396c82a7d35e96181c005d866aa40c553bf72caaea01fcdbd1b40e741fa0d374a423f8fd03248aa7f31a010000",
+      "00000002ff1dd04b7282300000d0bb642d0e2001d35dc136050afe180b6c1848221fab84f0a7d3bbd7e911defb012921ac6d93aebeb107780173aaa23559bb7c6b2639a9fab0ffbed4d43ff4ae6e51823d38c97a5e89b650e87199601c20c76fdc40bc399918fb60f6e8976b7bf78e0d8b4917fe51191ad15a2c0df9d90a21297da262d5c67a4e5833d57ecccc7847836277d8471c6a1ec1e1dd38f268f4b148244b3edf88adca1649544447450a736d601e8c87f17d5223db6bf8762978b99771ed779fe326ca2eb989a07d0da46ba56442680f549cd2da686c832dce2b022bc0265e0ad626e593bb8108adc0bf3de966ce9e01264b0513e0f70f4f28f9451a010000",
     ],
     [
       "Content-Type",
@@ -17508,7 +17169,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:50 GMT",
+      "Thu, 13 May 2021 15:19:05 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -17527,7 +17188,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -17548,7 +17208,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-117-1620764096226",
+      jobId: "grouparoo-job-117-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17556,11 +17216,16 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .reply(
     200,
     [
-      "1f8b08000000000002ff85536b6f9b3014fd2bc8fbda2410f22252b4a629ed9012b20169b54d1332e642dd124cb1695555f9efbb98a66b37699590c0bee7dc73ee836772c7cb94cc49c2f3fb06eaa74fb72221270414cdf1b6bc57c199f3183adea5ddf83fceecbc1e5d2e170b44f09625e9be2aa02745533390f35dd8cf6bd154b416a287897a9635ed5993a1399d8c4c67321c4e9028a1c8d6bcbc43fa8d52959c0f0647f17e2e445e00adb8ec33b17fbd1f3c0c07552d6e81293978af39401939f840f5732118555c948b5d880e1a09750c7bca0bf4f0879a26a7ef73f739ddf773043f70069431d194aaf585299828339e37b5ce4ae6cf44fb7cf3414277edae228389a2d9977149f77062a454d1583d55605c04db8de1f917db60b38cbcad1f87ab2fee66d95f6dd7bb8d1f1ad75fdcc035144d0ad05c63619cea938f07d44f412a5e6af5a8bd6e955f3ae4fd3b989680d212ba603c3527d49a994e92255396cdec7192999024b3643aa67662326704a334018a3c2daa59b414a5934d10ec8ce391639af1c84ec6f16c98d9f1d41a6763183b766a5ae470421e6baee09ccb4a48de75885c075ee4c651b0f357cbc8d52564b429d47967ac2de0ad47850522e83f351dda2817a8d4b6dbf3233758ae22efcaed26bc869cb2a7f01e679cd14202a2698dcd53506f448a0d23fe72e39e23584feceb3128c9fce733697bdeba78d3f2577a84036ced2afd26611478fea5b673445cd1a2d19087ee835468f9066b43d7875f88c42dedb2906f3b37f84ebaab0032a8a1641f4f13c13af0f1df76dc7c04e3eea38e5478c6e561b2556135744bc475bd2feca1653a539b6870adfe8e59f81cdbd6e66833c21e4af55252b7f9586927d6c857100671febe6ed7e137ae3a3af27b040000",
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00000002ff85535d6fda3014fd2b91f75a20141208125a194d5734086b08ada6698a6ce726751be23476baa18affbe1ba774ed26ad4fb17dcfb9e7dc8f3c917b5124644298c81e6aa8f61fee2423270434cdf0f5a6f8e5787ee852ed46cea72fb6a3e77b7e359d2242342c4577650e1d25eb8a839a6c37ddac9275492b293b98a8d3ef8f3a7df7d4f6fa9e3d705cc743a2823c5d8ae21ee9b75a976ad2eb1dc5bb9994590eb414aacbe5eee5bdf778da2b2b79075cabde5bcd1ecaa8de3baa1f73c9a916b2986e37e8a05650c5b0a322470f7fa8093b7b9bbb2be8ae9b21f85170a09ccbbad08d2f4cc165918aacae4c56327922c6e7ab03d9f84b7f1e595ce6f5ae880bba83132ba19ac67a5f827511ae57d622b85887ab59b45807f1667ee9af66ddf97ab95d051bebe6d20f7d4b539683e15a53ebccdc02bca07e024a8bc2a847cd73a3fcdca1c5bf83690828ada00dc623dba5fdb1edb1948d783a1e382cb581b1311b3974c06cee0d619830a0c833a286450b59f0be97d894a5314f3d160f2149628fa6344e5c6f3c845396406a93c309f959090de742955289b643e4265c447e1c85db603e8b7c53424aeb5c9fb7c69a025e7bd4582082fe53d3a1890a894a4dbb1741e487b379b4b8f6db092f21a37cbf79c019a7345780685a61f334542b9960c348305bf9e7083613fb7a0c2a32f9fe449a9e372e5eb5fc851ee1001bbbda7cc9260a17c16763e788b8a6796d208fed819468f9166b43d7871f88c42d6db390abad1f7e23ed5308295450f0f7a789601378ff6f3b6e3e8271f7514769bce3f270d5a8f00ada2512a6de67767fe88c072e31e04aff1d736dc73db6adc9d164841d14fab9a476f3b1d256ac562f200ce2fc03d3aec36f6ba91e6b7b040000",
     ],
     [
       "ETag",
-      "nqtRB9wS9IG3uNZB3gr4GA==",
+      "Wnx59ER6at6T5BK05tCycQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17572,7 +17237,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:51 GMT",
+      "Thu, 13 May 2021 15:19:06 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17591,7 +17256,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-117-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-117-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17610,19 +17275,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "92",
-      "dd",
-      "4e",
+      "41",
+      "4f",
       "c2",
       "40",
-      "10",
-      "85",
-      "df",
-      "65",
-      "bca42405a168132e8aa212f9b39498680859da6929b4ddb2bb4509e1dd9dad88464df4a69d997eb33de7b47b58c75900362ce26853a0d89d45a81e74e1a22c1225e996f34c2218808a45442e27abfbca7a3ccacf5f83cad6dd3c164fcdd469b78990fe125306f61ec218934082fdbc878ca5486b3e4f8a349b979d016a97ebe1c4737bc35bea531ee87e38edf79d4ebf0b07e3b41830c5e625ff8fb5d9c180155fb818a2c0cc47ad25177c85beea699b92a5798255c90be1a384122e1f44821739139c576952add55ad59a55375b56c3bcb4ea758bc884fb4cc53c23783a2181a0b86289cb5fc82668409425390ecbeb96c671503ad1656fe8598d52e05780b4857182f3bf4112bc64f41d3eb06306df3996f2225327eaa63f727e3b8e42fd3ceadaf1ba3f08a928aa13e2f506dd89e70cc69a9b1dbd77760ae558704a52a20eb166362e9a2dcb7ccff58aebace93db612051ae033fa3dee620576c8128987375ead7f217c020000",
+      "1085ffcb782d091528d284435194268008e582216469a7586c3b7577ab41c27f77b6221a35d14b3b33fd66fbde6bf7f098e411b8b04e364f25caddd906f59d29a6a8ca542bbe15942b040b508b0d93341a5ceb4ee3355a0c7436906d7f11cc22afdb6542850f980970f7102798460adcfb3de422435e0b292db37c557516e85d6186b360ea8f6fb8cf2832fd783e1c7abd611f0ed66931125aac2afe1f6bcb83055b5a4f3146897988464b21698ba1f68d4d25b222c59aa25286a8a082ab071b49652124518d2735db6ed76ce7bcdeb13bf546cb6975984c29143aa19ce1f98c0582262dd229bdb04d70189055c98ee3eafacce324aa9c98d21f074eb312f815606d7192e2ea6f90053f08fe0e1fd83183ef9cc8a8ccf589ba1ede7abf1dc7a17e1e75e505fd1f84d21cd50909fc517f1678a389e19647efbd9d463591c4492a3421daf5e645abedd4df73bd249335bfc7d5b2440b42c1bfc720d1e0c622557878033952fb287c020000",
     ],
     [
       "ETag",
-      "hSjK+kPOp3xd+vRqWuZ5mA==",
+      "oMHFt93zdZHtmHr7IZTSdA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17634,7 +17295,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:51 GMT",
+      "Thu, 13 May 2021 15:19:06 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17675,7 +17336,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-118-1620764096226",
+      jobId: "grouparoo-job-118-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17686,11 +17347,26 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "000000000002ff8554fd6f9b3010fd5790f74b2be5c3909490485597b5ac634a484748abee43893126f50a98da265b57e57fdf014d3fd66d9522057cefbd7b77bee30e5df33c462314f1f54dc9e4ed9bef22422dc43459c3e9fca2bb097fcd7e5a7170e30c7b03f1b190c5f8f01010bc62299215296b2b514acad46831efaca5280b2285688350db349db6695b7860f7f1d0b62c1b888aa5c984e7d740bfd2ba50a36e7797bcb316629d325270d5a1227b38ef6eac6e21c57746b5ea3ecfd98534aafb4ad6a35450a2b9c80f177370502a26972c233c050f8fd4387afb5cbbc349d6590378c32923948a32d7952f90a0224ff8ba94b52a1adda1dae79307347727ee71681ccf167eb8b72259455eed1b4419cba564aa4c75cb584151094fd992c7ab26525c1bef83d91422e0e08a28a656c6c50737700d63a534b85b195f4b8c7bd43832c6fe89f15cc2f38d85efbbf3d0d83bda374e83d9e2cc7877f90c03de63a634cf6be721895256b9beefaef7f2522b02d1e0a4092e07d826a6838751120d68e2f40ea204b32872a2c101e945980efbac1f478c004f57ea358be4222716c68eed50860f228249d47762821d4aecc1b01fc7111962d38e87661f6d5be887e49a9d705508c59b0ea38bc00bdd65182cfce371e8d6652404ba78d298ab8a78ea53439100fa4f5ddb2aca0564aaaecbf34337181f87deb9db4cc884ad09bd9ddfc08c2424550cd044928c6926a72286a6a1b3d9dc0bbd993f9e00a3bef6b31d42a1d197bb4742785bd45dd6f53f0abd29dcd1787a567bd881ce495ad6a84df3802c6ce136b6dae641685a23b33732fb1d8cf167b4ddb6fe2d3e0e82f12518225292db3f6250a4ddafe87fc95ae3ebb7c6fcce8589aa6c0f9ed0f6db167e2d048bd6a8a34f0b37b844cd51c01226594e5f1f2a00d781d73f18bbe50530ac2fe48145d01c6698aa2a0b95ac99659ed57e1bb6655aa6597f6e3491fa45cceae1dda5551a9522cb58aeef4b6a96b7ee54152ad50308823082bee79f42f437c39920a83e050000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "54",
+      "7f",
+      "4f",
+      "db",
+      "30",
+      "10",
+      "fd2a91f70f48fde1b4699b5442ac2b81456bd392a620d8a6d6719c6248e2123bb00af5bbef9250a0631b52a4a4bef7debd3bdff509ddf134447d14f0d57dceb2cda75b11a01a628aace0f4d2f8ea5df7babff8b751ee3e8ee8e92c7db4ce8f8e00c10b9624c93a667529f28c32d99fcf1aab4ce46b92095107a1baae9b75bddbc2966ee176a7dbb18028591c8d787a07f41ba5d6b2df6cee92375642ac6246d65c36a8485ece9b0fade63a13b78c2ad9dccfd98434b2f941d6e35850a2b8488fe63370904b962d5842780c1e5ea961f0795fbbc149d25801f8815346281579aa0a5f2041451af1559e95aaa8ff844a9f6f3ed0cc1ed9435f1b4ee6ae7fb02449415e1e6a446a8b45c6641eab9ab684a2221eb3050f9755647da79d7a933144c0c10d914c2eb5cbafb6676bda522a70b7d47ee418b7a976ac0ddc136d5fc271b5b9ebda335f3b383ed4cebcc97caa7db9dac380f79049c5d3d2b94f829815ae9fbbebbcbfd482401438a9828b1eee12ddc45610053d1a99ed4e1061160466d0eb907680a96530230c18019e2ad44b1649454a5a189b5d9332dc090826816186049b94747b96118601b1b0de0d2ddd40db1a7accb862275cae85e45587d1a5e7f8f6c2f7e6ee70e0db651911812e9e54e68a22defa54502480fe53d7b6887201998aeb725cdff60643dfb9b0ab0919b115a19bd93dcc484462c9004d329230c5b2b108a169683a9939be337107236094d73edd2124ea7f7f7a25f89b75d96555be91ef8ce18e06e369e96107ba20715ea21eaa0fd4c22d5cc7adbadef1f5565f6ff775a38131be46db6deddfe203cf1b5c8121926564f3470c8aec1a05fd2f594b7cf9ab32bf73a1a322db8b27b4fdb985a78660d12a75743eb7bd2b541d792c62194be9c74305",
+      "e032f0f11fc66e79010ceb0b796011148719a6b2c8423356cd324f4abf155b377a58efa0129ca977b156dbdc5d5aa15128b284a5eab9a46a79cb4e15a15cbe80200823e83aee19447f03f8ea13043e050000",
     ],
     [
       "ETag",
-      "SW/vTzOx2dRq8937oJprpA==",
+      "W4HRZ76xiKLuNwLcFSnw9Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17702,7 +17378,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:52 GMT",
+      "Thu, 13 May 2021 15:19:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17721,7 +17397,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-118-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-118-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17731,20 +17407,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "90",
-      "414f83401085ffcb78850468834ad283adc4624863d11e8c699a2d4c911618dc5d6a2ae97f7776ebc183072fbbb36fbe99bcb7031caab68008b655f9d1a33c5d95a897a6c850f5b5567c75d42a0407508bd290e96b29e759dcfbf7c9389d155fed76f4b89c4c9850f93b3602a2017615d68582e86d805634c8639b8db41b19d3a7ce28c9e2257e8833161a2a8cb058a5e9dd348de1ecfc1aeb0eff1a599f1dd8d336c31d4a6c73342e3a497bcc7562022ad17435ba8a7a99a3020bdb4629a9ef84247259717dffc6f5c3c0bb0ec7de6d1804219335e54257d432bc7a6673a0498b3aa34f0e080103d2969c7567cf23cb231be26801e3edef9e6f7aeb9f85d39346f52489ed2934cebc8bcb1919e79a1369d9a303b9e06f9e57faf23e7f03fcac804ac3010000",
+      "000000000002ff8d904f6f824010c5bfcbf40a09683495c4436d4835a1a68224fd13635618280a0cdd5d6cacf1bb7776eda1871e7ad99d7df39bc97b7b8643d5e610c0ae2a3f7a94a79b12f5ca1431aabed68aaf8e5a85e0006a513299545fa94c5291afe743efe5f9317d6d07c7d574ca84cadeb111109ca1a8b0ce15046f676845833cb6dd4abb91317dea8cb258aec3873066a1a1dc08cb348aee66510817e7d75877f8d7c8e6e2c09e76311628b1cdd0b8e824ed31d30b135089a6abd155d4cb0c1558d8364a497d272491cb8aebfbb7ae3f1e78137fe20d47e3d184c99a32a12b6a194e1336079ab4a863fae480306040da92b316f63cb23cb4218e1630defeeef9a6b7f959383b69544f92d89e42e3ccbbbabc27e35c73222d7b742013fccdf34a5fdf976fcd04a50cc3010000",
     ],
     [
       "ETag",
-      "bLYgrHREu1DI4LCdznb3JQ==",
+      "SizUrSUadTH30YXMUZn2vQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17756,7 +17423,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:52 GMT",
+      "Thu, 13 May 2021 15:19:07 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17774,10 +17441,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -17794,14 +17458,11 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "1d",
       "d0",
-      "4b",
+      "c9",
       "72",
       "82",
       "30",
-      "00",
-      "00",
-      "d0",
-      "bb64ad4e5041e90e94222805141a65c3f0097f422620043bbd7b9d1ee1bd1f102509eefb70e86a4cc00798a3b5bc4a5667ba57c33c33d5d9a91e3838a4d9dc5a5ddc183eec9c8bae704769c955593e4d8f6b36c96edf75134f79b11598c4830922ae154bb83390472c0935dc4fc2764d3e0b181f4fc4276e49a16b36462a7849305e58b44fabeea26e07d7bbdedd67b11d66812a8ce77a1a4bba794a2d83ee8ed917ad772f4763bd1d29a9a8aeb16309486feaa1ae6ce896c81cdbfb34f6e747af9d2afd6121d4aa81786306c41b24de0f91021600735a32dc87e59bbb11657901feede13053fc0e5071c43003bf7f50f683841a010000",
+      "0000d07fc9599d425ca0373205171a16ab58b9640204084e144290a5d37fafd34f78ef07d034656d4bd4e3c6eee01d8c543717e9c2ad0d448a9c0eb9e77f5f44119782344e7091791fc9f569d432195b636549f85c9b0cf59ab90e6c8eb75e093b1d19bdbf779c835bcad1986bb059567e3dc51a1e5c1e9e3b638af79ff674de0fbd7ae0371bb34414250d431267e1e90437aba3624f99f8e82be952916eab4c9c7772b2597e5daa5ba7c447b6e128a7fdaebb6347a0e5f1185d5831722b930707e22bd9b85e34d74c43ef23ba2adaa409798054802c30036ca8b9642de12f2e5c99e60cfcdb891a6bf60a408c4a26c1ef1f09d93a241a010000",
     ],
     [
       "Content-Type",
@@ -17815,7 +17476,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:52 GMT",
+      "Thu, 13 May 2021 15:19:07 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -17834,7 +17495,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -17855,7 +17515,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-119-1620764096226",
+      jobId: "grouparoo-job-119-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -17874,17 +17534,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "02",
       "ff",
       "85",
-      "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd2bc8fbda84bc202152b446295da3256425a455374dc8980b7107986293aaaaf2df77314dd7aad2fa09dbf79c7bce7df04cfef022265312f1f4a186eae9cbbd88c8190145537cf5ee4a9fef4de7e7f0f2f1e0ec17dfe3ab5c5dcf6688e00d4bd2bccca023455d3190d3ddb69b56a22e692544071375fa7da7d3b707bdb13dea39f6606023514296ac78f107e97ba54a3935cd9378371522cd80965c7699c85fdfcdc3c02c2b710f4c49f3bda68932d2fc44f56b2618555c14b3dd161dd412aa1072ca33f4f08f1a47e7ef737739cdbb29820f9c01654cd4856a7c610a268a84a775a5b392e933d13edf1cc8d65db98bc06022abf3222c680e67464c150dd55309c6a5bf591b4bef72e3afe7c172e385dbc595bb9e77179bd56eed6d8ddb2bd7770d45a30c34d79819e7fae6e105f563908a175a3d689e1be5970e2d3f0ea621a0b48436188e7b36ed4f7a4e944463964c865694f4208a26d1d8a2c3a8c79c118ce20828f2b4a866d1421463cbeadbcc8630a2a36138b26c2b9cf4865108d472ac68128f2838e478461e2baee082cb5248de7688dcfacbc00d037fe72de681ab4b48689da98bd65853c05b8f0a0b44d07f6a3a36512e50a969f7d20b5c7fbe0896376e3be115a4943d6d1f70c609cd24209a56d83c05d55ac4d02cf77ced5e20584fecc72928c9f4d733697adeb878d3f2577a80036cec2afd25dbc05f7adfb49d13e28666b5861cda0329d1f21e6b43d7c7df88c42d6db390eb9debdf91f6c987042a28d8e7d344b00e7cfeb79d361fc1b8fba82315de7179986c545805ed12715def0b7bd01f4cfa16d1e04a7d8839c3e1a96d4d8e2623e450a89792dacdc74a5bb15abe823088f3f774bb8e7f01a0c7f63c7b040000",
+      "536b6f9b3014fd2bc8fbdabc490291a2354a691b2d211d21ada66942b6b950b704536c326555fefb2ea6e9da4d5a3f61fb9e73cfb90f9ec9a3c86332214ca44f1594874f0f929133029aa6f87abffa658f937c54945faa4a04cb9b2befe9904ea78810354bd15d91414bc9aae4a026db4d3b2d6555d052ca16266af57a6eab37ea77dd9edb1d0c474317890ab26429f2c73abdd6859a743a27f1762a659a012d846a73b97b7defecfb9da2940fc0b5eabcd7eca08cea7ca0fa39939c6a21f3e976830e2a0565043b2a32f4f0871ab3f3f7b9db82eeda2982f78203e55c56b9ae7d610a2ef344a45569b292c933313edf1cc8c65b7af3d0e232ab767994d31d9c5931d534d28702accb60bdb216fee53a58cdc2c5da8f36f36b6f356bcfd7cbedcadf5877d75ee0599ab20c0cd79a5ae7e6e6e305f563505ae4463dac9f6be5970e2dfe1d4c4d4069054d301a7747b4e7745d96b0314f9cc190255d60cc61e3211db02e776db06306147946d4b0682e733a6203c77621020e3cb2e3b1133170e2c8ed0f46ae1ddb498f71723c233f4ba1e142a8422ad17488dc058bd08bc260ebcf67a1674a486895e98bc6585dc05b8f1a0b44d07f6a3ad6512151a96ef7c20fbd60360f17b75e33e125a4941f364f38e384660a104d4b6c9e867225636c18f1672bef02c1666237a7a02293efcfa4ee79ede24dcb5fe9210eb0b6abcd976cc260e15f193b27c42dcd2a03d9370752a0e57bac0d5d1f7f2012b7b4c942be6ebde01b699e0248a0849c7f3c4d049bc0c77fdb69f3118cbb8f3a4ae31d9787ab5a8597d02c9130f5beb07bf6d8b147c4804bfd77cce90efaa7b6d539ea8cb0835cbf94d46c3e56da8855ea1584419cbf6fda75fc0dfc9af0ca7b040000",
     ],
     [
       "ETag",
-      "NYpRih/9Z3Fwv9hCKdHmtQ==",
+      "hMz47fn6prKuuiRLPGEqyg==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17896,7 +17550,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:52 GMT",
+      "Thu, 13 May 2021 15:19:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17915,7 +17569,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-119-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-119-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -17924,22 +17578,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "92",
-      "dd",
-      "4ec2401085df65bc6d93424a91265e8022120181166234842cedf407db6edddd6a08e1dd9dad88464df4a69d997eb33de7b47b784a8b105cd8a4f17385627716a39ae9628eb2ca94a45bc90b8960002a161399dc472d67e1e7cbdee02198259dc1edd2b367171744c820c19c81bb8728c52c94e03eeea16039d25ac0b32a2fd6756780da957ae8f9f3e164407dce43dd4f16a351b737eac3c1382d864cb175cdff636d753060cb37738c506011a0d6520abec5400db54dc9f2324353f24a0428a186eb07b1e055c904e7264dcc46a363369ca6d5766cabe3349b0e91190f984a7941f0c22381a0b862d99cbf924dd080a84b721cd5d7171aa761ed4497c389efd8b5c0af00698bd20cd77f83243861f41d3eb06306df3996f3aa5027ea7a74d7fded380af5f3a8abaedfff414845519d107f38ee7b7e773cd5dceae8bdb75328a78253921275880dcb3e6fb51deb3dd74baeb3a6f7b84a546840c0e8f7b84915b811cb241ede008f8fedfa7c020000",
+      "08000000000002ff8d92515382501085ffcbf68a93949230d30396158d9a293e358e7385452960e9de8be638fef7f6525953cdd40bec2edf5ece39b083a7b488c18345ba7cae506e8f96a8ef4d314655655af1ada4422158805a2c99745b978bf878bdf6d5e0f622e938f2f925a0cdf939132a5a612ec0db419262162bf01e7650881c792da2acca8b79dd59a0b7a5194ec27130bce63ea7d8f4c369bfef77fb3dd85b87c5586831aff97faccdf6163cd2628c094a2c22345a4a498f18e9c0d854222f336c28aa64840a6ab87eb094549542123578d2b06db7613b274dd7769ba76da7ed32995124744a05c3d3090b044d5a6463dab04d70189075c98e93fabae6711ad74e4c190c43a7550bfc0ab0b624cd70fe37c8825782bfc307f69ec1774ee45415fa405df5effcdf8ee3503f8fbaf4c3de0f42698eea8084c1a03709fdc1c870b377efddad463592c4492a3421dacd56a77de634df72bd209335bfc7d3b2420b22c1bfc74daac14b44a670ff0a9a9ad8fd7c020000",
     ],
     [
       "ETag",
-      "hXf56UTmVBGZcQh9GKVS4Q==",
+      "94Dbd/vvAsMJCf86rqxIow==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -17951,7 +17594,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:53 GMT",
+      "Thu, 13 May 2021 15:19:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -17992,7 +17635,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-120-1620764096226",
+      jobId: "grouparoo-job-120-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -18008,13 +17651,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "85546b6f9b3014fd2bc8fbd2497910480889547534a51d524a5a425a650f25060c750398629329aaf2df77314d1febb64a4860df73ce3df7fa9a47b4a17984c628a0c94345cadda77b16a016220227b0fb4ddf16a79bebe5f436217786c1534e5ddf3a3e0604ad591c67454ada9c556548f87831ef2425ab0a5c32d606a1764f53db3d435387465f1d199a66009193349ed27c03f43b210a3eee760fc93b0963494a7041792764d9f37e77ab758b92dd9350f0eedb9c5d48c3bb1f643d4959880565f9f1620e0e2a4eca15c9304dc1c30b350abebcd5ee509c7512006f69487018b22a17b52f9008591ed3a42aa52a1a3f22e9f3d5079adb537be22b93d9c2f58fd638abc9ebcf0ae6ca6a55125ea5a2a5aca1a898a66445a375132936cab937bb840838b8c39cf0b572fbd5f66c453968283f2a55d543e544b1dc33e5ad86e32a0bd7b5e7be7274f259b9f0668b2be574f90603e623c205cda5751f0729a96d3fb5d7797faa35010bb0d2045743d5c03d531d0571300c63531f04b14a82c00c8603ac076a38ea937e14100c3c51ab4b16ce593e82601045bd914a0671d0570d330a7ada10c77a6c06fa68d08f4333d2b501dab7d0af920a724679c1386d5a8c6e3dc7b757beb77027966fcb32620c6d3c6bccd545bcf629a04800fda7ae7d1da50c32d5e7e5b8beed5913dfb9b19b1199920487bbf9030c498c534e008d4b9c1141ca4b1641d3d0d56ceef8ceccb5a6c090e77e75407034fefef842f07785ecb2906f743e9d59bed1970e0e901b9c5612b36d3e50af3300c4bef56f19cbf3ac25a4c66589777fc4a01c43d2ff9241e2e5aab1f99c11d5d90e2b0ded7feee16921b8538d3aba5ed8de12355b1e894949f2f0e3f101b00c7cfc6f38dc5300c34d853c5cc01aa635e47596b024cdd4d24cfa6dd85a4f1f0c3424c1a57817334cf3703cb546ad4832928ba7929a7b2a3b55872afe0c82200c9bebb81710fd0dd84ee74a29050000",
+      "02ff8554616f9b3010fd2bc8fbd24a6902091012a9ea684a37a49474045a55db941830a95bc029369da22aff7d67d3b4cdbaad1212d8f7debb77e7334fe89e56191aa384ae1e1a526f3eddb1047510117805bb71d0c4966d6633e69fdaf8e27a7e4a9cc23d3e0604952c8ecb75418e386bea94f0713cefae6ad6ac71cdd811081d197dfdc8b0fbfac818e903cbb64640e4a4c8a7b4ba07faad106b3eeef576c9bb2bc65605c16bcabb292b5ff67b8ffddeba66772415bcb79fb3076978ef83ac27054bb1a0ac3a8ee7e0a0e1a45e9012d3023cbc52b3e4f3be7697e2b2bb02f0234d094e53d65442fa02899455395d35b55245e327a47cbef940736fea4d226d328b83e860894b495e1e6a986b8b454d7853888eb684a2725a9005cd966d647daf9d87b30b8880835bcc095f6ad75fbdd0d3b49d86f6a3d1f541aa9d686e70a6ed6bf881160781378fb4839343ed4b388b2fb5d39b3d0c98cf0817b452d6239c1444da7e6eaffffe5425010bb0d2061743ddc686a38f923c19a6b933b0925c2749e224430b0f123d1d99c4cc12828127a4ba62e18a5523082659068742ac3c3175dbc912a33fc4f9207792c1c832f3d4c9067d0b6d3be8574d0539a37ccd386d5b8cae433ff2165118071337f254193986369eb5e664116f7d0a281240ffa96b2ba3944126795e7e1079a13b89fc2baf1d912959e174337f8021c971c109a0718d4b22487dc132681aba9ccdfdc89f05ee1418eadc2f77088ec6df9f5e09d166adba2cd41b9d4f676e649bcac10e72858b46611edb0f64742d406c3bff9671c3d0bd81d4b8aef1e68f1894632bfa5f3228bc5ab5365f3222996db7eaa3edcf2d3c1d0477aa5547df622fbc41ed56487252932afd787c00ac021fff1b76f754fe7ae6320f17b086694db9cc92d6a49d5a5a2abf2ddb309da1612005aec5bbd8a86fee8e476a484552924a3c97d4de53d529196af80b0882306c811f7c81e86f20b62c5829050000",
     ],
     [
       "ETag",
-      "Z3vpBkQYLWgeh66slsiNTA==",
+      "UNuU564dOoIB6aMWSBe8lA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18026,7 +17667,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:53 GMT",
+      "Thu, 13 May 2021 15:19:08 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18045,7 +17686,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-120-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-120-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -18056,11 +17697,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "8b",
       "08",
       "00",
-      "0000000002ff8d90414fc2401085ffcb786d63694c45120ea2048904a5803131846cdb6929b49dbabbc514d2ffeeece2c183072fbbb36fde4cbeb76738e455020388f2ecb341d95e65a817a608513585567cd554290407508b8c9dcffd360c8feff3b7dde329eabf54a7eb68b25c0c87ec50f10e4b018333a439168982c1c7192a51228f6db7d26e649b6e6ba34ce7abf1641cb250526284f97a36bb1fcdc6d039bfc6eac3bf46369d037b8a424c516215a3a1a825ed31d653135089b22ed055d4c8181558b36d64929a5a48229715b7e77b6e2ff0bddbe0c6bb0b7c3f606741b1d039556c5e2f190e34695184f4c501c16783b425674ded79b4b20961aa9e65fbbbe79bdee667e1a8d5a85e25319e4243e65d281fc8906b4ea465830ec482bff929d79777f70db477ae75c3010000",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02ff8d90cb6ec2301045ff65ba4da424085490580042942a42252d6c2a848c998490c7a4b6c343887fefd874d14517ddd8e33b7746e7fa06455eef6100bb3cfb6a515d9f32344b5b24a8dbd268be1aaa3582076844c6ceeabc5e5e8ad9ebe5b00c8af57347d0494e46c3213bb43c602560708334c772af61f079835a54c863dbad721bd966ae8d55e68b8fe96c9ab050d1de0a8b551c8fc6f114eedeafb1a6f8d7c8e6eec1917609a6a8b09668291a454794666e036a513525fa9a5a25518333bb46a6a86d8422f259f1c328f0c35e14f4c37ed0e9f6ba7d76962485c9a966f3ea9de1c090116542670e08111b942b396beace93936d085b858eedef5e647b9b9f85e3ab41fda688f1345ab2e04139214b6e3891512d7a20057ff34b6e1eeffb37b45b1e0cc3010000",
     ],
     [
       "ETag",
-      "K8yRRvXNVhDzb8Onz/bGSQ==",
+      "mwVQxkGJxhQ0kV83aovcCA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18072,7 +17717,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:53 GMT",
+      "Thu, 13 May 2021 15:19:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18090,10 +17735,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -18106,9 +17748,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "00",
       "00",
       "00",
-      "02",
-      "ff",
-      "1dd04b7282300000d0bb642d0e9a864f77410aa468015b7570930934201f352644613abd7b9d1ee1bd1fc0ca922b45876bc72fe0154c6ce9cecb792c1c8fd6e5a673a51750840df3f079e51c2124bc4dabe52a23429144bff4791244e1d7ceeb9c7c2c03b674a0abae30e6e87c76587448f753ada204c7c9911916ccd2ea522049719267f8b19aeedb40c7e4adb076e650f8298eb4ddbaf587631a930743ddcbfbedbcb0488c450e7dc9fb347cf845af85710abb96b407128bf71adb475fea6d70b36b989b7da7360b9f341712447bbbcaaae1c4d63b4dbfd7e3cd0433c047d148ae68f3e442e4ba33f06fa7c324f833c0e34c72097eff00fc33dd731a010000",
+      "02ff1dd0d97282301400d07fc9b33891c548df9a6151100571a8e52503f426acb259053bfdf73afd84737e509265308eecd65670456f684e647d992ddd6e439980dc2c99d393cc16bdb53d9dd29d945be2c00d9ee2262172e5c6011d8efed9a8cf0af38f17f5b0237a336a7be9bd57c136cb306f24a2e8809dfa512a6b1f26ffbee2541359f4a88c62cf0397d62d170d3dcb47db7f7c818a830f19ca99a45829bd52f2a19949c8c5fd2ab978cb77e9f4c9f21eeab17d469137d37c1de0ceb16cabbdc4ded466e9c14dfa68261636bf436f730ae36a53cb6208a9b19557688160ea8a014656bcb88aa6eb0bf46f67b7b983570085648001fdfe01dabc57241a010000",
     ],
     [
       "Content-Type",
@@ -18122,7 +17762,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:54 GMT",
+      "Thu, 13 May 2021 15:19:09 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -18141,7 +17781,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -18162,7 +17801,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-121-1620764096226",
+      jobId: "grouparoo-job-121-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -18182,11 +17821,15 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "6b6f9b3014fd2bc8fbda24401e9048d19aa674654dc84a48bb8726643b8639054cb1e95655f9efbb98a46b5569fd84ed7bce3de73e784277bcd8a209223cbdaf59f5f86127083a414ce1145ef1fc737a550dc9d7ef7f76323d0befcfe677bbebe91410bc61499c9719eb48515794c9c966dd4d2b5197b812a203893a966d75ac916d3aa381391ed9f608889265c982177740ffa5542927bdde51bc9b0a91660c975c76a9c89fdf7b0f76afacc48e51257baf357b20237befa87ecc04c58a8b62ba5983835ab22a6639e61978f847dd92d3d7b9bb1ce7dd14c00f9c324ca9a80bd5f882145414094feb4a67459327a47dbe38a0b5b7f0e691414556e7455ce09c9d185bac70ac1e4b665c84aba5e10717ab70398bfc5510afe797de72d69daf169b65b0366e2fbdd033142619d35c636a9cea5b0017d0df32a978a1d5a3e6b9513e74c87f3b988600d292b5c1d83147d872cd3149884313b73f2489c908718933c47d62d2f1800db68461e06951cdc285282c77e06e2dc78c1d9b9af1c01d92d83507566cf5cdb1331a9ac4b15db43f41bf2baed83997a590bced10ba0dfdc88ba37013cc6791a74b48709da9f3d65853c04b8f0a0a04d07f6ada37512e40a969b71f445e389b47fe8dd74e78c1524c1fd7f730e3046792011a57d03cc5aaa5d842c350305b7ae700d613fb720c4a34f9f1849a9e372e5eb4fc991ec1001bbb4a7fd13a0afde093b67344dce0acd69087f6800ecb03a6f73f01084bda2641d71b2ffc86daa79025ac62057d7f9800d681f77fb6e3e20318561f74a4823bec0e958d0aad58bb435c977b60dbd6c0eeeb5f55e14abd89f547c363d79a1c4d4696b3421d4a6a171f2a6dc56af90c82208c3fd0dddaff05e08e87077a040000",
+      "5d",
+      "6f",
+      "a2",
+      "40",
+      "14fd2b64f6b58aa0289898adb1744ba2d8456cd36c3664182e745a642c3374d334fef7bd0cda6dd364fb02ccdc73ee39f78357f2c8ab8c4c49ca8ba706ea976f0f22256704142df0f6ce1b07a665072acdc6105daf9e16f79216b3192278cb9274b72fa12745533390d3eda65fd4a2d9d35a881e26ea59b6d5b3c6f6c0b3bcc1d0193b1e122594f992578f48bf576a2fa7a67912ef17421425d03d977d26766ff7e6b36dee6bf1004c49f3a3a68932d2fc42f57b2918555c54b3ed061d3412ea04769497e8e11f354bcf3fe6ee73baeb17087ee60c2863a2a954eb0b533051e5bc686a9d954c5f89f6f9ee836cfca5bf880d26ca66572515ddc19991514513f5b207e3325aaf8c20bc5c47ab791cacc364b3b8f257f3fe62bddcaec28d717be547bea1685a82e61a33e35c9f423ca07e0652f14aabc7ed75ab7cec50f079302d01a52574c164321853cb1d78699e4e58ee0e9d341f409abae9c4a1c374c0bc118cb21428f2b4a866d14a5494e5b6331ad264e4baf8b02779e24ec04e06de70ec8e5c07327b420e67e44fcd155c70b91792771d22b75110fb491c6dc3c53cf67509396d4a75d1196b0b78ef51618108fa4f4d8736ca052ab5ed0ec2d88fe68b38b8f1bb092fa1a0ec65f38433ce692901d1b4c6e629a85722c3869170bef22f10ac27767d0a4a32fdf54ada9eb72edeb5fc8d1ee3005bbb4abfc9268e82f087b67342dcd0b2d190e7ee831c97074d1f7e231097b44b427e6efde88e745711e45043c5be1e268275e0eb9fedb4f808c6d5471da9f08cbbc364abc26ae87688eb728f6c6be43996fe5515add5a7d8c4b14f5d6b73b4196107953a96d42d3e56da8935f20d84411c7fa8bb75f80b260683bd7a040000",
     ],
     [
       "ETag",
-      "aCJgKr5bXZxjsgBRqBCkjQ==",
+      "Y96I/12Itbd6eRPMqChsag==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18198,7 +17841,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:54 GMT",
+      "Thu, 13 May 2021 15:19:09 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18217,7 +17860,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-121-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-121-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -18236,16 +17879,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "8d",
       "91",
-      "51",
+      "5d",
       "4f",
       "c2",
-      "30",
-      "10",
-      "c7bfcbf9e8966c13862ee1418851920565802f8690b2dd46b1dbcdb69310c277b7ad688cf1c197f5eef6bbe4ff6b8ff0ca9b0212d8f0eaad4379b8a850cf6c91a1ea8456e668a951081ea066952183c7fd6cbcad541ef5e9b98853bee097540d878650f9166b06c9114a8ea25090bc1ca161359ab59c4457376bd779a00fad1dce17d9647a6ffa9a0adb4f97697a3b4aefe0e47d2f164cb3b5e3ffb1b63a79b0a34d86254a6c72b4595a493bccf5c46a2a56b7027d459dcc518183dd8f4a52d73249e49b891f46a11fc65130887bc14d1c45b12105e54c736a0cbc9c9b80a0493391d1de68c29501a42b8d71e9beef66cc0b6762cbc97411f75cc09f8073fc42ce5abf9956b0e60f66754e303a68544f928c8f42ab1206bdebfe200e3eedc6648db5b9092d3bf42067e6911eb886a46442e1e9039359a04b02020000",
+      "301486ffcbf176241b1f13967081c48f198232c08418424a7736875b3bdb4e8384ffee6945638c17deace79c3d27799ff600cf854821826d91bf34a8f667399a992d12d44d69341db5141ac103342c27f22ae3b7b3d5fc61bc7a17f1ac7b37167d5c8d864322347fc28a417480acc032d5103d1e40b00a698dcbb2a9c4c6751e987d6d87f345124fafa9af646afbe97232195d4c2ee1e87d2fa6ccb08de3ffb1b63e7ab093db0433542838da2cb5923be426b69a9a5575892d2d1bc5518383dd8f5cc9a6664aca164d5a413b680561db1f0403bfd30b7b03224bc99929a4207839a78060a4616522df48133a0428579271e6beaf342e526762cb78ba08bb2ee04fc0397e2127addf4c5d32f107b33e25b8d81bd4f74a928f46ab12f8dd7eef3cf43fedc6d21a1bba09a31af480337aa49bc24094b152e3f1037e71bcf902020000",
     ],
     [
       "ETag",
-      "0OwQChgsc25oVd6LiTi+og==",
+      "FfcJQYSVCYznIQ4OCn8eYA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18257,7 +17898,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:54 GMT",
+      "Thu, 13 May 2021 15:19:10 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18275,31 +17916,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b",
-      "72",
-      "82",
-      "30",
-      "0000d0bb64ad4e0c2ad01d18bf14a85a50b2c9100814918f2408e2f4ee757a84f75e208c222e049555ce4bf0019e21d227d1c4aa3593a6b1bdd86a5c8ed3e61e1f6e282fccf9c5e9c8ce433ae168b63e798b61538622ac14efcabe547bea0828a1b977fa2bb110b44449b3c239429cc7c123e8f471a2da2c3ce0fdb7b1252bdfc2fb804f2976fc13865bf7c98c480e59cfe2c8f47834d03bad0a76f1c6aca85cac78f60051cb36ddcd82ebc74aca1d3eabad3233d2e4deda4b455baae2b3ac6a8d1072f4cfea35295c6442a5392fa9fee3f7f9cce66004785f670d17347b7395b9ae8fc0bf9dca67cddf01260f1bde80df3fcf0ebadb1a010000",
+      "08000000000002ff1dd04d7282301800d0bb64ad8e1252a03b7f084aaa1501053799247c628a0504a5d24eef5ea74778ef0709a5a06df9ad2aa044afa8178633522356db339eab83b7c6ecf2090617073e5d1a176967699e9ca9a0b1beee44d15587206405cc1ba77ddf469979f1cf614df2ad47866a9af559bc16775899a529bfcb9e6b99adb4c4989a49a5665d940609b83639b91f4bb6d9bfec034b626b380edc47da4cc2883ad46c4ffe902f0c0221237ec654598cbf1e9697baba336bca377dec2ee078648cd2c009582c22cfb0e6984bb92bb0aaf4d9a7d6dcbe4fac0db9a66f6880e051eb065aae9f5c4c1c6780feedfcd6d7f00c988168a041bf7facfe0cd21a010000",
     ],
     [
       "Content-Type",
@@ -18313,7 +17937,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:55 GMT",
+      "Thu, 13 May 2021 15:19:10 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -18332,7 +17956,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -18353,7 +17976,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-122-1620764096226",
+      jobId: "grouparoo-job-122-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -18374,19 +17997,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "85",
       "53",
       "6b",
-      "4f",
-      "db",
+      "6f",
+      "9b",
       "30",
       "14",
       "fd",
       "2b",
-      "91",
-      "f771f495a669a9548dae8451a949479a82a6698a6ce72618d238c40e08a1fef7dd382d03218d4fb17dcfb9e7dc475ec8bd281232254c640f3554cf5fee2423270434cdf0d5befc9e7fadaf4b779e4076b586917deb8b6c36438468588aeeca1c3a4ad6150735dd6eba5925eb9256527630516760db9d816bf7c7aed33f756ddb45a2823c5d89e21ee9b75a976adaeb1dc5bb9994590eb414aacbe5eef5bdf768f7ca4ade01d7aaf75eb38732aaf789eab75c72aa852c66db0d3aa8155431eca8c8d1c33f6ac2cedee7ee0abaeb66087e141c28e7b22e74e30b537059a422ab2b93954c5f88f1f9e64036deca5b44169779bd2be282eee0c44aa8a6b17e2ec1ba08d7beb50c2ed6a13f8f96eb20de2c2e3d7fde5dac575b3fd85837975ee8599ab21c0cd79a5967e616e005f513505a14463d6a9e1be54387961f07d310505a411b8cc77d970e26fd5396b2314f27c3114bfbc0d8848d4774c8fafcd4012761409167440d8b16b2980cecd4193a4e3c66a32476d2b11d4f46032766dc766cc61c975397ec4fc85325349c0b554a25da0e919b70197971146e83c53cf24c0929ad737dde1a6b0a78eb51638108fa4f4dfb262a242a35ed5e069117ce17d1f2da6b27bc828cf2e7cd03ce38a5b90244d30a9ba7a1f265820d23c1dcf7ce116c26f6f3185464fafb85343d6f5cbc69f92b3dc2013676b5f9924d142e831fc6ce11714df3da401edb03392c0f9adeff41202e699b845c6dbdf017699f4248a182827f3e4c049bc0e73fdb71f1118cab8f3a4ae31d7787ab468557d0ee9030e51ed8f66084e324065ce90fb1a1e31ebbd6e46832c20e0a7d28a95d7cacb415ab",
-      "d52b088338fec0746bff1722b2c8d37a040000",
+      "c8",
+      "fbda04f2200991a2354ae99a2a900d48ab6a9a906d0c730b38c3a65357e5bfefda245dab4aeb276cdf73ee39f7c1337ae07586e688f0e257cb9aa74ff782a033c4142ee0d50ffea8bcbecec9fdd5a5badbd941b913d7cbc502105cb324aef625eb49d13694c9f92eee178d68f7b811a207897a83e1b037980c1d6fe0392377e27a4094accc37bc7e00fa4fa5f6726edb27f17e21445132bce7b24f45f5f26e3f0eed7d23ee1955d27eab69838cb43f50fd5c0a8a1517f56217838356b2266515e62578f847cdc8f9dbdc7d8eab7e01e0474e19a654b4b5d2be20051575ce8bb63159d1fc19199faf0e28f637fe2ab1a828dbaa4e6b5cb1332bc30aa7ea69cfaccb681b58ebf0721b05cb64bd0dd37875e507cbfe6abbd905616cdd5ef9916f294c4a66b8d6c23a37b7102ea09f31a9786dd413fdac958f1d5abf1f8c2680b4645d309d3a133c98391ec9c994e6b3914b728711322353178f8843bd311b678461e01951c3c2b5a8e970389a8e1d379d8ebc2c1d032fc513274fc960968db3d974ea11820e67e877c315bbe0722f24ef3a846ea375e2a749b40b57cbc43725e4b82dd545674c17f0daa3820201f49f9a0e3aca0528e976afc3c48f96ab647de37713deb002d3a7f817cc38c7a56480c60d344fb1261019340c85cbc0bf00b099d8d75350a2f9f767a47bae5dbc6af90b3d81016abbca7c519c44ebf08bb17342dce0b23590c7ee808ecb03a60f3f00084bda2541df767e7487baa788e5ac6135fd78980036818f7fb6d3e20318561f74a4823bec0e955a8536acdb216eca3db207eec019bbc8801bf52e36729c53d7740e9d9155ac56c792bac5874a3b",
+      "b156be802008e30f4db70e7f014734c0a67a040000",
     ],
     [
       "ETag",
-      "2HBl+uVp6AdegQOe52hMig==",
+      "EMztfnJfbjHFtYU/MlUoJA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18398,7 +18021,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:55 GMT",
+      "Thu, 13 May 2021 15:19:11 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18417,7 +18040,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-122-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-122-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -18425,11 +18048,14 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8d916f4fc2301087bfcbf9d22d1913862ee105a0d12504e59f9a18624a779bc36e9d6da720e1bb7bad688cf1856fd6bbdb73c9ef6977f05c5429c4b02af29706d5f6284733b1c51475238ca6a3969546f0000dcb89bcbf1e6e14bfddbc07e9e4b8e9dca9243d57fd5e8f08cd9fb06410ef202b50a41ae2871d54ac445ae3523465f5e83a0fccb6b6c3d97c9a8c2fa92f656afbf16234ea0f4617b0f7be175366d8a3e3ffb1b6dc7bb096ab2966a8b0e268b3d44aae919bc46a6a56d6027d2d1bc5518383dd8f5cc9a6664a4a9f267e2b0cfd561406dda81d9c45611811292467a69015c18b190504230d1353f9469a70428072251967eefb4ae3227526b64cc6f3a8ed02fe049ce31772d0facdd482557f30cb4382c1d6a0be51927c345a9556d03eed74a3e0d36e28adb1a19b30aa410f38a347ba2a0cc419131af71fa1ad815c02020000",
+      "8b",
+      "08",
+      "00",
+      "0000000002ff8d91514bc33010c7bfcbf9da42dbadd515f6e064687114573710648cacbd769d69529374638c7d77af718a880fbe3477d7dfc1ff979ce0ad1605c4b0a9abf70ed5f1aa4233ef8b0c75c78da6a395422338808655444e45d70c5e9276f11864fbc370c9c3745bccc7632274bec586417c82b2465e68885f4f205883b4964bde35626d3b07ccb1ed87cf8b2c49efa96f64d1f7e97236bb9dcca67076be170b66d8daf2ff585b9d1dd8c94d86252a1439f6595a2577989ba4d7d4ac6939ba5a762a470d16b63f2a25bb9629295d9ab87e10b87e1478237fe40dc2281c11c965ce4c2d05c1cb670a08461ac63379204d1810a06c49c6a5fdee695c17d6a42f9374110d6dc09f8075fc422e5abf999633f107b3ba24981c0dea2725c94763afe27bc39bf03af23eedee646f6ce8268cead0819cd1233dd406e292718de70febeff77702020000",
     ],
     [
       "ETag",
-      "XOCxrcVxz0dQ+u5WrIdDrA==",
+      "Enum3XIpTK2Rvw4Ul5NhdQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18441,7 +18067,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:56 GMT",
+      "Thu, 13 May 2021 15:19:13 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18478,7 +18104,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-123-1620764096226",
+      jobId: "grouparoo-job-123-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -18487,11 +18113,19 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     200,
     [
       "1f",
-      "8b08000000000002ff8553eb6e9b30147e15e4fdd9b45c80249044aa3a96b28d28252d21adaa694a8c31cc2d606a9b4e519577df01925e56699590007f97f39d63fb11ddb122465314b1f4bea262f7e19647a883a8c229ac5a23615f7ed6e7ee7c503873c79be7b3eb4be7e40418ac56499c9719ed4a5e0942e574bdeaa5825725169c77c1a86b9883ae6199ba6d0df589659a160825cd92052bee40fe5ba9524efbfd63f15eca799a515c32d9233c7f5aef3f98fd52f05b4a94ecbfaed98732b2ff4ed5d38c13ac182f4ed62b4850492a3634c72c830ccfd238faf2dabbc770de4b81fcc008c584f0aa50752eb020bc48585a89c6154d1f5193f3c5075ab90b77166adb02e774ab61a96d3682ca2a531d6dcbe2c34a79a77d0b96e7daf6e02eb7daf50f3770b596e3f9dadaf7dd55a87d3cfda47d0f96eb0bedeb4d83750ece9025a652b1a24912e228a3758ac3b4bcb79b540bb0c292b6e0c6d62d6c8cf54994443649c6835194e8348ac6913dc283482793211dc611c5a053b57ba3c2052f0c4c0d6226861147980c0c7d341ad9893e1c5b668c937882135d27b61d0fd0be83fe08a6e819932597ac9d18ba0ebcd0dd84c1da9f39a1dbb4916018cf591bae6ee2654e054d02e93f7ded6b9471a8548fdff343377066a177e5b63bbea02926bbd53dec79823349818d054c505171ce63181aba58aebcd05bface0214cd365e1c19124d7f3e3e0bc25dd94c59356fe4048173031a2c04defd83410e6b88f6fb17e5ae7056359486dffcb5fe0f2d800cb4ffb587a783e034b77ee872ed0637a85d0a6842052dc8fb3b0de40678ff561e6f0890e18e401da9e01f0e1691751522687bc058de246cd5a6610d8c096ac842bdc14696719c64ed513bd29c16ead0527b439ad9d450259f4800c2b9f03dff3ba07f01601cc68fa3040000",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff8553eb6eda30147e95c8fbb3494012204090aa8ed1b4cb04a10da1159a26701c87b90d716a3b4ca8e2dd77e2402fabb44a9192f8bb9cef1cdb4fe881e5091aa2986d1e4b2af69fee798c1a882abc81d5682706bdcbe9f8c78579f7380ddda5f402f7e6ec0c18ac5249bc2d32da94bc1484cae162deda085e165870de04a3a6ddee34ed5edb726dd7ea383dc705a1a4593a61f903c87f2b55c8a1699e8ab7369c6f328a0b265b846f9fd7cd5ddb2c04bfa74449f36d4d13ca48f383aae7192758319e9f2de690a09454ace816b30c32bc4893f8eb5bef16c3dbd606c83b4628268497b9aa728105e179ca36a5d0ae68f88474ce571f68ee4dbc7164ac73bca56b034b63b5125496996a186b961c578a07e3329c4d8df5d15dae8dbbef5ee81935c70f8c451078f3c8f87cfec5b80a678b6be3db52638da3336449a8542cd749221c67b44a719c96ff7e932a015658d21a5cf5ad1eb607961ba7719fa4838e13a7168de341dc777027b688dba5dd24a61874aa72d72a9cf3dcc6d426edd4b69318938e6d398ed34fadeea0d74e709ab838b52cd2ef271d7468a03f82297ac164c125ab2786ee423ff25651b808c6a3c8d36da418c6735187ab9a789d53419340fa4f5f870a651c2a55e3f783c80b47e3c8bff5ea1d9fd00d26fbf923ec798a3349818d054c505131e5090c0d5dcfe67ee4cf82d104147a1baf4f0c89863f9f5e04d1bed05356fa8d4661385a82060b81f7ff6090a3d74587c3ab72b7382b3545f3f55fedbfab0164a3c3af033c0d04a7b9f643370b2f5ca27a29a4291534271fef349035f0f1ad3cdd1020c31d813a52c13f1c2c22ab2a44d0fa80b1ad4e58ab6da7d3ed3a4893857a87f506f669929547e548b73457c796ea1ba2675341a57c260108e722f0832b40ff021ad9661da3040000",
     ],
     [
       "ETag",
-      "65r7Q+0JEJ3nAJAIJmCWQA==",
+      "Tvr86FMCJD/WqMR9YsEN9Q==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18503,7 +18137,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:56 GMT",
+      "Thu, 13 May 2021 15:19:13 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18522,7 +18156,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-123-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-123-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -18531,22 +18165,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     [
       "1f",
       "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "6d",
-      "90",
-      "cd",
-      "6ec2301084df657b6c22415aa50289035408a2225a021caa0a45c65942c8cfbab6438b10efce3a546a0fbdd8def537eb199fa1c8eb14fab0cdb3cf06f5e92e43bb7087184d535ac39ba2da20788056644c96d3a8b8d7c3fcb5f8def67a8bfdfb4b3aa98783011346eeb112d03fc32ec73235d0ff38432d2a645992e8762263f6a45c67b98aa3f984eb8a5257cfd7b3d970341bc3c5fba352c5af229aafc69371fc9f6473f1e040db1877a8b196e84c284d07943672f98ca85489bea1464b34d0c2ed45a6a9514213f9dcf1bbc183df0d83ce53f8d8e98541103259921436a79ae1f592cd81252bca98be381f7419d0ed91a3eedaf5e89e6b14eaa4c24c2492b46a231d5b9c9d6e7e468c4e16cd9b263664d079e9dc7c3d93f36a3983d50d7a2005ffeb34b7b7fa7205fc59312ab4010000",
+      "08000000000002ff6d905f6bc23014c5bfcbdd6b0b565150f0618ee20411adcad8444a1aaf5db5edcd92d43f88df7d3771b03dec25c9bdf99d9b7372836351ef600059917f35a8af4f39da853b24689ad21ade14d5062100b42267f27c91c7a5f8482e6f8b5e9de5f3acfb4e72311c3261e42756020637d81758ee0c0c3637a845852c4b53ed273266afca7596ab64321b735dd1ced5b3f574fa3c9ac6700ffea8d4f1573199ade2719cfc27d9de03385096e01e35d6129d09a5e980d24e5c3e232a556268a8d1120d78d85fe49a1a253451c89d306a77c2a8d76ef5a37eabd3ed75fb4c9624852da86678bd647360c98a32a133e7838801ed8f1c75efd7937bae51a8d30a73914ad2ca473a799c9d6e7f468cae16cd5c131b32e8bcb41ebe5ec879b59cc1ea06039082fff5b5b08ffafe0d67de2072b4010000",
     ],
     [
       "ETag",
-      "lHIk+rAiOkxb99QhYKdGnA==",
+      "wxckSaZRxWQ6nbgPb5YocQ==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18558,7 +18181,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:56 GMT",
+      "Thu, 13 May 2021 15:19:13 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18576,10 +18199,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     ]
   );
 nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
   .once()
   .reply(
     200,
@@ -18587,20 +18207,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "1f",
       "8b",
       "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b",
-      "72",
-      "82",
-      "30",
-      "0000d0bb642d0ef231a5bb06c74f01b5e163cd2683212285040cd481747af73a3dc27b3f20678cf73d1dda9a4bf00aa6dcf2e66c1e742f8896acecf03649e37bb4d26a5cc082c44bfc75f4cc53c5f63761af04ae839a9c76437e13dd7b143fa0f17671f34313c214177641ce0e692cd5c3ac97e6a8421c06f943ca859fde47d41afdda1065d69c9b0d5c22efc33cfabe4fb6c7201896250e2473a3446b41434bb0f25e4c8248745ef93b7724ed3ecd5ad4eac3213174ec7c238e121ca572935cb5bdcee895d6f05259d0190bd369a74f5308acd7528119e0635729ded3eac9b55dcf9b817f3b1da68e3f0310cf1557e0f70f372ffafa1a010000",
+      "000000000002ff1dd0c97282300000d07fc9d93a34c8d61b200eb238b28970c94408126d491a90c54effbd4e3fe1bd1f80ab8af43d1ad89d74e0032c181aeb6aed73dd42d7665753536bdcf34186e139b03bd7847b323ebe8634aa065c873793e119c5bb409158a1da6d9024b36b29913fc61be734f9d2f269b325ad3154b238dfe7e39450f5e99e1c585c47a4d7f74bfe0dc5b57bf7cabef553432be82452d237dbe2d41c25891fb5c87970e7e66921f5166bf0e5f87290370873588476d54a9dedcfba4e9b7cf7165842d04d864bc65bb52ecfe56297e59c6d23d2b1e06e29313b986005c8cca9203da22faeac18c60afcdbd1b070f20ab008164480df3f7007250f1a010000",
     ],
     [
       "Content-Type",
@@ -18614,7 +18221,7 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:56 GMT",
+      "Thu, 13 May 2021 15:19:14 GMT",
       "Server",
       "scaffolding on HTTPServer2",
       "Cache-Control",
@@ -18633,7 +18240,6 @@ nock("https://www.googleapis.com:443", { encodedQueryParams: true })
       "chunked",
     ]
   );
-
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .post("/bigquery/v2/projects/sample-sources/jobs", {
     configuration: {
@@ -18654,193 +18260,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
     },
     jobReference: {
       projectId: "sample-sources",
-      jobId: "grouparoo-job-124-1620764096226",
-    },
-  })
-  .query({ prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "0002ff85535d4fdb3014fd2b91f738daa6699ab495aa5195009568cad21434a629b29d9bcc90c625769800f5bfef3aa10c84349e62fb9e73cfb91f792677a24cc9843091dfd7503d7eb9958c1c11d034c7d7b32726bc27e978f5cd0d449769fdb52a07f9748a0861588a6e77057494ac2b0e6ab25977f34ad63b5a49d9c1449dbee376fa9e63fb9e6b8f3dc7f190a8a0c82e447987f4df5aefd4a4d73b88777329f302e84ea82e97dbd7f7de83d3db55f216b856bdf79a3d9451bd4f54bf1592532d6439ddacd141ada04a604b45811efe515376fc3e7757d06d3747f083e040399775a98d2f4cc1659989bcae9aac64f24c1a9f6f0e641d5c04f3d8e2b2a8b76552d22d1c5929d534d18f3bb04ea3d5d25a84a7ab68398b17ab3059cfcf83e5ac3b5f5d6c96e1daba3e0fa2c0d29415d070ada975dcdc42bca07e0a4a8bb2518fcdb3517ee9d0e2e3600c01a515b4c1c4b73dda1fd96396319f67a3c1906536303662fe900e98cdc72eb829038abc46b461d152969c79c0dcc12819d07498b8ded04dc68e4f93913d729cd4f647994bc9fe88fca9848613a1765289b643e43a5ac44112479b703e8b83a6848cd6853e698d9902de7ad4582082fe53d3de44854425d3ee451807d16c1e2fae8276c2179053feb8bec71967b45080685a61f334544b9962c348385b0627086e267679082a32f9f94c4ccf8d8b372d7fa5c738406357375fb28ea34578d6d83920ae6851379087f660cac844614cef7f211097b44d42be6f82e807699f22c8a082927f3e4c043781cf7fb6c3e22318571f7594c63bee0e57468557d0ee9068ca7d613b7ddf6e7f554d2bfd21d6f70787ae991c26236ca1d42f25b58b8f95b662b57a056110c71f36dddaff05f590d0247a040000",
-    ],
-    [
-      "ETag",
-      "Gzbi6zo26uZZeRPdu+rn3g==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:57 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-124-1620764096226"
-  )
-  .query({ location: "US", prettyPrint: "false" })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "8d",
-      "93",
-      "51",
-      "6f",
-      "9b",
-      "30",
-      "10",
-      "c7",
-      "bf",
-      "8b",
-      "f7",
-      "4a24c232d222f581b4d91a8d265d425e3655c8b50feaced8ae6d524551befbceb4cba675127d81bbf3efc4dddf7f0ee4a7509c64e45e344f1dd8fd8706fcb710acc175d23b7c19ad1c908880a70d92974daef85efafa691a6fcfa789b9fafe75d35c5c20e1d803b4946407520b90dc91ecc78128da02b6312dbb56557d1611bf37a1b829d78be517cc5bcd43bedc16453e2be6e4189d1a39f5b4eaf977b4dd1d23f2a8efd7508305c520cc62ac7e04e617614d475b2361e474671938d2c3fd41637567a8d57a8495d138998cc669124fd3497c9e26498aa4d48c7aa115c2db0d0e48bcf654aef533ae49c61f91b07d8c2bd7fd738775c1fb5542b85896e9a49ff06f8032a63be5ab41b016d6f917f97e83af32fc4b4afa4e10ef4ac821a801c5c10e51c25494730bce0d92da55d49813365bad8ab7aa286eb5e0c3e04e0c00d2ef4ec0e76295ff4f5a74d81fadaef272fe86701e7d7342cac5cd7c53e637b781bb7b35c26cefc1dd5a8db672101c358e27679fa669fc62b24b1d8c87dfc9bced20228ce2bf722d3cc96a2a1d1c7f0181d12f2889030000",
-    ],
-    [
-      "ETag",
-      "CgAndyltfq70U972pDZKSg==",
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:57 GMT",
-      "Server",
-      "ESF",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-nock("https://www.googleapis.com:443", { encodedQueryParams: true })
-  .post("/oauth2/v4/token", {
-    grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-    assertion: /.+/g,
-  })
-  .once()
-  .reply(
-    200,
-    [
-      "1f",
-      "8b",
-      "08",
-      "00",
-      "00",
-      "00",
-      "00",
-      "00",
-      "02",
-      "ff",
-      "1d",
-      "d0",
-      "4b7282300000d0bb642d0ea258e88e283fa17c1474e8868921080a69f805c4e9ddebf408efbd00c298745ddaff3c08059fe089247589970e53607a237d5ceb39e2934393e8028b93a7eccbb317ba9e54adb3d99b0d5fd6a2ccc8a3cc6eb8b8a2eab1d80c301c540bafdc5d328a620e676a85d0ee8f44434a7d97bf5a65da17be999542f464152b463599a44d3c509d57ee51103477dae69b13d6af075b0a38eeef303464616e83f43b624a575e1ac18425aaa6c6373f124cb7cab8d31e5544f088b875a56d96c7ced959ef06d130c3fae6df7966ea018507c6c1029089952de9d2f2cd5dcbaaba00fff6b47f32f20e8004b5a405bf7ff51ea1571a010000",
-    ],
-    [
-      "Content-Type",
-      "application/json; charset=UTF-8",
-      "Vary",
-      "Origin",
-      "Vary",
-      "X-Origin",
-      "Vary",
-      "Referer",
-      "Content-Encoding",
-      "gzip",
-      "Date",
-      "Tue, 11 May 2021 20:16:58 GMT",
-      "Server",
-      "scaffolding on HTTPServer2",
-      "Cache-Control",
-      "private",
-      "X-XSS-Protection",
-      "0",
-      "X-Frame-Options",
-      "SAMEORIGIN",
-      "X-Content-Type-Options",
-      "nosniff",
-      "Alt-Svc",
-      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
-      "Connection",
-      "close",
-      "Transfer-Encoding",
-      "chunked",
-    ]
-  );
-
-nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
-  .post("/bigquery/v2/projects/sample-sources/jobs", {
-    configuration: {
-      query: {
-        useLegacySql: false,
-        query:
-          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
-        defaultDataset: { datasetId: "test" },
-        parameterMode: "named",
-        queryParameters: [
-          {
-            parameterType: { type: "STRING" },
-            parameterValue: { value: "profiles" },
-            name: "tableName",
-          },
-        ],
-      },
-    },
-    jobReference: {
-      projectId: "sample-sources",
-      jobId: "grouparoo-job-125-1620764096226",
+      jobId: "grouparoo-job-124-1620919035659",
     },
   })
   .query({ prettyPrint: "false" })
@@ -18860,16 +18280,11 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "ff",
       "85",
       "53",
-      "6b",
-      "6f",
-      "9b",
-      "30",
-      "14",
-      "fd2bc8fbda3c48027948d11aa5748d14c80aa4d5344dc8980b750b38c3a65355e5bfefda345dab4aeb276cdf73ee39f7c13379e075461624e5c5ef169aa72ff722256704142df0f5fa3672e87abe9b3facc1b9f3f9c4f5eb6cb55c22826b96a4d5a1849e146dc3402ef651bf68447ba08d103d4cd4b3474ecf7647c3a93b19ceddd1c845a28432dff2fa01e9774a1de462303889f70b218a12e881cb3e13d5ebfbe071343834e21e989283f79a039491834f54bf968251c545bddc47e8a095d02450515ea2877fd42c3d7f9fbbcf69d52f10fcc81950c6445b2bed0b533051e7bc681b93952c9e89f1f9e640226febad638b89b2adeaa4a6159c59195534514f07b02ec39d6f6d82cb5de8afe2cd2e48a2f595e7affaebdd76ef0791757be5859ea5685a82e15a4bebdcdc02bca07e0652f1daa8c7fa592bbf7468f371309a80d212ba60321dbad49e0de7699e4e593e1b3b693e84349da553878ed3219b4f6092a5409167440d8bd6a276f3b14d53c893394cb36442677642c7b69b0cf39c65333bcbf4888f67e44fc3155c70791092771d22b7e126f69238dc07eb55ec991272da96eaa233a60b78eb51618108fa4f4d471de5029574bb3741ec85ab75bcb9f1ba096fa1a0ec29fa8d33ce692901d1b4c1e629687c9161c348b0f2bd0b049b897d3f052559fc7c26bae7dac59b96bfd2631ca0b6abcc974471b809be193b27c40d2d5b0379ec0eba8c9c97daf4f117027149bb24e47aef853f48f714420e0dd4ecf36122d8043effd94e8b8f605c7dd4910aefb83b4c6a15d640b743dc94fbc21ed933db71880137ea436c62dba7aee91c3a235450ab9792bac5c74a3bb156be823088e30f4cb78e7f01372ad3027a040000",
+      "6b4fdb3014fd2b91f795b6e9232da9548daa04a8d4a62c4d61304d91eddc6486342eb10342a8ff7dd70e6520a4f129b6ef39f79cfbc80bb917654ac68489fca186eaf9db9d64e48880a639bede9c47417aa36ecfab4b5afcf47be9c52d15f964820861588a6e7705b494ac2b0e6abc59b7f34ad63b5a49d9c244ad6e6fd0ea0e7baedff5ddbe37f47c242a28b28528ef91fe47eb9d1a773a07f1762e655e00dd09d5e672fbf6de79ec757695bc03ae55e7a366076554e70bd5ef85e4540b594e366b74502ba812d85251a0877fd4949d7cccdd1674dbce11fc283850ce655d6ae30b5370596622af2b9b958c5f88f5f9ee40d6c12298c50e9745bd2d93926ee1c849a9a6897ede817316ad96ce3c3c5b45cb693c5f85c97a76112ca7edd96ab159866be7fa22880247535680e53a13e7c4de42bca07e0a4a8bd2aac7e6d928bf7668fe79308680d20a9a60327287b47becfa2c63239e1df73d96b9c0d8311b79b4cf5cee0f609032a0c8b3a296454b59b29432cf4fbda44f812583011d25ccef0d1300d64dfba38c53df25fb23f254090da742eda4124d87c875348f83248e36e16c1a07b6848cd6853e6d8c9902de7bd4582082fe53d3de44854425d3ee791807d17416cfaf8266c20bc8297f5e3fe08c335a284034adb0791aaaa54cb161249c2e835304db895d1e828a8c7fbd10d373e3e25dcbdfe8310ed0d8d5f64bd671340fcfad9d03e28a16b5853c36075346260a637aff1b81b8a44d12f263134437a4798a20830a4afef530116c035fff6c87c54730ae3eea288d77dc1dae8c0aafa0d92161cb7d6577bd4177e8110baef4a7d8a0373c74cde43019610ba57e2da9597cacb411abd51b088338fed0766bff1762b4425e7a040000",
     ],
     [
       "ETag",
-      "QWS5aC9O9kCe5hMi46MndA==",
+      "YGREdYsZGrPalX92dHZaig==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18881,7 +18296,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:58 GMT",
+      "Thu, 13 May 2021 15:19:14 GMT",
       "Server",
       "ESF",
       "Cache-Control",
@@ -18900,7 +18315,7 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   );
 nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
   .get(
-    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-125-1620764096226"
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-124-1620919035659"
   )
   .query({ location: "US", prettyPrint: "false" })
   .once()
@@ -18921,17 +18336,13 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "93",
       "61",
       "6f",
-      "da",
+      "d3",
       "30",
-      "10",
-      "86",
-      "ff",
-      "8b",
-      "f73548c068ba45ea07e828430ad0412a4d9aaac8b52f995bc7176c078610ffbde7b463d33a29fd92dc9d9f53ee5ebf39b22765244bd8832ab70dd8c38712fcb710acc135da3b7ad5681cb08881e72591cd365bec6e8a91bffe3ead8ad9d37efb6b76d85f5d11e1c44fa8384b8eac50a0a563c98f2333bc026a13a89bcae46d16317fa8437193ade7cb19e515ca902fefd2743c49a7ec149d1b25f73c6ff977b4dd9f22f6880f6b28c082111066a92d3e82f0f3b0a6e355ada1e7b0b1021c6be1f6a0b4d8d4dc22f6a8d21b0c2f7a8378d8bf8c47fdcff1701813a95170afd0107cb7a1019947cff51af7b4261b7c24c2b631ad5cb4cf1dd5956c5709e17c99c5a376c2bf012e0436c6e79d60a1acf32ff2fd065f65f897d4fc9d20dd95d25d50094682eda2549d73292d38d749a2cb795d9fb1c96a95be55c5488b4a76833bd50168bf3b0337e96afc3f69c9617fb4fa32cea66f08e7c93767249b2fa69b6cbcb80ddcfdab1126070feed622d9ca4170d4a03ffa747119f75f4c768dc178f49dc4db06222638fd2b5f956749c1b583d333934132f989030000",
+      "1086ff8bf9482a356b1b68a47d484b814a593bda4c4c4253e4d997e0e2d89eed14aaaaff9d73363ac490b22fc9ddf939e5eef59b23f921142729b917f5430bf6f0a606ff25041b70adf40e5f462b072422e0698de4e861677e35c98c7d3573b91523763b7f5b6497974838f61d1a4ad223a90448ee48faed48146d00db98966da3ca2e8b883f9850dc169be5ea13e68de6215fdde47936cb17e4149d1b39f5b4ecf857b4dd9d22b2d3f71ba8c0826210663156ef80f96558d3d1c6481838dd5a068e747077505bdd1a6ab51e6065105f8c077172319cc6d3e168924ca6484acda8175a217cb3c50189d79eca8dfe896b92788484ed625cb9ea9e7bac0bdead12c2e5aa48c6dd847f039431dd2a5ff68295b0ce3fcaf7077c92e15f52d25782785742f64135280eb68f12a6a49c5b70ae97d4aea4c69cb1d97a9dbf544571ab05ef07f7a207907e7f063ee6ebec7fd2a2c39eb5fa90158b1784f3e89b33522caf16db22bbba0edcdd931166070feeda6ab49583e0a878387e3f79970c1f4d36d7c178f89dd4db1622c228fe2b9f85276945a583d36f86c923b089030000",
     ],
     [
       "ETag",
-      "uqTMvFf4tCXEmfGkwqxGyw==",
+      "3qjpxm6BcWpClSi3cXC+TA==",
       "Content-Type",
       "application/json; charset=UTF-8",
       "Vary",
@@ -18943,7 +18354,182 @@ nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
       "Content-Encoding",
       "gzip",
       "Date",
-      "Tue, 11 May 2021 20:16:58 GMT",
+      "Thu, 13 May 2021 15:19:15 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://www.googleapis.com:443", { encodedQueryParams: true })
+  .post("/oauth2/v4/token", { grant_type: /.+/g, assertion: /.+/g })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "1d",
+      "d0",
+      "4b",
+      "72",
+      "82",
+      "300000d0bb642d0e83a2d09da068520141acca26934014fc4012a2804eef5ea74778ef0d4896b1a6c1aabeb20a7c819e18f6301b7e73cbc167f620798463339b5d0a0f52b3dde3d57eec5097a62d4cf2e825e6011a4da4db89f038df5cb83e55bef68c17bee66f6f8b66ebf5901e1fe1ebac148ec2a3763f38a5510b112c3d34d350046fe8d4b769b11a57b3ea893d1eca6bfc7327f31dd111b7fd2295b121ea75d235302507d44f5cc177c27e591dde244bb3742f415e26eb6d61b8ea808252d7454a2dcad5c4ba56b9a4b7bdaba066a11afaa7b54ca6600058c74bc91a5c7eb823d3b607e0df8e55cfd927c0614432097eff00a42041e61a010000",
+    ],
+    [
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:19:15 GMT",
+      "Server",
+      "scaffolding on HTTPServer2",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Connection",
+      "close",
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .post("/bigquery/v2/projects/sample-sources/jobs", {
+    configuration: {
+      query: {
+        useLegacySql: false,
+        query:
+          "SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = @tableName",
+        defaultDataset: { datasetId: "test" },
+        parameterMode: "named",
+        queryParameters: [
+          {
+            parameterType: { type: "STRING" },
+            parameterValue: { value: "profiles" },
+            name: "tableName",
+          },
+        ],
+      },
+    },
+    jobReference: {
+      projectId: "sample-sources",
+      jobId: "grouparoo-job-125-1620919035659",
+    },
+  })
+  .query({ prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "00",
+      "00",
+      "02",
+      "ff",
+      "85",
+      "53",
+      "6b6fda3014fd2b91f7b540028497845644d39509c21642ab699a22dbb9c9dc8698c64e2b56f1df77ed94ae55a5f513f1bde7dc73ee83277227ca944c0813f97d0dd5e1d3ad64e48c80a63946d7de958c98e8315d8ee14ffdb59b5d1eb2c7e91411c2b014dded0b682959571cd464bb69e795acf7b492b285855a5ed76f7983ae3bf6c66ecf1ff863242a28b2a528ef90fe5bebbd9a743a27f1762e655e00dd0bd5e672f712ef3c743bfb4ade02d7aaf356b38332aaf381eae74272aa852ca7db0d3aa8155409eca828d0c33f6acacedfd66e0bba6be7087e101c28e7b22eb5f18525b82c3391d795ad4a264fc4fa7cf54136c13298c70e9745bd2b9392eee0cc49a9a6893eecc1b98cd62b67115eaea3d52c5eacc36433bf0a56b3f67cbddcaec28d7373154481a3292bc0729da9736e5f213e503f05a54569d5631336cacf135abc5f8c21a0b48226990cdd01f546ee98656cc8b351cf67990b8c8dd8d0a73de6f2711ffa29038a3c2b6a59b494653a1c65dcf5fb494a533fe977fb59427b1e4dbcd108038361c67c8f1ccfc86325345c08b5974a34132237d1220e9238da86f3591cd816325a17faa231661a78ed51638308fa4f4f4793151295ccb817611c44b379bcb80e9a0d2f21a7fcb0b9c71d67b45080685ae1f034542b99e2c048385b051708b61bfb764a2a32f9f944cccc8d8b57237fa1c7b8406357db5fb289a345f8c5da3921ae69515bc843f361dac844614c1f7f21108fb42942be6f83e807694211645041c93f5e26826de2e33fdbe9f0118ca78f3a4ae31b6f872ba3c22b686e48d8769fd99eef0fdc3eb1e04abfcb8dbde1696aa686a9083b28f5734bcde163a78d58ad5e4098c4f587765ac7bf91b9c00a7a040000",
+    ],
+    [
+      "ETag",
+      "O1HoRbi3btn9ezuJ2fFyfw==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:19:15 GMT",
+      "Server",
+      "ESF",
+      "Cache-Control",
+      "private",
+      "X-XSS-Protection",
+      "0",
+      "X-Frame-Options",
+      "SAMEORIGIN",
+      "X-Content-Type-Options",
+      "nosniff",
+      "Alt-Svc",
+      'h3-29=":443"; ma=2592000,h3-T051=":443"; ma=2592000,h3-Q050=":443"; ma=2592000,h3-Q046=":443"; ma=2592000,h3-Q043=":443"; ma=2592000,quic=":443"; ma=2592000; v="46,43"',
+      "Transfer-Encoding",
+      "chunked",
+    ]
+  );
+nock("https://bigquery.googleapis.com:443", { encodedQueryParams: true })
+  .get(
+    "/bigquery/v2/projects/sample-sources/queries/grouparoo-job-125-1620919035659"
+  )
+  .query({ location: "US", prettyPrint: "false" })
+  .once()
+  .reply(
+    200,
+    [
+      "1f",
+      "8b",
+      "08",
+      "00",
+      "00",
+      "00",
+      "000002ff8d93516f9b3010c7bf8bf74a24689b6c41ea43d2661b134dd2843e4c53855cfb606e8dcdec235314e5bbef4cbb6c5a27d117b83bff4edcfdfde7c09e94912c650faafed181dbbfab016f43b001df69f4f46aadf1c02206c86b229baf4f18177bbdca0c5e2fbe6caf205eaeebcb4b22bcf80e0d67e981550ab4f42cfd76608637406dc2eaae31659f450cf76d286e8b4db6fc44796365c89777793e9be70b768c4e8d92232f7bfe0d6df7c7883dda870d54e0c00808b3b4ce3e82c02cace979d36a1879db39019ef5707f503bdbb5dc593ba2ca28391b8f92c9593c4da6f1f978329e12a9ade0a8ac21f86e4b0332b4c8f5c6fea43559724e84eb635ab9ea9f3baa2bd9af12c26c594c2efa09ff06b810b633580e8295721e9fe5fb0dbec8f02fa9f91b41ba2ba587a01a8c043744a9b6e4523af07e90b4bee46d7bc2e6ab55fe5a15239d557218dca90140e3ee047ccc57b3ff494b0efba3d5f5ac58bc223c926f4e4891dd2cb6c5ec661db8fb1723ccf7087eed2cd9ca437054125f7c18bf9fc4cf26bbb2c178f49d145d0711139cfe95cf0a595a71ede1f80bae7032af89030000",
+    ],
+    [
+      "ETag",
+      "mYkt0TylOIntDEJSCe0NPg==",
+      "Content-Type",
+      "application/json; charset=UTF-8",
+      "Vary",
+      "Origin",
+      "Vary",
+      "X-Origin",
+      "Vary",
+      "Referer",
+      "Content-Encoding",
+      "gzip",
+      "Date",
+      "Thu, 13 May 2021 15:19:17 GMT",
       "Server",
       "ESF",
       "Cache-Control",

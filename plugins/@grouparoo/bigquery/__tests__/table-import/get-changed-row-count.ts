@@ -19,7 +19,7 @@ const nockFile = path.join(
 
 // these comments to use nock
 const newNock = false;
-require("./../fixtures/table-get-changed-row-count");
+require(nockFile);
 // or these to make it true
 // const newNock = true;
 // helper.recordNock(nockFile, updater);
