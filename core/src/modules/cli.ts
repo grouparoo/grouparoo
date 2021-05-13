@@ -199,7 +199,7 @@ export namespace GrouparooCLI {
       },
     ];
 
-    function generateFinalSummaryLogs(logFinalArray: LogFinalArray) {
+    export function generateFinalSummaryLogs(logFinalArray: LogFinalArray) {
       logFinalArray.forEach(({ header, data }, idx) => {
         if (idx > 0) logger.log(cyanBold(`|`));
 

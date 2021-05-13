@@ -96,3 +96,11 @@ export namespace Status {
     return api.redis.clients.client;
   }
 }
+
+// export namespace FinalSummary {
+
+//   export function getFinalSummary(){
+//     const metrics: StatusMetric[] = [];
+// TO DO: GENERATE STATUSREPORTERS FOR FINAL SUMMARY
+//   }
+// }

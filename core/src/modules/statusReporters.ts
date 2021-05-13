@@ -414,3 +414,47 @@ function mergeMetrics(metrics: StatusMetric[]) {
 
   return mergedMetrics;
 }
+
+export namespace FinalSummaryReporters {
+  //assumptions to check:
+  //  - an updatedAt value will be generated when createdAt
+  //  - all sources will have at least one import and all destinations will have at least one export... are there exceptions to this?
+  //  - only one instance of roo run would be running on a data set at a time so timestamps are a "safe" metric to use
+  //general pondering:
+  //  - does each namespace need its own transform method or is there a generalized one I can call across namespaces?
+  export namespace Totals {
+    // 1. Length of Sources array below
+    // 2. Length of Destinations array below
+    // 3. Sum ea source's total imports OR query Imports and count all where updatedAt > roo run start time
+    // 4. Sum ea destinations total exports OR query Exports and count all where updatedAt > roo run start time
+    // 5. Transform data to fit LogFinalArray.data definition with "SUMMARY" header and return!
+  }
+
+  export namespace Sources {
+    // 1. findAll from Imports model where updated@ is > start of roo run command (are there cases where there might be a source run with)
+    //             * one idea: push ea source id into the array, then use the array to call the items below and store values according to what sources they are with?
+    //   a. HOW TO FIND SCHEDULES RUN?  Double check model...
+    //   b. findAll + count from group ^ where created@ is > roo run start time AND STATUS IS COMPLETE
+    //   c. findAll + count from group where updated@ (or completed@?) > start time AND STATUS IS COMPLETE
+    //   d. findAll + count where status = failed && updated@ > start time
+  }
+
+  export namespace Profiles {
+    // 1. Profiles.count() (??? unsure method name... return total count of items in Profiles)
+    // 2. findAll + count from Profiles model where updated@ is > start of roo run command (STORE THAT TOTAL)
+    //   a. findAll + count from that group ^ where created@ is > start of roo run command (STORE THAT TOTAL)
+    // 3. Transform data to fit LogFinalArray.data definition with header "Profiles" and return!
+    //  Format to return in:
+    //
+  }
+
+  export namespace Destinations {
+    //1.  findAll from Exports model where updated@ is > start of roo run command (COUNT VALUE BY SOURCE APPID)
+    //             * one idea: push ea destination id into the array, then use the array to call the items below and store values according to what destination they are with?
+    //  a. findAll + count from ^ that group where created@ is > start of roo run command AND STATUS IS COMPLETE
+    //  b. findAll + count from same group where state = complete (or completed@ > start of roo run?)
+    //  c. findAll + count from same group where state = failed
+    // 2. Transform data to fit LogFinalArray.data definition withe header "Destinations" and return!
+    //  Format to return in:
+  }
+}

@@ -33,9 +33,20 @@ export class StatusTask extends Task {
   }
 
   async logFinalSummary() {
+    // const finalSamples = await this.getFinalSamples();
     await GrouparooCLI.logger.finalSummary(GrouparooCLI.logger.dummyFinalArray);
     return false;
   }
+
+  // async getFinalSamples() {
+  //   //TO DO: Status.finalSample!
+  //   let finalSamples: StatusMetric[];
+  //   await CLS.wrap(async () => {
+  //     finalSamples = await Status.sample();
+  //   });
+
+  //   return finalSamples;
+  // }
 
   async checkForComplete(samples: StatusMetric[]) {
     let pendingItems = 0;
