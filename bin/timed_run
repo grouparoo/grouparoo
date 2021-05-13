@@ -1,0 +1,35 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/.."
+
+if [ -z "$1" ]
+  then
+    echo "No app provided, eg 'timed_run staging-community'"
+    exit 1
+fi
+
+APP=$1
+ROOT=`pwd`
+ROO="$ROOT/cli/dist/grouparoo.js"
+PROJECT_DIR="$ROOT/apps/$APP"
+
+cd $PROJECT_DIR
+
+echo "-----> RECOMPILING CORE"
+cd ../../core
+npm run prepare
+cd $PROJECT_DIR
+
+echo "-----> CLEARING REDIS\r\n"
+redis-cli flushall
+
+echo "-----> REBUILDING CONFIG FROM DEMO\r\n"
+$ROO demo purchases -c
+
+echo "-----> STARTING TEST"
+SECONDS=0
+
+$ROO run
+
+ELAPSED="$(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
+echo "🎉 Complete in $ELAPSED [$SECONDS seconds]"

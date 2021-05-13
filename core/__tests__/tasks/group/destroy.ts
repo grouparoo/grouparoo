@@ -1,9 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Import, Profile, Run } from "./../../../src";
+import { Group, Import, Profile, Run, plugin } from "./../../../src";
 
 describe("tasks/group:destroy", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   describe("group:run", () => {
     let mario: Profile;
@@ -12,6 +16,10 @@ describe("tasks/group:destroy", () => {
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
       await Import.truncate();
+    });
+
+    beforeAll(async () => {
+      await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
     beforeAll(async () => {

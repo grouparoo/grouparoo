@@ -1,7 +1,6 @@
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
-import { config } from "actionhero";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
@@ -71,7 +70,7 @@ export class ImportProfileProperty extends RetryableTask {
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
-      await profile.addOrUpdateProperty(hash);
+      await profile.addOrUpdateProperty(hash, [property]);
     } else {
       await ProfileProperty.update(
         { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },

@@ -57,7 +57,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "runs-profile-batch-size",
         title: "Runs: Profile Batch Size",
-        defaultValue: 100,
+        defaultValue: 1000,
         description:
           "How many Imports and should a Run enqueue in each batch before deferring to associate those Imports already enqueued? Also applies to un-associated Events.",
         type: "number",
@@ -73,7 +73,7 @@ export class Plugins extends CLSInitializer {
       {
         key: "imports-profile-properties-batch-size",
         title: "Imports: Profile Property Batch Size",
-        defaultValue: 50,
+        defaultValue: 500,
         description:
           "How many Profile Properties needing import should we process at once?",
         type: "number",

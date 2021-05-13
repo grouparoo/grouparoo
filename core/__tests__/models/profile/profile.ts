@@ -212,7 +212,7 @@ describe("models/profile", () => {
       profile = new Profile();
       await profile.save();
       await expect(
-        profile.addOrUpdateProperty({ email: ["luigi@example.com"] })
+        profile.addOrUpdateProperties({ email: ["luigi@example.com"] })
       ).rejects.toThrow("cannot find a property for id or key `email`");
       await profile.destroy();
     });
@@ -304,7 +304,7 @@ describe("models/profile", () => {
       });
 
       test("it can add a new profile property when the schema is prepared", async () => {
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)).toEqual({
           email: ["luigi@example.com"],
@@ -321,7 +321,7 @@ describe("models/profile", () => {
           { where: { profileId: profile.id } }
         );
 
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
         const properties = await profile.properties();
         expect(properties.email.state).toBe("ready");
         expect(properties.firstName.state).toBe("pending");
@@ -490,7 +490,7 @@ describe("models/profile", () => {
       });
 
       test("it can update an existing property", async () => {
-        await profile.addOrUpdateProperty({
+        await profile.addOrUpdateProperties({
           email: ["luigi-again@example.com"],
         });
         const properties = await profile.properties();
@@ -504,7 +504,7 @@ describe("models/profile", () => {
       });
 
       test("it will ignore the property _meta, as it is reserved", async () => {
-        await profile.addOrUpdateProperty({ _meta: ["bla"] });
+        await profile.addOrUpdateProperties({ _meta: ["bla"] });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties)._meta).toBeFalsy();
       });
@@ -523,7 +523,7 @@ describe("models/profile", () => {
       test("no problems arise when re-adding a deleted property", async () => {
         let properties = await profile.properties();
         expect(properties.email).toBeUndefined();
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
         properties = await profile.properties();
         expect(properties.email.values).toEqual(["luigi@example.com"]);
       });
@@ -541,7 +541,7 @@ describe("models/profile", () => {
       });
 
       test("profile properties can be addded by key", async () => {
-        await profile.addOrUpdateProperty({ email: ["luigi@example.com"] });
+        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
         const properties = await profile.properties();
         expect(simpleProfileValues(properties).email).toEqual([
           "luigi@example.com",
@@ -552,7 +552,7 @@ describe("models/profile", () => {
         const emailProperty = await Property.findOne({
           where: { key: "email" },
         });
-        await profile.addOrUpdateProperty({
+        await profile.addOrUpdateProperties({
           [emailProperty.id]: ["luigi@example.com"],
         });
 

@@ -5,7 +5,13 @@ process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import fs from "fs-extra";
 import { api, specHelper } from "actionhero";
-import { Profile, ProfileProperty, Property, Run } from "@grouparoo/core";
+import {
+  plugin,
+  Profile,
+  ProfileProperty,
+  Property,
+  Run,
+} from "@grouparoo/core";
 
 let envFile = path.resolve(path.join(__dirname, "../", ".env"));
 if (fs.existsSync(envFile)) {
@@ -38,6 +44,10 @@ describe("integration/runs/google-sheets", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+  });
+
+  beforeAll(async () => {
+    await plugin.updateSetting("core", "runs-profile-batch-size", 100);
   });
 
   beforeAll(async () => {
