@@ -12,7 +12,7 @@ import { Schedule } from "../../src/models/Schedule";
 import { Source } from "../../src/models/Source";
 
 import { ConfigWriter } from "../../src/modules/configWriter";
-// import { getConfigDir } from "../../src/modules/configLoaders";
+import { MappingHelper } from "../../src/modules/mappingHelper";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
@@ -141,7 +141,7 @@ describe("modules/configWriter", () => {
       const { id, name, type } = app;
       const options = await app.getOptions();
       expect(config).toEqual({
-        class: "app",
+        class: "App",
         id,
         name,
         type,
@@ -156,10 +156,10 @@ describe("modules/configWriter", () => {
 
       const { id, name, type, appId } = source;
       const options = await source.getOptions();
-      const mapping = await source.getMapping();
+      const mapping = await MappingHelper.getMapping(source, "id");
 
       expect(config).toEqual({
-        class: "source",
+        class: "Source",
         id,
         name,
         type,
@@ -179,7 +179,7 @@ describe("modules/configWriter", () => {
       const options = await schedule.getOptions();
 
       expect(config).toEqual({
-        class: "schedule",
+        class: "Schedule",
         id,
         name,
         sourceId,
@@ -208,7 +208,7 @@ describe("modules/configWriter", () => {
       const filters = await property.getFilters();
 
       expect(config).toEqual({
-        class: "property",
+        class: "Property",
         id,
         type,
         name: key,
@@ -229,12 +229,19 @@ describe("modules/configWriter", () => {
       const { id, name, type } = group;
 
       expect(config).toEqual({
-        class: "group",
+        class: "Group",
         id,
         type,
         name,
         rules: [
-          { propertyId: property.id, match: "nobody", operation: { op: "eq" } },
+          {
+            propertyId: property.id,
+            match: "nobody",
+            operation: { op: "eq" },
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
         ],
       });
     });
@@ -253,11 +260,11 @@ describe("modules/configWriter", () => {
       const { id, name, type, appId, groupId, syncMode } = destination;
 
       const options = await destination.getOptions();
-      const mapping = await destination.getMapping();
+      const mapping = await MappingHelper.getMapping(destination, "id");
 
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
-        class: "destination",
+        class: "Destination",
         id,
         name,
         type,
