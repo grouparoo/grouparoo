@@ -533,21 +533,12 @@ describe("modules/codeConfig", () => {
 
       await specHelper.runTask("property:destroy", foundTasks[0].args[0]);
       await specHelper.runTask("property:destroy", foundTasks[1].args[0]);
-
-      // clean up the queue for other tests
-      await specHelper.deleteEnqueuedTasks(
-        "property:destroy",
-        foundTasks[0].args[0]
-      );
-      await specHelper.deleteEnqueuedTasks(
-        "property:destroy",
-        foundTasks[1].args[0]
-      );
     });
   });
 
   describe("empty config", () => {
     beforeAll(async () => {
+      await api.resque.queue.connection.redis.flushdb();
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds, deletedIds } = await loadConfigDirectory(
         path.join(__dirname, "..", "..", "fixtures", "codeConfig", "empty")
