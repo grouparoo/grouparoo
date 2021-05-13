@@ -20,16 +20,10 @@ cd ../../core
 npm run prepare
 cd $PROJECT_DIR
 
-echo "-----> DROPPING AND RE-CREATING DATABASE\r\n"
-rm -rf *.sqlite
-dropdb grouparoo_development
-createdb grouparoo_development
-
 echo "-----> CLEARING REDIS\r\n"
 redis-cli flushall
 
 echo "-----> REBUILDING CONFIG FROM DEMO\r\n"
-rm -rf config
 $ROO demo purchases -c
 
 echo "-----> STARTING TEST"
