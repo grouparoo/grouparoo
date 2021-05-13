@@ -24,7 +24,7 @@ export class AppDestroy extends CLSTask {
 
     // check if we're still being used by something
     try {
-      await App.checkDependents(app);
+      await App.ensureNotInUse(app);
     } catch (error) {
       if (error.message.match(/cannot delete this app,/)) {
         return; // check back later

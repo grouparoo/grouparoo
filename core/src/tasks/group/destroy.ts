@@ -27,7 +27,7 @@ export class GroupDestroy extends CLSTask {
     if (!group) return; // the group may have been force-deleted
 
     try {
-      await Group.checkDestinationTracking(group);
+      await Group.ensureNotInUse(group);
     } catch (error) {
       if (error.message.match(/group still in use by/)) {
         return null;

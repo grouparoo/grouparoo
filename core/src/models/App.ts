@@ -281,7 +281,7 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
-  static async checkDependents(instance: App) {
+  static async ensureNotInUse(instance: App) {
     const sources = await Source.scope(null).findAll({
       where: { appId: instance.id },
     });

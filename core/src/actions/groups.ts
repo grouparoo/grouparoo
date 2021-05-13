@@ -356,7 +356,7 @@ export class GroupDestroy extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const group = await Group.findById(params.id);
-    await Group.checkDestinationTracking(group);
+    await Group.ensureNotInUse(group);
 
     if (params.force === true) {
       await GroupMember.destroy({ where: { groupId: group.id } });

@@ -330,15 +330,12 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureNoSchedule(instance: Source) {
+  static async ensureNotInUse(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
       throw new Error("cannot delete a source that has a schedule");
     }
-  }
 
-  @BeforeDestroy
-  static async ensureNoProperties(instance: Source) {
     const properties = await instance.$get("properties", {
       scope: null,
     });

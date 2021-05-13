@@ -654,7 +654,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   @BeforeDestroy
-  static async checkDestinationTracking(instance: Group) {
+  static async ensureNotInUse(instance: Group) {
     const count = await instance.$count("destinations");
     if (count > 0) {
       throw new Error(

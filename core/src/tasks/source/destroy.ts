@@ -24,7 +24,7 @@ export class SourceDestroy extends CLSTask {
 
     // check if we still have properties
     try {
-      await Source.ensureNoProperties(source);
+      await Source.ensureNotInUse(source);
     } catch (error) {
       if (error.message.match(/cannot delete a source that has a property/)) {
         return; // check back later
