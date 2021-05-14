@@ -21,8 +21,8 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_ACCESS_TOKEN }}
-      - name: Step 1
+      - name: Update ENV
         if: github.event.inputs.release_type != ''
-        run: echo "::set-env name=RELEASE_TYPE::${{ github.event.inputs.release_type }}"
+        run: echo "RELEASE_TYPE=${{ github.event.inputs.release_type }}" >> $GITHUB_ENV
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
