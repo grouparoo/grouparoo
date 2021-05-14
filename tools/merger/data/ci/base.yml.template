@@ -47,8 +47,6 @@ jobs:
           name: complete
           command: echo "Tests Complete!"
 
-{{{publish}}}
-
 workflows:
   version: 2
 
@@ -67,45 +65,3 @@ workflows:
             <<: *ignored-branches
           requires:
 {{{job_name_list}}}
-
-      - publish:
-          filters:
-            branches:
-              only:
-                - stable
-          requires:
-            - complete
-
-  #
-  # Run the tests each week + publish pre-release from main branch
-  test-grouparoo-nightly:
-    triggers:
-      - schedule:
-          cron: "0 0 * * 5"
-          filters:
-            branches:
-              only:
-                - main
-
-
-    jobs:
-      - build:
-          filters:
-            <<: *ignored-branches
-
-{{{workflows}}}
-
-      - complete:
-          filters:
-            <<: *ignored-branches
-          requires:
-{{{job_name_list}}}
-
-      - publish:
-          filters:
-            branches:
-              only:
-                - main
-          requires:
-            - complete
-

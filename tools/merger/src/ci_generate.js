@@ -393,9 +393,6 @@ class Generator {
       };
     }
 
-    const template = readTemplate("core", "publish");
-    view.publish = Mustache.render(template, view);
-
     return view;
   }
 

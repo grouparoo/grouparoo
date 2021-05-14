@@ -1,0 +1,23 @@
+name: publish
+
+on:
+  schedule:
+    - cron: "0 0 * * 5"
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: "`alpha` or `stable` release?"
+        required: true
+        default: "alpha"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'grouparoo/grouparoo' }}
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: publish
+        run: ./bin/publish ${{ github.event.inputs.release_type || "alpha" }}
