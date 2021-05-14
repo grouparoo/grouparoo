@@ -323,9 +323,5 @@ export async function deleteLockedObjects(seenIds) {
   // back to normal
   deletedIds["app"] = await deleteApps(seenIds.app);
 
-  // Enqueue deletion tasks
-  const task: CLSTask = api.tasks.tasks["destroy"];
-  await task.runWithinTransaction({}, {});
-
   return deletedIds;
 }
