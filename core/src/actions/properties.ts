@@ -340,7 +340,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
 
     apiData.properties[property.key] = {
       id: property.id,
-      state: property.state,
+      state: null,
       values: newPropertyValues,
       type: property.type,
       unique: property.unique,

@@ -65,7 +65,6 @@ export async function deleteGroups(ids: string[]) {
   for (const i in groups) {
     const group = groups[i];
     await group.update({ state: "deleted", locked: null });
-    await CLS.enqueueTask("group:destroy", { groupId: group.id });
     logModel(group, "deleted");
   }
 

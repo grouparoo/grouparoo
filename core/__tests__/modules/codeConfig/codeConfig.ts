@@ -387,13 +387,13 @@ describe("modules/codeConfig", () => {
       const destinations = await Destination.scope(null).findAll();
       expect(destinations.length).toBe(1);
       const destination = destinations[0];
+      expect(destination.id).toBe("test_destination");
       expect(destination.state).toEqual("deleted");
 
       // we need to "wait" for the destination to be deleted to remove it's dependant models
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "destination:destroy"
-      );
-      await specHelper.runTask("destination:destroy", foundTasks[0].args[0]);
+      await specHelper.runTask("destination:destroy", {
+        destinationId: "test_destination",
+      });
       await destination.reload();
       await destination.destroy();
     });
@@ -457,12 +457,12 @@ describe("modules/codeConfig", () => {
     });
 
     afterAll(async () => {
-      // pretending that the task had run to delete the group
+      // pretending that the task had run to delete the queued deletes
       await Group.truncate();
       await GroupRule.truncate();
     });
 
-    test("most objects will be deleted with an empty config file", async () => {
+    test("most objects will be deleted with a partially empty config file", async () => {
       expect(await App.count()).toBe(1);
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(0);
@@ -477,11 +477,44 @@ describe("modules/codeConfig", () => {
       expect(await Setting.count()).toBeGreaterThan(1);
     });
 
-    test("groups will be moved to the deleted state and unlocked", async () => {
+    test("a removed app will be deleted", async () => {
+      const app = await App.scope(null).findOne({
+        where: { id: "events" },
+      });
+      expect(app.state).toBe("deleted");
+      expect(app.locked).toBeNull();
+
+      await specHelper.runTask("app:destroy", { appId: "events" });
+    });
+
+    test("a removed group will be deleted", async () => {
       const groups = await Group.scope(null).findAll();
       expect(groups.length).toBe(1);
+      expect(groups[0].id).toBe("email_group");
       expect(groups[0].state).toBe("deleted");
       expect(groups[0].locked).toBe(null);
+
+      await specHelper.runTask("group:destroy", { groupId: "email_group" });
+    });
+
+    test("removed properties will be deleted", async () => {
+      const properties = await Property.scope(null).findAll({
+        where: { state: "deleted" },
+      });
+      expect(properties.length).toBe(2);
+      expect(properties.map((p) => p.id).sort()).toEqual([
+        "first_name",
+        "last_name",
+      ]);
+      properties.forEach((prop) => {
+        expect(prop.state).toBe("deleted");
+        expect(prop.locked).toBe(null);
+      });
+
+      await specHelper.runTask("property:destroy", {
+        propertyId: "first_name",
+      });
+      await specHelper.runTask("property:destroy", { propertyId: "last_name" });
     });
   });
 
@@ -526,6 +559,36 @@ describe("modules/codeConfig", () => {
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
+    });
+
+    test("removed properties will be deleted", async () => {
+      const properties = await Property.scope(null).findAll();
+      expect(properties.length).toBe(1);
+      expect(properties[0].id).toBe("email");
+      expect(properties[0].state).toBe("deleted");
+      expect(properties[0].locked).toBe(null);
+
+      await specHelper.runTask("property:destroy", { propertyId: "email" });
+    });
+
+    test("a removed source will be deleted", async () => {
+      const sources = await Source.scope(null).findAll();
+      expect(sources.length).toBe(1);
+      expect(sources[0].id).toBe("users_table");
+      expect(sources[0].state).toBe("deleted");
+      expect(sources[0].locked).toBeNull();
+
+      await specHelper.runTask("source:destroy", { sourceId: "users_table" });
+    });
+
+    test("a removed app will be deleted", async () => {
+      const apps = await App.scope(null).findAll();
+      expect(apps.length).toBe(1);
+      expect(apps[0].id).toBe("data_warehouse");
+      expect(apps[0].state).toBe("deleted");
+      expect(apps[0].locked).toBeNull();
+
+      await specHelper.runTask("app:destroy", { appId: "data_warehouse" });
     });
 
     test("settings remain", async () => {

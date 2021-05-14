@@ -51,6 +51,10 @@ export namespace DestinationOps {
     group: Group,
     force = true
   ) {
+    if (group.state === "deleted") {
+      throw new Error(`Cannot track deleted Group "${group.name}"`);
+    }
+
     const oldGroupId = destination.groupId;
     await destination.update({ groupId: group.id });
 
@@ -72,7 +76,9 @@ export namespace DestinationOps {
 
     if (oldGroupId) {
       const oldGroup = await Group.findById(oldGroupId);
-      return oldGroup.run(force, destination.id);
+      if (oldGroup.state !== "deleted") {
+        return oldGroup.run(force, destination.id);
+      }
     }
   }
 

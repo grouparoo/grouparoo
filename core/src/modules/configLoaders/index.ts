@@ -1,7 +1,8 @@
-import { log, config, env } from "actionhero";
+import { log, config, env, api } from "actionhero";
 import path from "path";
 import fs from "fs";
 import glob from "glob";
+import JSON5 from "json5";
 import {
   ConfigurationObject,
   sortConfigurationObjects,
@@ -21,8 +22,8 @@ import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
 import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
-import JSON5 from "json5";
 import { getParentPath } from "../../utils/pluginDetails";
+import { CLSTask } from "../../classes/tasks/clsTask";
 
 export function getConfigDir() {
   const configDir =

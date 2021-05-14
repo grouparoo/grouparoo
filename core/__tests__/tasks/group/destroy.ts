@@ -1,6 +1,13 @@
-import { helper } from "@grouparoo/spec-helper";
+import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Group, Import, Profile, Run, plugin } from "./../../../src";
+import {
+  Destination,
+  Group,
+  Import,
+  Profile,
+  Run,
+  plugin,
+} from "./../../../src";
 
 describe("tasks/group:destroy", () => {
   helper.grouparooTestServer({
@@ -52,8 +59,66 @@ describe("tasks/group:destroy", () => {
       expect(found.length).toEqual(1);
     });
 
+    it("will leave the group alone if it is not in the deleted state", async () => {
+      const group = await Group.create({
+        name: "test group 0",
+        type: "manual",
+        state: "ready",
+      });
+
+      let run: Run = await specHelper.runTask("group:destroy", {
+        groupId: group.id,
+      });
+      expect(run).toBeFalsy();
+
+      const reloadedGroup = await Group.findById(group.id);
+      expect(reloadedGroup.state).toBe("ready");
+    });
+
+    it("will immediately delete the group if it has no members and there are no existing runs", async () => {
+      const group = await Group.create({
+        name: "test group",
+        type: "manual",
+        state: "ready",
+      });
+
+      await group.update({ state: "deleted" }); // mark group as deleted
+
+      let run: Run = await specHelper.runTask("group:destroy", {
+        groupId: group.id,
+      });
+      expect(run).toBeFalsy();
+
+      await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
+    });
+
+    it("will make a new run to clear remainig group members if there is not an existing run", async () => {
+      const group = await Group.create({
+        name: "test group 2",
+        type: "manual",
+        state: "ready",
+      });
+
+      await group.addProfile(mario);
+      await group.addProfile(luigi);
+
+      await group.update({ state: "deleted" }); // mark group as deleted
+
+      let run: Run = await specHelper.runTask("group:destroy", {
+        groupId: group.id,
+      });
+
+      const reloadedGroup = await Group.findById(group.id);
+      expect(reloadedGroup.state).toBe("deleted");
+
+      expect(run).toBeTruthy();
+      expect(run.state).toBe("running");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+    });
+
     it("will remove all members in a manual group and then delete the group", async () => {
-      let foundTasks = [];
       let _imports = [];
       let groupMemberCount = 0;
 
@@ -72,53 +137,46 @@ describe("tasks/group:destroy", () => {
       expect(_imports.length).toBe(2);
       await Import.truncate();
 
-      await task.enqueue("group:destroy", {
+      await group.update({ state: "deleted" }); // mark group as deleted
+
+      // remove the profiles
+      let run: Run = await specHelper.runTask("group:destroy", {
         groupId: group.id,
       });
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(1);
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
 
       const reloadedGroup = await Group.findById(group.id);
       expect(reloadedGroup.state).toBe("deleted");
 
-      _imports = await Import.findAll();
-      expect(_imports.length).toBe(2);
-      expect(_imports.map((e) => e.profileId).sort()).toEqual(
-        [mario, luigi].map((p) => p.id).sort()
-      );
+      expect(run).toBeTruthy();
+      expect(run.state).toBe("running");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
 
-      await Promise.all(
-        [mario, luigi].map(async (p) => p.updateGroupMembership())
-      );
+      // process the run
+      await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
+      await specHelper.runTask("group:run", { runId: run.id }); // removePreviousRunGroupMembers
+      await specHelper.runTask("group:run", { runId: run.id }); // wait for imports...
+      await ImportWorkflow();
+      await specHelper.runTask("group:run", { runId: run.id }); // mark done
+      await run.reload();
+      expect(run.state).toBe("complete");
 
       groupMemberCount = await group.$count("groupMembers");
       expect(groupMemberCount).toBe(0);
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(1);
-      const run = await Run.findById(foundTasks[0].args[0].runId);
-      expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(0);
-      expect(run.groupMethod).toBe("runRemoveGroupMembers");
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the group and end the run
+      // remove the group
+      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+      expect(run).toBeNull();
 
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
-
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(0);
     });
 
     it("will remove all members in a calculated group and then delete the group", async () => {
-      let foundTasks = [];
-      let imports = [];
       let groupMemberCount = 0;
 
       const group = await Group.create({
-        name: "test group 2",
+        name: "test group 3",
         type: "calculated",
         state: "ready",
       });
@@ -133,40 +191,95 @@ describe("tasks/group:destroy", () => {
       groupMemberCount = await group.$count("groupMembers");
       expect(groupMemberCount).toBe(2);
 
-      await task.enqueue("group:destroy", {
+      await group.update({ state: "deleted" }); // mark group as deleted
+
+      // wait for run kicked off by setRules to complete
+      let run: Run = await specHelper.runTask("group:destroy", {
         groupId: group.id,
       });
+      expect(run).toBeNull();
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(1);
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the profiles
-
-      const reloadedGroup = await Group.findById(group.id);
+      let reloadedGroup = await Group.findById(group.id);
       expect(reloadedGroup.state).toBe("deleted");
 
-      imports = await Import.findAll();
-      expect(imports.length).toBe(2);
-      expect(imports.map((e) => e.profileId).sort()).toEqual(
-        [mario, luigi].map((p) => p.id).sort()
-      );
+      await group.stopPreviousRuns(); // force stop it to continue tests...
 
-      await Promise.all(
-        [mario, luigi].map(async (p) => p.updateGroupMembership())
-      );
+      // remove the profiles
+      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+
+      reloadedGroup = await Group.findById(group.id);
+      expect(reloadedGroup.state).toBe("deleted");
+
+      expect(run).toBeTruthy();
+      expect(run.state).toBe("running");
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(0);
+      expect(run.groupMethod).toBe("runRemoveGroupMembers");
+
+      // process the run
+      await specHelper.runTask("group:run", { runId: run.id }); // runRemoveGroupMembers
+      await specHelper.runTask("group:run", { runId: run.id }); // removePreviousRunGroupMembers
+      await specHelper.runTask("group:run", { runId: run.id }); // wait for imports...
+      await ImportWorkflow();
+      await specHelper.runTask("group:run", { runId: run.id }); // mark done
+      await run.reload();
+      expect(run.state).toBe("complete");
 
       groupMemberCount = await group.$count("groupMembers");
       expect(groupMemberCount).toBe(0);
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(1);
-      await api.resque.queue.connection.redis.flushdb();
-      await specHelper.runTask("group:destroy", foundTasks[0].args[0]); // remove the group and end the run
+      // remove the group and end the run
+      run = await specHelper.runTask("group:destroy", { groupId: group.id });
+      expect(run).toBeNull();
 
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
+    });
 
-      foundTasks = await specHelper.findEnqueuedTasks("group:destroy");
-      expect(foundTasks.length).toBe(0);
+    it("will not delete the group if a destination is tracking it", async () => {
+      const group = await Group.create({
+        name: "test group 4",
+        type: "manual",
+        state: "ready",
+      });
+
+      const destination: Destination = await helper.factories.destination();
+      await destination.trackGroup(group);
+
+      const trackGroupRun = await Run.findOne({
+        where: {
+          destinationId: destination.id,
+          creatorType: "group",
+          creatorId: group.id,
+        },
+      });
+      await trackGroupRun.stop();
+
+      // try to delete
+      await group.update({ state: "deleted" });
+      const run = await specHelper.runTask("group:destroy", {
+        groupId: group.id,
+      });
+      expect(run).toBeNull(); // run should not be created
+
+      let reloadedGroup = await Group.findById(group.id);
+      expect(reloadedGroup.state).toBe("deleted"); // still waiting
+
+      await destination.unTrackGroup(true);
+      const unTrackGroupRun = await Run.findOne({
+        where: {
+          destinationId: destination.id,
+          creatorType: "group",
+          creatorId: group.id,
+        },
+      });
+      unTrackGroupRun.stop();
+
+      // try to delete again
+      await specHelper.runTask("group:destroy", {
+        groupId: group.id,
+      });
+
+      await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
     });
   });
 });

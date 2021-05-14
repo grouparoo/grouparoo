@@ -416,10 +416,8 @@ export class DestinationDestroy extends AuthenticatedAction {
     if (params.force) {
       await destination.destroy();
     } else {
+      // destination:destroy will be enqueued by the `destroy` system task
       await destination.update({ state: "deleted" });
-      await CLS.enqueueTask("destination:destroy", {
-        destinationId: destination.id,
-      });
     }
 
     return { success: true };

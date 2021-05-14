@@ -57,7 +57,7 @@ export async function deleteApps(ids: string[]) {
   });
 
   for (const i in apps) {
-    await apps[i].destroy();
+    await apps[i].update({ state: "deleted", locked: null });
     logModel(apps[i], "deleted");
   }
 

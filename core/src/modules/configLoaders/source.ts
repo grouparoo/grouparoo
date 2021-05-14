@@ -11,6 +11,7 @@ import {
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
 import { log } from "actionhero";
+import { CLS } from "../cls";
 
 export async function loadSource(
   configObject: ConfigurationObject,
@@ -159,8 +160,9 @@ export async function deleteSources(ids: string[]) {
       }
     }
 
-    await source.destroy();
+    await source.update({ state: "deleted", locked: null });
     logModel(source, "deleted");
+
     deletedIds.source.push(source.id);
   }
 

@@ -15,15 +15,7 @@ export class DestinationDestroy extends CLSTask {
     this.queue = "destinations";
     this.inputs = {
       destinationId: { required: true },
-      runId: { required: false },
     };
-  }
-
-  async reEnqueue(destination: Destination, run: Run) {
-    return CLS.enqueueTaskIn(config.tasks.timeout * 2, this.name, {
-      destinationId: destination.id,
-      runId: run.id,
-    });
   }
 
   async runWithinTransaction(params) {
@@ -39,15 +31,17 @@ export class DestinationDestroy extends CLSTask {
     // this will trigger a run to export all group members one last time
     if (destination.groupId) {
       run = await destination.unTrackGroup();
-    } else if (params.runId) {
-      run = await Run.scope(null).findOne({ where: { id: params.runId } });
+    } else {
+      run = await Run.scope(null).findOne({
+        where: { destinationId: params.destinationId },
+        order: [["updatedAt", "desc"]],
+        limit: 1,
+      });
     }
 
     // the run is not yet complete
-    if (run) {
-      if (run.state === "running" || run.state === "draft") {
-        return this.reEnqueue(destination, run);
-      }
+    if (run && (run.state === "running" || run.state === "draft")) {
+      return;
     }
 
     // ensure that all the exports are complete
@@ -55,7 +49,7 @@ export class DestinationDestroy extends CLSTask {
       await Destination.waitForPendingExports(destination);
     } catch (error) {
       if (error.message.match(/cannot delete destination until/)) {
-        return this.reEnqueue(destination, run);
+        return;
       } else throw error;
     }
 
@@ -71,7 +65,7 @@ export class DestinationDestroy extends CLSTask {
         run.updatedAt.getTime() + config.tasks.timeout * 5 >
         new Date().getTime()
       ) {
-        return this.reEnqueue(destination, run);
+        return;
       }
     }
 
@@ -80,7 +74,7 @@ export class DestinationDestroy extends CLSTask {
         latestExport.updatedAt.getTime() + config.tasks.timeout * 5 >
         new Date().getTime()
       ) {
-        return this.reEnqueue(destination, run);
+        return;
       }
     }
 

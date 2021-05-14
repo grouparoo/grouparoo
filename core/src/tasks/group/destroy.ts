@@ -1,79 +1,63 @@
-import { log, config } from "actionhero";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Group } from "../../models/Group";
 import { Run } from "../../models/Run";
 import { plugin } from "../../modules/plugin";
-import { CLS } from "../../modules/cls";
 
 export class GroupDestroy extends CLSTask {
   constructor() {
     super();
     this.name = "group:destroy";
     this.description =
-      "remove all group members though imports, and then delete the group";
+      "kick off a run to remove all group members, and then delete the group when empty";
     this.frequency = 0;
     this.queue = "groups";
     this.inputs = {
       groupId: { required: true },
-      runId: { required: false },
-      offset: { required: false },
-      limit: { required: false },
     };
   }
 
   async runWithinTransaction(params) {
-    const offset: number = params.offset || 0;
-    const limit: number =
-      params.limit ||
-      parseInt(
-        (await plugin.readSetting("core", "runs-profile-batch-size")).value
-      );
+    const limit: number = parseInt(
+      (await plugin.readSetting("core", "runs-profile-batch-size")).value
+    );
 
     const group = await Group.scope(null).findOne({
-      where: { id: params.groupId },
+      where: { id: params.groupId, state: "deleted" },
     });
     if (!group) return; // the group may have been force-deleted
 
-    let run: Run;
-    if (params.runId) {
-      run = await Run.findById(params.runId);
-    } else {
-      await group.stopPreviousRuns();
-      run = await Run.create({
+    try {
+      await Group.ensureNotInUse(group);
+    } catch (error) {
+      if (error.message.match(/group still in use by/)) {
+        return null;
+      }
+
+      throw error;
+    }
+
+    let run = await Run.findOne({
+      where: { creatorId: group.id, creatorType: "group", state: "running" },
+    });
+
+    if (run) return null; // wait for runs to settle
+
+    const remainingMembers = await group.$count("groupMembers");
+    if (remainingMembers > 0) {
+      // kick off a run in the `runRemoveGroupMembers` stage
+      // this will be processed by run:tick -> group:run
+      return Run.create({
         creatorId: group.id,
         creatorType: "group",
         state: "running",
+        groupMemberOffset: 0,
+        groupMemberLimit: limit,
+        groupMethod: "runRemoveGroupMembers",
       });
-      await group.update({ state: "deleted" });
     }
 
-    if (run.state === "stopped") return;
-
-    await run.update({
-      groupMemberLimit: limit,
-      groupMemberOffset: offset,
-      groupMethod: "runRemoveGroupMembers",
-    });
-
-    const importsCounts = await group.runRemoveGroupMembers(run, limit);
-    const previousRunMembers = await group.removePreviousRunGroupMembers(
-      run,
-      limit
-    );
-    const remainingMembers = await group.$count("groupMembers");
-
-    await run.afterBatch();
-
-    if (importsCounts > 0 || previousRunMembers > 0 || remainingMembers > 0) {
-      await CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, {
-        runId: run.id,
-        groupId: group.id,
-        offset: offset + limit,
-        limit,
-      });
-    } else {
-      await run.afterBatch("complete");
-      await group.destroy();
-    }
+    // we're done here, the group can be destroyed
+    await group.destroy();
+    return null;
   }
 }

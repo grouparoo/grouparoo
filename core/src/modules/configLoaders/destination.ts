@@ -90,10 +90,10 @@ export async function deleteDestinations(ids: string[]) {
 
   for (const i in destinations) {
     const destination = destinations[i];
+
+    // destination:destroy will be enqueued by the `destroy` system task
     await destination.update({ state: "deleted", locked: null });
-    await CLS.enqueueTask("destination:destroy", {
-      destinationId: destination.id,
-    });
+
     logModel(destination, "deleted");
   }
 

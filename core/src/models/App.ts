@@ -35,13 +35,15 @@ export interface AppOption {
 
 export interface SimpleAppOptions extends OptionHelper.SimpleOptions {}
 
-const STATES = ["draft", "ready"] as const;
+const STATES = ["draft", "ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
     checks: [(instance: App) => instance.validateOptions(null)],
   },
+  { from: "draft", to: "deleted", checks: [] },
+  { from: "ready", to: "deleted", checks: [] },
 ];
 
 @DefaultScope(() => ({
@@ -279,7 +281,7 @@ export class App extends LoggedModel<App> {
   }
 
   @BeforeDestroy
-  static async checkDependents(instance: App) {
+  static async ensureNotInUse(instance: App) {
     const sources = await Source.scope(null).findAll({
       where: { appId: instance.id },
     });

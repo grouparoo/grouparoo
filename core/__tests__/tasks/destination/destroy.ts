@@ -63,18 +63,11 @@ describe("tasks/destination:destroy", () => {
         destinationId: destination.id,
       });
 
-      run = await Run.findOne({ where: { creatorId: group.id } });
+      run = await Run.findOne({
+        where: { creatorId: group.id, destinationId: destination.id },
+      });
       expect(run.state).toBe("running");
       expect(run.force).toBe(false);
-
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "destination:destroy"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        destinationId: destination.id,
-        runId: run.id,
-      });
 
       destination = await Destination.findById(destination.id);
       expect(destination.state).toBe("deleted");
@@ -85,7 +78,6 @@ describe("tasks/destination:destroy", () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
         destinationId: destination.id,
-        runId: run.id,
       });
 
       destination = await Destination.findById(destination.id);
@@ -118,7 +110,6 @@ describe("tasks/destination:destroy", () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
         destinationId: destination.id,
-        runId: run.id,
       });
 
       destination = await Destination.findById(destination.id);
@@ -142,7 +133,6 @@ describe("tasks/destination:destroy", () => {
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("destination:destroy", {
         destinationId: destination.id,
-        runId: run.id,
       });
 
       destination = await Destination.findById(destination.id);
@@ -157,7 +147,6 @@ describe("tasks/destination:destroy", () => {
       await utils.sleep(1000);
       await specHelper.runTask("destination:destroy", {
         destinationId: destination.id,
-        runId: run.id,
       });
 
       await expect(Destination.findById(destination.id)).rejects.toThrow(

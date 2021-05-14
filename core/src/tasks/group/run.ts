@@ -32,7 +32,6 @@ export class RunGroup extends CLSTask {
       where: { id: run.creatorId },
     });
     if (!group) return;
-    if (group.state === "deleted") return;
 
     const force = run.force || false;
     const destinationId = run.destinationId;
@@ -106,7 +105,9 @@ export class RunGroup extends CLSTask {
       groupMembersCount === 0
     ) {
       await run.afterBatch("complete");
-      await group.update({ state: "ready" });
+      if (group.state !== "deleted") {
+        await group.update({ state: "ready" });
+      }
     } else {
       await run.afterBatch();
     }
