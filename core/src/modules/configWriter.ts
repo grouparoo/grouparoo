@@ -11,7 +11,7 @@ import { Destination } from "../models/Destination";
 
 import { ConfigurationObject } from "../classes/codeConfig";
 
-import { getConfigDir } from "./configLoaders";
+import { getConfigDir } from "../utils/pluginDetails";
 
 type WritableConfigObject = {
   filePath: string;

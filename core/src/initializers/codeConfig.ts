@@ -1,5 +1,6 @@
 import { api } from "actionhero";
-import { getConfigDir, loadConfigDirectory } from "../modules/configLoaders";
+import { loadConfigDirectory } from "../modules/configLoaders";
+import { getConfigDir } from "../utils/pluginDetails";
 import { CLSInitializer } from "../classes/initializers/clsInitializer";
 
 declare module "actionhero" {

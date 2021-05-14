@@ -9,7 +9,7 @@ import { CLI, api } from "actionhero";
 import path from "path";
 import fs from "fs-extra";
 import prettier from "prettier";
-import { getConfigDir } from "../modules/configLoaders";
+import { getConfigDir } from "../utils/pluginDetails";
 
 export class Generate extends CLI {
   constructor() {

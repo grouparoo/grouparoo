@@ -2,11 +2,11 @@ import { GrouparooCLI } from "../modules/cli";
 import { CLI } from "actionhero";
 import { CLS } from "../modules/cls";
 import {
-  getConfigDir,
   loadConfigObjects,
   processConfigObjects,
   deleteLockedObjects,
 } from "../modules/configLoaders";
+import { getConfigDir } from "../utils/pluginDetails";
 import pluralize from "pluralize";
 
 export class Apply extends CLI {

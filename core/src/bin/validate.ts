@@ -2,10 +2,10 @@ import { GrouparooCLI } from "../modules/cli";
 import { CLI, api } from "actionhero";
 import { ConfigurationObject } from "../classes/codeConfig";
 import {
-  getConfigDir,
   loadConfigObjects,
   processConfigObjects,
 } from "../modules/configLoaders";
+import { getConfigDir } from "../utils/pluginDetails";
 import pluralize from "pluralize";
 
 export class Validate extends CLI {

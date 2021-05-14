@@ -22,15 +22,7 @@ import { loadSchedule, deleteSchedules } from "./schedule";
 import { loadSetting } from "./setting";
 import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
-import { getParentPath } from "../../utils/pluginDetails";
-import { CLSTask } from "../../classes/tasks/clsTask";
 import { ConfigWriter } from "../configWriter";
-
-export function getConfigDir() {
-  const configDir =
-    process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
-  return configDir;
-}
 
 export async function loadConfigDirectory(
   configDir: string,
