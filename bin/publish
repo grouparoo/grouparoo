@@ -96,6 +96,7 @@ echo "-----> INSTALL DEPENDENCIES & BUILD PACKAGES"
 echo ""
 
 pnpm install --prefer-frozen-lockfile
+git checkout pnpm-lock.yaml # the other github action will take care of this, but we need a clean working directory to publish
 
 echo ""
 echo "-----> PUSH TO NPM"
