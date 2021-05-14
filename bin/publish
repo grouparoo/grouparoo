@@ -1,25 +1,5 @@
 #!/bin/bash
 
-HELP = : <<'COMMENT'
-** THE GROUPAROO PUBLISHING PROCESS **
-
-1. When the `main` branch is in a good place and you want to publish it, run this command (`./bin/publish`)
-  a. Choose your release mode:
-    * If you want to make an alpha release (for testing), run `./bin/publish alpha`
-    * If you want to make a stable release (for customers), run `./bin/publish stable`
-  b. This command will:
-    a. Update the versions of all packages in the monorepo
-    b. Create a tag for the new version on Github
-    c. Generate release notes for that tag and publish them
-  c. Publish new packages to NPM
-
-Changes:
-  * No more "stable" branch.  The tags are what matters.
-  * Humans publish stable releases now
-  * CI continues to try to publish a weekly alpha release
-  * We don't need to rebuild the lockfile after publish, the `update-lockfile` action does that for us now
-COMMENT
-
 set -e
 cd "$(dirname "$0")"
 cd '..'
