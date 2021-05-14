@@ -9,6 +9,8 @@ import {
 import { App } from "../..";
 import { Op } from "sequelize";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadApp(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -17,17 +19,34 @@ export async function loadApp(
   let isNew = false;
   validateConfigObjectKeys(App, configObject);
 
+  let locked: string;
+  if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
+    locked = getCodeConfigLockKey();
+  } else if (ConfigWriter.isLockable(configObject)) {
+    locked = ConfigWriter.getLockKey();
+  }
+
+  let getParams: { id: string; locked?: string } = { id: configObject.id };
+  if (locked) getParams.locked = locked;
+
+  let createParams: {
+    id: string;
+    name: string;
+    type: string;
+    locked?: string;
+  } = {
+    id: configObject.id,
+    name: configObject.name,
+    type: configObject.type,
+  };
+  if (locked) createParams.locked = locked;
+
   let app = await App.scope(null).findOne({
-    where: { id: configObject.id, locked: getCodeConfigLockKey() },
+    where: getParams,
   });
   if (!app) {
     isNew = true;
-    app = await App.create({
-      id: configObject.id,
-      locked: getCodeConfigLockKey(),
-      name: configObject.name,
-      type: configObject.type,
-    });
+    app = await App.create(createParams);
   }
 
   await app.update({ type: configObject.type, name: configObject.name });

@@ -18,7 +18,24 @@ type WritableConfigObject = {
   object: ConfigurationObject;
 };
 
-let FILES_TO_DELETE: string[] = [];
+type CachedConfigFile = {
+  absFilePath: string;
+  objects: ConfigurationObject[];
+};
+
+let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
+
+/**
+ * TODO:
+ *
+ * - [ ] Consider making getLockKey into a constant since it's not going to
+ *   change.
+ * - [ ] Write specs for getConfigFileCache()
+ * - [ ] Write specs for resetConfigFileCache()
+ * - [ ] Write specs for isLockable()
+ * - [ ] Write specs for cacheConfigFile() (there are some that were for the
+ *   previous method that should be adjusted)
+ */
 
 export namespace ConfigWriter {
   export async function run() {
@@ -36,15 +53,40 @@ export namespace ConfigWriter {
     return configObjects;
   }
 
-  export async function setFileLoaded(absFilePath: string) {
-    FILES_TO_DELETE.push(absFilePath);
+  export function getLockKey() {
+    return "config:writer";
+  }
+
+  export function getConfigFileCache() {
+    return CONFIG_FILE_CACHE;
+  }
+
+  function resetConfigFileCache() {
+    CONFIG_FILE_CACHE = [];
+  }
+
+  export function isLockable(object: ConfigurationObject) {
+    const isMatch = (o) => o.id === object.id && o.class === object.class;
+    const cachedFileObj: CachedConfigFile = CONFIG_FILE_CACHE.find(
+      (cache) => cache.objects.filter(isMatch).length > 0
+    );
+    // If there is no cached file, we assume the file doesn't exist and so the
+    // object is not lockable.
+    if (!cachedFileObj) return false;
+    // Otherwise, it is lockable if it is a JS file.
+    const ext = path.extname(cachedFileObj.absFilePath);
+    return ext === ".js";
+  }
+
+  export async function cacheConfigFile(cacheObj: CachedConfigFile) {
+    CONFIG_FILE_CACHE.push(cacheObj);
   }
 
   async function deleteFiles() {
-    for (let file of FILES_TO_DELETE) {
-      if (fs.existsSync(file)) fs.rmSync(file);
+    for (let { absFilePath } of CONFIG_FILE_CACHE) {
+      if (fs.existsSync(absFilePath)) fs.rmSync(absFilePath);
     }
-    FILES_TO_DELETE = [];
+    resetConfigFileCache();
   }
 
   async function writeFile({ filePath, object }: WritableConfigObject) {
@@ -54,7 +96,7 @@ export namespace ConfigWriter {
     const stringifyFilter = (k, v) => (v === null ? undefined : v);
     const content = JSON.stringify(object, stringifyFilter, 2);
     await fs.writeFileSync(configFilePath, content);
-    setFileLoaded(configFilePath);
+    cacheConfigFile({ absFilePath: configFilePath, objects: [object] });
     return true;
   }
 
