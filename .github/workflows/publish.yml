@@ -24,6 +24,10 @@ jobs:
       - name: Update ENV
         if: github.event.inputs.release_type != ''
         run: echo "RELEASE_TYPE=${{ github.event.inputs.release_type }}" >> $GITHUB_ENV
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
       - run: npm install -g pnpm
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
