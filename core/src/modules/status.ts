@@ -107,7 +107,7 @@ export namespace FinalSummary {
     metrics.push(await FinalSummaryReporters.Profiles.updatedProfiles());
     metrics.push(await FinalSummaryReporters.Profiles.createdProfiles());
     metrics.push(await FinalSummaryReporters.Profiles.allProfiles());
-
+    console.log(await FinalSummaryReporters.Sources.getData());
     return metrics;
   }
 }

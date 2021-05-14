@@ -24,6 +24,7 @@ import { Notification } from "../models/Notification";
 
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
+import { RunsList } from "../actions/runs";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -417,7 +418,7 @@ function mergeMetrics(metrics: StatusMetric[]) {
 
 export namespace FinalSummaryReporters {
   //TO DO: GET ACTUAL RUN START TIME
-  const lastRunStart = new Date(Date.now() - 10 * 60000);
+  const lastRunStart = new Date(Date.now() - 60 * 60000);
 
   //assumptions to check:
   //  - all sources will have at least one import and all destinations will have at least one export... are there exceptions to this?
@@ -433,34 +434,115 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Sources {
-    // 1. findAll from Sources model where updated@ is > start of roo run command (are there cases where there might be a source run with)
-    //  2. push ea appId into the array, then use the array to call the items below and store values according to what sources they are with?  include name within object as well!
-    //   a. Would schedules run always yield a 0 or 1 as ea source has ONE schedule associated?
-    //   b. findAll + count from Imports where created@ is > roo run start time AND STATUS IS COMPLETE, group by appId and push into array (... which means array should likely be an object to search by key)
-    //   c. findAll + count from Imports where updated@ (or completed@?) > start time AND STATUS IS COMPLETE, group by appId and push into data structure
-    //   d. findAll + count from Imports where status = failed && updated@ > start time, group by appId and push into data structure
-    // 3. Transform to return format
-    // Format to return:
-    // Format to return in: [{
-    //   collection: "SOURCES",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "SOURCES",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "SOURCES",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, ]
+    // export async function schedulesRun(){}
+
+    export async function getData(): Promise<
+      Array<{
+        name: string;
+        profilesCreated: number;
+        profilesImported: number;
+        importsCreated: number;
+        error: string;
+      }>
+    > {
+      const runs = await Run.findAll({
+        where: {
+          updatedAt: { [Op.gt]: lastRunStart },
+          creatorType: "schedule",
+        },
+      });
+
+      const sources: {
+        [id: string]: {
+          name: string;
+          profilesCreated: number;
+          profilesImported: number;
+          importsCreated: number;
+          error: string;
+        };
+      } = {};
+      for (const run of runs) {
+        let source = null;
+        const schedule = await Schedule.findById(run.creatorId);
+        if (schedule) {
+          source = await schedule.$get("source");
+        }
+        if (!source) {
+          console.log("NO SOURCE FOUND", { run });
+          continue;
+        }
+
+        // Imports created: N
+        // Imports processed: N (could be more than created if there was already a backlog)
+        // Import errors: N
+
+        const currentSource = sources[source.id] || {
+          name: source.name,
+          profilesCreated: 0,
+          profilesImported: 0,
+          importsCreated: 0,
+          error: null,
+        };
+        currentSource.profilesCreated += run.profilesCreated;
+        currentSource.profilesImported += run.profilesImported;
+        currentSource.importsCreated += run.importsCreated;
+        currentSource.error = currentSource.error || run.error;
+        sources[source.id] = currentSource;
+      }
+
+      return Object.values(sources);
+    }
   }
+
+  //   SELECT COUNT(id), sources.id, sources.name FROM imports
+  //   INNER JOIN runs ON imports.creatorId = runs.id
+  //   INNER JOIN schedules ON schdules.sourceId = runs.creatorId
+  //   INNER JOIN sources ON Sources.id = scedules.sourceId
+  //   WHERE updatedAt > {date}
+  //     AND imports.creatorType = 'run'
+  //     AND runs.creatorType = 'schedule'
+  //   GROUP BY sources.id,
+
+  // SELECT COUNT(id), FROM imports
+  //   INNER JOIN runs ON imports.creatorId = runs.id
+  // WHERE updatedAt > {date}
+  //   AND imports.creatorType = 'run'
+
+  // runs = select * from runs where date > date WHERE creatorType = "schedule"
+  // run.importsCreated, run.profilesCreated
+
+  // run_ids = SELECR COUNT(id), creatorId from imports
+  // WHERE  updatedAt >= {date} AND creatorType = 'run' GROUP BY creatorId
+
+  // runs = SELECT * FROM runs WHERE id IN (run_ids)
+
+  // 1. findAll from ? model where updated@ is > start of roo run command (are there cases where there might be a source run with)
+  //  2. push ea appId into the array, then use the array to call the items below and store values according to what sources they are with?  include name within object as well!
+  //   a. Would schedules run always yield a 0 or 1 as ea source has ONE schedule associated?
+  //   b. findAll + count from Imports where created@ is > roo run start time AND STATUS IS COMPLETE, group by appId and push into array (... which means array should likely be an object to search by key)
+  //   c. findAll + count from Imports where updated@ (or completed@?) > start time AND STATUS IS COMPLETE, group by appId and push into data structure
+  //   d. findAll + count from Imports where status = failed && updated@ > start time, group by appId and push into data structure
+  // 3. Transform to return format
+  // Format to return:
+  // Format to return in: [{
+  //   collection: "SOURCES",
+  //   topic: destination.name,
+  //   aggregation: "count",
+  //   key: {label}
+  //   value: {data}
+  // }, {
+  //   collection: "SOURCES",
+  //   topic: destination.name,
+  //   aggregation: "count",
+  //   key: {label}
+  //   value: {data}
+  // }, {
+  //   collection: "SOURCES",
+  //   topic: destination.name,
+  //   aggregation: "count",
+  //   key: {label}
+  //   value: {data}
+  // }, ]
 
   export namespace Profiles {
     export async function updatedProfiles(): Promise<StatusMetric> {
@@ -491,31 +573,6 @@ export namespace FinalSummaryReporters {
         count: await Profile.count(),
       };
     }
-
-    // 1. Profiles.count() (??? unsure method name... return total count of items in Profiles)
-    // 2. findAll + count from Profiles model where updated@ is > start of roo run command (STORE THAT TOTAL)
-    //   a. findAll + count from that group ^ where created@ is > start of roo run command (STORE THAT TOTAL)
-    // 3. Transform data to fit LogFinalArray.data definition with header "Profiles" and return!
-    //
-    // Format to return in: [{
-    //   collection: "PROFILES",
-    //   topic: "profiles",
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "PROFILES",
-    //   topic: "profiles",
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "PROFILES",
-    //   topic: "profiles",
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, ]
   }
 
   export namespace Destinations {

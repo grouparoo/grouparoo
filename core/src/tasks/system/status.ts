@@ -20,6 +20,10 @@ export class StatusTask extends Task {
 
   async run({ toStop }: { toStop: boolean }) {
     const runMode = process.env.GROUPAROO_RUN_MODE;
+    const finalSummaryData = await this.getFinalSummaryData();
+
+    await this.logFinalSummary(finalSummaryData);
+
     const samples = await this.getSamples();
     if (runMode === "cli:run") this.logSamples(samples);
 
