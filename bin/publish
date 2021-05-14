@@ -53,7 +53,7 @@ if [[ -z "$GITHUB_AUTH" ]];then
 fi
 
 if [ -f ~/.npmrc ]; then
-  echo "Using local NPM user: `npm whoami`"
+  echo "Found existing .npmrc"
 else
   if [[ -z "$NPM_TOKEN" ]];then
     echo "No NPM_TOKEN or ~/.npmrc, exiting.."
@@ -62,6 +62,7 @@ else
     echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
   fi
 fi
+echo "Using local NPM user: `npm whoami`"
 
 if [[ $BRANCH != 'main' ]]; then
   echo "Not on 'main' branch.  Exiting"
