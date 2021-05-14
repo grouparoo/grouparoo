@@ -15,7 +15,6 @@ import {
   DataType,
   DefaultScope,
   AfterSave,
-  // AfterUpdate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -365,11 +364,6 @@ export class Source extends LoggedModel<Source> {
   static async noDestroyIfLocked(instance) {
     await LockableHelper.beforeDestroy(instance);
   }
-
-  // @AfterUpdate
-  // static async writeConfig(instance: App) {
-  //   return await ConfigWriter.write(instance);
-  // }
 
   @AfterDestroy
   static async destroyOptions(instance: Source) {
