@@ -39,7 +39,9 @@ export namespace ConfigWriter {
   }
 
   async function deleteFiles() {
-    for (let file of FILES_TO_DELETE) fs.rmSync(file);
+    for (let file of FILES_TO_DELETE) {
+      if (fs.existsSync(file)) fs.rmSync(file);
+    }
     FILES_TO_DELETE = [];
   }
 

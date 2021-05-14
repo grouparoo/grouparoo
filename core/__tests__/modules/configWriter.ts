@@ -63,6 +63,20 @@ describe("modules/configWriter", () => {
       );
       expect(appConfig).toEqual(await app.getConfigObject());
     });
+
+    test("deletes an object's file after the record is deleted", async () => {
+      const app: App = await helper.factories.app();
+      await ConfigWriter.run();
+      let files = glob.sync(configFilePattern);
+      expect(files).toEqual([
+        path.join(process.env.GROUPAROO_CONFIG_DIR, `apps/${app.id}.json`),
+      ]);
+
+      await app.destroy();
+      await ConfigWriter.run();
+      files = glob.sync(configFilePattern);
+      expect(files).toEqual([]);
+    });
   });
 
   // ---------------------------------------- | ConfigWriter.getConfigObjects()
