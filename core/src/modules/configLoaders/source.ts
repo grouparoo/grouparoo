@@ -98,7 +98,7 @@ export async function loadSource(
         mappedColumn,
         property.id,
         validate,
-        property.options
+        extractNonNullParts(property, "options")
       );
       await setMapping();
     } else {

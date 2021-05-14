@@ -65,6 +65,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "id",
+        sortColumn: null,
       },
       filters: [],
     },
@@ -93,6 +94,7 @@ module.exports = async function getConfig() {
       sourceId: "users_table", // sourceId -> `users_table`
       options: {
         column: "first_name",
+        sortColumn: null,
       },
       filters: [],
     },
