@@ -77,14 +77,14 @@ echo ""
 
 NEW_VERSION=`cat lerna.json | jq -r '.version'`
 echo "New Version: $NEW_VERSION"
+sleep 10
 
-# Update the release with the changelog
 CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
 ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
 sleep 10
+
 curl -H "Authorization: token $GITHUB_AUTH" --data "{
     \"tag_name\": \"v$NEW_VERSION\",
-    \"body\": $ESCAPED_CHANGELOG_BODY,
     \"prerelease\": $PRERELEASE
 }" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
@@ -92,7 +92,7 @@ echo ""
 echo "-----> INSTALL DEPENDENCIES & BUILD PACKAGES"
 echo ""
 
-pnpm install
+pnpm install --prefer-frozen-lockfile
 
 echo ""
 echo "-----> PUSH TO NPM"
