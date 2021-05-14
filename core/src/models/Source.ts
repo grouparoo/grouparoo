@@ -19,7 +19,7 @@ import {
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
 import { Schedule } from "./Schedule";
-import { Property } from "./Property";
+import { Property, PropertyFiltersWithKey } from "./Property";
 import { Option } from "./Option";
 import { App } from "./App";
 import { Run } from "./Run";
@@ -29,7 +29,6 @@ import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
-import { PropertyFiltersWithKey } from "../classes/plugin";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";

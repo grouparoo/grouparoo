@@ -28,11 +28,20 @@ export { Option } from "./models/Option";
 export { Permission } from "./models/Permission";
 export { Profile } from "./models/Profile";
 export { ProfileProperty } from "./models/ProfileProperty";
-export { Property, PropertyTypes } from "./models/Property";
+export {
+  Property,
+  PropertyTypes,
+  PropertyFiltersWithKey,
+  PluginConnectionPropertyOption,
+} from "./models/Property";
 export { PropertyFilter } from "./models/PropertyFilter";
 export { ProfileMultipleAssociationShim } from "./models/ProfileMultipleAssociationShim";
-export { Run } from "./models/Run";
-export { Schedule, SimpleScheduleOptions } from "./models/Schedule";
+export { Run, HighWaterMark } from "./models/Run";
+export {
+  Schedule,
+  SimpleScheduleOptions,
+  PluginConnectionScheduleOption,
+} from "./models/Schedule";
 export { Setting } from "./models/Setting";
 export { SetupStep } from "./models/SetupStep";
 export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
