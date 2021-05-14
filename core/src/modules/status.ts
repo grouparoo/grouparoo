@@ -1,7 +1,11 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
-import { StatusReporters, StatusMetric } from "./statusReporters";
+import {
+  StatusReporters,
+  StatusMetric,
+  FinalSummaryReporters,
+} from "./statusReporters";
 
 export namespace Status {
   export const maxSamples = 100;
@@ -97,10 +101,13 @@ export namespace Status {
   }
 }
 
-// export namespace FinalSummary {
+export namespace FinalSummary {
+  export async function getFinalSummary() {
+    const metrics: StatusMetric[] = [];
+    metrics.push(await FinalSummaryReporters.Profiles.updatedProfiles());
+    metrics.push(await FinalSummaryReporters.Profiles.createdProfiles());
+    metrics.push(await FinalSummaryReporters.Profiles.allProfiles());
 
-//   export function getFinalSummary(){
-//     const metrics: StatusMetric[] = [];
-// TO DO: GENERATE STATUSREPORTERS FOR FINAL SUMMARY
-//   }
-// }
+    return metrics;
+  }
+}

@@ -232,7 +232,6 @@ export namespace GrouparooCLI {
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
 
-      // TODO: modify following function to process logFinalArray similar to statusArray
       generateFinalSummaryLogs(logFinalArray);
 
       GrouparooCLI.logger.log(

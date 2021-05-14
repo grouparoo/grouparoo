@@ -1,7 +1,7 @@
 import { Task, api, log } from "actionhero";
 import { GrouparooCLI } from "../../modules/cli";
 import { CLS } from "../../modules/cls";
-import { Status } from "../../modules/status";
+import { Status, FinalSummary } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
 import { plugin } from "../../modules/plugin";
 
@@ -25,28 +25,60 @@ export class StatusTask extends Task {
 
     const complete = await this.checkForComplete(samples);
     if (runMode === "cli:run" && complete) {
-      await this.logFinalSummary();
+      const finalSummaryData = await this.getFinalSummaryData();
+      await this.logFinalSummary(finalSummaryData);
       await this.stopServer(toStop);
     }
 
     await this.updateTaskFrequency();
   }
 
-  async logFinalSummary() {
-    // const finalSamples = await this.getFinalSamples();
-    await GrouparooCLI.logger.finalSummary(GrouparooCLI.logger.dummyFinalArray);
+  async logFinalSummary(finalSummaryData: StatusMetric[]) {
+    const summary = finalSummaryData
+      .filter((item) => item.collection === "Summary")
+      .map((item) => {
+        return { [item.topic]: [item.count] };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    const sources = finalSummaryData
+      .filter((item) => item.collection === "Sources")
+      .map((item) => {
+        return { [item.topic]: [item.count] };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    const profiles = finalSummaryData
+      .filter((item) => item.collection === "Profiles")
+      .map((item) => {
+        return { [item.topic]: [item.count] };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    const destinations = finalSummaryData
+      .filter((item) => item.collection === "destinations")
+      .map((item) => {
+        return { [item.topic]: [item.count] };
+      })
+      .reduce((s, arr) => Object.assign(s, arr), {});
+
+    await GrouparooCLI.logger.finalSummary([
+      { header: "SUMMARY", data: summary },
+      { header: "SOURCES", data: sources },
+      { header: "PROFILES", data: profiles },
+      { header: "DESTINATIONS", data: destinations },
+    ]);
     return false;
   }
 
-  // async getFinalSamples() {
-  //   //TO DO: Status.finalSample!
-  //   let finalSamples: StatusMetric[];
-  //   await CLS.wrap(async () => {
-  //     finalSamples = await Status.sample();
-  //   });
+  async getFinalSummaryData() {
+    let finalSummaryData: StatusMetric[];
+    await CLS.wrap(async () => {
+      finalSummaryData = await FinalSummary.getFinalSummary();
+    });
 
-  //   return finalSamples;
-  // }
+    return finalSummaryData;
+  }
 
   async checkForComplete(samples: StatusMetric[]) {
     let pendingItems = 0;

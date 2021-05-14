@@ -416,8 +416,10 @@ function mergeMetrics(metrics: StatusMetric[]) {
 }
 
 export namespace FinalSummaryReporters {
+  //TO DO: GET ACTUAL RUN START TIME
+  const lastRunStart = new Date(Date.now() - 10 * 60000);
+
   //assumptions to check:
-  //  - an updatedAt value will be generated when createdAt
   //  - all sources will have at least one import and all destinations will have at least one export... are there exceptions to this?
   //  - only one instance of roo run would be running on a data set at a time so timestamps are a "safe" metric to use
   //general pondering:
@@ -431,30 +433,116 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Sources {
-    // 1. findAll from Imports model where updated@ is > start of roo run command (are there cases where there might be a source run with)
-    //             * one idea: push ea source id into the array, then use the array to call the items below and store values according to what sources they are with?
-    //   a. HOW TO FIND SCHEDULES RUN?  Double check model...
-    //   b. findAll + count from group ^ where created@ is > roo run start time AND STATUS IS COMPLETE
-    //   c. findAll + count from group where updated@ (or completed@?) > start time AND STATUS IS COMPLETE
-    //   d. findAll + count where status = failed && updated@ > start time
+    // 1. findAll from Sources model where updated@ is > start of roo run command (are there cases where there might be a source run with)
+    //  2. push ea appId into the array, then use the array to call the items below and store values according to what sources they are with?  include name within object as well!
+    //   a. Would schedules run always yield a 0 or 1 as ea source has ONE schedule associated?
+    //   b. findAll + count from Imports where created@ is > roo run start time AND STATUS IS COMPLETE, group by appId and push into array (... which means array should likely be an object to search by key)
+    //   c. findAll + count from Imports where updated@ (or completed@?) > start time AND STATUS IS COMPLETE, group by appId and push into data structure
+    //   d. findAll + count from Imports where status = failed && updated@ > start time, group by appId and push into data structure
+    // 3. Transform to return format
+    // Format to return:
+    // Format to return in: [{
+    //   collection: "SOURCES",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "SOURCES",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "SOURCES",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, ]
   }
 
   export namespace Profiles {
+    export async function updatedProfiles(): Promise<StatusMetric> {
+      return {
+        collection: "Profiles",
+        topic: "updated profiles",
+        aggregation: "count",
+        count: await Profile.count({
+          where: { updatedAt: { [Op.gt]: lastRunStart } },
+        }),
+      };
+    }
+    export async function createdProfiles(): Promise<StatusMetric> {
+      return {
+        collection: "Profiles",
+        topic: "new profiles",
+        aggregation: "count",
+        count: await Profile.count({
+          where: { createdAt: { [Op.gt]: lastRunStart } },
+        }),
+      };
+    }
+    export async function allProfiles(): Promise<StatusMetric> {
+      return {
+        collection: "Profiles",
+        topic: "all profiles",
+        aggregation: "count",
+        count: await Profile.count(),
+      };
+    }
+
     // 1. Profiles.count() (??? unsure method name... return total count of items in Profiles)
     // 2. findAll + count from Profiles model where updated@ is > start of roo run command (STORE THAT TOTAL)
     //   a. findAll + count from that group ^ where created@ is > start of roo run command (STORE THAT TOTAL)
     // 3. Transform data to fit LogFinalArray.data definition with header "Profiles" and return!
-    //  Format to return in:
     //
+    // Format to return in: [{
+    //   collection: "PROFILES",
+    //   topic: "profiles",
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "PROFILES",
+    //   topic: "profiles",
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "PROFILES",
+    //   topic: "profiles",
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, ]
   }
 
   export namespace Destinations {
-    //1.  findAll from Exports model where updated@ is > start of roo run command (COUNT VALUE BY SOURCE APPID)
-    //             * one idea: push ea destination id into the array, then use the array to call the items below and store values according to what destination they are with?
-    //  a. findAll + count from ^ that group where created@ is > start of roo run command AND STATUS IS COMPLETE
+    //1.  findAll from Destination model where updated@ is > start of roo run command.  Push appId to data structure as key.  Value is object.
+    //2. For each in that data structure, Exports.findAll + count from ^ that group where created@ is > start of roo run command AND STATUS IS COMPLETE
     //  b. findAll + count from same group where state = complete (or completed@ > start of roo run?)
-    //  c. findAll + count from same group where state = failed
+    //  c. findAll + count from same group where state = failed and updated@ > start of roo run
     // 2. Transform data to fit LogFinalArray.data definition withe header "Destinations" and return!
-    //  Format to return in:
+    //
+    // Format to return in: [{
+    //   collection: "DESTINATIONS",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "DESTINATIONS",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, {
+    //   collection: "DESTINATIONS",
+    //   topic: destination.name,
+    //   aggregation: "count",
+    //   key: {label}
+    //   value: {data}
+    // }, ]
   }
 }
