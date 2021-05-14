@@ -208,15 +208,8 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const {
-        id,
-        key,
-        type,
-        sourceId,
-        unique,
-        identifying,
-        isArray,
-      } = property;
+      const { id, key, type, sourceId, unique, identifying, isArray } =
+        property;
 
       const options = await property.getOptions();
       const filters = await property.getFilters();

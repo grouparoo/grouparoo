@@ -246,12 +246,10 @@ export class GroupCountComponentMembers extends AuthenticatedAction {
       }
     }
 
-    const {
-      componentCounts,
-      funnelCounts,
-    } = await group.countComponentMembersFromRules(
-      group.fromConvenientRules(rules)
-    );
+    const { componentCounts, funnelCounts } =
+      await group.countComponentMembersFromRules(
+        group.fromConvenientRules(rules)
+      );
 
     return { componentCounts, funnelCounts };
   }
