@@ -27,8 +27,8 @@ else
   exit 1
 fi
 
-if [[ -z "$GH_ACCESS_TOKEN" ]];then
-  echo "No GH_ACCESS_TOKEN env, exiting.."
+if [[ -z "$GITHUB_AUTH" ]];then
+  echo "No GITHUB_AUTH env, exiting.."
   exit 1;
 fi
 
@@ -71,7 +71,7 @@ echo "New Version: $NEW_VERSION"
 CHANGELOG_BODY=`./node_modules/.bin/lerna-changelog --from v$OLD_VERSION --to v$NEW_VERSION`
 ESCAPED_CHANGELOG_BODY=`echo "$CHANGELOG_BODY" | jq -R -s -c`
 sleep 10
-curl -H "Authorization: token $GH_ACCESS_TOKEN" --data "{
+curl -H "Authorization: token $GITHUB_AUTH" --data "{
     \"tag_name\": \"v$NEW_VERSION\",
     \"body\": $ESCAPED_CHANGELOG_BODY,
     \"prerelease\": $PRERELEASE

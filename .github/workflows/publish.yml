@@ -26,3 +26,6 @@ jobs:
         run: echo "RELEASE_TYPE=${{ github.event.inputs.release_type }}" >> $GITHUB_ENV
       - name: publish
         run: ./bin/publish $RELEASE_TYPE
+        env:
+          GITHUB_AUTH: ${{ secrets.GH_ACCESS_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
