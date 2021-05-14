@@ -7,7 +7,7 @@
     "clients/@grouparoo/*",
     "plugins/@grouparoo/*"
   ],
-  "version": "0.3.2-alpha.3",
+  "version": "0.3.2-alpha.4",
   "command": {
     "bootstrap": {
       "ignore": "@grouparoo/app-local*"
