@@ -28,6 +28,8 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
+      - run: git config --global user.email "hello@grouparoo.com"
+      - run: git config --global user.name "Grouparoo Bot"
       - run: npm install -g pnpm
       - name: publish
         run: ./bin/publish $RELEASE_TYPE

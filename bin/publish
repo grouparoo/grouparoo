@@ -10,7 +10,9 @@ BRANCH=`git rev-parse --abbrev-ref HEAD`
 OLD_VERSION=`cat lerna.json | jq -r '.version'`
 RELEASE_MODE=$1
 
-## CHECK INPUTS
+echo ""
+echo "-----> CHECK INPUTS"
+echo ""
 
 if [[ "$RELEASE_MODE" == "alpha" ]]
 then
@@ -56,17 +58,22 @@ fi
 
 echo "Publishing $RELEASE_MODE packages"
 echo "Old Version: $OLD_VERSION"
-echo ""
 
-## INSTALL ROOT DEPENDENCIES
+echo ""
+echo "-----> INSTALL ROOT DEPENDENCIES"
+echo ""
 
 pnpm install --filter @grouparoo/grouparoo
 
-## BUMP THE VERSION & PUSH TO GITHUB
+echo ""
+echo "-----> BUMP THE VERSION & PUSH TO GITHUB"
+echo ""
 
 ./node_modules/.bin/lerna version $LERNA_VERSION_ARGS
 
-## PUBLISH RELEASE NOTES
+echo ""
+echo "-----> PUBLISH RELEASE NOTES"
+echo ""
 
 NEW_VERSION=`cat lerna.json | jq -r '.version'`
 echo "New Version: $NEW_VERSION"
@@ -81,18 +88,23 @@ curl -H "Authorization: token $GITHUB_AUTH" --data "{
     \"prerelease\": $PRERELEASE
 }" -X POST "https://api.github.com/repos/$GITHUB_ORG/$GITHUB_REPO/releases"
 
-## INSTALL DEPENDENCIES & BUILD PACKAGES
+echo ""
+echo "-----> INSTALL DEPENDENCIES & BUILD PACKAGES"
+echo ""
 
 pnpm install
 
-## PUSH TO NPM
+echo ""
+echo "-----> PUSH TO NPM"
+echo ""
 
 ./node_modules/.bin/lerna publish from-git --concurrency 2 --ignore-scripts --dist-tag $DIST_TAG --yes
 
 ## COMPLETE
 
 echo ""
-echo "--- Version $NEW_VERSION published to $DIST_TAG tag ---"
+echo "-----> Done!"
+echo "Version $NEW_VERSION published to $DIST_TAG tag ---"
 echo ""
 
 exit 0
