@@ -387,13 +387,13 @@ describe("modules/codeConfig", () => {
       const destinations = await Destination.scope(null).findAll();
       expect(destinations.length).toBe(1);
       const destination = destinations[0];
+      expect(destination.id).toBe("test_destination");
       expect(destination.state).toEqual("deleted");
 
       // we need to "wait" for the destination to be deleted to remove it's dependant models
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "destination:destroy"
-      );
-      await specHelper.runTask("destination:destroy", foundTasks[0].args[0]);
+      await specHelper.runTask("destination:destroy", {
+        destinationId: "test_destination",
+      });
       await destination.reload();
       await destination.destroy();
     });
