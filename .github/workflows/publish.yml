@@ -21,6 +21,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           token: ${{ secrets.GH_ACCESS_TOKEN }}
+          fetch-depth: 0
       - name: Update ENV
         if: github.event.inputs.release_type != ''
         run: echo "RELEASE_TYPE=${{ github.event.inputs.release_type }}" >> $GITHUB_ENV
