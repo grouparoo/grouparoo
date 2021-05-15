@@ -58,13 +58,13 @@ export class StatusTask extends Task {
         return { [item.topic]: [item.count] };
       })
       .reduce((s, arr) => Object.assign(s, arr), {});
-
+    //TO DO: COMPLETE TRANSFORMING DESTINATION METRICS!
     const destinations = finalSummaryData
       .filter((item) => item.collection === "destinations")
       .map((item) => {
-        return { [item.topic]: [item.count] };
-      })
-      .reduce((s, arr) => Object.assign(s, arr), {});
+        return { header: item.topic, data: { [item.key]: [item.count] } };
+      });
+    // .reduce((s, arr) => Object.assign(s, arr), {});
 
     await GrouparooCLI.logger.finalSummary([
       { header: "SUMMARY", data: summary },

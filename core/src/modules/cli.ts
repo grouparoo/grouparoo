@@ -143,61 +143,61 @@ export namespace GrouparooCLI {
       );
       GrouparooCLI.logger.log("");
     }
-    export const dummyFinalArray: LogFinalArray = [
-      {
-        header: "SUMMARY",
-        data: {
-          "Sources used": [0],
-          "Runs processed": [0],
-          "Total imports": [0],
-          "Total exports": [0],
-        },
-      },
-      {
-        header: "SOURCES",
-        data: [
-          {
-            header: "MySQL",
-            data: {
-              "Schedules run": [0],
-              "Imports created": [0],
-              "Imports processed": [0],
-              "Import errors": [0],
-            },
-          },
-          {
-            header: "BigQuery",
-            data: {
-              "Schedules run": [0],
-              "Imports created": [0],
-              "Imports processed": [0],
-              "Import errors": [0],
-            },
-          },
-        ],
-      },
-      {
-        header: "DESTINATIONS",
-        data: [
-          {
-            header: "Mailchimp",
-            data: {
-              "Exports created": [0],
-              "Exports processed": [0],
-              "Export errors": [0],
-            },
-          },
-          {
-            header: "Pardot",
-            data: {
-              "Exports created": [0],
-              "Exports processed": [0],
-              "Export errors": [0],
-            },
-          },
-        ],
-      },
-    ];
+    // export const dummyFinalArray: LogFinalArray = [
+    //   {
+    //     header: "SUMMARY",
+    //     data: {
+    //       "Sources used": [0],
+    //       "Runs processed": [0],
+    //       "Total imports": [0],
+    //       "Total exports": [0],
+    //     },
+    //   },
+    //   {
+    //     header: "SOURCES",
+    //     data: [
+    //       {
+    //         header: "MySQL",
+    //         data: {
+    //           "Schedules run": [0],
+    //           "Imports created": [0],
+    //           "Imports processed": [0],
+    //           "Import errors": [0],
+    //         },
+    //       },
+    //       {
+    //         header: "BigQuery",
+    //         data: {
+    //           "Schedules run": [0],
+    //           "Imports created": [0],
+    //           "Imports processed": [0],
+    //           "Import errors": [0],
+    //         },
+    //       },
+    //     ],
+    //   },
+    //   {
+    //     header: "DESTINATIONS",
+    //     data: [
+    //       {
+    //         header: "Mailchimp",
+    //         data: {
+    //           "Exports created": [0],
+    //           "Exports processed": [0],
+    //           "Export errors": [0],
+    //         },
+    //       },
+    //       {
+    //         header: "Pardot",
+    //         data: {
+    //           "Exports created": [0],
+    //           "Exports processed": [0],
+    //           "Export errors": [0],
+    //         },
+    //       },
+    //     ],
+    //   },
+    // ];
 
     export function generateFinalSummaryLogs(logFinalArray: LogFinalArray) {
       logFinalArray.forEach(({ header, data }, idx) => {

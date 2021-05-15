@@ -418,13 +418,8 @@ function mergeMetrics(metrics: StatusMetric[]) {
 
 export namespace FinalSummaryReporters {
   //TO DO: GET ACTUAL RUN START TIME
-  const lastRunStart = new Date(Date.now() - 60 * 60000);
+  const lastRunStart = new Date(Date.now() - 200 * 60000);
 
-  //assumptions to check:
-  //  - all sources will have at least one import and all destinations will have at least one export... are there exceptions to this?
-  //  - only one instance of roo run would be running on a data set at a time so timestamps are a "safe" metric to use
-  //general pondering:
-  //  - does each namespace need its own transform method or is there a generalized one I can call across namespaces?
   export namespace Totals {
     // 1. Length of Sources array below
     // 2. Length of Destinations array below
@@ -434,8 +429,6 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Sources {
-    // export async function schedulesRun(){}
-
     export async function getData(): Promise<
       Array<{
         name: string;
@@ -472,10 +465,6 @@ export namespace FinalSummaryReporters {
           continue;
         }
 
-        // Imports created: N
-        // Imports processed: N (could be more than created if there was already a backlog)
-        // Import errors: N
-
         const currentSource = sources[source.id] || {
           name: source.name,
           profilesCreated: 0,
@@ -493,56 +482,6 @@ export namespace FinalSummaryReporters {
       return Object.values(sources);
     }
   }
-
-  //   SELECT COUNT(id), sources.id, sources.name FROM imports
-  //   INNER JOIN runs ON imports.creatorId = runs.id
-  //   INNER JOIN schedules ON schdules.sourceId = runs.creatorId
-  //   INNER JOIN sources ON Sources.id = scedules.sourceId
-  //   WHERE updatedAt > {date}
-  //     AND imports.creatorType = 'run'
-  //     AND runs.creatorType = 'schedule'
-  //   GROUP BY sources.id,
-
-  // SELECT COUNT(id), FROM imports
-  //   INNER JOIN runs ON imports.creatorId = runs.id
-  // WHERE updatedAt > {date}
-  //   AND imports.creatorType = 'run'
-
-  // runs = select * from runs where date > date WHERE creatorType = "schedule"
-  // run.importsCreated, run.profilesCreated
-
-  // run_ids = SELECR COUNT(id), creatorId from imports
-  // WHERE  updatedAt >= {date} AND creatorType = 'run' GROUP BY creatorId
-
-  // runs = SELECT * FROM runs WHERE id IN (run_ids)
-
-  // 1. findAll from ? model where updated@ is > start of roo run command (are there cases where there might be a source run with)
-  //  2. push ea appId into the array, then use the array to call the items below and store values according to what sources they are with?  include name within object as well!
-  //   a. Would schedules run always yield a 0 or 1 as ea source has ONE schedule associated?
-  //   b. findAll + count from Imports where created@ is > roo run start time AND STATUS IS COMPLETE, group by appId and push into array (... which means array should likely be an object to search by key)
-  //   c. findAll + count from Imports where updated@ (or completed@?) > start time AND STATUS IS COMPLETE, group by appId and push into data structure
-  //   d. findAll + count from Imports where status = failed && updated@ > start time, group by appId and push into data structure
-  // 3. Transform to return format
-  // Format to return:
-  // Format to return in: [{
-  //   collection: "SOURCES",
-  //   topic: destination.name,
-  //   aggregation: "count",
-  //   key: {label}
-  //   value: {data}
-  // }, {
-  //   collection: "SOURCES",
-  //   topic: destination.name,
-  //   aggregation: "count",
-  //   key: {label}
-  //   value: {data}
-  // }, {
-  //   collection: "SOURCES",
-  //   topic: destination.name,
-  //   aggregation: "count",
-  //   key: {label}
-  //   value: {data}
-  // }, ]
 
   export namespace Profiles {
     export async function updatedProfiles(): Promise<StatusMetric> {
@@ -576,30 +515,76 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Destinations {
-    //1.  findAll from Destination model where updated@ is > start of roo run command.  Push appId to data structure as key.  Value is object.
-    //2. For each in that data structure, Exports.findAll + count from ^ that group where created@ is > start of roo run command AND STATUS IS COMPLETE
-    //  b. findAll + count from same group where state = complete (or completed@ > start of roo run?)
-    //  c. findAll + count from same group where state = failed and updated@ > start of roo run
-    // 2. Transform data to fit LogFinalArray.data definition withe header "Destinations" and return!
-    //
-    // Format to return in: [{
-    //   collection: "DESTINATIONS",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "DESTINATIONS",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, {
-    //   collection: "DESTINATIONS",
-    //   topic: destination.name,
-    //   aggregation: "count",
-    //   key: {label}
-    //   value: {data}
-    // }, ]
+    export async function getData(): Promise<StatusMetric[]> {
+      const exports = await Export.findAll({
+        attributes: [
+          "destinationId",
+          [
+            api.sequelize.fn("count", api.sequelize.col("id")),
+            "exportsCreated",
+          ],
+        ],
+        where: { createdAt: { [Op.gt]: lastRunStart } },
+        group: ["destinationId"],
+      });
+
+      const metrics: StatusMetric[] = [];
+
+      for (const exp of exports) {
+        const destination = await Destination.findOne({
+          where: { id: exp.destinationId },
+        });
+
+        const exportsFailed = await Export.count({
+          where: {
+            state: "failed",
+            updatedAt: { [Op.gt]: lastRunStart },
+            destinationId: destination.id,
+          },
+        });
+
+        metrics.push({
+          collection: "Destinations",
+          topic: destination.id,
+          aggregation: "count",
+          key: "Exports failed",
+          count: exportsFailed,
+        });
+
+        const exportsComplete = await Export.count({
+          where: {
+            state: "complete",
+            updatedAt: { [Op.gt]: lastRunStart },
+            destinationId: destination.id,
+          },
+        });
+        metrics.push({
+          collection: "Destinations",
+          topic: destination.id,
+          aggregation: "count",
+          key: "Exports complete",
+          count: exportsComplete,
+        });
+        metrics.push({
+          collection: "Destinations",
+          topic: destination.id,
+          aggregation: "count",
+          key: "Exports created",
+          count: exp.getDataValue("exportsCreated"),
+        });
+
+        // console.log(exp);
+        // const currentDestination = {
+        //   name: destination.name,
+        //   exportsCreated: exp.getDataValue("exportsCreated"),
+        //   exportsFailed,
+        //   exportsComplete,
+        // };
+
+        // out.push(currentDestination);
+      }
+      console.log(metrics[0]);
+      return metrics;
+    }
   }
 }
