@@ -15,13 +15,13 @@ export class UpdateRunCounts extends CLSTask {
   }
 
   async runWithinTransaction() {
-    const since = Moment().subtract(1, "day");
+    const since = Moment().subtract(1, "day").toDate();
 
     const runs = await Run.findAll({
       where: {
         state: { [Op.ne]: "stopped" },
         error: { [Op.eq]: null },
-        updatedAt: { [Op.gte]: since.toDate() },
+        updatedAt: { [Op.gte]: since },
         [Op.or]: [
           { importsCreated: 0 },
           {
@@ -33,9 +33,16 @@ export class UpdateRunCounts extends CLSTask {
       },
     });
 
-    for (const i in runs) {
-      await runs[i].updateTotals();
+    let error: Error;
+    for (const run of runs) {
+      try {
+        await run.updateTotals();
+      } catch (_error) {
+        error = error;
+      }
     }
+
+    if (error) throw error;
 
     return runs.length;
   }
