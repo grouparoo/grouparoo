@@ -79,5 +79,27 @@ describe("tasks/runs:updateCounts", () => {
       const runsChecked = await specHelper.runTask("runs:updateCounts", {});
       expect(runsChecked).toBe(0);
     });
+
+    test("it will collect errors from the runs", async () => {
+      const schedule = await helper.factories.schedule();
+      await Run.create({
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "running",
+      });
+
+      Run.prototype.updateTotals = jest.fn().mockImplementation(function () {
+        throw new Error("oh no!");
+      });
+
+      try {
+        await specHelper.runTask("runs:updateCounts", {});
+        throw new Error("should not get here");
+      } catch (error) {
+        expect(error.message).toContain("oh no");
+        expect(error.message).toContain("Error updating runs");
+        expect(error.errors.length).toBe(1);
+      }
+    });
   });
 });
