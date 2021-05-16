@@ -33,16 +33,20 @@ export class UpdateRunCounts extends CLSTask {
       },
     });
 
-    let error: Error;
+    let errors: Error[] = [];
     for (const run of runs) {
       try {
         await run.updateTotals();
       } catch (_error) {
-        error = error;
+        errors.push(_error);
       }
     }
 
-    if (error) throw error;
+    if (errors.length > 0) {
+      const error = new Error(`Error updating runs: ${errors.join(", ")}`);
+      error["errors"] = errors;
+      throw error;
+    }
 
     return runs.length;
   }
