@@ -46,10 +46,14 @@ export function ImportProfilePropertiesDiff({
             : false;
         const nullOld =
           _import.oldProfileProperties[k] === null ||
-          _import.oldProfileProperties[k] === undefined;
+          _import.oldProfileProperties[k] === undefined ||
+          (_import.oldProfileProperties[k].length === 1 &&
+            _import.oldProfileProperties[k][0] === null);
         const nullNew =
           _import.newProfileProperties[k] === null ||
-          _import.newProfileProperties[k] === undefined;
+          _import.newProfileProperties[k] === undefined ||
+          (_import.newProfileProperties[k].length === 1 &&
+            _import.newProfileProperties[k][0] === null);
 
         const badge = hasChanges ? (
           nullOld && !nullNew ? (
