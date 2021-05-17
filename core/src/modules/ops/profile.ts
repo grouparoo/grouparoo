@@ -34,7 +34,10 @@ export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(profile: Profile) {
+  export async function properties(
+    profile: Profile,
+    properties: Property[] = []
+  ) {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.scope(null).findAll({
@@ -42,7 +45,9 @@ export namespace ProfileOps {
         order: [["position", "ASC"]],
       }));
 
-    const properties = await Property.findAll();
+    if (!properties || properties.length === 0) {
+      properties = await Property.findAll();
+    }
 
     const hash: ProfilePropertyType = {};
 
@@ -293,8 +298,8 @@ export namespace ProfileOps {
   }
 
   export async function buildNullProperties(profile: Profile, state = "ready") {
-    const profileProperties = await profile.properties();
     const properties = await Property.findAll();
+    const profileProperties = await profile.properties(properties);
 
     let newPropertiesCount = 0;
     for (const i in properties) {
