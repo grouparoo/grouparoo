@@ -66,10 +66,10 @@ export namespace ConfigWriter {
 
   export async function getConfigObjects(): Promise<WritableConfigObject[]> {
     let objects = [];
+    // Note: Sources bring their schedule.
     const queries = {
       apps: await App.findAll(),
       sources: await Source.findAll(),
-      schedules: await Schedule.findAll(),
       properties: await Property.findAll(),
       groups: await Group.findAll(),
       destinations: await Destination.findAll(),
