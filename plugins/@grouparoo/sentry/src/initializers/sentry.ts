@@ -1,7 +1,8 @@
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
-import { Initializer, api, env, action, task } from "actionhero";
+import { Initializer, api, env } from "actionhero";
 import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
+import domain from "domain";
 const packageJSON = require("./../../package.json");
 
 export class SentryInitializer extends Initializer {
@@ -41,71 +42,55 @@ export class SentryInitializer extends Initializer {
       beforeSend: beforeSend,
     });
 
-    // load the Sentry action middleware into actionhero
-    action.addMiddleware({
-      name: "Sentry Action Middleware",
-      global: true,
-      priority: 1,
-      preProcessor: (data) => {
+    // load the error reporter into actionhero
+    api.exceptionHandlers.reporters.push((error: Error) => {
+      Sentry.captureException(error);
+    });
+
+    // configure APM transaction tracing
+    plugin.setApmWrap(async function apmWrap(
+      name: string,
+      type: string,
+      data: any,
+      run: Function
+    ) {
+      const traceDomain = domain.create();
+
+      traceDomain.on("error", (error: Error) => {
+        throw error;
+      });
+
+      return traceDomain.run(async () => {
         const transaction = Sentry.startTransaction({
-          op: "action",
-          name: data.actionTemplate.name,
-          tags: { action: data.actionTemplate.name },
+          op: type,
+          name,
+          tags: { action: name },
         });
 
         Sentry.configureScope((scope) => scope.setSpan(transaction));
-        data.sentryTransaction = transaction;
-      },
-      postProcessor: (data) => {
-        const transaction = data?.sentryTransaction;
-        if (!transaction) return;
+
+        const response = await run();
 
         Sentry.configureScope(function (scope) {
-          if (data.session.teamMember) {
+          if (data?.session?.teamMember) {
             const teamMember: TeamMember = data.session.teamMember;
             scope.setUser({ id: teamMember.id, email: teamMember.email });
-          } else if (data.session.apiKey) {
+          } else if (data?.session?.apiKey) {
             const apiKey: ApiKey = data.session.apiKey;
             scope.setUser({ id: apiKey.id });
           }
         });
 
-        transaction.setHttpStatus(
-          data.connection.rawConnection?.responseHttpCode
-        );
+        if (data.connection) {
+          transaction.setHttpStatus(
+            data.connection.rawConnection?.responseHttpCode
+          );
+        }
 
         transaction.finish();
-      },
-    });
 
-    // load the Sentry task middleware into actionhero
-    task.addMiddleware({
-      name: "Sentry Task Middleware",
-      global: true,
-      priority: 1,
-      preProcessor: function () {
-        const worker = this.worker;
-
-        const transaction = Sentry.startTransaction({
-          op: "task",
-          name: worker.job.class,
-          tags: { action: worker.job.class },
-        });
-
-        Sentry.configureScope((scope) => scope.setSpan(transaction));
-
-        worker.sentryTransaction = transaction;
-      },
-      postProcessor: function () {
-        const worker = this.worker;
-        const transaction = worker?.sentryTransaction;
-        transaction.finish();
-      },
-    });
-
-    // load the error reporter into actionhero
-    api.exceptionHandlers.reporters.push((error: Error) => {
-      Sentry.captureException(error);
+        return response;
+      });
     });
   }
 
