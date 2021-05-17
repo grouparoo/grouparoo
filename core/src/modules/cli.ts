@@ -1,5 +1,7 @@
 import { CLI, api } from "actionhero";
 import Colors from "colors/safe";
+import { FinalSummary } from "./status";
+import { FinalSummaryReporters } from "../../../core/src/modules/statusReporters";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -8,15 +10,6 @@ export namespace GrouparooCLI {
   }
 
   export type LogStatusArray = Array<{ header: string; status: LogStatus }>;
-
-  export interface LogFinal {
-    [key: string]: number[] | string[];
-  }
-
-  export type LogFinalArray = Array<{
-    header: string;
-    data: LogFinal | LogFinalArray;
-  }>;
 
   /** Settings and Boot Options */
 
@@ -107,6 +100,13 @@ export namespace GrouparooCLI {
       return s.replace(/([a-z])([A-Z])/g, "$1 $2");
     }
 
+    export function deCamelAndCapitalize(s: string) {
+      return (
+        s.charAt(0).toUpperCase() +
+        s.slice(1).replace(/([a-z])([A-Z])/g, "$1 $2")
+      );
+    }
+
     export function fatal(message: string) {
       logger.error("❌ " + message);
       if (process.env.NODE_ENV !== "test") process.exit(1);
@@ -143,96 +143,67 @@ export namespace GrouparooCLI {
       );
       GrouparooCLI.logger.log("");
     }
-    // export const dummyFinalArray: LogFinalArray = [
-    //   {
-    //     header: "SUMMARY",
-    //     data: {
-    //       "Sources used": [0],
-    //       "Runs processed": [0],
-    //       "Total imports": [0],
-    //       "Total exports": [0],
-    //     },
-    //   },
-    //   {
-    //     header: "SOURCES",
-    //     data: [
-    //       {
-    //         header: "MySQL",
-    //         data: {
-    //           "Schedules run": [0],
-    //           "Imports created": [0],
-    //           "Imports processed": [0],
-    //           "Import errors": [0],
-    //         },
-    //       },
-    //       {
-    //         header: "BigQuery",
-    //         data: {
-    //           "Schedules run": [0],
-    //           "Imports created": [0],
-    //           "Imports processed": [0],
-    //           "Import errors": [0],
-    //         },
-    //       },
-    //     ],
-    //   },
-    //   {
-    //     header: "DESTINATIONS",
-    //     data: [
-    //       {
-    //         header: "Mailchimp",
-    //         data: {
-    //           "Exports created": [0],
-    //           "Exports processed": [0],
-    //           "Export errors": [0],
-    //         },
-    //       },
-    //       {
-    //         header: "Pardot",
-    //         data: {
-    //           "Exports created": [0],
-    //           "Exports processed": [0],
-    //           "Export errors": [0],
-    //         },
-    //       },
-    //     ],
-    //   },
-    // ];
 
-    export function generateFinalSummaryLogs(logFinalArray: LogFinalArray) {
-      logFinalArray.forEach(({ header, data }, idx) => {
-        if (idx > 0) logger.log(cyanBold(`|`));
+    export function generateSummaryItems(
+      categorySummary:
+        | FinalSummaryReporters.Profiles.ProfileData[]
+        | FinalSummaryReporters.Sources.SourceData[]
+        | FinalSummaryReporters.Destinations.DestinationData[]
+    ) {
+      if (categorySummary.length === 0) {
+        GrouparooCLI.logger.log(`${cyanBold("|")} None affected`);
+      }
+      categorySummary.forEach(
+        (
+          category:
+            | FinalSummaryReporters.Profiles.ProfileData
+            | FinalSummaryReporters.Sources.SourceData
+            | FinalSummaryReporters.Destinations.DestinationData,
+          idx
+        ) => {
+          if (idx > 0) logger.log(cyanBold(`|`));
 
-        GrouparooCLI.logger.log(cyanBold(`|`) + " " + underlineBold(header));
+          if (category.hasOwnProperty("name")) {
+            GrouparooCLI.logger.log(
+              `${cyanBold(`|`)} ${idx + 1}. ${underlineBold(category.name)}`
+            );
+          }
 
-        if (Array.isArray(data)) {
-          generateFinalSummaryLogs(data);
-          return false;
+          for (const property in category) {
+            GrouparooCLI.logger.log(
+              category[property] === null
+                ? `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: none`
+                : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
+                    category[property]
+                  }`
+            );
+          }
         }
-
-        for (const key in data) {
-          const [v1, v2] = data[key];
-          GrouparooCLI.logger.log(
-            `${cyanBold("|")} * ${deCamel(key)}${
-              (v1 !== null && v1 !== undefined ? ": " + v1.toString() : "") +
-              (v2 !== null && v2 !== undefined ? ` / ${v2.toString()}` : "")
-            }`
-          );
-        }
-      });
+      );
       return false;
     }
 
     export function finalSummary(
-      logFinalArray: LogFinalArray,
+      finalSummaryLogs: FinalSummary.FinalSummaryLogArray,
       secondaryTitle = `@ ${new Date().toISOString()}`
     ) {
       const formattedTitle = `┌-- 🦘 Run Completed @ ${secondaryTitle} ---`;
 
       GrouparooCLI.logger.log("");
       GrouparooCLI.logger.log(cyanBold(formattedTitle));
-
-      generateFinalSummaryLogs(logFinalArray);
+      const headings = ["PROFILES", "SOURCES", "DESTINATIONS"];
+      finalSummaryLogs.forEach((log, idx) => {
+        GrouparooCLI.logger.log(
+          cyanBold(`|`) +
+            "\n" +
+            cyanBold(`|`) +
+            " " +
+            underlineBold(headings[idx]) +
+            "\n" +
+            cyanBold(`|`)
+        );
+        generateSummaryItems(log);
+      });
 
       GrouparooCLI.logger.log(
         cyanBold("└" + "-".repeat(formattedTitle.length - 1))

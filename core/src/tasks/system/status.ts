@@ -20,69 +20,35 @@ export class StatusTask extends Task {
 
   async run({ toStop }: { toStop: boolean }) {
     const runMode = process.env.GROUPAROO_RUN_MODE;
-    const finalSummaryData = await this.getFinalSummaryData();
 
-    await this.logFinalSummary(finalSummaryData);
+    await this.logFinalSummary();
 
     const samples = await this.getSamples();
     if (runMode === "cli:run") this.logSamples(samples);
 
     const complete = await this.checkForComplete(samples);
     if (runMode === "cli:run" && complete) {
-      const finalSummaryData = await this.getFinalSummaryData();
-      await this.logFinalSummary(finalSummaryData);
+      await this.logFinalSummary();
       await this.stopServer(toStop);
     }
 
     await this.updateTaskFrequency();
   }
 
-  async logFinalSummary(finalSummaryData: StatusMetric[]) {
-    const summary = finalSummaryData
-      .filter((item) => item.collection === "Summary")
-      .map((item) => {
-        return { [item.topic]: [item.count] };
-      })
-      .reduce((s, arr) => Object.assign(s, arr), {});
-
-    const sources = finalSummaryData
-      .filter((item) => item.collection === "Sources")
-      .map((item) => {
-        return { [item.topic]: [item.count] };
-      })
-      .reduce((s, arr) => Object.assign(s, arr), {});
-
-    const profiles = finalSummaryData
-      .filter((item) => item.collection === "Profiles")
-      .map((item) => {
-        return { [item.topic]: [item.count] };
-      })
-      .reduce((s, arr) => Object.assign(s, arr), {});
-    //TO DO: COMPLETE TRANSFORMING DESTINATION METRICS!
-    const destinations = finalSummaryData
-      .filter((item) => item.collection === "destinations")
-      .map((item) => {
-        return { header: item.topic, data: { [item.key]: [item.count] } };
-      });
-    // .reduce((s, arr) => Object.assign(s, arr), {});
-
-    await GrouparooCLI.logger.finalSummary([
-      { header: "SUMMARY", data: summary },
-      { header: "SOURCES", data: sources },
-      { header: "PROFILES", data: profiles },
-      { header: "DESTINATIONS", data: destinations },
-    ]);
+  async logFinalSummary() {
+    const finalSummaryLog = await FinalSummary.getFinalSummary();
+    await GrouparooCLI.logger.finalSummary(finalSummaryLog);
     return false;
   }
 
-  async getFinalSummaryData() {
-    let finalSummaryData: StatusMetric[];
-    await CLS.wrap(async () => {
-      finalSummaryData = await FinalSummary.getFinalSummary();
-    });
+  // async getFinalSummaryLog() {
+  //   let finalSummaryLog: FinalSummary.FinalSummaryLogArray;
+  //   await CLS.wrap(async () => {
+  //     finalSummaryLog = await FinalSummary.getFinalSummary();
+  //   });
 
-    return finalSummaryData;
-  }
+  //   return finalSummaryLog;
+  // }
 
   async checkForComplete(samples: StatusMetric[]) {
     let pendingItems = 0;

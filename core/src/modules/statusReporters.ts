@@ -25,7 +25,7 @@ import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
 import { RunsList } from "../actions/runs";
-
+import { GrouparooCLI } from "../../../core/src/modules/cli";
 export interface StatusMetric {
   // the possible attributes for a metric are:
   // { collection, topic, aggregation, key, value, count, min, max, avg, imports, exports, runs, errors }
@@ -418,7 +418,7 @@ function mergeMetrics(metrics: StatusMetric[]) {
 
 export namespace FinalSummaryReporters {
   //TO DO: GET ACTUAL RUN START TIME
-  const lastRunStart = new Date(Date.now() - 200 * 60000);
+  const lastRunStart = new Date(Date.now() - 60 * 60000);
 
   export namespace Totals {
     // 1. Length of Sources array below
@@ -429,15 +429,14 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Sources {
-    export async function getData(): Promise<
-      Array<{
-        name: string;
-        profilesCreated: number;
-        profilesImported: number;
-        importsCreated: number;
-        error: string;
-      }>
-    > {
+    export interface SourceData {
+      name: string;
+      profilesCreated: number;
+      profilesImported: number;
+      importsCreated: number;
+      error: string;
+    }
+    export async function getData(): Promise<Array<SourceData>> {
       const runs = await Run.findAll({
         where: {
           updatedAt: { [Op.gt]: lastRunStart },
@@ -484,38 +483,44 @@ export namespace FinalSummaryReporters {
   }
 
   export namespace Profiles {
-    export async function updatedProfiles(): Promise<StatusMetric> {
-      return {
-        collection: "Profiles",
-        topic: "updated profiles",
-        aggregation: "count",
-        count: await Profile.count({
-          where: { updatedAt: { [Op.gt]: lastRunStart } },
-        }),
-      };
+    export interface ProfileData {
+      name: null;
+      profilesUpdated: number;
+      profilesCreated: number;
+      totalProfiles: number;
     }
-    export async function createdProfiles(): Promise<StatusMetric> {
-      return {
-        collection: "Profiles",
-        topic: "new profiles",
-        aggregation: "count",
-        count: await Profile.count({
-          where: { createdAt: { [Op.gt]: lastRunStart } },
-        }),
+
+    export async function getData(): Promise<Array<ProfileData>> {
+      const out = [];
+      const profilesUpdated = await Profile.count({
+        where: { updatedAt: { [Op.gt]: lastRunStart } },
+      });
+
+      const profilesCreated = await Profile.count({
+        where: { createdAt: { [Op.gt]: lastRunStart } },
+      });
+
+      const allProfiles = await Profile.count();
+
+      const profileData = {
+        profilesUpdated,
+        profilesCreated,
+        allProfiles,
       };
-    }
-    export async function allProfiles(): Promise<StatusMetric> {
-      return {
-        collection: "Profiles",
-        topic: "all profiles",
-        aggregation: "count",
-        count: await Profile.count(),
-      };
+      out.push(profileData);
+      return out;
     }
   }
 
   export namespace Destinations {
-    export async function getData(): Promise<StatusMetric[]> {
+    export interface DestinationData {
+      name: string;
+      exportsCreated: number;
+      exportsFailed: number;
+      exportsComplete: number;
+    }
+
+    export async function getData(): Promise<Array<DestinationData>> {
       const exports = await Export.findAll({
         attributes: [
           "destinationId",
@@ -528,8 +533,7 @@ export namespace FinalSummaryReporters {
         group: ["destinationId"],
       });
 
-      const metrics: StatusMetric[] = [];
-
+      const out = [];
       for (const exp of exports) {
         const destination = await Destination.findOne({
           where: { id: exp.destinationId },
@@ -543,14 +547,6 @@ export namespace FinalSummaryReporters {
           },
         });
 
-        metrics.push({
-          collection: "Destinations",
-          topic: destination.id,
-          aggregation: "count",
-          key: "Exports failed",
-          count: exportsFailed,
-        });
-
         const exportsComplete = await Export.count({
           where: {
             state: "complete",
@@ -558,33 +554,19 @@ export namespace FinalSummaryReporters {
             destinationId: destination.id,
           },
         });
-        metrics.push({
-          collection: "Destinations",
-          topic: destination.id,
-          aggregation: "count",
-          key: "Exports complete",
-          count: exportsComplete,
-        });
-        metrics.push({
-          collection: "Destinations",
-          topic: destination.id,
-          aggregation: "count",
-          key: "Exports created",
-          count: exp.getDataValue("exportsCreated"),
-        });
 
-        // console.log(exp);
-        // const currentDestination = {
-        //   name: destination.name,
-        //   exportsCreated: exp.getDataValue("exportsCreated"),
-        //   exportsFailed,
-        //   exportsComplete,
-        // };
+        console.log(exp);
+        const currentDestination = {
+          name: destination.name,
+          exportsCreated: exp.getDataValue("exportsCreated"),
+          exportsFailed,
+          exportsComplete,
+        };
 
-        // out.push(currentDestination);
+        out.push(currentDestination);
       }
-      console.log(metrics[0]);
-      return metrics;
+      console.log(`destinations out = ${out}`);
+      return out;
     }
   }
 }

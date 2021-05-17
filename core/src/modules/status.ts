@@ -1,4 +1,5 @@
 import { api, config, chatRoom } from "actionhero";
+import { format } from "sequelize/types/lib/utils";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
 import {
@@ -102,12 +103,19 @@ export namespace Status {
 }
 
 export namespace FinalSummary {
-  export async function getFinalSummary() {
-    const metrics: StatusMetric[] = [];
-    metrics.push(await FinalSummaryReporters.Profiles.updatedProfiles());
-    metrics.push(await FinalSummaryReporters.Profiles.createdProfiles());
-    metrics.push(await FinalSummaryReporters.Profiles.allProfiles());
-    metrics.push(...(await FinalSummaryReporters.Destinations.getData()));
-    return metrics;
+  export type FinalSummaryLogArray = Array<
+    | FinalSummaryReporters.Sources.SourceData[]
+    | FinalSummaryReporters.Profiles.ProfileData[]
+    | FinalSummaryReporters.Destinations.DestinationData[]
+  >;
+
+  export async function getFinalSummary(): Promise<FinalSummaryLogArray> {
+    const finalSummaryLogs: FinalSummaryLogArray = [];
+
+    finalSummaryLogs.push(await FinalSummaryReporters.Profiles.getData());
+    finalSummaryLogs.push(await FinalSummaryReporters.Sources.getData());
+    finalSummaryLogs.push(await FinalSummaryReporters.Destinations.getData());
+
+    return finalSummaryLogs;
   }
 }
