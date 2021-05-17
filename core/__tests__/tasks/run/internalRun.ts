@@ -1,10 +1,14 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
-import { Import, Property, Run, Profile } from "../../../src";
+import { plugin, Import, Property, Run, Profile } from "../../../src";
 
 describe("tasks/run:internalRun", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
   beforeEach(async () => await api.resque.queue.connection.redis.flushdb());
   beforeAll(async () => await helper.factories.properties());
 
@@ -14,6 +18,10 @@ describe("tasks/run:internalRun", () => {
     beforeAll(async () => {
       await Run.truncate();
       profile = await helper.factories.profile();
+    });
+
+    beforeAll(async () => {
+      await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
     test("the task will create an import for every profile", async () => {
