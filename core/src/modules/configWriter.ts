@@ -9,7 +9,10 @@ import { Property } from "../models/Property";
 import { Group } from "../models/Group";
 import { Destination } from "../models/Destination";
 
-import { ConfigurationObject } from "../classes/codeConfig";
+import {
+  ConfigurationObject,
+  getCodeConfigLockKey,
+} from "../classes/codeConfig";
 
 import { getConfigDir } from "../utils/pluginDetails";
 
@@ -24,18 +27,6 @@ type CachedConfigFile = {
 };
 
 let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
-
-/**
- * TODO:
- *
- * - [ ] Consider making getLockKey into a constant since it's not going to
- *   change.
- * - [ ] Write specs for getConfigFileCache()
- * - [ ] Write specs for resetConfigFileCache()
- * - [ ] Write specs for isLockable()
- * - [ ] Write specs for cacheConfigFile() (there are some that were for the
- *   previous method that should be adjusted)
- */
 
 export namespace ConfigWriter {
   export async function run() {
@@ -53,19 +44,48 @@ export namespace ConfigWriter {
     return configObjects;
   }
 
-  export function getLockKey() {
-    return "config:writer";
+  export async function getConfigObjects(): Promise<WritableConfigObject[]> {
+    let objects = [];
+    // Note: Sources bring their schedule.
+    const queries = {
+      apps: await App.findAll(),
+      sources: await Source.findAll(),
+      properties: await Property.findAll(),
+      groups: await Group.findAll(),
+      destinations: await Destination.findAll(),
+    };
+
+    for (let [type, instances] of Object.entries(queries)) {
+      for (let instance of instances) {
+        const object = await instance.getConfigObject();
+        const filePath = `${type}/${instance.id}.json`;
+        objects.push({ filePath, object });
+      }
+    }
+    return objects;
   }
+
+  // ---------------------------------------- | Config File Cache
 
   export function getConfigFileCache() {
     return CONFIG_FILE_CACHE;
   }
 
-  function resetConfigFileCache() {
+  export function resetConfigFileCache() {
     CONFIG_FILE_CACHE = [];
   }
 
-  export function isLockable(object: ConfigurationObject) {
+  export function getLockKey(configObject: ConfigurationObject): string | null {
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
+      return getCodeConfigLockKey();
+    }
+    if (isLockable(configObject)) {
+      return "config:writer";
+    }
+    return null;
+  }
+
+  function isLockable(object: ConfigurationObject) {
     const isMatch = (o) => o.id === object.id && o.class === object.class;
     const cachedFileObj: CachedConfigFile = CONFIG_FILE_CACHE.find(
       (cache) => cache.objects.filter(isMatch).length > 0
@@ -81,6 +101,8 @@ export namespace ConfigWriter {
   export async function cacheConfigFile(cacheObj: CachedConfigFile) {
     CONFIG_FILE_CACHE.push(cacheObj);
   }
+
+  // ---------------------------------------- | File Writers
 
   async function deleteFiles() {
     for (let { absFilePath } of CONFIG_FILE_CACHE) {
@@ -104,26 +126,5 @@ export namespace ConfigWriter {
     for (let configObject of configObjects) {
       await writeFile(configObject);
     }
-  }
-
-  export async function getConfigObjects(): Promise<WritableConfigObject[]> {
-    let objects = [];
-    // Note: Sources bring their schedule.
-    const queries = {
-      apps: await App.findAll(),
-      sources: await Source.findAll(),
-      properties: await Property.findAll(),
-      groups: await Group.findAll(),
-      destinations: await Destination.findAll(),
-    };
-
-    for (let [type, instances] of Object.entries(queries)) {
-      for (let instance of instances) {
-        const object = await instance.getConfigObject();
-        const filePath = `${type}/${instance.id}.json`;
-        objects.push({ filePath, object });
-      }
-    }
-    return objects;
   }
 }

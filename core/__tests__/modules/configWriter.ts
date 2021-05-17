@@ -14,6 +14,8 @@ import { Source } from "../../src/models/Source";
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { MappingHelper } from "../../src/modules/mappingHelper";
 
+import { ConfigurationObject } from "../../src/classes/codeConfig";
+
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
 const configFilePattern = path.join(configDir, "**/*.json");
@@ -74,9 +76,7 @@ describe("modules/configWriter", () => {
         `apps/${app.id}.json`,
         `sources/${source.id}.json`,
         `properties/${property.id}.json`,
-      ].map((configFilePath) =>
-        path.join(process.env.GROUPAROO_CONFIG_DIR, configFilePath)
-      );
+      ].map((configFilePath) => path.join(configDir, configFilePath));
 
       // Verify all expected files exist.
       expect(files.sort()).toEqual(expConfigFiles.sort());
@@ -91,14 +91,91 @@ describe("modules/configWriter", () => {
       const app: App = await helper.factories.app();
       await ConfigWriter.run();
       let files = glob.sync(configFilePattern);
-      expect(files).toEqual([
-        path.join(process.env.GROUPAROO_CONFIG_DIR, `apps/${app.id}.json`),
-      ]);
+      expect(files).toEqual([path.join(configDir, `apps/${app.id}.json`)]);
 
       await app.destroy();
       await ConfigWriter.run();
       files = glob.sync(configFilePattern);
       expect(files).toEqual([]);
+    });
+  });
+
+  // ---------------------------------------- | ConfigWriter -> File Cache
+
+  describe("File Cache", () => {
+    let app: App;
+
+    beforeEach(async () => {
+      app = await helper.factories.app();
+    });
+
+    afterEach(async () => {
+      await App.destroy({ truncate: true });
+      ConfigWriter.resetConfigFileCache();
+    });
+
+    test("stores a cache of config objects", async () => {
+      const configObject = await app.getConfigObject();
+      const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+      await ConfigWriter.cacheConfigFile({
+        absFilePath,
+        objects: [configObject],
+      });
+
+      const cache = await ConfigWriter.getConfigFileCache();
+      expect(cache.length).toEqual(1);
+      expect(cache[0].absFilePath).toEqual(absFilePath);
+      expect(cache[0].objects[0]).toEqual(configObject);
+    });
+
+    test("is reset-able", async () => {
+      const configObject = await app.getConfigObject();
+      const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+      await ConfigWriter.cacheConfigFile({
+        absFilePath,
+        objects: [configObject],
+      });
+
+      let cache = await ConfigWriter.getConfigFileCache();
+      expect(cache.length).toEqual(1);
+
+      ConfigWriter.resetConfigFileCache();
+      cache = await ConfigWriter.getConfigFileCache();
+      expect(cache.length).toEqual(0);
+    });
+
+    describe("getLockKey()", () => {
+      let configObject: ConfigurationObject;
+
+      beforeEach(async () => {
+        configObject = await app.getConfigObject();
+      });
+
+      test('returns "config:writer" for JS files (LOCKED)', async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        const absFilePath = path.join(configDir, `apps/${app.id}.js`);
+        await ConfigWriter.cacheConfigFile({
+          absFilePath,
+          objects: [configObject],
+        });
+        expect(ConfigWriter.getLockKey(configObject)).toEqual("config:writer");
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
+      test("returns null for JSON files (UNLOCKED)", async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+        await ConfigWriter.cacheConfigFile({
+          absFilePath,
+          objects: [configObject],
+        });
+        expect(ConfigWriter.getLockKey(configObject)).toEqual(null);
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
+      test('returns "code:config" when in start mode', async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:start";
+        expect(ConfigWriter.getLockKey(configObject)).toEqual("config:code");
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
     });
   });
 

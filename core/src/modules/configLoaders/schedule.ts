@@ -10,6 +10,8 @@ import {
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadSchedule(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -19,6 +21,8 @@ export async function loadSchedule(
   validateConfigObjectKeys(Schedule, configObject);
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
+  // We assume we will always have to create a new object when in config mode,
+  // so it is safe to leave locked in the find query.
   let schedule = await Schedule.scope(null).findOne({
     where: { id: configObject.id, locked: getCodeConfigLockKey() },
   });
@@ -26,7 +30,7 @@ export async function loadSchedule(
     isNew = true;
     schedule = await Schedule.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       sourceId: source.id,
     });
   }
@@ -48,6 +52,9 @@ export async function loadSchedule(
 }
 
 export async function deleteSchedules(ids: string[]) {
+  // Since this method is only used when config is loaded and because we assume
+  // the db is ephemeral, we can target locked objects, even though this will
+  // always return zero objects when in config mode.
   const schedules = await Schedule.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
