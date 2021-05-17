@@ -2,7 +2,6 @@ import os from "os";
 import { api, env, task } from "actionhero";
 import PluginDetails from "../utils/pluginDetails";
 import { Op } from "sequelize";
-
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
 import { Source } from "../models/Source";
@@ -21,7 +20,6 @@ import { Run } from "../models/Run";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
-
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
 import { RunsList } from "../actions/runs";
@@ -418,16 +416,8 @@ function mergeMetrics(metrics: StatusMetric[]) {
 
 export namespace FinalSummaryReporters {
   //TO DO: GET ACTUAL RUN START TIME
-  const lastRunStart = new Date(Date.now() - 60 * 60000);
-
-  export namespace Totals {
-    // 1. Length of Sources array below
-    // 2. Length of Destinations array below
-    // 3. Sum ea source's total imports OR query Imports and count all where updatedAt > roo run start time
-    // 4. Sum ea destinations total exports OR query Exports and count all where updatedAt > roo run start time
-    // 5. Transform data to fit LogFinalArray.data definition with "SUMMARY" header and return!
-  }
-
+  const lastRunStart = new Date(api.bootTime);
+  console.log(lastRunStart);
   export namespace Sources {
     export interface SourceData {
       name: string;
@@ -439,7 +429,7 @@ export namespace FinalSummaryReporters {
     export async function getData(): Promise<Array<SourceData>> {
       const runs = await Run.findAll({
         where: {
-          updatedAt: { [Op.gt]: lastRunStart },
+          updatedAt: { [Op.gte]: await lastRunStart },
           creatorType: "schedule",
         },
       });
@@ -493,11 +483,11 @@ export namespace FinalSummaryReporters {
     export async function getData(): Promise<Array<ProfileData>> {
       const out = [];
       const profilesUpdated = await Profile.count({
-        where: { updatedAt: { [Op.gt]: lastRunStart } },
+        where: { updatedAt: { [Op.gt]: await lastRunStart } },
       });
 
       const profilesCreated = await Profile.count({
-        where: { createdAt: { [Op.gt]: lastRunStart } },
+        where: { createdAt: { [Op.gt]: await lastRunStart } },
       });
 
       const allProfiles = await Profile.count();
@@ -529,7 +519,7 @@ export namespace FinalSummaryReporters {
             "exportsCreated",
           ],
         ],
-        where: { createdAt: { [Op.gt]: lastRunStart } },
+        where: { createdAt: { [Op.gt]: await lastRunStart } },
         group: ["destinationId"],
       });
 
@@ -542,7 +532,7 @@ export namespace FinalSummaryReporters {
         const exportsFailed = await Export.count({
           where: {
             state: "failed",
-            updatedAt: { [Op.gt]: lastRunStart },
+            updatedAt: { [Op.gt]: await lastRunStart },
             destinationId: destination.id,
           },
         });
@@ -550,7 +540,7 @@ export namespace FinalSummaryReporters {
         const exportsComplete = await Export.count({
           where: {
             state: "complete",
-            updatedAt: { [Op.gt]: lastRunStart },
+            updatedAt: { [Op.gt]: await lastRunStart },
             destinationId: destination.id,
           },
         });

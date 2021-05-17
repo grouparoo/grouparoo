@@ -20,9 +20,6 @@ export class StatusTask extends Task {
 
   async run({ toStop }: { toStop: boolean }) {
     const runMode = process.env.GROUPAROO_RUN_MODE;
-
-    await this.logFinalSummary();
-
     const samples = await this.getSamples();
     if (runMode === "cli:run") this.logSamples(samples);
 
@@ -40,15 +37,6 @@ export class StatusTask extends Task {
     await GrouparooCLI.logger.finalSummary(finalSummaryLog);
     return false;
   }
-
-  // async getFinalSummaryLog() {
-  //   let finalSummaryLog: FinalSummary.FinalSummaryLogArray;
-  //   await CLS.wrap(async () => {
-  //     finalSummaryLog = await FinalSummary.getFinalSummary();
-  //   });
-
-  //   return finalSummaryLog;
-  // }
 
   async checkForComplete(samples: StatusMetric[]) {
     let pendingItems = 0;
