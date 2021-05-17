@@ -2,6 +2,7 @@ import { api } from "actionhero";
 import { Op } from "sequelize";
 import { GrouparooPlugin } from "../classes/plugin";
 import { MustacheUtils } from "./mustacheUtils";
+import { APMWrap } from "./apm";
 
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
@@ -360,5 +361,9 @@ export namespace plugin {
     });
 
     return MustacheUtils.strictlyRender(string, data);
+  }
+
+  export function setApmWrap(f: APMWrap) {
+    api.apm.wrap = f;
   }
 }

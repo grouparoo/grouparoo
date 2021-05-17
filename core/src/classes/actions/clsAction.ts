@@ -1,4 +1,5 @@
 import { Action } from "actionhero";
+import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 
 export interface ActionData {
@@ -23,17 +24,13 @@ export abstract class CLSAction extends Action {
   }
 
   async run(params: ActionData) {
-    if (typeof this.runWithinTransaction === "function") {
+    return APM.wrap(this.name, "action", params, async () => {
       const options = { write: this.isWriteTransaction(), priority: true };
       return CLS.wrap(
         async () => await this.runWithinTransaction(params),
         options
       );
-    } else {
-      throw new Error(
-        "No run or runWithinTransaction method for this task: " + this.name
-      );
-    }
+    });
   }
 
   abstract runWithinTransaction(params: ActionData): Promise<any>;
