@@ -49,9 +49,9 @@ export const getProfileProperty: GetProfilePropertyMethod = ({
       aggregationMethod === AggregationMethod.Exact
     ) {
       const tableMappingCol: string = Object.values(sourceMapping)[0];
-      const properties = await profile.properties();
+      const profileProperties = await profile.properties();
       // if no property or no values, bail
-      if (!properties[tableMappingCol]?.values.length) {
+      if (!profileProperties[tableMappingCol]?.values.length) {
         return undefined;
       }
     }

@@ -87,12 +87,12 @@ export class Profile extends LoggedModel<Profile> {
     };
   }
 
-  async properties() {
-    return ProfileOps.properties(this);
+  async properties(preloadedProperties?: Property[]) {
+    return ProfileOps.properties(this, preloadedProperties);
   }
 
-  async simplifiedProperties() {
-    const properties = await this.properties();
+  async simplifiedProperties(preloadedProperties?: Property[]) {
+    const properties = await this.properties(preloadedProperties);
     const simpleProperties: {
       [key: string]: Array<string | boolean | number | Date>;
     } = {};

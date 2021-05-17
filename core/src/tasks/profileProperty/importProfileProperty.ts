@@ -37,13 +37,13 @@ export class ImportProfileProperty extends RetryableTask {
       where: { id: params.propertyId },
     });
     if (!property) return;
-    const properties = await profile.properties();
+    const profileProperties = await profile.properties();
     const source = await property.$get("source");
     const dependencies = await PropertyOps.dependencies(property);
 
     let ok = true;
     dependencies.forEach((dep) => {
-      if (properties[dep.key].state !== "ready") ok = false;
+      if (profileProperties[dep.key].state !== "ready") ok = false;
     });
 
     if (!ok) {
