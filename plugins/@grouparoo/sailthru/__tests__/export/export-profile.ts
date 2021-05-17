@@ -385,6 +385,29 @@ describe("sailthru/exportProfile", () => {
     expect(oldUser).toBe(null);
   });
 
+  test("cannot delete an user if sync mode does not allow it", async () => {
+    await expect(
+      runExport({
+        syncOperations: {
+          create: true,
+          delete: false,
+          update: true,
+        },
+        oldProfileProperties: { email: email, first_name: "Caio" },
+        newProfileProperties: { email: email, first_name: "Caio" },
+        oldGroups: [group2, group1],
+        newGroups: [],
+        toDelete: true,
+      })
+    ).rejects.toThrow(/sync mode does not delete/);
+
+    // no effect
+    const user = await getUserByEmail(email);
+    expect(user).not.toBe(null);
+    expect(user.keys.email).toBe(email);
+    expect(user.vars.first_name).toBe("Caio");
+  });
+
   test("can delete a user", async () => {
     await runExport({
       oldProfileProperties: { email: email, first_name: "Brian" },
