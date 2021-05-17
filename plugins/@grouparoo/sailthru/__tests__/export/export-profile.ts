@@ -8,7 +8,7 @@ import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination
 import { indexContacts } from "../../../iterable/__tests__/utils/shared";
 
 let client: Sailthru;
-const email = "brian@bleonard.com";
+const email = "brian@mailinator.com";
 const alternativeEmail = "caio@mailinator.com";
 const otherEmail = "sandro@mailinator.com";
 const ultraBrandNewEmail = "ultraBrand@mailinator.com";
