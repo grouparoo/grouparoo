@@ -78,7 +78,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   property: Property;
 
   async apiData() {
-    const property = await this.$get("property");
+    const property = await Property.findOneWithCache("id", this.propertyId);
 
     return {
       profileId: this.profileId,
@@ -109,7 +109,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   }
 
   async ensureProperty() {
-    const property = await this.$get("property");
+    const property = await Property.findOneWithCache("id", this.propertyId);
     if (!property) {
       throw new Error(`property not found for propertyId ${this.propertyId}`);
     }

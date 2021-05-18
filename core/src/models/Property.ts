@@ -418,7 +418,15 @@ export class Property extends LoggedModel<Property> {
 
   static async findOneWithCache(key: string, value: string) {
     const properties = await Property.findAllWithCache();
-    return properties.find((p) => p[key] === value);
+    let property = properties.find((p) => p[key] === value);
+
+    if (!property) {
+      // fallback if not found
+      property = await Property.findOne({ where: { [key]: value } });
+      if (property) await Property.invalidateCache();
+    }
+
+    return property;
   }
 
   static invalidateLocalCache() {
