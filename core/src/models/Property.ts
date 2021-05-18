@@ -438,7 +438,7 @@ export class Property extends LoggedModel<Property> {
   @AfterDestroy
   static async invalidateCache() {
     Property.invalidateLocalCache();
-    await CLS.wrap(async () =>
+    await CLS.afterCommit(async () =>
       redis.doCluster("api.rpc.property.invalidateCache")
     );
   }
