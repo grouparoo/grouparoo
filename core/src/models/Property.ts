@@ -16,7 +16,6 @@ import {
   BeforeUpdate,
   BeforeCreate,
   AfterSave,
-  AfterUpdate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { env, api, redis, config } from "actionhero";
