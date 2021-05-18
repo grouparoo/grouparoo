@@ -109,7 +109,7 @@ export namespace FinalSummary {
     | FinalSummaryReporters.Destinations.DestinationData[]
   >;
 
-  export async function getFinalSummary(): Promise<FinalSummaryLogArray> {
+  export async function getFinalSummary() {
     const finalSummaryLogs: FinalSummaryLogArray = [];
 
     finalSummaryLogs.push(await FinalSummaryReporters.Profiles.getData());

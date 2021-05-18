@@ -415,9 +415,7 @@ function mergeMetrics(metrics: StatusMetric[]) {
 }
 
 export namespace FinalSummaryReporters {
-  //TO DO: GET ACTUAL RUN START TIME
   const lastRunStart = new Date(api.bootTime);
-  console.log(lastRunStart);
   export namespace Sources {
     export interface SourceData {
       name: string;
@@ -449,10 +447,6 @@ export namespace FinalSummaryReporters {
         if (schedule) {
           source = await schedule.$get("source");
         }
-        if (!source) {
-          console.log("NO SOURCE FOUND", { run });
-          continue;
-        }
 
         const currentSource = sources[source.id] || {
           name: source.name,
@@ -477,11 +471,11 @@ export namespace FinalSummaryReporters {
       name: null;
       profilesUpdated: number;
       profilesCreated: number;
-      totalProfiles: number;
+      allProfiles: number;
     }
 
-    export async function getData(): Promise<Array<ProfileData>> {
-      const out = [];
+    export async function getData() {
+      const out: ProfileData[] = [];
       const profilesUpdated = await Profile.count({
         where: { updatedAt: { [Op.gt]: await lastRunStart } },
       });
@@ -493,6 +487,7 @@ export namespace FinalSummaryReporters {
       const allProfiles = await Profile.count();
 
       const profileData = {
+        name: null,
         profilesUpdated,
         profilesCreated,
         allProfiles,
@@ -510,7 +505,9 @@ export namespace FinalSummaryReporters {
       exportsComplete: number;
     }
 
-    export async function getData(): Promise<Array<DestinationData>> {
+    export async function getData() {
+      const out: DestinationData[] = [];
+
       const exports = await Export.findAll({
         attributes: [
           "destinationId",
@@ -523,7 +520,6 @@ export namespace FinalSummaryReporters {
         group: ["destinationId"],
       });
 
-      const out = [];
       for (const exp of exports) {
         const destination = await Destination.findOne({
           where: { id: exp.destinationId },
@@ -545,7 +541,6 @@ export namespace FinalSummaryReporters {
           },
         });
 
-        console.log(exp);
         const currentDestination = {
           name: destination.name,
           exportsCreated: exp.getDataValue("exportsCreated"),
@@ -555,7 +550,6 @@ export namespace FinalSummaryReporters {
 
         out.push(currentDestination);
       }
-      console.log(`destinations out = ${out}`);
       return out;
     }
   }
