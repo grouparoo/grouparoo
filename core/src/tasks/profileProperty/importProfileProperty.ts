@@ -33,7 +33,7 @@ export class ImportProfileProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOneWithCache("id", params.propertyId);
+    const property = await Property.findOneWithCache(params.propertyId);
     if (!property) return;
     const profileProperties = await profile.properties();
     const source = await property.$get("source");

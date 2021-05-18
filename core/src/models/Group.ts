@@ -169,7 +169,7 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
-      const property = await Property.findOneWithCache("id", rule.propertyId);
+      const property = await Property.findOneWithCache(rule.propertyId);
       const type = property
         ? property.type
         : TopLevelGroupRules.find((tlgr) => tlgr.key === rule.profileColumn)

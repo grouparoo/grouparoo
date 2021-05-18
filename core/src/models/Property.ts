@@ -417,7 +417,7 @@ export class Property extends LoggedModel<Property> {
     return _cachedProperties.properties;
   }
 
-  static async findOneWithCache(key: string, value: string) {
+  static async findOneWithCache(value: string, key = "id") {
     const properties = await Property.findAllWithCache();
     let property = properties.find((p) => p[key] === value);
 
