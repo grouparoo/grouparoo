@@ -260,11 +260,14 @@ describe("actions/properties", () => {
 
       connection.params = {
         csrfToken,
+        includeExamples: true,
       };
+
       const { error, properties, examples, total } = await specHelper.runAction(
         "properties:list",
         connection
       );
+
       expect(error).toBeUndefined();
       expect(properties.length).toBe(2); // this + userId
       expect(properties[1].sourceId).toBe(source.id);
@@ -275,6 +278,17 @@ describe("actions/properties", () => {
       expect(total).toBe(2);
 
       expect(examples[properties[0].id]).toEqual(["person@example.com"]);
+
+      connection.params = {
+        csrfToken,
+        includeExamples: false,
+      };
+
+      const secondRequest = await specHelper.runAction(
+        "properties:list",
+        connection
+      );
+      expect(secondRequest.examples).toBeUndefined();
 
       await profile.destroy();
     });
