@@ -10,7 +10,7 @@ export default function SourceTabs({ source }: { source: Models.SourceType }) {
 
   if (source.schedule) {
     tabs.push("schedule");
-    tabs.push("runs");
+    if (process.env.GROUPAROO_UI_EDITION === "enterprise") tabs.push("runs");
   }
 
   return <Tabs name={source.name} draftType={source.type} tabs={tabs} />;

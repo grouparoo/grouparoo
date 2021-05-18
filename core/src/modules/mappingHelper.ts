@@ -9,7 +9,10 @@ export namespace MappingHelper {
     [remoteKey: string]: any;
   }
 
-  export async function getMapping(instance: Source | Destination) {
+  export async function getMapping(
+    instance: Source | Destination,
+    propertyColumn?: "key" | "id"
+  ) {
     const MappingObject: Mappings = {};
     const mappings = await Mapping.findAll({
       where: { ownerId: instance.id },
@@ -25,7 +28,7 @@ export namespace MappingHelper {
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
         );
       }
-      MappingObject[mapping.remoteKey] = property.key;
+      MappingObject[mapping.remoteKey] = property[propertyColumn || "key"];
     }
 
     return MappingObject;

@@ -11,6 +11,7 @@ import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { AsyncReturnType } from "type-fest";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class DestinationsList extends AuthenticatedAction {
   constructor() {
@@ -140,6 +141,8 @@ export class DestinationCreate extends AuthenticatedAction {
       );
     if (params.state) await destination.update({ state: params.state });
 
+    await ConfigWriter.run();
+
     return { destination: await destination.apiData() };
   }
 }
@@ -195,6 +198,8 @@ export class DestinationEdit extends AuthenticatedAction {
     } else if (params.triggerExport) {
       run = await destination.exportGroupMembers(true);
     }
+
+    await ConfigWriter.run();
 
     return {
       destination: await destination.apiData(),
@@ -419,6 +424,8 @@ export class DestinationDestroy extends AuthenticatedAction {
       // destination:destroy will be enqueued by the `destroy` system task
       await destination.update({ state: "deleted" });
     }
+
+    await ConfigWriter.run();
 
     return { success: true };
   }

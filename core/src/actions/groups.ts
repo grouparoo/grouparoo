@@ -4,7 +4,7 @@ import { Group, GROUP_RULE_LIMIT, TopLevelGroupRules } from "../models/Group";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { Profile } from "../models/Profile";
 import { GroupMember } from "../models/GroupMember";
-import { GroupOps } from "../modules/ops/group";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class GroupsList extends AuthenticatedAction {
   constructor() {
@@ -92,6 +92,7 @@ export class GroupCreate extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
+    await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -120,6 +121,7 @@ export class GroupEdit extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
+    await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -363,6 +365,8 @@ export class GroupDestroy extends AuthenticatedAction {
       // group:destroy will be eventually enqueued by the `destroy` system task
       await group.update({ state: "deleted" });
     }
+
+    await ConfigWriter.run();
 
     return { success: true };
   }

@@ -30,6 +30,7 @@ export default function Page(props) {
   const [newRuleSourceId, setNewRuleSourceId] = useState(
     props.sources[0]?.id || ""
   );
+
   const [properties, setProperties] = useState<Models.PropertyType[]>(
     props.properties
   );
@@ -211,7 +212,7 @@ export default function Page(props) {
       />
 
       {sources.length > 0 &&
-      process.env.GROUPAROO_UI_EDITION === "enterprise" ? (
+      process.env.GROUPAROO_UI_EDITION !== "community" ? (
         <>
           <hr />
           <Form inline onSubmit={createNewProperty}>

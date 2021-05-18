@@ -1,5 +1,6 @@
 import { Schedule } from "../models/Schedule";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class SchedulesList extends AuthenticatedAction {
   constructor() {
@@ -91,6 +92,8 @@ export class ScheduleCreate extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
     if (params.state) await schedule.update({ state: params.state });
 
+    await ConfigWriter.run();
+
     return {
       schedule: await schedule.apiData(),
       pluginOptions: await schedule.pluginOptions(),
@@ -129,6 +132,8 @@ export class ScheduleEdit extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
 
     await schedule.update({ state: params.state, name: params.name });
+
+    await ConfigWriter.run();
 
     return {
       schedule: await schedule.apiData(),
@@ -173,6 +178,7 @@ export class ScheduleDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
     await schedule.destroy();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

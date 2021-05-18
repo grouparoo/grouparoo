@@ -8,7 +8,11 @@ export default function PropertyTabs({
   property: Models.PropertyType;
   source: Models.SourceType;
 }) {
-  const tabs = ["edit", "profiles", "groups", "runs", "logs"];
+  let tabs = ["edit"];
+
+  if (process.env.GROUPAROO_UI_EDITION === "enterprise") {
+    tabs.push("profiles", "groups", "runs", "logs");
+  }
 
   return (
     <>

@@ -6,6 +6,7 @@ import { ProfileProperty } from "../models/ProfileProperty";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { AsyncReturnType } from "type-fest";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class PropertiesList extends AuthenticatedAction {
   constructor() {
@@ -152,6 +153,7 @@ export class PropertyCreate extends AuthenticatedAction {
     if (params.filters) await property.setFilters(params.filters);
     if (params.state) await property.update({ state: params.state });
     const source = await property.$get("source");
+    await ConfigWriter.run();
     return {
       property: await property.apiData(),
       pluginOptions: await property.pluginOptions(),
@@ -190,6 +192,8 @@ export class PropertyEdit extends AuthenticatedAction {
 
     const source = await property.$get("source");
 
+    await ConfigWriter.run();
+
     return {
       property: await property.apiData(),
       pluginOptions: await property.pluginOptions(),
@@ -213,6 +217,7 @@ export class PropertyMakeIdentifying extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
     await property.makeIdentifying();
+    await ConfigWriter.run();
     return { property: await property.apiData() };
   }
 }
@@ -391,8 +396,8 @@ export class PropertyDestroy extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
-
     await property.destroy();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

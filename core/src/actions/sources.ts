@@ -4,9 +4,8 @@ import { App } from "../models/App";
 import { Source } from "../models/Source";
 import { GrouparooPlugin, PluginConnection } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
+import { ConfigWriter } from "../modules/configWriter";
 import { AsyncReturnType } from "type-fest";
-import { ProfileProperty } from "../models/ProfileProperty";
-import { Property } from "../models/Property";
 
 export class SourcesList extends AuthenticatedAction {
   constructor() {
@@ -127,6 +126,8 @@ export class SourceCreate extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
     if (params.state) await source.update({ state: params.state });
 
+    await ConfigWriter.run();
+
     return { source: await source.apiData() };
   }
 }
@@ -173,6 +174,9 @@ export class SourceEdit extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
 
     await source.update(params);
+
+    await ConfigWriter.run();
+
     return { source: await source.apiData() };
   }
 }
@@ -201,6 +205,8 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
       params.type,
       params.mappedColumn
     );
+
+    await ConfigWriter.run();
 
     return {
       source: await source.apiData(),
@@ -274,6 +280,7 @@ export class SourceDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
     await source.destroy();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

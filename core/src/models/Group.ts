@@ -37,7 +37,7 @@ export const GROUP_RULE_LIMIT = 10;
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export interface GroupRuleWithKey {
-  key: string;
+  key?: string;
   type?: string;
   topLevel?: boolean;
   operation: { op: string; description?: string };
@@ -613,6 +613,35 @@ export class Group extends LoggedModel<Group> {
     whereContainer[joinType] = wheres;
 
     return { where: whereContainer, include };
+  }
+
+  async getConfigObject() {
+    const { id, name, type } = this;
+
+    let rules = [];
+
+    const groupRules = await this.$get("groupRules", {
+      order: [["position", "asc"]],
+    });
+
+    if (groupRules?.length > 0) {
+      rules = groupRules.map((rule) => ({
+        propertyId: rule.propertyId,
+        operation: { op: rule.op },
+        match: rule.match,
+        relativeMatchNumber: rule.relativeMatchNumber,
+        relativeMatchUnit: rule.relativeMatchUnit,
+        relativeMatchDirection: rule.relativeMatchDirection,
+      }));
+    }
+
+    return {
+      id,
+      class: "Group",
+      type,
+      name,
+      rules,
+    };
   }
 
   // --- Class Methods --- //

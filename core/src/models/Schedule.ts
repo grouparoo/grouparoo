@@ -182,6 +182,20 @@ export class Schedule extends LoggedModel<Schedule> {
     return ScheduleOps.run(this, run);
   }
 
+  async getConfigObject() {
+    const { id, name, sourceId, recurring, recurringFrequency } = this;
+    const options = await this.getOptions();
+    return {
+      class: "Schedule",
+      id,
+      name,
+      sourceId,
+      recurring,
+      recurringFrequency,
+      options,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {

@@ -192,8 +192,11 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     if (navigationMode === "config") {
       navigationItems = [
-        { type: "link", title: "Hello", href: "/" },
         { type: "link", title: "Apps", href: "/apps" },
+        { type: "link", title: "Sources", href: "/sources" },
+        { type: "link", title: "Properties", href: "/properties" },
+        { type: "link", title: "Groups", href: "/groups" },
+        { type: "link", title: "Destinations", href: "/destinations" },
         { type: "link", title: "Plugins", href: "/plugins" },
         { type: "link", title: "Validate", href: "/validate" },
       ];

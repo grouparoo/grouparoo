@@ -517,6 +517,33 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
+  async getConfigObject() {
+    const { id, name, type, appId, groupId, syncMode } = this;
+
+    const options = await this.getOptions();
+    const mapping = await MappingHelper.getMapping(this, "id");
+
+    const dgm = await DestinationGroupMembership.findAll({
+      where: { destinationId: id },
+    });
+    const destinationGroupMemberships = Object.fromEntries(
+      dgm.map((dgm) => [dgm.groupId, dgm.remoteKey])
+    );
+
+    return {
+      class: "Destination",
+      id,
+      name,
+      type,
+      appId,
+      groupId,
+      syncMode,
+      options,
+      mapping,
+      destinationGroupMemberships,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {

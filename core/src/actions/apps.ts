@@ -3,6 +3,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { App } from "../models/App";
 import { GrouparooPlugin, PluginApp } from "../classes/plugin";
 import { OptionHelper } from "../modules/optionHelper";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class AppsList extends AuthenticatedAction {
   constructor() {
@@ -155,6 +156,8 @@ export class AppCreate extends AuthenticatedAction {
     if (params.options) await app.setOptions(params.options);
     if (params.state) await app.update({ state: params.state });
 
+    await ConfigWriter.run();
+
     return { app: await app.apiData() };
   }
 }
@@ -181,6 +184,8 @@ export class AppEdit extends AuthenticatedAction {
       await app.setOptions(params.options);
     }
     await app.update(params);
+
+    await ConfigWriter.run();
 
     return { app: await app.apiData() };
   }
@@ -244,6 +249,8 @@ export class AppDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const app = await App.findById(params.id);
     await app.destroy();
+
+    await ConfigWriter.run();
 
     return { success: true };
   }

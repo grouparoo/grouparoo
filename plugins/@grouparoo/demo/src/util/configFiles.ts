@@ -2,10 +2,8 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import { api } from "actionhero";
-import {
-  loadConfigDirectory,
-  getConfigDir,
-} from "@grouparoo/core/dist/modules/configLoaders";
+import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
+import { getConfigDir } from "@grouparoo/core/dist/utils/pluginDetails";
 import { prettier, log } from "./shared";
 import Connection from "./connection";
 import { updateEnvVariables } from "./env";

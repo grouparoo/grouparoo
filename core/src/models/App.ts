@@ -209,6 +209,18 @@ export class App extends LoggedModel<App> {
     return { source, destination };
   }
 
+  async getConfigObject() {
+    const { id, type, name } = this;
+    const options = await this.getOptions();
+    return {
+      class: "App",
+      id,
+      name,
+      type,
+      options,
+    };
+  }
+
   async _getIcon() {
     const { plugin } = await this.getPlugin();
     return plugin?.icon;
