@@ -21,6 +21,7 @@ export class PropertiesList extends AuthenticatedAction {
       unique: { required: false },
       state: { required: false },
       sourceId: { required: false },
+      includeExamples: { required: true, default: "false" },
       order: {
         required: false,
         default: [
@@ -32,6 +33,9 @@ export class PropertiesList extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
+    const includeExamples =
+      params.includeExamples === "true" || params.includeExamples === true;
+
     const where = {};
     if (params.state) where["state"] = params.state;
     if (params.sourceId) where["sourceId"] = params.sourceId;
@@ -50,22 +54,23 @@ export class PropertiesList extends AuthenticatedAction {
     > = [];
     const responseExamples: { [id: string]: string[] } = {};
 
-    for (const i in properties) {
-      const property = properties[i];
+    for (const property of properties) {
       const apiData = await property.apiData();
-
-      const examples = await ProfileProperty.findAll({
-        where: {
-          propertyId: property.id,
-          rawValue: { [Op.not]: null },
-        },
-        order: [["id", "asc"]],
-        limit: 5,
-      });
-      const exampleValues = examples.map((e) => e.rawValue);
-
       responseProperties.push(apiData);
-      responseExamples[property.id] = exampleValues;
+
+      if (includeExamples) {
+        const examples = await ProfileProperty.findAll({
+          where: {
+            propertyId: property.id,
+            rawValue: { [Op.not]: null },
+          },
+          order: [["id", "asc"]],
+          limit: 5,
+        });
+        const exampleValues = examples.map((e) => e.rawValue);
+
+        responseExamples[property.id] = exampleValues;
+      }
     }
 
     const total = await Property.scope(null).count();
@@ -73,7 +78,7 @@ export class PropertiesList extends AuthenticatedAction {
     return {
       total,
       properties: responseProperties,
-      examples: responseExamples,
+      examples: includeExamples ? responseExamples : undefined,
     };
   }
 }

@@ -52,6 +52,7 @@ export default function Page(props) {
       "get",
       `/properties`,
       {
+        includeExamples: true,
         limit: limit * (total === 0 ? 1 : total),
         offset: 0,
       }
@@ -253,6 +254,7 @@ Page.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
   const { limit, offset } = ctx.query;
   const { properties, total, examples } = await execApi("get", `/properties`, {
+    includeExamples: true,
     limit,
     offset,
   });

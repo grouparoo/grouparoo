@@ -58,10 +58,7 @@ export default function Page(props) {
         const prrResponse: Actions.PropertiesList = await execApi(
           "get",
           `/properties`,
-          {
-            unique: true,
-            state: "ready",
-          }
+          { includeExamples: true, unique: true, state: "ready" }
         );
         if (prrResponse?.properties) {
           setProperties(prrResponse.properties);
@@ -357,10 +354,7 @@ Page.getInitialProps = async (ctx) => {
   const { properties, examples: propertyExamples } = await execApi(
     "get",
     `/properties`,
-    {
-      state: "ready",
-      unique: true,
-    }
+    { includeExamples: true, state: "ready", unique: true }
   );
   const { types } = await execApi("get", `/propertyOptions`);
   const { total: scheduleCount } = await execApi("get", `/schedules`);
