@@ -118,7 +118,7 @@ export interface PropertyFiltersWithKey {
   relativeMatchDirection?: string;
 }
 
-const _cachedProperties: { expires: number; properties: Property[] } = {
+export const CachedProperties: { expires: number; properties: Property[] } = {
   expires: 0,
   properties: [],
 };
@@ -233,7 +233,10 @@ export class Property extends LoggedModel<Property> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) await PropertyOps.enqueueRuns(this);
+    if (hasChanges) {
+      await Property.invalidateCache();
+      await PropertyOps.enqueueRuns(this);
+    }
   }
 
   async validateOptions(options?: SimplePropertyOptions, allowEmpty = false) {
@@ -305,6 +308,8 @@ export class Property extends LoggedModel<Property> {
       });
     }
 
+    await this.touch();
+    await Property.invalidateCache();
     return PropertyOps.enqueueRuns(this);
   }
 
@@ -385,15 +390,15 @@ export class Property extends LoggedModel<Property> {
   static async findAllWithCache(): Promise<Property[]> {
     const now = new Date().getTime();
     if (
-      _cachedProperties.expires > now &&
-      _cachedProperties.properties.length > 0
+      CachedProperties.expires > now &&
+      CachedProperties.properties.length > 0
     ) {
-      return _cachedProperties.properties;
+      return CachedProperties.properties;
     }
 
-    _cachedProperties.properties = await Property.findAll();
-    _cachedProperties.expires = now + CACHE_TTL;
-    return _cachedProperties.properties;
+    CachedProperties.properties = await Property.findAll();
+    CachedProperties.expires = now + CACHE_TTL;
+    return CachedProperties.properties;
   }
 
   static async findOneWithCache(value: string, key = "id") {
@@ -403,14 +408,14 @@ export class Property extends LoggedModel<Property> {
     if (!property) {
       // fallback if not found
       property = await Property.findOne({ where: { [key]: value } });
-      if (property) await Property.invalidateCache();
+      if (!property) await Property.invalidateCache();
     }
 
     return property;
   }
 
   static invalidateLocalCache() {
-    _cachedProperties.expires = 0;
+    CachedProperties.expires = 0;
   }
 
   @AfterSave
