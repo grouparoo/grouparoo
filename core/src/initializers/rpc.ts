@@ -1,5 +1,6 @@
 import { Initializer, api, utils } from "actionhero";
 import { App } from "../models/App";
+import { Property } from "../models/Property";
 
 export class GrouparooRPC extends Initializer {
   constructor() {
@@ -13,6 +14,7 @@ export class GrouparooRPC extends Initializer {
      */
     api.rpc = {
       app: {},
+      property: {},
     };
 
     /**
@@ -22,6 +24,13 @@ export class GrouparooRPC extends Initializer {
     api.rpc.app.disconnect = async (appId: string) => {
       await utils.sleep(100);
       await App.disconnect(appId);
+    };
+
+    /**
+     * Clear the per-instance Property cache
+     */
+    api.rpc.property.invalidateCache = async () => {
+      Property.invalidateLocalCache();
     };
   }
 }

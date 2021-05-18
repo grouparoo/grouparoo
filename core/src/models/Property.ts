@@ -15,9 +15,11 @@ import {
   DefaultScope,
   BeforeUpdate,
   BeforeCreate,
+  AfterSave,
+  AfterUpdate,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api, config } from "actionhero";
+import { env, api, redis, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -117,6 +119,11 @@ export interface PropertyFiltersWithKey {
   relativeMatchUnit?: string;
   relativeMatchDirection?: string;
 }
+
+const _cachedProperties: { expires: number; properties: Property[] } = {
+  expires: 0,
+  properties: [],
+};
 
 @DefaultScope(() => ({
   where: { state: "ready" },
@@ -391,6 +398,38 @@ export class Property extends LoggedModel<Property> {
       options,
       filters,
     };
+  }
+
+  // --- Cache Methods --- //
+
+  static async findAllWithCache(): Promise<Property[]> {
+    const now = new Date().getTime();
+    if (
+      _cachedProperties.expires > now &&
+      _cachedProperties.properties.length > 0
+    ) {
+      return _cachedProperties.properties;
+    }
+
+    _cachedProperties.properties = await Property.findAll();
+    _cachedProperties.expires = now + CACHE_TTL;
+    return _cachedProperties.properties;
+  }
+
+  static async findOneWithCache(key: string, value: string) {
+    const properties = await Property.findAllWithCache();
+    return properties.find((p) => p[key] === value);
+  }
+
+  static invalidateLocalCache() {
+    _cachedProperties.expires = 0;
+  }
+
+  @AfterSave
+  @AfterUpdate
+  @AfterDestroy
+  static async invalidateCache() {
+    await redis.doCluster("api.rpc.property.invalidateCache");
   }
 
   // --- Class Methods --- //

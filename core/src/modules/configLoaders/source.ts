@@ -11,7 +11,6 @@ import {
 import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
 import { log } from "actionhero";
-import { CLS } from "../cls";
 
 export async function loadSource(
   configObject: ConfigurationObject,

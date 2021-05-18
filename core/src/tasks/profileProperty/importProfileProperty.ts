@@ -33,9 +33,7 @@ export class ImportProfileProperty extends RetryableTask {
       });
     }
 
-    const property = await Property.findOne({
-      where: { id: params.propertyId },
-    });
+    const property = await Property.findOneWithCache("id", params.propertyId);
     if (!property) return;
     const profileProperties = await profile.properties();
     const source = await property.$get("source");
@@ -70,7 +68,7 @@ export class ImportProfileProperty extends RetryableTask {
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
-      await profile.addOrUpdateProperty(hash, [property]);
+      await profile.addOrUpdateProperty(hash);
     } else {
       await ProfileProperty.update(
         { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },

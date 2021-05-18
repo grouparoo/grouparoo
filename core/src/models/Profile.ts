@@ -87,12 +87,12 @@ export class Profile extends LoggedModel<Profile> {
     };
   }
 
-  async properties(preloadedProperties?: Property[]) {
-    return ProfileOps.properties(this, preloadedProperties);
+  async properties() {
+    return ProfileOps.properties(this);
   }
 
-  async simplifiedProperties(preloadedProperties?: Property[]) {
-    const properties = await this.properties(preloadedProperties);
+  async simplifiedProperties() {
+    const properties = await this.properties();
     const simpleProperties: {
       [key: string]: Array<string | boolean | number | Date>;
     } = {};
@@ -101,32 +101,19 @@ export class Profile extends LoggedModel<Profile> {
     return simpleProperties;
   }
 
-  async addOrUpdateProperty(
-    properties: {
-      [key: string]: Array<string | number | boolean | Date>;
-    },
-    preloadedProperties: Property[]
-  ) {
-    return ProfileOps.addOrUpdateProperty(
-      this,
-      properties,
-      preloadedProperties
-    );
+  async addOrUpdateProperty(properties: {
+    [key: string]: Array<string | number | boolean | Date>;
+  }) {
+    return ProfileOps.addOrUpdateProperty(this, properties);
   }
 
   async addOrUpdateProperties(
     properties: {
       [key: string]: Array<string | number | boolean | Date>;
     },
-    toLock = true,
-    preloadedProperties: Property[] = []
+    toLock = true
   ) {
-    return ProfileOps.addOrUpdateProperties(
-      this,
-      properties,
-      toLock,
-      preloadedProperties
-    );
+    return ProfileOps.addOrUpdateProperties(this, properties, toLock);
   }
 
   async removeProperty(key: string) {

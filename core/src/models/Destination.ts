@@ -358,7 +358,7 @@ export class Destination extends LoggedModel<Destination> {
       false,
       saveCache
     );
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
     const exportArrayProperties = await this.getExportArrayProperties();
 
     // check for array properties

@@ -29,8 +29,7 @@ export class ImportProfileProperties extends RetryableTask {
     });
     if (profiles.length === 0) return;
 
-    const properties = await Property.findAll();
-    const property = properties.find((p) => p.id === params.propertyId);
+    const property = await Property.findOneWithCache("id", params.propertyId);
     if (!property) return;
     const source = await property.$get("source");
 
@@ -40,7 +39,7 @@ export class ImportProfileProperties extends RetryableTask {
 
     for (const profile of profiles) {
       let ok = true;
-      const profileProperties = await profile.properties(properties);
+      const profileProperties = await profile.properties();
 
       if (profileProperties[property.key].state === "ready") ok = false;
 
@@ -94,7 +93,7 @@ export class ImportProfileProperties extends RetryableTask {
     for (const profileId in propertyValuesBatch) {
       const profile = profilesToImport.find((p) => p.id === profileId);
       const hash = { [property.id]: propertyValuesBatch[profileId] };
-      await profile.addOrUpdateProperties(hash, false, properties); // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+      await profile.addOrUpdateProperties(hash, false); // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
     }
 
     // update the properties that got no data back

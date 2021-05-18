@@ -24,8 +24,8 @@ export class ProfileCompleteImport extends RetryableTask {
     });
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
 
-    const properties = await Property.findAll();
-    const profileProperties = await profile.properties(properties);
+    const properties = await Property.findAllWithCache();
+    const profileProperties = await profile.properties();
     const pendingProfileProperty = Object.keys(profileProperties).find(
       (k) => profileProperties[k].state !== "ready" // a property may have gone back into the pending state
     );
@@ -54,10 +54,7 @@ export class ProfileCompleteImport extends RetryableTask {
       await profile.addOrUpdateProperties(mergedValues);
       await profile.updateGroupMembership();
 
-      const newProfileProperties = await profile.simplifiedProperties(
-        properties
-      );
-
+      const newProfileProperties = await profile.simplifiedProperties();
       const newGroups = await profile.$get("groups");
       const newGroupIds = newGroups.map((g) => g.id);
       const now = new Date();

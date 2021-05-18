@@ -26,9 +26,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
       ).value
     );
 
-    const properties = await Property.findAll({
-      where: { state: "ready" },
-    });
+    const properties = await Property.findAllWithCache();
 
     for (const property of properties) {
       const pendingProfileProperties =

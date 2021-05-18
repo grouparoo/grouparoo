@@ -34,10 +34,7 @@ export namespace ProfileOps {
   /**
    * Get the Properties of this Profile
    */
-  export async function properties(
-    profile: Profile,
-    properties: Property[] = []
-  ) {
+  export async function properties(profile: Profile) {
     const profileProperties =
       profile.profileProperties ||
       (await ProfileProperty.scope(null).findAll({
@@ -45,9 +42,7 @@ export namespace ProfileOps {
         order: [["position", "ASC"]],
       }));
 
-    if (!properties || properties.length === 0) {
-      properties = await Property.findAll();
-    }
+    const properties = await Property.findAllWithCache();
 
     const hash: ProfilePropertyType = {};
 
@@ -104,8 +99,7 @@ export namespace ProfileOps {
    */
   export async function addOrUpdateProperty(
     profile: Profile,
-    hash: { [key: string]: Array<string | number | boolean | Date> },
-    properties: Property[]
+    hash: { [key: string]: Array<string | number | boolean | Date> }
   ) {
     const key = Object.keys(hash)[0]; // either the key or id of the property, preferring the id
     const values = hash[key];
@@ -113,6 +107,7 @@ export namespace ProfileOps {
     // ignore reserved profile property key
     if (key === "_meta") return;
 
+    const properties = await Property.findAllWithCache();
     const property =
       properties.find((p) => p.id === key) ||
       properties.find((p) => p.key === key);
@@ -235,17 +230,12 @@ export namespace ProfileOps {
     properties: {
       [key: string]: Array<string | number | boolean | Date> | any;
     },
-    toLock = true,
-    preloadedProperties: Property[] = []
+    toLock = true
   ) {
     let releaseLock: Function;
     if (toLock) {
       const response = await waitForLock(`profile:${profile.id}`);
       releaseLock = response.releaseLock;
-    }
-
-    if (!preloadedProperties || preloadedProperties.length === 0) {
-      preloadedProperties = await Property.findAll();
     }
 
     try {
@@ -260,7 +250,7 @@ export namespace ProfileOps {
           ? properties[keys[i]]
           : [properties[keys[i]]];
 
-        await addOrUpdateProperty(profile, h, preloadedProperties);
+        await addOrUpdateProperty(profile, h);
       }
 
       return profile;
@@ -298,8 +288,8 @@ export namespace ProfileOps {
   }
 
   export async function buildNullProperties(profile: Profile, state = "ready") {
-    const properties = await Property.findAll();
-    const profileProperties = await profile.properties(properties);
+    const properties = await Property.findAllWithCache();
+    const profileProperties = await profile.properties();
 
     let newPropertiesCount = 0;
     for (const i in properties) {
@@ -418,9 +408,9 @@ export namespace ProfileOps {
     let profile: Profile;
     let isNew = false;
     let profileProperty: ProfileProperty;
-    const uniqueProperties = await Property.findAll({
-      where: { unique: true },
-    });
+    const uniqueProperties = (await Property.findAllWithCache()).filter(
+      (p) => p.unique === true
+    );
     const uniquePropertiesHash = {};
 
     uniqueProperties.forEach((rule) => {
@@ -504,9 +494,9 @@ export namespace ProfileOps {
    * Mark the profile and all of its properties as pending
    */
   export async function markPending(profile: Profile) {
-    const nonDirectlyMappedRules = await Property.findAll({
-      where: { directlyMapped: false },
-    });
+    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
+      (p) => p.directlyMapped === false
+    );
 
     if (nonDirectlyMappedRules.length > 0) {
       await ProfileProperty.update(

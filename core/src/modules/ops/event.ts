@@ -15,9 +15,10 @@ export namespace EventOps {
     identifyingPropertyId: string,
     isRetry = false
   ): Promise<Profile> {
-    const property = await Property.findOne({
-      where: { id: identifyingPropertyId },
-    });
+    const property = await Property.findOneWithCache(
+      "id",
+      identifyingPropertyId
+    );
     if (!property) {
       throw new Error(
         `cannot find Property for identifyingPropertyId ${identifyingPropertyId}`
