@@ -138,7 +138,6 @@ export class PropertyCreate extends AuthenticatedAction {
       sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -154,7 +153,7 @@ export class PropertyCreate extends AuthenticatedAction {
     if (params.filters) await property.setFilters(params.filters);
     if (params.state) await property.update({ state: params.state });
     const source = await property.$get("source");
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return {
       property: await property.apiData(),
       pluginOptions: await property.pluginOptions(),
@@ -180,7 +179,6 @@ export class PropertyEdit extends AuthenticatedAction {
       sourceId: { required: false },
       options: { required: false },
       filters: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -194,7 +192,7 @@ export class PropertyEdit extends AuthenticatedAction {
 
     const source = await property.$get("source");
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return {
       property: await property.apiData(),
@@ -213,14 +211,13 @@ export class PropertyMakeIdentifying extends AuthenticatedAction {
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
       id: { required: true },
-      writeConfig: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
     await property.makeIdentifying();
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { property: await property.apiData() };
   }
 }
@@ -394,14 +391,13 @@ export class PropertyDestroy extends AuthenticatedAction {
     this.permission = { topic: "property", mode: "write" };
     this.inputs = {
       id: { required: true },
-      writeConfig: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
     await property.destroy();
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

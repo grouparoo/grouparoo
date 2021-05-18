@@ -111,11 +111,7 @@ export default function Page(props) {
     const response: Actions.GroupEdit = await execApi(
       "put",
       `/group/${group.id}`,
-      {
-        id: group.id,
-        rules: localRules,
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      }
+      { id: group.id, rules: localRules }
     );
     if (response?.group) {
       successHandler.set({ message: "Group Updated" });

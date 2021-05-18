@@ -50,10 +50,7 @@ export default function Page(props) {
       const response: Actions.SourceBootstrapUniqueProperty = await execApi(
         "post",
         `/source/${source.id}/bootstrapUniqueProperty`,
-        Object.assign(newProperty, {
-          mappedColumn: newMappingKey,
-          writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-        })
+        Object.assign(newProperty, { mappedColumn: newMappingKey })
       );
       if (response?.property) {
         successHandler.set({ message: "Property created" });
@@ -90,10 +87,7 @@ export default function Page(props) {
     const response: Actions.SourceEdit = await execApi(
       "put",
       `/source/${source.id}`,
-      Object.assign({}, source, {
-        state: "ready",
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      })
+      Object.assign({}, source, { state: "ready" })
     );
     if (response?.source) {
       // this source can have a schedule, and we have no schedules yet

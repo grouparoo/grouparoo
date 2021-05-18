@@ -23,6 +23,14 @@ process.env.GROUPAROO_CONFIG_DIR = configDir;
 describe("modules/configWriter", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
 
+  beforeEach(async () => {
+    process.env.GROUPAROO_RUN_MODE = "cli:config";
+  });
+
+  afterEach(async () => {
+    process.env.GROUPAROO_RUN_MODE = undefined;
+  });
+
   // ---------------------------------------- | ConfigWriter.run()
 
   describe("run()", () => {
@@ -33,6 +41,21 @@ describe("modules/configWriter", () => {
 
       const files = glob.sync(configFilePattern);
       for (let file of files) fs.rmSync(file);
+    });
+
+    test("does nothing unless in cli:config mode", async () => {
+      const app: App = await helper.factories.app();
+      const appFilePath = path.join(configDir, `apps/${app.id}.json`);
+
+      process.env.GROUPAROO_RUN_MODE = "x";
+      await ConfigWriter.run();
+      let files = glob.sync(configFilePattern);
+      expect(files).toEqual([]);
+
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+      await ConfigWriter.run();
+      files = glob.sync(configFilePattern);
+      expect(files).toEqual([appFilePath]);
     });
 
     test("writes a file for each object", async () => {

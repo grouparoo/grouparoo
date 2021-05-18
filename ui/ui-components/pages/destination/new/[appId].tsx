@@ -24,11 +24,7 @@ export default function Page(props) {
     const response: Actions.DestinationCreate = await execApi(
       "post",
       `/destination`,
-      {
-        appId,
-        type: connection.name,
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      }
+      { appId, type: connection.name }
     );
     if (response?.destination) {
       router.push(

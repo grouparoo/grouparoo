@@ -54,10 +54,7 @@ export default function Page(props) {
     const response: Actions.AppEdit = await execApi(
       "put",
       `/app/${id}`,
-      Object.assign({}, app, {
-        state,
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      })
+      Object.assign({}, app, { state })
     );
     if (response?.app) {
       if (response.app.state === "ready" && app.state === "draft") {
@@ -78,8 +75,7 @@ export default function Page(props) {
       setLoading(true);
       const response: Actions.AppDestroy = await execApi(
         "delete",
-        `/app/${id}`,
-        { writeConfig: process.env.GROUPAROO_UI_EDITION === "config" }
+        `/app/${id}`
       );
       if (response?.success) {
         successHandler.set({ message: "App Deleted" });

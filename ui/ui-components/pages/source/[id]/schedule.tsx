@@ -51,9 +51,7 @@ export default function Page(props) {
     const response: Actions.ScheduleEdit = await execApi(
       "put",
       `/schedule/${schedule.id}`,
-      Object.assign({}, _schedule, {
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      })
+      Object.assign({}, _schedule)
     );
     if (response?.schedule) {
       setRecurringFrequencyMinutes(
@@ -75,8 +73,7 @@ export default function Page(props) {
     if (window.confirm("are you sure?")) {
       const { success }: Actions.ScheduleDestroy = await execApi(
         "delete",
-        `/schedule/${schedule.id}`,
-        { writeConfig: process.env.GROUPAROO_UI_EDITION === "config" }
+        `/schedule/${schedule.id}`
       );
       if (success) {
         router.push(`/source/${source.id}/overview`);

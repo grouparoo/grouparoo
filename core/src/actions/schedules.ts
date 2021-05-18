@@ -78,7 +78,6 @@ export class ScheduleCreate extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: true, default: 0 },
-      writeConfig: { required: false },
     };
   }
 
@@ -93,7 +92,7 @@ export class ScheduleCreate extends AuthenticatedAction {
     if (params.options) await schedule.setOptions(params.options);
     if (params.state) await schedule.update({ state: params.state });
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return {
       schedule: await schedule.apiData(),
@@ -117,7 +116,6 @@ export class ScheduleEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       recurringFrequency: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -135,7 +133,7 @@ export class ScheduleEdit extends AuthenticatedAction {
 
     await schedule.update({ state: params.state, name: params.name });
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return {
       schedule: await schedule.apiData(),
@@ -174,14 +172,13 @@ export class ScheduleDestroy extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
-      writeConfig: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const schedule = await Schedule.findById(params.id);
     await schedule.destroy();
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

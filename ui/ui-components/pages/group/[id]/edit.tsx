@@ -51,10 +51,7 @@ export default function Page(props) {
       const response: Actions.GroupDestroy = await execApi(
         "delete",
         `/group/${group.id}`,
-        {
-          force,
-          writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-        }
+        { force }
       );
       if (response?.success) {
         successHandler.set({

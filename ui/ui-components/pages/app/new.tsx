@@ -25,7 +25,6 @@ export default function Page(props) {
     setLoading(true);
     const response: Actions.AppCreate = await execApi("post", `/app`, {
       type,
-      writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
     });
     if (response?.app) {
       return router.push("/app/[id]/edit", `/app/${response.app.id}/edit`);

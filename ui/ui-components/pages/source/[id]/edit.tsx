@@ -74,10 +74,7 @@ export default function Page(props) {
     const response: Actions.SourceEdit = await execApi(
       "put",
       `/source/${id}`,
-      Object.assign({}, source, {
-        state,
-        writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
-      })
+      Object.assign({}, source, { state })
     );
     if (response?.source) {
       setSource(response.source);
@@ -117,8 +114,7 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.SourceDestroy = await execApi(
         "delete",
-        `/source/${id}`,
-        { writeConfig: process.env.GROUPAROO_UI_EDITION === "config" }
+        `/source/${id}`
       );
       if (success) {
         successHandler.set({ message: "source deleted" });

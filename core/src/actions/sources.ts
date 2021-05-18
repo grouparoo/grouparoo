@@ -112,7 +112,6 @@ export class SourceCreate extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -127,7 +126,7 @@ export class SourceCreate extends AuthenticatedAction {
     if (params.mapping) await source.setMapping(params.mapping);
     if (params.state) await source.update({ state: params.state });
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { source: await source.apiData() };
   }
@@ -166,7 +165,6 @@ export class SourceEdit extends AuthenticatedAction {
       state: { required: false },
       options: { required: false },
       mapping: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -177,7 +175,7 @@ export class SourceEdit extends AuthenticatedAction {
 
     await source.update(params);
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { source: await source.apiData() };
   }
@@ -196,7 +194,6 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
       key: { required: true },
       type: { required: true },
       mappedColumn: { required: true },
-      writeConfig: { required: false },
     };
   }
 
@@ -209,7 +206,7 @@ export class SourceBootstrapUniqueProperty extends AuthenticatedAction {
       params.mappedColumn
     );
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return {
       source: await source.apiData(),
@@ -277,14 +274,13 @@ export class SourceDestroy extends AuthenticatedAction {
     this.permission = { topic: "source", mode: "write" };
     this.inputs = {
       id: { required: true },
-      writeConfig: { required: false },
     };
   }
 
   async runWithinTransaction({ params }) {
     const source = await Source.findById(params.id);
     await source.destroy();
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { success: true };
   }
 }

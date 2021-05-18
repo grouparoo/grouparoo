@@ -22,6 +22,8 @@ let FILES_TO_DELETE: string[] = [];
 
 export namespace ConfigWriter {
   export async function run() {
+    // If we're not in config mode, do nothing.
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
     // Any models we see before starting would be from existing code config
     // files.
     if (!api.process.started) return;

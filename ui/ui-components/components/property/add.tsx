@@ -17,7 +17,6 @@ export default function AddPropertyForm(props) {
       sourceId: source.id,
       unique: false,
       type: "string",
-      writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
     };
 
     const response: Actions.PropertyCreate = await execApi(

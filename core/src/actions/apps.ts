@@ -144,7 +144,6 @@ export class AppCreate extends AuthenticatedAction {
       type: { required: true },
       state: { required: false },
       options: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -157,7 +156,7 @@ export class AppCreate extends AuthenticatedAction {
     if (params.options) await app.setOptions(params.options);
     if (params.state) await app.update({ state: params.state });
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { app: await app.apiData() };
   }
@@ -176,7 +175,6 @@ export class AppEdit extends AuthenticatedAction {
       type: { required: false },
       state: { required: false },
       options: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -187,7 +185,7 @@ export class AppEdit extends AuthenticatedAction {
     }
     await app.update(params);
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { app: await app.apiData() };
   }
@@ -245,7 +243,6 @@ export class AppDestroy extends AuthenticatedAction {
     this.permission = { topic: "app", mode: "write" };
     this.inputs = {
       id: { required: true },
-      writeConfig: { required: false },
     };
   }
 
@@ -253,7 +250,7 @@ export class AppDestroy extends AuthenticatedAction {
     const app = await App.findById(params.id);
     await app.destroy();
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { success: true };
   }

@@ -121,7 +121,6 @@ export class DestinationCreate extends AuthenticatedAction {
       mapping: { required: false, default: {} },
       syncMode: { required: false },
       destinationGroupMemberships: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -142,7 +141,7 @@ export class DestinationCreate extends AuthenticatedAction {
       );
     if (params.state) await destination.update({ state: params.state });
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { destination: await destination.apiData() };
   }
@@ -165,7 +164,6 @@ export class DestinationEdit extends AuthenticatedAction {
       destinationGroupMemberships: { required: false },
       trackedGroupId: { required: false },
       triggerExport: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -201,7 +199,7 @@ export class DestinationEdit extends AuthenticatedAction {
       run = await destination.exportGroupMembers(true);
     }
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return {
       destination: await destination.apiData(),
@@ -415,7 +413,6 @@ export class DestinationDestroy extends AuthenticatedAction {
         formatter: (p: string | boolean) =>
           p.toString().toLowerCase() === "true",
       },
-      writeConfig: { required: false },
     };
   }
 
@@ -428,7 +425,7 @@ export class DestinationDestroy extends AuthenticatedAction {
       await destination.update({ state: "deleted" });
     }
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { success: true };
   }

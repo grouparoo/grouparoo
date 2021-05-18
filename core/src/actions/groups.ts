@@ -80,7 +80,6 @@ export class GroupCreate extends AuthenticatedAction {
       matchType: { required: true, default: "all" },
       rules: { required: false },
       state: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -93,7 +92,7 @@ export class GroupCreate extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -111,7 +110,6 @@ export class GroupEdit extends AuthenticatedAction {
       type: { required: false },
       matchType: { required: false },
       rules: { required: false },
-      writeConfig: { required: false },
     };
   }
 
@@ -123,7 +121,7 @@ export class GroupEdit extends AuthenticatedAction {
 
     const responseGroup = await group.apiData();
     responseGroup.rules = group.toConvenientRules(await group.getRules());
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
     return { group: responseGroup };
   }
 }
@@ -353,7 +351,6 @@ export class GroupDestroy extends AuthenticatedAction {
         formatter: (p: string | boolean) =>
           p.toString().toLowerCase() === "true",
       },
-      writeConfig: { required: false },
     };
   }
 
@@ -369,7 +366,7 @@ export class GroupDestroy extends AuthenticatedAction {
       await group.update({ state: "deleted" });
     }
 
-    if (params.writeConfig) await ConfigWriter.run();
+    await ConfigWriter.run();
 
     return { success: true };
   }

@@ -74,7 +74,6 @@ export default function Page(props) {
       trackedGroupId: trackedGroupId || "_none",
       destinationGroupMemberships: destinationGroupMembershipsObject,
       triggerExport: true,
-      writeConfig: process.env.GROUPAROO_UI_EDITION === "config",
     });
 
     setLoading(false);
