@@ -205,9 +205,6 @@ describe("modules/status", () => {
     beforeEach(async () => {
       await helper.truncate();
       await helper.factories.properties();
-    });
-
-    beforeAll(async () => {
       oldProfile = await helper.factories.profile();
       await changeTimestamps(oldProfile);
       newProfile = await helper.factories.profile();
@@ -295,9 +292,6 @@ describe("modules/status", () => {
         });
 
         const destinations = await FinalSummaryReporters.Destinations.getData();
-
-        console.log(await Export.findAll());
-
         expect(destinations[0].name).toEqual(destination.name);
         expect(destinations[0].exportsCreated).toEqual(2);
         expect(destinations[0].exportsFailed).toEqual(0);
