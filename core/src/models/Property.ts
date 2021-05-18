@@ -435,7 +435,6 @@ export class Property extends LoggedModel<Property> {
   }
 
   @AfterSave
-  @AfterUpdate
   @AfterDestroy
   static async invalidateCache() {
     Property.invalidateLocalCache();
