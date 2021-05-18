@@ -64,9 +64,7 @@ export namespace MappingHelper {
       });
     }
 
-    //@ts-ignore
-    instance.changed("updatedAt", true);
-    await instance.save();
+    await instance.touch();
 
     // if there's an afterSetMapping hook and we want to commit our changes
     if (typeof instance["afterSetMapping"] === "function") {

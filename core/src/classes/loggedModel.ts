@@ -57,6 +57,71 @@ export abstract class LoggedModel<T> extends Model {
   @UpdatedAt
   updatedAt: Date;
 
+  async touch() {
+    this.changed("updatedAt", true);
+    return this.save({ hooks: false });
+  }
+
+  async filteredDataForLogging() {
+    let apiData = {};
+    try {
+      apiData = await this.apiData();
+    } catch {}
+
+    config.general.filteredParams.forEach((p) => {
+      if (apiData[p]) apiData[p] = "** filtered **";
+    });
+
+    if (apiData["options"]) apiData["options"] = "** filtered **";
+
+    return apiData;
+  }
+
+  async logMessage(verb: "create" | "update" | "destroy") {
+    let message = "";
+    let primaryName = this.id;
+    const possibleNames = ["name", "key", "email", "path"];
+    for (let i in possibleNames) {
+      if (this[possibleNames[i]]) {
+        primaryName = this[possibleNames[i]];
+        break;
+      }
+    }
+
+    switch (verb) {
+      case "create":
+        message = `${modelName(this)} "${primaryName}" created`;
+        break;
+      case "update":
+        const changedValueStrings = [];
+        const changedKeys = this.changed() as Array<string>;
+        if (changedKeys) {
+          changedKeys.forEach((k) => {
+            let value = this[k];
+            if (config.general.filteredParams.includes(k)) {
+              value = "** filtered **";
+            }
+
+            changedValueStrings.push(`${k} -> ${value}`);
+          });
+        }
+
+        message = `${modelName(
+          this
+        )} "${primaryName}" updated: ${changedValueStrings.join(", ")}`;
+        break;
+      case "destroy":
+        message = `${modelName(this)} "${primaryName}" destroyed`;
+        break;
+    }
+
+    return message;
+  }
+
+  abstract apiData(): Promise<{ [key: string]: any }>;
+
+  // --- Class Methods --- //
+
   @AfterCreate
   static async logCreate(instance) {
     let message = `${modelName(this)} "${instance.id}" created`;
@@ -142,64 +207,6 @@ export abstract class LoggedModel<T> extends Model {
       message,
     });
   }
-
-  async filteredDataForLogging() {
-    let apiData = {};
-    try {
-      apiData = await this.apiData();
-    } catch {}
-
-    config.general.filteredParams.forEach((p) => {
-      if (apiData[p]) apiData[p] = "** filtered **";
-    });
-
-    if (apiData["options"]) apiData["options"] = "** filtered **";
-
-    return apiData;
-  }
-
-  async logMessage(verb: "create" | "update" | "destroy") {
-    let message = "";
-    let primaryName = this.id;
-    const possibleNames = ["name", "key", "email", "path"];
-    for (let i in possibleNames) {
-      if (this[possibleNames[i]]) {
-        primaryName = this[possibleNames[i]];
-        break;
-      }
-    }
-
-    switch (verb) {
-      case "create":
-        message = `${modelName(this)} "${primaryName}" created`;
-        break;
-      case "update":
-        const changedValueStrings = [];
-        const changedKeys = this.changed() as Array<string>;
-        if (changedKeys) {
-          changedKeys.forEach((k) => {
-            let value = this[k];
-            if (config.general.filteredParams.includes(k)) {
-              value = "** filtered **";
-            }
-
-            changedValueStrings.push(`${k} -> ${value}`);
-          });
-        }
-
-        message = `${modelName(
-          this
-        )} "${primaryName}" updated: ${changedValueStrings.join(", ")}`;
-        break;
-      case "destroy":
-        message = `${modelName(this)} "${primaryName}" destroyed`;
-        break;
-    }
-
-    return message;
-  }
-
-  abstract apiData(): Promise<{ [key: string]: any }>;
 
   /**
    * Find an instance of this class, regardless of scope
