@@ -37,6 +37,7 @@ import { Mapping } from "./Mapping";
 import { PropertyOps } from "../modules/ops/property";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CLS } from "../modules/cls";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -437,7 +438,10 @@ export class Property extends LoggedModel<Property> {
   @AfterUpdate
   @AfterDestroy
   static async invalidateCache() {
-    await redis.doCluster("api.rpc.property.invalidateCache");
+    Property.invalidateLocalCache();
+    await CLS.wrap(async () =>
+      redis.doCluster("api.rpc.property.invalidateCache")
+    );
   }
 
   // --- Class Methods --- //
