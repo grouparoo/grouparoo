@@ -66,6 +66,8 @@ export namespace Reset {
       counts[model.name] = count;
     }
 
+    Property.invalidateCache();
+
     // reset the SetupSteps
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
@@ -95,6 +97,8 @@ export namespace Reset {
       { where: { profileId: { [Op.ne]: null } } }
     );
 
+    Property.invalidateCache();
+
     await clearRedis();
 
     await logMethod(callerId, "data");
@@ -106,6 +110,7 @@ export namespace Reset {
    * * clears resque
    */
   export async function cache(callerId: string) {
+    Property.invalidateCache();
     await clearRedis();
 
     await logMethod(callerId, "cache");
