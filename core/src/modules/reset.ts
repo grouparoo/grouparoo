@@ -66,11 +66,10 @@ export namespace Reset {
       counts[model.name] = count;
     }
 
-    Property.invalidateCache();
-
     // reset the SetupSteps
     await SetupStep.update({ complete: false }, { where: { complete: true } });
 
+    await clearLocalCaches();
     await clearRedis();
 
     await logMethod(callerId, "cluster", { counts });
@@ -97,8 +96,7 @@ export namespace Reset {
       { where: { profileId: { [Op.ne]: null } } }
     );
 
-    Property.invalidateCache();
-
+    await clearLocalCaches();
     await clearRedis();
 
     await logMethod(callerId, "data");
@@ -110,7 +108,7 @@ export namespace Reset {
    * * clears resque
    */
   export async function cache(callerId: string) {
-    Property.invalidateCache();
+    await clearLocalCaches();
     await clearRedis();
 
     await logMethod(callerId, "cache");
@@ -142,6 +140,10 @@ export namespace Reset {
       ownerId: callerId,
       data,
     });
+  }
+
+  export async function clearLocalCaches() {
+    await Property.invalidateCache();
   }
 
   export async function clearRedis() {
