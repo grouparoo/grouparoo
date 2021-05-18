@@ -519,7 +519,6 @@ export namespace FinalSummaryReporters {
         where: { createdAt: { [Op.gt]: await lastRunStart } },
         group: ["destinationId"],
       });
-
       for (const exp of exports) {
         const destination = await Destination.findOne({
           where: { id: exp.destinationId },
