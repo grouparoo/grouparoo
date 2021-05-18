@@ -18,7 +18,7 @@ import { ConfigurationObject } from "../../src/classes/codeConfig";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configWriter`;
-const configFilePattern = path.join(configDir, "**/*.json");
+const configFilePattern = path.join(configDir, "**/*.{json,js}");
 
 process.env.GROUPAROO_CONFIG_DIR = configDir;
 
@@ -87,6 +87,14 @@ describe("modules/configWriter", () => {
       expect(appConfig).toEqual(await app.getConfigObject());
     });
 
+    test("does not write objects that are locked", async () => {
+      const app: App = await helper.factories.app();
+      await app.update({ locked: "config:test" });
+      await ConfigWriter.run();
+      let files = glob.sync(configFilePattern);
+      expect(files).toEqual([]);
+    });
+
     test("deletes an object's file after the record is deleted", async () => {
       const app: App = await helper.factories.app();
       await ConfigWriter.run();
@@ -97,6 +105,28 @@ describe("modules/configWriter", () => {
       await ConfigWriter.run();
       files = glob.sync(configFilePattern);
       expect(files).toEqual([]);
+    });
+
+    test("does not delete or duplicate locked (JS) files", async () => {
+      const app: App = await helper.factories.app();
+      await app.update({ locked: "config:test" });
+      const configObject = await app.getConfigObject();
+      // Create a dummy file just to ensure it is not deleted.
+      const configFilePath = path.join(configDir, `apps/${app.id}.js`);
+      fs.mkdirSync(path.dirname(configFilePath), { recursive: true });
+      fs.writeFileSync(configFilePath, "");
+      // Check to make sure the file is there.
+      let files = glob.sync(configFilePattern);
+      expect(files).toEqual([configFilePath]);
+      // Store the reference to the file (mimics what configLoader does).
+      await ConfigWriter.cacheConfigFile({
+        absFilePath: configFilePath,
+        objects: [configObject],
+      });
+      // Run the writer, which calls deleteFiles()
+      await ConfigWriter.run();
+      files = glob.sync(configFilePattern);
+      expect(files).toEqual([configFilePath]);
     });
   });
 
@@ -126,6 +156,19 @@ describe("modules/configWriter", () => {
       expect(cache.length).toEqual(1);
       expect(cache[0].absFilePath).toEqual(absFilePath);
       expect(cache[0].objects[0]).toEqual(configObject);
+    });
+
+    test("does not store locked files", async () => {
+      const configObject = await app.getConfigObject();
+      const absFilePath = path.join(configDir, `apps/${app.id}.js`);
+      const res = await ConfigWriter.cacheConfigFile({
+        absFilePath,
+        objects: [configObject],
+      });
+      expect(res).toEqual(null);
+
+      const cache = await ConfigWriter.getConfigFileCache();
+      expect(cache.length).toEqual(0);
     });
 
     test("is reset-able", async () => {
