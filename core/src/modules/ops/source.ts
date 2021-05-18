@@ -87,7 +87,9 @@ export namespace SourceOps {
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
 
-    await property.validateOptions(propertyOptionsOverride, false, true);
+    if (propertyOptionsOverride) {
+      await property.validateOptions(propertyOptionsOverride, false);
+    }
 
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {
@@ -174,7 +176,9 @@ export namespace SourceOps {
       return;
     }
 
-    await property.validateOptions(propertyOptionsOverride, false, true);
+    if (propertyOptionsOverride) {
+      await property.validateOptions(propertyOptionsOverride, false);
+    }
 
     const { pluginConnection } = await source.getPlugin();
     if (!pluginConnection) {

@@ -40,7 +40,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [(instance: App) => instance.validateOptions(null)],
+    checks: [(instance: App) => instance.validateOptions()],
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },

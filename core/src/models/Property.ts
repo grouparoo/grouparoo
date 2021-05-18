@@ -74,9 +74,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [
-      (instance: Property) => instance.validateOptions(null, null, null),
-    ],
+    checks: [(instance: Property) => instance.validateOptions()],
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
@@ -239,20 +237,7 @@ export class Property extends LoggedModel<Property> {
     if (hasChanges) await PropertyOps.enqueueRuns(this);
   }
 
-  async validateOptions(
-    options?: SimplePropertyOptions,
-    allowEmpty = false,
-    useCache = false
-  ) {
-    // This method is called on every Property, for every profile, before an import
-    // caching that we are already valid can speed this up
-    const cacheKey = `cache:property:${this.id}`;
-    const client = api.redis.clients.client;
-    if (useCache) {
-      const previouslyValidated = await client.get(cacheKey);
-      if (previouslyValidated === "true") return;
-    }
-
+  async validateOptions(options?: SimplePropertyOptions, allowEmpty = false) {
     if (!options) options = await this.getOptions(true);
 
     const response = await OptionHelper.validateOptions(
@@ -260,11 +245,6 @@ export class Property extends LoggedModel<Property> {
       options,
       allowEmpty
     );
-
-    if (CACHE_TTL > 0) {
-      await client.set(cacheKey, "true");
-      await client.expire(cacheKey, CACHE_TTL / 1000);
-    }
 
     return response;
   }

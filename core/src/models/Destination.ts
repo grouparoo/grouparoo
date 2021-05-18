@@ -98,7 +98,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [(instance: Destination) => instance.validateOptions(null)],
+    checks: [(instance: Destination) => instance.validateOptions()],
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
@@ -284,7 +284,7 @@ export class Destination extends LoggedModel<Destination> {
     return this.getDestinationGroupMemberships();
   }
 
-  async validateOptions(options: SimpleDestinationOptions) {
+  async validateOptions(options?: SimpleDestinationOptions) {
     if (!options) options = await this.getOptions(true);
     return OptionHelper.validateOptions(this, options, null);
   }
