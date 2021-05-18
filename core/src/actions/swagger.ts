@@ -1,6 +1,7 @@
 import { Action, config, api } from "actionhero";
 import path from "path";
 import { getParentPath, readPackageJson } from "../utils/pluginDetails";
+import pluralize from "pluralize";
 
 const SWAGGER_VERSION = "2.0";
 const API_VERSION = 1;
@@ -56,7 +57,7 @@ export class Swagger extends Action {
       api.routes.routes[method].map((route) => {
         const action = this.getLatestAction(route);
 
-        const tag = action.name.split(":")[0];
+        const tag = pluralize.singular(action.name.split(":")[0]);
         const formattedPath = route.path
           .replace("/v:apiVersion", "")
           .replace(/\/:(\w*)/, "/{$1}");
@@ -99,9 +100,7 @@ export class Swagger extends Action {
             : [],
         };
 
-        if (!tags.includes(tag)) {
-          tags.push(tag);
-        }
+        if (!tags.includes(tag)) tags.push(tag);
       });
     });
 
@@ -109,6 +108,8 @@ export class Swagger extends Action {
   }
 
   async run() {
+    const url: string =
+      process.env.WEB_URL ?? config.servers.web.allowedRequestHosts[0];
     const { swaggerPaths, tags } = this.buildSwaggerPaths();
 
     return {
@@ -119,20 +120,12 @@ export class Swagger extends Action {
         title: parentPackageJSON.name,
         license: { name: parentPackageJSON.license },
       },
-      host: (
-        config.servers.web.allowedRequestHosts[0] ||
-        `localhost:${config.servers.web.port}`
-      )
-        .replace("http://", "")
-        .replace("https://", ""),
+      host: url.replace("http://", "").replace("https://", ""),
       basePath: `/api/v${API_VERSION}`,
-      // tags: tags.map((tag) => {
-      //   return { name: tag, description: `topic: ${tag}` };
-      // }),
-      schemes:
-        config.servers.web.allowedRequestHosts[0]?.indexOf("https") === 0
-          ? ["https", "http"]
-          : ["http"],
+      tags: tags.map((tag) => {
+        return { name: tag };
+      }),
+      schemes: url.includes("https") ? ["https"] : ["http"],
       paths: swaggerPaths,
 
       securityDefinitions: {
