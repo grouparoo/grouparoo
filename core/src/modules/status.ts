@@ -1,5 +1,4 @@
 import { api, config, chatRoom } from "actionhero";
-import { format } from "sequelize/types/lib/utils";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
 import {

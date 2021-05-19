@@ -22,8 +22,7 @@ import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
-import { RunsList } from "../actions/runs";
-import { GrouparooCLI } from "../../../core/src/modules/cli";
+
 export interface StatusMetric {
   // the possible attributes for a metric are:
   // { collection, topic, aggregation, key, value, count, min, max, avg, imports, exports, runs, errors }
@@ -432,15 +431,7 @@ export namespace FinalSummaryReporters {
         },
       });
 
-      const sources: {
-        [id: string]: {
-          name: string;
-          profilesCreated: number;
-          profilesImported: number;
-          importsCreated: number;
-          error: string;
-        };
-      } = {};
+      const sources: { [id: string]: SourceData } = {};
       for (const run of runs) {
         let source = null;
         const schedule = await Schedule.findById(run.creatorId);
