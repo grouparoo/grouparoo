@@ -1,6 +1,10 @@
 import { SimpleAppOptions } from "@grouparoo/core";
-import CIO from "customerio-node";
+import { CustomerioClient } from "./client";
 
 export async function connect(appOptions: SimpleAppOptions) {
-  return new CIO(appOptions.siteId, appOptions.apiKey);
+  return new CustomerioClient(
+    appOptions.siteId,
+    appOptions.trackingApiKey,
+    appOptions.appApiKey
+  );
 }

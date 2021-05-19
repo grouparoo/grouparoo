@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { appOptions } from "../lib/appOptions";
@@ -23,6 +23,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/customerio/customerio.png",
@@ -30,9 +32,12 @@ export class Plugins extends Initializer {
         new AppTemplate("customerio", [
           path.join(templateRoot, "app", "*.template"),
         ]),
-        new DestinationTemplate("customerio", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "customerio",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -45,10 +50,16 @@ export class Plugins extends Initializer {
               description: "Customer.io Tracking API site id",
             },
             {
-              key: "apiKey",
-              displayName: "API Key",
+              key: "trackingApiKey",
+              displayName: "Tracking API Key",
               required: true,
               description: "Customer.io Tracking API key",
+            },
+            {
+              key: "appApiKey",
+              displayName: "App API Key",
+              required: true,
+              description: "Customer.io App API key",
             },
           ],
           methods: { test, appOptions },
@@ -60,6 +71,8 @@ export class Plugins extends Initializer {
           direction: "export",
           description: "Export profiles to customer.io as Customers",
           app: "customerio",
+          syncModes,
+          defaultSyncMode,
           options: [],
           methods: {
             exportProfile,

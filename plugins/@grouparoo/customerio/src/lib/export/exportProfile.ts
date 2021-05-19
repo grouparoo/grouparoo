@@ -1,8 +1,9 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { connect } from "../connect";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   appOptions,
+  syncOperations,
   export: {
     newProfileProperties,
     oldProfileProperties,
@@ -19,19 +20,25 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
   const customerId = newProfileProperties["customer_id"];
   const oldCustomerId = oldProfileProperties["customer_id"];
+  let newCustomer = null;
 
   if (!customerId) {
     throw new Error(`newProfileProperties[customer_id] is a required mapping`);
   }
+  newCustomer = await client.getCustomer(customerId);
+
+  if (toDelete) {
+    const oldCustomer = await client.getCustomer(oldCustomerId);
+    const userToDelete = newCustomer || oldCustomer;
+    if (userToDelete) {
+      await deleteCustomer(client, syncOperations, userToDelete.id, true);
+    }
+    return { success: true };
+  }
 
   if (oldCustomerId !== undefined && customerId !== oldCustomerId) {
     // Must delete old customer if ID has changed
-    await client.destroy(oldCustomerId);
-  }
-
-  if (toDelete) {
-    await client.destroy(customerId);
-    return { success: true };
+    await deleteCustomer(client, syncOperations, oldCustomerId);
   }
 
   const payload: any = {};
@@ -65,10 +72,32 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     }
   }
 
-  await client.identify(customerId, payload);
+  if (!newCustomer && !syncOperations.create) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not create new profiles."
+    );
+  } else if (newCustomer && !syncOperations.update) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not update existing profiles."
+    );
+  }
 
+  await client.identify(customerId, payload);
   return { success: true };
 };
+
+async function deleteCustomer(
+  client,
+  syncOperations,
+  customerId,
+  doThrow = false
+) {
+  if (syncOperations.delete) {
+    await client.destroy(customerId);
+  } else if (doThrow) {
+    throw new Errors.InfoError("Destination sync mode does not delete.");
+  }
+}
 
 function formatVar(value) {
   if (value === undefined) {
