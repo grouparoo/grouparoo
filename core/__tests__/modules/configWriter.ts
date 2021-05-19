@@ -206,8 +206,32 @@ describe("modules/configWriter", () => {
       });
     });
 
-    test("schedules can provide their config objects", async () => {
+    test("sources will also bring their own schedule", async () => {
       const schedule: Schedule = await helper.factories.schedule(source);
+      const config = await source.getConfigObject();
+      const scheduleConfig = await schedule.getConfigObject();
+
+      const { id, name, type, appId } = source;
+      const options = await source.getOptions();
+      const mapping = await MappingHelper.getMapping(source, "id");
+
+      expect(config.length).toEqual(2);
+      expect(config[0]).toEqual({
+        class: "Source",
+        id,
+        name,
+        type,
+        appId,
+        mapping,
+        options,
+      });
+      expect(config[1]).toEqual(scheduleConfig);
+    });
+
+    test("schedules can provide their config objects", async () => {
+      // The previous test created a schedule, which we can use here, since
+      // sources can only have one schedule.
+      const schedule: Schedule = await source.$get("schedule");
       const config = await schedule.getConfigObject();
 
       expect(config.id).toBeTruthy();

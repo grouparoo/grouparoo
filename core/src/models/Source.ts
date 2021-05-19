@@ -32,6 +32,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { ConfigurationObject } from "../classes/codeConfig";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}
@@ -283,7 +284,7 @@ export class Source extends LoggedModel<Source> {
     const options = await this.getOptions();
     const mapping = await MappingHelper.getMapping(this, "id");
 
-    return {
+    let configObject: any = {
       class: "Source",
       id,
       name,
@@ -292,6 +293,17 @@ export class Source extends LoggedModel<Source> {
       mapping,
       options,
     };
+
+    const setSchedule = async () => {
+      if (!this.schedule) return;
+      const scheduleConfigObject = await this.schedule.getConfigObject();
+      configObject = [{ ...configObject }, { ...scheduleConfigObject }];
+    };
+
+    if (!this.schedule) this.schedule = await this.$get("schedule");
+    await setSchedule();
+
+    return configObject;
   }
 
   // --- Class Methods --- //
