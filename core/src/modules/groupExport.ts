@@ -12,7 +12,7 @@ import { Property } from "../models/Property";
  */
 export async function groupExportToCSV(group: Group, limit = 1000) {
   // get the headers
-  const numberedPropertyKeys = (await Property.findAll())
+  const numberedPropertyKeys = (await Property.findAllWithCache())
     .map((rule) => rule.key)
     .sort();
   const columns = ["id", "createdAt", "updatedAt"].concat(numberedPropertyKeys);

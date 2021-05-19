@@ -15,9 +15,10 @@ import {
   DefaultScope,
   BeforeUpdate,
   BeforeCreate,
+  AfterSave,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
-import { env, api, config } from "actionhero";
+import { env, api, redis, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
 import { Profile } from "./Profile";
@@ -35,6 +36,7 @@ import { Mapping } from "./Mapping";
 import { PropertyOps } from "../modules/ops/property";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { CLS } from "../modules/cls";
 
 export function propertyJSToSQLType(jsType: string) {
   const map = {
@@ -71,9 +73,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [
-      (instance: Property) => instance.validateOptions(null, null, null),
-    ],
+    checks: [(instance: Property) => instance.validateOptions()],
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
@@ -117,6 +117,11 @@ export interface PropertyFiltersWithKey {
   relativeMatchUnit?: string;
   relativeMatchDirection?: string;
 }
+
+export const CachedProperties: { expires: number; properties: Property[] } = {
+  expires: 0,
+  properties: [],
+};
 
 @DefaultScope(() => ({
   where: { state: "ready" },
@@ -228,23 +233,13 @@ export class Property extends LoggedModel<Property> {
   }
 
   async afterSetOptions(hasChanges: boolean) {
-    if (hasChanges) await PropertyOps.enqueueRuns(this);
+    if (hasChanges) {
+      await Property.invalidateCache();
+      await PropertyOps.enqueueRuns(this);
+    }
   }
 
-  async validateOptions(
-    options?: SimplePropertyOptions,
-    allowEmpty = false,
-    useCache = false
-  ) {
-    // This method is called on every Property, for every profile, before an import
-    // caching that we are already valid can speed this up
-    const cacheKey = `cache:property:${this.id}`;
-    const client = api.redis.clients.client;
-    if (useCache) {
-      const previouslyValidated = await client.get(cacheKey);
-      if (previouslyValidated === "true") return;
-    }
-
+  async validateOptions(options?: SimplePropertyOptions, allowEmpty = false) {
     if (!options) options = await this.getOptions(true);
 
     const response = await OptionHelper.validateOptions(
@@ -252,11 +247,6 @@ export class Property extends LoggedModel<Property> {
       options,
       allowEmpty
     );
-
-    if (CACHE_TTL > 0) {
-      await client.set(cacheKey, "true");
-      await client.expire(cacheKey, CACHE_TTL / 1000);
-    }
 
     return response;
   }
@@ -318,6 +308,8 @@ export class Property extends LoggedModel<Property> {
       });
     }
 
+    await this.touch();
+    await Property.invalidateCache();
     return PropertyOps.enqueueRuns(this);
   }
 
@@ -391,6 +383,48 @@ export class Property extends LoggedModel<Property> {
       options,
       filters,
     };
+  }
+
+  // --- Cache Methods --- //
+
+  static async findAllWithCache(): Promise<Property[]> {
+    const now = new Date().getTime();
+    if (
+      CachedProperties.expires > now &&
+      CachedProperties.properties.length > 0
+    ) {
+      return CachedProperties.properties;
+    }
+
+    CachedProperties.properties = await Property.findAll();
+    CachedProperties.expires = now + CACHE_TTL;
+    return CachedProperties.properties;
+  }
+
+  static async findOneWithCache(value: string, key = "id") {
+    const properties = await Property.findAllWithCache();
+    let property = properties.find((p) => p[key] === value);
+
+    if (!property) {
+      // fallback if not found
+      property = await Property.findOne({ where: { [key]: value } });
+      if (!property) await Property.invalidateCache();
+    }
+
+    return property;
+  }
+
+  static invalidateLocalCache() {
+    CachedProperties.expires = 0;
+  }
+
+  @AfterSave
+  @AfterDestroy
+  static async invalidateCache() {
+    Property.invalidateLocalCache();
+    await CLS.afterCommit(async () =>
+      redis.doCluster("api.rpc.property.invalidateCache")
+    );
   }
 
   // --- Class Methods --- //

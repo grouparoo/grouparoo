@@ -42,7 +42,7 @@ const STATE_TRANSITIONS = [
     from: "draft",
     to: "ready",
     checks: [
-      (instance: Source) => instance.validateOptions(null),
+      (instance: Source) => instance.validateOptions(),
       (instance: Source) => instance.validateMapping(),
     ],
   },

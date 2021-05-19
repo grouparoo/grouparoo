@@ -275,7 +275,7 @@ export namespace DestinationOps {
     const app = await destination.$get("app");
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
     const destinationGroupMemberships =
       await destination.getDestinationGroupMemberships();
     const mapping = await destination.getMapping();

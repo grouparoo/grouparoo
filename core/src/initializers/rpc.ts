@@ -1,5 +1,6 @@
 import { Initializer, api, utils } from "actionhero";
 import { App } from "../models/App";
+import { Property } from "../models/Property";
 
 export class GrouparooRPC extends Initializer {
   constructor() {
@@ -13,15 +14,26 @@ export class GrouparooRPC extends Initializer {
      */
     api.rpc = {
       app: {},
+      property: {},
     };
 
     /**
+     * All handlers need start with a sleep() to decouple from mock redis' callback/transaction chain (there's no delay), or have no side-effects
+     */
+
+    /**
      * Signal that all Apps in the cluster should disconnect form persistent connections.
-     * All handlers need start with a sleep() to decouple from mock redis' callback/transaction chain (there's no delay)
      */
     api.rpc.app.disconnect = async (appId: string) => {
       await utils.sleep(100);
       await App.disconnect(appId);
+    };
+
+    /**
+     * Clear the per-instance Property cache
+     */
+    api.rpc.property.invalidateCache = async () => {
+      Property.invalidateLocalCache();
     };
   }
 }

@@ -66,7 +66,7 @@ const STATE_TRANSITIONS = [
   {
     from: "draft",
     to: "ready",
-    checks: [(instance: Schedule) => instance.validateOptions(null)],
+    checks: [(instance: Schedule) => instance.validateOptions()],
   },
 ];
 

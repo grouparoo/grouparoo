@@ -11,7 +11,7 @@ export namespace ScheduleOps {
     const options = await schedule.getOptions();
     const source = await schedule.$get("source");
     const app = await App.findById(source.appId);
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
 
@@ -115,7 +115,7 @@ export namespace ScheduleOps {
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
 
     for (const i in pluginConnection.scheduleOptions) {
       const opt = pluginConnection.scheduleOptions[i];

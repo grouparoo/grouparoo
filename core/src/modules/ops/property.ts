@@ -101,7 +101,7 @@ export namespace PropertyOps {
     const source = await property.$get("source");
     const sourceMapping = await source.getMapping();
     const ruleOptions = await property.getOptions();
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
 
     // does our source depend on another property to be mapped?
     const remoteMappingKeys = Object.values(sourceMapping);

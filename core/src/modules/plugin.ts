@@ -332,9 +332,9 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAll({
-      where: { isArray: false },
-    });
+    const properties = (await Property.findAllWithCache()).filter(
+      (p) => p.isArray === false
+    );
 
     const data = {};
     properties.forEach((rule) => {
@@ -353,7 +353,7 @@ export namespace plugin {
   ): Promise<string> {
     if (string.indexOf("{{") < 0) return string;
 
-    const properties = await Property.findAll();
+    const properties = await Property.findAllWithCache();
 
     const data = {};
     properties.forEach((rule) => {

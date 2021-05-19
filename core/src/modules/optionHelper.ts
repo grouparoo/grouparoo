@@ -106,11 +106,8 @@ export namespace OptionHelper {
       });
     }
 
-    // @ts-ignore
-    instance.changed("updatedAt", true);
+    await instance.touch();
     await LoggedModel.logUpdate(instance);
-    // @ts-ignore
-    await instance.save({ hooks: false });
 
     // if there's an afterSetMapping hook and we want to commit our changes
     if (typeof instance["afterSetOptions"] === "function") {
