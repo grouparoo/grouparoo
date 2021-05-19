@@ -78,6 +78,7 @@ export interface PluginConnection {
     destinationMappingOptions?: DestinationMappingOptionsMethod;
     exportProfile?: ExportProfilePluginMethod;
     exportProfiles?: ExportProfilesPluginMethod;
+    processExportedProfiles?: ProcessExportedProfilesPluginMethod;
     exportArrayProperties?: ExportArrayPropertiesMethod;
   };
 }
@@ -201,10 +202,24 @@ export interface ExportProfilePluginMethod {
   }): Promise<{ success: boolean; retryDelay?: number; error?: Error }>;
 }
 
+export interface ProcessExportsForProfileIds {
+  remoteKey: string;
+  profileIds: string[];
+  processDelay: number;
+}
+
+export interface ExportProfilesPluginMethodResponse {
+  success: boolean;
+  retryDelay?: number;
+  errors?: ErrorWithProfileId[];
+  processExports?: ProcessExportsForProfileIds;
+}
+
 /**
  * Method to export many profiles to a destination
  * Should only return a boolean indicating success, or throw an error if something went wrong.
- * Errors is an Array of Error objects with an additional `exportId` property so we can link the error to the specific export that caused the error.
+ * Can optionally return a `processExports` object to indicate exports will be processed asynchronously.
+ * Errors is an Array of Error objects with an additional `profileId` property so we can link the error to the specific export that caused the error.
  * If there's a general error with the batch, just throw a single error.
  */
 export interface ExportProfilesPluginMethod {
@@ -218,11 +233,29 @@ export interface ExportProfilesPluginMethod {
     destinationId: string;
     destinationOptions: SimpleDestinationOptions;
     exports: ExportedProfile[];
-  }): Promise<{
-    success: boolean;
-    retryDelay?: number;
-    errors?: ErrorWithProfileId[];
-  }>;
+  }): Promise<ExportProfilesPluginMethodResponse>;
+}
+
+// TODO do we need a ProcessExportPluginMethod (singular)?
+/**
+ * Method to check on the status of asynchronously processed exports
+ * If exports aren't ready yet, return the `processExports` object again to check back later
+ * Should return a boolean indicating success, or throw an error if something went wrong
+ * Errors is an Array of Error objects with an additional `profileId` property so we can link the error to the specific export that caused the error.
+ * If there's a general error with the export processor, just throw a single error
+ */
+export interface ProcessExportedProfilesPluginMethod {
+  (argument: {
+    connection: any;
+    app: App;
+    appId: string;
+    appOptions: SimpleAppOptions;
+    destination: Destination;
+    destinationId: string;
+    destinationOptions: SimpleDestinationOptions;
+    exports: ExportedProfile[];
+    remoteKey: string;
+  }): Promise<ExportProfilesPluginMethodResponse>;
 }
 
 export interface ErrorWithProfileId extends Error {

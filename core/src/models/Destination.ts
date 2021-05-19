@@ -22,6 +22,7 @@ import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Export } from "./Export";
+import { ExportProcessor } from "./ExportProcessor";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
@@ -490,6 +491,10 @@ export class Destination extends LoggedModel<Destination> {
 
   async sendExports(_exports: Export[], sync = false) {
     return DestinationOps.sendExports(this, _exports, sync);
+  }
+
+  async runExportProcessor(exportProcessor: ExportProcessor) {
+    return DestinationOps.runExportProcessor(this, exportProcessor);
   }
 
   async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {

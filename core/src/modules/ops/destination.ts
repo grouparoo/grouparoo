@@ -1,3 +1,4 @@
+import Moment from "moment";
 import {
   Destination,
   DestinationSyncModeData,
@@ -15,12 +16,15 @@ import {
   ErrorWithProfileId,
   DestinationMappingOptionsResponseTypes,
   DestinationMappingOptionsMethodResponse,
+  ProcessExportsForProfileIds,
+  ExportProfilesPluginMethodResponse,
 } from "../../classes/plugin";
 import { config, cache } from "actionhero";
 import { deepStrictEqual } from "assert";
 import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
+import { ExportProcessor } from "../../models/ExportProcessor";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -531,6 +535,263 @@ export namespace DestinationOps {
     errors?: ErrorWithProfileId[];
   }
 
+  async function handleProcessExports(
+    destination: Destination,
+    givenExports: Export[],
+    { processDelay, profileIds, remoteKey }: ProcessExportsForProfileIds,
+    exportProcessor?: ExportProcessor
+  ) {
+    const _exports = givenExports.filter((e) =>
+      profileIds.includes(e.profileId)
+    );
+
+    if (_exports.length === 0) {
+      if (exportProcessor) await exportProcessor.complete();
+      return;
+    }
+
+    if (!exportProcessor) {
+      exportProcessor = await ExportProcessor.create({
+        destinationId: destination.id,
+        remoteKey,
+        state: "pending",
+        processAt: Moment().add(processDelay, "ms").toDate(),
+      });
+
+      await Export.update(
+        { exportProcessorId: exportProcessor.id, state: "processing" },
+        { where: { id: _exports.map((e) => e.id) } }
+      );
+    } else {
+      await exportProcessor.retry(processDelay);
+    }
+  }
+
+  async function updateExports(
+    destination: Destination,
+    _exports: Export[],
+    exportResult?: ExportProfilesPluginMethodResponse,
+    combinedError?: CombinedError,
+    synchronous = false,
+    exportProcessor?: ExportProcessor
+  ) {
+    if (!combinedError) {
+      const errors = exportResult?.errors;
+      combinedError = new Error(
+        `error exporting ${
+          errors ? errors.length : "?"
+        } profiles to destination ${destination.name} (${destination.id}): ${
+          errors ? errors.map((e) => e.message).join(", ") : ""
+        }`
+      );
+      combinedError.errors = errors || [];
+    }
+
+    // problem!
+    if (
+      !exportResult?.success &&
+      (!combinedError.errors || combinedError.errors.length === 0)
+    ) {
+      // unspecified error, so don't know specific profile with issue.
+      const retryexportIds: string[] = [];
+      for (const _export of _exports) {
+        await _export.setError(combinedError, exportResult?.retryDelay);
+        retryexportIds.push(_export.id);
+      }
+      if (synchronous) {
+        // caller wants to raise
+        throw combinedError;
+      }
+      return {
+        success: false,
+        error: combinedError,
+        retryexportIds,
+        retryDelay: exportResult?.retryDelay,
+      };
+    }
+
+    // they were all correct!
+    if (exportResult?.success) {
+      const processExports = exportResult?.processExports;
+      if (processExports) {
+        await handleProcessExports(
+          destination,
+          _exports,
+          processExports,
+          exportProcessor
+        );
+      }
+
+      for (const _export of _exports) {
+        if (
+          !processExports ||
+          !processExports.profileIds.includes(_export.profileId)
+        ) {
+          // only mark complete if we don't have to process the export later
+          await _export.complete();
+        }
+      }
+
+      return {
+        success: true,
+        error: undefined,
+        retryexportIds: undefined,
+        retryDelay: undefined,
+      };
+    }
+
+    // known specific profiles where there were errors
+    const profilesWithErrors: { [id: string]: ErrorWithProfileId } = {};
+    for (const errorWithId of combinedError.errors) {
+      const profileId = errorWithId.profileId;
+      if (!profileId) {
+        throw new Error(
+          `Errors returned without profileId - throw if unknown (${destination.id})`
+        );
+      }
+      profilesWithErrors[profileId] = errorWithId;
+    }
+
+    const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
+
+    const retryexportIds: string[] = [];
+    for (const _export of _exports) {
+      const { profileId } = _export;
+      const errorWithId = profilesWithErrors[profileId];
+      if (errorWithId) {
+        await _export.setError(errorWithId, exportResult?.retryDelay);
+        delete remainingProfilesWithErrors[profileId]; // used
+
+        // "info" means that it's actually ok. for example, skipped.
+        // we don't need to retry it.
+        if (_export.errorLevel != "info") {
+          retryexportIds.push(_export.id);
+        }
+      } else {
+        // this one was a success!
+        await _export.complete();
+      }
+    }
+
+    const profilesNotUsed = Object.keys(remainingProfilesWithErrors);
+    if (profilesNotUsed.length > 0) {
+      throw new Error(
+        `Invalid ErrorWithProfileId given but not used (${
+          destination.id
+        }): ${profilesNotUsed.join(",")}`
+      );
+    }
+
+    // because of the "info" errorLevel, it's actually possible that everything is ok again
+    if (retryexportIds.length === 0) {
+      return {
+        success: true,
+        error: undefined,
+        retryexportIds: undefined,
+        retryDelay: undefined,
+      };
+    }
+
+    if (synchronous) {
+      // caller wants to raise
+      throw combinedError;
+    }
+    return {
+      success: false,
+      error: combinedError,
+      retryexportIds,
+      retryDelay: exportResult?.retryDelay,
+    };
+  }
+
+  export async function runExportProcessor(
+    destination: Destination,
+    exportProcessor: ExportProcessor
+  ) {
+    const _exports = await exportProcessor.getExportsToProcess();
+
+    const { pluginConnection } = await destination.getPlugin();
+    const processExportedProfiles =
+      pluginConnection.methods.processExportedProfiles;
+    if (!processExportedProfiles) {
+      throw new Error(
+        `destination ${destination.name} (${destination.id}) has no \`processExportedProfiles\` method`
+      );
+    }
+
+    const options = await destination.getOptions();
+    const app = await destination.$get("app");
+    const appOptions = await app.getOptions();
+    const connection = await app.getConnection();
+
+    // check if parallelism ok
+    const parallelismOk = await app.checkAndUpdateParallelism("incr");
+    if (!parallelismOk) {
+      const error = new Error(`parallelism limit reached for ${app.type}`);
+
+      const outRetryDelay = config.tasks.timeout + 1;
+      await exportProcessor.retry(outRetryDelay);
+
+      return {
+        success: false,
+        error,
+        retryDelay: outRetryDelay,
+        retryexportIds: _exports.map((e) => e.id),
+      };
+    }
+
+    let combinedError: CombinedError = null;
+    let exportResult: ExportProfilesPluginMethodResponse;
+
+    try {
+      const exportedProfiles = await buildExportedProfiles(
+        destination,
+        _exports
+      );
+
+      exportResult = await processExportedProfiles({
+        connection,
+        app,
+        appId: app.id,
+        appOptions,
+        destination,
+        destinationId: destination.id,
+        destinationOptions: options,
+        exports: exportedProfiles,
+        remoteKey: exportProcessor.remoteKey,
+      });
+    } catch (error) {
+      combinedError = error;
+    } finally {
+      await app.checkAndUpdateParallelism("decr");
+    }
+
+    if (combinedError) {
+      // error wasn't with a specific profile, set it on the ExportProcessor
+      await exportProcessor.setError(combinedError);
+
+      return {
+        success: false,
+        error: combinedError,
+      };
+    }
+
+    const { success, error, retryexportIds, retryDelay } = await updateExports(
+      destination,
+      _exports,
+      exportResult,
+      null,
+      false,
+      exportProcessor
+    );
+
+    if (!combinedError && !exportResult.processExports) {
+      await exportProcessor.complete();
+    }
+
+    return { success, error, retryexportIds, retryDelay };
+  }
+
   export async function sendExports(
     destination: Destination,
     givenExports: Export[],
@@ -585,8 +846,7 @@ export namespace DestinationOps {
     }
 
     let combinedError: CombinedError = null;
-    let outRetryDelay: number;
-    let outSuccess = false;
+    let exportResult: ExportProfilesPluginMethodResponse;
 
     try {
       const exportedProfiles = await buildExportedProfiles(
@@ -594,7 +854,7 @@ export namespace DestinationOps {
         _exports
       );
 
-      let { success, retryDelay, errors } = await exportProfiles({
+      exportResult = await exportProfiles({
         connection,
         app,
         appId: app.id,
@@ -605,116 +865,19 @@ export namespace DestinationOps {
         syncOperations,
         exports: exportedProfiles,
       });
-
-      combinedError = new Error(
-        `error exporting ${
-          errors ? errors.length : "?"
-        } profiles to destination ${destination.name} (${destination.id}): ${
-          errors ? errors.map((e) => e.message).join(", ") : ""
-        }`
-      );
-      combinedError.errors = errors || [];
-      outRetryDelay = retryDelay;
-      outSuccess = success && combinedError.errors.length === 0;
     } catch (error) {
       combinedError = error;
     } finally {
       await app.checkAndUpdateParallelism("decr");
     }
 
-    if (outSuccess) {
-      for (const _export of _exports) await _export.complete(); // they were all correct!
-
-      return {
-        success: true,
-        error: undefined,
-        retryexportIds: undefined,
-        retryDelay: undefined,
-      };
-    }
-
-    // problem!
-    if (!combinedError.errors || combinedError.errors.length === 0) {
-      // unspecified error, so don't know specific profile with issue.
-      const retryexportIds: string[] = [];
-      for (const _export of _exports) {
-        await _export.setError(combinedError, outRetryDelay);
-        retryexportIds.push(_export.id);
-      }
-      if (synchronous) {
-        // caller wants to raise
-        throw combinedError;
-      }
-      return {
-        success: false,
-        error: combinedError,
-        retryexportIds,
-        retryDelay: outRetryDelay,
-      };
-    }
-
-    // known specific profiles where there were errors
-    const profilesWithErrors: { [id: string]: ErrorWithProfileId } = {};
-    for (const errorWithId of combinedError.errors) {
-      const profileId = errorWithId.profileId;
-      if (!profileId) {
-        throw new Error(
-          `Errors returned without profileId - throw if unknown (${destination.id})`
-        );
-      }
-      profilesWithErrors[profileId] = errorWithId;
-    }
-
-    const remainingProfilesWithErrors = Object.assign({}, profilesWithErrors);
-
-    const retryexportIds: string[] = [];
-    for (const _export of _exports) {
-      const { profileId } = _export;
-      const errorWithId = profilesWithErrors[profileId];
-      if (errorWithId) {
-        await _export.setError(errorWithId, outRetryDelay);
-        delete remainingProfilesWithErrors[profileId]; // used
-
-        // "info" means that it's actually ok. for example, skipped.
-        // we don't need to retry it.
-        if (_export.errorLevel != "info") {
-          retryexportIds.push(_export.id);
-        }
-      } else {
-        // this one was a success!
-        await _export.complete();
-      }
-    }
-
-    const profilesNotUsed = Object.keys(remainingProfilesWithErrors);
-    if (profilesNotUsed.length > 0) {
-      throw new Error(
-        `Invalid ErrorWithProfileId given but not used (${
-          destination.id
-        }): ${profilesNotUsed.join(",")}`
-      );
-    }
-
-    // because of the "info" errorLevel, it's actually possible that everything is ok again
-    if (retryexportIds.length === 0) {
-      return {
-        success: true,
-        error: undefined,
-        retryexportIds: undefined,
-        retryDelay: undefined,
-      };
-    }
-
-    if (synchronous) {
-      // caller wants to raise
-      throw combinedError;
-    }
-    return {
-      success: false,
-      error: combinedError,
-      retryexportIds,
-      retryDelay: outRetryDelay,
-    };
+    return updateExports(
+      destination,
+      _exports,
+      exportResult,
+      combinedError,
+      synchronous
+    );
   }
 
   export async function sendExport(

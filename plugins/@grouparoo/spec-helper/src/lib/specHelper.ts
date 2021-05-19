@@ -40,6 +40,7 @@ import SourceFactory from "./factories/source";
 import ScheduleFactory from "./factories/schedule";
 import DestinationFactory from "./factories/destination";
 import ExportFactory from "./factories/export";
+import ExportProcessorFactory from "./factories/exportProcessor";
 import RunFactory from "./factories/run";
 import ApiKeyFactory from "./factories/apiKey";
 
@@ -63,6 +64,7 @@ const {
   Import,
   File,
   Export,
+  ExportProcessor,
   Event,
   EventData,
   Group,
@@ -95,6 +97,7 @@ const models = [
   GroupMember,
   GroupRule,
   Export,
+  ExportProcessor,
   Event,
   EventData,
   Log,
@@ -123,6 +126,7 @@ export namespace helper {
     destination: DestinationFactory,
     event: EventFactory,
     export: ExportFactory,
+    exportProcessor: ExportProcessorFactory,
     group: GroupFactory,
     import: ImportFactory,
     log: LogFactory,

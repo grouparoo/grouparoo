@@ -23,6 +23,7 @@ import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
 import { api, config } from "actionhero";
+import { ExportProcessor } from "./ExportProcessor";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -87,6 +88,11 @@ export class Export extends Model {
   @ForeignKey(() => Profile)
   @Column
   profileId: string;
+
+  @AllowNull(true)
+  @ForeignKey(() => ExportProcessor)
+  @Column
+  exportProcessorId: string;
 
   @AllowNull(false)
   @Default(Export.defaultState)
@@ -197,6 +203,7 @@ export class Export extends Model {
     } else if (this.errorLevel === "info") {
       this.state = "failed";
     } else {
+      this.state = "pending";
       this.sendAt = Moment().add(retryDelay, "ms").toDate();
       this.startedAt = null;
     }
