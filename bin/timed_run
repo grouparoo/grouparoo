@@ -14,6 +14,7 @@ ROO="$ROOT/cli/dist/grouparoo.js"
 PROJECT_DIR="$ROOT/apps/$APP"
 
 cd $PROJECT_DIR
+echo "Testing in: $PROJECT_DIR"
 
 echo "-----> RECOMPILING CORE"
 cd ../../core
