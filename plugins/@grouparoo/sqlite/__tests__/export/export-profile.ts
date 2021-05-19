@@ -58,11 +58,8 @@ async function getUser(userId) {
 }
 
 async function getUserGroups(userId) {
-  let {
-    groupsTable,
-    groupForeignKey,
-    groupColumnName,
-  } = await destination.parameterizedOptions();
+  let { groupsTable, groupForeignKey, groupColumnName } =
+    await destination.parameterizedOptions();
   const result = await client.asyncQuery(
     `SELECT "${groupColumnName}" FROM ${groupsTable} WHERE ${groupForeignKey} = ${userId}`
   );
