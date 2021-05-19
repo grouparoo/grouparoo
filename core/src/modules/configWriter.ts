@@ -103,6 +103,8 @@ export namespace ConfigWriter {
     if (isLockable(configObject)) {
       return "config:writer";
     }
+    // If we are in config mode and the file is not lockable (it is JSON file),
+    // we return null. A null value is equivalent to the object being unlocked.
     return null;
   }
 

@@ -19,8 +19,6 @@ export async function loadGroup(
   let isNew = false;
   validateConfigObjectKeys(Group, configObject);
 
-  // We assume we will always have to create a new object when in config mode,
-  // so it is safe to leave locked in the find query.
   let group = await Group.scope(null).findOne({
     where: { id: configObject.id, locked: getCodeConfigLockKey() },
   });
@@ -57,9 +55,6 @@ export async function loadGroup(
 }
 
 export async function deleteGroups(ids: string[]) {
-  // Since this method is only used when config is loaded and because we assume
-  // the db is ephemeral, we can target locked objects, even though this will
-  // always return zero objects when in config mode.
   const groups = await Group.scope(null).findAll({
     where: {
       locked: getCodeConfigLockKey(),

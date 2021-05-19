@@ -23,8 +23,6 @@ export async function loadDestination(
 
   validateConfigObjectKeys(Destination, configObject);
 
-  // We assume we will always have to create a new object when in config mode,
-  // so it is safe to leave locked in the find query.
   let destination = await Destination.scope(null).findOne({
     where: { id: configObject.id, appId: app.id },
   });
@@ -87,9 +85,6 @@ export async function loadDestination(
 }
 
 export async function deleteDestinations(ids: string[]) {
-  // Since this method is only used when config is loaded and because we assume
-  // the db is ephemeral, we can target locked objects, even though this will
-  // always return zero objects when in config mode.
   const destinations = await Destination.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
