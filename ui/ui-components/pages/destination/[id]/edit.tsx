@@ -92,7 +92,8 @@ export default function Page(props) {
       setLoading(true);
       const { success }: Actions.DestinationDestroy = await execApi(
         "delete",
-        `/destination/${id}`
+        `/destination/${id}`,
+        { force: process.env.GROUPAROO_UI_EDITION === "config" }
       );
       if (success) {
         router.push("/destinations");
