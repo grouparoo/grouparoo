@@ -427,7 +427,7 @@ export namespace FinalSummaryReporters {
     export async function getData(): Promise<Array<SourceData>> {
       const runs = await Run.findAll({
         where: {
-          updatedAt: { [Op.gte]: await lastRunStart },
+          updatedAt: { [Op.gte]: lastRunStart },
           creatorType: "schedule",
         },
       });
@@ -477,17 +477,17 @@ export namespace FinalSummaryReporters {
     export async function getData() {
       const out: ProfileData[] = [];
       const profilesUpdated = await Profile.count({
-        where: { updatedAt: { [Op.gt]: await lastRunStart } },
+        where: { updatedAt: { [Op.gt]: lastRunStart } },
       });
 
       const profilesCreated = await Profile.count({
-        where: { createdAt: { [Op.gt]: await lastRunStart } },
+        where: { createdAt: { [Op.gt]: lastRunStart } },
       });
-
+      const name = null;
       const allProfiles = await Profile.count();
 
       const profileData = {
-        name: null,
+        name,
         profilesUpdated,
         profilesCreated,
         allProfiles,
@@ -516,7 +516,7 @@ export namespace FinalSummaryReporters {
             "exportsCreated",
           ],
         ],
-        where: { createdAt: { [Op.gt]: await lastRunStart } },
+        where: { createdAt: { [Op.gt]: lastRunStart } },
         group: ["destinationId"],
       });
       for (const exp of exports) {
@@ -527,7 +527,7 @@ export namespace FinalSummaryReporters {
         const exportsFailed = await Export.count({
           where: {
             state: "failed",
-            updatedAt: { [Op.gt]: await lastRunStart },
+            updatedAt: { [Op.gt]: lastRunStart },
             destinationId: destination.id,
           },
         });
@@ -535,7 +535,7 @@ export namespace FinalSummaryReporters {
         const exportsComplete = await Export.count({
           where: {
             state: "complete",
-            updatedAt: { [Op.gt]: await lastRunStart },
+            updatedAt: { [Op.gt]: lastRunStart },
             destinationId: destination.id,
           },
         });

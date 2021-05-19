@@ -163,20 +163,24 @@ export namespace GrouparooCLI {
         ) => {
           if (idx > 0) logger.log(cyanBold(`|`));
 
-          if (category.hasOwnProperty("name")) {
+          if (category.name !== null) {
             GrouparooCLI.logger.log(
               `${cyanBold(`|`)} ${idx + 1}. ${underlineBold(category.name)}`
             );
           }
 
           for (const property in category) {
-            GrouparooCLI.logger.log(
-              category[property] === null
-                ? `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: none`
-                : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
-                    category[property]
-                  }`
-            );
+            if (property !== "name") {
+              GrouparooCLI.logger.log(
+                category[property] === null
+                  ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                      property
+                    )}: none`
+                  : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
+                      category[property]
+                    }`
+              );
+            }
           }
         }
       );
