@@ -106,9 +106,11 @@ export abstract class LoggedModel<T> extends Model {
           });
         }
 
-        message = `${modelName(
-          this
-        )} "${primaryName}" updated: ${changedValueStrings.join(", ")}`;
+        message = `${modelName(this)} "${primaryName}" updated${
+          changedValueStrings.length > 0
+            ? ": " + changedValueStrings.join(", ")
+            : ""
+        }`;
         break;
       case "destroy":
         message = `${modelName(this)} "${primaryName}" destroyed`;

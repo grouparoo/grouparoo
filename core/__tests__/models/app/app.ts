@@ -93,13 +93,12 @@ describe("models/app", () => {
   });
 
   test("the app options will not be logged", async () => {
-    await Log.truncate();
-
     const app = await App.create({
       name: "test log app",
       type: "test-plugin-app",
     });
 
+    await Log.truncate();
     await app.setOptions({ fileId: "abc123" });
 
     let log = await Log.findOne({
@@ -107,7 +106,7 @@ describe("models/app", () => {
     });
 
     expect(log.data.options).toBe("** filtered **");
-    expect(log.message).toMatch(/app "test log app" updated: updatedAt -> /);
+    expect(log.message).toMatch(/app "test log app" updated/);
 
     await app.destroy();
   });
