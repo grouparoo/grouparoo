@@ -55,15 +55,9 @@ describe("models/exportProcessor", () => {
     expect(exportProcessor.completedAt).toBeTruthy();
   });
 
-  test.todo("exportProcessor apiData", async () => {
-    // TODO
-    expect(true).toBe(false);
-  });
-
-  test.todo("old entries can be swept away", async () => {
-    // TODO
-    expect(true).toBe(false);
-  });
+  // TODO
+  test.todo("exportProcessor apiData");
+  test.todo("old entries can be swept away");
 
   describe("errors", () => {
     let processor;
