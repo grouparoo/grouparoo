@@ -14,16 +14,14 @@ import {
   Default,
   HasMany,
 } from "sequelize-typescript";
+import { Op } from "sequelize";
 import * as uuid from "uuid";
 import { Destination } from "./Destination";
-import { plugin } from "../modules/plugin";
-import Moment from "moment";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
 import { config } from "actionhero";
 import { Export } from "./Export";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
-import { Op } from "sequelize/types";
 
 const ERROR_LEVELS = ["error", "info"] as const;
 export type ExportProcessorErrorLevel = typeof ERROR_LEVELS[number];
