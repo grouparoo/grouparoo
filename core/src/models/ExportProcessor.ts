@@ -104,71 +104,11 @@ export class ExportProcessor extends Model {
   destination: Destination;
 
   async setError(error: Error, retryDelay: number = config.tasks.timeout) {
-    const maxAttempts = parseInt(
-      (await plugin.readSetting("core", "export-processors-max-retries-count"))
-        .value
-    );
-
-    this.errorMessage = error.message || error.toString();
-    if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
-
-    this.retryCount++;
-    if (this.retryCount >= maxAttempts) {
-      this.state = "failed";
-      this.processAt = null;
-      await Export.update(
-        {
-          state: "failed",
-          errorMessage: `An error occurred while processing the export: ${this.errorMessage}`,
-          errorLevel: "error",
-        },
-        { where: { state: "processing", exportProcessorId: this.id } }
-      );
-    } else if (this.errorLevel === "info") {
-      this.state = "failed";
-      await Export.update(
-        {
-          state: "failed",
-          errorMessage: this.errorMessage,
-          errorLevel: "info",
-        },
-        { where: { state: "processing", exportProcessorId: this.id } }
-      );
-    } else {
-      this.processAt = Moment().add(retryDelay, "ms").toDate();
-      this.startedAt = null;
-    }
-
-    return this.save();
+    return ExportProcessorOps.setError(this, error, retryDelay);
   }
 
   async retry(retryDelay: number = config.tasks.timeout) {
-    const maxAttempts = parseInt(
-      (await plugin.readSetting("core", "export-processors-max-retries-count"))
-        .value
-    );
-
-    this.retryCount++;
-    if (this.retryCount >= maxAttempts) {
-      this.state = "failed";
-      this.processAt = null;
-
-      // fail the related exports too
-      await Export.update(
-        {
-          state: "failed",
-          errorMessage:
-            "The maximum amount of retries was reached when trying to process this export.",
-          errorLevel: "info",
-        },
-        { where: { state: "processing", exportProcessorId: this.id } }
-      );
-    } else {
-      this.processAt = Moment().add(retryDelay, "ms").toDate();
-      this.startedAt = null;
-    }
-
-    return this.save();
+    return ExportProcessorOps.retry(this, retryDelay);
   }
 
   async complete() {
