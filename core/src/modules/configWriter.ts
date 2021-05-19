@@ -111,7 +111,7 @@ export namespace ConfigWriter {
   function fileIsLockable(absFilePath: string): boolean {
     // Otherwise, it is lockable if it is a JS file.
     const ext = path.extname(absFilePath);
-    return ext === ".js";
+    return ext !== ".json";
   }
 
   function isLockable(object: ConfigurationObject) {
