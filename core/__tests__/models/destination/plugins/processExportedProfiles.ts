@@ -468,7 +468,7 @@ describe("models/destination", () => {
       expect(export1.completedAt).toBeFalsy();
       expect(export1.errorMessage).toBe("oh no!");
       expect(export1.errorLevel).toBe("error");
-      expect(export1.exportProcessorId).toBe(exportProcessor.id);
+      expect(export1.exportProcessorId).toBeNull(); // cleared
 
       await export2.reload();
       expect(export2.profileId).toBe(profile2.id);

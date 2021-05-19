@@ -197,6 +197,7 @@ export class Export extends Model {
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
     this.retryCount++;
+
     if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;
@@ -204,6 +205,7 @@ export class Export extends Model {
       this.state = "failed";
     } else {
       this.state = "pending";
+      this.exportProcessorId = null;
       this.sendAt = Moment().add(retryDelay, "ms").toDate();
       this.startedAt = null;
     }

@@ -613,14 +613,6 @@ export namespace DestinationOps {
     // they were all correct!
     if (exportResult?.success) {
       const processExports = exportResult?.processExports;
-      if (processExports) {
-        await handleProcessExports(
-          destination,
-          _exports,
-          processExports,
-          exportProcessor
-        );
-      }
 
       for (const _export of _exports) {
         if (
@@ -630,6 +622,15 @@ export namespace DestinationOps {
           // only mark complete if we don't have to process the export later
           await _export.complete();
         }
+      }
+
+      if (processExports) {
+        await handleProcessExports(
+          destination,
+          _exports,
+          processExports,
+          exportProcessor
+        );
       }
 
       return {
