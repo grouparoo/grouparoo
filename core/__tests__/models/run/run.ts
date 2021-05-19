@@ -12,6 +12,7 @@ import {
   TeamMember,
   Profile,
   GroupMember,
+  Log,
 } from "../../../src";
 import { utils } from "actionhero";
 
@@ -222,6 +223,33 @@ describe("models/run", () => {
         });
         await run.determinePercentComplete();
         expect(run.percentComplete).toBe(99);
+      });
+
+      test("running - group - deleted", async () => {
+        await group.update({ state: "deleted" });
+
+        await Log.create({
+          ownerId: group.id,
+          topic: "group",
+          verb: "update",
+          message: "all good",
+          data: { profilesCount: 10 }, // previous group size was 10
+        });
+
+        run = await Run.create({
+          state: "running",
+          creatorId: group.id,
+          creatorType: "group",
+          groupMethod: "runRemoveGroupMembers",
+        });
+
+        // 3 members left (manually added because group is deleted)
+        await GroupMember.create({ groupId: group.id, profileId: profileA.id });
+        await GroupMember.create({ groupId: group.id, profileId: profileB.id });
+        await GroupMember.create({ groupId: group.id, profileId: profileC.id });
+
+        await run.determinePercentComplete();
+        expect(run.percentComplete).toBe(70);
       });
 
       test("running - teamMember", async () => {

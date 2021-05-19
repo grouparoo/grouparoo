@@ -6,6 +6,7 @@ import { GroupMember } from "../../models/GroupMember";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { log, api, task } from "actionhero";
+import { Log } from "../../models/Log";
 
 export namespace RunOps {
   /**
@@ -130,7 +131,7 @@ export namespace RunOps {
       if (!run.groupMethod) return 0; // we are exporting the group to CSV or not yet set
 
       const group = await Group.findById(run.creatorId);
-      const totalGroupMembers =
+      let totalGroupMembers =
         group.type === "calculated"
           ? await group.countPotentialMembers()
           : await group.$count("groupMembers");
@@ -143,6 +144,23 @@ export namespace RunOps {
       });
 
       if (totalGroupMembers === 0 && membersAlreadyUpdated === 0) return 0;
+
+      if (group.state === "deleted") {
+        totalGroupMembers = await group.$count("groupMembers");
+
+        const latestLogEntry = await Log.findOne({
+          where: { ownerId: group.id },
+          order: [["createdAt", "desc"]],
+        });
+
+        let latestProfilesCount = latestLogEntry?.data?.profilesCount ?? 0;
+        if (latestProfilesCount === 0) latestProfilesCount = 1;
+
+        return Math.floor(
+          100 *
+            ((latestProfilesCount - totalGroupMembers) / latestProfilesCount)
+        );
+      }
 
       // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
       let percentComplete = Math.floor(
