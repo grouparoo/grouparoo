@@ -294,11 +294,14 @@ export class Source extends LoggedModel<Source> {
       options,
     };
 
-    const schedule = await this.$get("schedule");
-    if (schedule) {
-      const scheduleConfigObject = await schedule.getConfigObject();
+    const setSchedule = async () => {
+      if (!this.schedule) return;
+      const scheduleConfigObject = await this.schedule.getConfigObject();
       configObject = [{ ...configObject }, { ...scheduleConfigObject }];
-    }
+    };
+
+    if (!this.schedule) this.schedule = await this.$get("schedule");
+    await setSchedule();
 
     return configObject;
   }
