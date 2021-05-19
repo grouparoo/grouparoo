@@ -1,9 +1,10 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
   destination,
+  syncOperations,
   export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
 }) => {
   let error: Error;
@@ -30,6 +31,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   try {
     // --- Profiles --- //
     if (toDelete) {
+      if (!syncOperations.delete) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not delete profiles."
+        );
+      }
       // delete
       const query = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
@@ -38,13 +44,17 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       const query = `SELECT * FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
       const existingRecords = await connection.asyncQuery(query);
-
       if (existingRecords.length === 1) {
+        if (!syncOperations.update) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not update existing profiles."
+          );
+        }
         // update
         let updateStatement = `UPDATE ${table} SET`;
         const maxIdx = Object.keys(newProfileProperties).length - 1;
-        newProfileProperties.map((key, idx) => {
-          updateStatement += ` ${key} = ${newProfileProperties[key]}`;
+        Object.keys(newProfileProperties).map((key, idx) => {
+          updateStatement += ` ${key} = "${newProfileProperties[key]}"`;
           if (idx < maxIdx) updateStatement += `,`;
         });
         updateStatement += ` WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
@@ -78,19 +88,16 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         await connection.asyncQuery(deleteQuery);
 
         // insert
-        const query = `INSERT INTO ${table} (${buildKeyList(
-          newProfileProperties
-        )}) VALUES (${buildValueList(newProfileProperties)})`;
-        validateQuery(query);
-        await connection.asyncQuery(query);
+        await insert(connection, table, syncOperations, newProfileProperties);
       }
     } else {
+      if (!syncOperations.create) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not create new profiles."
+        );
+      }
       // just insert
-      const query = `INSERT INTO ${table} (${buildKeyList(
-        newProfileProperties
-      )}) VALUES (${buildValueList(newProfileProperties)})`;
-      validateQuery(query);
-      await connection.asyncQuery(query);
+      await insert(connection, table, syncOperations, newProfileProperties);
     }
 
     // --- Groups --- //
@@ -123,6 +130,25 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     return { success: true };
   }
+};
+
+const insert = async (
+  connection,
+  table,
+  syncOperations,
+  newProfileProperties
+) => {
+  if (!syncOperations.create) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not create new profiles."
+    );
+  }
+  // insert
+  const query = `INSERT INTO ${table} (${buildKeyList(
+    newProfileProperties
+  )}) VALUES (${buildValueList(newProfileProperties)})`;
+  validateQuery(query);
+  await connection.asyncQuery(query);
 };
 
 const buildKeyList = (data: any[] | { [key: string]: any }) => {

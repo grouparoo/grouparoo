@@ -1,5 +1,5 @@
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import path from "path";
 
 import { test } from "./../lib/test";
@@ -38,6 +38,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/sqlite/sqlite.svg",
@@ -49,9 +51,12 @@ export class Plugins extends Initializer {
         new TablePropertyTemplate("sqlite"),
         new QuerySourceTemplate("sqlite"),
         new QueryPropertyTemplate("sqlite"),
-        new DestinationTemplate("sqlite", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "sqlite",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -77,6 +82,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles to a SQLite table. Groups will be exported to a secondary table linked by a foreign key.",
           app: "sqlite",
+          syncModes,
+          defaultSyncMode,
           options: [
             {
               key: "table",
