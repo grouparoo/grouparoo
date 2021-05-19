@@ -1,15 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, specHelper } from "actionhero";
-import {
-  plugin,
-  Property,
-  Log,
-  App,
-  Source,
-  Run,
-  Option,
-  PropertyFilter,
-} from "../../../src";
+import { Property, Source } from "../../../src";
 import { CachedProperties } from "../../../src/models/Property";
 
 describe("models/property", () => {
