@@ -7,6 +7,7 @@ exports.default = async function buildConfig() {
       type: "{{{__pluginName}}}-export",
       appId: {{{appId}}}, // The ID of the App this Source uses - e.g. `appId: "data_warehouse"`
       groupId: "...", // The ID of the group whose members you want to export - e.g. `groupId: "high_value_customers"`
+      syncMode: {{{syncMode}}}, // How should Grouparoo sync with this destination? Options: "sync", "additive", "enrich"
 
       options: {
         table: 'users_export', // The table to write profiles to
