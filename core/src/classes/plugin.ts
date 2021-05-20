@@ -236,7 +236,6 @@ export interface ExportProfilesPluginMethod {
   }): Promise<ExportProfilesPluginMethodResponse>;
 }
 
-// TODO do we need a ProcessExportPluginMethod (singular)?
 /**
  * Method to check on the status of asynchronously processed exports
  * If exports aren't ready yet, return the `processExports` object again to check back later
