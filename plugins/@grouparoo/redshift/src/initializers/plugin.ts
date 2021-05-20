@@ -1,6 +1,6 @@
 import path from "path";
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "@grouparoo/postgres/dist/lib/test";
 import { connect } from "@grouparoo/postgres/dist/lib/connect";
@@ -40,13 +40,18 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/redshift/redshift.svg",
       templates: [
-        new AppTemplate("redshift", [
-          path.join(templateRoot, "app", "*.template"),
-        ]),
+        new AppTemplate(
+          "redshift",
+          [path.join(templateRoot, "app", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
         new TableSourceTemplate("redshift", { getTables, getColumns }),
         new TablePropertyTemplate("redshift"),
         new QuerySourceTemplate("redshift"),
@@ -110,6 +115,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles to a Redshift table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "redshift",
+          syncModes,
+          defaultSyncMode,
           options: [
             {
               key: "table",
