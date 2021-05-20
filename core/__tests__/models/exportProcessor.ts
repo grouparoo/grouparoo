@@ -64,8 +64,36 @@ describe("models/exportProcessor", () => {
     expect(apiData.destinationName).toBe(destination.name);
   });
 
-  // TODO
-  test.todo("old entries can be swept away");
+  test("entries without exports can be swept away", async () => {
+    await ExportProcessor.truncate();
+
+    await helper.factories.exportProcessor(null, { state: "complete" });
+    await helper.factories.exportProcessor(null, { state: "failed" });
+    await helper.factories.exportProcessor(null, { state: "pending" });
+
+    const completeWithExports = await helper.factories.exportProcessor(null, {
+      state: "complete",
+    });
+    await helper.factories.export(null, null, {
+      exportProcessorId: completeWithExports.id,
+    });
+
+    const failedWithExports = await helper.factories.exportProcessor(null, {
+      state: "failed",
+    });
+    await helper.factories.export(null, null, {
+      exportProcessorId: failedWithExports.id,
+    });
+
+    const initialCount = await ExportProcessor.count();
+    expect(initialCount).toBe(5);
+
+    const count = await ExportProcessor.sweep(1000);
+    expect(count).toBe(2);
+
+    const remainingCount = await ExportProcessor.count();
+    expect(remainingCount).toBe(3);
+  });
 
   describe("errors", () => {
     let processor;

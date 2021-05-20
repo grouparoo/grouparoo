@@ -1,5 +1,12 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run, Log, Import, Export, plugin } from "../../../src";
+import {
+  Run,
+  Log,
+  Import,
+  Export,
+  ExportProcessor,
+  plugin,
+} from "../../../src";
 import { api, task, specHelper } from "actionhero";
 
 describe("tasks/sweeper", () => {
@@ -148,6 +155,43 @@ describe("tasks/sweeper", () => {
       expect(exports.length).toBe(2);
       expect(exports.map((e) => e.id).sort()).toEqual(
         [newerExportA.id, newerExportB.id].sort()
+      );
+    });
+
+    test("it will delete export processors without exports", async () => {
+      await ExportProcessor.truncate();
+      await Export.truncate();
+
+      await helper.factories.exportProcessor(null, { state: "complete" });
+      await helper.factories.exportProcessor(null, { state: "failed" });
+      const pendingProcessor = await helper.factories.exportProcessor(null, {
+        state: "pending",
+      });
+
+      const completeWithExports = await helper.factories.exportProcessor(null, {
+        state: "complete",
+      });
+      await helper.factories.export(null, null, {
+        exportProcessorId: completeWithExports.id,
+      });
+
+      const failedWithExports = await helper.factories.exportProcessor(null, {
+        state: "failed",
+      });
+      await helper.factories.export(null, null, {
+        exportProcessorId: failedWithExports.id,
+      });
+
+      await specHelper.runTask("sweeper", {});
+
+      const exportProcessors = await ExportProcessor.findAll();
+      expect(exportProcessors.length).toBe(3);
+      expect(exportProcessors.map((e) => e.id).sort()).toEqual(
+        [
+          pendingProcessor.id,
+          completeWithExports.id,
+          failedWithExports.id,
+        ].sort()
       );
     });
 

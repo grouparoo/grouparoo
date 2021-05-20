@@ -14,12 +14,12 @@ import {
   Default,
   HasMany,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
+import { api, config } from "actionhero";
 import * as uuid from "uuid";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
-import { config } from "actionhero";
 import { Export } from "./Export";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
 
@@ -189,6 +189,37 @@ export class ExportProcessor extends Model {
   }
 
   static async sweep(limit: number) {
-    throw new Error("not implemented");
+    // delete export processors that don't have any exports
+    const rowsWithNoExports: { id: string }[] = await api.sequelize.query(
+      `
+      DELETE FROM "exportProcessors"
+      WHERE id IN (
+        SELECT id FROM "exportProcessors"
+        WHERE "state" <> 'pending'
+        AND 0 = (
+          SELECT COUNT(id)
+          FROM exports
+          WHERE
+            exports."exportProcessorId" = "exportProcessors"."id"
+        )
+        LIMIT ${limit}
+      )
+     ${config.sequelize.dialect === "postgres" ? "RETURNING id" : ""}
+      ;`,
+      { type: QueryTypes.SELECT }
+    );
+
+    let responseCountWithNoExports = 0;
+    if (config.sequelize.dialect === "sqlite") {
+      const changesRows = await api.sequelize.query(
+        "SELECT changes() as count;",
+        { type: QueryTypes.SELECT }
+      );
+      responseCountWithNoExports = changesRows[0].count;
+    }
+
+    return config.sequelize.dialect === "sqlite"
+      ? responseCountWithNoExports
+      : rowsWithNoExports.length;
   }
 }

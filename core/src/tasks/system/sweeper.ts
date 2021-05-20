@@ -2,6 +2,7 @@ import { log } from "actionhero";
 import { Run } from "../../models/Run";
 import { Import } from "../../models/Import";
 import { Export } from "../../models/Export";
+import { ExportProcessor } from "../../models/ExportProcessor";
 import { Log } from "../../models/Log";
 import { Session } from "../../models/Session";
 import { CLSTask } from "../../classes/tasks/clsTask";
@@ -52,6 +53,12 @@ export class Sweeper extends CLSTask {
       response = await Export.sweep(limit);
       count = response.count;
       this.log("export", response.count, response.days);
+    }
+
+    // --- EXPORT PROCESSORS ---
+    count = -1;
+    while (count !== 0) {
+      count = await ExportProcessor.sweep(limit);
     }
 
     // --- LOGS ---
