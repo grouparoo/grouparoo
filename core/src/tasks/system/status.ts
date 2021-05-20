@@ -45,9 +45,7 @@ export class StatusTask extends Task {
     // do not await so the promise can end so the server can shut down
     new Promise(async () => {
       await api.process.stop();
-      GrouparooCLI.logger.log(
-        `All Grouparoo tasks complete - exiting with code 0`
-      );
+
       process.nextTick(() => process.exit(0));
     });
   }

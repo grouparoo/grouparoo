@@ -11,10 +11,6 @@ export async function main() {
   const app = api?.process || new Process();
 
   app.registerProcessSignals((exitCode) => {
-    log(
-      `All Grouparoo tasks complete - exiting with code ${exitCode}`,
-      "notice"
-    );
     process.nextTick(() => process.exit(exitCode));
   });
 
