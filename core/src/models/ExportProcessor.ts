@@ -135,6 +135,7 @@ export class ExportProcessor extends Model {
       processAt: APIData.formatDate(this.processAt),
       startedAt: APIData.formatDate(this.startedAt),
       completedAt: APIData.formatDate(this.completedAt),
+      remoteKey: this.remoteKey,
       exportsCount,
       retryCount: this.retryCount,
       errorMessage: this.errorMessage,

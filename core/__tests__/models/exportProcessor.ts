@@ -55,8 +55,16 @@ describe("models/exportProcessor", () => {
     expect(exportProcessor.completedAt).toBeTruthy();
   });
 
+  test("export apiData includes the destination name", async () => {
+    const exportProcessor = await ExportProcessor.create({
+      destinationId: destination.id,
+    });
+
+    const apiData = await exportProcessor.apiData();
+    expect(apiData.destinationName).toBe(destination.name);
+  });
+
   // TODO
-  test.todo("exportProcessor apiData");
   test.todo("old entries can be swept away");
 
   describe("errors", () => {
