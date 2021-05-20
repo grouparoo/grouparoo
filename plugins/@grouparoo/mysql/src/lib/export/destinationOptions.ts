@@ -10,7 +10,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
 }) => {
   async function getColumns(tableName: string) {
     const colRows = await connection.asyncQuery(
-      `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
+      `SELECT column_name AS column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
       [appOptions.database, tableName]
     );
 
@@ -28,7 +28,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   const tables = [];
 
   const rows = await connection.asyncQuery(
-    `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
+    `SELECT table_name AS table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
     [appOptions.database]
   );
 

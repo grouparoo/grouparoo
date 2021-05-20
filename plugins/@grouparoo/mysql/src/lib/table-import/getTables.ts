@@ -8,7 +8,7 @@ export const getTables: GetTablesMethod = async ({
   appOptions,
 }) => {
   const rows = await connection.asyncQuery(
-    `SELECT table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
+    `SELECT table_name AS table_name FROM INFORMATION_SCHEMA.TABLES WHERE table_schema = ?`,
     [appOptions.database]
   );
 
