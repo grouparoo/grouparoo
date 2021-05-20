@@ -43,7 +43,7 @@ export const destinationMappingOptions: DestinationMappingOptionsMethod =
       },
       properties: {
         required: [
-          { key: destinationOptions.primaryKey.toString(), type: "any" },
+          { key: destinationOptions.primaryKey?.toString(), type: "any" },
         ],
         known: columns,
         allowOptionalFromProperties: false,

@@ -9,12 +9,14 @@ export default function DestinationTabs({
   let tabs = [];
   switch (process.env.GROUPAROO_UI_EDITION) {
     case "enterprise":
-      tabs.push("edit", "data", "exports");
+      tabs.push("edit");
+      if (destination.state !== "draft") tabs.push("data");
+      tabs.push("exports");
       break;
     case "config":
-      tabs.push("edit", "data");
+      tabs.push("edit");
+      if (destination.state !== "draft") tabs.push("data");
       break;
-
     default:
       tabs.push("exports");
       break;
