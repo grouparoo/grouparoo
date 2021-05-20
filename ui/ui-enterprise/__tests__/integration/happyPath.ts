@@ -87,9 +87,9 @@ describe("integration", () => {
   );
 
   test(
-    "I was taken to the settings page after creating the first team",
+    "I was taken to the setup page after creating the first team",
     async () => {
-      await browser.wait(until.elementLocated(by.className("card")));
+      await browser.wait(until.elementLocated(by.className("alert")));
       const url = await browser.getCurrentUrl();
       expect(url).toMatch(/\/setup/);
       await browser.get(url);
