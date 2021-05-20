@@ -1,7 +1,5 @@
-# @Grouparoo/ui-enterprise
+# @Grouparoo/ui-community
 
-The Grouparoo Enterprise Web UI.
+The Grouparoo Community Web UI.
 
-This package is the commercial Grouparoo Enterprise website UI. It is a Next.JS + React Project. It is meant to be run alongside `@grouparoo/core` inside a Grouparoo client installation.
-
-Visit www.grouparoo.com to learn more about obtaining this software.
+This package is the open-source Grouparoo Enterprise website UI. It is a Next.JS + React Project. It is meant to be run alongside `@grouparoo/core` inside a Grouparoo client installation.
