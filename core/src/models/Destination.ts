@@ -617,6 +617,7 @@ export class Destination extends LoggedModel<Destination> {
 
   @BeforeDestroy
   static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
     if (instance.groupId) {
       const group = await Group.findOne({
         where: { id: instance.groupId },

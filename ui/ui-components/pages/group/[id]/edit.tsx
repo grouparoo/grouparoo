@@ -158,7 +158,7 @@ export default function Page(props) {
                   disabled={loading}
                   size="sm"
                   onClick={() => {
-                    handleDelete();
+                    handleDelete(process.env.GROUPAROO_UI_EDITION === "config");
                   }}
                 >
                   Delete

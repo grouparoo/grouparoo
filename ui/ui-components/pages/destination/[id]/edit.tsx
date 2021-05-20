@@ -87,12 +87,13 @@ export default function Page(props) {
     setLoadingOptions(false);
   }
 
-  async function handleDelete() {
+  async function handleDelete(force = false) {
     if (window.confirm("are you sure?")) {
       setLoading(true);
       const { success }: Actions.DestinationDestroy = await execApi(
         "delete",
-        `/destination/${id}`
+        `/destination/${id}`,
+        { force }
       );
       if (success) {
         router.push("/destinations");
@@ -391,7 +392,7 @@ export default function Page(props) {
                 size="sm"
                 disabled={loading}
                 onClick={() => {
-                  handleDelete();
+                  handleDelete(process.env.GROUPAROO_UI_EDITION === "config");
                 }}
               >
                 Delete
