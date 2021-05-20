@@ -8,8 +8,9 @@ import {
   IdsByClass,
 } from "../../classes/codeConfig";
 import { App, Destination, Group, Property } from "../..";
-import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
+
+import { ConfigWriter } from "../configWriter";
 
 export async function loadDestination(
   configObject: ConfigurationObject,
@@ -29,7 +30,7 @@ export async function loadDestination(
     isNew = true;
     destination = await Destination.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
       syncMode: configObject.syncMode,

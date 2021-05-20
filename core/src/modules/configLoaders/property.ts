@@ -10,6 +10,8 @@ import {
 import { Property, Source } from "../..";
 import { Op } from "sequelize";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -27,7 +29,7 @@ export async function loadProperty(
     isNew = true;
     property = await Property.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       key: configObject.key || configObject.name,
       type: configObject.type,
       sourceId: source.id,

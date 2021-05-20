@@ -10,6 +10,8 @@ import {
 import { Schedule, Source } from "../..";
 import { Op } from "sequelize";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadSchedule(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -26,7 +28,7 @@ export async function loadSchedule(
     isNew = true;
     schedule = await Schedule.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       sourceId: source.id,
     });
   }

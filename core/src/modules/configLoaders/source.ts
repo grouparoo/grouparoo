@@ -12,6 +12,8 @@ import { App, Source, Property } from "../..";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadSource(
   configObject: ConfigurationObject,
   configObjects: ConfigurationObject[],
@@ -35,7 +37,7 @@ export async function loadSource(
     isNew = true;
     source = await Source.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
       appId: app.id,

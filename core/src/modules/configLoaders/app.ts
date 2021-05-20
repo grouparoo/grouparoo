@@ -9,6 +9,8 @@ import {
 import { App } from "../..";
 import { Op } from "sequelize";
 
+import { ConfigWriter } from "../configWriter";
+
 export async function loadApp(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -18,15 +20,18 @@ export async function loadApp(
   validateConfigObjectKeys(App, configObject);
 
   let app = await App.scope(null).findOne({
-    where: { id: configObject.id, locked: getCodeConfigLockKey() },
+    where: {
+      id: configObject.id,
+      locked: getCodeConfigLockKey(),
+    },
   });
   if (!app) {
     isNew = true;
     app = await App.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
       name: configObject.name,
       type: configObject.type,
+      locked: ConfigWriter.getLockKey(configObject),
     });
   }
 

@@ -8,7 +8,8 @@ import {
 import { Group } from "../..";
 import { Property } from "../../models/Property";
 import { Op } from "sequelize";
-import { CLS } from "../../modules/cls";
+
+import { ConfigWriter } from "../configWriter";
 
 export async function loadGroup(
   configObject: ConfigurationObject,
@@ -25,7 +26,7 @@ export async function loadGroup(
     isNew = true;
     group = await Group.create({
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
     });

@@ -80,7 +80,8 @@ async function loadConfigFile(file: string): Promise<ConfigurationObject> {
 
   if (typeof payload === "function") payload = await payload(config);
 
-  ConfigWriter.setFileLoaded(file);
+  const objects = Array.isArray(payload) ? payload : [payload];
+  ConfigWriter.cacheConfigFile({ absFilePath: file, objects });
 
   return payload;
 }
