@@ -251,6 +251,7 @@ export class Export extends Model {
           : null,
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
+      exportProcessorId: this.exportProcessorId,
       state: this.state,
       force: this.force,
       createdAt: APIData.formatDate(this.createdAt),

@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
 import { useRouter } from "next/router";
-import { Row, Col, ButtonGroup, Button, Badge, Alert } from "react-bootstrap";
+import { Row, Col, ButtonGroup, Button, Alert } from "react-bootstrap";
 import Pagination from "../pagination";
 import Moment from "react-moment";
 import LoadingTable from "../loadingTable";
@@ -19,7 +19,6 @@ const states = ["all", "pending", "failed", "complete"];
 export default function ExportProcessorsList(props) {
   const {
     errorHandler,
-    groups,
   }: { errorHandler: ErrorHandler; groups: Models.GroupType[] } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
@@ -33,11 +32,6 @@ export default function ExportProcessorsList(props) {
   const limit = 100;
   const { offset, setOffset } = useOffset();
   const [state, setState] = useState(router.query.state?.toString() || "all");
-
-  let destinationId: string;
-  if (router.query.id) {
-    destinationId = router.query.id.toString();
-  }
 
   useSecondaryEffect(() => {
     load();
@@ -53,7 +47,6 @@ export default function ExportProcessorsList(props) {
         limit,
         offset,
         state: state === "all" ? undefined : state,
-        destinationId,
       }
     );
     setLoading(false);
@@ -216,9 +209,7 @@ export default function ExportProcessorsList(props) {
 
 ExportProcessorsList.hydrate = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { id, limit, offset, state } = ctx.query;
-
-  let destinationId: string = id;
+  const { limit, offset, state } = ctx.query;
 
   const { exportProcessors, total } = await execApi(
     "get",
@@ -227,7 +218,6 @@ ExportProcessorsList.hydrate = async (ctx) => {
       limit,
       offset,
       state: state === "all" ? undefined : state,
-      destinationId,
     }
   );
 

@@ -43,6 +43,18 @@ export default function Page({
               <a>{_export.destination.name}</a>
             </EnterpriseLink>
             <br />
+            {_export.exportProcessorId ? (
+              <>
+                <span>Processor</span>:{" "}
+                <Link
+                  href="/exportProcessor/[id]/edit"
+                  as={`/exportProcessor/${_export.exportProcessorId}/edit`}
+                >
+                  <a>{_export.exportProcessorId}</a>
+                </Link>
+                <br />
+              </>
+            ) : null}
             Profile:{" "}
             <Link
               href="/profile/[id]/edit"

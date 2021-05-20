@@ -19,11 +19,14 @@ describe("actions/exports", () => {
     let csrfToken;
     let destination;
     let profile;
+    let exportProcessor;
     let id;
 
     beforeAll(async () => {
       profile = await helper.factories.profile();
       destination = await helper.factories.destination();
+      exportProcessor = await helper.factories.exportProcessor(destination);
+
       const otherDestination = await helper.factories.destination();
 
       const firstExport = await Export.create({
@@ -46,6 +49,18 @@ describe("actions/exports", () => {
         oldGroups: [],
         newGroups: [],
         state: "pending",
+      });
+
+      await Export.create({
+        destinationId: destination.id,
+        exportProcessorId: exportProcessor.id,
+        profileId: "another-profile",
+        startedAt: new Date(),
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        oldGroups: [],
+        newGroups: [],
+        state: "processing",
       });
 
       await Export.create({
@@ -89,8 +104,8 @@ describe("actions/exports", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(exports.length).toBe(4);
-      expect(total).toBe(4);
+      expect(exports.length).toBe(5);
+      expect(total).toBe(5);
     });
 
     test("a reader can view an export", async () => {
@@ -128,10 +143,24 @@ describe("actions/exports", () => {
       );
 
       expect(error).toBeUndefined();
-      expect(exports.length).toBe(2);
+      expect(exports.length).toBe(3);
       expect(exports[0].destination.id).toBe(destination.id);
       expect(exports[1].destination.id).toBe(destination.id);
-      expect(total).toBe(2);
+      expect(exports[2].destination.id).toBe(destination.id);
+      expect(total).toBe(3);
+    });
+
+    test("a reader can ask for exports about an export processor", async () => {
+      connection.params = { csrfToken, exportProcessorId: exportProcessor.id };
+      const { error, exports, total } = await specHelper.runAction(
+        "exports:list",
+        connection
+      );
+
+      expect(error).toBeUndefined();
+      expect(exports.length).toBe(1);
+      expect(exports[0].exportProcessorId).toBe(exportProcessor.id);
+      expect(total).toBe(1);
     });
 
     test("a reader can get export totals", async () => {
@@ -147,7 +176,7 @@ describe("actions/exports", () => {
         draft: 0,
         failed: 1,
         pending: 2,
-        processing: 0,
+        processing: 1,
       });
     });
 
@@ -181,7 +210,7 @@ describe("actions/exports", () => {
         draft: 0,
         failed: 0,
         pending: 2,
-        processing: 0,
+        processing: 1,
       });
     });
   });

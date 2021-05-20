@@ -41,10 +41,13 @@ export default function ExportsList(props) {
   const [state, setState] = useState(router.query.state?.toString() || "all");
 
   let profileId: string;
+  let exportProcessorId: string;
   let destinationId: string;
   if (router.query.id) {
     if (router.pathname.match("/profile/")) {
       profileId = router.query.id.toString();
+    } else if (router.pathname.match("/exportProcessor/")) {
+      exportProcessorId = router.query.id.toString();
     } else {
       destinationId = router.query.id.toString();
     }
@@ -63,6 +66,7 @@ export default function ExportsList(props) {
       state: state === "all" ? undefined : state,
       profileId,
       destinationId,
+      exportProcessorId,
     });
     setLoading(false);
     if (response?.exports) {
@@ -162,6 +166,18 @@ export default function ExportsList(props) {
                     <span>State</span>:{" "}
                     <StateBadge state={_export.state} marginBottom={0} />
                     <br />
+                    {_export.exportProcessorId ? (
+                      <>
+                        <span>Processor</span>:{" "}
+                        <Link
+                          href="/exportProcessor/[id]/edit"
+                          as={`/exportProcessor/${_export.exportProcessorId}/edit`}
+                        >
+                          <a>{_export.exportProcessorId}</a>
+                        </Link>
+                        <br />
+                      </>
+                    ) : null}
                     Profile:{" "}
                     <Link
                       href="/profile/[id]/edit"
@@ -247,10 +263,13 @@ ExportsList.hydrate = async (ctx) => {
   const { groups } = await execApi("get", `/groups`);
 
   let profileId: string;
+  let exportProcessorId: string;
   let destinationId: string;
   if (id) {
     if (ctx.pathname.match("/profile/")) {
       profileId = id;
+    } else if (ctx.pathname.match("/exportProcessor/")) {
+      exportProcessorId = id;
     } else {
       destinationId = id;
     }
@@ -261,6 +280,7 @@ ExportsList.hydrate = async (ctx) => {
     offset,
     state: state === "all" ? undefined : state,
     destinationId,
+    exportProcessorId,
     profileId,
   });
 
