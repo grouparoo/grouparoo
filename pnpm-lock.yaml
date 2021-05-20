@@ -87,6 +87,25 @@ importers:
       '@grouparoo/ui-config': link:../../ui/ui-config
       jest: 26.6.3
 
+  apps/staging-config:
+    specifiers:
+      '@grouparoo/core': 0.3.2-alpha.8
+      '@grouparoo/demo': 0.3.2-alpha.8
+      '@grouparoo/postgres': 0.3.2-alpha.8
+      '@grouparoo/spec-helper': 0.3.2-alpha.8
+      '@grouparoo/sqlite': 0.3.2-alpha.8
+      '@grouparoo/ui-config': 0.3.2-alpha.8
+      jest: 26.6.3
+    dependencies:
+      '@grouparoo/core': link:../../core
+      '@grouparoo/demo': link:../../plugins/@grouparoo/demo
+      '@grouparoo/postgres': link:../../plugins/@grouparoo/postgres
+      '@grouparoo/sqlite': link:../../plugins/@grouparoo/sqlite
+    devDependencies:
+      '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
+      '@grouparoo/ui-config': link:../../ui/ui-config
+      jest: 26.6.3
+
   apps/staging-enterprise:
     specifiers:
       '@grouparoo/bigquery': 0.3.3-alpha.0
