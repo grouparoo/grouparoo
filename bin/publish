@@ -95,6 +95,13 @@ echo ""
 echo "-----> INSTALL DEPENDENCIES & BUILD PACKAGES"
 echo ""
 
+# Clear build caches
+rm -rf core/dist
+rm -rf clients/*/*/dist
+rm -rf cli/dist
+rm -rf plugins/*/*/dist
+rm -rf ui/*/.next
+
 pnpm install --prefer-frozen-lockfile
 git checkout pnpm-lock.yaml # the other github action will take care of this, but we need a clean working directory to publish
 
