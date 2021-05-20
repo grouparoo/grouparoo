@@ -271,6 +271,7 @@ export async function processConfigObjects(
         configObject.key || configObject.name
       }\` (${configObject.id}): ${message}`;
       errors.push(errorMessage);
+      log(error?.stack || error, "debug");
       if (fields.length === 0) {
         log(errorMessage, "warning");
         continue;
