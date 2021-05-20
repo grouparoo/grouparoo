@@ -17,6 +17,7 @@ export const getDestinationMappingOptions: GetDestinationMappingOptionsMethod =
       async ({ appOptions, destinationOptions }) => {
         const client = await connect(appOptions);
         const listId = destinationOptions.listId?.toString();
+        if (!listId) throw new Error("No listId provided");
         const mergeVars = await getMergeVars(client, listId);
         const properties = getProperties(mergeVars, mappingKey);
 
