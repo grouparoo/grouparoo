@@ -29,6 +29,7 @@ export class Apply extends CLI {
 
   preInitialize = () => {
     GrouparooCLI.setGrouparooRunMode(this);
+    GrouparooCLI.setNextDevelopmentMode();
   };
 
   async run({ params }) {

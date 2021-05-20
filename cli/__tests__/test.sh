@@ -4,7 +4,8 @@ set -e
 
 TIME=`date +%s`
 cd "$(dirname "$0")/../../"
-CORE_VERSION=`cat lerna.json | jq '.version'`
+MONOREPO=`pwd`
+CORE_VERSION=`cat lerna.json | jq --raw-output '.version'`
 cd "./cli/__tests__"
 WORKDIR="/tmp/grouparoo-$TIME"
 export INIT_CWD=$WORKDIR
@@ -17,8 +18,14 @@ mkdir -p ~/.npm-global
 export NPM_CONFIG_PREFIX=~/.npm-global
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-## use /this/ version of the "grouparoo" package with
-npm link ../
+## pack up a version of core
+cd "$MONOREPO/core" && npm pack
+PACKED_CORE="$MONOREPO/core/grouparoo-core-$CORE_VERSION.tgz"
+echo ""
+echo "--- core packed to $PACKED_CORE ---"
+
+## use /local/ version of the "grouparoo" packages with
+cd "$MONOREPO/cli" && npm link .
 
 echo ""
 echo "--- npm linked ---"
@@ -82,6 +89,36 @@ else
     exit 1
 fi
 
+## replace core with packed core
+# Note: with quotes and slashes, sed and awk don't work so well
+
+cat << EOF > "$WORKDIR/package.json"
+{
+  "author": "Your Name <email@example.com>",
+  "name": "grouparoo-1621472396",
+  "description": "A Grouparoo Deployment",
+  "version": "0.0.1",
+  "license": "MPL-2.0",
+  "private": true,
+  "engines": {
+    "node": ">=12.0.0 <16.0.0"
+  },
+  "dependencies": {
+    "@grouparoo/core": "$PACKED_CORE",
+    "@grouparoo/ui-community": "$CORE_VERSION"
+  },
+  "scripts": {
+    "start": "cd node_modules/@grouparoo/core && ./bin/start"
+  },
+  "grouparoo": {
+    "plugins": [
+      "@grouparoo/ui-community"
+    ]
+  }
+}
+EOF
+
+
 ## try the update command
 echo ""
 echo "--- test: update ---"
@@ -117,8 +154,24 @@ cd $WORKDIR && cat package.json
 echo ""
 echo ""
 
-## reset the NPM link
-npm unlink ../
+## try the start command
+echo ""
+echo "--- test: start ---"
+cd $WORKDIR && grouparoo start &
+PID=$!
+echo ""
+echo ""
+
+sleep 10
+
+echo ""
+echo "--- test: status ---"
+curl http://localhost:3000/api/v1/status/public
+
+kill $PID
+
+## reset the NPM links
+cd "$MONOREPO/cli" && npm unlink .
 echo "--- npm unlinked ---"
 
 echo ""

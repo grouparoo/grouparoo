@@ -13,6 +13,7 @@ export class Start extends CLI {
 
   preInitialize = () => {
     GrouparooCLI.setGrouparooRunMode(this);
+    GrouparooCLI.setNextDevelopmentMode();
   };
 
   async run() {

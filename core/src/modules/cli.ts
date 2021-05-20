@@ -44,6 +44,12 @@ export namespace GrouparooCLI {
     process.env.GROUPAROO_RUN_MODE = `cli:${cli.name}`;
   }
 
+  export function setNextDevelopmentMode(nextDevelopmentMode = false) {
+    if (process.env.NEXT_DEVELOPMENT_MODE === undefined) {
+      process.env.NEXT_DEVELOPMENT_MODE = nextDevelopmentMode.toString();
+    }
+  }
+
   export function logCLI(name: string, announcePlugins = true) {
     if (announcePlugins) api.plugins.announcePlugins();
 
