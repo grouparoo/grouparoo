@@ -157,7 +157,8 @@ echo ""
 ## try the start command
 echo ""
 echo "--- test: start ---"
-cd $WORKDIR && grouparoo start &
+cd $WORKDIR
+grouparoo start &
 PID=$!
 echo ""
 echo ""
@@ -169,6 +170,7 @@ echo "--- test: status ---"
 curl http://localhost:3000/api/v1/status/public
 
 kill $PID
+sleep 10
 
 ## reset the NPM links
 cd "$MONOREPO/cli" && npm unlink .
@@ -176,3 +178,5 @@ echo "--- npm unlinked ---"
 
 echo ""
 echo "🎉🎉🎉 TESTS PASSED 🎉🎉🎉"
+
+exit 0
