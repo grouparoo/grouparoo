@@ -13,6 +13,7 @@ export class Apply extends CLI {
 
   preInitialize = () => {
     GrouparooCLI.setGrouparooRunMode(this);
+    GrouparooCLI.setNextDevelopmentMode();
 
     // use temporary databases
     process.env.DATABASE_URL =
