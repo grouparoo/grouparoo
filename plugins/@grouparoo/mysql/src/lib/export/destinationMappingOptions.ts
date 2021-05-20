@@ -6,7 +6,7 @@ import {
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
   async ({ connection, appOptions, destinationOptions }) => {
     const rows = await connection.asyncQuery(
-      `SELECT column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
+      `SELECT column_name AS column_name FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
       [appOptions.database, destinationOptions.table]
     );
 

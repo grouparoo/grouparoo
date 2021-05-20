@@ -11,7 +11,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   tableName,
 }) => {
   const rows = await connection.asyncQuery(
-    `SELECT column_name, data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
+    `SELECT column_name AS column_name, data_type AS data_type FROM INFORMATION_SCHEMA.COLUMNS WHERE table_schema = ? AND table_name = ?`,
     [appOptions.database, tableName]
   );
 
