@@ -68,7 +68,8 @@ export abstract class LoggedModel<T> extends Model {
       apiData = await this.apiData();
     } catch {}
 
-    config.general.filteredParams.forEach((p) => {
+    const filteredParams: string[] = config.general.filteredParams();
+    filteredParams.forEach((p) => {
       if (apiData[p]) apiData[p] = "** filtered **";
     });
 
@@ -81,6 +82,7 @@ export abstract class LoggedModel<T> extends Model {
     let message = "";
     let primaryName = this.id;
     const possibleNames = ["name", "key", "email", "path"];
+    const filteredParams: string[] = config.general.filteredParams();
     for (let i in possibleNames) {
       if (this[possibleNames[i]]) {
         primaryName = this[possibleNames[i]];
@@ -98,10 +100,7 @@ export abstract class LoggedModel<T> extends Model {
         if (changedKeys) {
           changedKeys.forEach((k) => {
             let value = this[k];
-            if (config.general.filteredParams.includes(k)) {
-              value = "** filtered **";
-            }
-
+            if (filteredParams.includes(k)) value = "** filtered **";
             changedValueStrings.push(`${k} -> ${value}`);
           });
         }

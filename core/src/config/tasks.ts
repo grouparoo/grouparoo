@@ -1,3 +1,5 @@
+import { api } from "actionhero";
+
 export const DEFAULT = {
   tasks: (config) => {
     return {
@@ -8,8 +10,6 @@ export const DEFAULT = {
       scheduler: (process.env.WORKERS ? parseInt(process.env.WORKERS) : 0) > 0,
       // what queues should the taskProcessors work?
       queues: async () => {
-        const { api } = await import("actionhero"); // this needs to be async loaded as we are within the config system, to avoid circular dependencies
-
         return [].concat(
           [
             "system",
