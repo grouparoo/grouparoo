@@ -9,3 +9,4 @@ yarn-error.log
 dump.rdb
 *.retry
 coverage
+.next/cache/*
