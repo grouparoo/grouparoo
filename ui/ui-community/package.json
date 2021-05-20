@@ -21,7 +21,7 @@
     "directory": "ui/ui-community"
   },
   "scripts": {
-    "prepare": "rm -rf .next && next build",
+    "prepare": "next build",
     "start": "next start --port $PORT",
     "dev": "next dev",
     "pretest": "npm run lint && npm run prepare",
