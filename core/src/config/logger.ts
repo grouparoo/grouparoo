@@ -14,9 +14,8 @@ export const DEFAULT = {
 
     return {
       loggers,
-
-      // the maximum length of param to log (we will truncate)
-      maxLogStringLength: 100,
+      maxLogStringLength: 100, // the maximum length of param to log (we will truncate)
+      maxLogArrayLength: 10, // the maximum number of items in an array to log before collapsing into one message
     };
   },
 };
