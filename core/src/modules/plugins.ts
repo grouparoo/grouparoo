@@ -77,38 +77,12 @@ export namespace Plugins {
     return pluginResponse;
   }
 
-  export const ignoredPlugins = [
-    "@grouparoo/ui",
-    "@grouparoo/ui-components",
-    "@grouparoo/client-web",
-    "@grouparoo/app-templates",
-    "@grouparoo/email-authentication",
-    "@grouparoo/logger",
-    "@grouparoo/node-marketo-rest",
-  ];
-
-  export async function availableGrouparooPlugins(
-    query = "@grouparoo",
-    size = 250
-  ) {
-    const url = "https://registry.npmjs.com/-/v1/search";
-    const response = await fetch(`${url}?text=${query}&size=${size}`).then(
-      (r) => r.json()
-    );
-
-    if (!response.objects) throw new Error(`No NPM packages matching ${query}`);
-
-    const packages: NPMPackage[] = response.objects
-      .filter((o) => o.package)
-      .map((o) => o.package)
-      .filter((o) => !ignoredPlugins.includes(o.name))
-      .sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      });
-
-    return packages;
+  export async function availableGrouparooPlugins() {
+    const pluginManifestUrl =
+      process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
+      "https://www.grouparoo.com/plugins/v1/manifest.json";
+    const pluginManifest = await fetch(pluginManifestUrl).then((r) => r.json());
+    return pluginManifest;
   }
 
   export async function install(pluginName: string) {

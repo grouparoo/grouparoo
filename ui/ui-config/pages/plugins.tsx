@@ -30,19 +30,19 @@ export default function PluginsPage(props) {
     }
   }
 
-  async function uninstallPlugin(name: string) {
-    setLoading(true);
-    const response: Actions.PluginInstall = await execApi(
-      "post",
-      `/plugin/uninstall`,
-      { plugin: name }
-    );
-    setLoading(false);
-    if (response.success) {
-      successHandler.set({ message: "Plugin Uninstalled" });
-      loadInstalledPlugins();
-    }
-  }
+  // async function uninstallPlugin(name: string) {
+  //   setLoading(true);
+  //   const response: Actions.PluginInstall = await execApi(
+  //     "post",
+  //     `/plugin/uninstall`,
+  //     { plugin: name }
+  //   );
+  //   setLoading(false);
+  //   if (response.success) {
+  //     successHandler.set({ message: "Plugin Uninstalled" });
+  //     loadInstalledPlugins();
+  //   }
+  // }
 
   async function loadInstalledPlugins() {
     setLoading(true);
@@ -70,26 +70,36 @@ export default function PluginsPage(props) {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Package Name</th>
             <th>Description</th>
-            <th>Installed</th>
+            <th style={{ minWidth: "3rem" }}>Installed</th>
           </tr>
         </thead>
         <tbody>
           {availablePlugins.map((plugin) => {
             const installedPlugin = installedPlugins.find(
-              (p) => p.name === plugin.name
+              (p) => p.name === plugin.packageName
             );
             return (
-              <tr key={`plugin-${plugin.name}`}>
-                <td>{plugin.name}</td>
+              <tr key={`plugin-${plugin.packageName}`}>
+                <td style={{ whiteSpace: "nowrap" }}>
+                  <strong>{plugin.name}</strong>
+                </td>
                 <td>
-                  {plugin.description}
-                  <br />
-                  <a href={plugin.links.repository} target="_blank">
+                  <code>{plugin.packageName}</code>
+                </td>
+                <td>
+                  {plugin.description && (
+                    <>
+                      {plugin.description}
+                      <br />
+                    </>
+                  )}
+                  <a href={plugin.docsUrl || plugin.npmUrl} target="_blank">
                     Learn More
                   </a>
                 </td>
-                <td>
+                <td style={{ whiteSpace: "nowrap" }}>
                   {installedPlugin ? (
                     <Alert variant="success">
                       {installedPlugin.currentVersion}
@@ -97,9 +107,9 @@ export default function PluginsPage(props) {
                   ) : (
                     <Button
                       disabled={loading}
-                      onClick={() => installPlugin(plugin.name)}
+                      onClick={() => installPlugin(plugin.packageName)}
                     >
-                      Install v{plugin.version}
+                      Install
                     </Button>
                   )}
                 </td>
