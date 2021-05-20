@@ -1,5 +1,5 @@
 import { Initializer } from "actionhero";
-import { plugin } from "@grouparoo/core";
+import { DestinationSyncMode, plugin } from "@grouparoo/core";
 import path from "path";
 
 import { test } from "./../lib/test";
@@ -40,6 +40,8 @@ export class Plugins extends Initializer {
   }
 
   async initialize() {
+    const syncModes: DestinationSyncMode[] = ["sync", "additive", "enrich"];
+    const defaultSyncMode: DestinationSyncMode = "sync";
     plugin.registerPlugin({
       name: packageJSON.name,
       icon: "/public/@grouparoo/postgres/postgres.svg",
@@ -51,9 +53,12 @@ export class Plugins extends Initializer {
         new TablePropertyTemplate("postgres"),
         new QuerySourceTemplate("postgres"),
         new QueryPropertyTemplate("postgres"),
-        new DestinationTemplate("postgres", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "postgres",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
@@ -136,6 +141,8 @@ export class Plugins extends Initializer {
           description:
             "Export Profiles to a Postgres table.  Groups will be exported to a secondary table linked by a foreign key.",
           app: "postgres",
+          syncModes,
+          defaultSyncMode,
           options: [
             {
               key: "table",

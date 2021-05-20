@@ -1,10 +1,11 @@
-import { ExportProfilePluginMethod } from "@grouparoo/core";
+import { Errors, ExportProfilePluginMethod } from "@grouparoo/core";
 import { validateQuery } from "../validateQuery";
 import format from "pg-format";
 
 export const exportProfile: ExportProfilePluginMethod = async ({
   connection,
   destination,
+  syncOperations,
   export: { newProfileProperties, oldProfileProperties, newGroups, toDelete },
 }) => {
   let error: Error;
@@ -31,6 +32,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
   try {
     // --- Profiles --- //
     if (toDelete) {
+      if (!syncOperations.delete) {
+        throw new Errors.InfoError(
+          "Destination sync mode does not delete profiles."
+        );
+      }
       // delete
       await connection.query(
         validateQuery(
@@ -55,6 +61,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
       );
 
       if (existingRecords.rows.length === 1) {
+        if (!syncOperations.update) {
+          throw new Errors.InfoError(
+            "Destination sync mode does not update existing profiles."
+          );
+        }
         // update
         let updateStatement = `UPDATE %I SET`;
         const updateVariables = [table];
@@ -110,31 +121,12 @@ export const exportProfile: ExportProfilePluginMethod = async ({
             )
           )
         );
-
         // insert
-        await connection.query(
-          validateQuery(
-            format(
-              `INSERT INTO %I (%I) VALUES (%L)`,
-              table,
-              Object.keys(newProfileProperties),
-              Object.values(newProfileProperties)
-            )
-          )
-        );
+        await insert(connection, table, syncOperations, newProfileProperties);
       }
     } else {
       // just insert
-      await connection.query(
-        validateQuery(
-          format(
-            `INSERT INTO %I (%I) VALUES (%L)`,
-            table,
-            Object.keys(newProfileProperties),
-            Object.values(newProfileProperties)
-          )
-        )
-      );
+      await insert(connection, table, syncOperations, newProfileProperties);
     }
 
     // --- Groups --- //
@@ -187,4 +179,27 @@ export const exportProfile: ExportProfilePluginMethod = async ({
 
     return { success: true };
   }
+};
+
+const insert = async (
+  connection,
+  table,
+  syncOperations,
+  newProfileProperties
+) => {
+  if (!syncOperations.create) {
+    throw new Errors.InfoError(
+      "Destination sync mode does not create new profiles."
+    );
+  }
+  await connection.query(
+    validateQuery(
+      format(
+        `INSERT INTO %I (%I) VALUES (%L)`,
+        table,
+        Object.keys(newProfileProperties),
+        Object.values(newProfileProperties)
+      )
+    )
+  );
 };
