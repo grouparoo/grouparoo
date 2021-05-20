@@ -1,5 +1,3 @@
-import { Op } from "sequelize";
-
 export default {
   up: async function (migration, DataTypes) {
     await migration.sequelize.transaction(async () => {
@@ -92,10 +90,8 @@ export default {
 
   down: async function (migration) {
     await migration.sequelize.transaction(async () => {
-      await migration.sequelize.transaction(async () => {
-        await migration.removeColumn("exports", "exportProcessorId");
-        await migration.dropTable("exportProcessors");
-      });
+      await migration.removeColumn("exports", "exportProcessorId");
+      await migration.dropTable("exportProcessors", {});
     });
   },
 };
