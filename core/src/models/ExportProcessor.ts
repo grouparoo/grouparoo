@@ -118,6 +118,7 @@ export class ExportProcessor extends Model {
   }
 
   async apiData(includeDestination = true) {
+    const exportsCount = await this.$count("exports");
     const destination = await this.$get("destination", {
       scope: null,
     });
@@ -134,6 +135,7 @@ export class ExportProcessor extends Model {
       processAt: APIData.formatDate(this.processAt),
       startedAt: APIData.formatDate(this.startedAt),
       completedAt: APIData.formatDate(this.completedAt),
+      exportsCount,
       retryCount: this.retryCount,
       errorMessage: this.errorMessage,
       errorLevel: this.errorLevel,

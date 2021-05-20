@@ -8,6 +8,7 @@ import {
   Destination,
   DestinationGroupMembership,
   Export,
+  ExportProcessor,
   File,
   Group,
   GroupMember,
@@ -40,6 +41,9 @@ export namespace Models {
   >;
   export type FileType = Partial<AsyncReturnType<File["apiData"]>>;
   export type ExportType = Partial<AsyncReturnType<Export["apiData"]>>;
+  export type ExportProcessorType = Partial<
+    AsyncReturnType<ExportProcessor["apiData"]>
+  >;
   export type EventType = Partial<AsyncReturnType<Event["apiData"]>>;
   export type GroupType = Partial<AsyncReturnType<Group["apiData"]>>;
   export type GroupMemberType = Partial<
@@ -118,6 +122,10 @@ import {
   ExportsTotals,
   ExportsList,
 } from "@grouparoo/core/src/actions/exports";
+import {
+  ExportProcessorView,
+  ExportProcessorsList,
+} from "@grouparoo/core/src/actions/exportProcessors";
 import {
   FileCreate,
   FileDestroy,
@@ -385,6 +393,13 @@ export namespace Actions {
   >;
   export type ExportsList = AsyncReturnType<
     typeof ExportsList.prototype.runWithinTransaction
+  >;
+
+  export type ExportProcessorView = AsyncReturnType<
+    typeof ExportProcessorView.prototype.runWithinTransaction
+  >;
+  export type ExportProcessorsList = AsyncReturnType<
+    typeof ExportProcessorsList.prototype.runWithinTransaction
   >;
 
   export type FileCreate = AsyncReturnType<
