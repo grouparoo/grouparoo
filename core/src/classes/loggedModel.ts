@@ -20,6 +20,16 @@ function modelName(instance): string {
   return name;
 }
 
+function filteredParams() {
+  let filteredParams: string[] = [];
+  if (typeof config.general.filteredParams === "function") {
+    filteredParams = config.general.filteredParams();
+  } else {
+    filteredParams = config.general.filteredParams;
+  }
+  return filteredParams;
+}
+
 export abstract class LoggedModel<T> extends Model {
   /**
    * return the prefix for this type of class' id
@@ -68,8 +78,7 @@ export abstract class LoggedModel<T> extends Model {
       apiData = await this.apiData();
     } catch {}
 
-    const filteredParams: string[] = config.general.filteredParams();
-    filteredParams.forEach((p) => {
+    filteredParams().forEach((p) => {
       if (apiData[p]) apiData[p] = "** filtered **";
     });
 
@@ -82,7 +91,7 @@ export abstract class LoggedModel<T> extends Model {
     let message = "";
     let primaryName = this.id;
     const possibleNames = ["name", "key", "email", "path"];
-    const filteredParams: string[] = config.general.filteredParams();
+    const _filteredParams = filteredParams();
     for (let i in possibleNames) {
       if (this[possibleNames[i]]) {
         primaryName = this[possibleNames[i]];
@@ -100,7 +109,7 @@ export abstract class LoggedModel<T> extends Model {
         if (changedKeys) {
           changedKeys.forEach((k) => {
             let value = this[k];
-            if (filteredParams.includes(k)) value = "** filtered **";
+            if (_filteredParams.includes(k)) value = "** filtered **";
             changedValueStrings.push(`${k} -> ${value}`);
           });
         }
