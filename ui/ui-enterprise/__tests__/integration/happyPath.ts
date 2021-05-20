@@ -89,7 +89,7 @@ describe("integration", () => {
   test(
     "I was taken to the settings page after creating the first team",
     async () => {
-      await helper.sleep(4 * 1000);
+      await browser.wait(until.elementLocated(by.tagName("p")));
       const url = await browser.getCurrentUrl();
       expect(url).toMatch(/\/setup/);
       await browser.get(url);
@@ -101,7 +101,7 @@ describe("integration", () => {
     "I can sign out",
     async () => {
       await browser.get(`${env.url}/session/sign-out`);
-      await helper.sleep(1 * 1000);
+      await browser.wait(until.elementLocated(by.tagName("p")));
       const url = await browser.getCurrentUrl();
       expect(url).toMatch(/\//);
       await browser.get(url);
@@ -113,7 +113,7 @@ describe("integration", () => {
     "it can sign in",
     async () => {
       await browser.get(`${env.url}/session/sign-in`);
-      await helper.sleep(1 * 1000);
+      await browser.wait(until.elementLocated(by.tagName("p")));
 
       await browser.findElement(by.name("email")).sendKeys(email);
       await browser.findElement(by.name("password")).sendKeys(password);
