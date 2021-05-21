@@ -23,6 +23,7 @@ import { StateMachine } from "../modules/stateMachine";
 import { Export } from "./Export";
 import { Errors } from "../modules/errors";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
+import { LoggedModel } from "../classes/loggedModel";
 
 export const ExportProcessorStates = [
   "pending", // waiting to be processed
@@ -42,19 +43,13 @@ const STATE_TRANSITIONS = [
 ];
 
 @Table({ tableName: "exportProcessors", paranoid: false })
-export class ExportProcessor extends Model {
+export class ExportProcessor extends LoggedModel<ExportProcessor> {
   idPrefix() {
     return "prc";
   }
 
   @Column({ primaryKey: true })
   id: string;
-
-  @CreatedAt
-  createdAt: Date;
-
-  @UpdatedAt
-  updatedAt: Date;
 
   @AllowNull(false)
   @ForeignKey(() => Destination)
@@ -172,13 +167,6 @@ export class ExportProcessor extends Model {
   @BeforeSave
   static async updateState(instance: ExportProcessor) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @BeforeCreate
-  static generateId(instance) {
-    if (!instance.id) {
-      instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
-    }
   }
 
   @BeforeSave
