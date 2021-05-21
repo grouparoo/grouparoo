@@ -21,7 +21,7 @@ import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
  * 5. ✅  Make this behavior specific to config mode. Enterprise mode should work
  *    the same as this page does today.
  * 6. Reload the app to load in the new plugin.
- * 7. [SPIKE] Combining all these elements together and adding a badge for apps
+ * 7. ✅  [SPIKE] Combining all these elements together and adding a badge for apps
  *    that have been installed (those that are actually apps).
  */
 
@@ -39,19 +39,18 @@ export default function Page(props) {
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const [app, setApp] = useState<Models.AppType>({ type: "" });
-  const [installablePlugins, setInstallablePlugins] = useState([]);
-  const [addableApps, setAddableApps] = useState([]);
+  const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
   const [installing, setInstalling] = useState(false);
 
   async function resetPluginsAndApps() {
     const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
     const { plugins } = await execApi("get", `/plugins/available`);
-    setAddableApps(types.filter((app) => app.addible !== false));
-    preparePluginList(plugins);
+    const apps = types.filter((app) => app.addible !== false);
+    prepareCards(apps, plugins);
   }
 
-  function preparePluginList(plugins) {
+  function prepareCards(apps, plugins) {
     const pluginList = plugins
       .filter((plugin) => !plugin.installed)
       .map((plugin) => {
@@ -60,6 +59,7 @@ export default function Page(props) {
           plugin: {
             icon: plugin.imageUrl,
             name: plugin.packageName,
+            installed: plugin.installed,
           },
           provides: {
             source: plugin.source,
@@ -67,16 +67,25 @@ export default function Page(props) {
           },
         };
       });
-    setInstallablePlugins(pluginList);
+    const appList = apps
+      .sort((a, b) => (a.name > b.name ? 1 : -1))
+      .map((app) => ({
+        ...app,
+        plugin: { ...app.plugin, installed: true },
+      }));
+    setCards(appList.concat(pluginList));
   }
 
   useEffect(() => {
-    preparePluginList(plugins);
-    setAddableApps(apps);
+    prepareCards(apps, plugins);
   }, []);
 
-  async function handleSubmit({ name: type }) {
+  async function handleClick(card) {
     if (loading) return;
+
+    const { name: type } = card;
+
+    if (!card.plugin.installed) return installPlugin(card);
 
     setApp({ type });
     setLoading(true);
@@ -142,18 +151,9 @@ export default function Page(props) {
 
       <Form id="form">
         <AppSelectorList
-          onClick={handleSubmit}
+          onClick={handleClick}
           selectedItem={app}
-          items={addableApps}
-        />
-
-        <br />
-        <br />
-        <h2>Or install a new plugin to add app options</h2>
-        <AppSelectorList
-          onClick={installPlugin}
-          selectedItem={app}
-          items={installablePlugins}
+          items={cards}
         />
       </Form>
     </>

@@ -1,6 +1,11 @@
 import AppIcon from "./appIcon";
 import { Row, Col, Badge } from "react-bootstrap";
 
+export interface BadgeProp {
+  message?: string;
+  variant?: string;
+}
+
 export default function Selector({
   src = "",
   title = "",
@@ -9,6 +14,7 @@ export default function Selector({
   subheading = "",
   description = "",
   badges = [],
+  metaBadge,
   className = "",
   onClick = () => {},
 }: {
@@ -19,7 +25,8 @@ export default function Selector({
   iconClassName?: string;
   subheading?: string;
   description?: string;
-  badges: { message?: string; variant?: string }[];
+  badges: BadgeProp[];
+  metaBadge?: BadgeProp;
   onClick?: any;
 }) {
   return (
@@ -41,7 +48,7 @@ export default function Selector({
     >
       <div className="d-flex flex-column">
         <div
-          className="align-self-center"
+          className="align-self-center mb-3"
           style={{
             backgroundColor: "white",
             width: 140,
@@ -54,7 +61,13 @@ export default function Selector({
         >
           <AppIcon className={iconClassName} src={src} size={size} />
         </div>
-        <br />
+        {metaBadge && (
+          <div className="text-center mb-2">
+            <Badge pill variant={metaBadge.variant}>
+              {metaBadge.message}
+            </Badge>
+          </div>
+        )}
         <h4 className="align-self-center" style={{ textAlign: "center" }}>
           {title}
         </h4>

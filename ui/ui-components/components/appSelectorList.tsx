@@ -1,4 +1,4 @@
-import Selector from "./selector";
+import Selector, { BadgeProp } from "./selector";
 import { CardDeck } from "react-bootstrap";
 import { useRouter } from "next/router";
 
@@ -23,7 +23,8 @@ export default function AppSelectorList({
         let subheading: string;
         let description: string;
         let className: string;
-        let badges: { message?: string; variant?: string }[] = [];
+        let metaBadge: BadgeProp;
+        let badges: BadgeProp[] = [];
 
         if (item?.plugin) {
           // these items are apps themselves
@@ -44,6 +45,10 @@ export default function AppSelectorList({
             badges.push({ message: "destination", variant: "info" });
           } else {
             badges.push({});
+          }
+
+          if (item.plugin.installed) {
+            metaBadge = { message: "installed", variant: "warning" };
           }
         } else {
           // these are apps extracted from connectionApps
@@ -67,6 +72,7 @@ export default function AppSelectorList({
             className={className}
             iconClassName="card-img"
             badges={badges}
+            metaBadge={metaBadge}
             onClick={() => onClick(item)}
             key={`card-${idx}`}
           />
