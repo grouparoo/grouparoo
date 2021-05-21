@@ -76,6 +76,7 @@ export namespace ImportOps {
     const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");
 
+    _import.createdProfile = isNew;
     _import.profileId = profile.id;
     _import.profileAssociatedAt = new Date();
 

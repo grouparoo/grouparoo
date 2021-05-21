@@ -30,16 +30,7 @@ export class ImportAssociateProfile extends Task {
           if (!_import) return;
           if (_import.profileId) return;
 
-          const { profile, isNew } = await _import.associateProfile();
-
-          const oldProfileProperties = await profile.simplifiedProperties();
-          const oldGroups = await profile.$get("groups");
-
-          await _import.update({
-            createdProfile: isNew,
-            oldProfileProperties,
-            oldGroupIds: oldGroups.map((g) => g.id),
-          });
+          const { profile } = await _import.associateProfile();
 
           await profile.markPending();
         },
