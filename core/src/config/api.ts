@@ -49,7 +49,7 @@ export const DEFAULT = {
             .flat()
             .map((a) => a.options)
             .flat()
-            .filter((o) => o.required)
+            .filter((o) => o.type === "password")
             .map((o) => `options.${o.key}`) ?? [];
 
         return [].concat(filteredParams, requiredAppOptions);
