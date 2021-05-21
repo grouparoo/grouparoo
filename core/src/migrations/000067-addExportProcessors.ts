@@ -15,7 +15,6 @@ export default {
         remoteKey: {
           type: DataTypes.STRING(191),
           allowNull: true,
-          defaultValue: null,
         },
 
         createdAt: {
@@ -67,7 +66,6 @@ export default {
       await migration.addColumn("exports", "exportProcessorId", {
         type: DataTypes.STRING(191),
         allowNull: true,
-        defaultValue: null,
       });
 
       await migration.addIndex("exportProcessors", ["destinationId"], {
