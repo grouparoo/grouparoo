@@ -4,7 +4,6 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfiles } from "../lib/export/exportProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -67,12 +66,13 @@ export class Plugins extends Initializer {
             },
             {
               key: "clientSecret",
+              type: "password",
               displayName: "Client Secret",
               required: true,
               description: "Found in LaunchPoint for an API user.",
             },
           ],
-          methods: { test, parallelism, appOptions },
+          methods: { test, parallelism },
         },
       ],
       connections: [

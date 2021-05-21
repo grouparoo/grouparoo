@@ -3,7 +3,6 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -45,13 +44,14 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "apiKey",
+              type: "password",
               displayName: "Iterable API Key",
               required: true,
               description:
                 "Iterable api key. The api keys can be managed here: https://app.iterable.com/settings/apiKeys",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [

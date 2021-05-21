@@ -7,7 +7,6 @@ import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { exportProfile } from "./../lib/export/exportProfile";
 import { exportArrayProperties } from "./../lib/export/exportArrayProperties";
-import { appOptions } from "./../lib/appOptions";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
@@ -86,12 +85,13 @@ export class Plugins extends Initializer {
             },
             {
               key: "password",
+              type: "password",
               displayName: "Password",
               required: false,
               description: "The MySQL user's password.",
             },
           ],
-          methods: { test, connect, disconnect, appOptions },
+          methods: { test, connect, disconnect },
         },
       ],
       connections: [

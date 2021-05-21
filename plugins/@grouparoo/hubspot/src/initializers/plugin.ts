@@ -3,7 +3,6 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -46,12 +45,13 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "hapikey",
+              type: "password",
               displayName: "Hubspot API Key",
               required: true,
               description: "Hubspot hapikey (api) key.",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [

@@ -48,8 +48,8 @@ export class Plugins extends Initializer {
               key: "businessUnitId",
               displayName: "Pardot Business Unit ID",
               required: true,
-              description: `To find the Pardot Business Unit ID, use Setup in Salesforce. 
-              From Setup, enter "Pardot Account Setup" in the Quick Find box. 
+              description: `To find the Pardot Business Unit ID, use Setup in Salesforce.
+              From Setup, enter "Pardot Account Setup" in the Quick Find box.
               Your Pardot Business Unit ID begins with "0Uv" and is 18 characters long.`,
             },
             {
@@ -60,12 +60,14 @@ export class Plugins extends Initializer {
             },
             {
               key: "password",
+              type: "password",
               displayName: "Password",
               required: true,
               description: "Password for logging into Salesforce",
             },
             {
               key: "securityToken",
+              type: "password",
               displayName: "Security Token",
               required: false,
               description:

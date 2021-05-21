@@ -4,7 +4,6 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfiles } from "../lib/export-objects/exportProfiles";
 import { destinationOptions } from "../lib/export-objects/destinationOptions";
@@ -50,19 +49,21 @@ export class Plugins extends Initializer {
             },
             {
               key: "password",
+              type: "password",
               displayName: "Password",
               required: true,
               description: "Password for logging into Salesforce",
             },
             {
               key: "securityToken",
+              type: "password",
               displayName: "Security Token",
               required: false,
               description:
                 "To get a new security token, click on 'Reset My Security Token' in `personal settings`",
             },
           ],
-          methods: { test, parallelism, appOptions },
+          methods: { test, parallelism },
         },
       ],
       connections: [

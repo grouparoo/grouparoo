@@ -390,12 +390,21 @@ export namespace OptionHelper {
 
     // TODO: only for Apps for now
     if (instance instanceof App) {
+      const plugin = await instance.getPlugin();
+      const staticAppOptions = plugin.pluginApp.options;
+
+      staticAppOptions.forEach((option) => {
+        if (option.type === "password" && obfuscatePasswords) {
+          optionsToObfuscate.push(option.key);
+        }
+      });
+
       const appOptions = await instance.appOptions();
       const appOptionKeys = Object.keys(appOptions);
 
-      appOptionKeys.forEach((appOptionKey) => {
-        if (appOptions[appOptionKey].type == "password" && obfuscatePasswords) {
-          optionsToObfuscate.push(appOptionKey);
+      appOptionKeys.forEach((k) => {
+        if (appOptions[k].type === "password" && obfuscatePasswords) {
+          optionsToObfuscate.push(k);
         }
       });
     }

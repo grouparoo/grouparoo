@@ -5,7 +5,6 @@ import { plugin } from "@grouparoo/core";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
@@ -66,6 +65,7 @@ export class Plugins extends Initializer {
             },
             {
               key: "password",
+              type: "password",
               displayName: "Password",
               required: true,
               description: "Password for the given username.",
@@ -91,7 +91,7 @@ export class Plugins extends Initializer {
               defaultValue: "PUBLIC",
             },
           ],
-          methods: { test, connect, disconnect, appOptions },
+          methods: { test, connect, disconnect },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],

@@ -3,7 +3,6 @@ import { Initializer } from "actionhero";
 import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -58,12 +57,13 @@ export class Plugins extends Initializer {
             },
             {
               key: "token",
+              type: "password",
               displayName: "API Token",
               required: true,
               description: "Zendesk api token for the admin user.",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [

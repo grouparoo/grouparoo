@@ -3,7 +3,6 @@ import { Initializer } from "actionhero";
 import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { exportProfile } from "../lib/export/exportProfile";
 import { destinationOptions } from "../lib/export/destinationOptions";
@@ -51,12 +50,13 @@ export class Plugins extends Initializer {
             },
             {
               key: "apiSecret",
+              type: "password",
               displayName: "API Key Secret",
               required: true,
               description: "Sailthru apiKey secret.",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [
