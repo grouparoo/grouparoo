@@ -2,7 +2,6 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import {
   buildConnection as buildCustomConnection,
@@ -48,12 +47,13 @@ export class Plugins extends Initializer {
             },
             {
               key: "accessToken",
+              type: "password",
               displayName: "Access Token",
               required: true,
               description: "Needs the ads_management permission",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [buildCustomConnection()],

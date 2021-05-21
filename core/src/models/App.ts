@@ -23,9 +23,11 @@ import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { PluginOptionTypes } from "../classes/plugin";
 
 export interface AppOption {
   key: string;
+  type?: PluginOptionTypes;
   displayName?: string;
   required: boolean;
   description?: string;
@@ -82,8 +84,22 @@ export class App extends LoggedModel<App> {
 
   async appOptions() {
     const { pluginApp } = await this.getPlugin();
-    if (!pluginApp?.methods?.appOptions) return {};
-    return pluginApp.methods.appOptions();
+    const staticAppOptions = pluginApp.options;
+    const appOptions =
+      typeof pluginApp.methods.appOptions === "function"
+        ? await pluginApp.methods.appOptions()
+        : {};
+
+    for (const o of staticAppOptions) {
+      if (o.type) {
+        if (!appOptions[o.key]) appOptions[o.key] = { type: o.type };
+        if (!appOptions[o.key].type) {
+          appOptions[o.key].type = staticAppOptions[o.key].type;
+        }
+      }
+    }
+
+    return appOptions;
   }
 
   async getOptions(sourceFromEnvironment = true, obfuscatePasswords = false) {

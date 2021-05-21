@@ -32,7 +32,6 @@ import { StateMachine } from "./../modules/stateMachine";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
-import { ConfigurationObject } from "../classes/codeConfig";
 
 export interface SimpleSourceOptions extends OptionHelper.SimpleOptions {}
 export interface SourceMapping extends MappingHelper.Mappings {}

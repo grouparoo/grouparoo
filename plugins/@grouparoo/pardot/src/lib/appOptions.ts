@@ -12,7 +12,5 @@ export const appOptions: AppOptionsMethod = async () => {
       options: ["https://pi.pardot.com", "https://pi.demo.pardot.com"],
       descriptions: ["Production domain", "Demo domain"],
     },
-    password: { type: "password" },
-    securityToken: { type: "password" },
   };
 };

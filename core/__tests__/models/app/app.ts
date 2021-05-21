@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { plugin, App, Option, Log } from "../../../src";
+import { plugin, App, Option, Log, PluginOptionTypes } from "../../../src";
 import { api, redis, utils } from "actionhero";
 import { ObfuscatedPasswordString } from "../../../src/modules/optionHelper";
 
@@ -277,6 +277,7 @@ describe("models/app", () => {
     let testCounter = 0;
     let profilePropertyCount = 0;
     let parallelism = Infinity;
+    let appOptionsReturnType: PluginOptionTypes = "list";
 
     beforeAll(async () => {
       plugin.registerPlugin({
@@ -286,8 +287,8 @@ describe("models/app", () => {
           {
             name: "test-template-app",
             options: [
-              { key: "test_key", required: true },
-              { key: "password", required: false },
+              { key: "test_key", type: "list", required: true },
+              { key: "password", type: "password", required: false },
             ],
             methods: {
               test: async () => {
@@ -296,8 +297,7 @@ describe("models/app", () => {
               },
               appOptions: async () => {
                 return {
-                  test_key: { type: "list", options: ["a", "b"] },
-                  password: { type: "password" },
+                  test_key: { type: appOptionsReturnType, options: ["a", "b"] },
                 };
               },
               parallelism: async () => {
@@ -353,10 +353,19 @@ describe("models/app", () => {
     });
 
     test("it can return the appOptions from the plugin", async () => {
-      const options = await app.appOptions();
-      expect(options).toEqual({
-        test_key: { type: "list", options: ["a", "b"] },
-        password: { type: "password" },
+      // original
+      const optionsA = await app.appOptions();
+      expect(optionsA).toEqual({
+        test_key: { type: "list", options: ["a", "b"] }, // dynamically defined
+        password: { type: "password" }, // statically defined
+      });
+
+      // override
+      appOptionsReturnType = "pending";
+      const optionsB = await app.appOptions();
+      expect(optionsB).toEqual({
+        test_key: { type: "pending", options: ["a", "b"] }, // dynamically defined
+        password: { type: "password" }, // statically defined
       });
     });
 

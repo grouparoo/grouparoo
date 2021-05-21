@@ -2,7 +2,6 @@ import { Initializer } from "actionhero";
 import { plugin } from "@grouparoo/core";
 
 import { test } from "../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { sourcePreview } from "../lib/sheet-import/sourcePreview";
 import { profiles } from "../lib/sheet-import/profiles";
@@ -46,13 +45,14 @@ export class Plugins extends Initializer {
             },
             {
               key: "private_key",
+              type: "password",
               displayName: "Private Key",
               required: true,
               description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          methods: { test, appOptions },
+          methods: { test },
         },
       ],
       connections: [

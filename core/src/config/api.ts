@@ -1,5 +1,6 @@
 import path from "path";
 import { getParentPath } from "../utils/pluginDetails";
+import { api } from "actionhero";
 
 export const DEFAULT = {
   general: (config) => {
@@ -11,6 +12,8 @@ export const DEFAULT = {
     ));
 
     return {
+      _toExpand: false,
+
       apiVersion: packageJSON.version,
       serverName: packageJSON.name,
       // A unique token to your application that servers will use to authenticate to each other
@@ -30,7 +33,29 @@ export const DEFAULT = {
       // enable action response to logger
       enableResponseLogging: false,
       // params you would like hidden from any logs
-      filteredParams: ["password", "passwordHash", "csrfToken", "private_key"],
+      // api.plugins.plugins.map(p => p.apps).filter(a => a).flat().map(a => a.options).flat().filter(o => o.required).map(o => o.key)
+      filteredParams: function () {
+        const filteredParams = [
+          "password",
+          "passwordHash",
+          "csrfToken",
+          "private_key",
+        ];
+
+        const requiredAppOptions =
+          api?.plugins?.plugins
+            .map((p) => p.apps)
+            .filter((a) => a)
+            .flat()
+            .map((a) => a.options)
+            .flat()
+            .filter((o) => o.type === "password")
+            .map((o) => `options.${o.key}`) ?? [];
+
+        return [].concat(filteredParams, requiredAppOptions);
+      },
+      // responses you would like hidden from any logs. Can be an array of strings or a method that returns an array of strings.
+      filteredResponse: [],
       // values that signify missing params
       missingParamChecks: [null, "", undefined],
       // The default filetype to server when a user requests a directory

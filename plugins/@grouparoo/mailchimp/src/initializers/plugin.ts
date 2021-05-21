@@ -4,7 +4,6 @@ import { DestinationSyncMode, plugin } from "@grouparoo/core";
 
 import { test } from "./../lib/test";
 import { parallelism } from "./../lib/parallelism";
-import { appOptions } from "../lib/appOptions";
 
 import {
   emailDestinationConnection,
@@ -59,12 +58,13 @@ export class Plugins extends Initializer {
           options: [
             {
               key: "apiKey",
+              type: "password",
               displayName: "API Key",
               required: true,
               description: "Mailchimp api key.",
             },
           ],
-          methods: { test, parallelism, appOptions },
+          methods: { test, parallelism },
         },
       ],
       connections: [

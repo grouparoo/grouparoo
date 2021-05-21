@@ -5,7 +5,6 @@ import { plugin } from "@grouparoo/core";
 import { connect } from "./../lib/connect";
 import { disconnect } from "./../lib/disconnect";
 import { test } from "./../lib/test";
-import { appOptions } from "../lib/appOptions";
 
 import { getConnection as getTableConnection } from "../lib/table-import/connection";
 import { getConnection as getQueryConnection } from "../lib/query-import/connection";
@@ -74,12 +73,13 @@ export class Plugins extends Initializer {
             {
               key: "private_key",
               displayName: "Private Key",
+              type: "password",
               required: true,
               description: "Private key of service account.",
               placeholder: "e.g. -----BEGIN PRIVATE KEY-----\nMII ...",
             },
           ],
-          methods: { test, connect, disconnect, appOptions },
+          methods: { test, connect, disconnect },
         },
       ],
       connections: [getTableConnection(), getQueryConnection()],
