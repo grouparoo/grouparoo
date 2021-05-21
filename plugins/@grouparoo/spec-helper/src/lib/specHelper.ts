@@ -553,4 +553,18 @@ export namespace helper {
       use_separator: false,
     });
   }
+
+  export async function changeTimestamps(
+    instance: any, // could be any Model
+    setCreated: boolean = false,
+    timestamp = "1900-01-01 12:13:14"
+  ) {
+    const { api } = await import("actionhero");
+    const tableName = instance.constructor["tableName"];
+    return api.sequelize.query(
+      `UPDATE ${tableName} SET "updatedAt" = '${timestamp}' ${
+        setCreated ? `, "createdAt" = '${timestamp}' ` : ` `
+      }WHERE id = '${instance.id}'`
+    );
+  }
 }

@@ -35,7 +35,6 @@ export class StatusTask extends Task {
   async logFinalSummary() {
     const finalSummaryLog = await FinalSummary.getFinalSummary();
     GrouparooCLI.logger.finalSummary(finalSummaryLog);
-    return false;
   }
 
   async checkForComplete(samples: StatusMetric[]) {

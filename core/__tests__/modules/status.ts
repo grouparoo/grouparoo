@@ -206,7 +206,7 @@ describe("modules/status", () => {
       await helper.truncate();
       await helper.factories.properties();
       oldProfile = await helper.factories.profile();
-      await changeTimestamps(oldProfile);
+      await helper.changeTimestamps(oldProfile, true); // 'true' will set both updatedAt and createdAt
       newProfile = await helper.factories.profile();
     });
 
@@ -283,7 +283,7 @@ describe("modules/status", () => {
           destination,
           undefined
         );
-        await changeTimestamps(_export3);
+        await helper.changeTimestamps(_export3, true);
 
         const now = new Date();
         await _export.update({
@@ -300,13 +300,3 @@ describe("modules/status", () => {
     });
   });
 });
-
-async function changeTimestamps(
-  instance: Profile | Export,
-  timestamp = "1900-01-01 12:13:14"
-) {
-  const tableName = instance.constructor["tableName"];
-  return api.sequelize.query(
-    `UPDATE ${tableName} SET "updatedAt" = '${timestamp}', "createdAt" = '${timestamp}' WHERE id = '${instance.id}'`
-  );
-}
