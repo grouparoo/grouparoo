@@ -1,13 +1,9 @@
 import {
-  Model,
   Table,
   Column,
-  CreatedAt,
-  UpdatedAt,
   AllowNull,
   Is,
   BelongsTo,
-  BeforeCreate,
   BeforeSave,
   ForeignKey,
   DataType,
@@ -16,7 +12,6 @@ import {
 } from "sequelize-typescript";
 import { Op, QueryTypes } from "sequelize";
 import { api, config } from "actionhero";
-import * as uuid from "uuid";
 import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
@@ -56,7 +51,7 @@ export class ExportProcessor extends LoggedModel<ExportProcessor> {
   @Column
   destinationId: string;
 
-  @Column
+  @Column(DataType.TEXT)
   remoteKey: string;
 
   @AllowNull(false)

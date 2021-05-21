@@ -13,7 +13,7 @@ export default {
         },
 
         remoteKey: {
-          type: DataTypes.STRING(191),
+          type: DataTypes.TEXT,
           allowNull: true,
         },
 
