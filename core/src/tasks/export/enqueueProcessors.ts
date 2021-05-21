@@ -10,7 +10,7 @@ export class EnqueueExportProcessors extends RetryableTask {
     this.name = "export:enqueueProcessors";
     this.description =
       "check for pending export processors and enqueue other tasks to process them";
-    this.frequency = 1000 * 10;
+    this.frequency = 1000 * 30; // every 30 seconds
     this.queue = "exports";
     this.inputs = {};
   }
