@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, utils } from "actionhero";
+import { api, utils, config } from "actionhero";
 import { StatusMetric } from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
 
@@ -71,6 +71,21 @@ describe("modules/status", () => {
     test("the number of metrics returned can be chosen", async () => {
       const foundMetrics = await Status.get(3);
       expect(foundMetrics.length).toBe(3);
+    });
+
+    test("if a metric expires mid-read, it will not cause problems", async () => {
+      await api.resque.queue.connection.redis.flushdb();
+      await Status.set([metric]);
+
+      const cachePrefix = `${config.general.cachePrefix}status:samples:`;
+      const redis = api.redis.clients.client;
+      await redis.set(`${cachePrefix}:foo`, "foo");
+      await redis.set(`${cachePrefix}:undefined`, undefined);
+      await redis.set(`${cachePrefix}:null`, null);
+      await redis.set(`${cachePrefix}:not-json`, "{a:1");
+
+      const foundMetrics = await Status.get(); // does not throw
+      expect(foundMetrics.length).toBe(1);
     });
   });
 
