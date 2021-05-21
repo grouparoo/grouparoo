@@ -636,11 +636,11 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeDestroy
   static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
-      where: { state: "pending" },
+      where: { state: ["pending", "processing"] },
     });
     if (pendingExportCount > 0) {
       throw new Error(
-        `cannot delete destination until all pending exports have been sent (${pendingExportCount} pending)`
+        `cannot delete destination until all pending exports have been processed (${pendingExportCount} pending)`
       );
     }
   }

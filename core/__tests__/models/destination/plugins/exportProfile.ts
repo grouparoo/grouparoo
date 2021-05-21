@@ -1082,7 +1082,28 @@ describe("models/destination", () => {
         });
 
         await expect(destination.destroy()).rejects.toThrow(
-          /cannot delete destination until all pending exports have been sent/
+          /cannot delete destination until all pending exports have been processed/
+        );
+
+        await _export.update({ state: "complete" });
+        await destination.destroy(); // does not throw
+      });
+
+      test("a destination cannot be destroyed until all exports are processed", async () => {
+        const _export = await Export.create({
+          destinationId: destination.id,
+          profileId: profile.id,
+          startedAt: new Date(),
+          completedAt: null,
+          oldProfileProperties: {},
+          newProfileProperties: {},
+          oldGroups: [],
+          newGroups: [],
+          state: "processing",
+        });
+
+        await expect(destination.destroy()).rejects.toThrow(
+          /cannot delete destination until all pending exports have been processed/
         );
 
         await _export.update({ state: "complete" });
