@@ -91,11 +91,6 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         await insert(connection, table, syncOperations, newProfileProperties);
       }
     } else {
-      if (!syncOperations.create) {
-        throw new Errors.InfoError(
-          "Destination sync mode does not create new profiles."
-        );
-      }
       // just insert
       await insert(connection, table, syncOperations, newProfileProperties);
     }
