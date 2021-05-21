@@ -1,6 +1,6 @@
 import { App, AppOption, SimpleAppOptions } from "../models/App";
 import { Source, SimpleSourceOptions, SourceMapping } from "../models/Source";
-import { ExportErrorLevel } from "../models/Export";
+import { Errors } from "../modules/errors";
 import {
   Destination,
   DestinationSyncOperations,
@@ -259,7 +259,7 @@ export interface ProcessExportedProfilesPluginMethod {
 
 export interface ErrorWithProfileId extends Error {
   profileId: string;
-  errorLevel: ExportErrorLevel;
+  errorLevel: Errors.ErrorLevel;
 }
 
 export interface ConnectionOption extends AppOption {}
