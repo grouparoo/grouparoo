@@ -21,10 +21,8 @@ import { Destination } from "./Destination";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
 import { Export } from "./Export";
+import { Errors } from "../modules/errors";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
-
-const ERROR_LEVELS = ["error", "info"] as const;
-export type ExportProcessorErrorLevel = typeof ERROR_LEVELS[number];
 
 export const ExportProcessorStates = [
   "pending", // waiting to be processed
@@ -91,12 +89,14 @@ export class ExportProcessor extends Model {
   exports: Export[];
 
   @Is("ofValidErrorLevel", (value) => {
-    if (value && !ERROR_LEVELS.includes(value)) {
-      throw new Error(`errorLevel must be one of: ${ERROR_LEVELS.join(",")}`);
+    if (value && !Errors.ERROR_LEVELS.includes(value)) {
+      throw new Error(
+        `errorLevel must be one of: ${Errors.ERROR_LEVELS.join(",")}`
+      );
     }
   })
-  @Column(DataType.ENUM(...ERROR_LEVELS))
-  errorLevel: ExportProcessorErrorLevel;
+  @Column(DataType.ENUM(...Errors.ERROR_LEVELS))
+  errorLevel: Errors.ErrorLevel;
 
   @BelongsTo(() => Destination)
   destination: Destination;

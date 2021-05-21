@@ -1,4 +1,7 @@
 export namespace Errors {
+  export const ERROR_LEVELS = ["error", "info"] as const;
+  export type ErrorLevel = typeof ERROR_LEVELS[number];
+
   export class InfoError extends Error {
     errorLevel: string;
 
