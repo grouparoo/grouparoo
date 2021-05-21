@@ -46,19 +46,19 @@ export class Plugins extends Initializer {
       name: packageJSON.name,
       icon: "/public/@grouparoo/redshift/redshift.svg",
       templates: [
-        new AppTemplate(
-          "redshift",
-          [path.join(templateRoot, "app", "*.template")],
-          syncModes,
-          defaultSyncMode
-        ),
+        new AppTemplate("redshift", [
+          path.join(templateRoot, "app", "*.template"),
+        ]),
         new TableSourceTemplate("redshift", { getTables, getColumns }),
         new TablePropertyTemplate("redshift"),
         new QuerySourceTemplate("redshift"),
         new QueryPropertyTemplate("redshift"),
-        new DestinationTemplate("redshift", [
-          path.join(templateRoot, "destination", "*.template"),
-        ]),
+        new DestinationTemplate(
+          "redshift",
+          [path.join(templateRoot, "destination", "*.template")],
+          syncModes,
+          defaultSyncMode
+        ),
       ],
       apps: [
         {
