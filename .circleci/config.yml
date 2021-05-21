@@ -260,6 +260,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -303,6 +306,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -348,6 +354,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -391,6 +400,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -436,6 +448,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -479,6 +494,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -524,6 +542,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -567,6 +588,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -612,6 +636,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -655,6 +682,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -766,6 +796,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -815,6 +848,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -866,6 +902,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -916,6 +955,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -961,6 +1003,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1014,6 +1059,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1066,6 +1114,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1109,6 +1160,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1154,6 +1208,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1197,6 +1254,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1242,6 +1302,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1285,6 +1348,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1330,6 +1396,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1373,6 +1442,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1418,6 +1490,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1461,6 +1536,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1506,6 +1584,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1549,6 +1630,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1594,6 +1678,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1637,6 +1724,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1682,6 +1772,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1725,6 +1818,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1773,6 +1869,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1824,6 +1923,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1874,6 +1976,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -1917,6 +2022,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -1962,6 +2070,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2005,6 +2116,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -2050,6 +2164,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2093,6 +2210,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -2138,6 +2258,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2181,6 +2304,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -2226,6 +2352,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2269,6 +2398,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -2314,6 +2446,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2357,6 +2492,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
@@ -2402,6 +2540,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2446,6 +2587,9 @@ jobs:
       - restore_cache:
           <<: *core-cache-options
       - run:
+          name: update apt
+          command: sudo apt update
+      - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
       - run:
@@ -2489,6 +2633,9 @@ jobs:
           <<: *dist-cache-options
       - restore_cache:
           <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
       - run:
           name: install postgresql client
           command: sudo apt install -y postgresql-client
