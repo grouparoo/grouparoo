@@ -59,7 +59,14 @@ export namespace Status {
 
     const values = (await redis.mget(keys))
       .slice(0, limit)
-      .map((v) => JSON.parse(v) as StatusObject)
+      .map((v) => {
+        let parsed: StatusObject;
+        try {
+          parsed = JSON.parse(v);
+        } catch {}
+        return parsed;
+      })
+      .filter((v) => v && v.timestamp)
       .sort((a, b) => {
         return b.timestamp - a.timestamp;
       });
