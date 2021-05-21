@@ -492,6 +492,57 @@ describe("models/destination", () => {
       await profile3.destroy();
     });
 
+    test("failed exports will be retried, sent back to pending and cleared of an exportProcessor", async () => {
+      const exportProcessor = await helper.factories.exportProcessor(
+        destination,
+        {
+          processAt: new Date(0),
+        }
+      );
+      const profile1 = await helper.factories.profile();
+      const export1 = await helper.factories.export(profile1, destination, {
+        startedAt: new Date(),
+        state: "processing",
+        exportProcessorId: exportProcessor.id,
+      });
+
+      const profileError1 = new Error("oh no!");
+      profileError1["profileId"] = profile1.id;
+
+      await specHelper.runTask("export:enqueueProcessors", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:process");
+      expect(foundTasks.length).toBe(1);
+
+      processProfilesResponse = {
+        success: false,
+        errors: [profileError1],
+        retryDelay: 1000,
+        processExports: null,
+      };
+
+      await specHelper.runTask("export:process", foundTasks[0].args[0]);
+
+      // export processor marked as completed
+      await exportProcessor.reload();
+      expect(exportProcessor.state).toBe("complete");
+      expect(exportProcessor.completedAt).toBeTruthy();
+      expect(exportProcessor.errorMessage).toBeNull();
+
+      // Failed export gets kicked back to pending, bump retry and clear processor
+      await export1.reload();
+      expect(export1.profileId).toBe(profile1.id);
+      expect(export1.state).toBe("pending"); // kicked back to pending state
+      expect(export1.completedAt).toBeFalsy();
+      expect(export1.errorMessage).toBe("oh no!");
+      expect(export1.errorLevel).toBe("error");
+      expect(export1.exportProcessorId).toBeNull(); // cleared
+      expect(export1.retryCount).toBe(1);
+
+      await export1.destroy();
+      await profile1.destroy();
+    });
+
     test("the processExportedProfiles method can return processExports to have them reprocessed", async () => {
       const exportProcessor = await helper.factories.exportProcessor(
         destination,
