@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useApi } from "../../hooks/useApi";
 import { useState, useEffect } from "react";
-import { Form } from "react-bootstrap";
+import { Form, Modal, Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import AppSelectorList from "../../components/appSelectorList";
 import { ErrorHandler } from "../../utils/errorHandler";
@@ -15,9 +15,9 @@ import { Actions, Models } from "../../utils/apiData";
  *    renders a card for each plugin.
  * 2. ✅  Apps coming from plugins that have been installed are not shown in the
  *    plugin list.
- * 3. Clicking on a plugin installs it on the fly.
- * 4. Add feedback to the installation process -- i.e. figure out what loading
- *    does and/or set noticeable loading feedback.
+ * 3. ✅  Clicking on a plugin installs it on the fly.
+ * 4. ✅  Add feedback to the installation process -- i.e. figure out what
+ *    loading does and/or set noticeable loading feedback.
  * 5. Make this behavior specific to config mode. Enterprise mode should work
  *    the same as this page does today.
  * 6. Reload the app to load in the new plugin.
@@ -42,6 +42,7 @@ export default function Page(props) {
   const [installablePlugins, setInstallablePlugins] = useState([]);
   const [addableApps, setAddableApps] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [installing, setInstalling] = useState(false);
 
   async function resetPluginsAndApps() {
     const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
@@ -91,6 +92,7 @@ export default function Page(props) {
 
   async function installPlugin(plugin) {
     setLoading(true);
+    setInstalling(plugin.plugin.name);
     const response: Actions.PluginInstall = await execApi(
       "post",
       `/plugin/install`,
@@ -101,8 +103,10 @@ export default function Page(props) {
     if (response) {
       await resetPluginsAndApps();
       setLoading(false);
+      setInstalling(false);
     } else {
       setLoading(false);
+      setInstalling(false);
     }
   }
 
@@ -111,6 +115,28 @@ export default function Page(props) {
       <Head>
         <title>Grouparoo: New App</title>
       </Head>
+
+      {installing && (
+        <Modal
+          show={true}
+          backdrop="static"
+          keyboard={false}
+          centered
+          animation={false}
+        >
+          <Modal.Body>
+            <Spinner
+              animation="border"
+              role="status"
+              size="sm"
+              className="mr-2"
+            >
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+            <span>Installing plugin {installing} ...</span>
+          </Modal.Body>
+        </Modal>
+      )}
 
       <h1>Add App</h1>
 
