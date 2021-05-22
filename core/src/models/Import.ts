@@ -11,6 +11,8 @@ import {
   DataType,
   AfterCreate,
   Default,
+  BeforeBulkCreate,
+  AfterBulkCreate,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { config } from "actionhero";
@@ -220,10 +222,15 @@ export class Import extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
+  static generateId(instance: Import) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
+  }
+
+  @BeforeBulkCreate
+  static generateIds(instances: Import[]) {
+    instances.forEach((instance) => this.generateId(instance));
   }
 
   @AfterCreate
@@ -232,11 +239,14 @@ export class Import extends Model {
       await CLS.enqueueTaskIn(
         config.tasks.timeout + 1,
         "import:associateProfile",
-        {
-          importId: instance.id,
-        }
+        { importId: instance.id }
       );
     }
+  }
+
+  @AfterBulkCreate
+  static async enqueueTasks(instances: Import[]) {
+    for (const instance of instances) await Import.enqueueTask(instance);
   }
 
   static async sweep(limit: number) {

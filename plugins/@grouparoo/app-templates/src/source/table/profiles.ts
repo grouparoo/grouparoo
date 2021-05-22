@@ -40,8 +40,6 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
     const highWaterMarkAndSortColumnASC =
       scheduleOptions[columnNameKey]?.toString();
     const secondarySortColumnASC = Object.keys(sourceMapping)[0];
-
-    let importsCount = 0;
     const highWaterMarkKey = "__hwm";
 
     const results = await getChangedRows({
@@ -78,13 +76,10 @@ export const getProfiles: GetProfilesMethod = ({ getChangedRows }) => {
       }
     }
 
-    for (const result of results) {
-      await plugin.createImport(sourceMapping, run, result);
-      importsCount++;
-    }
+    await plugin.createImports(sourceMapping, run, results);
 
     return {
-      importsCount,
+      importsCount: results.length,
       highWaterMark: nextHighWaterMark,
       sourceOffset: nextSourceOffset,
     };

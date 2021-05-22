@@ -22,21 +22,17 @@ export const profiles: ProfilesPluginMethod = async ({
   }
 
   const offset = sourceOffset ? parseInt(sourceOffset.toString()) : 0;
-  let importsCount = 0;
   const sheet = new Spreadsheet(
     appOptions,
     sourceOptions.sheet_url?.toString()
   );
   const rows = await sheet.read({ limit, offset });
 
-  for (const row of rows) {
-    await plugin.createImport(combinedMapping, run, row);
-    importsCount++;
-  }
+  await plugin.createImports(combinedMapping, run, rows);
 
   return {
-    importsCount,
+    importsCount: rows.length,
     highWaterMark: {},
-    sourceOffset: offset + importsCount,
+    sourceOffset: offset + rows.length,
   };
 };
