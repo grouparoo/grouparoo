@@ -1,9 +1,13 @@
 export default {
   up: async function (migration) {
     await migration.sequelize.transaction(async () => {
-      await migration.addIndex("profileProperties", ["profileId", "rawValue"], {
-        fields: ["profileId", "rawValue"],
-      });
+      await migration.addIndex(
+        "profileProperties",
+        ["propertyId", "rawValue"],
+        {
+          fields: ["propertyId", "rawValue"],
+        }
+      );
     });
   },
 
@@ -11,9 +15,9 @@ export default {
     await migration.sequelize.transaction(async () => {
       await migration.removeIndex(
         "profileProperties",
-        ["profileId", "rawValue"],
+        ["propertyId", "rawValue"],
         {
-          fields: ["profileId", "rawValue"],
+          fields: ["propertyId", "rawValue"],
         }
       );
     });
