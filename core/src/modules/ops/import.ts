@@ -29,7 +29,6 @@ export namespace ImportOps {
         },
       },
       limit,
-      order: [["createdAt", "asc"]],
     });
 
     if (imports.length > 0) {
