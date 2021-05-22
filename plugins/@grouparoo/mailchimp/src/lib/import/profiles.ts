@@ -29,7 +29,6 @@ export const profiles: ProfilesPluginMethod = async ({
     limit = 1000;
   }
   const since_last_changed = highWaterMark["last_changed"];
-  let importsCount = 0;
   let nextSourceOffset = 0;
   let nextHighWaterMark = highWaterMark;
   const fieldKeys = Object.keys(combinedMapping);
@@ -44,12 +43,10 @@ export const profiles: ProfilesPluginMethod = async ({
   });
 
   const lastRow = members[members.length - 1];
+  const rows = [];
 
-  for (const member of members) {
-    const row = member.getAll(fieldKeys);
-    await plugin.createImport(combinedMapping, run, row);
-    importsCount++;
-  }
+  for (const member of members) rows.push(member.getAll(fieldKeys));
+  await plugin.createImports(combinedMapping, run, rows);
 
   if (lastRow) {
     const last_changed = lastRow.get("last_changed");
@@ -61,14 +58,14 @@ export const profiles: ProfilesPluginMethod = async ({
     const newValue = last_changed.toString();
 
     if (currentValue && newValue === currentValue) {
-      nextSourceOffset = offset + importsCount;
+      nextSourceOffset = offset + rows.length;
     } else {
       nextHighWaterMark["last_changed"] = newValue;
     }
   }
 
   return {
-    importsCount,
+    importsCount: rows.length,
     highWaterMark: nextHighWaterMark,
     sourceOffset: nextSourceOffset,
   };
