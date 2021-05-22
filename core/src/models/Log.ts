@@ -8,6 +8,7 @@ import {
   ForeignKey,
   BeforeCreate,
   AfterCreate,
+  BeforeBulkCreate,
 } from "sequelize-typescript";
 import { DataTypes } from "sequelize";
 import * as uuid from "uuid";
@@ -90,6 +91,11 @@ export class Log extends Model {
   @BeforeCreate
   static generateId(instance: Log) {
     if (!instance.id) instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
+  }
+
+  @BeforeBulkCreate
+  static generateIds(instances: Log[]) {
+    instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeCreate

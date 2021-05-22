@@ -9,6 +9,7 @@ import {
   AfterDestroy,
   AfterBulkCreate,
   Length,
+  BeforeBulkCreate,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
@@ -47,6 +48,11 @@ export abstract class LoggedModel<T> extends Model {
     }
   }
 
+  @BeforeBulkCreate
+  static generateIds(instances) {
+    instances.forEach((instance) => this.generateId(instance));
+  }
+
   @BeforeCreate
   static validateId(instance) {
     const id: string = instance.id;
@@ -59,6 +65,11 @@ export abstract class LoggedModel<T> extends Model {
         `invalid id: \`${id}\` - ids must be less than 191 characters and not contain spaces or special characters`
       );
     }
+  }
+
+  @BeforeBulkCreate
+  static validateIds(instances) {
+    instances.forEach((instance) => this.validateId(instance));
   }
 
   @CreatedAt
@@ -150,6 +161,30 @@ export abstract class LoggedModel<T> extends Model {
     });
   }
 
+  @AfterBulkCreate
+  static async logBulkCreate(instances) {
+    const bulkParams = [];
+
+    for (const instance of instances) {
+      let message = `${modelName(this)} "${instance.id}" created`;
+      try {
+        message = await instance.logMessage("create");
+      } catch (error) {
+        message += ` (${error})`;
+      }
+
+      bulkParams.push({
+        topic: modelName(instance),
+        verb: "create",
+        ownerId: instance.id,
+        data: await instance.filteredDataForLogging(),
+        message,
+      });
+    }
+
+    if (bulkParams.length > 0) await Log.bulkCreate(bulkParams);
+  }
+
   @AfterCreate
   static async broadcast(instance) {
     try {
@@ -158,28 +193,6 @@ export abstract class LoggedModel<T> extends Model {
         verb: "create",
       });
     } catch {}
-  }
-
-  @AfterBulkCreate
-  static async logBulkCreate(instances) {
-    for (const i in instances) {
-      const instance = instances[i];
-
-      let message = `${modelName(this)} "${instance.id}" created`;
-      try {
-        message = await instance.logMessage("create");
-      } catch (error) {
-        message += ` (${error})`;
-      }
-
-      await Log.create({
-        topic: modelName(instance),
-        verb: "create",
-        ownerId: instance.id,
-        data: await instance.filteredDataForLogging(),
-        message,
-      });
-    }
   }
 
   @AfterUpdate

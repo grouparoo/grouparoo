@@ -270,9 +270,7 @@ export namespace ProfileOps {
       where: { profileId: profile.id, propertyId: property.id },
     });
 
-    for (const i in properties) {
-      await properties[i].destroy();
-    }
+    for (const property of properties) await property.destroy();
   }
 
   /**
@@ -291,23 +289,26 @@ export namespace ProfileOps {
     const properties = await Property.findAllWithCache();
     const profileProperties = await profile.properties();
 
-    let newPropertiesCount = 0;
-    for (const i in properties) {
-      const property = properties[i];
+    const bulkArgs = [];
+    const now = new Date();
+
+    for (const key in properties) {
+      const property = properties[key];
       if (!profileProperties[property.key]) {
-        await ProfileProperty.create({
+        bulkArgs.push({
           profileId: profile.id,
           propertyId: property.id,
           state,
-          stateChangedAt: new Date(),
-          valueChangedAt: new Date(),
-          confirmedAt: new Date(),
+          stateChangedAt: now,
+          valueChangedAt: now,
+          confirmedAt: now,
         });
-        newPropertiesCount++;
       }
     }
 
-    return newPropertiesCount;
+    if (bulkArgs.length > 0) await ProfileProperty.bulkCreate(bulkArgs);
+
+    return bulkArgs.length;
   }
 
   /**
