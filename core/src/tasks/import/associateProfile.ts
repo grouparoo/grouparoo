@@ -1,5 +1,6 @@
 import { log, env, Task } from "actionhero";
 import { Import } from "../../models/Import";
+import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 
 export class ImportAssociateProfile extends Task {
@@ -19,26 +20,28 @@ export class ImportAssociateProfile extends Task {
     };
   }
 
-  async run(params) {
+  async run(params, worker) {
     const { importId } = params;
     let _import: Import;
 
-    try {
-      await CLS.wrap(
-        async () => {
-          _import = await Import.findOne({ where: { id: importId } });
-          if (!_import) return;
-          if (_import.profileId) return;
+    return APM.wrap(this.name, "task", worker, async () => {
+      try {
+        await CLS.wrap(
+          async () => {
+            _import = await Import.findOne({ where: { id: importId } });
+            if (!_import) return;
+            if (_import.profileId) return;
 
-          const { profile } = await _import.associateProfile();
+            const { profile } = await _import.associateProfile();
 
-          await profile.markPending();
-        },
-        { write: true }
-      );
-    } catch (error) {
-      if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
-      if (_import) await _import.setError(error, this.name);
-    }
+            await profile.markPending();
+          },
+          { write: true }
+        );
+      } catch (error) {
+        if (env !== "test") log(`[ASSOCIATE PROFILE ERROR] ${error}`, "alert");
+        if (_import) await _import.setError(error, this.name);
+      }
+    });
   }
 }

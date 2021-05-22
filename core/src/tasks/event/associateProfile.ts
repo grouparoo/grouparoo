@@ -1,6 +1,7 @@
 import { Event } from "../../models/Event";
 import { App } from "../../models/App";
 import { Task, log } from "actionhero";
+import { APM } from "../../modules/apm";
 import { CLS } from "../../modules/cls";
 
 export class EventAssociateProfile extends Task {
@@ -30,27 +31,31 @@ export class EventAssociateProfile extends Task {
     };
   }
 
-  async run(params: { eventId: string; count: number }) {
-    const { eventId } = params;
-    let event: Event;
+  async run(params: { eventId: string; count: number }, worker) {
+    return APM.wrap(this.name, "task", worker, async () => {
+      const { eventId } = params;
+      let event: Event;
 
-    try {
-      await CLS.wrap(
-        async () => {
-          event = await Event.scope(null).findOne({ where: { id: eventId } });
-          if (!event) return;
+      try {
+        await CLS.wrap(
+          async () => {
+            event = await Event.scope(null).findOne({ where: { id: eventId } });
+            if (!event) return;
 
-          const app = await App.findOne({ where: { type: "events" } });
-          if (!app) return;
-          const appOptions = await app.getOptions();
+            const app = await App.findOne({ where: { type: "events" } });
+            if (!app) return;
+            const appOptions = await app.getOptions();
 
-          await event.associate(appOptions.identifyingPropertyId.toString());
-        },
-        { write: true }
-      );
-    } catch (error) {
-      log(`re-enqueuing association of event ${eventId}`);
-      throw new Error(`Error associating event ${event.id}: ${error.message}`);
-    }
+            await event.associate(appOptions.identifyingPropertyId.toString());
+          },
+          { write: true }
+        );
+      } catch (error) {
+        log(`re-enqueuing association of event ${eventId}`);
+        throw new Error(
+          `Error associating event ${event.id}: ${error.message}`
+        );
+      }
+    });
   }
 }
