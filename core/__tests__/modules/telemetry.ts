@@ -8,7 +8,11 @@ import { TelemetryInitializer } from "../../src/initializers/telemetry";
 enableFetchMocks();
 
 describe("modules/status", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   beforeEach(async () => {
     await helper.truncate();
