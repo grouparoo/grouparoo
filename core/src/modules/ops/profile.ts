@@ -589,8 +589,7 @@ export namespace ProfileOps {
    */
   export async function makeReady(limit = 100, toExport = true) {
     let profiles: Profile[] = await api.sequelize.query(
-      `
-        SELECT
+      `SELECT
           profiles.id as id
         FROM profiles
         JOIN
@@ -601,7 +600,7 @@ export namespace ProfileOps {
         HAVING
           MAX("profileProperties".state) = 'ready'
           AND COUNT(DISTINCT "profileProperties".state) = 1
-        LIMIT ${limit};
+        LIMIT ${limit}
         ;`,
       { type: QueryTypes.SELECT }
     );
