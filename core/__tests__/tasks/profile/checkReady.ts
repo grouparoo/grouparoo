@@ -27,17 +27,30 @@ describe("tasks/profile:checkReady", () => {
       await luigi.import();
       await luigi.update({ state: "pending" });
 
+      // toad is ready already
       const toad = await helper.factories.profile();
       await toad.import();
       await toad.update({ state: "ready" });
 
+      // peach has 1 pending profile property
       const peach = await helper.factories.profile();
       await peach.import();
-      const peachProperties = await ProfileProperty.findOne({
+      const peachProperty = await ProfileProperty.findOne({
         where: { profileId: peach.id },
       });
-      await peachProperties.update({ state: "pending" });
+      await peachProperty.update({ state: "pending" });
       await peach.update({ state: "pending" });
+
+      // bowser has all pending profile properties
+      const bowser = await helper.factories.profile();
+      await bowser.import();
+      const bowserProperties = await ProfileProperty.findAll({
+        where: { profileId: bowser.id },
+      });
+      for (const p of bowserProperties) {
+        await p.update({ state: "pending" });
+      }
+      await bowser.update({ state: "pending" });
 
       await specHelper.runTask("profiles:checkReady", {});
 
@@ -49,20 +62,23 @@ describe("tasks/profile:checkReady", () => {
       await luigi.reload();
       await toad.reload();
       await peach.reload();
+      await bowser.reload();
 
-      expect(mario.state).toBe("ready"); // changed!
-      expect(luigi.state).toBe("ready"); // changed!
-      expect(toad.state).toBe("ready"); // already was ready!
-      expect(peach.state).toBe("pending"); // not ready yet (pending profile property)
+      expect(mario.state).toBe("ready");
+      expect(luigi.state).toBe("ready");
+      expect(toad.state).toBe("ready");
+      expect(peach.state).toBe("pending");
+      expect(bowser.state).toBe("pending");
 
       expect(found.map((t) => t.args[0].profileId).sort()).toEqual(
-        [mario.id, luigi.id].sort() // no toad, no peach
+        [mario.id, luigi.id].sort() // no toad, no peach, no bowser
       );
 
       await mario.destroy();
       await luigi.destroy();
       await toad.destroy();
       await peach.destroy();
+      await bowser.destroy();
     });
 
     test("batch size can be configured with a setting", async () => {

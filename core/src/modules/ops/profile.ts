@@ -599,7 +599,8 @@ export namespace ProfileOps {
           profiles.state = 'pending'
         GROUP BY profiles.id
         HAVING
-          COUNT(DISTINCT "profileProperties".state) = 1
+          MAX("profileProperties".state) = 'ready'
+          AND COUNT(DISTINCT "profileProperties".state) = 1
         LIMIT ${limit};
         ;`,
       { type: QueryTypes.SELECT }
