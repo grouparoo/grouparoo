@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { plugin } from "../../../src";
+import { plugin, ProfileProperty } from "../../../src";
 
 describe("tasks/profile:checkReady", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -31,6 +31,14 @@ describe("tasks/profile:checkReady", () => {
       await toad.import();
       await toad.update({ state: "ready" });
 
+      const peach = await helper.factories.profile();
+      await peach.import();
+      const peachProperties = await ProfileProperty.findOne({
+        where: { profileId: peach.id },
+      });
+      await peachProperties.update({ state: "pending" });
+      await peach.update({ state: "pending" });
+
       await specHelper.runTask("profiles:checkReady", {});
 
       const found = await specHelper.findEnqueuedTasks(
@@ -39,17 +47,22 @@ describe("tasks/profile:checkReady", () => {
 
       await mario.reload();
       await luigi.reload();
+      await toad.reload();
+      await peach.reload();
 
-      expect(mario.state).toBe("ready");
-      expect(luigi.state).toBe("ready");
+      expect(mario.state).toBe("ready"); // changed!
+      expect(luigi.state).toBe("ready"); // changed!
+      expect(toad.state).toBe("ready"); // already was ready!
+      expect(peach.state).toBe("pending"); // not ready yet (pending profile property)
 
       expect(found.map((t) => t.args[0].profileId).sort()).toEqual(
-        [mario.id, luigi.id].sort() // no toad
+        [mario.id, luigi.id].sort() // no toad, no peach
       );
 
       await mario.destroy();
       await luigi.destroy();
       await toad.destroy();
+      await peach.destroy();
     });
 
     test("batch size can be configured with a setting", async () => {
