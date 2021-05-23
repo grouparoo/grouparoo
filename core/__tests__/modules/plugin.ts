@@ -334,14 +334,19 @@ describe("modules/plugin", () => {
         });
 
         expect(_imports.length).toBe(2);
-
-        expect(_imports[0].data).toEqual({ firstName: ["Peach"] });
-        expect(_imports[0].rawData).toEqual({
+        const peachImport = _imports.find(
+          (i) => i.data.firstName[0] === "Peach"
+        );
+        const marioImport = _imports.find(
+          (i) => i.data.firstName[0] === "Mario"
+        );
+        expect(peachImport).toBeTruthy();
+        expect(marioImport).toBeTruthy();
+        expect(peachImport.rawData).toEqual({
           first__name: "Peach",
           last__name: "Toadstool",
         });
-        expect(_imports[1].data).toEqual({ firstName: ["Mario"] });
-        expect(_imports[1].rawData).toEqual({
+        expect(marioImport.rawData).toEqual({
           first__name: "Mario",
           last__name: "Mario",
         });
@@ -351,8 +356,9 @@ describe("modules/plugin", () => {
         );
 
         expect(tasks.length).toBe(2);
-        expect(tasks[0].args[0].importId).toBe(_imports[0].id);
-        expect(tasks[1].args[0].importId).toBe(_imports[1].id);
+        expect(tasks.map((t) => t.args[0].importId).sort()).toEqual(
+          [marioImport.id, peachImport.id].sort()
+        );
       });
     });
   });

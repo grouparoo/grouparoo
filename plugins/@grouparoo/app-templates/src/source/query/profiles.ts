@@ -49,8 +49,6 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       connection,
     });
 
-    const queryCol = Object.keys(rows[0])[0];
-
     const property = properties.find(
       (p) => p.id === scheduleOptions.propertyId
     );
@@ -59,12 +57,12 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       throw new Error(`cannot find property ${scheduleOptions.propertyId}`);
     }
 
-    const propertyMapping = { [queryCol]: property.key };
-
-    if (rows.length === 0) {
-      offset = 0;
-    } else {
+    if (rows.length > 0) {
+      const queryCol = Object.keys(rows[0])[0];
+      const propertyMapping = { [queryCol]: property.key };
       await plugin.createImports(propertyMapping, run, rows);
+    } else {
+      offset = 0;
     }
 
     return {
