@@ -517,6 +517,37 @@ export namespace ProfileOps {
   }
 
   /**
+   * Mark many Profiles and all of their properties as pending
+   */
+  export async function markPendingByIds(
+    profileIds: string[],
+    includeProperties = true
+  ) {
+    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
+      (p) => p.directlyMapped === false
+    );
+
+    if (includeProperties && nonDirectlyMappedRules.length > 0) {
+      await ProfileProperty.update(
+        { state: "pending", startedAt: null },
+        {
+          where: {
+            profileId: { [Op.in]: profileIds },
+            propertyId: {
+              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
+            },
+          },
+        }
+      );
+    }
+
+    await Profile.update(
+      { state: "pending" },
+      { where: { id: { [Op.in]: profileIds } } }
+    );
+  }
+
+  /**
    * Merge 2 Profiles, favoring the first Profile
    */
   export async function merge(profile: Profile, otherProfile: Profile) {

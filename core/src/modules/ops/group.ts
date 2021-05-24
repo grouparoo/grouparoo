@@ -6,6 +6,7 @@ import { ProfileMultipleAssociationShim } from "../../models/ProfileMultipleAsso
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
 import { api, log } from "actionhero";
+import { ProfileOps } from "./profile";
 
 export namespace GroupOps {
   /**
@@ -51,45 +52,32 @@ export namespace GroupOps {
   /**
    * Given a Profile, create an import to recalculate its Group Membership.  Optionally re-import all Profile Properties with `force`
    */
-  export async function updateProfile(
-    profileId: string,
+  export async function updateProfiles(
+    profileIds: string[],
     creatorType: string,
     creatorId: string,
     force: boolean,
     destinationId?: string
   ) {
-    const profile = await Profile.findOne({
-      where: { id: profileId },
-    });
-
-    const oldProfileProperties = {};
-    const properties = await profile.properties();
-    for (const key in properties) {
-      oldProfileProperties[key] = properties[key].values;
+    const bulkData = [];
+    for (const profileId of profileIds) {
+      bulkData.push({
+        rawData: destinationId ? { _meta: { destinationId } } : {},
+        data: destinationId ? { _meta: { destinationId } } : {},
+        creatorType,
+        creatorId,
+        profileId,
+        profileAssociatedAt: new Date(),
+        oldProfileProperties: {},
+        oldGroupIds: [],
+      });
     }
 
-    const oldGroupIds = (await profile.$get("groups")).map((g) => g.id);
+    const _imports = await Import.bulkCreate(bulkData);
 
-    const _import = await Import.create({
-      rawData: destinationId ? { _meta: { destinationId } } : {},
-      data: destinationId ? { _meta: { destinationId } } : {},
-      creatorType,
-      creatorId,
-      profileId: profile.id,
-      profileAssociatedAt: new Date(),
-      oldProfileProperties,
-      oldGroupIds,
-    });
+    await ProfileOps.markPendingByIds(profileIds, force);
 
-    if (force) {
-      // re-import the whole profile (relies on profileProperty:enqueue)
-      await profile.markPending();
-    } else {
-      // just calculate the groups and export (relies on profile:checkReady)
-      await profile.update({ state: "pending" });
-    }
-
-    return _import;
+    return _imports;
   }
 
   /**
@@ -288,10 +276,13 @@ export namespace GroupOps {
         ? profiles
         : profiles.filter((p) => !existingGroupMemberProfileIds.includes(p.id));
 
-    for (const i in profilesNeedingGroupMembership) {
-      const profileId = profilesNeedingGroupMembership[i].id;
-      await updateProfile(profileId, "run", run.id, force, destinationId);
-    }
+    await updateProfiles(
+      profilesNeedingGroupMembership.map((p) => p.id),
+      "run",
+      run.id,
+      force,
+      destinationId
+    );
 
     if (profiles.length > 0) {
       await GroupMember.update(
@@ -324,8 +315,6 @@ export namespace GroupOps {
     limit = 1000,
     destinationId?: string
   ) {
-    let groupMembersCount = 0;
-
     const groupMembersToRemove = await GroupMember.findAll({
       where: {
         groupId: group.id,
@@ -337,25 +326,28 @@ export namespace GroupOps {
     });
 
     // The offset and order can be ignored as we will keep running this query until the set of results becomes 0.
-    for (const i in groupMembersToRemove) {
-      const member = groupMembersToRemove[i];
+    await updateProfiles(
+      groupMembersToRemove.map((member) => member.profileId),
+      "run",
+      run.id,
+      false,
+      destinationId
+    );
 
-      await updateProfile(
-        member.profileId,
-        "run",
-        run.id,
-        false,
-        destinationId
-      );
-
-      member.removedAt = new Date();
-      await member.save();
-
-      groupMembersCount++;
-    }
+    const now = new Date();
+    await GroupMember.update(
+      { removedAt: now },
+      {
+        where: {
+          id: {
+            [Op.in]: groupMembersToRemove.map((member) => member.id),
+          },
+        },
+      }
+    );
 
     await group.update({ calculatedAt: new Date() });
-    return groupMembersCount;
+    return groupMembersToRemove.length;
   }
 
   /**
@@ -367,8 +359,6 @@ export namespace GroupOps {
     run: Run,
     limit = 100
   ) {
-    let groupMembersCount = 0;
-
     const groupMembersToRemove = await GroupMember.findAll({
       where: {
         groupId: group.id,
@@ -377,21 +367,26 @@ export namespace GroupOps {
       limit,
     });
 
-    for (const i in groupMembersToRemove) {
-      const member = groupMembersToRemove[i];
+    await updateProfiles(
+      groupMembersToRemove.map((member) => member.profileId),
+      "run",
+      run.id,
+      false
+    );
 
-      await updateProfile(member.profileId, "run", run.id, false);
+    const now = new Date();
+    await GroupMember.update(
+      { removedAt: now },
+      {
+        where: {
+          id: {
+            [Op.in]: groupMembersToRemove.map((member) => member.id),
+          },
+        },
+      }
+    );
 
-      member.removedAt = new Date();
-      await member.save();
-
-      groupMembersCount++;
-    }
-
-    run.set("updatedAt", new Date());
-    await run.save();
-
-    return groupMembersCount;
+    return groupMembersToRemove.length;
   }
 
   /**

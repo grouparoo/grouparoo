@@ -358,7 +358,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async addProfile(profile: Profile, force = true) {
-    await GroupOps.updateProfile(profile.id, "group", this.id, force);
+    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
 
     await GroupMember.create({
       groupId: this.id,
@@ -373,7 +373,7 @@ export class Group extends LoggedModel<Group> {
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    await GroupOps.updateProfile(profile.id, "group", this.id, force);
+    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
 
     await membership.destroy();
   }
