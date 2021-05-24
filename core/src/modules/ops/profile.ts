@@ -7,7 +7,7 @@ import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
-import { Op } from "sequelize";
+import { Op, QueryTypes } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { CLS } from "../../modules/cls";
@@ -588,24 +588,53 @@ export namespace ProfileOps {
    * Task `profile:completeImport` will be enqueued for each Profile.
    */
   export async function makeReady(limit = 100, toExport = true) {
-    let profiles: Profile[];
+    // let profiles: Profile[] = await api.sequelize.query(
+    //   `SELECT
+    //       profiles.id as id
+    //     FROM profiles
+    //     JOIN
+    //       "profileProperties" on "profileProperties"."profileId" = profiles.id
+    //     WHERE
+    //       profiles.state = 'pending'
+    //     GROUP BY profiles.id
+    //     HAVING
+    //       MAX("profileProperties".state) = 'ready'
+    //       AND COUNT(DISTINCT "profileProperties".state) = 1
+    //     LIMIT ${limit}
+    //     ;`,
+    //   { type: QueryTypes.SELECT }
+    // );
 
-    const notInQuery = api.sequelize.dialect.queryGenerator
-      .selectQuery("profileProperties", {
-        attributes: [
-          api.sequelize.fn("DISTINCT", api.sequelize.col("profileId")),
-        ],
-        where: { state: "pending" },
-      })
-      .slice(0, -1);
-
-    profiles = await Profile.findAll({
-      where: {
-        state: "pending",
-        id: { [Op.notIn]: api.sequelize.literal(`(${notInQuery})`) },
-      },
+    let profiles = await Profile.findAll({
+      subQuery: false,
+      attributes: ["id"],
+      where: { state: "pending" },
+      include: [{ model: ProfileProperty, required: true, attributes: [] }],
+      group: "Profile.id",
       limit,
-      order: [["id", "asc"]],
+      having: {
+        [Op.and]: [
+          api.sequelize.where(
+            api.sequelize.fn(
+              "MAX",
+              api.sequelize.col("profileProperties.state")
+            ),
+            "=",
+            "ready"
+          ),
+          api.sequelize.where(
+            api.sequelize.fn(
+              "COUNT",
+              api.sequelize.fn(
+                "DISTINCT",
+                api.sequelize.col("profileProperties.state")
+              )
+            ),
+            "=",
+            1
+          ),
+        ],
+      },
     });
 
     const updateResponse = await Profile.update(

@@ -759,6 +759,37 @@ jobs:
           command: cd core/ && ./node_modules/.bin/jest __tests__/actions --ci --maxWorkers 2
           environment:
             DB_DIALECT: sqlite
+  test-core-local-tasks:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: test
+          command: cd core/ && ./node_modules/.bin/jest __tests__/tasks --ci --maxWorkers 2
+          environment:
+            DB_DIALECT: sqlite
   test-ui-components:
     docker:
       - image: circleci/node:14
@@ -2770,6 +2801,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-core-local-tasks:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-ui-components:
           filters:
             <<: *ignored-branches
@@ -2989,6 +3025,7 @@ workflows:
             - test-core-tasks
             - test-core-local-models
             - test-core-local-actions
+            - test-core-local-tasks
             - test-ui-components
             - test-ui-community
             - test-ui-enterprise
