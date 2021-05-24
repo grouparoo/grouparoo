@@ -588,22 +588,57 @@ export namespace ProfileOps {
    * Task `profile:completeImport` will be enqueued for each Profile.
    */
   export async function makeReady(limit = 100, toExport = true) {
-    let profiles: Profile[] = await api.sequelize.query(
-      `SELECT
-          profiles.id as id
-        FROM profiles
-        JOIN
-          "profileProperties" on "profileProperties"."profileId" = profiles.id
-        WHERE
-          profiles.state = 'pending'
-        GROUP BY profiles.id
-        HAVING
-          MAX("profileProperties".state) = 'ready'
-          AND COUNT(DISTINCT "profileProperties".state) = 1
-        LIMIT ${limit}
-        ;`,
-      { type: QueryTypes.SELECT }
-    );
+    // let profiles: Profile[] = await api.sequelize.query(
+    //   `SELECT
+    //       profiles.id as id
+    //     FROM profiles
+    //     JOIN
+    //       "profileProperties" on "profileProperties"."profileId" = profiles.id
+    //     WHERE
+    //       profiles.state = 'pending'
+    //     GROUP BY profiles.id
+    //     HAVING
+    //       MAX("profileProperties".state) = 'ready'
+    //       AND COUNT(DISTINCT "profileProperties".state) = 1
+    //     LIMIT ${limit}
+    //     ;`,
+    //   { type: QueryTypes.SELECT }
+    // );
+
+    let profiles = await Profile.findAll({
+      subQuery: false,
+      attributes: ["id"],
+      where: { state: "pending" },
+      include: [{ model: ProfileProperty, required: true, attributes: [] }],
+      group: "Profile.id",
+      limit,
+      having: {
+        [Op.and]: [
+          api.sequelize.where(
+            api.sequelize.fn(
+              "MAX",
+              api.sequelize.col("profileProperties.state")
+            ),
+            "=",
+            "ready"
+          ),
+          api.sequelize.where(
+            api.sequelize.fn(
+              "COUNT",
+              // api.sequelize.col(
+              api.sequelize.fn(
+                "DISTINCT",
+                api.sequelize.col("profileProperties.state")
+              )
+              // )
+            ),
+            "=",
+            1
+          ),
+        ],
+      },
+      logging: true,
+    });
 
     const updateResponse = await Profile.update(
       { state: "ready" },
