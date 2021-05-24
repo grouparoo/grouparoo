@@ -106,6 +106,13 @@ class Generator {
       relative_path: `core`,
       name: "actions",
     });
+
+    this.jobList.push({
+      type: "core-local",
+      job_name: `test-core-local-tasks`,
+      relative_path: `core`,
+      name: "tasks",
+    });
   }
 
   addUiComponents() {
