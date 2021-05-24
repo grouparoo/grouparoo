@@ -129,7 +129,8 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async markPending() {
-    return ProfileOps.markPending(this);
+    await ProfileOps.markPendingByIds([this.id]);
+    await this.reload();
   }
 
   async sync(force = true, oldGroupsOverride?: Group[], toExport = true) {
