@@ -389,13 +389,6 @@ describe("modules/codeConfig", () => {
       const destination = destinations[0];
       expect(destination.id).toBe("test_destination");
       expect(destination.state).toEqual("deleted");
-
-      // we need to "wait" for the destination to be deleted to remove it's dependant models
-      await specHelper.runTask("destination:destroy", {
-        destinationId: "test_destination",
-      });
-      await destination.reload();
-      await destination.destroy();
     });
 
     test("changes to team permissions will be updated", async () => {
@@ -456,12 +449,6 @@ describe("modules/codeConfig", () => {
       });
     });
 
-    afterAll(async () => {
-      // pretending that the task had run to delete the queued deletes
-      await Group.truncate();
-      await GroupRule.truncate();
-    });
-
     test("most objects will be deleted with a partially empty config file", async () => {
       expect(await App.count()).toBe(1);
       expect(await Source.count()).toBe(1);
@@ -483,8 +470,6 @@ describe("modules/codeConfig", () => {
       });
       expect(app.state).toBe("deleted");
       expect(app.locked).toBeNull();
-
-      await specHelper.runTask("app:destroy", { appId: "events" });
     });
 
     test("a removed group will be deleted", async () => {
@@ -493,8 +478,6 @@ describe("modules/codeConfig", () => {
       expect(groups[0].id).toBe("email_group");
       expect(groups[0].state).toBe("deleted");
       expect(groups[0].locked).toBe(null);
-
-      await specHelper.runTask("group:destroy", { groupId: "email_group" });
     });
 
     test("removed properties will be deleted", async () => {
@@ -567,8 +550,6 @@ describe("modules/codeConfig", () => {
       expect(properties[0].id).toBe("email");
       expect(properties[0].state).toBe("deleted");
       expect(properties[0].locked).toBe(null);
-
-      await specHelper.runTask("property:destroy", { propertyId: "email" });
     });
 
     test("a removed source will be deleted", async () => {
@@ -577,22 +558,200 @@ describe("modules/codeConfig", () => {
       expect(sources[0].id).toBe("users_table");
       expect(sources[0].state).toBe("deleted");
       expect(sources[0].locked).toBeNull();
-
-      await specHelper.runTask("source:destroy", { sourceId: "users_table" });
     });
 
     test("a removed app will be deleted", async () => {
-      const apps = await App.scope(null).findAll();
-      expect(apps.length).toBe(1);
-      expect(apps[0].id).toBe("data_warehouse");
-      expect(apps[0].state).toBe("deleted");
-      expect(apps[0].locked).toBeNull();
-
-      await specHelper.runTask("app:destroy", { appId: "data_warehouse" });
+      const app = await App.scope(null).findOne({
+        where: { id: "data_warehouse" },
+      });
+      expect(app.state).toBe("deleted");
+      expect(app.locked).toBeNull();
     });
 
     test("settings remain", async () => {
       expect(await Setting.count()).toBeGreaterThan(1);
+    });
+  });
+
+  describe("bring it all back", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+      );
+      expect(errors).toEqual([]);
+      expect(seenIds).toEqual({
+        apikey: ["website_key"],
+        app: expect.arrayContaining(["data_warehouse", "events"]),
+        destination: ["test_destination"],
+        group: ["email_group"],
+        property: expect.arrayContaining([
+          "user_id",
+          "email",
+          "last_name",
+          "first_name",
+        ]),
+        schedule: ["users_table_schedule"],
+        source: ["users_table"],
+        team: ["admin_team"],
+        teammember: ["demo"],
+      });
+      expect(deletedIds).toEqual({
+        apikey: [],
+        app: [],
+        destination: [],
+        group: [],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+      });
+    });
+
+    test("apps are brought back", async () => {
+      const apps = await App.findAll({
+        order: [["type", "asc"]],
+      });
+      expect(apps.length).toBe(2);
+
+      expect(apps[0].id).toBe("events");
+      expect(apps[0].name).toBe("Grouparoo Events");
+      expect(apps[0].state).toBe("ready");
+      expect(apps[0].locked).toBe("config:code");
+      let options = await apps[0].getOptions();
+      expect(options).toEqual({
+        identifyingPropertyId: "user_id",
+      });
+
+      expect(apps[1].id).toBe("data_warehouse");
+      expect(apps[1].name).toBe("Data Warehouse");
+      expect(apps[1].state).toBe("ready");
+      expect(apps[1].locked).toBe("config:code");
+      options = await apps[1].getOptions();
+      expect(options).toEqual({ fileId: "test-file-path.db" });
+    });
+
+    test("sources are brought back", async () => {
+      const sources = await Source.findAll();
+      expect(sources.length).toBe(1);
+      expect(sources[0].id).toBe("users_table");
+      expect(sources[0].appId).toBe("data_warehouse");
+      expect(sources[0].name).toBe("Users Table");
+      expect(sources[0].state).toBe("ready");
+      expect(sources[0].locked).toBe("config:code");
+      const options = await sources[0].getOptions();
+      expect(options).toEqual({ table: "users" });
+    });
+
+    test("the bootstrapped property is brought back", async () => {
+      const property = await Property.findOne({
+        where: { directlyMapped: true },
+      });
+      expect(property.id).toBe("user_id");
+      expect(property.key).toBe("userId");
+      expect(property.type).toBe("integer");
+      expect(property.unique).toBe(true);
+      expect(property.identifying).toBe(true);
+      expect(property.state).toBe("ready");
+      expect(property.locked).toBe("config:code");
+    });
+
+    test("schedules are brought back", async () => {
+      const schedules = await Schedule.findAll();
+      expect(schedules.length).toBe(1);
+      expect(schedules[0].id).toBe("users_table_schedule");
+      expect(schedules[0].sourceId).toBe("users_table");
+      expect(schedules[0].name).toBe("Users Table Schedule");
+      expect(schedules[0].state).toBe("ready");
+      expect(schedules[0].recurring).toBe(true);
+      expect(schedules[0].recurringFrequency).toBe(900000);
+      expect(schedules[0].locked).toBe("config:code");
+    });
+
+    test("properties are brought back", async () => {
+      const rules = await Property.findAll();
+      expect(rules.length).toBe(4);
+      expect(rules.map((r) => r.key).sort()).toEqual([
+        "email",
+        "first name",
+        "last name",
+        "userId",
+      ]);
+      expect(rules.map((r) => r.sourceId).sort()).toEqual([
+        "users_table",
+        "users_table",
+        "users_table",
+        "users_table",
+      ]);
+      expect(rules.map((r) => r.state).sort()).toEqual([
+        "ready",
+        "ready",
+        "ready",
+        "ready",
+      ]);
+      expect(rules.map((r) => r.locked).sort()).toEqual([
+        "config:code",
+        "config:code",
+        "config:code",
+        "config:code",
+      ]);
+
+      const options = await Promise.all(rules.map((r) => r.getOptions()));
+      expect(options.map((o) => o.column).sort()).toEqual([
+        "email",
+        "first_name",
+        "id",
+        "last_name",
+      ]);
+    });
+
+    test("groups are brought back", async () => {
+      const groups = await Group.findAll();
+      expect(groups.length).toBe(1);
+      expect(groups[0].id).toBe("email_group");
+      expect(groups[0].name).toBe("People with Email Addresses");
+      expect(groups[0].locked).toBe("config:code");
+      const rules = await groups[0].getRules();
+      expect(rules).toEqual([
+        {
+          key: "userId",
+          match: "null",
+          operation: { description: "is not equal to", op: "ne" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: false,
+          type: "integer",
+        },
+        {
+          key: "email",
+          match: "%@%",
+          operation: { description: "is like (case sensitive)", op: "like" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: false,
+          type: "email",
+        },
+      ]);
+    });
+
+    test("destinations are brought back", async () => {
+      const destinations = await Destination.findAll();
+      expect(destinations.length).toBe(1);
+      expect(destinations[0].id).toBe("test_destination");
+      expect(destinations[0].appId).toBe("data_warehouse");
+      expect(destinations[0].name).toBe("Test Destination");
+      expect(destinations[0].syncMode).toBe("additive");
+      expect(destinations[0].state).toBe("ready");
+      expect(destinations[0].locked).toBe("config:code");
+      const options = await destinations[0].getOptions();
+      expect(options).toEqual({ table: "output" });
+    });
+
+    afterAll(async () => {
+      await helper.truncate();
     });
   });
 

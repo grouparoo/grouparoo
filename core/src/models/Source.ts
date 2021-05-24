@@ -48,6 +48,14 @@ const STATE_TRANSITIONS = [
   },
   { from: "draft", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
+  {
+    from: "deleted",
+    to: "ready",
+    checks: [
+      (instance: Source) => instance.validateOptions(),
+      (instance: Source) => instance.validateMapping(),
+    ],
+  },
 ];
 
 @DefaultScope(() => ({

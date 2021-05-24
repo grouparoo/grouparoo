@@ -29,15 +29,17 @@ export async function loadSource(
   let source = await Source.scope(null).findOne({
     where: {
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
       appId: app.id,
+      [Op.or]: {
+        locked: getCodeConfigLockKey(),
+        state: "deleted",
+      },
     },
   });
   if (!source) {
     isNew = true;
     source = await Source.create({
       id: configObject.id,
-      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
       appId: app.id,
@@ -107,10 +109,15 @@ export async function loadSource(
     }
   }
 
-  await source.update({ state: "ready" });
+  if (isNew || source.state === "deleted") {
+    await source.update({
+      state: "ready",
+      locked: ConfigWriter.getLockKey(configObject),
+    });
 
-  if (isNew && bootstrappedProperty) {
-    await bootstrappedProperty.update({ locked: getCodeConfigLockKey() });
+    if (bootstrappedProperty) {
+      await bootstrappedProperty.update({ locked: getCodeConfigLockKey() });
+    }
   }
 
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");

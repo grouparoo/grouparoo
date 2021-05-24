@@ -20,19 +20,32 @@ export async function loadGroup(
   validateConfigObjectKeys(Group, configObject);
 
   let group = await Group.scope(null).findOne({
-    where: { id: configObject.id, locked: getCodeConfigLockKey() },
+    where: {
+      id: configObject.id,
+      [Op.or]: {
+        locked: getCodeConfigLockKey(),
+        state: "deleted",
+      },
+    },
   });
   if (!group) {
     isNew = true;
     group = await Group.create({
       id: configObject.id,
-      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
     });
   }
 
-  await group.update({ type: configObject.type, name: configObject.name });
+  await group.update({
+    type: configObject.type,
+    name: configObject.name,
+    locked: ConfigWriter.getLockKey(configObject),
+  });
+
+  if (group.state === "deleted") {
+    await group.stopPreviousRuns();
+  }
 
   if (configObject.rules) {
     const rules = [...configObject.rules];

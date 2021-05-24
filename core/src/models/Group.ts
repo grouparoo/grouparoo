@@ -72,6 +72,7 @@ const STATE_TRANSITIONS = [
   { from: "updating", to: "initializing", checks: [] },
   { from: "updating", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
+  { from: "deleted", to: "ready", checks: [] },
 ];
 
 export const TopLevelGroupRules = [
