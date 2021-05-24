@@ -50,7 +50,6 @@ describe("modules/status", () => {
   describe("with many metrics", () => {
     beforeAll(async () => {
       await api.resque.queue.connection.redis.flushdb();
-
       await Status.set([metric]);
       await utils.sleep(10);
       await Status.set([metric]);
@@ -285,7 +284,6 @@ describe("modules/status", () => {
           undefined
         );
         await helper.changeTimestamps(_export3, true);
-
 
         const now = new Date();
         await _export.update({
