@@ -30,8 +30,8 @@ describe("tasks/import:associateProfile", () => {
         email: "toad@example.com",
         firstName: "Toad",
       });
-      expect(_import.profileId).toBeNull();
-      expect(_import.profileAssociatedAt).toBeNull();
+      expect(_import.profileId).toBeFalsy();
+      expect(_import.profileAssociatedAt).toBeFalsy();
 
       let profilesCount = await Profile.count();
       expect(profilesCount).toBe(0);

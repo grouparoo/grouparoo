@@ -139,7 +139,7 @@ describe("tasks/schedule:run", () => {
         state: "running",
       });
 
-      specHelper.runTask("schedule:run", {
+      await specHelper.runTask("schedule:run", {
         scheduleId: schedule.id,
         runId: run.id,
       });

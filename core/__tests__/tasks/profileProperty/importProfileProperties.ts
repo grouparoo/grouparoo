@@ -168,24 +168,20 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       const properties = await Property.findAll();
 
       // run once to set userId
-      await Promise.all(
-        properties.map((property) =>
-          specHelper.runTask("profileProperty:importProfileProperties", {
-            profileIds: [profileA.id, profileB.id, profileC.id],
-            propertyId: property.id,
-          })
-        )
-      );
+      for (const property of properties) {
+        await specHelper.runTask("profileProperty:importProfileProperties", {
+          profileIds: [profileA.id, profileB.id, profileC.id],
+          propertyId: property.id,
+        });
+      }
 
       // run again for other properties
-      await Promise.all(
-        properties.map((property) =>
-          specHelper.runTask("profileProperty:importProfileProperties", {
-            profileIds: [profileA.id, profileB.id, profileC.id],
-            propertyId: property.id,
-          })
-        )
-      );
+      for (const property of properties) {
+        await specHelper.runTask("profileProperty:importProfileProperties", {
+          profileIds: [profileA.id, profileB.id, profileC.id],
+          propertyId: property.id,
+        });
+      }
 
       const profileProperties = await profileA.properties();
       expect(profileProperties.firstName.values).toEqual(["Mario"]);

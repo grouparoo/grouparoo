@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { api, task, specHelper } from "actionhero";
+import { api, config, task, specHelper } from "actionhero";
 import { Group, Profile, ProfileProperty, Property } from "../../../src";
 
 describe("tasks/profile:completeImport", () => {
@@ -16,7 +16,9 @@ describe("tasks/profile:completeImport", () => {
       {
         key: "lastName",
         match: "Mario",
-        operation: { op: "iLike" },
+        operation: {
+          op: config.sequelize.dialect === "postgres" ? "iLike" : "like",
+        },
       },
     ]);
     await group.update({ state: "ready" });
