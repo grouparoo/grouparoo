@@ -625,12 +625,10 @@ export namespace ProfileOps {
           api.sequelize.where(
             api.sequelize.fn(
               "COUNT",
-              // api.sequelize.col(
               api.sequelize.fn(
                 "DISTINCT",
                 api.sequelize.col("profileProperties.state")
               )
-              // )
             ),
             "=",
             1
