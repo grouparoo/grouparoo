@@ -29,7 +29,6 @@ export namespace ImportOps {
         },
       },
       limit,
-      order: [["createdAt", "asc"]],
     });
 
     if (imports.length > 0) {
@@ -76,6 +75,7 @@ export namespace ImportOps {
     const oldProfileProperties = await profile.simplifiedProperties();
     const oldGroups = await profile.$get("groups");
 
+    _import.createdProfile = isNew;
     _import.profileId = profile.id;
     _import.profileAssociatedAt = new Date();
 

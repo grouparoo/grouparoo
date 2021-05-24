@@ -91,7 +91,6 @@ export namespace ExportOps {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },
       },
-      order: [["sendAt", "asc"]],
       limit,
     });
 

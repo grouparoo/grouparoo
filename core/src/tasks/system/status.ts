@@ -1,6 +1,7 @@
 import { Task, api, log } from "actionhero";
 import { GrouparooCLI } from "../../modules/cli";
 import { CLS } from "../../modules/cls";
+import { APM } from "../../modules/apm";
 import { Status, FinalSummary } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
 import { plugin } from "../../modules/plugin";
@@ -18,18 +19,20 @@ export class StatusTask extends Task {
     };
   }
 
-  async run({ toStop }: { toStop: boolean }) {
-    const runMode = process.env.GROUPAROO_RUN_MODE;
-    const samples = await this.getSamples();
-    if (runMode === "cli:run") this.logSamples(samples);
+  async run({ toStop }: { toStop: boolean }, worker) {
+    return APM.wrap(this.name, "task", worker, async () => {
+      const runMode = process.env.GROUPAROO_RUN_MODE;
+      const samples = await this.getSamples();
+      if (runMode === "cli:run") this.logSamples(samples);
 
-    const complete = await this.checkForComplete(samples);
-    if (runMode === "cli:run" && complete) {
-      await this.logFinalSummary();
-      await this.stopServer(toStop);
-    }
+      const complete = await this.checkForComplete(samples);
+      if (runMode === "cli:run" && complete) {
+        await this.logFinalSummary();
+        await this.stopServer(toStop);
+      }
 
-    await this.updateTaskFrequency();
+      await this.updateTaskFrequency();
+    });
   }
 
   async logFinalSummary() {

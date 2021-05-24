@@ -281,7 +281,7 @@ export class Export extends Model {
   }
 
   @BeforeSave
-  static async updateState(instance: Profile) {
+  static async updateState(instance: Export) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
   }
 

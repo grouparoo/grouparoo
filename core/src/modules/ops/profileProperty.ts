@@ -102,7 +102,6 @@ export namespace ProfilePropertyOps {
           [Op.or]: [null, { [Op.lt]: new Date().getTime() - delayMs }],
         },
       },
-      order: [["stateChangedAt", "ASC"]],
       limit,
     });
 
