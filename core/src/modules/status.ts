@@ -1,7 +1,11 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
-import { StatusReporters, StatusMetric } from "./statusReporters";
+import {
+  StatusReporters,
+  StatusMetric,
+  FinalSummaryReporters,
+} from "./statusReporters";
 
 export namespace Status {
   export const maxSamples = 100;
@@ -94,5 +98,23 @@ export namespace Status {
 
   function getRedis() {
     return api.redis.clients.client;
+  }
+}
+
+export namespace FinalSummary {
+  export type FinalSummaryLogArray = Array<
+    | FinalSummaryReporters.Sources.SourceData[]
+    | FinalSummaryReporters.Profiles.ProfileData[]
+    | FinalSummaryReporters.Destinations.DestinationData[]
+  >;
+
+  export async function getFinalSummary() {
+    const finalSummaryLogs: FinalSummaryLogArray = [];
+
+    finalSummaryLogs.push(await FinalSummaryReporters.Profiles.getData());
+    finalSummaryLogs.push(await FinalSummaryReporters.Sources.getData());
+    finalSummaryLogs.push(await FinalSummaryReporters.Destinations.getData());
+
+    return finalSummaryLogs;
   }
 }

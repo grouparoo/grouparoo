@@ -1,7 +1,7 @@
 import { Task, api, log } from "actionhero";
 import { GrouparooCLI } from "../../modules/cli";
 import { CLS } from "../../modules/cls";
-import { Status } from "../../modules/status";
+import { Status, FinalSummary } from "../../modules/status";
 import { StatusMetric } from "../../modules/statusReporters";
 import { plugin } from "../../modules/plugin";
 
@@ -24,9 +24,17 @@ export class StatusTask extends Task {
     if (runMode === "cli:run") this.logSamples(samples);
 
     const complete = await this.checkForComplete(samples);
-    if (runMode === "cli:run" && complete) await this.stopServer(toStop);
+    if (runMode === "cli:run" && complete) {
+      await this.logFinalSummary();
+      await this.stopServer(toStop);
+    }
 
     await this.updateTaskFrequency();
+  }
+
+  async logFinalSummary() {
+    const finalSummaryLog = await FinalSummary.getFinalSummary();
+    GrouparooCLI.logger.finalSummary(finalSummaryLog);
   }
 
   async checkForComplete(samples: StatusMetric[]) {

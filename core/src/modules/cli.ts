@@ -1,5 +1,7 @@
 import { CLI, api } from "actionhero";
 import Colors from "colors/safe";
+import { FinalSummary } from "./status";
+import { FinalSummaryReporters } from "../../../core/src/modules/statusReporters";
 
 export namespace GrouparooCLI {
   /** Types */
@@ -82,6 +84,10 @@ export namespace GrouparooCLI {
       return colorEnabled() ? Colors.blue(Colors.bold(s)) : s;
     }
 
+    export function cyanBold(s: string) {
+      return colorEnabled() ? Colors.cyan(Colors.bold(s)) : s;
+    }
+
     export function blue(s: string) {
       return colorEnabled() ? Colors.blue(s) : s;
     }
@@ -92,6 +98,13 @@ export namespace GrouparooCLI {
 
     export function deCamel(s: string) {
       return s.replace(/([a-z])([A-Z])/g, "$1 $2");
+    }
+
+    export function deCamelAndCapitalize(s: string) {
+      return (
+        s.charAt(0).toUpperCase() +
+        s.slice(1).replace(/([a-z])([A-Z])/g, "$1 $2")
+      );
     }
 
     export function fatal(message: string) {
@@ -127,6 +140,77 @@ export namespace GrouparooCLI {
 
       GrouparooCLI.logger.log(
         blueBold("└" + "-".repeat(formattedTitle.length - 1))
+      );
+      GrouparooCLI.logger.log("");
+    }
+
+    export function generateSummaryItems(
+      categorySummary:
+        | FinalSummaryReporters.Profiles.ProfileData[]
+        | FinalSummaryReporters.Sources.SourceData[]
+        | FinalSummaryReporters.Destinations.DestinationData[]
+    ) {
+      if (categorySummary.length === 0) {
+        GrouparooCLI.logger.log(`${cyanBold("|")} None affected`);
+      }
+      categorySummary.forEach(
+        (
+          category:
+            | FinalSummaryReporters.Profiles.ProfileData
+            | FinalSummaryReporters.Sources.SourceData
+            | FinalSummaryReporters.Destinations.DestinationData,
+          idx
+        ) => {
+          if (idx > 0) logger.log(cyanBold(`|`));
+
+          if (category.name !== null) {
+            GrouparooCLI.logger.log(
+              `${cyanBold(`|`)} ${idx + 1}. ${underlineBold(category.name)}`
+            );
+          }
+
+          for (const property in category) {
+            if (property !== "name") {
+              GrouparooCLI.logger.log(
+                category[property] === null
+                  ? `${cyanBold("|")}   * ${deCamelAndCapitalize(
+                      property
+                    )}: none`
+                  : `${cyanBold("|")}   * ${deCamelAndCapitalize(property)}: ${
+                      category[property]
+                    }`
+              );
+            }
+          }
+        }
+      );
+      return false;
+    }
+
+    export function finalSummary(
+      finalSummaryLogs: FinalSummary.FinalSummaryLogArray,
+      secondaryTitle = `@ ${new Date().toISOString()}`
+    ) {
+      const formattedTitle = `┌-- 🦘 Run Completed @ ${secondaryTitle} ---`;
+
+      GrouparooCLI.logger.log("");
+      GrouparooCLI.logger.log(cyanBold(formattedTitle));
+      const headings = ["PROFILES", "SOURCES", "DESTINATIONS"];
+      finalSummaryLogs.forEach((log, idx) => {
+        GrouparooCLI.logger.log(
+          cyanBold(`|`) +
+            "\n" +
+            cyanBold(`|`) +
+            " " +
+            underlineBold(headings[idx]) +
+            "\n" +
+            cyanBold(`|`)
+        );
+        generateSummaryItems(log);
+      });
+
+      GrouparooCLI.logger.log(
+        cyanBold("└" + "-".repeat(formattedTitle.length - 1))
       );
       GrouparooCLI.logger.log("");
     }

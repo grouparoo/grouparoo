@@ -1,7 +1,11 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, utils, config } from "actionhero";
-import { StatusMetric } from "../../src/modules/statusReporters";
+import {
+  StatusMetric,
+  FinalSummaryReporters,
+} from "../../src/modules/statusReporters";
 import { Status } from "../../src/modules/status";
+import { Destination, Profile, Source, Export } from "../../src";
 
 describe("modules/status", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -17,7 +21,7 @@ describe("modules/status", () => {
     value: "foo",
   };
 
-  describe("with a metic", () => {
+  describe("with a metric", () => {
     beforeEach(async () => {
       await api.resque.queue.connection.redis.flushdb();
       await Status.set([metric]);
@@ -46,7 +50,6 @@ describe("modules/status", () => {
   describe("with many metrics", () => {
     beforeAll(async () => {
       await api.resque.queue.connection.redis.flushdb();
-
       await Status.set([metric]);
       await utils.sleep(10);
       await Status.set([metric]);
@@ -191,6 +194,109 @@ describe("modules/status", () => {
           // value: "source name",
         }),
       ]);
+    });
+  });
+
+  describe("final summary", () => {
+    let oldProfile: Profile;
+    let newProfile: Profile;
+
+    beforeEach(async () => {
+      await helper.truncate();
+      await helper.factories.properties();
+      oldProfile = await helper.factories.profile();
+      await helper.changeTimestamps(oldProfile, true); // 'true' will set both updatedAt and createdAt
+
+      newProfile = await helper.factories.profile();
+    });
+
+    test("it gathers profiles", async () => {
+      const profiles = await FinalSummaryReporters.Profiles.getData();
+      expect(profiles[0].profilesCreated).toEqual(1);
+      expect(profiles[0].profilesUpdated).toEqual(1);
+      expect(profiles[0].allProfiles).toEqual(2);
+    });
+
+    describe("it gathers sources", () => {
+      it("does not show sources without a run", async () => {
+        const sources = await Source.findAll();
+        expect(sources.length).toBe(1);
+        const sourceReport = await FinalSummaryReporters.Sources.getData();
+        expect(sourceReport).toEqual([]);
+      });
+
+      it("shows sources that ran", async () => {
+        const source = await helper.factories.source();
+        await source.setOptions({ table: "users_table" });
+        await source.setMapping({ id: "userId" });
+        await source.update({ state: "ready" });
+
+        const schedule = await helper.factories.schedule(source);
+        const run = await helper.factories.run(schedule);
+
+        const _import = await helper.factories.import(
+          run,
+          undefined,
+          oldProfile.id
+        );
+        const now = new Date();
+        await _import.update({
+          profileAssociatedAt: now,
+          profileUpdatedAt: now,
+          groupsUpdatedAt: now,
+        });
+        await run.updateTotals();
+
+        const sources = await FinalSummaryReporters.Sources.getData();
+        expect(sources[0].name).toEqual(source.name);
+        expect(sources[0].importsCreated).toEqual(1);
+        expect(sources[0].profilesCreated).toEqual(0);
+        expect(sources[0].profilesImported).toEqual(1);
+        expect(sources[0].error).toEqual(null);
+      });
+    });
+    describe("it gathers destinations", () => {
+      it("does not show destinations without an export", async () => {
+        const destination = await helper.factories.destination();
+        const destinations = await Destination.findAll();
+        expect(destinations.length).toBe(1);
+        const destinationReport =
+          await FinalSummaryReporters.Destinations.getData();
+        expect(destinationReport).toEqual([]);
+      });
+
+      it("shows destinations that ran", async () => {
+        const destination = await helper.factories.destination();
+
+        const _export = await helper.factories.export(
+          undefined,
+          destination,
+          undefined
+        );
+        const _export2 = await helper.factories.export(
+          undefined,
+          destination,
+          undefined
+        );
+        const _export3 = await helper.factories.export(
+          undefined,
+          destination,
+          undefined
+        );
+        await helper.changeTimestamps(_export3, true);
+
+        const now = new Date();
+        await _export.update({
+          completedAt: new Date(now),
+          state: "complete",
+        });
+
+        const destinations = await FinalSummaryReporters.Destinations.getData();
+        expect(destinations[0].name).toEqual(destination.name);
+        expect(destinations[0].exportsCreated).toEqual(2);
+        expect(destinations[0].exportsFailed).toEqual(0);
+        expect(destinations[0].exportsComplete).toEqual(1);
+      });
     });
   });
 });

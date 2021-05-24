@@ -2,7 +2,6 @@ import os from "os";
 import { api, env, task } from "actionhero";
 import PluginDetails from "../utils/pluginDetails";
 import { Op } from "sequelize";
-
 import { App } from "../models/App";
 import { ApiKey } from "../models/ApiKey";
 import { Source } from "../models/Source";
@@ -21,7 +20,6 @@ import { Run } from "../models/Run";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
-
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
 
@@ -413,4 +411,136 @@ function mergeMetrics(metrics: StatusMetric[]) {
   });
 
   return mergedMetrics;
+}
+
+export namespace FinalSummaryReporters {
+  const lastRunStart = new Date(api.bootTime);
+  export namespace Sources {
+    export interface SourceData {
+      name: string;
+      profilesCreated: number;
+      profilesImported: number;
+      importsCreated: number;
+      error: string;
+    }
+    export async function getData(): Promise<Array<SourceData>> {
+      const runs = await Run.findAll({
+        where: {
+          updatedAt: { [Op.gte]: lastRunStart },
+          creatorType: "schedule",
+        },
+      });
+
+      const sources: { [id: string]: SourceData } = {};
+      for (const run of runs) {
+        let source = null;
+        const schedule = await Schedule.findById(run.creatorId);
+        if (schedule) {
+          source = await schedule.$get("source");
+        }
+
+        const currentSource = sources[source.id] || {
+          name: source.name,
+          profilesCreated: 0,
+          profilesImported: 0,
+          importsCreated: 0,
+          error: null,
+        };
+        currentSource.profilesCreated += run.profilesCreated;
+        currentSource.profilesImported += run.profilesImported;
+        currentSource.importsCreated += run.importsCreated;
+        currentSource.error = currentSource.error || run.error;
+        sources[source.id] = currentSource;
+      }
+
+      return Object.values(sources);
+    }
+  }
+
+  export namespace Profiles {
+    export interface ProfileData {
+      name: null;
+      profilesUpdated: number;
+      profilesCreated: number;
+      allProfiles: number;
+    }
+
+    export async function getData() {
+      const out: ProfileData[] = [];
+      const profilesUpdated = await Profile.count({
+        where: { updatedAt: { [Op.gt]: lastRunStart } },
+      });
+
+      const profilesCreated = await Profile.count({
+        where: { createdAt: { [Op.gt]: lastRunStart } },
+      });
+      const name = null;
+      const allProfiles = await Profile.count();
+
+      const profileData = {
+        name,
+        profilesUpdated,
+        profilesCreated,
+        allProfiles,
+      };
+      out.push(profileData);
+      return out;
+    }
+  }
+
+  export namespace Destinations {
+    export interface DestinationData {
+      name: string;
+      exportsCreated: number;
+      exportsFailed: number;
+      exportsComplete: number;
+    }
+
+    export async function getData() {
+      const out: DestinationData[] = [];
+
+      const exports = await Export.findAll({
+        attributes: [
+          "destinationId",
+          [
+            api.sequelize.fn("count", api.sequelize.col("id")),
+            "exportsCreated",
+          ],
+        ],
+        where: { createdAt: { [Op.gt]: lastRunStart } },
+        group: ["destinationId"],
+      });
+      for (const exp of exports) {
+        const destination = await Destination.findOne({
+          where: { id: exp.destinationId },
+        });
+
+        const exportsFailed = await Export.count({
+          where: {
+            state: "failed",
+            updatedAt: { [Op.gt]: lastRunStart },
+            destinationId: destination.id,
+          },
+        });
+
+        const exportsComplete = await Export.count({
+          where: {
+            state: "complete",
+            updatedAt: { [Op.gt]: lastRunStart },
+            destinationId: destination.id,
+          },
+        });
+
+        const currentDestination = {
+          name: destination.name,
+          exportsCreated: exp.getDataValue("exportsCreated"),
+          exportsFailed,
+          exportsComplete,
+        };
+
+        out.push(currentDestination);
+      }
+      return out;
+    }
+  }
 }
