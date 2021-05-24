@@ -492,31 +492,6 @@ export namespace ProfileOps {
   }
 
   /**
-   * Mark the profile and all of its properties as pending
-   */
-  export async function markPending(profile: Profile) {
-    const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
-      (p) => p.directlyMapped === false
-    );
-
-    if (nonDirectlyMappedRules.length > 0) {
-      await ProfileProperty.update(
-        { state: "pending", startedAt: null },
-        {
-          where: {
-            profileId: profile.id,
-            propertyId: {
-              [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
-            },
-          },
-        }
-      );
-    }
-
-    await profile.update({ state: "pending" });
-  }
-
-  /**
    * Mark many Profiles and all of their properties as pending
    */
   export async function markPendingByIds(
