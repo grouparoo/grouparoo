@@ -105,7 +105,8 @@ export class Client {
     useCache = true,
     uploadHandler?,
     req?,
-    res?
+    res?,
+    timeout?: number
   ) {
     const headers = {
       Accept: "application/json",
@@ -133,6 +134,7 @@ export class Client {
         );
         return uploadHandler ? uploadHandler.set({ uploadPercentage }) : null;
       },
+      timeout,
     };
 
     data.csrfToken = this.csrfToken();
