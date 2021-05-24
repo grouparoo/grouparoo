@@ -42,7 +42,7 @@ export class Plugins extends Initializer {
       icon: "/public/@grouparoo/csv/csv.svg",
       templates: [
         CSVAppTemplate,
-        CSVFileSourceTemplate,
+        // CSVFileSourceTemplate, because we currently do not support CSV file upload from code config, let's not list it as an option
         CSVRemoteSourceTemplate,
         CSVPropertyTemplate,
       ],
