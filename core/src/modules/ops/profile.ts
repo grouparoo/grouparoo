@@ -637,7 +637,6 @@ export namespace ProfileOps {
           ),
         ],
       },
-      logging: true,
     });
 
     const updateResponse = await Profile.update(
