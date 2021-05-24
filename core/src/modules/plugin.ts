@@ -33,6 +33,7 @@ import { Source } from "../models/Source";
 import { Notification } from "../models/Notification";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { ExportProcessor } from "../models/ExportProcessor";
 
 // the order matters here - the children need to come before the parents (destinationGroup -> destination)
 const models = [
@@ -48,6 +49,7 @@ const models = [
   EventData,
   Run,
   Export,
+  ExportProcessor,
   File,
   GroupMember,
   Group,

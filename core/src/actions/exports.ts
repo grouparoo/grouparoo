@@ -12,6 +12,7 @@ export class ExportsList extends AuthenticatedAction {
     this.inputs = {
       profileId: { required: false },
       destinationId: { required: false },
+      exportProcessorId: { required: false },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       state: { required: false },
@@ -29,6 +30,9 @@ export class ExportsList extends AuthenticatedAction {
     }
     if (params.destinationId) {
       where["destinationId"] = params.destinationId;
+    }
+    if (params.exportProcessorId) {
+      where["exportProcessorId"] = params.exportProcessorId;
     }
     if (params.state) {
       where["state"] = params.state;

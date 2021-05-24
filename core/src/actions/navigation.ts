@@ -119,7 +119,8 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       platformItems.push(
         { type: "link", title: "Apps", href: "/apps" },
         { type: "link", title: "Imports", href: "/imports" },
-        { type: "link", title: "Exports", href: "/exports" }
+        { type: "link", title: "Exports", href: "/exports" },
+        { type: "link", title: "Export Processors", href: "/exportProcessors" }
       );
 
       if (showSystemLinks) {

@@ -21,6 +21,8 @@ export const DEFAULT = {
         { path: "/v:apiVersion/exports", action: "exports:list" },
         { path: "/v:apiVersion/exports/totals", action: "exports:totals" },
         { path: "/v:apiVersion/export/:id", action: "export:view" },
+        { path: "/v:apiVersion/exportProcessors", action: "exportProcessors:list" },
+        { path: "/v:apiVersion/exportProcessor/:id", action: "exportProcessor:view" },
         { path: "/v:apiVersion/navigation", action: "navigation:list" },
         { path: "/v:apiVersion/teams", action: "teams:list" },
         { path: "/v:apiVersion/team/:id", action: "team:view" },

@@ -23,6 +23,8 @@ import { ExportOps } from "../modules/ops/export";
 import { APIData } from "../modules/apiData";
 import { StateMachine } from "../modules/stateMachine";
 import { api, config } from "actionhero";
+import { ExportProcessor } from "./ExportProcessor";
+import { Errors } from "../modules/errors";
 
 /**
  * The Profile Properties in their normal data types (string, boolean, date, etc)
@@ -37,9 +39,6 @@ export interface ExportProfileProperties {
 export interface ExportProfilePropertiesWithType {
   [key: string]: { type: string; rawValue: string | string[] };
 }
-
-const ERROR_LEVELS = ["error", "info"] as const;
-export type ExportErrorLevel = typeof ERROR_LEVELS[number];
 
 export const ExportStates = [
   "draft", // not ready to send, needs manual review
@@ -88,6 +87,11 @@ export class Export extends Model {
   @Column
   profileId: string;
 
+  @AllowNull(true)
+  @ForeignKey(() => ExportProcessor)
+  @Column
+  exportProcessorId: string;
+
   @AllowNull(false)
   @Default(Export.defaultState)
   @Column(DataType.ENUM(...ExportStates))
@@ -115,12 +119,14 @@ export class Export extends Model {
   errorMessage: string;
 
   @Is("ofValidErrorLevel", (value) => {
-    if (value && !ERROR_LEVELS.includes(value)) {
-      throw new Error(`errorLevel must be one of: ${ERROR_LEVELS.join(",")}`);
+    if (value && !Errors.ERROR_LEVELS.includes(value)) {
+      throw new Error(
+        `errorLevel must be one of: ${Errors.ERROR_LEVELS.join(",")}`
+      );
     }
   })
-  @Column(DataType.ENUM(...ERROR_LEVELS))
-  errorLevel: ExportErrorLevel;
+  @Column(DataType.ENUM(...Errors.ERROR_LEVELS))
+  errorLevel: Errors.ErrorLevel;
 
   @Column(DataType.TEXT)
   get oldProfileProperties(): ExportProfileProperties {
@@ -191,12 +197,15 @@ export class Export extends Model {
     if (error["errorLevel"]) this.errorLevel = error["errorLevel"];
 
     this.retryCount++;
+
     if (this.retryCount >= maxExportAttempts) {
       this.state = "failed";
       this.sendAt = null;
     } else if (this.errorLevel === "info") {
       this.state = "failed";
     } else {
+      this.state = "pending";
+      this.exportProcessorId = null;
       this.sendAt = Moment().add(retryDelay, "ms").toDate();
       this.startedAt = null;
     }
@@ -242,6 +251,7 @@ export class Export extends Model {
           : null,
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
+      exportProcessorId: this.exportProcessorId,
       state: this.state,
       force: this.force,
       createdAt: APIData.formatDate(this.createdAt),

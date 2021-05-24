@@ -120,6 +120,22 @@ export class Plugins extends CLSInitializer {
         type: "number",
       },
       {
+        key: "export-processors-retry-delay-seconds",
+        title: "Export Processors Retry Delay Seconds",
+        defaultValue: 60 * 30, // 30 minutes
+        description:
+          "How long before Grouparoo considers a started but not-yet-complete Export Processor to have stalled and try again?",
+        type: "number",
+      },
+      {
+        key: "export-processors-max-retries-count",
+        title: "Export Processors Maximum Retry Count",
+        defaultValue: 10,
+        description:
+          "How many times should we attempt to check on an Export Processor before considering it failed?",
+        type: "number",
+      },
+      {
         key: "profiles-default-country-code",
         title: "Profile: Default Country Code",
         defaultValue: "US",

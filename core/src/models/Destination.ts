@@ -22,6 +22,7 @@ import { Option } from "./Option";
 import { Profile } from "./Profile";
 import { Group } from "./Group";
 import { Export } from "./Export";
+import { ExportProcessor } from "./ExportProcessor";
 import { DestinationGroupMembership } from "./DestinationGroupMembership";
 import { plugin } from "../modules/plugin";
 import { Op } from "sequelize";
@@ -492,6 +493,10 @@ export class Destination extends LoggedModel<Destination> {
     return DestinationOps.sendExports(this, _exports, sync);
   }
 
+  async runExportProcessor(exportProcessor: ExportProcessor) {
+    return DestinationOps.runExportProcessor(this, exportProcessor);
+  }
+
   async validateUniqueAppAndOptions(options?: SimpleDestinationOptions) {
     if (!options) options = await this.getOptions(true);
     const otherDestinations = await Destination.scope(null).findAll({
@@ -631,11 +636,11 @@ export class Destination extends LoggedModel<Destination> {
   @BeforeDestroy
   static async waitForPendingExports(instance: Destination) {
     const pendingExportCount = await instance.$count("exports", {
-      where: { state: "pending" },
+      where: { state: ["pending", "processing"] },
     });
     if (pendingExportCount > 0) {
       throw new Error(
-        `cannot delete destination until all pending exports have been sent (${pendingExportCount} pending)`
+        `cannot delete destination until all pending exports have been processed (${pendingExportCount} pending)`
       );
     }
   }
