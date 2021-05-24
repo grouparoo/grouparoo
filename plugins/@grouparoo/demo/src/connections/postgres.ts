@@ -1,4 +1,4 @@
-import { Client } from "pg";
+import { Client, ClientConfig } from "pg";
 import { log } from "../util/shared";
 import { api, config } from "actionhero";
 import Connection from "../util/connection";
@@ -56,14 +56,29 @@ const TYPES = {
   },
 };
 
-function findConfig() {
+function findConfig(): ClientConfig {
   const connectionURL = process.env.DEMO_DATABASE_URL;
   if (!connectionURL) {
     // return the default
     if (config.sequelize.dialect !== "postgres") {
       throw new Error("Set DEMO_DATABASE_URL to a Postgres database.");
     }
-    return api.sequelize.config;
+    const {
+      username: user,
+      password,
+      host,
+      database,
+      port,
+      ssl,
+    } = api.sequelize.config;
+    return {
+      user,
+      password,
+      host,
+      database,
+      port,
+      ssl,
+    };
   }
 
   let dialect = null;
