@@ -205,6 +205,41 @@ export namespace plugin {
   }
 
   /**
+   * Like plugin.createImport, but for many imports at once!
+   * * mapping: an object whose keys are remote columns and whose values are the property keys, ie: {remoteColumnId: 'userId'}
+   * rows: Array<{email: 'abc@company.com', vip: true}>
+   */
+  export async function createImports(
+    mapping: { [remoteKey: string]: string },
+    run: Run,
+    rows: { [remoteKey: string]: any }[]
+  ) {
+    const bulkParams = [];
+    const mappingKeys = Object.keys(mapping);
+
+    for (const row of rows) {
+      const mappedProfileProperties = {};
+      mappingKeys.forEach((k) => {
+        mappedProfileProperties[mapping[k]] = Array.isArray(row[k])
+          ? row[k]
+          : [row[k]];
+      });
+
+      bulkParams.push({
+        rawData: row,
+        data: mappedProfileProperties,
+        creatorType: "run",
+        creatorId: run.id,
+      });
+    }
+
+    const _imports =
+      bulkParams.length > 0 ? await Import.bulkCreate(bulkParams) : [];
+
+    return _imports;
+  }
+
+  /**
    * Given a fileId, download the file to this server and return the readable local path
    */
   export async function getLocalFilePath(fileId: string): Promise<string> {

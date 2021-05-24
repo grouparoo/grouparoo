@@ -49,28 +49,25 @@ export const getProfilesMethod = (getChangedRows: GetChangedRowsMethod) => {
       connection,
     });
 
-    let processed = 0;
-    for (const row of rows) {
-      const queryCol = Object.keys(row)[0];
-      const property = properties.find(
-        (p) => p.id === scheduleOptions.propertyId
-      );
+    const property = properties.find(
+      (p) => p.id === scheduleOptions.propertyId
+    );
 
-      if (!property) {
-        throw new Error(`cannot find property ${scheduleOptions.propertyId}`);
-      }
-
-      const propertyMapping = { [queryCol]: property.key };
-
-      await plugin.createImport(propertyMapping, run, row);
-      processed++;
+    if (!property) {
+      throw new Error(`cannot find property ${scheduleOptions.propertyId}`);
     }
 
-    if (processed === 0) offset = 0;
+    if (rows.length > 0) {
+      const queryCol = Object.keys(rows[0])[0];
+      const propertyMapping = { [queryCol]: property.key };
+      await plugin.createImports(propertyMapping, run, rows);
+    } else {
+      offset = 0;
+    }
 
     return {
       importsCount: rows.length,
-      highWaterMark: { offset: offset + processed, limit },
+      highWaterMark: { offset: offset + rows.length, limit },
       sourceOffset: null,
     };
   };

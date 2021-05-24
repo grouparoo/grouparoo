@@ -42,8 +42,8 @@ export async function parseProfiles({
 
   // TODO: Is there a way to scan by row numbers and start/stop the stream as needed?
   //       Scanning the whole file each time seems silly.
-  let importsCount = 0;
   let rowId = -1;
+  const validRows = [];
   const offset = highWaterMark?.row
     ? parseInt(highWaterMark?.row.toString())
     : 0;
@@ -56,8 +56,7 @@ export async function parseProfiles({
         try {
           const inRange = rowId >= offset && rowId < offset + limit;
           if (inRange) {
-            await plugin.createImport(combinedMapping, run, row);
-            importsCount++;
+            validRows.push(row);
           } else {
             await sleep(); // we need to ensure this method is async
           }
@@ -73,9 +72,11 @@ export async function parseProfiles({
     parser.on("error", reject);
   });
 
+  await plugin.createImports(combinedMapping, run, validRows);
+
   return {
-    importsCount,
-    highWaterMark: { row: (offset + importsCount).toString() },
+    importsCount: validRows.length,
+    highWaterMark: { row: (offset + validRows.length).toString() },
     sourceOffset: 0,
   };
 }

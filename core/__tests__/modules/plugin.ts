@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { plugin, Setting, Run, Import, Property } from "../../src";
 import { specHelper } from "actionhero";
 import { SourceOptionsMethodResponse } from "../..";
+import { api } from "actionhero";
 
 describe("modules/plugin", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -283,6 +284,7 @@ describe("modules/plugin", () => {
 
     describe("createImport", () => {
       test("it will create the import and task to store only the properties that are present in the schedule's mapping", async () => {
+        await api.resque.queue.connection.redis.flushdb();
         const schedule = await helper.factories.schedule(null, {});
         const run = await helper.factories.run(schedule);
         const row = { first__name: "Peach", last__name: "Toadstool" };
@@ -310,6 +312,53 @@ describe("modules/plugin", () => {
 
         expect(tasks.length).toBe(1);
         expect(tasks[0].args[0].importId).toBe(_import.id);
+      });
+    });
+
+    describe("createImports", () => {
+      test("it will create the imports and task to store only the properties that are present in the schedule's mapping", async () => {
+        await api.resque.queue.connection.redis.flushdb();
+        const schedule = await helper.factories.schedule(null, {});
+        const run = await helper.factories.run(schedule);
+        const row1 = { first__name: "Peach", last__name: "Toadstool" };
+        const row2 = { first__name: "Mario", last__name: "Mario" };
+        const mapping = { first__name: "firstName" };
+
+        await plugin.createImports(mapping, run, [row1, row2]);
+
+        const _imports = await Import.findAll({
+          where: {
+            creatorType: "run",
+            creatorId: run.id,
+          },
+        });
+
+        expect(_imports.length).toBe(2);
+        const peachImport = _imports.find(
+          (i) => i.data.firstName[0] === "Peach"
+        );
+        const marioImport = _imports.find(
+          (i) => i.data.firstName[0] === "Mario"
+        );
+        expect(peachImport).toBeTruthy();
+        expect(marioImport).toBeTruthy();
+        expect(peachImport.rawData).toEqual({
+          first__name: "Peach",
+          last__name: "Toadstool",
+        });
+        expect(marioImport.rawData).toEqual({
+          first__name: "Mario",
+          last__name: "Mario",
+        });
+
+        const tasks = await specHelper.findEnqueuedTasks(
+          "import:associateProfile"
+        );
+
+        expect(tasks.length).toBe(2);
+        expect(tasks.map((t) => t.args[0].importId).sort()).toEqual(
+          [marioImport.id, peachImport.id].sort()
+        );
       });
     });
   });
