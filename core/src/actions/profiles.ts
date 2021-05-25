@@ -131,8 +131,7 @@ export class ProfilesList extends AuthenticatedAction {
         total,
         profiles: await Promise.all(
           profiles.map(async (p) => {
-            const profile = await Profile.findById(p.id);
-            return profile.apiData();
+            return p.apiData();
           })
         ),
       };
