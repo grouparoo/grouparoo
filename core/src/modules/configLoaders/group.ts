@@ -36,11 +36,19 @@ export async function loadGroup(
 
   if (configObject.rules) {
     const rules = [...configObject.rules];
+    const calculatesWithDate = ["gt", "lt", "lte", "gte", "eq", "ne"];
     for (const i in rules) {
       if (rules[i]["propertyId"]) {
         const property = await Property.findById(rules[i]["propertyId"]);
         delete rules[i]["propertyId"];
         rules[i].key = property.key;
+      }
+      //parses to epoch time
+      if (
+        calculatesWithDate.indexOf(rules[i]["operation"]["op"]) >= 1 &&
+        rules[i]["type"] === "date"
+      ) {
+        rules[i]["match"] = Date.parse(rules[i]["match"].toString()).toString();
       }
     }
 
