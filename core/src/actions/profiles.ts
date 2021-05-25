@@ -105,19 +105,26 @@ export class ProfilesList extends AuthenticatedAction {
       };
     } else {
       const requiredJoin = Object.keys(where).length > 0 ? true : false;
+      const profileWhere = {
+        state: params.state ? params.state : { [Op.ne]: null },
+      };
+      const profileInclude = requiredJoin
+        ? [{ model: ProfileProperty, where, required: true }]
+        : [ProfileProperty];
+      const countInclude = requiredJoin ? profileInclude : [];
 
       profiles = await Profile.findAll({
         offset: params.offset,
         limit: params.limit,
-        where: { state: params.state ? params.state : { [Op.ne]: null } },
-        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+        where: profileWhere,
+        include: profileInclude,
         order: params.order,
       });
 
       const total = await Profile.count({
         distinct: true,
-        where: { state: params.state ? params.state : { [Op.ne]: null } },
-        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+        where: profileWhere,
+        include: countInclude,
       });
 
       return {
