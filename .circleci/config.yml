@@ -45,6 +45,7 @@ jobs:
           <<: *module-other-cache-options
           paths:
             - apps/staging-community/node_modules
+            - apps/staging-config/node_modules
             - apps/staging-enterprise/node_modules
             - cli/node_modules
             - clients/@grouparoo/web/node_modules
