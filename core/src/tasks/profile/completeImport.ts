@@ -66,18 +66,20 @@ export class ProfileCompleteImport extends RetryableTask {
       const newGroupIds = newGroups.map((g) => g.id);
       const now = new Date();
 
-      await Import.update(
-        {
-          newProfileProperties: newProfileProperties,
-          profileUpdatedAt: now,
-          newGroupIds: newGroupIds,
-          groupsUpdatedAt: now,
-          exportedAt: params.toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
-        },
-        {
-          where: { id: { [Op.in]: imports.map((i) => i.id) } },
-        }
-      );
+      if (imports.length > 0) {
+        await Import.update(
+          {
+            newProfileProperties: newProfileProperties,
+            profileUpdatedAt: now,
+            newGroupIds: newGroupIds,
+            groupsUpdatedAt: now,
+            exportedAt: params.toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
+          },
+          {
+            where: { id: { [Op.in]: imports.map((i) => i.id) } },
+          }
+        );
+      }
 
       if (params.toExport) {
         await CLS.enqueueTask("profile:export", {
