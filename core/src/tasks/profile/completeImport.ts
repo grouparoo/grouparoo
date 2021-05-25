@@ -3,6 +3,9 @@ import { config } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
+import { ProfileProperty } from "../../models/ProfileProperty";
+import { Import } from "../../models/Import";
+import { Op } from "sequelize";
 
 export class ProfileCompleteImport extends RetryableTask {
   constructor() {
@@ -21,13 +24,13 @@ export class ProfileCompleteImport extends RetryableTask {
   async runWithinTransaction(params) {
     const profile = await Profile.findOne({
       where: { id: params.profileId },
+      include: [ProfileProperty],
     });
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
 
     const properties = await Property.findAllWithCache();
-    const profileProperties = await profile.properties();
-    const pendingProfileProperty = Object.keys(profileProperties).find(
-      (k) => profileProperties[k].state !== "ready" // a property may have gone back into the pending state
+    const pendingProfileProperty = Object.keys(profile.profileProperties).find(
+      (k) => profile.profileProperties[k].state !== "ready" // a property may have gone back into the pending state
     );
 
     if (profile.state !== "ready" || pendingProfileProperty) {
@@ -51,7 +54,11 @@ export class ProfileCompleteImport extends RetryableTask {
     }
 
     try {
-      await profile.addOrUpdateProperties(mergedValues);
+      if (Object.keys(mergedValues).length > 0) {
+        await profile.addOrUpdateProperties(mergedValues);
+        await profile.reload({ include: [ProfileProperty] });
+      }
+
       await profile.updateGroupMembership();
 
       const newProfileProperties = await profile.simplifiedProperties();
@@ -59,15 +66,18 @@ export class ProfileCompleteImport extends RetryableTask {
       const newGroupIds = newGroups.map((g) => g.id);
       const now = new Date();
 
-      for (const i in imports) {
-        const _import = imports[i];
-        _import.newProfileProperties = newProfileProperties;
-        _import.profileUpdatedAt = now;
-        _import.newGroupIds = newGroupIds;
-        _import.groupsUpdatedAt = now;
-        if (!params.toExport) _import.exportedAt = now; // we want to indicate that the import's lifecycle is complete
-        await _import.save();
-      }
+      await Import.update(
+        {
+          newProfileProperties: newProfileProperties,
+          profileUpdatedAt: now,
+          newGroupIds: newGroupIds,
+          groupsUpdatedAt: now,
+          exportedAt: params.toExport ? undefined : now, // we want to indicate that the import's lifecycle is complete
+        },
+        {
+          where: { id: { [Op.in]: imports.map((i) => i.id) } },
+        }
+      );
 
       if (params.toExport) {
         await CLS.enqueueTask("profile:export", {

@@ -22,7 +22,7 @@ import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
-import { Property } from "./Property";
+import { GroupRule } from "./GroupRule";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -154,11 +154,12 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async updateGroupMembership() {
-    const results = {};
-    const groups = await Group.scope("notDraft").findAll();
+    const results: { [groupId: string]: boolean } = {};
+    const groups = await Group.scope("notDraft").findAll({
+      include: [GroupRule],
+    });
 
-    for (const i in groups) {
-      const group = groups[i];
+    for (const group of groups) {
       const belongs = await group.updateProfileMembership(this);
       results[group.id] = belongs;
     }
