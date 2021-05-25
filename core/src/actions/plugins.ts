@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { Plugins } from "../modules/plugins";
+import { api } from "actionhero";
 
 export class PluginsInstalledList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -50,13 +51,21 @@ export class PluginInstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
+      restart: { required: true, default: "false" },
     };
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ params }) {
-    const response = await Plugins.install(params.plugin);
-    return response;
+  async runWithinTransaction({
+    params,
+  }): Promise<{ success: boolean; checkIn: number }> {
+    // const response = await Plugins.install(params.plugin);
+    const sleepTime = 100;
+    setTimeout(() => {
+      api.process.restart();
+    }, sleepTime);
+    // return response;
+    return { success: true, checkIn: sleepTime * 4 };
   }
 }
 

@@ -3,6 +3,7 @@ import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { useState, useEffect } from "react";
 import { Form, Modal, Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
+
 import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
@@ -23,6 +24,20 @@ import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
  * 6. Reload the app to load in the new plugin.
  * 7. ✅  [SPIKE] Combining all these elements together and adding a badge for apps
  *    that have been installed (those that are actually apps).
+ * 8. Move GROUPAROO_PLUGIN_MANIFEST_URL to config.
+ */
+
+/**
+ *
+ * BROWSER - install plugin
+ *
+ * MODAL - waiting for install (wait for api response)
+ *       SERVER - install
+ * MODAL - waiting for reboot (polling)
+ *       SERVER - reboot
+ *
+ * BROWSER - reload page
+ *
  */
 
 export default function Page(props) {
@@ -41,7 +56,10 @@ export default function Page(props) {
   const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [installing, setInstalling] = useState(false);
+  const [installingMessage, setInstallingMessage]: [
+    string | boolean,
+    Function
+  ] = useState(false);
 
   async function resetPluginsAndApps() {
     const { types }: Actions.AppOptions = await execApi("get", `/appOptions`);
@@ -99,9 +117,13 @@ export default function Page(props) {
     }
   }
 
+  function timeout(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
   async function installPlugin(plugin) {
     setLoading(true);
-    setInstalling(plugin.plugin.name);
+    setInstallingMessage(`Installing plugin ${plugin.plugin.name} ...`);
     const response: Actions.PluginInstall = await execApi(
       "post",
       `/plugin/install`,
@@ -109,14 +131,92 @@ export default function Page(props) {
         plugin: plugin.plugin.name,
       }
     );
-    if (response) {
-      await resetPluginsAndApps();
-      setLoading(false);
-      setInstalling(false);
+    if (response?.checkIn) {
+      // await resetPluginsAndApps();
+      // setLoading(false);
+      // setInstallingMessage(false);
+
+      setInstallingMessage("Restarting application ...");
+
+      // await timeout(1000 * 10);
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
+      await timeout(response.checkIn);
+      await waitForServer();
     } else {
       setLoading(false);
-      setInstalling(false);
+      setInstallingMessage(false);
     }
+  }
+
+  function waitForServer() {
+    // try {
+    console.log("Checking server ...");
+
+    return new Promise((resolve, reject) => {
+      // setTimeout(() => {
+      //   // resolve("TIMEOUT");
+      //   waitForServer();
+      // }, 1000);
+
+      execApi(
+        "get",
+        "/status/public",
+        undefined,
+        undefined,
+        undefined,
+        false,
+        1000
+      )
+        .then((response) => {
+          console.log("RELOADING ...");
+          // console.log(globalThis);
+
+          // globalThis.window.location.reload();
+          console.log(response);
+
+          resolve(response);
+        })
+        .catch((err) => {
+          console.error(err);
+          reject(err);
+        });
+    });
+
+    // return response;
+    // } catch (err) {
+    //   console.error(err);
+    //   const response = await waitForServer();
+    //   return response;
+    // }
   }
 
   return (
@@ -125,7 +225,7 @@ export default function Page(props) {
         <title>Grouparoo: New App</title>
       </Head>
 
-      {installing && (
+      {installingMessage && (
         <Modal
           show={true}
           backdrop="static"
@@ -142,7 +242,7 @@ export default function Page(props) {
             >
               <span className="sr-only">Loading...</span>
             </Spinner>
-            <span>Installing plugin {installing} ...</span>
+            <span>{installingMessage}</span>
           </Modal.Body>
         </Modal>
       )}
