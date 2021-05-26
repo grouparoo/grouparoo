@@ -127,13 +127,14 @@ export class ProfilesList extends AuthenticatedAction {
         include: countInclude,
       });
 
+      const profileData = [];
+      for (const p of profiles) {
+        profileData.push(await p.apiData());
+      }
+
       return {
         total,
-        profiles: await Promise.all(
-          profiles.map(async (p) => {
-            return p.apiData();
-          })
-        ),
+        profiles: profileData,
       };
     }
   }
