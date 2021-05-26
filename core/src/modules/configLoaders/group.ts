@@ -43,9 +43,8 @@ export async function loadGroup(
     locked: ConfigWriter.getLockKey(configObject),
   });
 
-  if (group.state === "deleted") {
-    await group.stopPreviousRuns();
-  }
+  const previousState = group.state;
+  await group.update({ state: "ready" });
 
   if (configObject.rules) {
     const rules = [...configObject.rules];
@@ -60,7 +59,9 @@ export async function loadGroup(
     await group.setRules(group.fromConvenientRules(configObject.rules));
   }
 
-  await group.update({ state: "ready" });
+  if (previousState === "deleted") {
+    await group.run();
+  }
 
   logModel(group, validate ? "validated" : isNew ? "created" : "updated");
 

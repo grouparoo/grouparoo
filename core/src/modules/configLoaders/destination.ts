@@ -84,6 +84,10 @@ export async function loadDestination(
     await destination.trackGroup(group);
   }
 
+  if (destination.state === "deleted") {
+    await destination.exportGroupMembers(true);
+  }
+
   await destination.update({ state: "ready" });
 
   logModel(destination, validate ? "validated" : isNew ? "created" : "updated");

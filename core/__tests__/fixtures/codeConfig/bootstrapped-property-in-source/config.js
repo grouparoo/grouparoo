@@ -123,6 +123,20 @@ module.exports = async function getConfig() {
     },
 
     {
+      id: "high_value", // id -> `high_value`
+      name: "High Value Individuals",
+      class: "Group",
+      type: "calculated",
+      rules: [
+        {
+          propertyId: "user_id",
+          operation: { op: "gt" },
+          match: 100,
+        },
+      ],
+    },
+
+    {
       id: "test_destination", // id -> `dst_hubspot_destination`
       name: "Test Destination",
       class: "destination",

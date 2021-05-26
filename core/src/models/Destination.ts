@@ -93,7 +93,7 @@ export const DestinationSyncModeData: Record<
   },
 };
 
-const STATES = ["draft", "ready"] as const;
+const STATES = ["draft", "ready", "deleted"] as const;
 const STATE_TRANSITIONS = [
   {
     from: "draft",

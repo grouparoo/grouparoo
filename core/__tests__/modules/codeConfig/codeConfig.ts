@@ -6,7 +6,6 @@ import {
   Source,
   Schedule,
   Group,
-  GroupRule,
   Destination,
   ApiKey,
   Team,
@@ -14,6 +13,8 @@ import {
   Setting,
   Option,
   Profile,
+  Run,
+  GroupMember,
 } from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
@@ -32,6 +33,8 @@ describe("modules/codeConfig", () => {
     "%p config",
     (configDir) => {
       beforeAll(async () => {
+        await helper.truncate();
+
         // manually run the initializer again after the server has started.
         // the test test-app plugin has been loaded
         api.codeConfig.allowLockedModelChanges = true;
@@ -43,7 +46,7 @@ describe("modules/codeConfig", () => {
           apikey: ["website_key"],
           app: expect.arrayContaining(["data_warehouse", "events"]),
           destination: ["test_destination"],
-          group: ["email_group"],
+          group: ["email_group", "high_value"],
           property: expect.arrayContaining([
             "user_id",
             "email",
@@ -172,11 +175,12 @@ describe("modules/codeConfig", () => {
       });
 
       test("groups are created", async () => {
-        const groups = await Group.findAll();
-        expect(groups.length).toBe(1);
+        const groups = await Group.findAll({ order: [["id", "asc"]] });
+        expect(groups.length).toBe(2);
         expect(groups[0].id).toBe("email_group");
         expect(groups[0].name).toBe("People with Email Addresses");
         expect(groups[0].locked).toBe("config:code");
+        expect(groups[0].state).toBe("updating");
         const rules = await groups[0].getRules();
         expect(rules).toEqual([
           {
@@ -198,6 +202,24 @@ describe("modules/codeConfig", () => {
             relativeMatchUnit: null,
             topLevel: false,
             type: "email",
+          },
+        ]);
+
+        expect(groups[1].id).toBe("high_value");
+        expect(groups[1].name).toBe("High Value Individuals");
+        expect(groups[1].locked).toBe("config:code");
+        expect(groups[1].state).toBe("updating");
+        const rules2 = await groups[1].getRules();
+        expect(rules2).toEqual([
+          {
+            key: "userId",
+            match: "100",
+            operation: { description: "is greater than", op: "gt" },
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+            topLevel: false,
+            type: "integer",
           },
         ]);
       });
@@ -273,7 +295,7 @@ describe("modules/codeConfig", () => {
         apikey: [],
         app: [],
         destination: ["test_destination"],
-        group: [],
+        group: ["high_value"],
         property: [],
         schedule: [],
         source: [],
@@ -473,11 +495,17 @@ describe("modules/codeConfig", () => {
     });
 
     test("a removed group will be deleted", async () => {
-      const groups = await Group.scope(null).findAll();
-      expect(groups.length).toBe(1);
+      const groups = await Group.scope(null).findAll({
+        order: [["id", "asc"]],
+      });
+      expect(groups.length).toBe(2);
       expect(groups[0].id).toBe("email_group");
       expect(groups[0].state).toBe("deleted");
       expect(groups[0].locked).toBe(null);
+
+      expect(groups[1].id).toBe("high_value");
+      expect(groups[1].state).toBe("deleted");
+      expect(groups[1].locked).toBe(null);
     });
 
     test("removed properties will be deleted", async () => {
@@ -574,6 +602,29 @@ describe("modules/codeConfig", () => {
   });
 
   describe("bring it all back", () => {
+    let previousRun;
+    beforeAll(async () => {
+      // fake that runs are still being executed
+      const highValue = await Group.scope(null).findOne({
+        where: { id: "high_value", state: "deleted" },
+      });
+      expect(highValue).toBeTruthy();
+
+      await highValue.stopPreviousRuns();
+
+      const profile: Profile = await helper.factories.profile();
+      await GroupMember.create({
+        profileId: profile.id,
+        groupId: "high_value",
+      });
+
+      previousRun = await specHelper.runTask("group:destroy", {
+        groupId: "high_value",
+      });
+      expect(previousRun).toBeTruthy();
+      expect(previousRun.state).toBe("running");
+    });
+
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds, deletedIds } = await loadConfigDirectory(
@@ -584,7 +635,7 @@ describe("modules/codeConfig", () => {
         apikey: ["website_key"],
         app: expect.arrayContaining(["data_warehouse", "events"]),
         destination: ["test_destination"],
-        group: ["email_group"],
+        group: ["email_group", "high_value"],
         property: expect.arrayContaining([
           "user_id",
           "email",
@@ -707,11 +758,12 @@ describe("modules/codeConfig", () => {
     });
 
     test("groups are brought back", async () => {
-      const groups = await Group.findAll();
-      expect(groups.length).toBe(1);
+      const groups = await Group.findAll({ order: [["id", "asc"]] });
+      expect(groups.length).toBe(2);
       expect(groups[0].id).toBe("email_group");
       expect(groups[0].name).toBe("People with Email Addresses");
       expect(groups[0].locked).toBe("config:code");
+      expect(groups[0].state).toBe("updating");
       const rules = await groups[0].getRules();
       expect(rules).toEqual([
         {
@@ -735,6 +787,39 @@ describe("modules/codeConfig", () => {
           type: "email",
         },
       ]);
+
+      expect(groups[1].id).toBe("high_value");
+      expect(groups[1].name).toBe("High Value Individuals");
+      expect(groups[1].locked).toBe("config:code");
+      expect(groups[1].state).toBe("updating");
+      const rules2 = await groups[1].getRules();
+      expect(rules2).toEqual([
+        {
+          key: "userId",
+          match: "100",
+          operation: { description: "is greater than", op: "gt" },
+          relativeMatchDirection: null,
+          relativeMatchNumber: null,
+          relativeMatchUnit: null,
+          topLevel: false,
+          type: "integer",
+        },
+      ]);
+
+      // previous run stopped
+      await previousRun.reload();
+      expect(previousRun.state).toBe("stopped");
+
+      // new run kicked off
+      const run = await Run.findOne({
+        where: {
+          creatorType: "group",
+          creatorId: "high_value",
+          state: "running",
+        },
+      });
+      expect(run).toBeTruthy();
+      expect(run.force).toBe(false);
     });
 
     test("destinations are brought back", async () => {
@@ -748,6 +833,13 @@ describe("modules/codeConfig", () => {
       expect(destinations[0].locked).toBe("config:code");
       const options = await destinations[0].getOptions();
       expect(options).toEqual({ table: "output" });
+
+      const runs = await Run.findAll({
+        where: { state: "running", destinationId: destinations[0].id },
+      });
+      expect(runs.length).toBe(1);
+      expect(runs[0].force).toBe(true);
+      expect(runs[0].creatorId).toBe("email_group");
     });
 
     afterAll(async () => {
