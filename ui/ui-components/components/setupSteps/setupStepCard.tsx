@@ -78,25 +78,27 @@ export default function SetupStepCard({
                       </Button>
                     ) : null}
                   </Col>
-                  <Col md={6} style={{ textAlign: "right" }}>
-                    {step.skipped ? (
-                      <Button
-                        size="sm"
-                        variant="outline-dark"
-                        onClick={() => skip()}
-                      >
-                        un-skip
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant="outline-dark"
-                        onClick={() => skip()}
-                      >
-                        skip
-                      </Button>
-                    )}
-                  </Col>
+                  {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+                    <Col md={6} style={{ textAlign: "right" }}>
+                      {step.skipped ? (
+                        <Button
+                          size="sm"
+                          variant="outline-dark"
+                          onClick={() => skip()}
+                        >
+                          un-skip
+                        </Button>
+                      ) : (
+                        <Button
+                          size="sm"
+                          variant="outline-dark"
+                          onClick={() => skip()}
+                        >
+                          skip
+                        </Button>
+                      )}
+                    </Col>
+                  )}
                 </Row>
               )}
             </Card.Body>

@@ -88,11 +88,13 @@ export default function Page(props) {
 
       <br />
 
-      <Row>
-        <Col style={{ textAlign: "center" }}>
-          <HideSetupButton /> <br /> <br />
-        </Col>
-      </Row>
+      {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+        <Row>
+          <Col style={{ textAlign: "center" }}>
+            <HideSetupButton /> <br /> <br />
+          </Col>
+        </Row>
+      )}
     </>
   );
 }
