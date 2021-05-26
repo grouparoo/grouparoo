@@ -7,7 +7,6 @@ import { GroupMember } from "../models/GroupMember";
 import { Property } from "../models/Property";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
-import { profile } from "winston";
 
 export class ProfilesList extends AuthenticatedAction {
   constructor() {
