@@ -579,13 +579,13 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
-  @AfterSave
-  // TODO: Background Job
+  @BeforeSave
   static async updateProfilePropertyUniqueness(instance: Property) {
-    await ProfileProperty.update(
-      { unique: instance.unique },
-      { where: { propertyId: instance.id } }
-    );
+    if (!instance.isNewRecord && instance.changed("unique")) {
+      CLS.enqueueTask("property:updateProfileProperties", {
+        propertyId: instance.id,
+      });
+    }
   }
 
   @BeforeDestroy
