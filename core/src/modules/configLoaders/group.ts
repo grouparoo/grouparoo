@@ -36,19 +36,30 @@ export async function loadGroup(
 
   if (configObject.rules) {
     const rules = [...configObject.rules];
-    const calculatesWithDate = ["gt", "lt", "lte", "gte", "eq", "ne"];
+    const calculatesWithDate = ["lte", "gt", "lt", "gte", "eq", "ne"];
     for (const i in rules) {
       if (rules[i]["propertyId"]) {
         const property = await Property.findById(rules[i]["propertyId"]);
         delete rules[i]["propertyId"];
         rules[i].key = property.key;
       }
+
       //parses to epoch time
       if (
         calculatesWithDate.indexOf(rules[i]["operation"]["op"]) >= 0 &&
         rules[i]["type"] === "date"
       ) {
-        rules[i]["match"] = Date.parse(rules[i]["match"].toString());
+        let epochTime: number;
+        //will parse as exact timestamp, or will default to 00:00:00.000 UTC if none
+        epochTime = Date.parse(rules[i]["match"].toString());
+        //if rule uses <= or > and no time is given, base rule on 11:59:59.999
+        if (
+          calculatesWithDate.indexOf(rules[i]["operation"]["op"]) <= 1 &&
+          rules[i]["match"].toString().length === 10
+        ) {
+          epochTime += 86399999;
+        }
+        rules[i]["match"] = epochTime;
       }
     }
 

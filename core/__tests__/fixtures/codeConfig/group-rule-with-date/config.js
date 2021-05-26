@@ -44,13 +44,19 @@ module.exports = async function getConfig() {
       rules: [
         {
           propertyId: "last_purchase_date",
+          operation: { op: "lt" },
+          match: "2020-03-01", // date only with lt rule
+          type: "date",
+        },
+        {
+          propertyId: "last_email_date",
           operation: { op: "gt" },
-          match: "2020-03-01", // date
+          match: "2021-04-05", //date only with gt rule
           type: "date",
         },
         {
           propertyId: "last_appointment_date",
-          operation: { op: "lte" },
+          operation: { op: "gte" },
           match: "2019-10-10T14:48:00.000+09:00", //date with time and timezone
           type: "date",
         },
@@ -69,15 +75,15 @@ module.exports = async function getConfig() {
       },
     },
     {
-      id: "last_message_date",
-      name: "Last message date",
+      id: "last_email_date",
+      name: "Last email date",
       type: "date",
       class: "Property",
       sourceId: "users_table",
       unique: false,
       isArray: false,
       options: {
-        column: "last_message_date",
+        column: "last_email_date",
       },
     },
     {

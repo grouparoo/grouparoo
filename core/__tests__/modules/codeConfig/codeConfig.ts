@@ -614,7 +614,7 @@ describe("modules/codeConfig", () => {
     });
   });
 
-  describe("group rules with dates", () => {
+  describe("Dates in calculated group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors, seenIds } = await loadConfigDirectory(
@@ -630,14 +630,30 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
     });
 
-    test("Group rules calculated from date strings will be stored as epoch time in groupRules", async () => {
+    test("Date only strings store as 00:00:00.000 for <, =, !=, or >=", async () => {
       const purchaseTimestamp = "1583020800000";
-      const appointmentTimestamp = "1570686480000";
-      const groupRules = await GroupRule.findAll();
-      expect(groupRules.length).toBe(2);
+      const groupRule = await GroupRule.findOne({
+        where: { propertyId: "last_purchase_date" },
+      });
 
-      expect(groupRules[0].match).toBe(purchaseTimestamp);
-      expect(groupRules[1].match).toBe(appointmentTimestamp);
+      expect(groupRule.match).toBe(purchaseTimestamp);
+    });
+
+    test("Date only strings default to 11:59:59.999 UTC for <= or >", async () => {
+      const emailTimestamp = "1617667199999";
+      const groupRule = await GroupRule.findOne({
+        where: { propertyId: "last_email_date" },
+      });
+
+      expect(groupRule.match).toBe(emailTimestamp);
+    });
+
+    test("Full datetimes with timezone are parsed as is", async () => {
+      const appointmentTimestamp = "1570686480000";
+      const groupRule = await GroupRule.findOne({
+        where: { propertyId: "last_appointment_date" },
+      });
+      expect(groupRule.match).toBe(appointmentTimestamp);
     });
   });
 
