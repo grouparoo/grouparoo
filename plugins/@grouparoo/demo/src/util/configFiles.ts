@@ -32,7 +32,10 @@ export async function loadConfigFiles(
 ) {
   subDirs = [...new Set(subDirs)]; // unique
 
-  const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
+  const demoDir = process.env.JEST_WORKER_ID
+    ? `demo-${process.env.JEST_WORKER_ID}`
+    : "demo";
+  const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", demoDir));
   await generateConfig(dataset, db, configDir, subDirs);
 
   const locked = api.codeConfig.allowLockedModelChanges;
@@ -55,7 +58,7 @@ async function generateConfig(
   deleteDir(configDir);
 
   for (const subDir of subDirs) {
-    copyDir(configDir, db, dataset, subDir);
+    copyDir(configDir, dataset, db, subDir);
   }
   updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
@@ -67,19 +70,30 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, db: any, dataset: string, subDir: string) {
+function copyDir(configDir, dataset: string, db: any, subDir: string) {
   const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
 
-  copyDirIfExists(path.join(rootPath, "shared", "all", subDir), configDir);
-  copyDirIfExists(path.join(rootPath, "shared", db.name(), subDir), configDir);
-  copyDirIfExists(path.join(rootPath, dataset, "all", subDir), configDir);
-  copyDirIfExists(path.join(rootPath, dataset, db.name(), subDir), configDir);
+  copyDirIfExists(configDir, rootPath, "shared", "all", subDir);
+  copyDirIfExists(configDir, rootPath, "shared", db, subDir);
+  copyDirIfExists(configDir, rootPath, dataset, "all", subDir);
+  copyDirIfExists(configDir, rootPath, dataset, db, subDir);
 }
 
-function copyDirIfExists(from, to) {
+function copyDirIfExists(
+  toConfigDir: string,
+  rootPath: string,
+  dataset: string,
+  db: any,
+  subDir: string
+) {
+  if (!dataset || !db) {
+    return;
+  }
+  const dbName = typeof db === "string" ? db : db.name();
+  const from = path.join(rootPath, "shared", dbName, subDir);
   if (fs.existsSync(from)) {
-    fs.copySync(from, to);
+    fs.copySync(from, toConfigDir);
   }
 }
 

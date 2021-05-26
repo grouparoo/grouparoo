@@ -16,7 +16,7 @@ import { events } from "../../../events/events";
 import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 
-export class Console extends CLI {
+export class Demo extends CLI {
   constructor() {
     super();
     this.name = "demo [type] [type]";
