@@ -51,21 +51,26 @@ export class PluginInstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
-      restart: { required: true, default: "false" },
+      restart: { required: false, default: "false" },
     };
     this.outputExample = {};
   }
 
   async runWithinTransaction({
     params,
-  }): Promise<{ success: boolean; checkIn: number }> {
-    // const response = await Plugins.install(params.plugin);
+  }): Promise<{ success: boolean; checkIn?: number }> {
+    const response = await Plugins.install(params.plugin);
+    console.log(response);
+
+    if (!response.success) return { success: false };
+    // Return if did not ask to restart
+    if (!params.restart) return { success: response.success };
+    // Otherwise, return, then restart the server.
     const sleepTime = 100;
     setTimeout(() => {
       api.process.restart();
     }, sleepTime);
-    // return response;
-    return { success: true, checkIn: sleepTime * 4 };
+    return { success: response.success, checkIn: sleepTime * 4 };
   }
 }
 

@@ -9,37 +9,6 @@ import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
 
-/**
- * TODO:
- *
- * 1. ✅  Add section below the list of apps as "Or install a new plugin" that
- *    renders a card for each plugin.
- * 2. ✅  Apps coming from plugins that have been installed are not shown in the
- *    plugin list.
- * 3. ✅  Clicking on a plugin installs it on the fly.
- * 4. ✅  Add feedback to the installation process -- i.e. figure out what
- *    loading does and/or set noticeable loading feedback.
- * 5. ✅  Make this behavior specific to config mode. Enterprise mode should work
- *    the same as this page does today.
- * 6. Reload the app to load in the new plugin.
- * 7. ✅  [SPIKE] Combining all these elements together and adding a badge for apps
- *    that have been installed (those that are actually apps).
- * 8. Move GROUPAROO_PLUGIN_MANIFEST_URL to config.
- */
-
-/**
- *
- * BROWSER - install plugin
- *
- * MODAL - waiting for install (wait for api response)
- *       SERVER - install
- * MODAL - waiting for reboot (polling)
- *       SERVER - reboot
- *
- * BROWSER - reload page
- *
- */
-
 export default function Page(props) {
   const {
     errorHandler,
@@ -129,94 +98,42 @@ export default function Page(props) {
       `/plugin/install`,
       {
         plugin: plugin.plugin.name,
+        restart: true,
       }
     );
     if (response?.checkIn) {
-      // await resetPluginsAndApps();
-      // setLoading(false);
-      // setInstallingMessage(false);
-
       setInstallingMessage("Restarting application ...");
 
-      // await timeout(1000 * 10);
       await timeout(response.checkIn);
       await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
-      await timeout(response.checkIn);
-      await waitForServer();
+
+      await resetPluginsAndApps();
+      setLoading(false);
+      setInstallingMessage(false);
     } else {
       setLoading(false);
       setInstallingMessage(false);
     }
   }
 
-  function waitForServer() {
-    // try {
-    console.log("Checking server ...");
+  async function waitForServer() {
+    let response: Actions.PublicStatus = await execApi(
+      "get",
+      "/status/public",
+      undefined,
+      undefined,
+      undefined,
+      false,
+      1000
+    );
 
-    return new Promise((resolve, reject) => {
-      // setTimeout(() => {
-      //   // resolve("TIMEOUT");
-      //   waitForServer();
-      // }, 1000);
+    if (response?.status !== "ok") {
+      console.log("Server down. Trying again in 0.25 seconds ...");
+      await timeout(250);
+      response = await waitForServer();
+    }
 
-      execApi(
-        "get",
-        "/status/public",
-        undefined,
-        undefined,
-        undefined,
-        false,
-        1000
-      )
-        .then((response) => {
-          console.log("RELOADING ...");
-          // console.log(globalThis);
-
-          // globalThis.window.location.reload();
-          console.log(response);
-
-          resolve(response);
-        })
-        .catch((err) => {
-          console.error(err);
-          reject(err);
-        });
-    });
-
-    // return response;
-    // } catch (err) {
-    //   console.error(err);
-    //   const response = await waitForServer();
-    //   return response;
-    // }
+    return response;
   }
 
   return (
