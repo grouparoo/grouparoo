@@ -45,10 +45,10 @@ export async function loadGroup(
       }
       //parses to epoch time
       if (
-        calculatesWithDate.indexOf(rules[i]["operation"]["op"]) >= 1 &&
+        calculatesWithDate.indexOf(rules[i]["operation"]["op"]) >= 0 &&
         rules[i]["type"] === "date"
       ) {
-        rules[i]["match"] = Date.parse(rules[i]["match"].toString()).toString();
+        rules[i]["match"] = Date.parse(rules[i]["match"].toString());
       }
     }
 
