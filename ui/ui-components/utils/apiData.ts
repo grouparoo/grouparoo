@@ -170,6 +170,7 @@ import {
   ConfigValidate,
   ConfigApply,
   ConfigGenerate,
+  ConfigUserCreate,
 } from "@grouparoo/core/src/actions/config";
 import {
   PropertyCreate,
@@ -507,6 +508,9 @@ export namespace Actions {
   >;
   export type ConfigGenerate = AsyncReturnType<
     typeof ConfigGenerate.prototype.runWithinTransaction
+  >;
+  export type ConfigUserCreate = AsyncReturnType<
+    typeof ConfigUserCreate.prototype.runWithinTransaction
   >;
 
   export type PropertyCreate = AsyncReturnType<

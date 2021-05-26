@@ -1,5 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { spawnPromise } from "../modules/spawnPromise";
+import { ConfigUser } from "../modules/configUser";
 
 export class ConfigValidate extends AuthenticatedAction {
   constructor() {
@@ -67,5 +69,26 @@ export class ConfigGenerate extends AuthenticatedAction {
       params.id,
       params.parentId,
     ]);
+  }
+}
+
+export class ConfigUserCreate extends OptionallyAuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "config:user:create";
+    this.description = "I write user details to a .local file.";
+    this.permission = { topic: "system", mode: "write" };
+    this.inputs = {
+      email: { required: true },
+      company: { required: true },
+      subscribed: { required: false },
+    };
+    this.outputExample = {};
+  }
+
+  async runWithinTransaction({ params }) {
+    ConfigUser.create();
+    const user = ConfigUser.get();
+    return { user };
   }
 }

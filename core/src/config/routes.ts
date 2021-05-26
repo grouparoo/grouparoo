@@ -92,6 +92,7 @@ export const DEFAULT = {
         { path: "/v:apiVersion/config/validate", action: "config:validate" },
         { path: "/v:apiVersion/config/apply", action: "config:apply" },
         { path: "/v:apiVersion/config/generate", action: "config:generate" },
+        { path: "/v:apiVersion/config/user", action: "config:user:create" },
         { path: "/v:apiVersion/team", action: "team:create" },
         { path: "/v:apiVersion/team/initialize", action: "team:initialize" },
         { path: "/v:apiVersion/team/member", action: "teamMember:create" },

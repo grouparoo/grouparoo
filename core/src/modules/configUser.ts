@@ -3,7 +3,7 @@ import path from "path";
 
 import { getConfigDir } from "../utils/pluginDetails";
 
-const localUserFilePath = path.join(getConfigDir(), ".local/user.json");
+const localUserFilePath = path.join(getConfigDir(), "../.local/user.json");
 
 export namespace ConfigUser {
   export function create() {
