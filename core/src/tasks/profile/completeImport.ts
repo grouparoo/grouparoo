@@ -29,8 +29,8 @@ export class ProfileCompleteImport extends RetryableTask {
     if (!profile) return; // the profile may have been deleted or merged by the time this task ran
 
     const properties = await Property.findAllWithCache();
-    const pendingProfileProperty = Object.keys(profile.profileProperties).find(
-      (k) => profile.profileProperties[k].state !== "ready" // a property may have gone back into the pending state
+    const pendingProfileProperty = profile.profileProperties.find(
+      (p) => p.state !== "ready" // a property may have gone back into the pending state
     );
 
     if (profile.state !== "ready" || pendingProfileProperty) {

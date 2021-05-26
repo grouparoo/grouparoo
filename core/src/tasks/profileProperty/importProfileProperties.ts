@@ -39,19 +39,25 @@ export class ImportProfileProperties extends RetryableTask {
 
     for (const profile of profiles) {
       let ok = true;
-      const profileProperties = await profile.properties();
+      // already (wrongly) ready?
+      if (
+        profile.profileProperties.find((p) => p.propertyId === property.id)
+          ?.state === "ready"
+      ) {
+        ok = false;
+      }
 
-      if (profileProperties[property.key].state === "ready") ok = false;
-
+      // dependencies are not ready
       dependencies.forEach((dep) => {
-        if (profileProperties[dep.key].state !== "ready") ok = false;
+        if (
+          profile.profileProperties.find((p) => p.propertyId === dep.id)
+            ?.state !== "ready"
+        ) {
+          ok = false;
+        }
       });
 
-      if (ok) {
-        profilesToImport.push(profile);
-      } else {
-        profilesNotReady.push(profile);
-      }
+      ok ? profilesToImport.push(profile) : profilesNotReady.push(profile);
     }
 
     if (profilesNotReady.length > 0) {

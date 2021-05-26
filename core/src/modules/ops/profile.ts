@@ -97,167 +97,134 @@ export namespace ProfileOps {
   }
 
   /**
-   * Add or Update many Properties on this Profile
-   */
-  export async function addOrUpdateProperty(
-    profile: Profile,
-    hash: { [key: string]: Array<string | number | boolean | Date> }
-  ) {
-    const key = Object.keys(hash)[0]; // either the key or id of the property, preferring the id
-    const values = hash[key];
-
-    // ignore reserved profile property key
-    if (key === "_meta") return;
-
-    const properties = await Property.findAllWithCache();
-    const property =
-      properties.find((p) => p.id === key) ||
-      properties.find((p) => p.key === key);
-
-    if (!property) {
-      throw new Error(`cannot find a property for id or key \`${key}\``);
-    }
-
-    // Note: Lifecycle hooks do not fire on upserts, so we need to manually check if the property exists or not
-
-    if (property.isArray) {
-      let profileProperties = await ProfileProperty.findAll({
-        where: {
-          profileId: profile.id,
-          propertyId: property.id,
-        },
-        order: [["position", "asc"]],
-      });
-
-      const existingValues = await Promise.all(
-        profileProperties.map((property) => property.getValue())
-      );
-
-      if (arraysAreEqual(existingValues, values)) {
-        await ProfileProperty.update(
-          {
-            state: "ready",
-            stateChangedAt: new Date(),
-            confirmedAt: new Date(),
-          },
-          {
-            where: { id: { [Op.in]: profileProperties.map((p) => p.id) } },
-          }
-        );
-      } else {
-        await ProfileProperty.destroy({
-          where: { id: { [Op.in]: profileProperties.map((p) => p.id) } },
-        });
-
-        let position = 0;
-        for (const i in values) {
-          const value = values[i];
-          const profileProperty = new ProfileProperty({
-            profileId: profile.id,
-            propertyId: property.id,
-            position,
-            state: "ready",
-            stateChangedAt: new Date(),
-            confirmedAt: new Date(),
-            valueChangedAt:
-              profileProperties[i] &&
-              profileProperties[i].valueChangedAt !== null
-                ? profileProperties[i].rawValue !==
-                  (await ProfilePropertyOps.buildRawValue(value, property.type))
-                  ? new Date()
-                  : profileProperties[i].valueChangedAt
-                : new Date(),
-          });
-          await profileProperty.setValue(value);
-          await profileProperty.save();
-          position++;
-        }
-      }
-    } else {
-      if (values.length > 1) {
-        throw new Error(
-          "cannot set multiple profile properties for a non-array property"
-        );
-      }
-
-      const value = values[0];
-      let changed = false;
-
-      let profileProperty = await ProfileProperty.findOne({
-        where: {
-          profileId: profile.id,
-          propertyId: property.id,
-          position: 0,
-        },
-      });
-
-      if (!profileProperty) {
-        changed = true;
-        profileProperty = new ProfileProperty({
-          profileId: profile.id,
-          propertyId: property.id,
-          position: 0,
-        });
-      } else if (
-        profileProperty.rawValue !==
-        (await ProfilePropertyOps.buildRawValue(value, property.type))
-      ) {
-        changed = true;
-      }
-
-      await profileProperty.setValue(value);
-      profileProperty.state = "ready";
-      profileProperty.stateChangedAt = new Date();
-      profileProperty.confirmedAt = new Date();
-      if (changed || profileProperty.valueChangedAt === null) {
-        profileProperty.valueChangedAt = new Date();
-      }
-
-      await profileProperty.save();
-      await ProfileProperty.destroy({
-        where: {
-          profileId: profile.id,
-          propertyId: property.id,
-          position: { [Op.ne]: 0 },
-        },
-      });
-    }
-  }
-
-  /**
-   * Add or Update a Property on this Profile
+   * Add or Update a Property on Profiles
    */
   export async function addOrUpdateProperties(
-    profile: Profile,
-    properties: {
+    profiles: Profile[],
+    profileProperties: {
       [key: string]: Array<string | number | boolean | Date> | any;
-    },
+    }[],
     toLock = true
   ) {
-    let releaseLock: Function;
-    if (toLock) {
-      const response = await waitForLock(`profile:${profile.id}`);
-      releaseLock = response.releaseLock;
+    if (profiles.length === 0) return;
+    if (profiles.length !== profileProperties.length) {
+      throw new Error(
+        "Profiles and ProfileProperty arrays are not the same length"
+      );
     }
 
+    const releaseLocks: Function[] = [];
+    const bulkCreates = [];
+    const bulkDeletes = { where: { [Op.and]: [] } };
+    const properties = await Property.findAllWithCache();
+    const now = new Date();
+
+    // load existing profile properties
+    const existingProfileProperties = await ProfileProperty.findAll({
+      where: { profileId: { [Op.in]: profiles.map((p) => p.id) } },
+    });
+
     try {
-      if (profile.isNewRecord) await profile.save();
+      let profileOffset = 0;
+      checkProfiles: for (const profile of profiles) {
+        if (toLock) {
+          const response = await waitForLock(`profile:${profile.id}`);
+          releaseLocks.push(response.releaseLock);
+        }
 
-      const keys = Object.keys(properties);
-      for (const i in keys) {
-        if (keys[i] === "id") continue;
+        if (profile.isNewRecord) await profile.save();
 
-        const h = {};
-        h[keys[i]] = Array.isArray(properties[keys[i]])
-          ? properties[keys[i]]
-          : [properties[keys[i]]];
+        const keys = Object.keys(profileProperties[profileOffset]);
+        checkKeys: for (const key of keys) {
+          if (key === "id") continue checkKeys;
+          if (key === "_meta") continue checkKeys;
 
-        await addOrUpdateProperty(profile, h);
+          const h: { [key: string]: Array<string | number | boolean | Date> } =
+            {};
+          h[key] = Array.isArray(profileProperties[profileOffset][key])
+            ? profileProperties[profileOffset][key]
+            : [profileProperties[profileOffset][key]];
+
+          const property =
+            properties.find((p) => p.id === key) ??
+            properties.find((p) => p.key === key);
+
+          if (!property) {
+            throw new Error(`cannot find a property for id or key \`${key}\``);
+          }
+
+          // add new Profile Properties to batch
+          let position = 0;
+          buildQueries: for (const value of h[key]) {
+            if (position > 0 && !property.isArray) {
+              throw new Error(
+                "cannot set multiple profile properties for a non-array property"
+              );
+            }
+
+            const existingProfileProperty = existingProfileProperties.find(
+              (p) =>
+                p.profileId === profile.id &&
+                p.propertyId === property.id &&
+                p.position === position
+            );
+            const rawValue = await ProfilePropertyOps.buildRawValue(
+              value,
+              property.type
+            );
+
+            bulkCreates.push({
+              id: existingProfileProperty
+                ? existingProfileProperty.id
+                : undefined,
+              profileId: profile.id,
+              propertyId: property.id,
+              position,
+              rawValue,
+              state: "ready",
+              stateChangedAt: now,
+              confirmedAt: now,
+              valueChangedAt:
+                !existingProfileProperty ||
+                !existingProfileProperty.valueChangedAt ||
+                !existingProfileProperty.rawValue ||
+                rawValue !== existingProfileProperty.rawValue
+                  ? now
+                  : existingProfileProperty.valueChangedAt,
+              unique: property.unique,
+            });
+
+            position++;
+          }
+
+          // delete old properties we didn't update
+          bulkDeletes.where[Op.and].push({
+            profileId: profile.id,
+            propertyId: property.id,
+            position: { [Op.gte]: position },
+          });
+        }
+        profileOffset++;
       }
 
-      return profile;
+      if (bulkCreates.length > 0) {
+        await ProfileProperty.bulkCreate(bulkCreates, {
+          updateOnDuplicate: [
+            "state",
+            "unique",
+            "stateChangedAt",
+            "confirmedAt",
+            "valueChangedAt",
+            "rawValue",
+            "updatedAt",
+          ],
+        });
+      }
+      if (bulkDeletes.where[Op.and].length > 0) {
+        await ProfileProperty.destroy(bulkDeletes);
+      }
     } finally {
-      if (releaseLock) await releaseLock();
+      for (const releaseLock of releaseLocks) await releaseLock();
     }
   }
 
@@ -268,11 +235,9 @@ export namespace ProfileOps {
     const property = await Property.findOne({ where: { key } });
     if (!property) return;
 
-    const properties = await ProfileProperty.findAll({
+    return ProfileProperty.destroy({
       where: { profileId: profile.id, propertyId: property.id },
     });
-
-    for (const property of properties) await property.destroy();
   }
 
   /**
@@ -346,8 +311,9 @@ export namespace ProfileOps {
       );
 
       if (toSave) {
-        await addOrUpdateProperties(profile, hash, false);
+        await addOrUpdateProperties([profile], [hash], false);
         await buildNullProperties([profile]);
+
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },
@@ -490,8 +456,9 @@ export namespace ProfileOps {
         profile = await profile.reload();
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
         lockReleases.push(releaseLock);
-        await addOrUpdateProperties(profile, uniquePropertiesHash, false);
+        await addOrUpdateProperties([profile], [uniquePropertiesHash], false);
         await buildNullProperties([profile]);
+
         isNew = true;
       }
 
@@ -572,7 +539,7 @@ export namespace ProfileOps {
 
       // delete other profile so unique profile properties will be available
       await otherProfile.destroy();
-      await addOrUpdateProperties(profile, newProperties, false);
+      await addOrUpdateProperties([profile], [newProperties], false);
 
       // transfer anonymousId
       if (!profile.anonymousId && otherProfile.anonymousId) {
@@ -682,9 +649,9 @@ export namespace ProfileOps {
     return profiles;
   }
 
-  function arraysAreEqual(a: Array<any>, b: Array<any>) {
-    return (
-      a.length === b.length && a.every((value, index) => value === b[index])
-    );
-  }
+  // function arraysAreEqual(a: Array<any>, b: Array<any>) {
+  //   return (
+  //     a.length === b.length && a.every((value, index) => value === b[index])
+  //   );
+  // }
 }

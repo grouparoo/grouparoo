@@ -351,6 +351,7 @@ describe("models/profile", () => {
       describe("profile property timestamps (non-array)", () => {
         test("changing a value sets valueChangedAt and confirmedAt", async () => {
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
@@ -364,6 +365,7 @@ describe("models/profile", () => {
 
         test("updating with the same value only sets confirmedAt", async () => {
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
@@ -379,6 +381,7 @@ describe("models/profile", () => {
             { where: { profileId: profile.id } }
           );
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             email: ["new-email@example.com"],
@@ -410,6 +413,7 @@ describe("models/profile", () => {
 
         test("changing a value sets valueChangedAt and confirmedAt", async () => {
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             purchases: ["hat"],
@@ -434,6 +438,7 @@ describe("models/profile", () => {
 
         test("updating with the same value only sets confirmedAt", async () => {
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
@@ -453,6 +458,7 @@ describe("models/profile", () => {
             { where: { profileId: profile.id } }
           );
           const start = new Date().getTime();
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             purchases: ["hat", "mushroom"],
@@ -464,138 +470,142 @@ describe("models/profile", () => {
         });
       });
 
-      test("it can add properties in bulk with proper timestamps", async () => {
-        await profile.addOrUpdateProperties({
-          email: ["luigi@example.com"],
-          firstName: ["Luigi"],
-          lastName: ["Mario"],
-          color: ["green"],
-          userId: [123],
+      describe("profile property lifecycle", () => {
+        test("it can add properties in bulk with proper timestamps", async () => {
+          await profile.addOrUpdateProperties({
+            email: ["luigi@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+          });
+
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties)).toEqual({
+            email: ["luigi@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+          });
+
+          expect(profile.createdAt.getTime()).toBeLessThan(
+            properties.color.createdAt.getTime()
+          );
+          expect(profile.updatedAt.getTime()).toBeLessThan(
+            properties.color.updatedAt.getTime()
+          );
         });
 
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties)).toEqual({
-          email: ["luigi@example.com"],
-          firstName: ["Luigi"],
-          lastName: ["Mario"],
-          color: ["green"],
-          userId: [123],
+        test("it can update an existing property", async () => {
+          await profile.addOrUpdateProperties({
+            email: ["luigi-again@example.com"],
+          });
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties)).toEqual({
+            email: ["luigi-again@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+          });
         });
 
-        expect(profile.createdAt.getTime()).toBeLessThan(
-          properties.color.createdAt.getTime()
-        );
-        expect(profile.updatedAt.getTime()).toBeLessThan(
-          properties.color.updatedAt.getTime()
-        );
-      });
-
-      test("it can update an existing property", async () => {
-        await profile.addOrUpdateProperties({
-          email: ["luigi-again@example.com"],
-        });
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties)).toEqual({
-          email: ["luigi-again@example.com"],
-          firstName: ["Luigi"],
-          lastName: ["Mario"],
-          color: ["green"],
-          userId: [123],
-        });
-      });
-
-      test("it will ignore the property _meta, as it is reserved", async () => {
-        await profile.addOrUpdateProperties({ _meta: ["bla"] });
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties)._meta).toBeFalsy();
-      });
-
-      test("it can remove an existing property", async () => {
-        await profile.removeProperty("email");
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties)).toEqual({
-          firstName: ["Luigi"],
-          lastName: ["Mario"],
-          color: ["green"],
-          userId: [123],
-        });
-      });
-
-      test("no problems arise when re-adding a deleted property", async () => {
-        let properties = await profile.properties();
-        expect(properties.email).toBeUndefined();
-        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        properties = await profile.properties();
-        expect(properties.email.values).toEqual(["luigi@example.com"]);
-      });
-
-      test("it will not raise when trying to remove a non-existent property", async () => {
-        await profile.removeProperty("funky");
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties)).toEqual({
-          email: ["luigi@example.com"],
-          firstName: ["Luigi"],
-          lastName: ["Mario"],
-          color: ["green"],
-          userId: [123],
-        });
-      });
-
-      test("profile properties can be addded by key", async () => {
-        await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties).email).toEqual([
-          "luigi@example.com",
-        ]);
-      });
-
-      test("profile properties can be addded by id", async () => {
-        const emailProperty = await Property.findOne({
-          where: { key: "email" },
-        });
-        await profile.addOrUpdateProperties({
-          [emailProperty.id]: ["luigi@example.com"],
+        test("it will ignore the property _meta, as it is reserved", async () => {
+          await profile.addOrUpdateProperties({ _meta: ["bla"] });
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties)._meta).toBeFalsy();
+          expect(simpleProfileValues(properties).firstName).toEqual(["Luigi"]);
         });
 
-        const properties = await profile.properties();
-        expect(simpleProfileValues(properties).email).toEqual([
-          "luigi@example.com",
-        ]);
-      });
-
-      test("orphan profile properties will be removed", async () => {
-        await profile.reload();
-
-        const profileProperty = await ProfileProperty.create(
-          {
-            id: "rule_missing",
-            profileId: profile.id,
-            propertyId: "missing",
-            rawValue: "green-hat",
-            position: 0,
-          },
-          //@ts-ignore
-          { hooks: false } // we need to skip validations
-        );
-
-        const properties = await profile.properties(); // does not throw
-        expect(Object.keys(properties).length).toBe(5);
-
-        await expect(profileProperty.reload()).rejects.toThrow(
-          /does not exist anymore/
-        );
-      });
-
-      test("deleting the profile also deletes the properties", async () => {
-        const beforeCount = await ProfileProperty.count({
-          where: { profileId: profile.id },
+        test("it can remove an existing property", async () => {
+          await profile.removeProperty("email");
+          const properties = await profile.properties();
+          expect(properties["email"]).toBeUndefined();
+          expect(simpleProfileValues(properties)).toEqual({
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+          });
         });
-        expect(beforeCount).toBe(5);
-        await profile.destroy();
-        const afterCount = await ProfileProperty.count({
-          where: { profileId: profile.id },
+
+        test("no problems arise when re-adding a deleted property", async () => {
+          let properties = await profile.properties();
+          expect(properties.email).toBeUndefined();
+          await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
+          properties = await profile.properties();
+          expect(properties.email.values).toEqual(["luigi@example.com"]);
         });
-        expect(afterCount).toBe(0);
+
+        test("it will not raise when trying to remove a non-existent property", async () => {
+          await profile.removeProperty("funky");
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties)).toEqual({
+            email: ["luigi@example.com"],
+            firstName: ["Luigi"],
+            lastName: ["Mario"],
+            color: ["green"],
+            userId: [123],
+          });
+        });
+
+        test("profile properties can be addded by key", async () => {
+          await profile.addOrUpdateProperties({ email: ["luigi@example.com"] });
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties).email).toEqual([
+            "luigi@example.com",
+          ]);
+        });
+
+        test("profile properties can be addded by id", async () => {
+          const emailProperty = await Property.findOne({
+            where: { key: "email" },
+          });
+          await profile.addOrUpdateProperties({
+            [emailProperty.id]: ["luigi@example.com"],
+          });
+
+          const properties = await profile.properties();
+          expect(simpleProfileValues(properties).email).toEqual([
+            "luigi@example.com",
+          ]);
+        });
+
+        test("orphan profile properties will be removed", async () => {
+          await profile.reload();
+
+          const profileProperty = await ProfileProperty.create(
+            {
+              id: "rule_missing",
+              profileId: profile.id,
+              propertyId: "missing",
+              rawValue: "green-hat",
+              position: 0,
+            },
+            //@ts-ignore
+            { hooks: false } // we need to skip validations
+          );
+
+          const properties = await profile.properties(); // does not throw
+          expect(Object.keys(properties).length).toBe(5);
+
+          await expect(profileProperty.reload()).rejects.toThrow(
+            /does not exist anymore/
+          );
+        });
+
+        test("deleting the profile also deletes the properties", async () => {
+          const beforeCount = await ProfileProperty.count({
+            where: { profileId: profile.id },
+          });
+          expect(beforeCount).toBe(5);
+          await profile.destroy();
+          const afterCount = await ProfileProperty.count({
+            where: { profileId: profile.id },
+          });
+          expect(afterCount).toBe(0);
+        });
       });
 
       describe("array properties", () => {
@@ -661,6 +671,8 @@ describe("models/profile", () => {
           });
           const firstProperties = await profile.properties();
           const firstUpdate = firstProperties.purchases.updatedAt;
+
+          await helper.sleep(1000);
 
           await profile.addOrUpdateProperties({
             email: ["luigi@example.com"],

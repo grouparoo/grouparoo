@@ -579,6 +579,15 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
+  @AfterSave
+  // TODO: Background Job
+  static async updateProfilePropertyUniqueness(instance: Property) {
+    await ProfileProperty.update(
+      { unique: instance.unique },
+      { where: { propertyId: instance.id } }
+    );
+  }
+
   @BeforeDestroy
   static async ensureNotInUse(instance: Property) {
     const groupRule = await GroupRule.findOne({

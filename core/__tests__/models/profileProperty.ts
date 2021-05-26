@@ -172,7 +172,7 @@ describe("models/profileProperty", () => {
           propertyId: purchasesProperty.id,
           rawValue: "hat",
         })
-      ).rejects.toThrow(/There is already a ProfileProperty/);
+      ).rejects.toThrow(/Validation error/);
 
       await property.destroy();
     });
@@ -462,9 +462,7 @@ describe("models/profileProperty", () => {
         secondProfile.addOrUpdateProperties({
           email: ["mario@example.com"],
         })
-      ).rejects.toThrow(
-        /Another profile already has the value mario@example.com for property email/
-      );
+      ).rejects.toThrow(/Validation error/);
     });
 
     test("editing the key of a property renames all the profile properties that have that key", async () => {

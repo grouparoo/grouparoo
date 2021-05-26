@@ -101,19 +101,13 @@ export class Profile extends LoggedModel<Profile> {
     return simpleProperties;
   }
 
-  async addOrUpdateProperty(properties: {
-    [key: string]: Array<string | number | boolean | Date>;
-  }) {
-    return ProfileOps.addOrUpdateProperty(this, properties);
-  }
-
   async addOrUpdateProperties(
     properties: {
       [key: string]: Array<string | number | boolean | Date>;
     },
     toLock = true
   ) {
-    return ProfileOps.addOrUpdateProperties(this, properties, toLock);
+    return ProfileOps.addOrUpdateProperties([this], [properties], toLock);
   }
 
   async removeProperty(key: string) {
