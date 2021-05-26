@@ -91,7 +91,7 @@ function copyDirIfExists(
     return;
   }
   const dbName = typeof db === "string" ? db : db.name();
-  const from = path.join(rootPath, "shared", dbName, subDir);
+  const from = path.join(rootPath, dataset, dbName, subDir);
   if (fs.existsSync(from)) {
     fs.copySync(from, toConfigDir);
   }
