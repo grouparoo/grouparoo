@@ -78,7 +78,7 @@ describe("modules/codeConfig", () => {
             apikey: ["website_key"],
             app: expect.arrayContaining(["data_warehouse", "events"]),
             destination: ["test_destination"],
-            group: ["email_group"],
+            group: ["email_group", "high_value"],
             property: expect.arrayContaining([
               "user_id",
               "last_name",
