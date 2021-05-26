@@ -1,5 +1,5 @@
-import { config } from "actionhero";
 import { Op } from "sequelize";
+import { config } from "actionhero";
 
 export default {
   up: async function (migration, DataTypes) {
@@ -19,13 +19,26 @@ export default {
 
       if (uniqueProperties.length > 0) {
         await migration.sequelize.query(
-          `UPDATE "profileProperties" SET "unique"='${
-            uniqueProperties[0].unique
-          }' WHERE "propertyId" IN (${uniqueProperties
+          `UPDATE "profileProperties" SET "unique"=true WHERE "propertyId" IN (${uniqueProperties
             .map((p) => `'${p.id}'`)
             .join(", ")})`
         );
+
+        await migration.sequelize.query(
+          `UPDATE "profileProperties" SET "unique"=false WHERE "propertyId" NOT IN (${uniqueProperties
+            .map((p) => `'${p.id}'`)
+            .join(", ")})`
+        );
+      } else {
+        await migration.sequelize.query(
+          `UPDATE "profileProperties" SET "unique"=false`
+        );
       }
+
+      await migration.changeColumn("profileProperties", "unique", {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+      });
 
       await migration.addIndex(
         "profileProperties",
