@@ -4,7 +4,6 @@ import path from "path";
 
 import { App } from "../models/App";
 import { Source } from "../models/Source";
-import { Schedule } from "../models/Schedule";
 import { Property } from "../models/Property";
 import { Group } from "../models/Group";
 import { Destination } from "../models/Destination";
