@@ -4,6 +4,7 @@ import { ApiKey } from "../../models/ApiKey";
 import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
 import { Errors } from "../errors";
+import { ConfigUser } from "../configUser";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
@@ -41,18 +42,11 @@ export const ChatRoomMiddleware: chatRoom.ChatMiddleware = {
 };
 
 // authenticate a web user with session cookie & csrfToken
-async function authenticateTeamMember(
+async function authenticateTeamMemberFromSession(
   data: { [key: string]: any },
   optional: boolean
 ) {
-  if (
-    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
-    env === "development"
-  ) {
-    return; // TODO: What's the log in story for `grouparoo config`
-  }
-
-  const error: Error = await CLS.wrap(
+  return await CLS.wrap(
     async () => {
       const session = await api.session.load(data.connection);
       if (!session && optional) return;
@@ -93,6 +87,41 @@ async function authenticateTeamMember(
     },
     { catchError: true }
   );
+}
+
+// Authenticate user from file in .local directory
+function authenticateConfigUser(
+  data: { [key: string]: any },
+  optional: boolean
+) {
+  if (optional) return;
+  try {
+    const user = ConfigUser.get();
+    if (user?.email !== true) {
+      const error = new Error("Config user not properly set.");
+      error["code"] = "AUTHENTICATION_ERROR";
+      throw error;
+    }
+  } catch (err) {
+    return err;
+  }
+}
+
+// Conditionally choose auth method based on run mode.
+async function authenticateTeamMember(
+  data: { [key: string]: any },
+  optional: boolean
+) {
+  let error: Error;
+
+  if (
+    process.env.GROUPAROO_RUN_MODE === "cli:config" &&
+    env === "development"
+  ) {
+    error = authenticateConfigUser(data, optional);
+  } else {
+    error = await authenticateTeamMemberFromSession(data, optional);
+  }
 
   if (error) {
     if (error["code"] === "AUTHENTICATION_ERROR") {
