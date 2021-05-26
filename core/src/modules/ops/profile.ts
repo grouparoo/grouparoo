@@ -115,7 +115,7 @@ export namespace ProfileOps {
 
     const releaseLocks: Function[] = [];
     const bulkCreates = [];
-    const bulkDeletes = { where: { [Op.and]: [] } };
+    const bulkDeletes = { where: { [Op.or]: [] } };
     const properties = await Property.findAllWithCache();
     const now = new Date();
 
@@ -198,7 +198,7 @@ export namespace ProfileOps {
           }
 
           // delete old properties we didn't update
-          bulkDeletes.where[Op.and].push({
+          bulkDeletes.where[Op.or].push({
             profileId: profile.id,
             propertyId: property.id,
             position: { [Op.gte]: position },
@@ -220,7 +220,7 @@ export namespace ProfileOps {
           ],
         });
       }
-      if (bulkDeletes.where[Op.and].length > 0) {
+      if (bulkDeletes.where[Op.or].length > 0) {
         await ProfileProperty.destroy(bulkDeletes);
       }
     } finally {
