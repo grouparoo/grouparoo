@@ -38,7 +38,7 @@ export default function Page(props) {
         <title>Grouparoo: Setup</title>
       </Head>
 
-      <h1>Setup Grouparoo</h1>
+      <h1 id="setup">Setup Grouparoo</h1>
       {currentStep ? (
         <p>
           Thanks for installing Grouparoo! There are few steps to get started
