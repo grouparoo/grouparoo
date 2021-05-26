@@ -124,7 +124,7 @@ export class Profile extends LoggedModel<Profile> {
     return ProfileOps.removeProperties(this, properties);
   }
 
-  async buildNullProperties(state = "ready") {
+  async buildNullProperties(state = "pending") {
     return ProfileOps.buildNullProperties(this, state);
   }
 

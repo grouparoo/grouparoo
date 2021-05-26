@@ -285,7 +285,10 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(profile: Profile, state = "ready") {
+  export async function buildNullProperties(
+    profile: Profile,
+    state = "pending"
+  ) {
     const properties = await Property.findAllWithCache();
     const profileProperties = await profile.properties();
 

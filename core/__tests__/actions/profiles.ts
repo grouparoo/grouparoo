@@ -69,6 +69,11 @@ describe("actions/profiles", () => {
         purchaseAmounts: [null],
         purchases: [null],
       });
+
+      expect(profile.properties["userId"].state).toBe("ready");
+      expect(profile.properties["email"].state).toBe("ready");
+      expect(profile.properties["purchases"].state).toBe("pending");
+
       id = profile.id;
     });
 
