@@ -632,14 +632,12 @@ describe("modules/codeConfig", () => {
 
     test("Group rules calculated from date strings will be stored as epoch time in groupRules", async () => {
       const purchaseTimestamp = "1583020800000";
-      const messageTimestamp = "1615388400000";
       const appointmentTimestamp = "1570686480000";
       const groupRules = await GroupRule.findAll();
-      expect(groupRules.length).toBe(3);
+      expect(groupRules.length).toBe(2);
 
       expect(groupRules[0].match).toBe(purchaseTimestamp);
-      expect(groupRules[1].match).toBe(messageTimestamp);
-      expect(groupRules[2].match).toBe(appointmentTimestamp);
+      expect(groupRules[1].match).toBe(appointmentTimestamp);
     });
   });
 

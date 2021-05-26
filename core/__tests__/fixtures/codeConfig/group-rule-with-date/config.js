@@ -49,12 +49,6 @@ module.exports = async function getConfig() {
           type: "date",
         },
         {
-          propertyId: "last_message_date",
-          operation: { op: "lt" },
-          match: "2021-03-10T07:00", //date with time (UTC)
-          type: "date",
-        },
-        {
           propertyId: "last_appointment_date",
           operation: { op: "lte" },
           match: "2019-10-10T14:48:00.000+09:00", //date with time and timezone
