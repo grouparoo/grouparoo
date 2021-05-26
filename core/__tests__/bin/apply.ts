@@ -95,7 +95,7 @@ describe("bin/config-apply", () => {
       expect(await Schedule.count()).toBe(1);
       expect(await Destination.count()).toBe(1);
       expect(await Group.count()).toBe(2);
-      expect(await GroupRule.count()).toBe(2);
+      expect(await GroupRule.count()).toBe(3);
       expect(await Property.count()).toBe(4);
       expect(await ApiKey.count()).toBe(1);
       expect(await Team.count()).toBe(1);
