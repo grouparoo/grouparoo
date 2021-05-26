@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import { Op } from "sequelize";
 
 export default {
@@ -35,6 +36,14 @@ export default {
           where: { unique: { [Op.eq]: true } },
         }
       );
+
+      // All previous SQLite indexes had been removed (migration 000053), but we need to manually apply the per-profile position/value lock
+      // We cannot use Sequelize to apply the second index as it clobbers the first (https://github.com/sequelize/sequelize/issues/12823)
+      if (config.sequelize.dialect === "sqlite") {
+        await migration.sequelize.query(
+          "CREATE UNIQUE INDEX `profile_properties_profile_guid_profile_property_rule_guid_posi` ON `profileProperties` (`profileId`, `propertyId`, `position`)"
+        );
+      }
     });
   },
 
