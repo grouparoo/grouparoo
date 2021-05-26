@@ -1,3 +1,4 @@
+import { config } from "actionhero";
 import PluginDetails from "../utils/pluginDetails";
 import pacote from "pacote";
 import { log } from "actionhero";
@@ -78,9 +79,7 @@ export namespace Plugins {
   }
 
   export async function availableGrouparooPlugins() {
-    const pluginManifestUrl =
-      process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
-      "https://www.grouparoo.com/plugins/v1/manifest.json";
+    const pluginManifestUrl = config.pluginManifestUrl;
     const pluginManifest = await fetch(pluginManifestUrl).then((r) => r.json());
     return pluginManifest;
   }

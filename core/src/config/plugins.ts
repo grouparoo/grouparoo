@@ -33,4 +33,7 @@ export const DEFAULT = {
 
     return plugins;
   },
+  pluginManifestUrl:
+    process.env.GROUPAROO_PLUGIN_MANIFEST_URL ||
+    "https://www.grouparoo.com/plugins/v1/manifest.json",
 };
