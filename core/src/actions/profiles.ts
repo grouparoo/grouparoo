@@ -361,6 +361,9 @@ export class ProfileDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const profile = await Profile.findById(params.id);
     await profile.destroy();
+
+    await ConfigWriter.run();
+
     return { success: true };
   }
 }
