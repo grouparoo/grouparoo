@@ -45,7 +45,7 @@ module.exports = async function getConfig() {
         {
           propertyId: "last_purchase_date",
           operation: { op: "lt" },
-          match: "2020-03-01", // date only with lt rule
+          match: "2020-03-01", // date only
           type: "date",
         },
         {
