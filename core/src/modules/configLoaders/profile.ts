@@ -10,6 +10,8 @@ export async function loadProfile(
   externallyValidate: boolean,
   validate = false
 ) {
+  if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
+
   const { isNew } = await Profile.findOrCreateByUniqueProfileProperties(
     configObject.properties
   );
