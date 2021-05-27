@@ -30,20 +30,6 @@ export default function PluginsPage(props) {
     }
   }
 
-  // async function uninstallPlugin(name: string) {
-  //   setLoading(true);
-  //   const response: Actions.PluginInstall = await execApi(
-  //     "post",
-  //     `/plugin/uninstall`,
-  //     { plugin: name }
-  //   );
-  //   setLoading(false);
-  //   if (response.success) {
-  //     successHandler.set({ message: "Plugin Uninstalled" });
-  //     loadInstalledPlugins();
-  //   }
-  // }
-
   async function loadInstalledPlugins() {
     setLoading(true);
     const response: Actions.PluginsInstalledList = await execApi(
