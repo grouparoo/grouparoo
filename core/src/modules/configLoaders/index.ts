@@ -23,6 +23,7 @@ import { loadSetting } from "./setting";
 import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
+import { loadProfile } from "./profile";
 
 export async function loadConfigDirectory(
   configDir: string,
@@ -242,6 +243,9 @@ export async function processConfigObjects(
             externallyValidate,
             validate
           );
+          break;
+        case "profile":
+          await loadProfile(configObject, externallyValidate, validate);
           break;
         case "synctable":
           const many = await expandSyncTable(

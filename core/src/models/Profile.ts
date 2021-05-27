@@ -206,22 +206,21 @@ export class Profile extends LoggedModel<Profile> {
 
   async getConfigObject() {
     const properties = await this.properties();
-    console.log("got props");
     const directlyMappedProps: {
-      [key: string]: Array<string | boolean | number | Date>;
+      [key: string]: string | boolean | number | Date;
     } = {};
 
     for (const k in properties) {
-      if (properties[k].directlyMapped) {
-        directlyMappedProps[k] = properties[k].values;
+      const property = properties[k];
+      if (property.directlyMapped && property.values.length > 0) {
+        directlyMappedProps[property.id] = property.values[0];
       }
     }
 
-    console.log("directly mapped", directlyMappedProps);
-
     return {
+      id: this.id,
       class: "Profile",
-      ...directlyMappedProps,
+      properties: directlyMappedProps,
     };
   }
 

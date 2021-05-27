@@ -344,7 +344,6 @@ export namespace ProfileOps {
             .then((data) => (hash = Object.assign(hash, data)))
         )
       );
-      console.log("IMPORT HASH", hash);
 
       if (toSave) {
         await addOrUpdateProperties(profile, hash, false);
@@ -426,6 +425,8 @@ export namespace ProfileOps {
     uniqueProperties.forEach((rule) => {
       if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
         uniquePropertiesHash[rule.id] = hash[rule.key];
+      } else if (hash[rule.id] !== null && hash[rule.id] !== undefined) {
+        uniquePropertiesHash[rule.id] = hash[rule.id];
       }
     });
 
@@ -489,6 +490,7 @@ export namespace ProfileOps {
         profile = await profile.reload();
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
         lockReleases.push(releaseLock);
+        console.log("add or update", profile.id, uniquePropertiesHash);
         await addOrUpdateProperties(profile, uniquePropertiesHash, false);
         await buildNullProperties([profile]);
         isNew = true;

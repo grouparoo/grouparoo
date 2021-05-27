@@ -256,9 +256,7 @@ export class ProfileCreate extends AuthenticatedAction {
 
     const groups = await profile.$get("groups");
 
-    console.log("will write profile");
     await ConfigWriter.run();
-    console.log("wrote profile");
 
     return {
       profile: await profile.apiData(),

@@ -59,11 +59,8 @@ export namespace ConfigWriter {
 
     await deleteFiles();
 
-    console.log("deleted");
     const configObjects: WritableConfigObject[] = await getConfigObjects();
-    console.log("got objs");
     await writeFiles(configObjects);
-    console.log("wrote objs");
     return configObjects;
   }
 
@@ -79,8 +76,6 @@ export namespace ConfigWriter {
       destinations: await Destination.findAll(queryParams),
       profiles: await Profile.findAll(),
     };
-
-    console.log("profiles", queries.profiles);
 
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {

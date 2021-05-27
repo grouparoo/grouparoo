@@ -86,7 +86,6 @@ export namespace SourceOps {
     } = {}
   ) {
     if (property.state !== "ready" && !propertyOptionsOverride) return;
-    console.log("import property", source.id, property.id);
 
     if (propertyOptionsOverride) {
       await property.validateOptions(propertyOptionsOverride, false);
@@ -100,7 +99,6 @@ export namespace SourceOps {
     }
 
     const method = pluginConnection.methods.profileProperty;
-    console.log("profileprop method", method);
     if (!method) return;
 
     const app = preloadedArgs.app || (await source.$get("app"));
@@ -117,12 +115,8 @@ export namespace SourceOps {
       const profileProperties =
         preloadedArgs.profileProperties || (await profile.properties());
       if (!profileProperties[propertyMappingKey]) {
-        console.log("we dont have the poperty mapping key");
         return;
       }
-      console.log("mapkey", profileProperties[propertyMappingKey]);
-    } else {
-      console.log("no source mappign");
     }
 
     while ((await app.checkAndUpdateParallelism("incr")) === false) {
@@ -243,15 +237,12 @@ export namespace SourceOps {
    * Import all profile properties from a Source for a Profile
    */
   export async function _import(source: Source, profile: Profile) {
-    console.log("import", source.name, profile.id);
     const hash = {};
     const rules = await source.$get("properties", {
       where: { state: "ready" },
     });
-    console.log("source rules", rules.length);
 
     const profileProperties = await profile.properties();
-    console.log("prof prop", profileProperties);
     const app = await source.$get("app");
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();

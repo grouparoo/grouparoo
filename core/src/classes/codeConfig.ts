@@ -5,7 +5,6 @@ import extractDuplicates from "../modules/validators/extractDuplicates";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
-
 export interface IdsByClass {
   app?: string[];
   source?: string[];
@@ -44,6 +43,7 @@ export interface ConfigurationObject {
   syncMode?: DestinationSyncMode;
   bootstrappedProperty?: ConfigurationObject;
   destinationGroupMemberships?: { [key: string]: string };
+  properties?: { [key: string]: any };
 
   // For SyncTable
   source?: ConfigurationObject;
@@ -56,9 +56,6 @@ export interface ConfigurationObject {
   userKeyColumn?: string;
   userKeyMapsToPropertyId?: string;
   highWaterColumn?: string;
-
-  // For Profiles
-  profiles?: { [key: string]: any }[];
 }
 
 interface ConfigObjectWithReferenceIDs {
@@ -341,6 +338,11 @@ export async function getParentIds(
       configObject["destinationGroupMemberships"]
     );
     groupIds.forEach((v) => prerequisiteIds.push(v));
+  }
+
+  if (configObject["properties"]) {
+    const propertyIds: string[] = Object.keys(configObject["properties"]);
+    propertyIds.forEach((v) => prerequisiteIds.push(v));
   }
 
   return {
