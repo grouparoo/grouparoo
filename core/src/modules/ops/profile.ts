@@ -490,7 +490,6 @@ export namespace ProfileOps {
         profile = await profile.reload();
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
         lockReleases.push(releaseLock);
-        console.log("add or update", profile.id, uniquePropertiesHash);
         await addOrUpdateProperties(profile, uniquePropertiesHash, false);
         await buildNullProperties([profile]);
         isNew = true;
