@@ -7,6 +7,7 @@ import { GroupMember } from "../models/GroupMember";
 import { Property } from "../models/Property";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class ProfilesList extends AuthenticatedAction {
   constructor() {
@@ -254,6 +255,10 @@ export class ProfileCreate extends AuthenticatedAction {
     await profile.addOrUpdateProperties(params.properties);
 
     const groups = await profile.$get("groups");
+
+    console.log("will write profile");
+    await ConfigWriter.run();
+    console.log("wrote profile");
 
     return {
       profile: await profile.apiData(),

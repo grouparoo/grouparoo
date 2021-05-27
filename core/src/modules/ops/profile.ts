@@ -19,6 +19,7 @@ export interface ProfilePropertyType {
     values: Array<string | number | boolean | Date>;
     type: Property["type"];
     unique: Property["unique"];
+    directlyMapped: Property["directlyMapped"];
     isArray: Property["isArray"];
     identifying: Property["identifying"];
     valueChangedAt: ProfileProperty["valueChangedAt"];
@@ -63,6 +64,7 @@ export namespace ProfileOps {
           values: [],
           type: property.type,
           unique: property.unique,
+          directlyMapped: property.directlyMapped,
           isArray: property.isArray,
           identifying: property.identifying,
           valueChangedAt: profileProperties[i].valueChangedAt,
@@ -342,6 +344,7 @@ export namespace ProfileOps {
             .then((data) => (hash = Object.assign(hash, data)))
         )
       );
+      console.log("IMPORT HASH", hash);
 
       if (toSave) {
         await addOrUpdateProperties(profile, hash, false);

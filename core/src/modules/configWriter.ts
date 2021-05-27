@@ -15,6 +15,7 @@ import {
 } from "../classes/codeConfig";
 
 import { getConfigDir } from "../utils/pluginDetails";
+import { Profile } from "../models/Profile";
 
 type WritableConfigObject = {
   filePath: string;
@@ -58,9 +59,11 @@ export namespace ConfigWriter {
 
     await deleteFiles();
 
+    console.log("deleted");
     const configObjects: WritableConfigObject[] = await getConfigObjects();
+    console.log("got objs");
     await writeFiles(configObjects);
-
+    console.log("wrote objs");
     return configObjects;
   }
 
@@ -74,7 +77,10 @@ export namespace ConfigWriter {
       properties: await Property.findAll(queryParams),
       groups: await Group.findAll(queryParams),
       destinations: await Destination.findAll(queryParams),
+      profiles: await Profile.findAll(),
     };
+
+    console.log("profiles", queries.profiles);
 
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {

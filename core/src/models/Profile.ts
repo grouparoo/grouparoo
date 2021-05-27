@@ -204,6 +204,27 @@ export class Profile extends LoggedModel<Profile> {
     }
   }
 
+  async getConfigObject() {
+    const properties = await this.properties();
+    console.log("got props");
+    const directlyMappedProps: {
+      [key: string]: Array<string | boolean | number | Date>;
+    } = {};
+
+    for (const k in properties) {
+      if (properties[k].directlyMapped) {
+        directlyMappedProps[k] = properties[k].values;
+      }
+    }
+
+    console.log("directly mapped", directlyMappedProps);
+
+    return {
+      class: "Profile",
+      ...directlyMappedProps,
+    };
+  }
+
   // --- Class Methods --- //
 
   static async findById(id: string) {

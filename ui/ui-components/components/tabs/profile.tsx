@@ -8,5 +8,10 @@ export default function ProfileTabs({
   profile: Models.ProfileType;
 }) {
   const tabs = ["edit", "imports", "events", "exports", "logs"];
+
+  if (process.env.GROUPAROO_UI_EDITION === "config") {
+    tabs.splice(tabs.indexOf("imports"), 2);
+  }
+
   return <Tabs name={getProfileDisplayName(profile)} tabs={tabs} />;
 }

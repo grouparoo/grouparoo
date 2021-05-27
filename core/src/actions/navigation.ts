@@ -196,6 +196,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         { type: "link", title: "Apps", href: "/apps" },
         { type: "link", title: "Sources", href: "/sources" },
         { type: "link", title: "Properties", href: "/properties" },
+        { type: "link", title: "Profiles", href: "/profiles" },
         { type: "link", title: "Groups", href: "/groups" },
         { type: "link", title: "Destinations", href: "/destinations" },
         { type: "link", title: "Plugins", href: "/plugins" },

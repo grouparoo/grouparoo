@@ -56,6 +56,9 @@ export interface ConfigurationObject {
   userKeyColumn?: string;
   userKeyMapsToPropertyId?: string;
   highWaterColumn?: string;
+
+  // For Profiles
+  profiles?: { [key: string]: any }[];
 }
 
 interface ConfigObjectWithReferenceIDs {
