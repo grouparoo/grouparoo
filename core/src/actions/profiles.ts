@@ -30,9 +30,7 @@ export class ProfilesList extends AuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    let profiles: Profile[];
-
-    const where: { [propertyId: string]: any } = {};
+    const searchWhere: { [propertyId: string]: any } = {};
 
     if (
       params.searchKey &&
@@ -46,19 +44,30 @@ export class ProfilesList extends AuthenticatedAction {
         throw new Error(`cannot find a property for ${params.searchKey}`);
       }
 
-      where.propertyId = property.id;
+      searchWhere.propertyId = property.id;
       if (
         params.searchValue.toLowerCase() === "null" ||
         params.searchValue === ""
       ) {
-        where.rawValue = { [Op.eq]: null };
+        searchWhere.rawValue = { [Op.eq]: null };
       } else {
         const op = config.sequelize.dialect === "postgres" ? Op.iLike : Op.like;
         const rawValueWhereClause = {};
         rawValueWhereClause[op] = `${params.searchValue}`;
-        where.rawValue = rawValueWhereClause;
+        searchWhere.rawValue = rawValueWhereClause;
       }
     }
+
+    const hasSearch = Object.keys(searchWhere).length > 0 ? true : false;
+    const searchIncludeItem = {
+      model: ProfileProperty,
+      where: searchWhere,
+      required: true,
+    };
+    const profileWhere = {
+      state: params.state ? params.state : { [Op.ne]: null },
+    };
+    const profileIncludeItem = { model: ProfileProperty };
 
     if (params.groupId) {
       const group = await Group.findById(params.groupId);
@@ -71,20 +80,20 @@ export class ProfilesList extends AuthenticatedAction {
         }
       );
 
-      const include: Array<any> = [{ model: GroupMember }];
-      if (Object.keys(where).length > 0) {
-        include.push({
-          model: ProfileProperty,
-          where,
-        });
+      const groupInclude: Array<any> = [{ model: GroupMember }];
+      if (hasSearch) {
+        groupInclude.push(searchIncludeItem);
+      } else {
+        groupInclude.push(profileIncludeItem);
       }
 
-      profiles = await Profile.findAll({
-        where: {
-          id: { [Op.in]: groupMembers.map((mem) => mem.profileId) },
-          state: params.state ? params.state : { [Op.ne]: null },
-        },
-        include,
+      profileWhere["id"] = {
+        [Op.in]: groupMembers.map((mem) => mem.profileId),
+      };
+
+      const profiles = await Profile.findAll({
+        where: profileWhere,
+        include: groupInclude,
         order: params.order,
       });
 
@@ -103,31 +112,62 @@ export class ProfilesList extends AuthenticatedAction {
           })
         ),
       };
-    } else {
-      const requiredJoin = Object.keys(where).length > 0 ? true : false;
-
-      profiles = await Profile.findAll({
+    } else if (hasSearch) {
+      const found = await Profile.findAll({
         offset: params.offset,
         limit: params.limit,
-        where: { state: params.state ? params.state : { [Op.ne]: null } },
-        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+        where: profileWhere,
+        include: [searchIncludeItem],
+        order: params.order,
+      });
+
+      let profiles: Profile[] = [];
+      if (found.length > 0) {
+        // fetch to get full profile
+        profiles = await Profile.findAll({
+          where: { id: found.map((p) => p.id) },
+          include: [profileIncludeItem],
+        });
+      }
+
+      const total = await Profile.count({
+        distinct: true,
+        where: profileWhere,
+        include: [searchIncludeItem],
+      });
+
+      const profileData = [];
+      for (let p of profiles) {
+        profileData.push(await p.apiData());
+      }
+      return {
+        total,
+        profiles: profileData,
+      };
+    } else {
+      // regular list based on state
+      const profiles = await Profile.findAll({
+        offset: params.offset,
+        limit: params.limit,
+        where: profileWhere,
+        include: [profileIncludeItem],
         order: params.order,
       });
 
       const total = await Profile.count({
         distinct: true,
-        where: { state: params.state ? params.state : { [Op.ne]: null } },
-        include: [{ model: ProfileProperty, where, required: requiredJoin }],
+        where: profileWhere,
+        include: [],
       });
+
+      const profileData = [];
+      for (let p of profiles) {
+        profileData.push(await p.apiData());
+      }
 
       return {
         total,
-        profiles: await Promise.all(
-          profiles.map(async (p) => {
-            const profile = await Profile.findById(p.id);
-            return profile.apiData();
-          })
-        ),
+        profiles: profileData,
       };
     }
   }

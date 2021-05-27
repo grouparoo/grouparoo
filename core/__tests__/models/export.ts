@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Destination, Profile, Export } from "../../src";
+import { Destination, Profile, Export, ProfileProperty } from "../../src";
 import { Op } from "sequelize";
 
 describe("models/export", () => {
@@ -308,6 +308,10 @@ describe("models/export", () => {
       ltv: [100.99],
       isVIP: [true],
     });
+    await ProfileProperty.update(
+      { state: "ready" },
+      { where: { profileId: profile.id } }
+    );
     await profile.update({ state: "ready" });
 
     const group = await helper.factories.group();

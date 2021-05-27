@@ -285,7 +285,10 @@ export namespace ProfileOps {
     }
   }
 
-  export async function buildNullProperties(profile: Profile, state = "ready") {
+  export async function buildNullProperties(
+    profile: Profile,
+    state = "pending"
+  ) {
     const properties = await Property.findAllWithCache();
     const profileProperties = await profile.properties();
 
@@ -492,19 +495,22 @@ export namespace ProfileOps {
   }
 
   /**
-   * Mark the profile and all of its properties as pending
+   * Mark many Profiles and all of their properties as pending
    */
-  export async function markPending(profile: Profile) {
+  export async function markPendingByIds(
+    profileIds: string[],
+    includeProperties = true
+  ) {
     const nonDirectlyMappedRules = (await Property.findAllWithCache()).filter(
       (p) => p.directlyMapped === false
     );
 
-    if (nonDirectlyMappedRules.length > 0) {
+    if (includeProperties && nonDirectlyMappedRules.length > 0) {
       await ProfileProperty.update(
         { state: "pending", startedAt: null },
         {
           where: {
-            profileId: profile.id,
+            profileId: { [Op.in]: profileIds },
             propertyId: {
               [Op.in]: nonDirectlyMappedRules.map((r) => r.id),
             },
@@ -513,7 +519,10 @@ export namespace ProfileOps {
       );
     }
 
-    await profile.update({ state: "pending" });
+    await Profile.update(
+      { state: "pending" },
+      { where: { id: { [Op.in]: profileIds } } }
+    );
   }
 
   /**

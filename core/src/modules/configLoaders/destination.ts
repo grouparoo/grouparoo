@@ -24,13 +24,19 @@ export async function loadDestination(
   validateConfigObjectKeys(Destination, configObject);
 
   let destination = await Destination.scope(null).findOne({
-    where: { id: configObject.id, appId: app.id },
+    where: {
+      id: configObject.id,
+      appId: app.id,
+      [Op.or]: {
+        locked: getCodeConfigLockKey(),
+        state: "deleted",
+      },
+    },
   });
   if (!destination) {
     isNew = true;
     destination = await Destination.create({
       id: configObject.id,
-      locked: ConfigWriter.getLockKey(configObject),
       name: configObject.name,
       type: configObject.type,
       syncMode: configObject.syncMode,
@@ -47,6 +53,7 @@ export async function loadDestination(
     name: configObject.name,
     type: configObject.type,
     syncMode: configObject.syncMode,
+    locked: ConfigWriter.getLockKey(configObject),
   });
 
   await destination.setOptions(extractNonNullParts(configObject, "options"));
@@ -75,6 +82,11 @@ export async function loadDestination(
 
   if (group && destination.groupId !== group.id) {
     await destination.trackGroup(group);
+  }
+
+  if (destination.state === "deleted") {
+    // when bringing back deleted destinations, we need to be sure to trigger a new export even though options may be the same
+    await destination.exportGroupMembers(true);
   }
 
   await destination.update({ state: "ready" });

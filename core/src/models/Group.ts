@@ -72,6 +72,7 @@ const STATE_TRANSITIONS = [
   { from: "updating", to: "initializing", checks: [] },
   { from: "updating", to: "deleted", checks: [] },
   { from: "ready", to: "deleted", checks: [] },
+  { from: "deleted", to: "ready", checks: [] },
 ];
 
 export const TopLevelGroupRules = [
@@ -163,9 +164,11 @@ export class Group extends LoggedModel<Group> {
     if (this.state === "deleted") return [];
 
     const rulesWithKey: GroupRuleWithKey[] = [];
-    const rules = await this.$get("groupRules", {
-      order: [["position", "asc"]],
-    });
+    const rules =
+      this.groupRules?.sort((a, b) => a.position - b.position) ??
+      (await this.$get("groupRules", {
+        order: [["position", "asc"]],
+      }));
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
@@ -358,7 +361,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   async addProfile(profile: Profile, force = true) {
-    await GroupOps.updateProfile(profile.id, "group", this.id, force);
+    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
 
     await GroupMember.create({
       groupId: this.id,
@@ -373,7 +376,7 @@ export class Group extends LoggedModel<Group> {
 
     if (!membership) throw new Error("profile is not a member of this group");
 
-    await GroupOps.updateProfile(profile.id, "group", this.id, force);
+    await GroupOps.updateProfiles([profile.id], "group", this.id, force);
 
     await membership.destroy();
   }
