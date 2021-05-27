@@ -602,9 +602,11 @@ describe("modules/codeConfig", () => {
   });
 
   describe("bring it all back", () => {
-    let previousRun;
+    let previousGroupRun;
+    let previousDestinationRun;
+
     beforeAll(async () => {
-      // fake that runs are still being executed
+      // fake that runs are still being executed for deleted group
       const highValue = await Group.scope(null).findOne({
         where: { id: "high_value", state: "deleted" },
       });
@@ -618,11 +620,40 @@ describe("modules/codeConfig", () => {
         groupId: "high_value",
       });
 
-      previousRun = await specHelper.runTask("group:destroy", {
+      previousGroupRun = await specHelper.runTask("group:destroy", {
         groupId: "high_value",
       });
-      expect(previousRun).toBeTruthy();
-      expect(previousRun.state).toBe("running");
+      expect(previousGroupRun).toBeTruthy();
+      expect(previousGroupRun.state).toBe("running");
+
+      // fake that runs are still being executed for deleted destination
+      const emailGroup = await Group.scope(null).findOne({
+        where: { id: "email_group", state: "deleted" },
+      });
+      expect(emailGroup).toBeTruthy();
+
+      await emailGroup.update({ state: "ready", locked: "config:code" });
+      await emailGroup.stopPreviousRuns();
+
+      await GroupMember.create({
+        profileId: profile.id,
+        groupId: "email_group",
+      });
+
+      const destination = await Destination.scope(null).findOne({
+        where: { id: "test_destination", state: "deleted" },
+      });
+      expect(destination).toBeTruthy();
+
+      await specHelper.runTask("destination:destroy", {
+        destinationId: destination.id,
+      });
+
+      previousDestinationRun = await Run.scope(null).findOne({
+        where: { destinationId: destination.id, state: "running" },
+      });
+      expect(previousDestinationRun).toBeTruthy();
+      expect(previousDestinationRun.creatorId).toBe("email_group");
     });
 
     beforeAll(async () => {
@@ -807,8 +838,8 @@ describe("modules/codeConfig", () => {
       ]);
 
       // previous run stopped
-      await previousRun.reload();
-      expect(previousRun.state).toBe("stopped");
+      await previousGroupRun.reload();
+      expect(previousGroupRun.state).toBe("stopped");
 
       // new run kicked off
       const run = await Run.findOne({
@@ -834,6 +865,11 @@ describe("modules/codeConfig", () => {
       const options = await destinations[0].getOptions();
       expect(options).toEqual({ table: "output" });
 
+      // previous run stopped
+      await previousDestinationRun.reload();
+      expect(previousDestinationRun.state).toBe("stopped");
+
+      // new run kicked off
       const runs = await Run.findAll({
         where: { state: "running", destinationId: destinations[0].id },
       });
