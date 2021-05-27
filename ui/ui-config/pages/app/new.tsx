@@ -6,8 +6,31 @@ import { useRouter } from "next/router";
 
 import AppSelectorList from "@grouparoo/ui-components/components/appSelectorList";
 import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
+import { EventDispatcher } from "@grouparoo/ui-components/utils/eventDispatcher";
 
 import { Actions, Models } from "@grouparoo/ui-components/utils/apiData";
+
+class CustomErrorHandler extends EventDispatcher {
+  error: Error | string | any;
+  parentErrorHandler: EventDispatcher;
+
+  constructor(parentErrorHandler: EventDispatcher) {
+    super();
+
+    this.error = null;
+    this.parentErrorHandler = parentErrorHandler;
+
+    this.subscribe("_internal", ({ error }) => {
+      this.error = error;
+
+      if (this.error?.config?.url === "/api/v1/status/public") {
+        console.info(`could not reach API: ${error}`);
+      } else {
+        parentErrorHandler.set({ error: this.error });
+      }
+    });
+  }
+}
 
 export default function Page(props) {
   const {
@@ -21,7 +44,7 @@ export default function Page(props) {
   } = props;
 
   const router = useRouter();
-  const { execApi } = useApi(props, errorHandler);
+  const { execApi } = useApi(props, new CustomErrorHandler(errorHandler));
   const [app, setApp] = useState<Models.AppType>({ type: "" });
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);

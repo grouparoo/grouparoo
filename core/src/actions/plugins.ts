@@ -60,7 +60,6 @@ export class PluginInstall extends AuthenticatedAction {
     params,
   }): Promise<{ success: boolean; checkIn?: number }> {
     const response = await Plugins.install(params.plugin);
-    console.log(response);
 
     if (!response.success) return { success: false };
     // Return if did not ask to restart
