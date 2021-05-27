@@ -1,4 +1,5 @@
 import { config } from "actionhero";
+import path from "path";
 import PluginDetails from "../utils/pluginDetails";
 import pacote from "pacote";
 import { log } from "actionhero";
@@ -85,17 +86,11 @@ export namespace Plugins {
   }
 
   export async function install(pluginName: string) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "install",
-      pluginName,
-    ]);
+    return spawnPromise(getCli(), ["install", pluginName]);
   }
 
   export async function uninstall(pluginName: string) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "uninstall",
-      pluginName,
-    ]);
+    return spawnPromise(getCli(), ["uninstall", pluginName]);
   }
 
   async function getLatestNPMVersion(
@@ -103,5 +98,14 @@ export namespace Plugins {
     tag = "latest"
   ) {
     return pacote.manifest(`${plugin.name}@${tag}`);
+  }
+
+  function getCli() {
+    return path.join(
+      PluginDetails.getParentPath(),
+      "node_modules",
+      ".bin",
+      "grouparoo"
+    );
   }
 }
