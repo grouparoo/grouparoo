@@ -22,7 +22,10 @@ export async function loadApp(
   let app = await App.scope(null).findOne({
     where: {
       id: configObject.id,
-      locked: getCodeConfigLockKey(),
+      [Op.or]: {
+        locked: getCodeConfigLockKey(),
+        state: "deleted",
+      },
     },
   });
   if (!app) {
@@ -31,11 +34,14 @@ export async function loadApp(
       id: configObject.id,
       name: configObject.name,
       type: configObject.type,
-      locked: ConfigWriter.getLockKey(configObject),
     });
   }
 
-  await app.update({ type: configObject.type, name: configObject.name });
+  await app.update({
+    type: configObject.type,
+    name: configObject.name,
+    locked: ConfigWriter.getLockKey(configObject),
+  });
   await app.setOptions(extractNonNullParts(configObject, "options"));
 
   if (externallyValidate) {

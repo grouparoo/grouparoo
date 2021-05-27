@@ -23,13 +23,19 @@ export async function loadProperty(
   validateConfigObjectKeys(Property, configObject, ["name"]);
 
   let property = await Property.scope(null).findOne({
-    where: { locked: getCodeConfigLockKey(), id: configObject.id },
+    where: {
+      id: configObject.id,
+      [Op.or]: {
+        locked: getCodeConfigLockKey(),
+        state: "deleted",
+      },
+    },
   });
+
   if (!property) {
     isNew = true;
     property = await Property.create({
       id: configObject.id,
-      locked: ConfigWriter.getLockKey(configObject),
       key: configObject.key || configObject.name,
       type: configObject.type,
       sourceId: source.id,
@@ -43,6 +49,7 @@ export async function loadProperty(
     key: configObject.key || configObject.name,
     unique: configObject.unique,
     isArray: configObject.isArray,
+    locked: ConfigWriter.getLockKey(configObject),
   });
 
   if (configObject.filters) {

@@ -83,9 +83,9 @@ describe("bin/config-apply", () => {
       expect(toStop).toBe(true);
 
       const output = messages.join(" ");
-      expect(output).toContain("Applying 14 objects...");
+      expect(output).toContain("Applying 15 objects...");
       expect(output).toContain(
-        "✅ Config applied - 14 config objects up-to-date!"
+        "✅ Config applied - 15 config objects up-to-date!"
       );
     });
 
@@ -94,8 +94,8 @@ describe("bin/config-apply", () => {
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(1);
       expect(await Destination.count()).toBe(1);
-      expect(await Group.count()).toBe(1);
-      expect(await GroupRule.count()).toBe(2);
+      expect(await Group.count()).toBe(2);
+      expect(await GroupRule.count()).toBe(3);
       expect(await Property.count()).toBe(4);
       expect(await ApiKey.count()).toBe(1);
       expect(await Team.count()).toBe(1);
