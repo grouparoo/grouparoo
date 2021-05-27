@@ -42,20 +42,26 @@ describe("actions/plugins", () => {
   });
 
   test("can list available plugins", async () => {
-    // cannot actually test this without injecting some plugins at the package.json level...
     const { plugins, error } = await specHelper.runAction(
       "plugins:available:list"
     );
     expect(error).toBeFalsy();
     expect(plugins.length).toBeGreaterThanOrEqual(1);
-    const postgresPlugin = plugins.find(
-      (p) => p.name === "@grouparoo/postgres"
-    );
+    console.log(plugins);
+
+    const postgresPlugin = plugins.find((p) => p.name === "Postgres");
 
     expect(postgresPlugin).toEqual(
       expect.objectContaining({
-        name: "@grouparoo/postgres",
-        version: "0.2.12", // from nock recording
+        name: "Postgres",
+        imageUrl:
+          "https://www.grouparoo.com/images/home/integrations/postgres/postgres.svg",
+        packageName: "@grouparoo/postgres",
+        source: true,
+        destination: true,
+        npmUrl: "https://www.npmjs.com/package/@grouparoo/postgres",
+        docsUrl: "https://www.grouparoo.com/docs/plugins/grouparoo-postgres",
+        installed: false,
       })
     );
   });
