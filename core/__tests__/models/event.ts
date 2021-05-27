@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Event, Log, Property } from "../../src";
+import { Profile, Event, Log, Property, ProfileProperty } from "../../src";
 
 describe("models/event", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -132,6 +132,10 @@ describe("models/event", () => {
     test("associating an event to a Profile marks the Profile as pending", async () => {
       const profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({ userId: [999] });
+      await ProfileProperty.update(
+        { state: "ready" },
+        { where: { profileId: profile.id } }
+      );
       await profile.update({ state: "ready" });
 
       const event = await helper.factories.event();

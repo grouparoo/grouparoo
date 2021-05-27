@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Run } from "../../../src";
+import { ProfileProperty, Run } from "../../../src";
 import { api, task, specHelper } from "actionhero";
 import { StatusTask } from "../../../src/tasks/system/status";
 import { Status } from "../../../src/modules/status";
@@ -47,6 +47,10 @@ describe("tasks/status", () => {
 
     test("will not be complete with a pending import", async () => {
       const profile = await helper.factories.profile();
+      await ProfileProperty.update(
+        { state: "ready" },
+        { where: { profileId: profile.id } }
+      );
       await profile.update({ state: "ready" });
       await helper.factories.import(null, { profileId: profile.id });
 
@@ -59,6 +63,10 @@ describe("tasks/status", () => {
 
     test("will not be complete with a pending export", async () => {
       const profile = await helper.factories.profile();
+      await ProfileProperty.update(
+        { state: "ready" },
+        { where: { profileId: profile.id } }
+      );
       await profile.update({ state: "ready" });
       await helper.factories.export(profile);
 

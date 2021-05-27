@@ -231,7 +231,7 @@ describe("tasks/profileProperties:enqueue", () => {
           );
 
           expect(importProfilePropertyTasks.length).toBe(0);
-          expect(importProfilePropertiesTasks.length).toBe(propertiesCount - 1);
+          expect(importProfilePropertiesTasks.length).toBe(propertiesCount);
           importProfilePropertiesTasks.forEach((t) =>
             expect(t.args[0].profileIds.length).toBe(2)
           );
