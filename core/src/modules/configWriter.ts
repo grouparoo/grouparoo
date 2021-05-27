@@ -74,7 +74,6 @@ export namespace ConfigWriter {
       properties: await Property.findAll(queryParams),
       groups: await Group.findAll(queryParams),
       destinations: await Destination.findAll(queryParams),
-      profiles: await Profile.findAll(),
     };
 
     for (let [type, instances] of Object.entries(queries)) {
@@ -84,6 +83,15 @@ export namespace ConfigWriter {
         objects.push({ filePath, object });
       }
     }
+
+    const profiles = await Profile.findAll();
+    const profileObjects = await Promise.all(
+      profiles.map((p) => p.getConfigObject())
+    );
+    if (profileObjects.length > 0) {
+      objects.push({ filePath: "profiles.json", object: profileObjects });
+    }
+
     return objects;
   }
 
