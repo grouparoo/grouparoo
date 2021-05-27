@@ -47,7 +47,6 @@ describe("actions/plugins", () => {
     );
     expect(error).toBeFalsy();
     expect(plugins.length).toBeGreaterThanOrEqual(1);
-    console.log(plugins);
 
     const postgresPlugin = plugins.find((p) => p.name === "Postgres");
 
