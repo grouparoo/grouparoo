@@ -25,12 +25,11 @@ export async function loadProperty(
   let property = await Property.scope(null).findOne({
     where: {
       id: configObject.id,
-      [Op.or]: {
-        locked: getCodeConfigLockKey(),
-        state: "deleted",
-      },
     },
   });
+
+  // don't process bootstrapped properties again
+  if (property && property.directlyMapped) return {};
 
   if (!property) {
     isNew = true;

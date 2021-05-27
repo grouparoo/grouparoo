@@ -901,6 +901,119 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("models are properly locked in cli:config mode", () => {
+    beforeAll(async () => {
+      await helper.truncate();
+
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+      );
+      expect(errors).toEqual([]);
+      expect(seenIds).toEqual({
+        apikey: ["website_key"],
+        app: expect.arrayContaining(["data_warehouse", "events"]),
+        destination: ["test_destination"],
+        group: ["email_group", "high_value"],
+        property: expect.arrayContaining([
+          "user_id",
+          "email",
+          "last_name",
+          "first_name",
+        ]),
+        schedule: ["users_table_schedule"],
+        source: ["users_table"],
+        team: ["admin_team"],
+        teammember: ["demo"],
+      });
+      expect(deletedIds).toEqual({
+        apikey: [],
+        app: [],
+        destination: [],
+        group: [],
+        property: [],
+        schedule: [],
+        source: [],
+        team: [],
+        teammember: [],
+      });
+    });
+
+    afterAll(async () => {
+      await helper.truncate();
+      process.env.GROUPAROO_RUN_MODE = undefined;
+    });
+
+    test('settings are locked with "config:code"', async () => {
+      const setting = await plugin.readSetting("core", "cluster-name");
+      expect(setting.value).toBe("Test Cluster");
+      expect(setting.locked).toBe("config:code");
+    });
+
+    test('apps are locked with "config:writer"', async () => {
+      const apps = await App.findAll({
+        order: [["type", "asc"]],
+      });
+
+      expect(apps.length).toBe(2);
+      expect(apps.map((r) => r.locked).sort()).toEqual([
+        "config:writer",
+        "config:writer",
+      ]);
+    });
+
+    test('sources are locked with "config:writer"', async () => {
+      const sources = await Source.findAll();
+      expect(sources.length).toBe(1);
+      expect(sources[0].locked).toBe("config:writer");
+    });
+
+    test('schedules are locked with "config:writer"', async () => {
+      const schedules = await Schedule.findAll();
+      expect(schedules.length).toBe(1);
+      expect(schedules[0].locked).toBe("config:writer");
+    });
+
+    test('properties are locked with "config:writer"', async () => {
+      const rules = await Property.findAll();
+      expect(rules.length).toBe(4);
+      expect(rules.map((r) => r.locked).sort()).toEqual([
+        "config:writer",
+        "config:writer",
+        "config:writer",
+        "config:writer",
+      ]);
+    });
+
+    test('groups are locked with "config:writer"', async () => {
+      const groups = await Group.findAll({ order: [["id", "asc"]] });
+      expect(groups.length).toBe(2);
+      expect(groups.map((g) => g.locked).sort()).toEqual([
+        "config:writer",
+        "config:writer",
+      ]);
+    });
+
+    test('destinations are locked with "config:writer"', async () => {
+      const destinations = await Destination.findAll();
+      expect(destinations.length).toBe(1);
+      expect(destinations[0].locked).toBe("config:writer");
+    });
+
+    test('apiKeys are locked with "config:code"', async () => {
+      const apiKeys = await ApiKey.findAll();
+      expect(apiKeys.length).toBe(1);
+      expect(apiKeys[0].locked).toBe("config:code");
+    });
+
+    test('teams are locked with "config:code"', async () => {
+      const teams = await Team.findAll();
+      expect(teams.length).toBe(1);
+      expect(teams[0].locked).toBe("config:code");
+    });
+  });
+
   describe("errors", () => {
     describe("plugin not installed", () => {
       beforeAll(async () => {
