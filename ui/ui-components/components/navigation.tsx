@@ -108,7 +108,6 @@ export default function Navigation(props) {
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
   const uiPlugin = `@grouparoo/ui-${process.env.GROUPAROO_UI_EDITION}`;
-
   return (
     <div
       id="navigation"
@@ -173,7 +172,7 @@ export default function Navigation(props) {
           </span>
         </div>
 
-        {navigationMode === "authenticated" && (
+        {navigationMode !== "unauthenticated" && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}
@@ -301,7 +300,11 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-      <div>
+      <div
+        className={
+          process.env.GROUPAROO_UI_EDITION === "config" ? "mb-5" : null
+        }
+      >
         <div
           id="bottomNavigationMenuCTA"
           style={{

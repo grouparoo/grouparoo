@@ -57,7 +57,9 @@ export default function Page(props) {
           </a>
           <br />
           <br />
-          <HideSetupButton />
+          {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
+            <HideSetupButton />
+          )}
         </Alert>
       )}
 
