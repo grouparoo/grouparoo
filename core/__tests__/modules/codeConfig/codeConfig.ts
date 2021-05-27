@@ -15,6 +15,7 @@ import {
   Profile,
   Run,
   GroupMember,
+  GroupRule,
 } from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
@@ -943,7 +944,8 @@ describe("modules/codeConfig", () => {
       expect(groupRules.relativeMatchNumber).toBe(8);
       expect(groupRules.relativeMatchUnit).toBe("days");
       expect(groupRules.relativeMatchDirection).toBe("subtract");
-    })})
+    });
+  });
   describe("models are properly locked in cli:config mode", () => {
     beforeAll(async () => {
       await helper.truncate();
