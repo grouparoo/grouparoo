@@ -19,6 +19,7 @@ import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { TopLevelGroupRules } from "../../../src/models/Group";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({
@@ -630,7 +631,7 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
     });
 
-    test("Date only strings store as 00:00:00.000 for <, =, !=, or >=", async () => {
+    test("it parses date only strings to 00:00:00.000UTC", async () => {
       const purchaseTimestamp = "1583020800000";
       const groupRule = await GroupRule.findOne({
         where: { propertyId: "last_purchase_date" },
@@ -639,21 +640,22 @@ describe("modules/codeConfig", () => {
       expect(groupRule.match).toBe(purchaseTimestamp);
     });
 
-    test("Date only strings default to 11:59:59.999 UTC for <= or >", async () => {
-      const emailTimestamp = "1617667199999";
-      const groupRule = await GroupRule.findOne({
-        where: { propertyId: "last_email_date" },
-      });
-
-      expect(groupRule.match).toBe(emailTimestamp);
-    });
-
-    test("Full datetimes with timezone are parsed as is", async () => {
+    test("It parses datetime strings with timezone", async () => {
       const appointmentTimestamp = "1570686480000";
       const groupRule = await GroupRule.findOne({
         where: { propertyId: "last_appointment_date" },
       });
       expect(groupRule.match).toBe(appointmentTimestamp);
+    });
+
+    test("It accurately stores relative match rules", async () => {
+      const groupRules = await GroupRule.findOne({
+        where: { propertyId: "last_email_date" },
+      });
+
+      expect(groupRules.relativeMatchNumber).toBe(8);
+      expect(groupRules.relativeMatchUnit).toBe("days");
+      expect(groupRules.relativeMatchDirection).toBe("subtract");
     });
   });
 

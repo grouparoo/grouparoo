@@ -49,16 +49,16 @@ module.exports = async function getConfig() {
           type: "date",
         },
         {
-          propertyId: "last_email_date",
-          operation: { op: "gt" },
-          match: "2021-04-05", //date only with gt rule
-          type: "date",
-        },
-        {
           propertyId: "last_appointment_date",
           operation: { op: "gte" },
           match: "2019-10-10T14:48:00.000+09:00", //date with time and timezone
           type: "date",
+        },
+        {
+          propertyId: "last_email_date",
+          operation: { op: "relative_gt" },
+          relativeMatchNumber: "8", // relative date rule
+          relativeMatchUnit: "days",
         },
       ],
     },
