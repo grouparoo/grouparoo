@@ -90,13 +90,13 @@ async function authenticateTeamMemberFromSession(
 }
 
 // Authenticate user from file in .local directory
-function authenticateConfigUser(
+async function authenticateConfigUser(
   data: { [key: string]: any },
   optional: boolean
 ) {
   if (optional) return;
   try {
-    const user = ConfigUser.get();
+    const user = await ConfigUser.get();
     if (user?.email !== true) {
       const error = new Error("Config user not properly set.");
       error["code"] = "AUTHENTICATION_ERROR";
@@ -118,7 +118,7 @@ async function authenticateTeamMember(
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
     env === "development"
   ) {
-    error = authenticateConfigUser(data, optional);
+    error = await authenticateConfigUser(data, optional);
   } else {
     error = await authenticateTeamMemberFromSession(data, optional);
   }

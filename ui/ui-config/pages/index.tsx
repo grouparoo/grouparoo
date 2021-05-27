@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { Row, Col } from "react-bootstrap";
 import Link from "next/link";
+import { useApi } from "@grouparoo/ui-components/hooks/useApi";
+import { Actions } from "@grouparoo/ui-components/utils/apiData";
 
 export default function IndexPage() {
   return (
@@ -33,3 +35,13 @@ export default function IndexPage() {
     </>
   );
 }
+
+IndexPage.getInitialProps = async (ctx) => {
+  const { execApi } = useApi(ctx);
+  // Hit an auth route so that we redirect to sign in if not already signed in.
+  const apiStatus: Actions.PrivateStatus = await execApi(
+    "get",
+    `/status/private`
+  );
+  return { apiStatus };
+};

@@ -87,8 +87,8 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
-    ConfigUser.create();
-    const user = ConfigUser.get();
+    await ConfigUser.create(params);
+    const user = await ConfigUser.get();
     return { user };
   }
 }
