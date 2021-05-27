@@ -12,6 +12,15 @@ import { Op } from "sequelize";
 
 import { ConfigWriter } from "../configWriter";
 
+async function isBootstrappedProperty(
+  configObject: ConfigurationObject,
+  source: Source
+) {
+  const sourceMapping = await source.getMapping();
+  const mappedPropertyKeys = Object.values(sourceMapping);
+  return mappedPropertyKeys.includes(configObject.key || configObject.name);
+}
+
 export async function loadProperty(
   configObject: ConfigurationObject,
   externallyValidate: boolean,
@@ -21,6 +30,9 @@ export async function loadProperty(
   const source: Source = await getParentByName(Source, configObject.sourceId);
 
   validateConfigObjectKeys(Property, configObject, ["name"]);
+
+  // don't process bootstrapped properties again
+  if (await isBootstrappedProperty(configObject, source)) return {};
 
   let property = await Property.scope(null).findOne({
     where: {

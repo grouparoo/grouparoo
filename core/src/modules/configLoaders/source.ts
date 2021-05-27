@@ -116,27 +116,31 @@ export async function loadSource(
     });
 
     if (bootstrappedProperty) {
-      await bootstrappedProperty.update({ locked: getCodeConfigLockKey() });
+      await bootstrappedProperty.update({
+        locked: ConfigWriter.getLockKey(configObject),
+      });
     }
   }
 
   logModel(source, validate ? "validated" : isNew ? "created" : "updated");
-  if (configObject.bootstrappedProperty) {
-    log(
-      `source.bootstrappedProperty is deprecated. Please generate a config file for the Property by using \`grouparoo generate\`. (${configObject.id})`,
-      "warning"
-    );
+
+  if (bootstrappedProperty) {
     logModel(
       bootstrappedProperty,
       validate ? "validated" : isNew ? "created" : "updated"
     );
+
+    if (configObject.bootstrappedProperty) {
+      log(
+        `source.bootstrappedProperty is deprecated. Please generate a config file for the Property by using \`grouparoo generate\`. (${configObject.id})`,
+        "warning"
+      );
+    }
   }
 
   return {
     source: [source.id],
-    property: configObject.bootstrappedProperty
-      ? [configObject.bootstrappedProperty.id]
-      : [], // might have done this
+    property: bootstrappedProperty ? [bootstrappedProperty.id] : [], // might have done this
   };
 }
 
