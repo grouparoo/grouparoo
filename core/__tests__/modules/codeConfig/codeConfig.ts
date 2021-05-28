@@ -895,24 +895,6 @@ describe("modules/codeConfig", () => {
     });
   });
 
-  describe("duplicate IDs", () => {
-    test("config with duplicate IDs will not be applied", async () => {
-      api.codeConfig.allowLockedModelChanges = true;
-      const { errors } = await loadConfigDirectory(
-        path.join(
-          __dirname,
-          "..",
-          "..",
-          "fixtures",
-          "codeConfig",
-          "duplicate-id"
-        )
-      );
-
-      expect(errors[0]).toEqual("Duplicate ID values found: data_warehouse_a");
-    });
-  });
-
   describe("Dates in calculated group rules", () => {
     beforeAll(async () => {
       api.codeConfig.allowLockedModelChanges = true;
@@ -956,118 +938,242 @@ describe("modules/codeConfig", () => {
       expect(groupRules.relativeMatchDirection).toBe("subtract");
     });
   });
-  describe("models are properly locked in cli:config mode", () => {
+
+  describe("cli:config mode", () => {
     beforeAll(async () => {
       await helper.truncate();
+    });
 
-      process.env.GROUPAROO_RUN_MODE = "cli:config";
+    describe("sample profiles", () => {
+      test("profiles are not loaded by default", async () => {
+        api.codeConfig.allowLockedModelChanges = true;
+        const { errors, seenIds, deletedIds } = await loadConfigDirectory(
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "profiles")
+        );
+        expect(errors).toEqual([]);
+        expect(seenIds).toEqual({
+          apikey: [],
+          app: ["data_warehouse"],
+          destination: [],
+          group: [],
+          property: expect.arrayContaining(["user_id", "email"]),
+          schedule: ["users_table_schedule"],
+          source: ["users_table"],
+          team: [],
+          teammember: [],
+          profile: [],
+        });
+        expect(deletedIds).toEqual({
+          apikey: [],
+          app: [],
+          destination: [],
+          group: [],
+          property: [],
+          schedule: [],
+          source: [],
+          team: [],
+          teammember: [],
+          profile: [],
+        });
+      });
+
+      test("profiles are loaded in cli:config mode", async () => {
+        await helper.truncate();
+
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        api.codeConfig.allowLockedModelChanges = true;
+        const { errors, seenIds, deletedIds } = await loadConfigDirectory(
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "profiles")
+        );
+        expect(errors).toEqual([]);
+        expect(seenIds).toEqual({
+          apikey: [],
+          app: ["data_warehouse"],
+          destination: [],
+          group: [],
+          property: expect.arrayContaining(["user_id", "email"]),
+          schedule: ["users_table_schedule"],
+          source: ["users_table"],
+          team: [],
+          teammember: [],
+          profile: ["profile_john", "profile_matthew"],
+        });
+        expect(deletedIds).toEqual({
+          apikey: [],
+          app: [],
+          destination: [],
+          group: [],
+          property: [],
+          schedule: [],
+          source: [],
+          team: [],
+          teammember: [],
+          profile: [],
+        });
+      });
+
+      test("profiles are created", async () => {
+        const profiles = await Profile.findAll({ order: [["id", "asc"]] });
+        expect(profiles.length).toBe(2);
+
+        const john = profiles[0];
+        expect(john.id).toBe("profile_john");
+        expect(john.state).toBe("pending");
+
+        const johnProps = await john.properties();
+        expect(johnProps.userId.state).toBe("ready");
+        expect(johnProps.userId.values).toEqual([20]);
+        expect(johnProps.email.state).toBe("pending");
+        expect(johnProps.email.values).toEqual([null]);
+
+        const matthew = profiles[1];
+        expect(matthew.id).toBe("profile_matthew");
+        expect(matthew.state).toBe("pending");
+
+        const matthewProps = await matthew.properties();
+        expect(matthewProps.userId.state).toBe("ready");
+        expect(matthewProps.userId.values).toEqual([100]);
+        expect(matthewProps.email.state).toBe("pending");
+        expect(matthewProps.email.values).toEqual([null]);
+      });
+
+      afterAll(async () => {
+        await helper.truncate();
+        api.codeConfig.allowLockedModelChanges = undefined;
+      });
+    });
+
+    describe("models are properly locked in cli:config mode", () => {
+      beforeAll(async () => {
+        await helper.truncate();
+
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        api.codeConfig.allowLockedModelChanges = true;
+        const { errors, seenIds, deletedIds } = await loadConfigDirectory(
+          path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+        );
+        expect(errors).toEqual([]);
+        expect(seenIds).toEqual({
+          apikey: ["website_key"],
+          app: expect.arrayContaining(["data_warehouse", "events"]),
+          destination: ["test_destination"],
+          group: ["email_group", "high_value"],
+          property: expect.arrayContaining([
+            "user_id",
+            "email",
+            "last_name",
+            "first_name",
+          ]),
+          schedule: ["users_table_schedule"],
+          source: ["users_table"],
+          team: ["admin_team"],
+          teammember: ["demo"],
+          profile: [],
+        });
+        expect(deletedIds).toEqual({
+          apikey: [],
+          app: [],
+          destination: [],
+          group: [],
+          property: [],
+          schedule: [],
+          source: [],
+          team: [],
+          teammember: [],
+          profile: [],
+        });
+      });
+
+      afterAll(async () => {
+        await helper.truncate();
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
+
+      test('settings are locked with "config:code"', async () => {
+        const setting = await plugin.readSetting("core", "cluster-name");
+        expect(setting.value).toBe("Test Cluster");
+        expect(setting.locked).toBe("config:code");
+      });
+
+      test('apps are locked with "config:writer"', async () => {
+        const apps = await App.findAll({
+          order: [["type", "asc"]],
+        });
+
+        expect(apps.length).toBe(2);
+        expect(apps.map((r) => r.locked).sort()).toEqual([
+          "config:writer",
+          "config:writer",
+        ]);
+      });
+
+      test('sources are locked with "config:writer"', async () => {
+        const sources = await Source.findAll();
+        expect(sources.length).toBe(1);
+        expect(sources[0].locked).toBe("config:writer");
+      });
+
+      test('schedules are locked with "config:writer"', async () => {
+        const schedules = await Schedule.findAll();
+        expect(schedules.length).toBe(1);
+        expect(schedules[0].locked).toBe("config:writer");
+      });
+
+      test('properties are locked with "config:writer"', async () => {
+        const rules = await Property.findAll();
+        expect(rules.length).toBe(4);
+        expect(rules.map((r) => r.locked).sort()).toEqual([
+          "config:writer",
+          "config:writer",
+          "config:writer",
+          "config:writer",
+        ]);
+      });
+
+      test('groups are locked with "config:writer"', async () => {
+        const groups = await Group.findAll({ order: [["id", "asc"]] });
+        expect(groups.length).toBe(2);
+        expect(groups.map((g) => g.locked).sort()).toEqual([
+          "config:writer",
+          "config:writer",
+        ]);
+      });
+
+      test('destinations are locked with "config:writer"', async () => {
+        const destinations = await Destination.findAll();
+        expect(destinations.length).toBe(1);
+        expect(destinations[0].locked).toBe("config:writer");
+      });
+
+      test('apiKeys are locked with "config:code"', async () => {
+        const apiKeys = await ApiKey.findAll();
+        expect(apiKeys.length).toBe(1);
+        expect(apiKeys[0].locked).toBe("config:code");
+      });
+
+      test('teams are locked with "config:code"', async () => {
+        const teams = await Team.findAll();
+        expect(teams.length).toBe(1);
+        expect(teams[0].locked).toBe("config:code");
+      });
+    });
+  });
+
+  describe("duplicate IDs", () => {
+    test("config with duplicate IDs will not be applied", async () => {
       api.codeConfig.allowLockedModelChanges = true;
-      const { errors, seenIds, deletedIds } = await loadConfigDirectory(
-        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "initial")
+      const { errors } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "duplicate-id"
+        )
       );
-      expect(errors).toEqual([]);
-      expect(seenIds).toEqual({
-        apikey: ["website_key"],
-        app: expect.arrayContaining(["data_warehouse", "events"]),
-        destination: ["test_destination"],
-        group: ["email_group", "high_value"],
-        property: expect.arrayContaining([
-          "user_id",
-          "email",
-          "last_name",
-          "first_name",
-        ]),
-        schedule: ["users_table_schedule"],
-        source: ["users_table"],
-        team: ["admin_team"],
-        teammember: ["demo"],
-        profile: [],
-      });
-      expect(deletedIds).toEqual({
-        apikey: [],
-        app: [],
-        destination: [],
-        group: [],
-        property: [],
-        schedule: [],
-        source: [],
-        team: [],
-        teammember: [],
-        profile: [],
-      });
-    });
 
-    afterAll(async () => {
-      await helper.truncate();
-      process.env.GROUPAROO_RUN_MODE = undefined;
-    });
-
-    test('settings are locked with "config:code"', async () => {
-      const setting = await plugin.readSetting("core", "cluster-name");
-      expect(setting.value).toBe("Test Cluster");
-      expect(setting.locked).toBe("config:code");
-    });
-
-    test('apps are locked with "config:writer"', async () => {
-      const apps = await App.findAll({
-        order: [["type", "asc"]],
-      });
-
-      expect(apps.length).toBe(2);
-      expect(apps.map((r) => r.locked).sort()).toEqual([
-        "config:writer",
-        "config:writer",
-      ]);
-    });
-
-    test('sources are locked with "config:writer"', async () => {
-      const sources = await Source.findAll();
-      expect(sources.length).toBe(1);
-      expect(sources[0].locked).toBe("config:writer");
-    });
-
-    test('schedules are locked with "config:writer"', async () => {
-      const schedules = await Schedule.findAll();
-      expect(schedules.length).toBe(1);
-      expect(schedules[0].locked).toBe("config:writer");
-    });
-
-    test('properties are locked with "config:writer"', async () => {
-      const rules = await Property.findAll();
-      expect(rules.length).toBe(4);
-      expect(rules.map((r) => r.locked).sort()).toEqual([
-        "config:writer",
-        "config:writer",
-        "config:writer",
-        "config:writer",
-      ]);
-    });
-
-    test('groups are locked with "config:writer"', async () => {
-      const groups = await Group.findAll({ order: [["id", "asc"]] });
-      expect(groups.length).toBe(2);
-      expect(groups.map((g) => g.locked).sort()).toEqual([
-        "config:writer",
-        "config:writer",
-      ]);
-    });
-
-    test('destinations are locked with "config:writer"', async () => {
-      const destinations = await Destination.findAll();
-      expect(destinations.length).toBe(1);
-      expect(destinations[0].locked).toBe("config:writer");
-    });
-
-    test('apiKeys are locked with "config:code"', async () => {
-      const apiKeys = await ApiKey.findAll();
-      expect(apiKeys.length).toBe(1);
-      expect(apiKeys[0].locked).toBe("config:code");
-    });
-
-    test('teams are locked with "config:code"', async () => {
-      const teams = await Team.findAll();
-      expect(teams.length).toBe(1);
-      expect(teams[0].locked).toBe("config:code");
+      expect(errors[0]).toEqual("Duplicate ID values found: data_warehouse_a");
     });
   });
 
