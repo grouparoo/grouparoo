@@ -1,4 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
@@ -25,6 +26,29 @@ export class SettingsList extends AuthenticatedAction {
     const setting = await Setting.findAll({ order: params.order });
     return {
       settings: await Promise.all(setting.map(async (s) => await s.apiData())),
+    };
+  }
+}
+
+export class SettingClusterNameView extends OptionallyAuthenticatedAction {
+  constructor() {
+    super();
+    this.name = "settings:clusterName:view";
+    this.description =
+      "Return the cluster name setting and whether it's been changed";
+    this.outputExample = {};
+    this.permission = { topic: "system", mode: "read" };
+    this.inputs = {};
+  }
+
+  async runWithinTransaction() {
+    const setting: Setting = await Setting.findOne({
+      where: { key: "cluster-name" },
+    });
+    return {
+      id: setting.id,
+      clusterName: setting.value,
+      default: setting.value === setting.defaultValue,
     };
   }
 }
