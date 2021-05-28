@@ -10,6 +10,7 @@ import { Group } from "../../src/models/Group";
 import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
 import { Source } from "../../src/models/Source";
+import { Profile } from "../../src/models/Profile";
 
 import { ConfigWriter } from "../../src/modules/configWriter";
 import { MappingHelper } from "../../src/modules/mappingHelper";
@@ -243,6 +244,8 @@ describe("modules/configWriter", () => {
       await source.setMapping({ id: "userId_03" });
       await source.update({ state: "ready" });
       const property: Property = await Property.findOne();
+      const profile: Profile = await helper.factories.profile();
+      const profile2: Profile = await helper.factories.profile();
 
       const configObjects = await ConfigWriter.getConfigObjects();
 
@@ -259,6 +262,13 @@ describe("modules/configWriter", () => {
           filePath: `properties/${property.id}.json`,
           object: await property.getConfigObject(),
         },
+        {
+          filePath: `development/profiles.json`,
+          object: [
+            await profile.getConfigObject(),
+            await profile2.getConfigObject(),
+          ],
+        },
       ]);
     });
   });
@@ -273,7 +283,12 @@ describe("modules/configWriter", () => {
     beforeAll(async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test-table-02" });
-      await source.bootstrapUniqueProperty("userId_02", "integer", "id");
+      await source.bootstrapUniqueProperty(
+        "userId_02",
+        "integer",
+        "id",
+        "user_id_02"
+      );
       await source.setMapping({ id: "userId_02" });
       await source.update({ state: "ready" });
 
@@ -450,6 +465,24 @@ describe("modules/configWriter", () => {
         destinationGroupMemberships: {
           "My Dest Tag": group.id,
         },
+      });
+    });
+
+    test("profiles can provide their config objects", async () => {
+      const profile: Profile = await helper.factories.profile();
+      const properties = { user_id_02: 12 };
+
+      await profile.addOrUpdateProperties({
+        ...properties,
+        [property.id]: "some_value",
+      });
+
+      const config = await profile.getConfigObject();
+      expect(config.id).toBeTruthy();
+      expect(config).toEqual({
+        class: "Profile",
+        id: profile.id,
+        properties,
       });
     });
   });

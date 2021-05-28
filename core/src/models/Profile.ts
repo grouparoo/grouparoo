@@ -109,7 +109,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async addOrUpdateProperties(
     properties: {
-      [key: string]: Array<string | number | boolean | Date>;
+      [key: string]: Array<string | number | boolean | Date> | any;
     },
     toLock = true
   ) {
