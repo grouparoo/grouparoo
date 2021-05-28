@@ -1,5 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import path from "path";
+// import fs from "fs";
 import { specHelper } from "actionhero";
 
 import PluginDetails from "./../../src/utils/pluginDetails";
@@ -7,11 +8,6 @@ const coreVersion = PluginDetails.getCoreVersion();
 
 describe("actions/plugins", () => {
   beforeAll(async () => {
-    // --- record new nock file ---
-    // const nock = await import("nock");
-    // nock.recorder.rec();
-
-    // --- use recorded nock file ---
     const nockFile = path.join(
       __dirname,
       "..",
@@ -19,6 +15,16 @@ describe("actions/plugins", () => {
       "actions",
       "plugins.ts"
     );
+
+    // --- record new nock file ---
+    // const nock = await import("nock");
+    // nock.recorder.rec({
+    //   logging: (content) => {
+    //     fs.appendFileSync(nockFile, content);
+    //   },
+    // });
+
+    // --- use recorded nock file ---
     await import(nockFile);
   });
 
@@ -34,7 +40,7 @@ describe("actions/plugins", () => {
     expect(plugins[0]).toEqual({
       name: "@grouparoo/core",
       currentVersion: coreVersion,
-      latestVersion: "0.2.12", // from nock recording
+      latestVersion: "0.3.2", // from nock recording
       upToDate: true,
       license: "MPL-2.0",
       url: "https://github.com/grouparoo/grouparoo",
