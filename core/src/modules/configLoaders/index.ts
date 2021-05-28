@@ -126,6 +126,7 @@ export async function processConfigObjects(
     apikey: [],
     team: [],
     teammember: [],
+    profile: [],
   };
   const errors: string[] = [];
 
@@ -245,7 +246,7 @@ export async function processConfigObjects(
           );
           break;
         case "profile":
-          await loadProfile(configObject, externallyValidate, validate);
+          ids = await loadProfile(configObject, externallyValidate, validate);
           break;
         case "synctable":
           const many = await expandSyncTable(

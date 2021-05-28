@@ -1,8 +1,9 @@
 import {
   ConfigurationObject,
   validateConfigObjectKeys,
+  extractNonNullParts,
+  logModel,
 } from "../../classes/codeConfig";
-import { log } from "actionhero";
 import { Profile } from "../../models/Profile";
 
 export async function loadProfile(
@@ -12,14 +13,31 @@ export async function loadProfile(
 ) {
   if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
 
-  const { isNew } = await Profile.findOrCreateByUniqueProfileProperties(
-    configObject.properties
+  validateConfigObjectKeys(Profile, configObject);
+
+  let profile = await Profile.scope(null).findOne({
+    where: { id: configObject.id },
+  });
+
+  let isNew = false;
+  if (!profile) {
+    isNew = true;
+    profile = await Profile.create({
+      id: configObject.id,
+    });
+  }
+
+  await profile.addOrUpdateProperties(
+    extractNonNullParts(configObject, "properties")
   );
 
-  if (isNew) {
-    log(
-      `[ config ] created Profile ${JSON.stringify(configObject.properties)}`,
-      "notice"
-    );
-  }
+  logModel(
+    profile,
+    validate ? "validated" : isNew ? "created" : "updated",
+    JSON.stringify(configObject.properties)
+  );
+
+  return {
+    profile: [profile.id],
+  };
 }
