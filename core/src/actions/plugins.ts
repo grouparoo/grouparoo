@@ -1,6 +1,7 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { Plugins } from "../modules/plugins";
+import { api } from "actionhero";
 
 export class PluginsInstalledList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -29,8 +30,16 @@ export class PluginsAvailableList extends OptionallyAuthenticatedAction {
   }
 
   async runWithinTransaction() {
-    const plugins = await Plugins.availableGrouparooPlugins();
-    return { plugins };
+    let availablePlugins = await Plugins.availableGrouparooPlugins();
+    const installedPlugins = await Plugins.installedPluginVersions();
+    const installedPluginNames = installedPlugins.map((plugin) => plugin.name);
+    availablePlugins = availablePlugins.map((plugin) => {
+      return {
+        ...plugin,
+        installed: installedPluginNames.includes(plugin.packageName),
+      };
+    });
+    return { plugins: availablePlugins };
   }
 }
 
@@ -42,13 +51,25 @@ export class PluginInstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
+      restart: { required: false, default: "false" },
     };
     this.outputExample = {};
   }
 
-  async runWithinTransaction({ params }) {
+  async runWithinTransaction({
+    params,
+  }): Promise<{ success: boolean; checkIn?: number }> {
     const response = await Plugins.install(params.plugin);
-    return response;
+
+    if (!response.success) return { success: false };
+    // Return if did not ask to restart
+    if (!params.restart) return { success: response.success };
+    // Otherwise, return, then restart the server.
+    const sleepTime = 100;
+    setTimeout(() => {
+      api.process.restart();
+    }, sleepTime);
+    return { success: response.success, checkIn: sleepTime * 4 };
   }
 }
 

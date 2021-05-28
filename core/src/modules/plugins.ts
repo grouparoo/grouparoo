@@ -1,3 +1,5 @@
+import { config } from "actionhero";
+import path from "path";
 import PluginDetails from "../utils/pluginDetails";
 import pacote from "pacote";
 import { log } from "actionhero";
@@ -77,52 +79,18 @@ export namespace Plugins {
     return pluginResponse;
   }
 
-  export const ignoredPlugins = [
-    "@grouparoo/ui",
-    "@grouparoo/ui-components",
-    "@grouparoo/client-web",
-    "@grouparoo/app-templates",
-    "@grouparoo/email-authentication",
-    "@grouparoo/logger",
-    "@grouparoo/node-marketo-rest",
-  ];
-
-  export async function availableGrouparooPlugins(
-    query = "@grouparoo",
-    size = 250
-  ) {
-    const url = "https://registry.npmjs.com/-/v1/search";
-    const response = await fetch(`${url}?text=${query}&size=${size}`).then(
-      (r) => r.json()
-    );
-
-    if (!response.objects) throw new Error(`No NPM packages matching ${query}`);
-
-    const packages: NPMPackage[] = response.objects
-      .filter((o) => o.package)
-      .map((o) => o.package)
-      .filter((o) => !ignoredPlugins.includes(o.name))
-      .sort((a, b) => {
-        if (a.name > b.name) return 1;
-        if (a.name < b.name) return -1;
-        return 0;
-      });
-
-    return packages;
+  export async function availableGrouparooPlugins() {
+    const pluginManifestUrl = config.pluginManifestUrl;
+    const pluginManifest = await fetch(pluginManifestUrl).then((r) => r.json());
+    return pluginManifest;
   }
 
   export async function install(pluginName: string) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "install",
-      pluginName,
-    ]);
+    return spawnPromise(getCli(), ["install", pluginName]);
   }
 
   export async function uninstall(pluginName: string) {
-    return spawnPromise("./node_modules/.bin/grouparoo", [
-      "uninstall",
-      pluginName,
-    ]);
+    return spawnPromise(getCli(), ["uninstall", pluginName]);
   }
 
   async function getLatestNPMVersion(
@@ -130,5 +98,14 @@ export namespace Plugins {
     tag = "latest"
   ) {
     return pacote.manifest(`${plugin.name}@${tag}`);
+  }
+
+  function getCli() {
+    return path.join(
+      PluginDetails.getParentPath(),
+      "node_modules",
+      ".bin",
+      "grouparoo"
+    );
   }
 }
