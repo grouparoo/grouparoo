@@ -15,11 +15,13 @@ import {
   Profile,
   Run,
   GroupMember,
+  GroupRule,
 } from "../../../src";
 import path from "path";
 import { api, specHelper } from "actionhero";
 import { Op } from "sequelize";
 import { loadConfigDirectory } from "../../../src/modules/configLoaders";
+import { TopLevelGroupRules } from "../../../src/models/Group";
 
 describe("modules/codeConfig", () => {
   helper.grouparooTestServer({
@@ -360,7 +362,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("property options will be updated before validating", async () => {
-      const profile = await Profile.create(); // validations only happen if there's a pofile
+      const profile = await Profile.create(); // validations only happen if there's a profile
 
       const nameProperty = await Property.findById("first_name");
       let options = await nameProperty.getOptions();
@@ -901,6 +903,49 @@ describe("modules/codeConfig", () => {
     });
   });
 
+  describe("Dates in calculated group rules", () => {
+    beforeAll(async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors, seenIds } = await loadConfigDirectory(
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "fixtures",
+          "codeConfig",
+          "group-rule-with-date"
+        )
+      );
+      expect(errors).toEqual([]);
+    });
+
+    test("it parses date only strings to 00:00:00.000UTC", async () => {
+      const purchaseTimestamp = "1583020800000";
+      const groupRule = await GroupRule.findOne({
+        where: { propertyId: "last_purchase_date" },
+      });
+
+      expect(groupRule.match).toBe(purchaseTimestamp);
+    });
+
+    test("It parses datetime strings with timezone", async () => {
+      const appointmentTimestamp = "1570686480000";
+      const groupRule = await GroupRule.findOne({
+        where: { propertyId: "last_appointment_date" },
+      });
+      expect(groupRule.match).toBe(appointmentTimestamp);
+    });
+
+    test("It accurately stores relative match rules", async () => {
+      const groupRules = await GroupRule.findOne({
+        where: { propertyId: "last_email_date" },
+      });
+
+      expect(groupRules.relativeMatchNumber).toBe(8);
+      expect(groupRules.relativeMatchUnit).toBe("days");
+      expect(groupRules.relativeMatchDirection).toBe("subtract");
+    });
+  });
   describe("models are properly locked in cli:config mode", () => {
     beforeAll(async () => {
       await helper.truncate();
