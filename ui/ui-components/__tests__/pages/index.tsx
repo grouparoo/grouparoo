@@ -67,4 +67,45 @@ describe("pages/index", () => {
     expect(html).not.toContain("Sign In");
     expect(html).toContain("View Dashboard");
   });
+
+  describe("Config UI Edition", () => {
+    test("it prompts users to complete steps in config mode", async () => {
+      wrapper = mount(
+        <Page
+          {...commonProps}
+          navigationMode="config"
+          navigation={{ bottomMenuItems: [] }}
+          setupSteps={[
+            { complete: false, skipped: false },
+            { complete: true, skipped: false },
+          ]}
+        />
+      );
+
+      const html = wrapper.html();
+      expect(html).not.toContain("Sign In");
+      expect(html).toContain("Set Up");
+    });
+  });
+
+  describe("Config UI Edition", () => {
+    test("it prompts users to configure profiles after steps", async () => {
+      wrapper = mount(
+        <Page
+          {...commonProps}
+          navigationMode="config"
+          navigation={{ bottomMenuItems: [] }}
+          setupSteps={[
+            { complete: true, skipped: false },
+            { complete: true, skipped: false },
+          ]}
+        />
+      );
+
+      const html = wrapper.html();
+      expect(html).not.toContain("Sign In");
+      expect(html).not.toContain("Set Up");
+      expect(html).toContain("Configure Your Profiles");
+    });
+  });
 });

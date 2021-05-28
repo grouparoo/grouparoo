@@ -14,9 +14,6 @@ export default function Page(props) {
   let CTAMessage = "Sign In";
   let CTATarget: string;
 
-  console.log(
-    `env = ${process.env.GROUPAROO_UI_EDITION} navMode = ${navigationMode}`
-  );
   if (navigationMode === "config" && currentStep) {
     CTAMessage = "Set Up Grouparoo";
     CTALink = "/setup";
