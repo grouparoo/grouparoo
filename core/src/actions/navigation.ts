@@ -2,6 +2,7 @@ import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuth
 import { Setting } from "../models/Setting";
 import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
+import { ConfigUser } from "../modules/configUser";
 
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -192,16 +193,48 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     }
 
     if (navigationMode === "config") {
-      navigationItems = [
-        { type: "link", title: "Apps", href: "/apps" },
-        { type: "link", title: "Sources", href: "/sources" },
-        { type: "link", title: "Properties", href: "/properties" },
-        { type: "link", title: "Profiles", href: "/profiles" },
-        { type: "link", title: "Groups", href: "/groups" },
-        { type: "link", title: "Destinations", href: "/destinations" },
-        { type: "link", title: "Plugins", href: "/plugins" },
-        { type: "link", title: "Validate", href: "/validate" },
-      ];
+      const user = await ConfigUser.get();
+      if (user) {
+        navigationItems = [
+          {
+            type: "link",
+            title: "Apps",
+            href: "/apps",
+          },
+          {
+            type: "link",
+            title: "Sources",
+            href: "/sources",
+            icon: "file-import",
+          },
+          {
+            type: "link",
+            title: "Properties",
+            href: "/properties",
+            icon: "address-card",
+          },
+          {
+            type: "link",
+            title: "Profiles",
+            href: "/profiles",
+            icon: "user",
+          },
+          {
+            type: "link",
+            title: "Groups",
+            href: "/groups",
+            icon: "users",
+          },
+          {
+            type: "link",
+            title: "Destinations",
+            href: "/destinations",
+            icon: "file-export",
+          },
+          // { type: "link", title: "Plugins", href: "/plugins" },
+          // { type: "link", title: "Validate", href: "/validate" },
+        ];
+      }
     }
 
     const clusterNameSetting = await Setting.findOne({
