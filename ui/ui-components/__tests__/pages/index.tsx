@@ -16,6 +16,10 @@ describe("pages/index", () => {
               { title: "create first team", href: "/team/initialize" },
             ],
           }}
+          setupSteps={[
+            { complete: false, skipped: false },
+            { complete: true, skipped: false },
+          ]}
         />
       );
 
@@ -32,6 +36,10 @@ describe("pages/index", () => {
         {...commonProps}
         navigationMode="unauthenticated"
         navigation={{ bottomMenuItems: [] }}
+        setupSteps={[
+          { complete: false, skipped: false },
+          { complete: true, skipped: false },
+        ]}
       />
     );
 
@@ -47,6 +55,10 @@ describe("pages/index", () => {
         {...commonProps}
         navigationMode="authenticated"
         navigation={{ bottomMenuItems: [] }}
+        setupSteps={[
+          { complete: false, skipped: false },
+          { complete: true, skipped: false },
+        ]}
       />
     );
 
