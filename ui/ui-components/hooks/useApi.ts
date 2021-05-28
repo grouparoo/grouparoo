@@ -18,8 +18,7 @@ export function useApi(
     data = {},
     setter?: Function,
     setterKey?: string,
-    useCache = process.env.NODE_ENV === "test" ? false : true,
-    timeout?: number
+    useCache = process.env.NODE_ENV === "test" ? false : true
   ) {
     if (data === null || data === undefined) {
       data = {};
@@ -34,8 +33,7 @@ export function useApi(
         useCache,
         uploadHandler,
         ctx?.req,
-        ctx?.res,
-        timeout
+        ctx?.res
       );
 
       if (setter) {

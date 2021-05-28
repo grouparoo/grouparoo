@@ -146,11 +146,10 @@ export default function Page(props) {
       undefined,
       undefined,
       undefined,
-      false,
-      1000
+      false
     );
 
-    if (response?.status !== "ok") {
+    if (response["status"] !== "ok") {
       console.log("Server down. Trying again in 0.25 seconds ...");
       await timeout(250);
       response = await waitForServer();
