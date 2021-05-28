@@ -447,7 +447,9 @@ describe("modules/configWriter", () => {
         syncMode,
         options,
         mapping,
-        destinationGroupMemberships,
+        destinationGroupMemberships: {
+          "My Dest Tag": group.id,
+        },
       });
     });
   });

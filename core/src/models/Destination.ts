@@ -537,7 +537,7 @@ export class Destination extends LoggedModel<Destination> {
       where: { destinationId: id },
     });
     const destinationGroupMemberships = Object.fromEntries(
-      dgm.map((dgm) => [dgm.groupId, dgm.remoteKey])
+      dgm.map((dgm) => [dgm.remoteKey, dgm.groupId])
     );
 
     return {
