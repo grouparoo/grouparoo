@@ -1,4 +1,3 @@
-import { log, config } from "actionhero";
 import { Run } from "../models/Run";
 
 /**
