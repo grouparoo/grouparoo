@@ -189,7 +189,7 @@ export namespace GrouparooCLI {
 
     export function finalSummary(
       finalSummaryLogs: FinalSummary.FinalSummaryLogArray,
-      secondaryTitle = `@ ${new Date().toISOString()}`
+      secondaryTitle = `${new Date().toISOString()}`
     ) {
       const formattedTitle = `┌-- 🦘 Run Completed @ ${secondaryTitle} ---`;
 
