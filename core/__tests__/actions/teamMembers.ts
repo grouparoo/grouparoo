@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
-import { TeamMember, Setting } from "../../src";
+import { TeamMember } from "../../src";
 
 const GrouparooSubscriptionModule = require("../../src/modules/grouparooSubscription");
 GrouparooSubscriptionModule.GrouparooSubscription = jest.fn();
@@ -72,12 +72,12 @@ describe("actions/teamMembers", () => {
       ).toHaveBeenCalledTimes(1);
       expect(
         GrouparooSubscriptionModule.GrouparooSubscription
-      ).toHaveBeenCalledWith(
-        expect.objectContaining({
+      ).toHaveBeenCalledWith({
+        teamMember: expect.objectContaining({
           email: "toad@example.com",
         }),
-        true
-      );
+        subscribed: true,
+      });
 
       GrouparooSubscriptionModule.GrouparooSubscription.mockReset();
 
@@ -96,12 +96,12 @@ describe("actions/teamMembers", () => {
       ).toHaveBeenCalledTimes(1);
       expect(
         GrouparooSubscriptionModule.GrouparooSubscription
-      ).toHaveBeenCalledWith(
-        expect.objectContaining({
+      ).toHaveBeenCalledWith({
+        teamMember: expect.objectContaining({
           email: "yoshi@example.com",
         }),
-        false
-      );
+        subscribed: false,
+      });
     });
 
     test("an administrator can view a team member", async () => {

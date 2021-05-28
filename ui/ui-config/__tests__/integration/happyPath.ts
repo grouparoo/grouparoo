@@ -33,11 +33,11 @@ describe("integration", () => {
   });
 
   test(
-    "it renders the home page",
+    "it renders the registration page",
     async () => {
       await browser.get(env.url);
       const header = await browser.findElement(by.tagName("h1")).getText();
-      expect(header).toContain("Hello from @grouparoo/ui-config");
+      expect(header).toContain("Register");
     },
     helper.mediumTime
   );
