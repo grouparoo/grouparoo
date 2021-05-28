@@ -16,7 +16,6 @@ export default function NewProfile(props) {
 
   async function onSubmit(data) {
     setLoading(true);
-    console.log(data);
     const response: Actions.ProfileCreate = await execApi(
       "post",
       `/profile`,
