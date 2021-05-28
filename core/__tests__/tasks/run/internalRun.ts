@@ -1,7 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
 import { internalRun } from "../../../src/modules/internalRun";
-import { plugin, Import, Property, Run, Profile } from "../../../src";
+import { plugin, Property, Run, Profile, ProfileProperty } from "../../../src";
 
 describe("tasks/run:internalRun", () => {
   helper.grouparooTestServer({
@@ -18,26 +18,58 @@ describe("tasks/run:internalRun", () => {
     beforeAll(async () => {
       await Run.truncate();
       profile = await helper.factories.profile();
+      await profile.buildNullProperties();
     });
 
     beforeAll(async () => {
       await plugin.updateSetting("core", "runs-profile-batch-size", 100);
     });
 
-    test("the task will create an import for every profile", async () => {
-      await internalRun("test", "testId");
+    beforeEach(async () => {
+      await ProfileProperty.update(
+        { state: "ready" },
+        { where: { profileId: profile.id } }
+      );
+      await profile.reload({ include: [ProfileProperty] });
+      await profile.update({ state: "ready" });
+    });
 
-      const run = await Run.findOne({ where: { state: "running" } });
+    test("the task will mark every profile as pending by default", async () => {
+      const run = await internalRun("test", "testId");
       await specHelper.runTask("run:internalRun", { runId: run.id });
 
       await run.reload();
       expect(run.groupMemberLimit).toBe(100);
-      expect(run.groupMemberOffset).toBe(100);
+      expect(run.groupMemberOffset).toBe(1);
       expect(run.groupMethod).toBe("internalRun");
 
-      const imports = await Import.findAll();
-      expect(imports.length).toBe(1);
-      expect(imports[0].profileId).toBe(profile.id);
+      await profile.reload({ include: [ProfileProperty] });
+      expect(profile.state).toBe("pending");
+      profile.profileProperties.forEach((p) => expect(p.state).toBe("pending"));
+    });
+
+    test("if the run was created due to a property, only those profileProperties will become pending", async () => {
+      const property = await Property.findOne({ where: { key: "email" } });
+      const run = await internalRun("property", property.id);
+      await specHelper.runTask("run:internalRun", { runId: run.id });
+
+      await run.reload();
+      expect(run.groupMemberLimit).toBe(100);
+      expect(run.groupMemberOffset).toBe(1);
+      expect(run.groupMethod).toBe("internalRun");
+
+      await profile.reload({ include: [ProfileProperty] });
+      expect(profile.state).toBe("pending");
+      expect(new Set(profile.profileProperties.map((p) => p.state))).toEqual(
+        new Set(["ready", "pending"])
+      );
+      for (const profileProperty of profile.profileProperties) {
+        if (profileProperty.propertyId === property.id) {
+          expect(profileProperty.state).toBe("pending");
+        } else {
+          expect(profileProperty.state).toBe("ready");
+        }
+      }
     });
 
     test("a run can be stopped outside of the task and not enqueue another task", async () => {

@@ -286,26 +286,29 @@ export namespace ProfileOps {
   }
 
   export async function buildNullProperties(
-    profile: Profile,
+    profiles: Profile[],
     state = "pending"
   ) {
     const properties = await Property.findAllWithCache();
-    const profileProperties = await profile.properties();
 
     const bulkArgs = [];
     const now = new Date();
 
-    for (const key in properties) {
-      const property = properties[key];
-      if (!profileProperties[property.key]) {
-        bulkArgs.push({
-          profileId: profile.id,
-          propertyId: property.id,
-          state,
-          stateChangedAt: now,
-          valueChangedAt: now,
-          confirmedAt: now,
-        });
+    for (const profile of profiles) {
+      const profileProperties = await profile.properties();
+
+      for (const key in properties) {
+        const property = properties[key];
+        if (!profileProperties[property.key]) {
+          bulkArgs.push({
+            profileId: profile.id,
+            propertyId: property.id,
+            state,
+            stateChangedAt: now,
+            valueChangedAt: now,
+            confirmedAt: now,
+          });
+        }
       }
     }
 
@@ -342,7 +345,7 @@ export namespace ProfileOps {
 
       if (toSave) {
         await addOrUpdateProperties(profile, hash, false);
-        await buildNullProperties(profile);
+        await buildNullProperties([profile]);
         await profile.save();
         await ProfileProperty.update(
           { state: "ready" },
@@ -484,7 +487,7 @@ export namespace ProfileOps {
         const { releaseLock } = await waitForLock(`profile:${profile.id}`);
         lockReleases.push(releaseLock);
         await addOrUpdateProperties(profile, uniquePropertiesHash, false);
-        await buildNullProperties(profile);
+        await buildNullProperties([profile]);
         isNew = true;
       }
 

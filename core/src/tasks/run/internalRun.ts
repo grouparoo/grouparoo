@@ -1,10 +1,10 @@
 import { Run } from "../../models/Run";
-import { Import } from "../../models/Import";
 import { Profile } from "../../models/Profile";
 import { plugin } from "../../modules/plugin";
 import { ProfileProperty } from "../../models/ProfileProperty";
-import { waitForLock } from "../../modules/locks";
 import { CLSTask } from "../../classes/tasks/clsTask";
+import { Op } from "sequelize";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class RunInternalRun extends CLSTask {
   constructor() {
@@ -16,44 +16,6 @@ export class RunInternalRun extends CLSTask {
     this.inputs = {
       runId: { required: true },
     };
-  }
-
-  async updateProfileWithLock(profile: Profile, run: Run) {
-    const { releaseLock } = await waitForLock(`profile:${profile.id}`);
-
-    try {
-      const oldProfileProperties = await profile.simplifiedProperties();
-      const oldGroups = await profile.$get("groups");
-
-      await profile.buildNullProperties("pending");
-
-      await Import.create({
-        profileId: profile.id,
-        profileAssociatedAt: new Date(),
-        oldProfileProperties: oldProfileProperties,
-        oldGroupIds: oldGroups.map((g) => g.id),
-        rawData: {},
-        data: {},
-        creatorType: "run",
-        creatorId: run.id,
-      });
-
-      if (run.creatorType === "property") {
-        const property = await ProfileProperty.findOne({
-          where: {
-            profileId: profile.id,
-            propertyId: run.creatorId,
-          },
-        });
-
-        await property?.update({ state: "pending" });
-        await profile.update({ state: "pending" });
-      } else {
-        await profile.markPending();
-      }
-    } finally {
-      await releaseLock();
-    }
   }
 
   async runWithinTransaction(params) {
@@ -73,22 +35,48 @@ export class RunInternalRun extends CLSTask {
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
+      include: [ProfileProperty],
       limit,
       offset,
     });
 
-    for (const i in profiles) {
-      const profile = profiles[i];
-      await this.updateProfileWithLock(profile, run);
+    if (profiles.length > 0) {
+      if (run.creatorType === "property") {
+        // ensure the property exists and set this property to pending for these profiles
+        await ProfileOps.buildNullProperties(profiles);
+
+        await ProfileProperty.update(
+          { state: "pending" },
+          {
+            where: {
+              profileId: { [Op.in]: profiles.map((p) => p.id) },
+              propertyId: run.creatorId,
+            },
+          }
+        );
+      } else {
+        // set all properties to pending for these profiles
+        await ProfileProperty.update(
+          { state: "pending" },
+          { where: { profileId: { [Op.in]: profiles.map((p) => p.id) } } }
+        );
+      }
+
+      // always mark the profile as pending
+      await Profile.update(
+        { state: "pending" },
+        { where: { id: { [Op.in]: profiles.map((p) => p.id) } } }
+      );
     }
 
     await run.update({
       groupMemberLimit: limit,
-      groupMemberOffset: offset + limit,
+      groupMemberOffset: offset + profiles.length,
     });
 
     if (profiles.length === 0) {
       await run.afterBatch("complete");
+      return 0;
     } else {
       await run.afterBatch();
     }
