@@ -3,6 +3,8 @@ import { specHelper } from "actionhero";
 import { Setting, plugin } from "../../src";
 
 describe("actions/settings", () => {
+  let connection;
+
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
@@ -12,10 +14,33 @@ describe("actions/settings", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+
+    connection = await specHelper.buildConnection();
+
+    await Setting.truncate();
+  });
+
+  test("can publicly read the cluster name", async () => {
+    const setting = await plugin.registerSetting(
+      "testPlugin",
+      "cluster-name",
+      "My Grouparoo Cluster",
+      "My Grouparoo Cluster",
+      "Name of the cluster",
+      "string"
+    );
+    const {
+      error,
+      clusterName,
+      default: defaultValue,
+    } = await specHelper.runAction("settings:clusterName:view", connection);
+    expect(error).toBeUndefined();
+    expect(clusterName).not.toBeUndefined();
+    expect(clusterName).toEqual(setting.value);
+    expect(defaultValue).toEqual(true);
   });
 
   describe("reader signed in", () => {
-    let connection;
     let csrfToken;
     let id;
 
