@@ -89,7 +89,10 @@ export namespace ConfigWriter {
       profiles.map((p) => p.getConfigObject())
     );
     if (profileObjects.length > 0) {
-      objects.push({ filePath: "profiles.json", object: profileObjects });
+      objects.push({
+        filePath: "development/profiles.json",
+        object: profileObjects,
+      });
     }
 
     return objects;
