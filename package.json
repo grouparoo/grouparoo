@@ -28,7 +28,7 @@
     "test": "pnpm run test --stream --workspace-concurrency=1 --filter !'@grouparoo/grouparoo'",
     "nuke": "rm -rf pnpm-lock.yaml && rm -rf node_modules && rm -rf core/node_modules rm -rf ui/*/node_modules && rm -rf cli/node_modules && rm -rf clients/*/*/node_modules && rm -rf plugins/*/*/node_modules && rm -rf apps/*/node_modules && rm -rf core/dist && rm -rf clients/*/*/dist && rm -rf cli/dist && rm -rf plugins/*/*/dist && rm -rf ui/*/.next",
     "update": "npm-check-updates -u && pnpm exec -- npm-check-updates -u && npm run nuke && pnpm install",
-    "heroku-prebuild": "npm install -g pnpm",
+    "heroku-prebuild": "npm install -g pnpm@6.4.x",
     "heroku-postbuild": "pnpm install"
   }
 }
