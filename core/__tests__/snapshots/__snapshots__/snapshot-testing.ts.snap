@@ -178,6 +178,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -195,6 +196,7 @@ Object {
     "firstName": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -212,6 +214,7 @@ Object {
     "isVIP": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -229,6 +232,7 @@ Object {
     "lastLoginAt": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -246,6 +250,7 @@ Object {
     "lastName": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -263,6 +268,7 @@ Object {
     "ltv": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -280,6 +286,7 @@ Object {
     "purchaseAmounts": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": true,
@@ -298,6 +305,7 @@ Object {
     "purchases": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": true,
@@ -316,6 +324,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": true,
       "id": Any<String>,
       "identifying": true,
       "isArray": false,

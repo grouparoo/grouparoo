@@ -308,6 +308,7 @@ export async function deleteLockedObjects(seenIds) {
     apikey: [],
     team: [],
     teammember: [],
+    profile: [],
   };
 
   deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);

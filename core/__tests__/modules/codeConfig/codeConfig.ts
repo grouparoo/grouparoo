@@ -59,6 +59,7 @@ describe("modules/codeConfig", () => {
           source: ["users_table"],
           team: ["admin_team"],
           teammember: ["demo"],
+          profile: [],
         });
         expect(deletedIds).toEqual({
           apikey: [],
@@ -70,6 +71,7 @@ describe("modules/codeConfig", () => {
           source: [],
           team: [],
           teammember: [],
+          profile: [],
         });
       });
 
@@ -292,6 +294,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: ["admin_team"],
         teammember: ["demo"],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -303,6 +306,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
+        profile: [],
       });
     });
 
@@ -459,6 +463,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: [],
         teammember: [],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: ["website_key"],
@@ -470,6 +475,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: ["admin_team"],
         teammember: ["demo"],
+        profile: [],
       });
     });
 
@@ -548,6 +554,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -559,6 +566,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: [],
         teammember: [],
+        profile: [],
       });
     });
 
@@ -679,6 +687,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: ["admin_team"],
         teammember: ["demo"],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -690,6 +699,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
+        profile: [],
       });
     });
 
@@ -971,6 +981,7 @@ describe("modules/codeConfig", () => {
         source: ["users_table"],
         team: ["admin_team"],
         teammember: ["demo"],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -982,6 +993,7 @@ describe("modules/codeConfig", () => {
         source: [],
         team: [],
         teammember: [],
+        profile: [],
       });
     });
 

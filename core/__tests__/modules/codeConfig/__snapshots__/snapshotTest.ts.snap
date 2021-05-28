@@ -78,6 +78,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -95,6 +96,7 @@ Object {
     "first name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -112,6 +114,7 @@ Object {
     "last name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -129,6 +132,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": true,
       "id": Any<String>,
       "identifying": true,
       "isArray": false,
@@ -225,6 +229,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -242,6 +247,7 @@ Object {
     "first name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -259,6 +265,7 @@ Object {
     "last name": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -276,6 +283,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<Date>,
       "createdAt": Any<Date>,
+      "directlyMapped": true,
       "id": Any<String>,
       "identifying": true,
       "isArray": false,
