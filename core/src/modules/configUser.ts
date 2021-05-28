@@ -3,6 +3,8 @@ import path from "path";
 
 import { getConfigDir } from "../utils/pluginDetails";
 import { GrouparooSubscription } from "./grouparooSubscription";
+import { plugin } from "../modules/plugin";
+import { Setting } from "../models/Setting";
 
 const localUserFilePath = path.join(getConfigDir(), "../.local/user.json");
 
@@ -21,6 +23,18 @@ export namespace ConfigUser {
     await GrouparooSubscription({ email, subscribed });
   }
 
+  async function storeCompanyName(company: string) {
+    let setting = await Setting.findOne({ where: { key: "cluster-name" } });
+    if (setting) {
+      setting = await plugin.updateSetting(
+        setting.pluginName,
+        setting.key,
+        company
+      );
+    }
+    return setting;
+  }
+
   export async function create({
     email,
     subscribed = true,
@@ -32,6 +46,7 @@ export namespace ConfigUser {
   }) {
     store();
     if (subscribed) await subscribe(email, subscribed);
+    await storeCompanyName(company);
   }
 
   export async function get() {

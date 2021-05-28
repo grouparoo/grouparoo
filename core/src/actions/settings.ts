@@ -46,7 +46,6 @@ export class SettingClusterNameView extends OptionallyAuthenticatedAction {
       where: { key: "cluster-name" },
     });
     return {
-      id: setting.id,
       clusterName: setting.value,
       default: setting.value === setting.defaultValue,
     };
