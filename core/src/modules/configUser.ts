@@ -6,16 +6,18 @@ import { GrouparooSubscription } from "./grouparooSubscription";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 
-const localUserFilePath = path.join(getConfigDir(), "../.local/user.json");
-
 export namespace ConfigUser {
+  export function localUserFilePath() {
+    return path.join(getConfigDir(), "../.local/user.json");
+  }
+
   function store() {
-    const localFileDir = path.dirname(localUserFilePath);
+    const localFileDir = path.dirname(localUserFilePath());
     if (!fs.existsSync(localFileDir)) {
       fs.mkdirSync(localFileDir, { recursive: true });
     }
     const fileContent = { email: true };
-    fs.writeFileSync(localUserFilePath, JSON.stringify(fileContent, null, 2));
+    fs.writeFileSync(localUserFilePath(), JSON.stringify(fileContent, null, 2));
   }
 
   async function subscribe(email: string, subscribed: boolean = true) {
@@ -50,8 +52,8 @@ export namespace ConfigUser {
   }
 
   export async function get() {
-    if (!fs.existsSync(localUserFilePath)) return null;
-    const fileContent = fs.readFileSync(localUserFilePath).toString();
+    if (!fs.existsSync(localUserFilePath())) return null;
+    const fileContent = fs.readFileSync(localUserFilePath()).toString();
     return JSON.parse(fileContent);
   }
 }
