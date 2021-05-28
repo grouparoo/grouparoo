@@ -41,7 +41,7 @@ describe("integration/runs/internalRun", () => {
       run = runs[0];
     });
 
-    test("the internalRun task will mark every profile as pending", async () => {
+    test("the internalRun task will mark every profile as pending and create imports", async () => {
       await specHelper.deleteEnqueuedTasks("run:internalRun", {
         runId: run.id,
       });
@@ -49,6 +49,10 @@ describe("integration/runs/internalRun", () => {
 
       await profile.reload();
       expect(profile.state).toBe("pending");
+
+      const imports = await Import.findAll();
+      expect(imports.length).toBe(1);
+      expect(imports[0].profileId).toBe(profile.id);
     });
 
     test("the run will be complete when all the profiles have been touched", async () => {
@@ -82,6 +86,9 @@ describe("integration/runs/internalRun", () => {
       // check the results of the run
       await run.updateTotals();
       expect(run.state).toBe("complete");
+      expect(run.importsCreated).toBe(1);
+      expect(run.profilesCreated).toBe(0);
+      expect(run.profilesImported).toBe(1);
     });
   });
 

@@ -5,6 +5,8 @@ import { ProfileProperty } from "../../models/ProfileProperty";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { Op } from "sequelize";
 import { ProfileOps } from "../../modules/ops/profile";
+import { Import } from "../../models/Import";
+import { GroupMember } from "../../models/GroupMember";
 
 export class RunInternalRun extends CLSTask {
   constructor() {
@@ -35,7 +37,7 @@ export class RunInternalRun extends CLSTask {
 
     const profiles = await Profile.findAll({
       order: [["createdAt", "asc"]],
-      include: [ProfileProperty],
+      include: [ProfileProperty, GroupMember],
       limit,
       offset,
     });
@@ -67,6 +69,26 @@ export class RunInternalRun extends CLSTask {
         { state: "pending" },
         { where: { id: { [Op.in]: profiles.map((p) => p.id) } } }
       );
+
+      // create imports to track the lineage of the profile property values
+      const now = new Date();
+      const bulkImports = [];
+
+      for (const profile of profiles) {
+        const oldProfileProperties = await profile.simplifiedProperties();
+        const oldGroupIds = profile.groupMembers.map((gm) => gm.groupId);
+
+        bulkImports.push({
+          profileId: profile.id,
+          profileAssociatedAt: now,
+          oldProfileProperties,
+          oldGroupIds,
+          creatorType: "run",
+          creatorId: run.id,
+        });
+      }
+
+      await Import.bulkCreate(bulkImports);
     }
 
     await run.update({
