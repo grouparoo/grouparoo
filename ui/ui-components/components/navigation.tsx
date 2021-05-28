@@ -60,6 +60,8 @@ export default function Navigation(props) {
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);
   const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
   const logoLink = teamMember?.id ? "/dashboard" : "/";
+  const settingsLink = navigationMode === "config" ? "/" : "/settings/[tab]";
+  const settingsLinkAs = navigationMode === "config" ? "/" : "/settings/core";
 
   useEffect(() => {
     sessionHandler.subscribe("navigation", (_teamMember) =>
@@ -157,7 +159,7 @@ export default function Navigation(props) {
               </a>
             </Link>
             <br />
-            <Link href="/settings/[tab]" as="/settings/core">
+            <Link href={settingsLink} as={settingsLinkAs}>
               <a>
                 <Badge variant="secondary">
                   {clusterName
