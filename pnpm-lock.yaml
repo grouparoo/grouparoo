@@ -1600,7 +1600,7 @@ importers:
       react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
-      react-markdown: 6.0.0_@types+react@17.0.4+react@17.0.2
+      react-markdown: 6.0.0_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
