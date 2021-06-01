@@ -1400,7 +1400,7 @@ importers:
       react-date-range: 1.1.3
       react-dom: 17.0.2
       react-hook-form: 6.15.5
-      react-markdown: 6.0.0
+      react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
@@ -1429,7 +1429,7 @@ importers:
       react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
-      react-markdown: 6.0.0_@types+react@17.0.8+react@17.0.2
+      react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
@@ -1485,7 +1485,7 @@ importers:
       react-date-range: 1.1.3
       react-dom: 17.0.2
       react-hook-form: 6.15.5
-      react-markdown: 6.0.0
+      react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.47.1
@@ -1526,7 +1526,7 @@ importers:
       react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
-      react-markdown: 6.0.0_@types+react@17.0.8+react@17.0.2
+      react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.47.1
@@ -1570,7 +1570,7 @@ importers:
       react-date-range: 1.1.3
       react-dom: 17.0.2
       react-hook-form: 6.15.5
-      react-markdown: 6.0.0
+      react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
@@ -1600,7 +1600,7 @@ importers:
       react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
-      react-markdown: 6.0.0_@types+react@17.0.8+react@17.0.2
+      react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
@@ -1656,7 +1656,7 @@ importers:
       react-date-range: 1.1.3
       react-dom: 17.0.2
       react-hook-form: 6.15.5
-      react-markdown: 6.0.0
+      react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
@@ -1685,7 +1685,7 @@ importers:
       react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
-      react-markdown: 6.0.0_@types+react@17.0.8+react@17.0.2
+      react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
@@ -12363,8 +12363,8 @@ packages:
       prop-types: 15.7.2
       react: 17.0.2
 
-  /react-markdown/6.0.0_@types+react@17.0.8+react@17.0.2:
-    resolution: {integrity: sha512-MC+zljUJeoLb4RbDm/wRbfoQFEZGz4TDOt/wb4dEehdaJWxLMn/T2IgwhQy0VYhuPEd2fhd7iOayE8lmENU0FA==}
+  /react-markdown/6.0.2_@types+react@17.0.8+react@17.0.2:
+    resolution: {integrity: sha512-Et2AjXAsbmPP1nLQQRqmVgcqzfwcz8uQJ8VAdADs8Nk/aaUA0YeU9RDLuCtD+GwajCnm/+Iiu2KPmXzmD/M3vA==}
     peerDependencies:
       '@types/react': '>=16'
       react: '>=16'
@@ -12383,6 +12383,7 @@ packages:
       style-to-object: 0.3.0
       unified: 9.2.1
       unist-util-visit: 2.0.3
+      vfile: 4.2.1
     transitivePeerDependencies:
       - supports-color
 
