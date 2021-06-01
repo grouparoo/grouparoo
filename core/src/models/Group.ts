@@ -322,7 +322,10 @@ export class Group extends LoggedModel<Group> {
           convenientRules[k].operation.op === rules[i].operation.op &&
           convenientRules[k].match === rules[i].match
         ) {
-          rules[i] = Object.assign(rules[i], { operation: { op: k } });
+          rules[i] = Object.assign(rules[i], {
+            operation: { op: k },
+            match: undefined,
+          });
         }
       }
 
@@ -336,6 +339,7 @@ export class Group extends LoggedModel<Group> {
         ].filter(
           (operation) => operation.op === rules[i].operation.op
         )[0].description;
+        delete rules[i].relativeMatchDirection;
       }
     }
 
@@ -623,19 +627,19 @@ export class Group extends LoggedModel<Group> {
 
     let rules = [];
 
-    const groupRules = await this.$get("groupRules", {
-      order: [["position", "asc"]],
-    });
+    const groupRules = await this.getRules();
+    const convenientRules = this.toConvenientRules(groupRules);
 
-    if (groupRules?.length > 0) {
-      rules = groupRules.map((rule) => ({
-        propertyId: rule.propertyId,
-        operation: { op: rule.op },
+    for (const rule of convenientRules) {
+      const property = await Property.findOneWithCache(rule.key, "key");
+      rules.push({
+        propertyId: property.id,
+        operation: { op: rule.operation.op },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
         relativeMatchUnit: rule.relativeMatchUnit,
         relativeMatchDirection: rule.relativeMatchDirection,
-      }));
+      });
     }
 
     return {
