@@ -200,6 +200,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
             type: "link",
             title: "Apps",
             href: "/apps",
+            icon: "th-large",
           },
           {
             type: "link",
@@ -231,8 +232,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
             href: "/destinations",
             icon: "file-export",
           },
-          // { type: "link", title: "Plugins", href: "/plugins" },
-          // { type: "link", title: "Validate", href: "/validate" },
         ];
       }
     }
@@ -246,7 +245,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       clusterName: {
         default:
           clusterNameSetting?.value &&
-          clusterNameSetting.value !== clusterNameSetting.defaultValue,
+          clusterNameSetting.value === clusterNameSetting.defaultValue,
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
