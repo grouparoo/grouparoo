@@ -78,7 +78,7 @@ module.exports = async function getConfig() {
       id: "profile_john",
       class: "Profile",
       properties: {
-        user_id: 20,
+        user_id: [20],
       },
     },
 
@@ -86,7 +86,7 @@ module.exports = async function getConfig() {
       id: "profile_matthew",
       class: "Profile",
       properties: {
-        user_id: 100,
+        user_id: [100],
       },
     },
   ];

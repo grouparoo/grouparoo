@@ -109,7 +109,7 @@ export class Profile extends LoggedModel<Profile> {
 
   async addOrUpdateProperties(
     properties: {
-      [key: string]: Array<string | number | boolean | Date> | any;
+      [key: string]: Array<string | number | boolean | Date>;
     },
     toLock = true
   ) {
@@ -207,13 +207,13 @@ export class Profile extends LoggedModel<Profile> {
   async getConfigObject() {
     const properties = await this.properties();
     const directlyMappedProps: {
-      [key: string]: string | boolean | number | Date;
+      [key: string]: Array<string | boolean | number | Date>;
     } = {};
 
     for (const k in properties) {
       const property = properties[k];
       if (property.directlyMapped && property.values.length > 0) {
-        directlyMappedProps[property.id] = property.values[0];
+        directlyMappedProps[property.id] = property.values;
       }
     }
 

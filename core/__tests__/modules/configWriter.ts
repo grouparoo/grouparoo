@@ -470,11 +470,11 @@ describe("modules/configWriter", () => {
 
     test("profiles can provide their config objects", async () => {
       const profile: Profile = await helper.factories.profile();
-      const properties = { user_id_02: 12 };
+      const properties = { user_id_02: [12] };
 
       await profile.addOrUpdateProperties({
         ...properties,
-        [property.id]: "some_value",
+        [property.id]: ["some_value"],
       });
 
       const config = await profile.getConfigObject();
