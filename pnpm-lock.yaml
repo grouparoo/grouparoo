@@ -281,7 +281,7 @@ importers:
       typescript: 4.2.4
       umzug: v3.0.0-beta.5
       uuid: 8.3.2
-      validator: 13.5.2
+      validator: 13.6.0
       winston: 3.3.3
       ws: 7.4.6
     dependencies:
@@ -323,7 +323,7 @@ importers:
       sqlite3: 5.0.2
       ts-node: 10.0.0_d2424d8ba14dff607ab94d9707a8bf6b
       uuid: 8.3.2
-      validator: 13.5.2
+      validator: 13.6.0
       winston: 3.3.3
       ws: 7.4.6
     devDependencies:
@@ -14956,8 +14956,8 @@ packages:
     engines: {node: '>= 0.10'}
     dev: false
 
-  /validator/13.5.2:
-    resolution: {integrity: sha512-mD45p0rvHVBlY2Zuy3F3ESIe1h5X58GPfAtslBjY7EtTqGquZTj+VX/J4RnHWN8FKq0C9WRVt1oWAcytWRuYLQ==}
+  /validator/13.6.0:
+    resolution: {integrity: sha512-gVgKbdbHgtxpRyR8K0O6oFZPhhB5tT1jeEHZR0Znr9Svg03U0+r9DXWMrnRAB+HtCStDQKlaIZm42tVsVjqtjg==}
     engines: {node: '>= 0.10'}
     dev: false
 
