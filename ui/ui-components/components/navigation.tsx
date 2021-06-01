@@ -44,7 +44,7 @@ export default function Navigation(props) {
   }: {
     navigationMode: Actions.NavigationList["navigationMode"];
     navigation: Actions.NavigationList["navigation"];
-    clusterName: string;
+    clusterName: { value: string; default: boolean };
     navExpanded: boolean;
     toggleNavExpanded: () => {};
     errorHandler: ErrorHandler;
@@ -160,7 +160,9 @@ export default function Navigation(props) {
             <br />
             <Link href="/settings/[tab]" as="/settings/core">
               <a>
-                <Badge variant="secondary">{truncate(clusterName, 30)}</Badge>
+                <Badge variant="secondary">
+                  {truncate(clusterName.value, 30)}
+                </Badge>
               </a>
             </Link>
           </div>

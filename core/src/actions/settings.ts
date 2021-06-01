@@ -30,28 +30,6 @@ export class SettingsList extends AuthenticatedAction {
   }
 }
 
-export class SettingClusterNameView extends OptionallyAuthenticatedAction {
-  constructor() {
-    super();
-    this.name = "settings:clusterName:view";
-    this.description =
-      "Return the cluster name setting and whether it's been changed";
-    this.outputExample = {};
-    this.permission = { topic: "system", mode: "read" };
-    this.inputs = {};
-  }
-
-  async runWithinTransaction() {
-    const setting: Setting = await Setting.findOne({
-      where: { key: "cluster-name" },
-    });
-    return {
-      clusterName: setting.value,
-      default: setting.value === setting.defaultValue,
-    };
-  }
-}
-
 export class SettingEdit extends AuthenticatedAction {
   constructor() {
     super();

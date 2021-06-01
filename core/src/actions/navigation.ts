@@ -243,7 +243,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     return {
       navigationMode,
-      clusterName: clusterNameSetting?.value || "",
+      clusterName: {
+        default:
+          clusterNameSetting?.value &&
+          clusterNameSetting.value !== clusterNameSetting.defaultValue,
+        value: clusterNameSetting?.value || "",
+      },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
       navigation: {
         navigationItems,

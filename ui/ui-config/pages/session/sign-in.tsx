@@ -9,7 +9,7 @@ import { Actions } from "@grouparoo/ui-components/utils/apiData";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
 export default function SignInPage(props) {
-  const { errorHandler, setting } = props;
+  const { clusterName, errorHandler } = props;
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
   const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ export default function SignInPage(props) {
                 type="text"
                 placeholder="Company Name"
                 ref={register}
-                defaultValue={setting.default ? "" : setting.clusterName}
+                defaultValue={clusterName.default ? "" : clusterName.value}
               />
               <Form.Control.Feedback type="invalid">
                 Company name is required
@@ -94,12 +94,3 @@ export default function SignInPage(props) {
     </>
   );
 }
-
-SignInPage.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
-  const setting: Actions.SettingClusterNameView = await execApi(
-    "get",
-    `/settings/clusterName`
-  );
-  return { setting };
-};
