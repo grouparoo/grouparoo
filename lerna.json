@@ -13,10 +13,7 @@
       "ignore": "@grouparoo/app-local*"
     },
     "version": {
-      "allowBranch": [
-        "main",
-        "stable"
-      ],
+      "allowBranch": ["main", "stable"],
       "message": "chore(release): publish %s [ci skip]"
     }
   }
