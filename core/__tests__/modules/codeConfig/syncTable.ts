@@ -84,6 +84,7 @@ describe("modules/codeConfig/syncTable", () => {
         source: ["magic_table_source"],
         team: [],
         teammember: [],
+        profile: [],
       });
       expect(deletedIds).toEqual({
         apikey: [],
@@ -95,6 +96,7 @@ describe("modules/codeConfig/syncTable", () => {
         source: [],
         team: [],
         teammember: [],
+        profile: [],
       });
     });
 

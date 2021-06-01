@@ -7,6 +7,7 @@ import { GroupMember } from "../models/GroupMember";
 import { Property } from "../models/Property";
 import { internalRun } from "../modules/internalRun";
 import { Op } from "sequelize";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class ProfilesList extends AuthenticatedAction {
   constructor() {
@@ -255,6 +256,8 @@ export class ProfileCreate extends AuthenticatedAction {
 
     const groups = await profile.$get("groups");
 
+    await ConfigWriter.run();
+
     return {
       profile: await profile.apiData(),
       groups: await Promise.all(groups.map((group) => group.apiData())),
@@ -358,6 +361,9 @@ export class ProfileDestroy extends AuthenticatedAction {
   async runWithinTransaction({ params }) {
     const profile = await Profile.findById(params.id);
     await profile.destroy();
+
+    await ConfigWriter.run();
+
     return { success: true };
   }
 }

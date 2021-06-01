@@ -15,6 +15,7 @@ import {
 } from "../classes/codeConfig";
 
 import { getConfigDir } from "../utils/pluginDetails";
+import { Profile } from "../models/Profile";
 
 type WritableConfigObject = {
   filePath: string;
@@ -60,7 +61,6 @@ export namespace ConfigWriter {
 
     const configObjects: WritableConfigObject[] = await getConfigObjects();
     await writeFiles(configObjects);
-
     return configObjects;
   }
 
@@ -83,6 +83,18 @@ export namespace ConfigWriter {
         objects.push({ filePath, object });
       }
     }
+
+    const profiles = await Profile.findAll();
+    const profileObjects = await Promise.all(
+      profiles.map((p) => p.getConfigObject())
+    );
+    if (profileObjects.length > 0) {
+      objects.push({
+        filePath: "development/profiles.json",
+        object: profileObjects,
+      });
+    }
+
     return objects;
   }
 

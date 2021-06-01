@@ -354,6 +354,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
       values: newPropertyValues,
       type: property.type,
       unique: property.unique,
+      directlyMapped: property.directlyMapped,
       isArray: property.isArray,
       identifying: property.identifying,
       valueChangedAt: null,

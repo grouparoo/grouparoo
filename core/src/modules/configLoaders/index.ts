@@ -23,6 +23,7 @@ import { loadSetting } from "./setting";
 import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
+import { loadProfile } from "./profile";
 
 export async function loadConfigDirectory(
   configDir: string,
@@ -125,6 +126,7 @@ export async function processConfigObjects(
     apikey: [],
     team: [],
     teammember: [],
+    profile: [],
   };
   const errors: string[] = [];
 
@@ -243,6 +245,9 @@ export async function processConfigObjects(
             validate
           );
           break;
+        case "profile":
+          ids = await loadProfile(configObject, externallyValidate, validate);
+          break;
         case "synctable":
           const many = await expandSyncTable(
             configObject,
@@ -303,6 +308,7 @@ export async function deleteLockedObjects(seenIds) {
     apikey: [],
     team: [],
     teammember: [],
+    profile: [],
   };
 
   deletedIds["teammember"] = await deleteTeamMembers(seenIds.teammember);

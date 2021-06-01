@@ -5,7 +5,6 @@ import extractDuplicates from "../modules/validators/extractDuplicates";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
-
 export interface IdsByClass {
   app?: string[];
   source?: string[];
@@ -16,6 +15,7 @@ export interface IdsByClass {
   apikey?: string[];
   team?: string[];
   teammember?: string[];
+  profile?: string[];
 }
 
 export interface ConfigurationObject {
@@ -44,6 +44,7 @@ export interface ConfigurationObject {
   syncMode?: DestinationSyncMode;
   bootstrappedProperty?: ConfigurationObject;
   destinationGroupMemberships?: { [key: string]: string };
+  properties?: { [key: string]: any };
 
   // For SyncTable
   source?: ConfigurationObject;
@@ -117,7 +118,8 @@ export function validateConfigObjectKeys(
 
 export function logModel(
   instance,
-  mode: "created" | "updated" | "deleted" | "validated"
+  mode: "created" | "updated" | "deleted" | "validated",
+  name?: string
 ) {
   let logLevel = "info";
   if (mode === "created") logLevel = "notice";
@@ -125,7 +127,7 @@ export function logModel(
 
   log(
     `[ config ] ${mode} ${instance.constructor.name} \`${
-      instance.key || instance.email || instance.name
+      name || instance.key || instance.email || instance.name
     }\` (${instance.id})`,
     logLevel
   );
@@ -338,6 +340,11 @@ export async function getParentIds(
       configObject["destinationGroupMemberships"]
     );
     groupIds.forEach((v) => prerequisiteIds.push(v));
+  }
+
+  if (configObject["properties"]) {
+    const propertyIds: string[] = Object.keys(configObject["properties"]);
+    propertyIds.forEach((v) => prerequisiteIds.push(v));
   }
 
   return {

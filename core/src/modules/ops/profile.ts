@@ -19,6 +19,7 @@ export interface ProfilePropertyType {
     values: Array<string | number | boolean | Date>;
     type: Property["type"];
     unique: Property["unique"];
+    directlyMapped: Property["directlyMapped"];
     isArray: Property["isArray"];
     identifying: Property["identifying"];
     valueChangedAt: ProfileProperty["valueChangedAt"];
@@ -63,6 +64,7 @@ export namespace ProfileOps {
           values: [],
           type: property.type,
           unique: property.unique,
+          directlyMapped: property.directlyMapped,
           isArray: property.isArray,
           identifying: property.identifying,
           valueChangedAt: profileProperties[i].valueChangedAt,
@@ -423,6 +425,8 @@ export namespace ProfileOps {
     uniqueProperties.forEach((rule) => {
       if (hash[rule.key] !== null && hash[rule.key] !== undefined) {
         uniquePropertiesHash[rule.id] = hash[rule.key];
+      } else if (hash[rule.id] !== null && hash[rule.id] !== undefined) {
+        uniquePropertiesHash[rule.id] = hash[rule.id];
       }
     });
 

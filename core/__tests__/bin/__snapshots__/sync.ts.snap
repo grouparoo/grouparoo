@@ -8,6 +8,7 @@ Object {
     "email": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -25,6 +26,7 @@ Object {
     "firstName": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -42,6 +44,7 @@ Object {
     "isVIP": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -59,6 +62,7 @@ Object {
     "lastLoginAt": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -76,6 +80,7 @@ Object {
     "lastName": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -93,6 +98,7 @@ Object {
     "ltv": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": false,
@@ -110,6 +116,7 @@ Object {
     "purchaseAmounts": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": true,
@@ -128,6 +135,7 @@ Object {
     "purchases": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": false,
       "id": Any<String>,
       "identifying": false,
       "isArray": true,
@@ -146,6 +154,7 @@ Object {
     "userId": Object {
       "confirmedAt": Any<String>,
       "createdAt": Any<String>,
+      "directlyMapped": true,
       "id": Any<String>,
       "identifying": true,
       "isArray": false,
