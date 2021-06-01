@@ -434,7 +434,8 @@ export namespace FinalSummaryReporters {
       const sources: { [id: string]: SourceData } = {};
       for (const run of runs) {
         let source = null;
-        const schedule = await Schedule.findById(run.creatorId);
+        const schedule = await Schedule.findByPk(run.creatorId);
+
         if (schedule) {
           source = await schedule.$get("source");
         }
@@ -468,11 +469,11 @@ export namespace FinalSummaryReporters {
     export async function getData() {
       const out: ProfileData[] = [];
       const profilesUpdated = await Profile.count({
-        where: { updatedAt: { [Op.gt]: lastRunStart } },
+        where: { updatedAt: { [Op.gte]: lastRunStart } },
       });
 
       const profilesCreated = await Profile.count({
-        where: { createdAt: { [Op.gt]: lastRunStart } },
+        where: { createdAt: { [Op.gte]: lastRunStart } },
       });
       const name = null;
       const allProfiles = await Profile.count();
@@ -507,7 +508,7 @@ export namespace FinalSummaryReporters {
             "exportsCreated",
           ],
         ],
-        where: { createdAt: { [Op.gt]: lastRunStart } },
+        where: { createdAt: { [Op.gte]: lastRunStart } },
         group: ["destinationId"],
       });
       for (const exp of exports) {
@@ -518,7 +519,7 @@ export namespace FinalSummaryReporters {
         const exportsFailed = await Export.count({
           where: {
             state: "failed",
-            updatedAt: { [Op.gt]: lastRunStart },
+            updatedAt: { [Op.gte]: lastRunStart },
             destinationId: destination.id,
           },
         });
@@ -526,7 +527,7 @@ export namespace FinalSummaryReporters {
         const exportsComplete = await Export.count({
           where: {
             state: "complete",
-            updatedAt: { [Op.gt]: lastRunStart },
+            updatedAt: { [Op.gte]: lastRunStart },
             destinationId: destination.id,
           },
         });
