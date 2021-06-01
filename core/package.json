@@ -73,7 +73,7 @@
     "sqlite3": "5.0.2",
     "ts-node": "10.0.0",
     "uuid": "8.3.2",
-    "validator": "13.5.2",
+    "validator": "13.6.0",
     "winston": "3.3.3",
     "ws": "7.4.6"
   },
