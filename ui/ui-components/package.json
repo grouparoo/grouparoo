@@ -64,7 +64,7 @@
     "swagger-ui-dist": "3.47.1",
     "ts-jest": "26.5.6",
     "type-fest": "1.2.0",
-    "typescript": "4.2.4",
+    "typescript": "4.3.2",
     "victory": "35.5.1"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
