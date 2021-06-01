@@ -116,7 +116,7 @@ async function authenticateTeamMember(
 
   if (
     process.env.GROUPAROO_RUN_MODE === "cli:config" &&
-    env === "development"
+    ["development", "test"].includes(env)
   ) {
     error = await authenticateConfigUser(data, optional);
   } else {
