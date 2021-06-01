@@ -161,7 +161,9 @@ export default function Navigation(props) {
             <Link href="/settings/[tab]" as="/settings/core">
               <a>
                 <Badge variant="secondary">
-                  {truncate(clusterName.value, 30)}
+                  {clusterName
+                    ? truncate(clusterName.value, 30)
+                    : "Name not set"}
                 </Badge>
               </a>
             </Link>
