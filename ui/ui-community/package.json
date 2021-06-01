@@ -35,7 +35,6 @@
     "@fortawesome/react-fontawesome": "0.1.14",
     "@zeit/next-source-maps": "0.0.3",
     "axios": "0.21.1",
-    "date-fns": "2.21.3",
     "dotenv": "9.0.1",
     "md5": "2.3.0",
     "moment": "2.29.1",

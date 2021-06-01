@@ -247,7 +247,6 @@ importers:
       compare-versions: 3.6.0
       csv-parse: 4.15.4
       csv-stringify: 5.6.2
-      date-fns: 2.21.3
       dotenv: 9.0.1
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -297,7 +296,6 @@ importers:
       colors: 1.4.0
       compare-versions: 3.6.0
       csv-stringify: 5.6.2
-      date-fns: 2.21.3
       dotenv: 9.0.1
       fs-extra: 10.0.0
       glob: 7.1.7
@@ -1381,7 +1379,6 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1415,7 +1412,6 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       md5: 2.3.0
       moment: 2.29.1
@@ -1426,7 +1422,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
-      react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
+      react-date-range: 1.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
@@ -1465,7 +1461,6 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.21.3
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1506,7 +1501,6 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_fae758709a8810ba97b4c03852dde4d0
       axios: 0.21.1
       bootstrap: 4.6.0
-      date-fns: 2.21.3
       enzyme: 3.11.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -1523,7 +1517,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
-      react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
+      react-date-range: 1.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
@@ -1551,7 +1545,6 @@ importers:
       '@zeit/next-source-maps': 0.0.3
       ansi-to-html: 0.6.14
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1586,7 +1579,6 @@ importers:
       '@zeit/next-source-maps': 0.0.3
       ansi-to-html: 0.6.14
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       md5: 2.3.0
       moment: 2.29.1
@@ -1597,7 +1589,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
-      react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
+      react-date-range: 1.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
@@ -1637,7 +1629,6 @@ importers:
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1671,7 +1662,6 @@ importers:
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
       axios: 0.21.1
-      date-fns: 2.21.3
       dotenv: 9.0.1
       md5: 2.3.0
       moment: 2.29.1
@@ -1682,7 +1672,7 @@ importers:
       react: 17.0.2
       react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
-      react-date-range: 1.1.3_date-fns@2.21.3+react@17.0.2
+      react-date-range: 1.1.3_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
       react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
@@ -5916,10 +5906,6 @@ packages:
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.5.0
     dev: true
-
-  /date-fns/2.21.3:
-    resolution: {integrity: sha512-HeYdzCaFflc1i4tGbj7JKMjM4cKGYoyxwcIIkHzNgCkX8xXDNJDZXgDDVchIWpN4eQc3lH37WarduXFZJOtxfw==}
-    engines: {node: '>=0.11'}
 
   /dateformat/3.0.3:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
@@ -12313,14 +12299,13 @@ packages:
       uncontrollable: 7.2.1_react@17.0.2
       warning: 4.0.3
 
-  /react-date-range/1.1.3_date-fns@2.21.3+react@17.0.2:
+  /react-date-range/1.1.3_react@17.0.2:
     resolution: {integrity: sha512-Q0+80JaEw3O2J50Lf1dcwWfqkzu3SaCZUTgtVEG9kIHy1h1x8XTNrumX08hKz+M//wg7NOymaTzP1RPBYoLpmw==}
     peerDependencies:
       date-fns: 2.0.0-alpha.7 || >=2.0.0
       react: ^0.14 || ^15.0.0-rc || >=15.0
     dependencies:
       classnames: 2.3.1
-      date-fns: 2.21.3
       prop-types: 15.7.2
       react: 17.0.2
       react-list: 0.8.16_react@17.0.2
@@ -14450,7 +14435,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@9.1.1
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
