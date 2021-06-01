@@ -1318,11 +1318,58 @@ describe("modules/codeConfig", () => {
         expect(errors[0]).toMatch(/TeamMember.firstName cannot be null/);
       });
     });
+
+    describe("profile", () => {
+      beforeAll(async () => {
+        process.env.GROUPAROO_RUN_MODE = "cli:config";
+        api.codeConfig.allowLockedModelChanges = true;
+      });
+
+      test("non unique property", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-profile-non-unique-property"
+          )
+        );
+
+        expect(errors.length).toBe(1);
+        expect(errors[0]).toMatch(
+          /there are no directly mapped profile properties provided in/
+        );
+      });
+
+      test("missing property", async () => {
+        const { errors } = await loadConfigDirectory(
+          path.join(
+            __dirname,
+            "..",
+            "..",
+            "fixtures",
+            "codeConfig",
+            "error-profile-missing-property"
+          )
+        );
+
+        expect(errors.length).toBe(1);
+        expect(errors[0]).toMatch(
+          /Could not find object with ID: unknown_property_id/
+        );
+      });
+
+      afterAll(() => {
+        process.env.GROUPAROO_RUN_MODE = undefined;
+      });
+    });
   });
 
   describe("errors in a second run", () => {
     beforeEach(async () => {
-      helper.truncate();
+      await helper.truncate();
     });
 
     test("changing an app's type (missing) causes an error", async () => {

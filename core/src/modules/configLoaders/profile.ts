@@ -5,6 +5,7 @@ import {
   logModel,
 } from "../../classes/codeConfig";
 import { Profile } from "../../models/Profile";
+import { Property } from "../../models/Property";
 
 export async function loadProfile(
   configObject: ConfigurationObject,
@@ -27,14 +28,34 @@ export async function loadProfile(
     });
   }
 
-  await profile.addOrUpdateProperties(
-    extractNonNullParts(configObject, "properties")
-  );
+  const nonNullProperties = extractNonNullParts(configObject, "properties");
+
+  const directlyMappedProperties = (await Property.findAllWithCache())
+    .filter((p) => p.directlyMapped === true)
+    .map((p) => p.id);
+
+  let hasDirectlyMapped = false;
+  for (const propertyId in nonNullProperties) {
+    if (directlyMappedProperties.includes(propertyId)) {
+      hasDirectlyMapped = true;
+      break;
+    }
+  }
+
+  const serializedProps = JSON.stringify(nonNullProperties);
+
+  if (!hasDirectlyMapped) {
+    throw new Error(
+      `there are no directly mapped profile properties provided in ${serializedProps}`
+    );
+  }
+
+  await profile.addOrUpdateProperties(nonNullProperties);
 
   logModel(
     profile,
     validate ? "validated" : isNew ? "created" : "updated",
-    JSON.stringify(configObject.properties)
+    serializedProps
   );
 
   return {
