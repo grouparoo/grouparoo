@@ -1,6 +1,7 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
 import { Profile, Group, Team, TeamMember, Property, Run } from "../../src";
+import { ConfigWriter } from "../../src/modules/configWriter";
 
 function simpleProfileValues(complexProfileValues): { [key: string]: any } {
   const keys = Object.keys(complexProfileValues);
@@ -12,6 +13,8 @@ function simpleProfileValues(complexProfileValues): { [key: string]: any } {
 }
 
 describe("actions/profiles", () => {
+  const mockedConfigWriterRun = jest.fn();
+
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
   let id: string;
 
@@ -25,6 +28,8 @@ describe("actions/profiles", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+
+    ConfigWriter.run = mockedConfigWriterRun;
   });
 
   describe("writer signed in", () => {
@@ -75,6 +80,30 @@ describe("actions/profiles", () => {
       expect(profile.properties["purchases"].state).toBe("pending");
 
       id = profile.id;
+    });
+
+    test("when a profile is created, config writers will be run", async () => {
+      mockedConfigWriterRun.mockReset();
+
+      connection.params = {
+        csrfToken,
+        properties: {
+          userId: 12,
+          email: "wario@example.com",
+          firstName: "Wario",
+          lastName: "Waluigio",
+        },
+      };
+
+      const { profile: profileData } = await specHelper.runAction(
+        "profile:create",
+        connection
+      );
+
+      expect(mockedConfigWriterRun).toHaveBeenCalledTimes(1);
+
+      const profile = await Profile.findOne({ where: { id: profileData.id } });
+      await profile.destroy();
     });
 
     test("a writer can edit a property of a profile", async () => {
@@ -226,6 +255,23 @@ describe("actions/profiles", () => {
       );
       expect(error).toBeUndefined();
       expect(success).toBe(true);
+    });
+
+    test("when a profile is destroyed, config writers will be run", async () => {
+      mockedConfigWriterRun.mockReset();
+      const profile = await helper.factories.profile();
+
+      connection.params = {
+        csrfToken,
+        id: profile.id,
+      };
+
+      const { success } = await specHelper.runAction(
+        "profile:destroy",
+        connection
+      );
+      expect(success).toBe(true);
+      expect(mockedConfigWriterRun).toHaveBeenCalledTimes(1);
     });
 
     describe("groups", () => {
