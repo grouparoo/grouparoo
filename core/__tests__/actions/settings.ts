@@ -20,26 +20,6 @@ describe("actions/settings", () => {
     await Setting.truncate();
   });
 
-  test("can publicly read the cluster name", async () => {
-    const setting = await plugin.registerSetting(
-      "testPlugin",
-      "cluster-name",
-      "My Grouparoo Cluster",
-      "My Grouparoo Cluster",
-      "Name of the cluster",
-      "string"
-    );
-    const {
-      error,
-      clusterName,
-      default: defaultValue,
-    } = await specHelper.runAction("settings:clusterName:view", connection);
-    expect(error).toBeUndefined();
-    expect(clusterName).not.toBeUndefined();
-    expect(clusterName).toEqual(setting.value);
-    expect(defaultValue).toEqual(true);
-  });
-
   describe("reader signed in", () => {
     let csrfToken;
     let id;
