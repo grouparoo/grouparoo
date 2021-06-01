@@ -81,9 +81,7 @@ export namespace DestinationOps {
 
     if (oldGroupId) {
       const oldGroup = await Group.findById(oldGroupId);
-      if (oldGroup.state !== "deleted") {
-        return oldGroup.run(force, destination.id);
-      }
+      return oldGroup.run(force, destination.id);
     }
   }
 
