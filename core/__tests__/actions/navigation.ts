@@ -24,7 +24,9 @@ describe("actions/navigation", () => {
 
   test("the navigation action includes the clusterName", async () => {
     const { clusterName } = await specHelper.runAction("navigation:list");
-    expect(clusterName).toBe("My Grouparoo Cluster");
+    expect(clusterName).toEqual(
+      expect.objectContaining({ default: true, value: "My Grouparoo Cluster" })
+    );
   });
 
   describe("with session", () => {

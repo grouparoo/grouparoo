@@ -26,6 +26,18 @@ describe("modules/ConfigUser", () => {
     if (fs.existsSync(localFile)) fs.rmSync(localFile);
   });
 
+  test("does nothing unless in cli:config mode", async () => {
+    process.env.GROUPAROO_RUN_MODE = undefined;
+    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);
+    await ConfigUser.create({
+      email: "demo@grouparoo.com",
+      company: "My Company",
+    });
+    expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);
+    const user = await ConfigUser.get();
+    expect(user).toEqual(null);
+  });
+
   // also tests the get() method
   test("writes a file to .local/user.json", async () => {
     expect(fs.existsSync(ConfigUser.localUserFilePath())).toEqual(false);

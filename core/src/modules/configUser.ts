@@ -46,6 +46,7 @@ export namespace ConfigUser {
     subscribed?: boolean;
     company: string;
   }) {
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
     store();
     if (subscribed) await subscribe(email, subscribed);
     await storeCompanyName(company);

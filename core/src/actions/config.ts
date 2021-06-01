@@ -87,6 +87,9 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
   }
 
   async runWithinTransaction({ params }) {
+    if (process.env.GROUPAROO_RUN_MODE !== "cli:config") {
+      throw new Error("Action only available in config mode.");
+    }
     await ConfigUser.create(params);
     const user = await ConfigUser.get();
     return { user };
