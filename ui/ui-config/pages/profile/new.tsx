@@ -6,9 +6,16 @@ import { useRouter } from "next/router";
 import { Form } from "react-bootstrap";
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
+import { ErrorHandler } from "@grouparoo/ui-components/utils/errorHandler";
 
 export default function NewProfile(props) {
-  const { errorHandler } = props;
+  const {
+    errorHandler,
+    properties,
+  }: {
+    errorHandler: ErrorHandler;
+    properties: Actions.PropertiesList["properties"];
+  } = props;
   const router = useRouter();
   const { execApi } = useApi(props, errorHandler);
   const { handleSubmit, register } = useForm();
@@ -28,7 +35,7 @@ export default function NewProfile(props) {
     }
   }
 
-  const uniqueDirectlyMappedProfileProperties = props.properties.filter(
+  const uniqueDirectlyMappedProfileProperties = properties.filter(
     (rule) => rule.unique && rule.directlyMapped
   );
 
@@ -79,7 +86,10 @@ export default function NewProfile(props) {
 
 NewProfile.getInitialProps = async (ctx) => {
   const { execApi } = useApi(ctx);
-  const { properties } = await execApi("get", `/properties`);
+  const { properties }: Actions.PropertiesList = await execApi(
+    "get",
+    `/properties`
+  );
 
   return { properties };
 };
