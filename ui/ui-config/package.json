@@ -40,7 +40,7 @@
     "dotenv": "10.0.0",
     "md5": "2.3.0",
     "moment": "2.29.1",
-    "next": "10.2.2",
+    "next": "10.2.3",
     "node-sass": "5.0.0",
     "nprogress": "0.2.0",
     "pluralize": "8.0.0",
