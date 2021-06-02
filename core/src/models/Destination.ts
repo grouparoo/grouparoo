@@ -639,7 +639,7 @@ export class Destination extends LoggedModel<Destination> {
   static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
     if (instance.groupId) {
-      const group = await Group.findOne({
+      const group = await Group.scope("notDraft").findOne({
         where: { id: instance.groupId },
       });
       if (group) {

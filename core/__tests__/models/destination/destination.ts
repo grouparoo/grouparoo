@@ -680,19 +680,6 @@ describe("models/destination", () => {
           expect(runB.force).toBe(false);
         });
 
-        test("when the group being tracked is removed and it is in deleted state, it should not be re-exported", async () => {
-          const runA = await destination.trackGroup(group);
-
-          await group.update({ state: "deleted" });
-
-          // do not create a run- it will be created by `group:destroy` task
-          const runB = await destination.unTrackGroup();
-          expect(runB).toBeFalsy();
-
-          await runA.reload();
-          expect(runA.state).toBe("running");
-        });
-
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {
           const otherGroup = await helper.factories.group();
           await otherGroup.update({ state: "ready" });
