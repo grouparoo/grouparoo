@@ -216,7 +216,7 @@ importers:
       ts-loader: 9.2.2
       typescript: 4.3.2
       webpack: 5.38.1
-      webpack-cli: 4.6.0
+      webpack-cli: 4.7.0
     devDependencies:
       '@types/jest': 26.0.23
       jest: 26.6.3
@@ -225,8 +225,8 @@ importers:
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       ts-loader: 9.2.2_typescript@4.3.2+webpack@5.38.1
       typescript: 4.3.2
-      webpack: 5.38.1_webpack-cli@4.6.0
-      webpack-cli: 4.6.0_webpack@5.38.1
+      webpack: 5.38.1_webpack-cli@4.7.0
+      webpack-cli: 4.7.0_webpack@5.38.1
 
   core:
     specifiers:
@@ -505,7 +505,7 @@ importers:
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
-      mongodb: 3.6.6
+      mongodb: 3.6.9
       pg: 8.6.0
       prettier: 2.3.0
       replace-in-files: 3.0.0
@@ -518,7 +518,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
-      mongodb: 3.6.6
+      mongodb: 3.6.9
       pg: 8.6.0
       prettier: 2.3.0
       replace-in-files: 3.0.0
@@ -855,13 +855,13 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      mongodb: 3.6.6
+      mongodb: 3.6.9
       prettier: 2.3.0
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      mongodb: 3.6.6
+      mongodb: 3.6.9
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1345,13 +1345,13 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      node-zendesk: 2.0.6
+      node-zendesk: 2.1.0
       prettier: 2.3.0
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      node-zendesk: 2.0.6
+      node-zendesk: 2.1.0
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1404,7 +1404,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.5.1
@@ -1433,7 +1433,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       victory: 35.5.1
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1488,7 +1488,7 @@ importers:
       react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       type-fest: 1.2.0
       typescript: 4.3.2
@@ -1529,7 +1529,7 @@ importers:
       react-markdown: 6.0.2_@types+react@17.0.8+react@17.0.2
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       type-fest: 1.2.0
       typescript: 4.3.2
@@ -1549,7 +1549,7 @@ importers:
       '@types/react-dom': '*'
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
-      ansi-to-html: 0.6.14
+      ansi-to-html: 0.6.15
       axios: 0.21.1
       date-fns: 2.22.1
       dotenv: 10.0.0
@@ -1574,7 +1574,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.5.1
@@ -1584,7 +1584,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
-      ansi-to-html: 0.6.14
+      ansi-to-html: 0.6.15
       axios: 0.21.1
       date-fns: 2.22.1
       dotenv: 10.0.0
@@ -1604,7 +1604,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       victory: 35.5.1
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1660,7 +1660,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.5.1
@@ -1689,7 +1689,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.47.1
+      swagger-ui-dist: 3.49.0
       victory: 35.5.1
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -3928,26 +3928,26 @@ packages:
       '@xtuc/long': 4.2.2
     dev: true
 
-  /@webpack-cli/configtest/1.0.3_webpack-cli@4.6.0+webpack@5.38.1:
+  /@webpack-cli/configtest/1.0.3_webpack-cli@4.7.0+webpack@5.38.1:
     resolution: {integrity: sha512-WQs0ep98FXX2XBAfQpRbY0Ma6ADw8JR6xoIkaIiJIzClGOMqVRvPCWqndTxf28DgFopWan0EKtHtg/5W1h0Zkw==}
     peerDependencies:
       webpack: 4.x.x || 5.x.x
       webpack-cli: 4.x.x
     dependencies:
-      webpack: 5.38.1_webpack-cli@4.6.0
-      webpack-cli: 4.6.0_webpack@5.38.1
+      webpack: 5.38.1_webpack-cli@4.7.0
+      webpack-cli: 4.7.0_webpack@5.38.1
     dev: true
 
-  /@webpack-cli/info/1.2.4_webpack-cli@4.6.0:
+  /@webpack-cli/info/1.2.4_webpack-cli@4.7.0:
     resolution: {integrity: sha512-ogE2T4+pLhTTPS/8MM3IjHn0IYplKM4HbVNMCWA9N4NrdPzunwenpCsqKEXyejMfRu6K8mhauIPYf8ZxWG5O6g==}
     peerDependencies:
       webpack-cli: 4.x.x
     dependencies:
       envinfo: 7.8.1
-      webpack-cli: 4.6.0_webpack@5.38.1
+      webpack-cli: 4.7.0_webpack@5.38.1
     dev: true
 
-  /@webpack-cli/serve/1.4.0_webpack-cli@4.6.0:
+  /@webpack-cli/serve/1.4.0_webpack-cli@4.7.0:
     resolution: {integrity: sha512-xgT/HqJ+uLWGX+Mzufusl3cgjAcnqYYskaB7o0vRcwOEfuu6hMzSILQpnIzFMGsTaeaX4Nnekl+6fadLbl1/Vg==}
     peerDependencies:
       webpack-cli: 4.x.x
@@ -3956,7 +3956,7 @@ packages:
       webpack-dev-server:
         optional: true
     dependencies:
-      webpack-cli: 4.6.0_webpack@5.38.1
+      webpack-cli: 4.7.0_webpack@5.38.1
     dev: true
 
   /@wojtekmaj/enzyme-adapter-react-17/0.6.1_fae758709a8810ba97b4c03852dde4d0:
@@ -4200,11 +4200,6 @@ packages:
     dependencies:
       string-width: 3.1.0
 
-  /ansi-colors/4.1.1:
-    resolution: {integrity: sha512-JoX0apGbHaUJBNl6yF+p6JAFYZ666/hhCGKN5t9QFjbJQKUU/g8MNbFDbvfrgKXvI1QpZplPOnwIo99lX/AAmA==}
-    engines: {node: '>=6'}
-    dev: true
-
   /ansi-escapes/4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
     engines: {node: '>=8'}
@@ -4240,11 +4235,12 @@ packages:
     dependencies:
       color-convert: 2.0.1
 
-  /ansi-to-html/0.6.14:
-    resolution: {integrity: sha512-7ZslfB1+EnFSDO5Ju+ue5Y6It19DRnZXWv8jrGHgIlPna5Mh4jz7BV5jCbQneXNFurQcKoolaaAjHtgSBfOIuA==}
+  /ansi-to-html/0.6.15:
+    resolution: {integrity: sha512-28ijx2aHJGdzbs+O5SNQF65r6rrKYnkuwTYm8lZlChuoJ9P1vVzIpWO20sQTqTPDXYp6NFwk326vApTtLVFXpQ==}
+    engines: {node: '>=8.0.0'}
     hasBin: true
     dependencies:
-      entities: 1.1.2
+      entities: 2.2.0
     dev: false
 
   /any-promise/1.3.0:
@@ -6331,24 +6327,12 @@ packages:
       tapable: 2.2.0
     dev: true
 
-  /enquirer/2.3.6:
-    resolution: {integrity: sha512-yjNnPr315/FjS4zIsUxYguYUPP2e1NK4d7E7ZOLiyYCcbFBiTMyID+2wvm2w6+pZ/odMA7cRkjhsPbltwBOrLg==}
-    engines: {node: '>=8.6'}
-    dependencies:
-      ansi-colors: 4.1.1
-    dev: true
-
   /ent/2.2.0:
     resolution: {integrity: sha1-6WQhkyWiHQX0RGai9obtbOX13R0=}
     dev: false
 
-  /entities/1.1.2:
-    resolution: {integrity: sha512-f2LZMYl1Fzu7YSBKg+RoROelpOaNrcGmE9AZubeDfrCEia483oW4MI4VyFd5VNHIgQ/7qm1I0wUHK1eJnn2y2w==}
-    dev: false
-
   /entities/2.2.0:
     resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
-    dev: true
 
   /env-paths/2.2.1:
     resolution: {integrity: sha512-+h1lkLKhZMTYjog1VEpJNG7NZJWcuc2DDk/qsqSTRRCOXiLjeQ1d1/udrUGhqMxUgAlwKNZ0cf2uqan5GLuS2A==}
@@ -10373,8 +10357,8 @@ packages:
   /moment/2.29.1:
     resolution: {integrity: sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==}
 
-  /mongodb/3.6.6:
-    resolution: {integrity: sha512-WlirMiuV1UPbej5JeCMqE93JRfZ/ZzqE7nJTwP85XzjAF4rRSeq2bGCb1cjfoHLOF06+HxADaPGqT0g3SbVT1w==}
+  /mongodb/3.6.9:
+    resolution: {integrity: sha512-1nSCKgSunzn/CXwgOWgbPHUWOO5OfERcuOWISmqd610jn0s8BU9K4879iJVabqgpPPbA6hO7rG48eq+fGED3Mg==}
     engines: {node: '>=4'}
     peerDependencies:
       aws4: '*'
@@ -10866,8 +10850,8 @@ packages:
     hasBin: true
     dev: false
 
-  /node-zendesk/2.0.6:
-    resolution: {integrity: sha512-efCRryoVnx8x3EE1iksp9+YCs7V8pjLboSMlW/0FUD0F2LAdJ70Z5K27ROQHy+zPehsWFVVpjwSaQ8i88AH7ig==}
+  /node-zendesk/2.1.0:
+    resolution: {integrity: sha512-vMdk3hrN/mTu5MziyZupn8jeTcIIjJX5xMA1qavI58zyPhCLx13ASjqWik10oUNzJZxPX22wxc4zWbPLdGhAMg==}
     dependencies:
       async: 3.2.0
       nconf: 0.11.0
@@ -14135,8 +14119,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /swagger-ui-dist/3.47.1:
-    resolution: {integrity: sha512-7b9iHDC/GGC9SJLd3HiV/3EnsJ3wu7xN8Q4MpOPfQO8UG7TQFG2TMTDkvvy0SNeqxQY0tGQY0ppZC9a95tW3kg==}
+  /swagger-ui-dist/3.49.0:
+    resolution: {integrity: sha512-R1+eT16XNP1bBLfacISifZAkFJlpwvWsS2vVurF5pbIFZnmCasD/hj+9r/q7urYdQyb0B6v11mDnuYU7rUpfQg==}
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
@@ -14237,7 +14221,7 @@ packages:
       serialize-javascript: 5.0.1
       source-map: 0.6.1
       terser: 5.7.0
-      webpack: 5.38.1_webpack-cli@4.6.0
+      webpack: 5.38.1_webpack-cli@4.7.0
     dev: true
 
   /terser/5.7.0:
@@ -14485,7 +14469,7 @@ packages:
       micromatch: 4.0.4
       semver: 7.3.5
       typescript: 4.3.2
-      webpack: 5.38.1_webpack-cli@4.6.0
+      webpack: 5.38.1_webpack-cli@4.7.0
     dev: true
 
   /ts-node/10.0.0_b89ec6c4eb73802631cbe54606dd8cdb:
@@ -15297,8 +15281,8 @@ packages:
     engines: {node: '>=10.4'}
     dev: true
 
-  /webpack-cli/4.6.0_webpack@5.38.1:
-    resolution: {integrity: sha512-9YV+qTcGMjQFiY7Nb1kmnupvb1x40lfpj8pwdO/bom+sQiP4OBMKjHq29YQrlDWDPZO9r/qWaRRywKaRDKqBTA==}
+  /webpack-cli/4.7.0_webpack@5.38.1:
+    resolution: {integrity: sha512-7bKr9182/sGfjFm+xdZSwgQuFjgEcy0iCTIBxRUeteJ2Kr8/Wz0qNJX+jw60LU36jApt4nmMkep6+W5AKhok6g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
     peerDependencies:
@@ -15318,19 +15302,18 @@ packages:
         optional: true
     dependencies:
       '@discoveryjs/json-ext': 0.5.3
-      '@webpack-cli/configtest': 1.0.3_webpack-cli@4.6.0+webpack@5.38.1
-      '@webpack-cli/info': 1.2.4_webpack-cli@4.6.0
-      '@webpack-cli/serve': 1.4.0_webpack-cli@4.6.0
+      '@webpack-cli/configtest': 1.0.3_webpack-cli@4.7.0+webpack@5.38.1
+      '@webpack-cli/info': 1.2.4_webpack-cli@4.7.0
+      '@webpack-cli/serve': 1.4.0_webpack-cli@4.7.0
       colorette: 1.2.2
       commander: 7.2.0
-      enquirer: 2.3.6
       execa: 5.0.0
       fastest-levenshtein: 1.0.12
       import-local: 3.0.2
       interpret: 2.2.0
       rechoir: 0.7.0
       v8-compile-cache: 2.3.0
-      webpack: 5.38.1_webpack-cli@4.6.0
+      webpack: 5.38.1_webpack-cli@4.7.0
       webpack-merge: 5.7.3
     dev: true
 
@@ -15350,7 +15333,7 @@ packages:
       source-map: 0.6.1
     dev: true
 
-  /webpack/5.38.1_webpack-cli@4.6.0:
+  /webpack/5.38.1_webpack-cli@4.7.0:
     resolution: {integrity: sha512-OqRmYD1OJbHZph6RUMD93GcCZy4Z4wC0ele4FXyYF0J6AxO1vOSuIlU1hkS/lDlR9CDYBz64MZRmdbdnFFoT2g==}
     engines: {node: '>=10.13.0'}
     hasBin: true
@@ -15382,7 +15365,7 @@ packages:
       tapable: 2.2.0
       terser-webpack-plugin: 5.1.2_webpack@5.38.1
       watchpack: 2.2.0
-      webpack-cli: 4.6.0_webpack@5.38.1
+      webpack-cli: 4.7.0_webpack@5.38.1
       webpack-sources: 2.3.0
     dev: true
 
