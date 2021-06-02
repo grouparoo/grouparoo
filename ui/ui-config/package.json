@@ -34,7 +34,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@zeit/next-source-maps": "0.0.3",
-    "ansi-to-html": "0.6.14",
+    "ansi-to-html": "0.6.15",
     "axios": "0.21.1",
     "date-fns": "2.22.1",
     "dotenv": "10.0.0",
