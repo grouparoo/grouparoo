@@ -32,6 +32,10 @@ describe("actions/status", () => {
 
         beforeEach(async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:config";
+          await ConfigUser.create({
+            email: "mario@example.com",
+            company: "Nintendo",
+          });
         });
         afterEach(async () => {
           process.env.GROUPAROO_RUN_MODE = undefined;
@@ -41,7 +45,6 @@ describe("actions/status", () => {
 
         test("cannot use status:private with a local users file in run mode", async () => {
           process.env.GROUPAROO_RUN_MODE = "cli:run";
-          fs.writeFileSync(localFile, JSON.stringify({ email: true }));
           const { error, metrics } = await specHelper.runAction(
             "status:private"
           );
@@ -49,10 +52,6 @@ describe("actions/status", () => {
           expect(metrics).toBeUndefined();
         });
         test("can use status:private with a local users file in run mode", async () => {
-          await ConfigUser.create({
-            company: "Nintendo",
-            email: "mario@example.com",
-          });
           const { error, metrics } = await specHelper.runAction(
             "status:private"
           );
