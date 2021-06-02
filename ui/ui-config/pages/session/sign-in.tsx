@@ -73,7 +73,7 @@ export default function SignInPage(props) {
                   type="text"
                   placeholder="Company Name"
                   ref={register}
-                  defaultValue={setting.default ? "" : setting.clusterName}
+                  defaultValue={clusterName || ""}
                 />
                 <Form.Control.Feedback type="invalid">
                   Company name is required
