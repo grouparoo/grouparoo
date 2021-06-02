@@ -2,6 +2,10 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { Plugins } from "../modules/plugins";
 import { api } from "actionhero";
+import path from "path";
+import fs from "fs";
+
+const restartSleepTime = 100;
 
 export class PluginsInstalledList extends OptionallyAuthenticatedAction {
   constructor() {
@@ -65,11 +69,11 @@ export class PluginInstall extends AuthenticatedAction {
     // Return if did not ask to restart
     if (!params.restart) return { success: response.success };
     // Otherwise, return, then restart the server.
-    const sleepTime = 100;
     setTimeout(() => {
+      clearPluginConfigCache();
       api.process.restart();
-    }, sleepTime);
-    return { success: response.success, checkIn: sleepTime * 4 };
+    }, restartSleepTime);
+    return { success: response.success, checkIn: restartSleepTime * 4 };
   }
 }
 
@@ -81,12 +85,33 @@ export class PluginUninstall extends AuthenticatedAction {
     this.permission = { topic: "system", mode: "write" };
     this.inputs = {
       plugin: { required: true },
+      restart: { required: false, default: "false" },
     };
     this.outputExample = {};
   }
 
   async runWithinTransaction({ params }) {
     const response = await Plugins.uninstall(params.plugin);
-    return response;
+
+    if (!response.success) return { success: false };
+    // Return if did not ask to restart
+    if (!params.restart) return { success: response.success };
+    // Otherwise, return, then restart the server.
+    setTimeout(() => {
+      clearPluginConfigCache();
+      api.process.restart();
+    }, restartSleepTime);
+    return { success: response.success, checkIn: restartSleepTime * 4 };
   }
+}
+
+function clearPluginConfigCache() {
+  const files = ["plugins.js"];
+
+  files.forEach((file) => {
+    const fullPath = path.join(__dirname, "..", "config", file);
+    if (fs.existsSync(fullPath)) {
+      delete require.cache[require.resolve(fullPath)];
+    }
+  });
 }
