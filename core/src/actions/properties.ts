@@ -259,7 +259,7 @@ export class PropertyView extends AuthenticatedAction {
 
   async runWithinTransaction({ params }) {
     const property = await Property.findById(params.id);
-    const source = await property.$get("source");
+    const source = await property.$get("source", { scope: null });
 
     return {
       property: await property.apiData(),
@@ -333,7 +333,7 @@ export class PropertyProfilePreview extends AuthenticatedAction {
     }
 
     const apiData = await profile.apiData();
-    const source = await property.$get("source");
+    const source = await property.$get("source", { scope: null });
 
     let newPropertyValues: Array<string | number | boolean | Date>;
     let errorMessage: string;

@@ -35,6 +35,7 @@ export class ImportProfileProperties extends RetryableTask {
     if (!property) return;
     const source = await property.$get("source", {
       include: [Option, Mapping],
+      scope: null,
     });
 
     const profilesToImport: Profile[] = [];

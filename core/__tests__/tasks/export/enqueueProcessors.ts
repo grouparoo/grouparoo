@@ -15,8 +15,10 @@ describe("tasks/export:enqueueProcessors", () => {
 
   describe("with export processors", () => {
     let destination: Destination;
+    let deletedDestination: Destination;
     let pendingProcessorA: ExportProcessor,
       pendingProcessorB: ExportProcessor,
+      pendingProcessorC: ExportProcessor,
       recentStartedProcessor: ExportProcessor,
       stuckStartedProcessor: ExportProcessor,
       newCompleteProcessor: ExportProcessor,
@@ -31,6 +33,13 @@ describe("tasks/export:enqueueProcessors", () => {
         type: "test-plugin-export-batch",
       });
 
+      const deletedApp = await helper.factories.app();
+      deletedDestination = await helper.factories.destination(deletedApp, {
+        type: "test-plugin-export-batch",
+      });
+      await deletedDestination.update({ state: "deleted" });
+      await deletedApp.update({ state: "deleted" });
+
       pendingProcessorA = await ExportProcessor.create({
         destinationId: destination.id,
         processAt: new Date(),
@@ -39,6 +48,12 @@ describe("tasks/export:enqueueProcessors", () => {
 
       pendingProcessorB = await ExportProcessor.create({
         destinationId: destination.id,
+        processAt: new Date(),
+        state: "pending",
+      });
+
+      pendingProcessorC = await ExportProcessor.create({
+        destinationId: deletedDestination.id,
         processAt: new Date(),
         state: "pending",
       });
@@ -119,17 +134,19 @@ describe("tasks/export:enqueueProcessors", () => {
 
     afterAll(async () => {
       await destination.destroy();
+      await deletedDestination.destroy();
     });
 
     test("export processors not yet exported or with an error will be enqueued", async () => {
       await specHelper.runTask("export:enqueueProcessors", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:process");
-      expect(foundTasks.length).toBe(4);
+      expect(foundTasks.length).toBe(5);
       const processorIds = foundTasks.map((t) => t.args[0].exportProcessorId);
 
       expect(processorIds).toContain(pendingProcessorA.id);
       expect(processorIds).toContain(pendingProcessorB.id);
+      expect(processorIds).toContain(pendingProcessorC.id);
       expect(processorIds).toContain(stuckStartedProcessor.id);
       expect(processorIds).toContain(erroredProcessor.id);
 
@@ -144,7 +161,7 @@ describe("tasks/export:enqueueProcessors", () => {
     test("checking again will find no results as the export processors should now have a startedAt", async () => {
       await specHelper.runTask("export:enqueueProcessors", {}); // call first time
       let foundTasks = await specHelper.findEnqueuedTasks("export:process");
-      expect(foundTasks.length).toBe(4);
+      expect(foundTasks.length).toBe(5);
 
       await api.resque.queue.connection.redis.flushdb();
       await specHelper.runTask("export:enqueueProcessors", {}); // call second time

@@ -129,7 +129,7 @@ export const CachedProperties: { expires: number; properties: Property[] } = {
 };
 
 @DefaultScope(() => ({
-  where: { state: "ready" },
+  where: { state: { [Op.notIn]: ["draft"] } },
 }))
 @Table({ tableName: "properties", paranoid: false })
 export class Property extends LoggedModel<Property> {

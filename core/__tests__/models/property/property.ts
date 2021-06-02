@@ -766,26 +766,34 @@ describe("models/property", () => {
       });
     });
 
-    test("properties can retrieve their options from the source", async () => {
-      const property = await Property.create({
-        key: "test",
-        type: "string",
-        sourceId: source.id,
-      });
+    test.each(["deleted", "ready"])(
+      "properties can retrieve their options from the %p source",
+      async (state) => {
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
 
-      const pluginOptions = await property.pluginOptions();
-      expect(pluginOptions).toEqual([
-        {
-          description: "the column to choose",
-          key: "column",
-          options: [{ examples: [1, 2, 3], key: "id" }],
-          required: true,
-          type: "list",
-        },
-      ]);
+        await source.update({ state });
+        await app.update({ state });
 
-      await property.destroy();
-    });
+        const pluginOptions = await property.pluginOptions();
+        expect(pluginOptions).toEqual([
+          {
+            description: "the column to choose",
+            key: "column",
+            options: [{ examples: [1, 2, 3], key: "id" }],
+            required: true,
+            type: "list",
+          },
+        ]);
+
+        await property.destroy();
+        await source.update({ state: "ready" });
+        await app.update({ state: "ready" });
+      }
+    );
 
     test("creating or editing a property options will test the query against a profile", async () => {
       expect(queryCounter).toBe(0);

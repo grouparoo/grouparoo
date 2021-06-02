@@ -417,6 +417,34 @@ describe("models/destination", () => {
       await destination.destroy();
     });
 
+    test.each(["deleted", "ready"])(
+      "can get destinationMappingOptions with a %p app",
+      async (appState) => {
+        await app.update({ state: appState });
+
+        const opts = await destination.destinationMappingOptions();
+        expect(opts).toEqual({
+          labels: {
+            group: {
+              singular: "list",
+              plural: "lists",
+            },
+            property: {
+              singular: "var",
+              plural: "vars",
+            },
+          },
+          properties: {
+            required,
+            known,
+            allowOptionalFromProperties: true,
+          },
+        });
+
+        await app.update({ state: "ready" });
+      }
+    );
+
     test("mappings can be of the same type", async () => {
       required = [{ key: "remote-id", type: "integer" }];
       await destination.setMapping({ "remote-id": "userId" });

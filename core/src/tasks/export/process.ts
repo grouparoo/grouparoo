@@ -24,6 +24,7 @@ export class ProcessExports extends CLSTask {
 
     const destination = await exportProcessor.$get("destination", {
       include: [Option, Mapping],
+      scope: null,
     });
     await destination.runExportProcessor(exportProcessor);
   }

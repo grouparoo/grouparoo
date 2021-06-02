@@ -347,28 +347,36 @@ describe("models/schedule", () => {
       await source.update({ state: "ready" });
     });
 
-    test("schedules can retrieve their options from the source", async () => {
-      const schedule = await Schedule.create({
-        name: "test plugin schedule",
-        sourceId: source.id,
-      });
+    test.each(["ready", "deleted"])(
+      "schedules can retrieve their options from a %p source",
+      async (state) => {
+        const schedule = await Schedule.create({
+          name: "test plugin schedule",
+          sourceId: source.id,
+        });
 
-      const pluginOptions = await schedule.pluginOptions();
-      expect(pluginOptions).toEqual([
-        {
-          description: "the column to choose",
-          key: "maxColumn",
-          options: [
-            { examples: [1, 2, 3], key: "created_at" },
-            { key: "updated_at", examples: [1, 2, 3] },
-          ],
-          required: true,
-          type: "list",
-        },
-      ]);
+        await app.update({ state });
+        await source.update({ state });
 
-      await schedule.destroy();
-    });
+        const pluginOptions = await schedule.pluginOptions();
+        expect(pluginOptions).toEqual([
+          {
+            description: "the column to choose",
+            key: "maxColumn",
+            options: [
+              { examples: [1, 2, 3], key: "created_at" },
+              { key: "updated_at", examples: [1, 2, 3] },
+            ],
+            required: true,
+            type: "list",
+          },
+        ]);
+
+        await schedule.destroy();
+        await source.update({ state: "ready" });
+        await app.update({ state: "ready" });
+      }
+    );
 
     test("running a schedule that isn't ready will throw", async () => {
       const schedule = await Schedule.create({

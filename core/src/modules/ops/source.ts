@@ -18,7 +18,7 @@ export namespace SourceOps {
     sourceOptions: SimpleSourceOptions = {}
   ) {
     const { pluginConnection } = await source.getPlugin();
-    const app = await source.$get("app", { include: [Option] });
+    const app = await source.$get("app", { scope: null, include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -50,7 +50,7 @@ export namespace SourceOps {
     }
 
     const { pluginConnection } = await source.getPlugin();
-    const app = await source.$get("app", { include: [Option] });
+    const app = await source.$get("app", { scope: null, include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -103,7 +103,8 @@ export namespace SourceOps {
     if (!method) return;
 
     const app =
-      preloadedArgs.app || (await source.$get("app", { include: [Option] }));
+      preloadedArgs.app ||
+      (await source.$get("app", { scope: null, include: [Option] }));
     const connection = preloadedArgs.connection || (await app.getConnection());
     const appOptions = preloadedArgs.appOptions || (await app.getOptions());
     const sourceOptions =
@@ -246,7 +247,7 @@ export namespace SourceOps {
     });
 
     const profileProperties = await profile.properties();
-    const app = await source.$get("app", { include: [Option] });
+    const app = await source.$get("app", { scope: null, include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
     const sourceOptions = await source.getOptions();

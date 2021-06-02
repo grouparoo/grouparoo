@@ -302,7 +302,7 @@ export class Run extends Model {
         name = property.key;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findById(this.creatorId);
-        const source = await schedule.$get("source");
+        const source = await schedule.$get("source", { scope: null });
         name = source.name;
       } else if (this.creatorType === "teamMember") {
         const teamMember = await TeamMember.findById(this.creatorId);
