@@ -434,6 +434,7 @@ export namespace FinalSummaryReporters {
       const sources: { [id: string]: SourceData } = {};
       for (const run of runs) {
         let source = null;
+        await run.updateTotals();
         const schedule = await Schedule.findByPk(run.creatorId);
 
         if (schedule) {

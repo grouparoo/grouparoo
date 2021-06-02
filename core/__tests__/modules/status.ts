@@ -245,7 +245,6 @@ describe("modules/status", () => {
           profileUpdatedAt: now,
           groupsUpdatedAt: now,
         });
-        await run.updateTotals();
 
         const sources = await FinalSummaryReporters.Sources.getData();
         expect(sources[0].name).toEqual(source.name);
