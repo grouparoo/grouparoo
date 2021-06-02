@@ -1395,7 +1395,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.5.2
+      react-bootstrap: 1.6.0
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.4
       react-dom: 17.0.2
@@ -1424,7 +1424,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-date-range: 1.1.4_date-fns@2.22.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -1480,7 +1480,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.5.2
+      react-bootstrap: 1.6.0
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.4
       react-dom: 17.0.2
@@ -1521,7 +1521,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-date-range: 1.1.4_date-fns@2.22.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -1565,7 +1565,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.5.2
+      react-bootstrap: 1.6.0
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.4
       react-dom: 17.0.2
@@ -1595,7 +1595,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-date-range: 1.1.4_date-fns@2.22.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -1651,7 +1651,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.5.2
+      react-bootstrap: 1.6.0
       react-bootstrap-typeahead: 5.1.4
       react-date-range: 1.1.4
       react-dom: 17.0.2
@@ -1680,7 +1680,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.5.2_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-date-range: 1.1.4_date-fns@2.22.1+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -12283,8 +12283,8 @@ packages:
       scroll-into-view-if-needed: 2.2.28
       warning: 4.0.3
 
-  /react-bootstrap/1.5.2_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-mGKPY5+lLd7Vtkx2VFivoRkPT4xAHazuFfIhJLTEgHlDfIUSePn7qrmpZe5gXH9zvHV0RsBaQ9cLfXjxnZrOpA==}
+  /react-bootstrap/1.6.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-PaeOGeRC2+JH9Uf1PukJgXcIpfGlrKKHEBZIArymjenYzSJ/RhO2UdNX+e7nalsCFFZLRRgQ0/FKkscW2LmmRg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
