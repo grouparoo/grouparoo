@@ -14,6 +14,7 @@ import {
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
+import slugify from "slugify";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
@@ -231,11 +232,11 @@ export class App extends LoggedModel<App> {
   }
 
   async getConfigObject() {
-    const { id, type, name } = this;
+    const { type, name } = this;
     const options = await this.getOptions();
     return {
       class: "App",
-      id,
+      id: slugify(name, { lower: true, strict: true }),
       name,
       type,
       options,
