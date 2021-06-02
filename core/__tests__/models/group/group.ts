@@ -148,6 +148,24 @@ describe("models/group", () => {
         await group.destroy(); // does not throw
       });
 
+      test("a group cannot be deleted if a deleted destination is tracking it", async () => {
+        const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+        });
+
+        const destination = await helper.factories.destination();
+        await destination.trackGroup(group);
+        await destination.update({ state: "deleted" });
+
+        await expect(group.destroy()).rejects.toThrow(
+          /this group still in use by 1 destinations, cannot delete/
+        );
+
+        await destination.unTrackGroup();
+        await group.destroy(); // does not throw
+      });
+
       test("a group can be deleted even if a destination membership is using it", async () => {
         const group = await Group.create({
           name: "tracked group",

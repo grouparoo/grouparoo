@@ -691,9 +691,7 @@ export class Group extends LoggedModel<Group> {
 
   @BeforeDestroy
   static async ensureNotInUse(instance: Group) {
-    const count = await Destination.count({
-      where: { groupId: instance.id, state: { [Op.in]: ["ready", "deleted"] } },
-    });
+    const count = await instance.$count("destinations", { scope: "notDraft" });
 
     if (count > 0) {
       throw new Error(

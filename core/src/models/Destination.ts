@@ -14,6 +14,7 @@ import {
   DataType,
   DefaultScope,
   BeforeDestroy,
+  Scopes,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -113,6 +114,13 @@ const STATE_TRANSITIONS = [
 
 @DefaultScope(() => ({
   where: { state: "ready" },
+}))
+@Scopes(() => ({
+  notDraft: {
+    where: {
+      state: { [Op.notIn]: ["draft"] },
+    },
+  },
 }))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
