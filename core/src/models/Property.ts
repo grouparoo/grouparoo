@@ -579,6 +579,15 @@ export class Property extends LoggedModel<Property> {
     }
   }
 
+  @BeforeSave
+  static async updateProfilePropertyUniqueness(instance: Property) {
+    if (!instance.isNewRecord && instance.changed("unique")) {
+      CLS.enqueueTask("property:updateProfileProperties", {
+        propertyId: instance.id,
+      });
+    }
+  }
+
   @BeforeDestroy
   static async ensureNotInUse(instance: Property) {
     const groupRule = await GroupRule.findOne({

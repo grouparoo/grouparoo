@@ -68,7 +68,7 @@ export class ImportProfileProperty extends RetryableTask {
       hash[property.id] = Array.isArray(propertyValues)
         ? propertyValues
         : [propertyValues];
-      await profile.addOrUpdateProperty(hash);
+      await profile.addOrUpdateProperties(hash);
     } else {
       await ProfileProperty.update(
         { state: "ready", stateChangedAt: new Date(), confirmedAt: new Date() },

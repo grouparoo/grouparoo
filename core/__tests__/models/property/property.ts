@@ -384,6 +384,40 @@ describe("models/property", () => {
     await source.destroy();
   });
 
+  test("updating a property's unique property queues a task to update the profile properties", async () => {
+    const source = await helper.factories.source();
+    await source.setOptions({ table: "test table" });
+    await source.setMapping({ id: "userId" });
+    await source.update({ state: "ready" });
+
+    const property = await Property.create({
+      sourceId: source.id,
+      key: "thing",
+      type: "string",
+      unique: false,
+    });
+
+    // when unique changes
+    await api.resque.queue.connection.redis.flushdb();
+    await property.update({ unique: true });
+    let foundTasks = await specHelper.findEnqueuedTasks(
+      "property:updateProfileProperties"
+    );
+    expect(foundTasks.length).toBe(1);
+    expect(foundTasks[0].args[0].propertyId).toBe(property.id);
+
+    // when something else changes
+    await api.resque.queue.connection.redis.flushdb();
+    await property.update({ key: "new name" });
+    foundTasks = await specHelper.findEnqueuedTasks(
+      "property:updateProfileProperties"
+    );
+    expect(foundTasks.length).toBe(0);
+
+    await property.destroy();
+    await source.destroy();
+  });
+
   test("a property cannot be deleted if a calculated group is using it", async () => {
     const source = await helper.factories.source();
     await source.setOptions({ table: "some table" });

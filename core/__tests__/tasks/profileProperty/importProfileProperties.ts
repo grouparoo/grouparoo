@@ -4,6 +4,7 @@ import { Op } from "sequelize";
 import {
   GrouparooPlugin,
   PluginConnection,
+  Profile,
   ProfileProperty,
   Property,
 } from "../../../src";
@@ -88,13 +89,13 @@ describe("tasks/profileProperty:importProfileProperties", () => {
     });
 
     test("will import profile properties that have no dependencies", async () => {
-      const profile = await helper.factories.profile();
+      const profile: Profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({
         userId: [1],
         email: ["old@example.com"],
       });
       const profileProperty = await ProfileProperty.findOne({
-        where: { rawValue: "old@example.com" },
+        where: { rawValue: "1" },
       });
       await profileProperty.update({ state: "pending" });
 
@@ -106,7 +107,8 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       // new value and state
       await profileProperty.reload();
       expect(profileProperty.state).toBe("ready");
-      expect(profileProperty.rawValue).toBe(`${profile.id}@example.com`);
+      expect(profileProperty.rawValue).toBe(`1`);
+      await profile.destroy();
     });
 
     test("will not import profile properties that have pending dependencies", async () => {
@@ -114,7 +116,7 @@ describe("tasks/profileProperty:importProfileProperties", () => {
         where: { key: "userId" },
       });
 
-      const profile = await helper.factories.profile();
+      const profile: Profile = await helper.factories.profile();
       await profile.addOrUpdateProperties({
         userId: [null],
         email: ["old@example.com"],
@@ -149,12 +151,13 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       expect(profileProperty.startedAt.getTime()).toBeLessThan(
         new Date().getTime()
       );
+      await profile.destroy();
     });
 
     test("can be run for the same profile more than once without deadlock", async () => {
-      const profileA = await helper.factories.profile();
-      const profileB = await helper.factories.profile();
-      const profileC = await helper.factories.profile();
+      const profileA: Profile = await helper.factories.profile();
+      const profileB: Profile = await helper.factories.profile();
+      const profileC: Profile = await helper.factories.profile();
 
       await ProfileProperty.update(
         { state: "pending" },
@@ -186,6 +189,10 @@ describe("tasks/profileProperty:importProfileProperties", () => {
       const profileProperties = await profileA.properties();
       expect(profileProperties.firstName.values).toEqual(["Mario"]);
       expect(profileProperties.lastName.values).toEqual(["Mario"]);
+
+      await profileA.destroy();
+      await profileB.destroy();
+      await profileC.destroy();
     });
   });
 });

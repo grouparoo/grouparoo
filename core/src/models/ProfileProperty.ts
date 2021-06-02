@@ -54,6 +54,11 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @Column
   position: number;
 
+  @AllowNull(false)
+  @Default(false)
+  @Column
+  unique: boolean;
+
   @AllowNull(true)
   @Column
   valueChangedAt: Date;
@@ -89,6 +94,7 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       confirmedAt: APIData.formatDate(this.confirmedAt),
       startedAt: APIData.formatDate(this.startedAt),
       position: this.position,
+      unique: this.unique,
       key: property.key,
       value: await this.getValue(),
     };
@@ -105,7 +111,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
       value,
       property.type
     );
-    await this.validateValue();
   }
 
   async ensureProperty() {
@@ -143,31 +148,6 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
     return message;
   }
 
-  async validateValue() {
-    const property = await this.ensureProperty();
-
-    // null values are always "unique", even for unique profile properties
-    if (this.rawValue === null || this.rawValue === undefined) {
-      return;
-    }
-
-    if (property.unique) {
-      const count = await ProfileProperty.count({
-        where: {
-          propertyId: property.id,
-          rawValue: this.rawValue,
-          profileId: { [Op.notIn]: [this.profileId] },
-        },
-      });
-
-      if (count > 0) {
-        throw new Error(
-          `Another profile already has the value ${this.rawValue} for property ${property.key}`
-        );
-      }
-    }
-  }
-
   // --- Class Methods --- //
 
   static async findById(id: string) {
@@ -179,24 +159,5 @@ export class ProfileProperty extends LoggedModel<ProfileProperty> {
   @BeforeSave
   static async updateState(instance: ProfileProperty) {
     await StateMachine.transition(instance, STATE_TRANSITIONS);
-  }
-
-  @BeforeSave
-  static async ensureOneProfilePropertyPerProfileProeprtyRule(
-    instance: ProfileProperty
-  ) {
-    const count = await ProfileProperty.scope(null).count({
-      where: {
-        id: { [Op.ne]: instance.id },
-        profileId: instance.profileId,
-        propertyId: instance.propertyId,
-        position: instance.position,
-      },
-    });
-    if (count > 0) {
-      throw new Error(
-        `There is already a ProfileProperty for ${instance.profileId} and ${instance.propertyId} at position ${instance.position}`
-      );
-    }
   }
 }
