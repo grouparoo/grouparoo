@@ -183,13 +183,17 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
-    test("a destination can get options from a connection", async () => {
-      const connectionOptions =
-        await destination.destinationConnectionOptions();
-      expect(connectionOptions).toEqual({
-        table: { type: "list", options: ["users_out"] },
-      });
-    });
+    test.each(["deleted", "ready"])(
+      "a destination can get options from a connection with a %p app",
+      async (appState) => {
+        await app.update({ state: appState });
+        const connectionOptions =
+          await destination.destinationConnectionOptions();
+        expect(connectionOptions).toEqual({
+          table: { type: "list", options: ["users_out"] },
+        });
+      }
+    );
 
     test("partial options will be passed to destinationConnectionOptions", async () => {
       const connectionOptions = await destination.destinationConnectionOptions({

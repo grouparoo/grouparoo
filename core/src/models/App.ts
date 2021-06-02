@@ -54,7 +54,7 @@ const STATE_TRANSITIONS = [
 ];
 
 @DefaultScope(() => ({
-  where: { state: "ready" },
+  where: { state: ["ready", "deleted"] },
 }))
 @Table({ tableName: "apps", paranoid: false })
 export class App extends LoggedModel<App> {
