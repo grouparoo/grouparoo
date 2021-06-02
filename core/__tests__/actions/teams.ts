@@ -27,12 +27,12 @@ describe("actions/teams", () => {
 
       expect(
         GrouparooSubscriptionModule.GrouparooSubscription
-      ).toHaveBeenCalledWith(
-        expect.objectContaining({
+      ).toHaveBeenCalledWith({
+        teamMember: expect.objectContaining({
           email: "mario@example.com",
         }),
-        true
-      );
+        subscribed: true,
+      });
     });
 
     test("the company name will be used to set the clusterName setting", async () => {

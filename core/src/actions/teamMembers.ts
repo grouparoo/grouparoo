@@ -64,7 +64,7 @@ export class TeamMemberCreate extends AuthenticatedAction {
     await teamMember.save();
     await teamMember.updatePassword(params.password);
 
-    await GrouparooSubscription(teamMember, params.subscribed);
+    await GrouparooSubscription({ teamMember, subscribed: params.subscribed });
 
     return { teamMember: await teamMember.apiData() };
   }

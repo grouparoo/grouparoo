@@ -17,12 +17,18 @@ const campaign = `v${packageJSON.version}`;
  * We also want to allow for this method to fail, and not block anything else in the server.
  * Therefore, we don't await the top-level CLS.afterCommit method
  */
-export async function GrouparooSubscription(
-  teamMember: TeamMember,
-  subscribed = true
-) {
+export async function GrouparooSubscription({
+  teamMember,
+  email,
+  subscribed = true,
+}: {
+  teamMember?: TeamMember;
+  email?: string;
+  subscribed: boolean;
+}) {
   if (process.env.NODE_ENV === "test") return;
   if (!config.telemetry.enabled) return;
+  if (!teamMember && !email) return;
 
   CLS.afterCommit(async () => {
     const setting = await plugin.readSetting("telemetry", "customer-id");
@@ -33,9 +39,9 @@ export async function GrouparooSubscription(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: teamMember.email,
-          firstName: teamMember.firstName,
-          lastName: teamMember.lastName,
+          email: teamMember?.email || email,
+          firstName: teamMember?.firstName,
+          lastName: teamMember?.lastName,
           source,
           medium,
           campaign,

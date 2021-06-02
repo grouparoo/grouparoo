@@ -3,6 +3,8 @@ import { specHelper } from "actionhero";
 import { Setting, plugin } from "../../src";
 
 describe("actions/settings", () => {
+  let connection;
+
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
 
   beforeAll(async () => {
@@ -12,10 +14,13 @@ describe("actions/settings", () => {
       password: "P@ssw0rd!",
       email: "mario@example.com",
     });
+
+    connection = await specHelper.buildConnection();
+
+    await Setting.truncate();
   });
 
   describe("reader signed in", () => {
-    let connection;
     let csrfToken;
     let id;
 

@@ -1,4 +1,5 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
+import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { plugin } from "../modules/plugin";
 import { Setting } from "../models/Setting";
 

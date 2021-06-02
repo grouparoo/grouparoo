@@ -1,5 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
 import { specHelper } from "actionhero";
+import os from "os";
+import fs from "fs";
+import { ConfigUser } from "../../src/modules/configUser";
+
+const workerId = process.env.JEST_WORKER_ID;
+const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
+
+process.env.GROUPAROO_CONFIG_DIR = configDir;
 
 describe("actions/status", () => {
   helper.grouparooTestServer({ truncate: true, resetSettings: true });
@@ -17,6 +25,39 @@ describe("actions/status", () => {
         const { error, metrics } = await specHelper.runAction("status:private");
         expect(error.code).toBe("AUTHENTICATION_ERROR");
         expect(metrics).toBeUndefined();
+      });
+
+      describe("config mode", () => {
+        const localFile = ConfigUser.localUserFilePath();
+
+        beforeEach(async () => {
+          process.env.GROUPAROO_RUN_MODE = "cli:config";
+          await ConfigUser.create({
+            email: "mario@example.com",
+            company: "Nintendo",
+          });
+        });
+        afterEach(async () => {
+          process.env.GROUPAROO_RUN_MODE = undefined;
+          if (fs.existsSync(localFile)) fs.rmSync(localFile);
+          await helper.resetSettings();
+        });
+
+        test("cannot use status:private with a local users file in run mode", async () => {
+          process.env.GROUPAROO_RUN_MODE = "cli:run";
+          const { error, metrics } = await specHelper.runAction(
+            "status:private"
+          );
+          expect(error.code).toBe("AUTHENTICATION_ERROR");
+          expect(metrics).toBeUndefined();
+        });
+        test("can use status:private with a local users file in run mode", async () => {
+          const { error, metrics } = await specHelper.runAction(
+            "status:private"
+          );
+          expect(error).toBeUndefined();
+          expect(metrics).toEqual([]);
+        });
       });
     });
   });

@@ -13,6 +13,7 @@ import {
   faTerminal,
   faStream,
   faExchangeAlt,
+  faThLarge,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { faSlack } from "@fortawesome/free-brands-svg-icons";
@@ -29,5 +30,6 @@ library.add(
   faTerminal,
   faSlack,
   faStream,
-  faExchangeAlt
+  faExchangeAlt,
+  faThLarge
 );
