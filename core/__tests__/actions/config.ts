@@ -21,6 +21,10 @@ describe("actions/config", () => {
     };
   });
 
+  afterAll(async () => {
+    await helper.resetSettings();
+  });
+
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
   });
