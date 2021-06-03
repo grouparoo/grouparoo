@@ -725,10 +725,14 @@ export class Group extends LoggedModel<Group> {
 
     for (const i in destinationGroupMemberships) {
       const destination = await destinationGroupMemberships[i].$get(
-        "destination"
+        "destination",
+        { scope: "notDraft" }
       );
       await destinationGroupMemberships[i].destroy();
-      await destination.exportGroupMembers(false);
+
+      if (destination && destination.state === "ready") {
+        await destination.exportGroupMembers(false);
+      }
     }
   }
 
