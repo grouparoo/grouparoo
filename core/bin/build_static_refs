@@ -10,18 +10,6 @@ const { enumerateCLICommands } = require("../dist/utils/cli");
 
 const data = [
   {
-    name: "property-ops-dictionary--postgres",
-    data: buildPropertyOpsDictionary({
-      sequelize: { dialect: "postgres" },
-    }),
-  },
-  {
-    name: "property-ops-dictionary--sqlite",
-    data: buildPropertyOpsDictionary({
-      sequelize: { dialect: "sqlite" },
-    }),
-  },
-  {
     name: "cli-commands",
     data: enumerateCLICommands(),
   },
