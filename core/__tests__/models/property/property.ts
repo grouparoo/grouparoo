@@ -656,6 +656,55 @@ describe("models/property", () => {
         await property.destroy();
       });
 
+      test("it will memoize filters as they are set", async () => {
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await property.setFilters([
+          { op: "greater than", match: 1, key: "id" },
+        ]);
+
+        expect(property.propertyFilters.length).toBe(1);
+        expect(property.propertyFilters[0].op).toBe("greater than");
+        expect(property.propertyFilters[0].match).toBe("1");
+        expect(property.propertyFilters[0].key).toBe("id");
+
+        await property.destroy();
+      });
+
+      test("it will use memoized filters if they exist", async () => {
+        const property = await Property.create({
+          key: "test",
+          type: "string",
+          sourceId: source.id,
+        });
+
+        await property.setFilters([
+          { op: "greater than", match: 999, key: "id" },
+        ]);
+
+        property.propertyFilters = [
+          PropertyFilter.build({
+            propertyId: property.id,
+            position: 1,
+            key: "foo",
+            match: "-1",
+            op: "less than",
+          }),
+        ];
+
+        const filters = await property.getFilters();
+        expect(filters.length).toBe(1);
+        expect(filters[0].key).toEqual("foo");
+        expect(filters[0].match).toEqual("-1");
+        expect(filters[0].op).toEqual("less than");
+
+        await property.destroy();
+      });
+
       test("filters that match the options can be set", async () => {
         const property = await Property.create({
           key: "test",
