@@ -170,7 +170,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   async apiData() {
-    const app = await this.$get("app", { scope: null });
+    const app = await this.$get("app", { scope: null, include: [Option] });
     const schedule = await this.$get("schedule", { scope: null });
 
     const options = await this.getOptions(null);

@@ -1,7 +1,8 @@
 import { Property, PropertyFiltersWithKey } from "../../models/Property";
 import { Group } from "../../models/Group";
+import { Option } from "../../models/Option";
+import { Mapping } from "../../models/Mapping";
 import { GroupRule } from "../../models/GroupRule";
-import { App } from "../../models/App";
 import { internalRun } from "../internalRun";
 import { Op } from "sequelize";
 import Mustache from "mustache";
@@ -35,7 +36,10 @@ export namespace PropertyOps {
    * Get the options for a Property from its plugin
    */
   export async function pluginOptions(property: Property) {
-    const source = await property.$get("source", { scope: null });
+    const source = await property.$get("source", {
+      scope: null,
+      include: [Option, Mapping],
+    });
     const { pluginConnection } = await source.getPlugin();
 
     if (!pluginConnection) {
@@ -58,9 +62,9 @@ export namespace PropertyOps {
         examples?: Array<any>;
       }>;
     }> = [];
-    const app = await App.findById(source.appId);
-    const connection = await app.getConnection();
+    const app = await source.$get("app", { include: [Option], scope: null });
     const appOptions = await app.getOptions(true);
+    const connection = await app.getConnection();
     const sourceOptions = await source.getOptions(true);
     const sourceMapping = await source.getMapping();
 
@@ -98,7 +102,9 @@ export namespace PropertyOps {
    */
   export async function dependencies(property: Property) {
     const dependencies: Property[] = [];
-    const source = await property.$get("source");
+    const source = await property.$get("source", {
+      include: [Option, Mapping],
+    });
     const sourceMapping = await source.getMapping();
     const ruleOptions = await property.getOptions();
     const properties = await Property.findAllWithCache();
@@ -147,10 +153,13 @@ export namespace PropertyOps {
     if (!pluginConnection.methods.sourceFilters) return [];
 
     const propertyOptions = await property.getOptions(true);
-    const source = await property.$get("source", { scope: null });
+    const source = await property.$get("source", {
+      scope: null,
+      include: [Option, Mapping],
+    });
     const sourceOptions = await source.getOptions(true);
     const sourceMapping = await source.getMapping();
-    const app = await App.findById(source.appId);
+    const app = await source.$get("app", { include: [Option], scope: null });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 

@@ -164,11 +164,11 @@ export class Group extends LoggedModel<Group> {
     if (this.state === "deleted") return [];
 
     const rulesWithKey: GroupRuleWithKey[] = [];
-    const rules =
-      this.groupRules?.sort((a, b) => a.position - b.position) ??
-      (await this.$get("groupRules", {
-        order: [["position", "asc"]],
-      }));
+    const rules = this.groupRules
+      ? this.groupRules.sort((a, b) => a.position - b.position)
+      : await this.$get("groupRules", {
+          order: [["position", "asc"]],
+        });
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];

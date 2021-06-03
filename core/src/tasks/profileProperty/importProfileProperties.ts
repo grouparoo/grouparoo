@@ -2,6 +2,8 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
+import { Mapping } from "../../models/Mapping";
+import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
@@ -31,7 +33,9 @@ export class ImportProfileProperties extends RetryableTask {
 
     const property = await Property.findOneWithCache(params.propertyId);
     if (!property) return;
-    const source = await property.$get("source");
+    const source = await property.$get("source", {
+      include: [Option, Mapping],
+    });
 
     const profilesToImport: Profile[] = [];
     const profilesNotReady: Profile[] = [];

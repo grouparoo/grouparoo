@@ -3,6 +3,7 @@ import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property, PropertyFiltersWithKey } from "../../models/Property";
 import { Profile } from "../../models/Profile";
 import { App } from "../../models/App";
+import { Option } from "../../models/Option";
 import { OptionHelper } from "../optionHelper";
 import { MappingHelper } from "../mappingHelper";
 import { log, utils, api } from "actionhero";
@@ -17,7 +18,7 @@ export namespace SourceOps {
     sourceOptions: SimpleSourceOptions = {}
   ) {
     const { pluginConnection } = await source.getPlugin();
-    const app = await source.$get("app");
+    const app = await source.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -49,7 +50,7 @@ export namespace SourceOps {
     }
 
     const { pluginConnection } = await source.getPlugin();
-    const app = await source.$get("app");
+    const app = await source.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -101,7 +102,8 @@ export namespace SourceOps {
     const method = pluginConnection.methods.profileProperty;
     if (!method) return;
 
-    const app = preloadedArgs.app || (await source.$get("app"));
+    const app =
+      preloadedArgs.app || (await source.$get("app", { include: [Option] }));
     const connection = preloadedArgs.connection || (await app.getConnection());
     const appOptions = preloadedArgs.appOptions || (await app.getOptions());
     const sourceOptions =
@@ -190,7 +192,8 @@ export namespace SourceOps {
     const method = pluginConnection.methods.profileProperties;
     if (!method) return;
 
-    const app = preloadedArgs.app || (await source.$get("app"));
+    const app =
+      preloadedArgs.app || (await source.$get("app", { include: [Option] }));
     const connection = preloadedArgs.connection || (await app.getConnection());
     const appOptions = preloadedArgs.appOptions || (await app.getOptions());
     const sourceOptions =
@@ -243,7 +246,7 @@ export namespace SourceOps {
     });
 
     const profileProperties = await profile.properties();
-    const app = await source.$get("app");
+    const app = await source.$get("app", { include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
     const sourceOptions = await source.getOptions();
@@ -328,7 +331,7 @@ export namespace SourceOps {
           typeof pluginConnection.methods.uniquePropertyBootstrapOptions ===
           "function"
         ) {
-          const app = await source.$get("app");
+          const app = await source.$get("app", { include: [Option] });
           const connection = await app.getConnection();
           const appOptions = await app.getOptions(true);
           const options = await source.getOptions(true);

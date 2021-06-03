@@ -19,6 +19,8 @@ import { Export } from "./Export";
 import { Errors } from "../modules/errors";
 import { ExportProcessorOps } from "../modules/ops/exportProcessor";
 import { LoggedModel } from "../classes/loggedModel";
+import { Mapping } from "./Mapping";
+import { Option } from "./Option";
 
 export const ExportProcessorStates = [
   "pending", // waiting to be processed
@@ -110,6 +112,7 @@ export class ExportProcessor extends LoggedModel<ExportProcessor> {
   async apiData(includeDestination = true) {
     const exportsCount = await this.$count("exports");
     const destination = await this.$get("destination", {
+      include: includeDestination ? [Option, Mapping] : undefined,
       scope: null,
     });
 

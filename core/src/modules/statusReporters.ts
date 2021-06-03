@@ -437,9 +437,7 @@ export namespace FinalSummaryReporters {
         await run.updateTotals();
         const schedule = await Schedule.findByPk(run.creatorId);
 
-        if (schedule) {
-          source = await schedule.$get("source");
-        }
+        if (schedule) source = await schedule.$get("source");
 
         const currentSource = sources[source.id] || {
           name: source.name,

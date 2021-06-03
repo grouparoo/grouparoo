@@ -6,6 +6,7 @@ import { Profile } from "../models/Profile";
 import { Group } from "../models/Group";
 import { Run } from "../models/Run";
 import { Property } from "../models/Property";
+import { ProfileProperty } from "../models/ProfileProperty";
 
 /**
  * Build a CSV file on this host which contains all profiles, properties, and groups
@@ -23,6 +24,7 @@ export async function groupExportToCSV(group: Group, limit = 1000) {
     return group.$get("profiles", {
       limit,
       offset,
+      include: [ProfileProperty],
       order: [
         ["createdAt", "asc"],
         ["id", "asc"],
