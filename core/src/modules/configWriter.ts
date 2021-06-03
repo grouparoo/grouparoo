@@ -1,12 +1,13 @@
 import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
+import slugify from "slugify";
 
 import { App } from "../models/App";
-import { Source } from "../models/Source";
-import { Property } from "../models/Property";
-import { Group } from "../models/Group";
 import { Destination } from "../models/Destination";
+import { Group } from "../models/Group";
+import { Property } from "../models/Property";
+import { Source } from "../models/Source";
 
 import {
   ConfigurationObject,
@@ -29,14 +30,29 @@ type CachedConfigFile = {
 /**
  * TODO:
  *
- * - [ ] Add slugify method to ConfigWriter
- * - [ ] Add specs for slugify method (simple, since we're using another lib)
- * - [ ] Use slugify method within the App model
- * - [ ] Extend to the other model (including profile)
- * - [ ] Check specs and fix for the shape of these objects, if necessary
+ * - [✔] Add slugify method to ConfigWriter
+ * - [✔] Add specs for slugify method (simple, since we're using another lib)
+ * - [✔] Use slugify method within the App model
+ * - [✔] Extend to the other model (including profile)
  * - [ ] Work through associations - e.g. how does a source find its appId?
- *   Should it use the app's config object?
- * - [ ] Write specs for the associations
+ *       Should it use the app's config object?
+ * - [ ] Check specs and fix for the shape of these objects, if necessary
+ * - [ ] Write specs for the associations (below)
+ *
+ *
+ * Test cases:
+ *
+ * - [ ] App requires certain associations and columns
+ * - [ ] Source requires certain associations and columns
+ * - [ ] Schedule (through a Source) requires certain associations and columns
+ * - [ ] Property requires certain associations and columns
+ * - [ ] Destination requires certain associations and columns
+ * - [ ] Group requires certain associations and columns
+ * - [ ] ConfigWriter skips objects that don't have ID values
+ * - [ ] If Source exists and is valid, but its Schedule doesn't have a name,
+ *       the object is still just a single object.
+ * - [ ] MappingHelper.getConfigMapping()
+ *
  */
 
 /**
@@ -62,6 +78,21 @@ type CachedConfigFile = {
 let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
 
 export namespace ConfigWriter {
+  // ---------------------------------------- | Helpers
+
+  export function generateId(name): string {
+    if (!name) return;
+    slugify.extend({ $: "", "%": "", "&": "", "<": "", ">": "" });
+    return slugify(name, { lower: true, strict: true });
+  }
+
+  function generateFilePath(name: string, type?: string): string {
+    let filePath = `${generateId(name)}.json`;
+    if (type) filePath = `${type}/${filePath}`;
+    return filePath;
+  }
+
+  // ---------------------------------------- | Controllers
   export async function run() {
     // If we're not in config mode, do nothing.
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
@@ -91,8 +122,8 @@ export namespace ConfigWriter {
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {
         const object = await instance.getConfigObject();
-        if (!object.id) continue;
-        const filePath = `${type}/${object.id}.json`;
+        if (!object?.id) continue;
+        const filePath = generateFilePath(object.name, type);
         objects.push({ filePath, object });
       }
     }

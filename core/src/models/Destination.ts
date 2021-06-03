@@ -30,6 +30,7 @@ import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ConfigWriter } from "./../modules/configWriter";
 import { Property } from "./Property";
 import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
@@ -537,22 +538,35 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, name, type, appId, groupId, syncMode } = this;
+    const { name, type, syncMode } = this;
+
+    this.app = await this.$get("app");
+    const appId = this.app?.getConfigId();
+    this.group = await this.$get("group");
+    const groupId = this.group?.getConfigId();
+    this.destinationGroupMemberships = await this.$get(
+      "destinationGroupMemberships"
+    );
+    const destinationGroupMemberships = Object.fromEntries(
+      this.destinationGroupMemberships.map((dgm) => [
+        dgm.remoteKey,
+        dgm.groupId,
+      ])
+    );
 
     const options = await this.getOptions();
     const mapping = await MappingHelper.getMapping(this, "id");
 
-    const dgm = await DestinationGroupMembership.findAll({
-      where: { destinationId: id },
-    });
-    const destinationGroupMemberships = Object.fromEntries(
-      dgm.map((dgm) => [dgm.remoteKey, dgm.groupId])
-    );
+    if (!name || !appId || !groupId) return;
 
     return {
       class: "Destination",
-      id,
+      id: this.getConfigId(),
       name,
       type,
       appId,

@@ -30,6 +30,7 @@ import { Property, propertyJSToSQLType } from "./Property";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
+import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -625,8 +626,12 @@ export class Group extends LoggedModel<Group> {
     return { where: whereContainer, include };
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, name, type } = this;
+    const { name, type } = this;
 
     let rules = [];
 
@@ -645,8 +650,10 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
+    if (!name) return;
+
     return {
-      id,
+      id: this.getConfigId(),
       class: "Group",
       type,
       name,

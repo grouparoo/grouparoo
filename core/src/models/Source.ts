@@ -30,6 +30,7 @@ import { plugin } from "../modules/plugin";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ConfigWriter } from "./../modules/configWriter";
 import { SourceOps } from "../modules/ops/source";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
@@ -286,15 +287,23 @@ export class Source extends LoggedModel<Source> {
     );
   }
 
-  async getConfigObject() {
-    const { id, name, type, appId } = this;
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
 
+  async getConfigObject() {
+    const { name, type } = this;
+
+    this.app = await this.$get("app");
+    const appId = this.app?.getConfigId();
     const options = await this.getOptions();
-    const mapping = await MappingHelper.getMapping(this, "id");
+    const mapping = await MappingHelper.getConfigMapping(this);
+
+    if (!appId || !name) return;
 
     let configObject: any = {
       class: "Source",
-      id,
+      id: this.getConfigId(),
       name,
       type,
       appId,
@@ -308,7 +317,7 @@ export class Source extends LoggedModel<Source> {
       configObject = [{ ...configObject }, { ...scheduleConfigObject }];
     };
 
-    if (!this.schedule) this.schedule = await this.$get("schedule");
+    this.schedule = await this.$get("schedule");
     await setSchedule();
 
     return configObject;

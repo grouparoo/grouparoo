@@ -31,6 +31,7 @@ import { Run } from "./Run";
 import { GroupRule } from "./GroupRule";
 import { PropertyFilter } from "./PropertyFilter";
 import { OptionHelper } from "../modules/optionHelper";
+import { ConfigWriter } from "../modules/configWriter";
 import { StateMachine } from "../modules/stateMachine";
 import { Mapping } from "./Mapping";
 import { PropertyOps } from "../modules/ops/property";
@@ -379,15 +380,23 @@ export class Property extends LoggedModel<Property> {
     };
   }
 
-  async getConfigObject() {
-    const { id, key, type, sourceId, unique, identifying, isArray } = this;
+  getConfigId() {
+    return ConfigWriter.generateId(this.key);
+  }
 
+  async getConfigObject() {
+    const { key, type, unique, identifying, isArray } = this;
+
+    this.source = await this.$get("source");
+    const sourceId = this.source?.getConfigId();
     const options = await this.getOptions();
     const filters = await this.getFilters();
 
+    if (!sourceId) return;
+
     return {
       class: "Property",
-      id,
+      id: this.getConfigId(),
       type,
       name: key,
       sourceId,

@@ -34,6 +34,20 @@ describe("modules/configWriter", () => {
     process.env.GROUPAROO_RUN_MODE = undefined;
   });
 
+  // ---------------------------------------- | ConfigWriter.generateId()
+
+  describe("generateId()", () => {
+    test("it returns undefined when no name is passed", () => {
+      expect(ConfigWriter.generateId(null)).toBeUndefined();
+    });
+    test("it returns a slugified, lowercase name", () => {
+      let res = ConfigWriter.generateId("Hello World");
+      expect(res).toEqual("hello-world");
+      res = ConfigWriter.generateId("!@#$%^&*(){}[]:\";'<>,./? Hello  World");
+      expect(res).toEqual("hello-world");
+    });
+  });
+
   // ---------------------------------------- | ConfigWriter.run()
 
   describe("run()", () => {
