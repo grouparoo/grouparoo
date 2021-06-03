@@ -253,6 +253,35 @@ describe("models/schedule", () => {
       expect(optionsCount).toBe(0);
     });
 
+    test("deleting a schedule deletes the previous runs", async () => {
+      const schedule = await Schedule.create({
+        name: "incoming schedule A",
+        type: "test-plugin-import",
+        sourceId: source.id,
+      });
+
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      await Run.create({
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "running",
+      });
+
+      let runCount = await Run.scope(null).count({
+        where: { creatorId: schedule.id },
+      });
+      expect(runCount).toBe(1);
+
+      await schedule.destroy();
+
+      runCount = await Run.scope(null).count({
+        where: { creatorId: schedule.id },
+      });
+      expect(runCount).toBe(0);
+    });
+
     test("providing invalid options will result in an error", async () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
