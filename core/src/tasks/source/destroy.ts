@@ -23,6 +23,16 @@ export class SourceDestroy extends CLSTask {
     // the source may have been force-deleted
     if (!source) return;
 
+    // check if we still have properties
+    try {
+      await Source.ensureNotInUse(source, true);
+    } catch (error) {
+      if (error.message.match(/cannot delete a source that has a property/)) {
+        return; // check back later
+      }
+      throw error;
+    }
+
     const directlyMappedProperty = await Property.scope(null).findOne({
       where: { sourceId: source.id, directlyMapped: true },
     });
@@ -34,17 +44,6 @@ export class SourceDestroy extends CLSTask {
       await Property.destroyOptions(directlyMappedProperty);
       await Property.destroyPropertyFilters(directlyMappedProperty);
       await Property.destroyProfileProperties(directlyMappedProperty);
-    }
-
-    // check if we still have properties
-    try {
-      await Source.ensureNotInUse(source);
-    } catch (error) {
-      if (error.message.match(/cannot delete a source that has a property/)) {
-        return; // check back later
-      }
-
-      throw error;
     }
 
     // no properties, let's delete it
