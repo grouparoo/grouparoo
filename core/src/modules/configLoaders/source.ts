@@ -117,6 +117,7 @@ export async function loadSource(
 
     if (bootstrappedProperty) {
       await bootstrappedProperty.update({
+        state: "ready",
         locked: ConfigWriter.getLockKey(configObject),
       });
     }
@@ -145,38 +146,15 @@ export async function loadSource(
 }
 
 export async function deleteSources(ids: string[]) {
-  const deletedIds: { property: string[]; source: string[] } = {
-    property: [],
-    source: [],
-  };
-
   const sources = await Source.scope(null).findAll({
     where: { locked: getCodeConfigLockKey(), id: { [Op.notIn]: ids } },
   });
 
   for (const i in sources) {
     const source = sources[i];
-    const properties = await source.$get("properties");
-
-    for (const j in properties) {
-      const property = properties[j];
-      if (property.directlyMapped) {
-        //@ts-ignore
-        await property.destroy({ hooks: false });
-        await Property.stopRuns(property);
-        await Property.destroyOptions(property);
-        await Property.destroyPropertyFilters(property);
-        await Property.destroyProfileProperties(property);
-        logModel(property, "deleted");
-        deletedIds.property.push(property.id);
-      }
-    }
-
     await source.update({ state: "deleted", locked: null });
     logModel(source, "deleted");
-
-    deletedIds.source.push(source.id);
   }
 
-  return deletedIds;
+  return sources.map((instance) => instance.id);
 }

@@ -486,7 +486,7 @@ describe("modules/codeConfig", () => {
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
-      expect(await Property.count()).toBe(2);
+      expect(await Property.count()).toBe(4);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
@@ -578,18 +578,24 @@ describe("modules/codeConfig", () => {
       expect(await Schedule.count()).toBe(0);
       expect(await Destination.count()).toBe(0);
       expect(await Group.count()).toBe(0);
-      expect(await Property.count()).toBe(0);
+      expect(await Property.count()).toBe(2);
       expect(await ApiKey.count()).toBe(0);
       expect(await Team.count()).toBe(0);
       expect(await TeamMember.count()).toBe(0);
     });
 
     test("removed properties will be deleted", async () => {
-      const properties = await Property.scope(null).findAll();
-      expect(properties.length).toBe(1);
+      const properties = await Property.scope(null).findAll({
+        order: [["id", "asc"]],
+      });
+      expect(properties.length).toBe(2);
       expect(properties[0].id).toBe("email");
       expect(properties[0].state).toBe("deleted");
       expect(properties[0].locked).toBe(null);
+
+      expect(properties[1].id).toBe("user_id");
+      expect(properties[1].state).toBe("deleted");
+      expect(properties[1].locked).toBe(null);
     });
 
     test("a removed source will be deleted", async () => {
