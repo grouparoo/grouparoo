@@ -27,6 +27,19 @@ type CachedConfigFile = {
 };
 
 /**
+ * TODO:
+ *
+ * - [ ] Add slugify method to ConfigWriter
+ * - [ ] Add specs for slugify method (simple, since we're using another lib)
+ * - [ ] Use slugify method within the App model
+ * - [ ] Extend to the other model (including profile)
+ * - [ ] Check specs and fix for the shape of these objects, if necessary
+ * - [ ] Work through associations - e.g. how does a source find its appId?
+ *   Should it use the app's config object?
+ * - [ ] Write specs for the associations
+ */
+
+/**
  * Loading
  * ----------------------------------------
  * 1. Loader tells Writer to cache all files it read.
@@ -78,7 +91,8 @@ export namespace ConfigWriter {
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {
         const object = await instance.getConfigObject();
-        const filePath = `${type}/${instance.id}.json`;
+        if (!object.id) continue;
+        const filePath = `${type}/${object.id}.json`;
         objects.push({ filePath, object });
       }
     }
