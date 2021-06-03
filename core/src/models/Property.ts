@@ -262,9 +262,13 @@ export class Property extends LoggedModel<Property> {
 
   async getFilters() {
     const filtersWithCol: PropertyFiltersWithKey[] = [];
-    const filters = await this.$get("propertyFilters", {
-      order: [["position", "asc"]],
-    });
+    const filters = this.propertyFilters
+      ? this.propertyFilters.sort((a, b) => a.position - b.position)
+      : await this.$get("propertyFilters", {
+          order: [["position", "asc"]],
+        });
+
+    if (!this.propertyFilters) this.propertyFilters = filters;
 
     for (const i in filters) {
       const filter = filters[i];
@@ -298,10 +302,11 @@ export class Property extends LoggedModel<Property> {
       where: { propertyId: this.id },
     });
 
+    const newPropertyFilters: PropertyFilter[] = [];
     for (const i in filters) {
       const filter = filters[i];
 
-      await PropertyFilter.create({
+      const propertyFilter = await PropertyFilter.create({
         position: parseInt(i) + 1,
         propertyId: this.id,
         key: filter.key,
@@ -311,8 +316,10 @@ export class Property extends LoggedModel<Property> {
         relativeMatchUnit: filter.relativeMatchUnit,
         relativeMatchDirection: filter.relativeMatchDirection,
       });
+      newPropertyFilters.push(propertyFilter);
     }
 
+    this.propertyFilters = newPropertyFilters;
     await this.touch();
     await Property.invalidateCache();
     return PropertyOps.enqueueRuns(this);
