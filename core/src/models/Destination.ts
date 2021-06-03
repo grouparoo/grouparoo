@@ -549,14 +549,12 @@ export class Destination extends LoggedModel<Destination> {
     const appId = this.app?.getConfigId();
     this.group = await this.$get("group");
     const groupId = this.group?.getConfigId();
-    this.destinationGroupMemberships = await this.$get(
-      "destinationGroupMemberships"
-    );
+    const dgms = await DestinationGroupMembership.findAll({
+      where: { destinationId: this.id },
+      include: [Group],
+    });
     const destinationGroupMemberships = Object.fromEntries(
-      this.destinationGroupMemberships.map((dgm) => [
-        dgm.remoteKey,
-        dgm.groupId,
-      ])
+      dgms.map((dgm) => [dgm.remoteKey, dgm.group.getConfigId()])
     );
 
     const options = await this.getOptions();

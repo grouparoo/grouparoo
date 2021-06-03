@@ -314,7 +314,9 @@ export class Source extends LoggedModel<Source> {
     const setSchedule = async () => {
       if (!this.schedule) return;
       const scheduleConfigObject = await this.schedule.getConfigObject();
-      configObject = [{ ...configObject }, { ...scheduleConfigObject }];
+      if (scheduleConfigObject?.id) {
+        configObject = [{ ...configObject }, { ...scheduleConfigObject }];
+      }
     };
 
     this.schedule = await this.$get("schedule");

@@ -34,7 +34,7 @@ type CachedConfigFile = {
  * - [✔] Add specs for slugify method (simple, since we're using another lib)
  * - [✔] Use slugify method within the App model
  * - [✔] Extend to the other model (including profile)
- * - [ ] Work through associations - e.g. how does a source find its appId?
+ * - [✔] Work through associations - e.g. how does a source find its appId?
  *       Should it use the app's config object?
  * - [ ] Check specs and fix for the shape of these objects, if necessary
  * - [ ] Write specs for the associations (below)
@@ -48,10 +48,14 @@ type CachedConfigFile = {
  * - [ ] Property requires certain associations and columns
  * - [ ] Destination requires certain associations and columns
  * - [ ] Group requires certain associations and columns
+ * - [ ] The ID values generated for all cases above are from getConfigId() and
+ *       differ from the primary id for each object.
  * - [ ] ConfigWriter skips objects that don't have ID values
  * - [ ] If Source exists and is valid, but its Schedule doesn't have a name,
  *       the object is still just a single object.
- * - [ ] MappingHelper.getConfigMapping()
+ * - [ ] MappingHelper.generateFilePath()
+ * - [ ] MappingHelper.getConfigMapping(), including that it returns null
+ *       without a valid object, and that it works for arrays.
  *
  */
 
@@ -86,13 +90,18 @@ export namespace ConfigWriter {
     return slugify(name, { lower: true, strict: true });
   }
 
-  function generateFilePath(name: string, type?: string): string {
+  export function generateFilePath(
+    object: ConfigurationObject,
+    type?: string
+  ): string {
+    const name = Array.isArray(object) ? object[0].name : object.name;
     let filePath = `${generateId(name)}.json`;
     if (type) filePath = `${type}/${filePath}`;
     return filePath;
   }
 
   // ---------------------------------------- | Controllers
+
   export async function run() {
     // If we're not in config mode, do nothing.
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
@@ -122,8 +131,13 @@ export namespace ConfigWriter {
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {
         const object = await instance.getConfigObject();
-        if (!object?.id) continue;
-        const filePath = generateFilePath(object.name, type);
+        // Don't process arrays that have objects missing id values.
+        if (Array.isArray(object) && object.filter((o) => !o.id).length > 0) {
+          continue;
+        }
+        // Don't process objects that have missing id values.
+        if (!Array.isArray(object) && !object?.id) continue;
+        const filePath = generateFilePath(object, type);
         objects.push({ filePath, object });
       }
     }
