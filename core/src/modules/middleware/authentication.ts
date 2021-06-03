@@ -5,6 +5,7 @@ import { Team } from "../../models/Team";
 import { TeamMember } from "../../models/TeamMember";
 import { Errors } from "../errors";
 import { ConfigUser } from "../configUser";
+import { Permission } from "../../models/Permission";
 
 export const AuthenticatedActionMiddleware: action.ActionMiddleware = {
   name: "authenticated-action",
@@ -63,14 +64,13 @@ async function authenticateTeamMemberFromSession(
       } else {
         const teamMember = await TeamMember.findOne({
           where: { id: session.teamMemberId },
-          include: [Team],
+          include: [{ model: Team, include: [Permission] }],
         });
 
         if (!teamMember)
           throw new Errors.AuthenticationError("Team member not found");
 
-        const team = await teamMember.$get("team");
-        const authorized = await team.authorizeAction(
+        const authorized = await teamMember.team.authorizeAction(
           data.actionTemplate.permission.topic,
           data.actionTemplate.permission.mode
         );
@@ -142,6 +142,7 @@ async function authenticateApiKey(data: { [key: string]: any }) {
   await CLS.wrap(async () => {
     const apiKey = await ApiKey.findOne({
       where: { apiKey: data.params.apiKey },
+      include: [Permission],
     });
 
     if (!apiKey) throw new Errors.AuthenticationError("apiKey not found");
@@ -189,14 +190,13 @@ async function authenticateTeamMemberInRoom(
     } else {
       const teamMember = await TeamMember.findOne({
         where: { id: session.teamMemberId },
-        include: [Team],
+        include: [{ model: Team, include: [Permission] }],
       });
 
       if (!teamMember)
         throw new Errors.AuthenticationError("Team member not found");
 
-      const team = await teamMember.$get("team");
-      const authorized = await team.authorizeAction(topic, mode);
+      const authorized = await teamMember.team.authorizeAction(topic, mode);
       if (!authorized) {
         throw new Errors.AuthorizationError(mode, topic);
       }
