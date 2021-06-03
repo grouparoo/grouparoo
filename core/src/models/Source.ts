@@ -104,7 +104,7 @@ export class Source extends LoggedModel<Source> {
   properties: Property[];
 
   @HasMany(() => Option, "ownerId")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+  __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   async getOptions(sourceFromEnvironment = true) {
     return OptionHelper.getOptions(this, sourceFromEnvironment);

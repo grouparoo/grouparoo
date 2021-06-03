@@ -47,6 +47,7 @@ export namespace MappingHelper {
       where: { ownerId: instance.id },
     });
 
+    let newMappings: Mapping[] = [];
     const keys = Object.keys(mappings);
     for (const i in keys) {
       const remoteKey = keys[i];
@@ -59,14 +60,16 @@ export namespace MappingHelper {
         throw new Error(`cannot find property ${key}`);
       }
 
-      await Mapping.create({
+      const mapping = await Mapping.create({
         ownerId: instance.id,
         ownerType: instance.constructor.name.toLowerCase(),
         propertyId: property.id,
         remoteKey,
       });
+      newMappings.push(mapping);
     }
 
+    instance.mappings = newMappings;
     await instance.touch();
     await LoggedModel.logUpdate(instance);
 

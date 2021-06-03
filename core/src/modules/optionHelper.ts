@@ -37,12 +37,12 @@ export namespace OptionHelper {
     }
 
     const options =
-      instance._options ??
+      instance.__options ??
       (await Option.findAll({
         where: { ownerId: instance.id },
       }));
 
-    if (!instance._options) instance._options = options;
+    if (!instance.__options) instance.__options = options;
 
     const optionsToObfuscate = await getOptionsToObfuscate(
       instance,
@@ -98,18 +98,21 @@ export namespace OptionHelper {
       where: { ownerId: instance.id },
     });
 
+    const newOptions: Option[] = [];
     const keys = Object.keys(sanitizedOptions);
     for (const i in keys) {
       const key = keys[i];
-      await Option.create({
+      const option = await Option.create({
         ownerId: instance.id,
         ownerType: modelName(instance),
         key,
         value: sanitizedOptions[key],
         type: typeof sanitizedOptions[key],
       });
+      newOptions.push(option);
     }
 
+    instance.__options = newOptions;
     await instance.touch();
     await LoggedModel.logUpdate(instance);
 

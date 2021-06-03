@@ -108,7 +108,7 @@ export class Schedule extends LoggedModel<Schedule> {
   recurringFrequency: number;
 
   @HasMany(() => Option, "ownerId")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+  __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @BelongsTo(() => Source)
   source: Source;
