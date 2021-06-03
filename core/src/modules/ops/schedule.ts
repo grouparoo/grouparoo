@@ -93,6 +93,7 @@ export namespace ScheduleOps {
    */
   export async function pluginOptions(schedule: Schedule) {
     const source = await schedule.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
     const { pluginConnection } = await source.getPlugin();
