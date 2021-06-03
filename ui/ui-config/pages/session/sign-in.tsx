@@ -73,7 +73,7 @@ export default function SignInPage(props) {
                   type="text"
                   placeholder="Company Name"
                   ref={register}
-                  defaultValue={clusterName || ""}
+                  defaultValue={clusterName.default ? "" : clusterName.value}
                 />
                 <Form.Control.Feedback type="invalid">
                   Company name is required
@@ -117,12 +117,3 @@ export default function SignInPage(props) {
     </>
   );
 }
-
-SignInPage.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
-  const setting: Actions.SettingClusterNameView = await execApi(
-    "get",
-    `/settings/clusterName`
-  );
-  return { setting };
-};
