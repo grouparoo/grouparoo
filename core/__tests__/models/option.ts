@@ -249,6 +249,32 @@ describe("models/option", () => {
         expect(options.test_default_key).toEqual("Some custom value");
       });
 
+      test("it will memoize options as they are set", async () => {
+        await appWithOptions.setOptions({
+          test_default_key: "foo",
+        });
+        expect(appWithOptions.__options.length).toBe(1);
+        expect(appWithOptions.__options[0].value).toBe("foo");
+      });
+
+      test("it will use memoized options if they exist", async () => {
+        await appWithOptions.setOptions({
+          test_default_key: "foo",
+        });
+
+        appWithOptions.__options = [
+          Option.build({
+            ownerId: appWithOptions.id,
+            ownerType: "app",
+            key: "foo",
+            value: "fake",
+            type: "string",
+          }),
+        ];
+        const options = await appWithOptions.getOptions();
+        expect(options["foo"]).toBe("fake");
+      });
+
       describe("connection options", () => {
         let connection: Destination;
         beforeAll(async () => {

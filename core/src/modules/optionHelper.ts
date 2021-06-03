@@ -36,9 +36,13 @@ export namespace OptionHelper {
       sourceFromEnvironment = true;
     }
 
-    const options = await Option.findAll({
-      where: { ownerId: instance.id },
-    });
+    const options =
+      instance.__options ??
+      (await Option.findAll({
+        where: { ownerId: instance.id },
+      }));
+
+    if (!instance.__options) instance.__options = options;
 
     const optionsToObfuscate = await getOptionsToObfuscate(
       instance,
@@ -65,6 +69,7 @@ export namespace OptionHelper {
     instance: Source | Destination | Schedule | Property | App,
     options: SimpleOptions
   ) {
+    delete instance.__options;
     let sanitizedOptions = Object.assign({}, options);
 
     sanitizedOptions = await replaceObfuscatedPasswords(
@@ -94,18 +99,21 @@ export namespace OptionHelper {
       where: { ownerId: instance.id },
     });
 
+    const newOptions: Option[] = [];
     const keys = Object.keys(sanitizedOptions);
     for (const i in keys) {
       const key = keys[i];
-      await Option.create({
+      const option = await Option.create({
         ownerId: instance.id,
         ownerType: modelName(instance),
         key,
         value: sanitizedOptions[key],
         type: typeof sanitizedOptions[key],
       });
+      newOptions.push(option);
     }
 
+    instance.__options = newOptions;
     await instance.touch();
     await LoggedModel.logUpdate(instance);
 

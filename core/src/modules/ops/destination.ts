@@ -25,6 +25,7 @@ import { ProfilePropertyOps } from "./profileProperty";
 import { destinationTypeConversions } from "../destinationTypeConversions";
 import { GroupMember } from "../../models/GroupMember";
 import { ExportProcessor } from "../../models/ExportProcessor";
+import { Option } from "../../models/Option";
 
 function deepStrictEqualBoolean(a: any, b: any): boolean {
   try {
@@ -166,7 +167,7 @@ export namespace DestinationOps {
     destinationOptions: SimpleDestinationOptions = {}
   ) {
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -215,7 +216,7 @@ export namespace DestinationOps {
     }
 
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const destinationOptions = await destination.getOptions(true);
@@ -244,7 +245,7 @@ export namespace DestinationOps {
 
   export async function getExportArrayProperties(destination: Destination) {
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const destinationOptions = await destination.getOptions(true);
@@ -276,7 +277,7 @@ export namespace DestinationOps {
     force = false,
     saveExports = true
   ) {
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
     const properties = await Property.findAllWithCache();
@@ -721,7 +722,7 @@ export namespace DestinationOps {
     }
 
     const options = await destination.getOptions();
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
 
@@ -823,7 +824,7 @@ export namespace DestinationOps {
       : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
 
     const options = await destination.getOptions();
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", { include: [Option] });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
 

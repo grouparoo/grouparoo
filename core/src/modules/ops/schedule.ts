@@ -1,16 +1,18 @@
 import { Schedule } from "../../models/Schedule";
-import { Source } from "../../models/Source";
 import { Run, HighWaterMark } from "../../models/Run";
-import { App } from "../../models/App";
 import { Property } from "../../models/Property";
+import { Option } from "../../models/Option";
+import { Mapping } from "../../models/Mapping";
 import { plugin } from "../plugin";
 import { log } from "actionhero";
 
 export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
     const options = await schedule.getOptions();
-    const source = await schedule.$get("source");
-    const app = await App.findById(source.appId);
+    const source = await schedule.$get("source", {
+      include: [Option, Mapping],
+    });
+    const app = await source.$get("app", { include: [Option], scope: null });
     const properties = await Property.findAllWithCache();
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.profiles;
@@ -89,7 +91,9 @@ export namespace ScheduleOps {
    * Load the options for this schedule from the plugin
    */
   export async function pluginOptions(schedule: Schedule) {
-    const source = await Source.findById(schedule.sourceId);
+    const source = await schedule.$get("source", {
+      include: [Option, Mapping],
+    });
     const { pluginConnection } = await source.getPlugin();
 
     const response: Array<{
@@ -110,7 +114,7 @@ export namespace ScheduleOps {
 
     if (!pluginConnection.scheduleOptions) return response;
 
-    const app = await source.$get("app");
+    const app = await source.$get("app", { include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
@@ -147,13 +151,15 @@ export namespace ScheduleOps {
    * Determine the percentage complete for this run
    */
   export async function runPercentComplete(schedule: Schedule, run: Run) {
-    const source = await schedule.$get("source");
+    const source = await schedule.$get("source", {
+      include: [Option, Mapping],
+    });
 
     const { pluginConnection } = await source.getPlugin();
     const method = pluginConnection.methods.sourceRunPercentComplete;
     if (!method) return 0;
 
-    const app = await source.$get("app");
+    const app = await source.$get("app", { include: [Option] });
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();

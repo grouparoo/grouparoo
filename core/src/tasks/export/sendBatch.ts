@@ -1,7 +1,8 @@
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
-import { App } from "../../models/App";
 import { Op } from "sequelize";
+import { Option } from "../../models/Option";
+import { Mapping } from "../../models/Mapping";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class ExportSendBatches extends CLSTask {
@@ -21,14 +22,13 @@ export class ExportSendBatches extends CLSTask {
     const destinationId: string = params.destinationId;
     const exportIds: string[] = params.exportIds;
     let _exports: Export[] = [];
-    let app: App;
 
     if (exportIds.length === 0) return;
     const destination = await Destination.scope(null).findOne({
       where: { id: destinationId },
+      include: [Option, Mapping],
     });
     if (!destination) return;
-    app = await destination.$get("app");
 
     _exports = await Export.findAll({
       where: {

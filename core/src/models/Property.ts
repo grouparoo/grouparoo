@@ -190,7 +190,7 @@ export class Property extends LoggedModel<Property> {
   source: Source;
 
   @HasMany(() => Option, "ownerId")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+  __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => PropertyFilter)
   propertyFilters: PropertyFilter[];
@@ -262,9 +262,13 @@ export class Property extends LoggedModel<Property> {
 
   async getFilters() {
     const filtersWithCol: PropertyFiltersWithKey[] = [];
-    const filters = await this.$get("propertyFilters", {
-      order: [["position", "asc"]],
-    });
+    const filters = this.propertyFilters
+      ? this.propertyFilters.sort((a, b) => a.position - b.position)
+      : await this.$get("propertyFilters", {
+          order: [["position", "asc"]],
+        });
+
+    if (!this.propertyFilters) this.propertyFilters = filters;
 
     for (const i in filters) {
       const filter = filters[i];
@@ -286,6 +290,8 @@ export class Property extends LoggedModel<Property> {
 
     externallyValidate = true
   ) {
+    delete this.propertyFilters;
+
     if (externallyValidate) await this.validateFilters(filters);
     const existingFilters = await this.getFilters();
     const filtersAreEqual = await PropertyOps.filtersAreEqual(
@@ -298,21 +304,24 @@ export class Property extends LoggedModel<Property> {
       where: { propertyId: this.id },
     });
 
+    const newPropertyFilters: PropertyFilter[] = [];
     for (const i in filters) {
       const filter = filters[i];
 
-      await PropertyFilter.create({
+      const propertyFilter = await PropertyFilter.create({
         position: parseInt(i) + 1,
         propertyId: this.id,
         key: filter.key,
         op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
+        match: filter.match?.toString() ?? null,
+        relativeMatchNumber: filter.relativeMatchNumber ?? null,
+        relativeMatchUnit: filter.relativeMatchUnit ?? null,
+        relativeMatchDirection: filter.relativeMatchDirection ?? null,
       });
+      newPropertyFilters.push(propertyFilter);
     }
 
+    this.propertyFilters = newPropertyFilters;
     await this.touch();
     await Property.invalidateCache();
     return PropertyOps.enqueueRuns(this);

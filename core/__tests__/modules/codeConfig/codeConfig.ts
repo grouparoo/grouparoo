@@ -374,6 +374,7 @@ describe("modules/codeConfig", () => {
 
       // clear option
       await Option.destroy({ where: { ownerId: "first_name", key: "column" } });
+      delete nameProperty.__options;
       options = await nameProperty.getOptions();
       expect(options).toEqual({});
 
@@ -384,6 +385,7 @@ describe("modules/codeConfig", () => {
       expect(errors.length).toBe(0);
 
       // option should be set
+      delete nameProperty.__options;
       options = await nameProperty.getOptions();
       expect(options).toEqual({ column: "other_first_name" });
 

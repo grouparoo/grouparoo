@@ -78,7 +78,7 @@ export class ApiKey extends LoggedModel<ApiKey> {
   }
 
   async authorizeAction(topic: string, mode: "read" | "write") {
-    return Permission.authorizeAction(this.id, topic, mode);
+    return Permission.authorizeAction(topic, mode, this);
   }
 
   async setPermissions(

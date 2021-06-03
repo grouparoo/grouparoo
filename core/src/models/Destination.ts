@@ -35,6 +35,7 @@ import { ExportOps } from "../modules/ops/export";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { GroupRule } from "./GroupRule";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -161,7 +162,7 @@ export class Destination extends LoggedModel<Destination> {
   mappings: Mapping[];
 
   @HasMany(() => Option, "ownerId")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+  __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Export)
   exports: Export[];
@@ -173,9 +174,10 @@ export class Destination extends LoggedModel<Destination> {
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
-    if (includeApp) app = await this.$get("app", { scope: null });
+    if (includeApp)
+      app = await this.$get("app", { scope: null, include: [Option] });
     if (includeGroup) {
-      group = await this.$get("group", { scope: null });
+      group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
     const mapping = await this.getMapping();

@@ -135,7 +135,7 @@ export class Profile extends LoggedModel<Profile> {
     await this.sync(undefined, undefined, false); // import the profile and recalculate groups; skip exports here
 
     const properties = await this.properties();
-    const groups = await this.$get("groups");
+    const groups = await this.$get("groups", { include: [GroupRule] });
     const groupApiData = (
       await Promise.all(groups.map((g) => g.apiData()))
     ).sort((a, b) => (a.name > b.name ? 1 : -1));
