@@ -311,10 +311,10 @@ export class Property extends LoggedModel<Property> {
         propertyId: this.id,
         key: filter.key,
         op: filter.op,
-        match: filter.match,
-        relativeMatchNumber: filter.relativeMatchNumber,
-        relativeMatchUnit: filter.relativeMatchUnit,
-        relativeMatchDirection: filter.relativeMatchDirection,
+        match: filter.match?.toString() ?? null,
+        relativeMatchNumber: filter.relativeMatchNumber ?? null,
+        relativeMatchUnit: filter.relativeMatchUnit ?? null,
+        relativeMatchDirection: filter.relativeMatchDirection ?? null,
       });
       newPropertyFilters.push(propertyFilter);
     }
