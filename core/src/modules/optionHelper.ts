@@ -69,6 +69,7 @@ export namespace OptionHelper {
     instance: Source | Destination | Schedule | Property | App,
     options: SimpleOptions
   ) {
+    delete instance.__options;
     let sanitizedOptions = Object.assign({}, options);
 
     sanitizedOptions = await replaceObfuscatedPasswords(

@@ -290,6 +290,8 @@ export class Property extends LoggedModel<Property> {
 
     externallyValidate = true
   ) {
+    delete this.propertyFilters;
+
     if (externallyValidate) await this.validateFilters(filters);
     const existingFilters = await this.getFilters();
     const filtersAreEqual = await PropertyOps.filtersAreEqual(

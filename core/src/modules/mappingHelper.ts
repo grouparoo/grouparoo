@@ -41,6 +41,7 @@ export namespace MappingHelper {
     instance: Source | Destination,
     mappings: Mappings
   ) {
+    delete instance.mappings;
     await LockableHelper.beforeUpdateOptions(instance);
 
     await Mapping.destroy({
