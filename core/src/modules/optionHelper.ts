@@ -36,9 +36,13 @@ export namespace OptionHelper {
       sourceFromEnvironment = true;
     }
 
-    const options = await Option.findAll({
-      where: { ownerId: instance.id },
-    });
+    const options =
+      instance._options ??
+      (await Option.findAll({
+        where: { ownerId: instance.id },
+      }));
+
+    if (!instance._options) instance._options = options;
 
     const optionsToObfuscate = await getOptionsToObfuscate(
       instance,

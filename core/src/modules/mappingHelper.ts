@@ -15,15 +15,17 @@ export namespace MappingHelper {
     propertyColumn?: "key" | "id"
   ) {
     const MappingObject: Mappings = {};
-    const mappings = await Mapping.findAll({
-      where: { ownerId: instance.id },
-    });
+    const mappings =
+      instance.mappings ??
+      (await Mapping.findAll({
+        where: { ownerId: instance.id },
+      }));
+
+    if (!instance.mappings) instance.mappings = mappings;
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const property = await mapping.$get("property", {
-        scope: null,
-      });
+      const property = await Property.findOneWithCache(mapping.propertyId);
       if (!property) {
         throw new Error(
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
