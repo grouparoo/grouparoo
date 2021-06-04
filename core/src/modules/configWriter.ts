@@ -37,7 +37,7 @@ type CachedConfigFile = {
  * - [✔] Work through associations - e.g. how does a source find its appId?
  *       Should it use the app's config object?
  * - [ ] Check specs and fix for the shape of these objects, if necessary
- * - [ ] Write specs for the associations (below)
+ * - [ ] Write specs for all test cases (below)
  *
  *
  * Test cases:
@@ -92,11 +92,11 @@ export namespace ConfigWriter {
 
   export function generateFilePath(
     object: ConfigurationObject,
-    type?: string
+    prefix?: string
   ): string {
     const name = Array.isArray(object) ? object[0].name : object.name;
     let filePath = `${generateId(name)}.json`;
-    if (type) filePath = `${type}/${filePath}`;
+    if (prefix) filePath = `${prefix}/${filePath}`;
     return filePath;
   }
 

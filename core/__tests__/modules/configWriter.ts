@@ -62,7 +62,10 @@ describe("modules/configWriter", () => {
 
     test("does nothing unless in cli:config mode", async () => {
       const app: App = await helper.factories.app();
-      const appFilePath = path.join(configDir, `apps/${app.id}.json`);
+      const appFilePath = path.join(
+        configDir,
+        `apps/${app.getConfigId()}.json`
+      );
 
       process.env.GROUPAROO_RUN_MODE = "x";
       await ConfigWriter.run();
@@ -88,9 +91,9 @@ describe("modules/configWriter", () => {
 
       const files = glob.sync(configFilePattern);
       const expConfigFiles = [
-        `apps/${app.id}.json`,
-        `sources/${source.id}.json`,
-        `properties/${property.id}.json`,
+        `apps/${app.getConfigId()}.json`,
+        `sources/${source.getConfigId()}.json`,
+        `properties/${property.getConfigId()}.json`,
       ].map((configFilePath) => path.join(configDir, configFilePath));
 
       // Verify all expected files exist.
@@ -114,7 +117,9 @@ describe("modules/configWriter", () => {
       const app: App = await helper.factories.app();
       await ConfigWriter.run();
       let files = glob.sync(configFilePattern);
-      expect(files).toEqual([path.join(configDir, `apps/${app.id}.json`)]);
+      expect(files).toEqual([
+        path.join(configDir, `apps/${app.getConfigId()}.json`),
+      ]);
 
       await app.destroy();
       await ConfigWriter.run();
@@ -127,7 +132,10 @@ describe("modules/configWriter", () => {
       await app.update({ locked: "config:test" });
       const configObject = await app.getConfigObject();
       // Create a dummy file just to ensure it is not deleted.
-      const configFilePath = path.join(configDir, `apps/${app.id}.js`);
+      const configFilePath = path.join(
+        configDir,
+        `apps/${app.getConfigId()}.js`
+      );
       fs.mkdirSync(path.dirname(configFilePath), { recursive: true });
       fs.writeFileSync(configFilePath, "");
       // Check to make sure the file is there.
@@ -161,7 +169,10 @@ describe("modules/configWriter", () => {
 
     test("stores a cache of config objects", async () => {
       const configObject = await app.getConfigObject();
-      const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+      const absFilePath = path.join(
+        configDir,
+        `apps/${app.getConfigId()}.json`
+      );
       await ConfigWriter.cacheConfigFile({
         absFilePath,
         objects: [configObject],
@@ -175,7 +186,7 @@ describe("modules/configWriter", () => {
 
     test("does not store locked files", async () => {
       const configObject = await app.getConfigObject();
-      const absFilePath = path.join(configDir, `apps/${app.id}.js`);
+      const absFilePath = path.join(configDir, `apps/${app.getConfigId()}.js`);
       const res = await ConfigWriter.cacheConfigFile({
         absFilePath,
         objects: [configObject],
@@ -188,7 +199,10 @@ describe("modules/configWriter", () => {
 
     test("is reset-able", async () => {
       const configObject = await app.getConfigObject();
-      const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+      const absFilePath = path.join(
+        configDir,
+        `apps/${app.getConfigId()}.json`
+      );
       await ConfigWriter.cacheConfigFile({
         absFilePath,
         objects: [configObject],
@@ -211,7 +225,10 @@ describe("modules/configWriter", () => {
 
       test('returns "config:writer" for JS files (LOCKED)', async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
-        const absFilePath = path.join(configDir, `apps/${app.id}.js`);
+        const absFilePath = path.join(
+          configDir,
+          `apps/${app.getConfigId()}.js`
+        );
         await ConfigWriter.cacheConfigFile({
           absFilePath,
           objects: [configObject],
@@ -221,7 +238,10 @@ describe("modules/configWriter", () => {
       });
       test("returns null for JSON files (UNLOCKED)", async () => {
         process.env.GROUPAROO_RUN_MODE = "cli:config";
-        const absFilePath = path.join(configDir, `apps/${app.id}.json`);
+        const absFilePath = path.join(
+          configDir,
+          `apps/${app.getConfigId()}.json`
+        );
         await ConfigWriter.cacheConfigFile({
           absFilePath,
           objects: [configObject],
@@ -265,15 +285,15 @@ describe("modules/configWriter", () => {
 
       expect(configObjects).toEqual([
         {
-          filePath: `apps/${app.id}.json`,
+          filePath: `apps/${app.getConfigId()}.json`,
           object: await app.getConfigObject(),
         },
         {
-          filePath: `sources/${source.id}.json`,
+          filePath: `sources/${source.getConfigId()}.json`,
           object: await source.getConfigObject(),
         },
         {
-          filePath: `properties/${property.id}.json`,
+          filePath: `properties/${property.getConfigId()}.json`,
           object: await property.getConfigObject(),
         },
         {
@@ -324,11 +344,11 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { id, name, type } = app;
+      const { name, type } = app;
       const options = await app.getOptions();
       expect(config).toEqual({
         class: "App",
-        id,
+        id: app.getConfigId(),
         name,
         type,
         options,
@@ -340,16 +360,17 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { id, name, type, appId } = source;
+      const { name, type } = source;
+      const app = await source.$get("app");
       const options = await source.getOptions();
       const mapping = await MappingHelper.getMapping(source, "id");
 
       expect(config).toEqual({
         class: "Source",
-        id,
+        id: source.getConfigId(),
         name,
         type,
-        appId,
+        appId: app.getConfigId(),
         mapping,
         options,
       });
@@ -360,17 +381,18 @@ describe("modules/configWriter", () => {
       const config = await source.getConfigObject();
       const scheduleConfig = await schedule.getConfigObject();
 
-      const { id, name, type, appId } = source;
+      const { name, type } = source;
+      const app = await source.$get("app");
       const options = await source.getOptions();
       const mapping = await MappingHelper.getMapping(source, "id");
 
       expect(config.length).toEqual(2);
       expect(config[0]).toEqual({
         class: "Source",
-        id,
+        id: source.getConfigId(),
         name,
         type,
-        appId,
+        appId: app.getConfigId(),
         mapping,
         options,
       });
@@ -385,14 +407,14 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { id, name, sourceId, recurring, recurringFrequency } = schedule;
+      const { name, recurring, recurringFrequency } = schedule;
       const options = await schedule.getOptions();
 
       expect(config).toEqual({
         class: "Schedule",
-        id,
+        id: schedule.getConfigId(),
         name,
-        sourceId,
+        sourceId: source.getConfigId(),
         recurring,
         recurringFrequency,
         options,
@@ -404,18 +426,17 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { id, key, type, sourceId, unique, identifying, isArray } =
-        property;
+      const { key, type, unique, identifying, isArray } = property;
 
       const options = await property.getOptions();
       const filters = await property.getFilters();
 
       expect(config).toEqual({
         class: "Property",
-        id,
+        id: property.getConfigId(),
         type,
         name: key,
-        sourceId,
+        sourceId: source.getConfigId(),
         unique,
         identifying,
         isArray,
@@ -429,16 +450,16 @@ describe("modules/configWriter", () => {
 
       expect(config.id).toBeTruthy();
 
-      const { id, name, type } = group;
+      const { name, type } = group;
 
       expect(config).toEqual({
         class: "Group",
-        id,
+        id: group.getConfigId(),
         type,
         name,
         rules: [
           {
-            propertyId: property.id,
+            propertyId: property.getConfigId(),
             match: "nobody",
             operation: { op: "eq" },
             relativeMatchDirection: null,
@@ -451,6 +472,7 @@ describe("modules/configWriter", () => {
 
     test("destinations can provide their config objects", async () => {
       const destination: Destination = await helper.factories.destination();
+      const app: App = await destination.$get("app");
 
       const destinationGroupMemberships = {};
       destinationGroupMemberships[group.id] = "My Dest Tag";
@@ -460,7 +482,7 @@ describe("modules/configWriter", () => {
 
       const config = await destination.getConfigObject();
 
-      const { id, name, type, appId, groupId, syncMode } = destination;
+      const { name, type, syncMode } = destination;
 
       const options = await destination.getOptions();
       const mapping = await MappingHelper.getMapping(destination, "id");
@@ -468,11 +490,11 @@ describe("modules/configWriter", () => {
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
         class: "Destination",
-        id,
+        id: destination.getConfigId(),
         name,
         type,
-        appId,
-        groupId,
+        appId: app.getConfigId(),
+        groupId: group.getConfigId(),
         syncMode,
         options,
         mapping,
