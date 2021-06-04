@@ -123,6 +123,7 @@ export namespace ProfileOps {
 
     const ands: WhereAttributeHash[] = [];
     const include: Array<any> = [ProfileProperty];
+    let countRequiresIncludes = false;
 
     // Are we searching for Profiles in a specific state?
     if (state) ands.push({ state });
@@ -131,6 +132,8 @@ export namespace ProfileOps {
     if (searchKey && searchValue) {
       const property = await Property.findOneWithCache(`${searchKey}`, "key");
       if (!property) throw new Error(`cannot find a property for ${searchKey}`);
+
+      countRequiresIncludes = true;
       ands.push(
         api.sequelize.where(
           api.sequelize.col("profileProperties.propertyId"),
@@ -159,6 +162,7 @@ export namespace ProfileOps {
 
     // Are we limiting the search for only members of a Specific Group?
     if (groupId) {
+      countRequiresIncludes = true;
       ands.push(
         api.sequelize.where(api.sequelize.col("groupMembers.groupId"), groupId)
       );
@@ -173,13 +177,12 @@ export namespace ProfileOps {
       offset,
       order,
       subQuery: false,
-      logging: true,
     });
 
     const total = await Profile.count({
-      include: ands.length > 0 ? include : undefined,
+      include: countRequiresIncludes ? include : undefined,
       where: { [Op.and]: ands },
-      logging: true,
+      distinct: true,
     });
 
     return { profiles, total };
