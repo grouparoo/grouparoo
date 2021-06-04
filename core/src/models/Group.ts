@@ -444,7 +444,7 @@ export class Group extends LoggedModel<Group> {
     if (!rules) rules = await this.getRules();
 
     const include = [];
-    const wheres = [];
+    const wheres = [{ state: "ready" }];
     const localNumbers = [].concat(numbers);
 
     for (const i in rules) {
