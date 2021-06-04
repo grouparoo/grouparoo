@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api, config } from "actionhero";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -444,7 +444,7 @@ export class Group extends LoggedModel<Group> {
     if (!rules) rules = await this.getRules();
 
     const include = [];
-    const wheres = [{ state: "ready" }];
+    const wheres: WhereAttributeHash[] = [{ state: "ready" }];
     const localNumbers = [].concat(numbers);
 
     for (const i in rules) {
