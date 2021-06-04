@@ -21,9 +21,6 @@ cd ../../core
 npm run prepare
 cd $PROJECT_DIR
 
-echo "-----> CLEARING REDIS\r\n"
-redis-cli flushall
-
 echo "-----> REBUILDING CONFIG FROM DEMO\r\n"
 $ROO demo purchases -c
 
