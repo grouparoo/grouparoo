@@ -1,5 +1,5 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Profile, Group, Run, Import } from "../../src";
+import { Profile, Group, Run, Import, ProfileProperty } from "../../src";
 import { specHelper } from "actionhero";
 
 export namespace SharedGroupTests {
@@ -87,6 +87,16 @@ export namespace SharedGroupTests {
     await group.update({ matchType: "all" });
 
     run = await helper.factories.run();
+
+    await ProfileProperty.update(
+      { state: "ready" },
+      { where: { profileId: [mario.id, luigi.id, peach.id, toad.id] } }
+    );
+
+    await mario.update({ state: "ready" });
+    await luigi.update({ state: "ready" });
+    await peach.update({ state: "ready" });
+    await toad.update({ state: "ready" });
 
     return { group, run };
   }
