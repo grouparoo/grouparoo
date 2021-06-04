@@ -1,6 +1,14 @@
 import { helper, ImportWorkflow } from "@grouparoo/spec-helper";
 import { api, specHelper, task } from "actionhero";
-import { Group, Import, Profile, GroupMember, Run, plugin } from "../../../src";
+import {
+  Group,
+  Import,
+  Profile,
+  GroupMember,
+  Run,
+  plugin,
+  ProfileProperty,
+} from "../../../src";
 
 describe("tasks/group:run", () => {
   helper.grouparooTestServer({
@@ -69,6 +77,9 @@ describe("tasks/group:run", () => {
         lastName: ["Toadstool"],
         email: ["toad@example.com"],
       });
+
+      await ProfileProperty.update({ state: "ready" }, { where: {} });
+      await Profile.update({ state: "ready" }, { where: {} });
     });
 
     test("can be enqueued", async () => {
