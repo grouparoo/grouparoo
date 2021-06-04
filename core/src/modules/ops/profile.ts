@@ -5,9 +5,10 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
+import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
-import { api } from "actionhero";
-import { Op, QueryTypes } from "sequelize";
+import { api, config } from "actionhero";
+import { Op, OrderItem, WhereAttributeHash } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { CLS } from "../../modules/cls";
@@ -94,6 +95,94 @@ export namespace ProfileOps {
     }
 
     return hash;
+  }
+
+  /**
+   * Search & List Profiles
+   */
+  export async function search({
+    limit,
+    offset,
+    state,
+    groupId,
+    searchKey,
+    searchValue,
+    order,
+  }: {
+    limit?: number;
+    offset?: number;
+    state?: string;
+    groupId?: string;
+    searchKey?: string | number;
+    searchValue?: string;
+    order?: OrderItem[];
+  }) {
+    if (!limit) limit = 100;
+    if (!offset) offset = 0;
+    if (!order) order = [["createdAt", "asc"]];
+
+    const ands: WhereAttributeHash[] = [];
+    const include: Array<any> = [ProfileProperty];
+
+    // Are we searching for Profiles in a specific state?
+    if (state) ands.push({ state });
+
+    // Are we searching for a specific ProfileProperty?
+    if (searchKey && searchValue) {
+      const property = await Property.findOneWithCache(`${searchKey}`, "key");
+      if (!property) throw new Error(`cannot find a property for ${searchKey}`);
+      ands.push(
+        api.sequelize.where(
+          api.sequelize.col("profileProperties.propertyId"),
+          property.id
+        )
+      );
+      if (searchValue.toLowerCase() === "null" || searchValue === "") {
+        ands.push(
+          api.sequelize.where(api.sequelize.col("profileProperties.rawValue"), {
+            [Op.eq]: null,
+          })
+        );
+      } else {
+        const op = searchValue.includes("%")
+          ? config.sequelize.dialect === "postgres"
+            ? Op.iLike
+            : Op.like
+          : Op.eq;
+        ands.push(
+          api.sequelize.where(api.sequelize.col("profileProperties.rawValue"), {
+            [op]: searchValue,
+          })
+        );
+      }
+    }
+
+    // Are we limiting the search for only members of a Specific Group?
+    if (groupId) {
+      ands.push(
+        api.sequelize.where(api.sequelize.col("groupMembers.groupId"), groupId)
+      );
+      include.push(GroupMember);
+    }
+
+    // Load the profiles in full now that we know the relevant profiles
+    const profiles = await Profile.findAll({
+      include,
+      where: { [Op.and]: ands },
+      limit,
+      offset,
+      order,
+      subQuery: false,
+      logging: true,
+    });
+
+    const total = await Profile.count({
+      include: ands.length > 0 ? include : undefined,
+      where: { [Op.and]: ands },
+      logging: true,
+    });
+
+    return { profiles, total };
   }
 
   /**
