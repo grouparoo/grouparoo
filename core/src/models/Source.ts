@@ -15,6 +15,7 @@ import {
   DataType,
   DefaultScope,
   AfterSave,
+  AssociationGetOptions,
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
@@ -365,15 +366,21 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureNotInUse(instance: Source) {
+  static async ensureNotInUse(
+    instance: Source,
+    excludeDirectlyMapped: boolean = false
+  ) {
     const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
       throw new Error("cannot delete a source that has a schedule");
     }
 
-    const properties = await instance.$get("properties", {
-      scope: null,
-    });
+    const propertyOptions: AssociationGetOptions = { scope: null };
+    if (excludeDirectlyMapped) {
+      propertyOptions.where = { directlyMapped: false };
+    }
+    const properties = await instance.$get("properties", propertyOptions);
+
     if (properties.length > 0) {
       throw new Error("cannot delete a source that has a property");
     }

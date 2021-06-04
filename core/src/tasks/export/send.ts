@@ -23,7 +23,6 @@ export class ExportSend extends CLSTask {
       include: [Option, Mapping],
     });
     if (!destination) return;
-
     const _export = await Export.findOne({
       where: { id: params.exportId },
     });

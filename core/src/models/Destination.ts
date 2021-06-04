@@ -14,6 +14,7 @@ import {
   DataType,
   DefaultScope,
   BeforeDestroy,
+  Scopes,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -113,6 +114,13 @@ const STATE_TRANSITIONS = [
 
 @DefaultScope(() => ({
   where: { state: "ready" },
+}))
+@Scopes(() => ({
+  notDraft: {
+    where: {
+      state: { [Op.notIn]: ["draft"] },
+    },
+  },
 }))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
@@ -631,7 +639,7 @@ export class Destination extends LoggedModel<Destination> {
   static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
     if (instance.groupId) {
-      const group = await Group.findOne({
+      const group = await Group.scope("notDraft").findOne({
         where: { id: instance.groupId },
       });
       if (group) {

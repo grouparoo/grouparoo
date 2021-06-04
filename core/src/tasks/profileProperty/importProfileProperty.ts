@@ -39,6 +39,7 @@ export class ImportProfileProperty extends RetryableTask {
     if (!property) return;
     const profileProperties = await profile.properties();
     const source = await property.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
     const dependencies = await PropertyOps.dependencies(property);

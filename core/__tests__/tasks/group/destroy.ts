@@ -235,51 +235,44 @@ describe("tasks/group:destroy", () => {
       await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
     });
 
-    it("will not delete the group if a destination is tracking it", async () => {
-      const group = await Group.create({
-        name: "test group 4",
-        type: "manual",
-        state: "ready",
-      });
+    test.each(["ready", "deleted"])(
+      "will not delete the group if a destination in %p state is tracking it",
+      async (destinationState) => {
+        const group = await Group.create({
+          name: "test group 4",
+          type: "manual",
+          state: "ready",
+        });
 
-      const destination: Destination = await helper.factories.destination();
-      await destination.trackGroup(group);
+        const destination: Destination = await helper.factories.destination();
+        await destination.trackGroup(group);
+        await group.stopPreviousRuns();
 
-      const trackGroupRun = await Run.findOne({
-        where: {
-          destinationId: destination.id,
-          creatorType: "group",
-          creatorId: group.id,
-        },
-      });
-      await trackGroupRun.stop();
+        await destination.update({ state: destinationState });
+        expect(destination.state).toBe(destinationState);
 
-      // try to delete
-      await group.update({ state: "deleted" });
-      const run = await specHelper.runTask("group:destroy", {
-        groupId: group.id,
-      });
-      expect(run).toBeNull(); // run should not be created
+        // try to delete
+        await group.update({ state: "deleted" });
+        let run = await specHelper.runTask("group:destroy", {
+          groupId: group.id,
+        });
+        expect(run).toBeNull(); // run should not be created
 
-      let reloadedGroup = await Group.findById(group.id);
-      expect(reloadedGroup.state).toBe("deleted"); // still waiting
+        let reloadedGroup = await Group.findById(group.id);
+        expect(reloadedGroup.state).toBe("deleted"); // still waiting
 
-      await destination.unTrackGroup(true);
-      const unTrackGroupRun = await Run.findOne({
-        where: {
-          destinationId: destination.id,
-          creatorType: "group",
-          creatorId: group.id,
-        },
-      });
-      unTrackGroupRun.stop();
+        await destination.unTrackGroup(true);
+        await group.stopPreviousRuns();
 
-      // try to delete again
-      await specHelper.runTask("group:destroy", {
-        groupId: group.id,
-      });
+        // try to delete again
+        await specHelper.runTask("group:destroy", {
+          groupId: group.id,
+        });
 
-      await expect(group.reload()).rejects.toThrow(/does not exist anymore/);
-    });
+        await expect(Group.findById(group.id)).rejects.toThrow(
+          /cannot find Group/
+        );
+      }
+    );
   });
 });

@@ -10,6 +10,7 @@ export namespace ScheduleOps {
   export async function run(schedule: Schedule, run: Run) {
     const options = await schedule.getOptions();
     const source = await schedule.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
     const app = await source.$get("app", { include: [Option], scope: null });
@@ -92,6 +93,7 @@ export namespace ScheduleOps {
    */
   export async function pluginOptions(schedule: Schedule) {
     const source = await schedule.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
     const { pluginConnection } = await source.getPlugin();
@@ -114,7 +116,7 @@ export namespace ScheduleOps {
 
     if (!pluginConnection.scheduleOptions) return response;
 
-    const app = await source.$get("app", { include: [Option] });
+    const app = await source.$get("app", { scope: null, include: [Option] });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
@@ -152,6 +154,7 @@ export namespace ScheduleOps {
    */
   export async function runPercentComplete(schedule: Schedule, run: Run) {
     const source = await schedule.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
 
@@ -159,7 +162,7 @@ export namespace ScheduleOps {
     const method = pluginConnection.methods.sourceRunPercentComplete;
     if (!method) return 0;
 
-    const app = await source.$get("app", { include: [Option] });
+    const app = await source.$get("app", { scope: null, include: [Option] });
     const appOptions = await app.getOptions();
     const sourceOptions = await source.getOptions();
     const sourceMapping = await source.getMapping();

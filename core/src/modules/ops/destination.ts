@@ -81,9 +81,7 @@ export namespace DestinationOps {
 
     if (oldGroupId) {
       const oldGroup = await Group.findById(oldGroupId);
-      if (oldGroup.state !== "deleted") {
-        return oldGroup.run(force, destination.id);
-      }
+      return oldGroup.run(force, destination.id);
     }
   }
 
@@ -167,7 +165,10 @@ export namespace DestinationOps {
     destinationOptions: SimpleDestinationOptions = {}
   ) {
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
 
@@ -216,7 +217,10 @@ export namespace DestinationOps {
     }
 
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const destinationOptions = await destination.getOptions(true);
@@ -245,7 +249,10 @@ export namespace DestinationOps {
 
   export async function getExportArrayProperties(destination: Destination) {
     const { pluginConnection } = await destination.getPlugin();
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const connection = await app.getConnection();
     const appOptions = await app.getOptions(true);
     const destinationOptions = await destination.getOptions(true);
@@ -277,7 +284,10 @@ export namespace DestinationOps {
     force = false,
     saveExports = true
   ) {
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const appOptions = await app.getOptions();
     await app.validateOptions(appOptions);
     const properties = await Property.findAllWithCache();
@@ -722,7 +732,10 @@ export namespace DestinationOps {
     }
 
     const options = await destination.getOptions();
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
 
@@ -824,7 +837,10 @@ export namespace DestinationOps {
       : DestinationSyncModeData.sync.operations; // if destination does not support sync modes, allow all
 
     const options = await destination.getOptions();
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const appOptions = await app.getOptions();
     const connection = await app.getConnection();
 

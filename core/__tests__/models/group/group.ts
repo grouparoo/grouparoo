@@ -1,5 +1,13 @@
 import { helper } from "@grouparoo/spec-helper";
-import { Log, Profile, Group, Import, GroupMember, Run } from "../../../src";
+import {
+  Log,
+  Profile,
+  Group,
+  Import,
+  GroupMember,
+  Run,
+  Destination,
+} from "../../../src";
 import { GroupOps } from "../../../src/modules/ops/group";
 
 describe("models/group", () => {
@@ -148,24 +156,86 @@ describe("models/group", () => {
         await group.destroy(); // does not throw
       });
 
-      test("a group can be deleted even if a destination membership is using it", async () => {
+      test("a group cannot be deleted if a deleted destination is tracking it", async () => {
         const group = await Group.create({
+          name: "tracked group",
+          type: "manual",
+        });
+
+        const destination = await helper.factories.destination();
+        await destination.trackGroup(group);
+        await destination.update({ state: "deleted" });
+
+        await expect(group.destroy()).rejects.toThrow(
+          /this group still in use by 1 destinations, cannot delete/
+        );
+
+        await destination.unTrackGroup();
+        await group.destroy(); // does not throw
+      });
+
+      test.each(["ready", "deleted"])(
+        "a group can be deleted even if a %p destination membership is using it",
+        async (destinationState) => {
+          const group = await Group.create({
+            name: "tracked group",
+            type: "manual",
+            state: "ready",
+          });
+
+          const destination = await helper.factories.destination();
+          const destinationGroupMemberships = {};
+          destinationGroupMemberships[group.id] = "remote-tag";
+          await destination.setDestinationGroupMemberships(
+            destinationGroupMemberships
+          );
+
+          await destination.update({ state: destinationState });
+
+          await group.destroy(); // does not throw
+        }
+      );
+
+      test("deleting a group that a destination had as a membership will enqueue a run for that destinations group", async () => {
+        const trackedGroup = await Group.create({
           name: "tracked group",
           type: "manual",
           state: "ready",
         });
 
-        const destination = await helper.factories.destination();
+        const taggedGroup = await Group.create({
+          name: "taged group",
+          type: "manual",
+          state: "ready",
+        });
+
+        const destination: Destination = await helper.factories.destination();
+        const run = await destination.trackGroup(trackedGroup);
         const destinationGroupMemberships = {};
-        destinationGroupMemberships[group.id] = "remote-tag";
+        destinationGroupMemberships[taggedGroup.id] = "remote-tagged-group";
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
 
-        await group.destroy(); // does not throw
+        await trackedGroup.stopPreviousRuns();
+
+        await destination.update({ state: "ready" });
+        await taggedGroup.destroy(); // does not throw
+
+        const runningRuns = await Run.findAll({
+          where: { state: "running", creatorId: trackedGroup.id },
+        });
+        expect(runningRuns.length).toBe(1);
+        expect(runningRuns[0].destinationId).toBe(destination.id);
+        expect(runningRuns[0].force).toBe(false);
+        expect(runningRuns[0].id).not.toBe(run.id);
+
+        await destination.unTrackGroup();
+        await trackedGroup.destroy();
+        await taggedGroup.destroy();
       });
 
-      test("deleting a group that a destination had as a membership will enqueue a run for that destinations group", async () => {
+      test("deleting a group that a deleted destination had as a membership will not enqueue a run", async () => {
         const trackedGroup = await Group.create({
           name: "tracked group",
           type: "manual",
@@ -185,16 +255,15 @@ describe("models/group", () => {
         await destination.setDestinationGroupMemberships(
           destinationGroupMemberships
         );
-        await destination.update({ state: "ready" });
+
+        await trackedGroup.stopPreviousRuns();
+        await destination.update({ state: "deleted" });
         await taggedGroup.destroy(); // does not throw
 
         const runningRuns = await Run.findAll({
           where: { state: "running", creatorId: trackedGroup.id },
         });
-        expect(runningRuns.length).toBe(1);
-        expect(runningRuns[0].destinationId).toBe(destination.id);
-        expect(runningRuns[0].force).toBe(false);
-        expect(runningRuns[0].id).not.toBe(run.id);
+        expect(runningRuns.length).toBe(0);
       });
     });
   });

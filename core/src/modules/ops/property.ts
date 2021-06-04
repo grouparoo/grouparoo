@@ -103,6 +103,7 @@ export namespace PropertyOps {
   export async function dependencies(property: Property) {
     const dependencies: Property[] = [];
     const source = await property.$get("source", {
+      scope: null,
       include: [Option, Mapping],
     });
     const sourceMapping = await source.getMapping();

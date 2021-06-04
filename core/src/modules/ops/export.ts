@@ -78,7 +78,10 @@ export namespace ExportOps {
       delayMs = defaultExportProcessingDelay;
     }
 
-    const app = await destination.$get("app", { include: [Option] });
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const { pluginConnection } = await destination.getPlugin();
 
     let _exports: Export[];

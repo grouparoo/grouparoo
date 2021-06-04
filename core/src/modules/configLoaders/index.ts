@@ -318,12 +318,7 @@ export async function deleteLockedObjects(seenIds) {
   deletedIds["schedule"] = await deleteSchedules(seenIds.schedule);
   deletedIds["group"] = await deleteGroups(seenIds.group);
   deletedIds["property"] = await deleteProperties(seenIds.property);
-  // might return a bootstrapped property, needs special processing
-  const deletedSourceIds = await deleteSources(seenIds.source);
-  deletedIds["source"] = deletedSourceIds.source;
-  deletedSourceIds.property.map((id) => {
-    if (!deletedIds["property"].includes(id)) deletedIds["property"].push(id);
-  });
+  deletedIds["source"] = await deleteSources(seenIds.source);
   // back to normal
   deletedIds["app"] = await deleteApps(seenIds.app);
 

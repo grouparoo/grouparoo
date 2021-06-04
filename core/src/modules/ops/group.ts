@@ -20,7 +20,10 @@ export namespace GroupOps {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
 
     await group.stopPreviousRuns();
-    await group.update({ state: "updating" });
+
+    if (group.state !== "deleted") {
+      await group.update({ state: "updating" });
+    }
 
     const run = await Run.create({
       creatorId: group.id,

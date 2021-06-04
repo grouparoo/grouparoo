@@ -691,7 +691,8 @@ export class Group extends LoggedModel<Group> {
 
   @BeforeDestroy
   static async ensureNotInUse(instance: Group) {
-    const count = await instance.$count("destinations");
+    const count = await instance.$count("destinations", { scope: "notDraft" });
+
     if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
@@ -727,7 +728,10 @@ export class Group extends LoggedModel<Group> {
         "destination"
       );
       await destinationGroupMemberships[i].destroy();
-      await destination.exportGroupMembers(false);
+
+      if (destination) {
+        await destination.exportGroupMembers(false);
+      }
     }
   }
 

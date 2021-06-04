@@ -183,13 +183,17 @@ describe("models/destination", () => {
       await profile.destroy();
     });
 
-    test("a destination can get options from a connection", async () => {
-      const connectionOptions =
-        await destination.destinationConnectionOptions();
-      expect(connectionOptions).toEqual({
-        table: { type: "list", options: ["users_out"] },
-      });
-    });
+    test.each(["deleted", "ready"])(
+      "a destination can get options from a connection with a %p app",
+      async (appState) => {
+        await app.update({ state: appState });
+        const connectionOptions =
+          await destination.destinationConnectionOptions();
+        expect(connectionOptions).toEqual({
+          table: { type: "list", options: ["users_out"] },
+        });
+      }
+    );
 
     test("partial options will be passed to destinationConnectionOptions", async () => {
       const connectionOptions = await destination.destinationConnectionOptions({
@@ -678,19 +682,6 @@ describe("models/destination", () => {
           expect(runB.state).toBe("running");
           expect(runB.destinationId).toBe(destination.id);
           expect(runB.force).toBe(false);
-        });
-
-        test("when the group being tracked is removed and it is in deleted state, it should not be re-exported", async () => {
-          const runA = await destination.trackGroup(group);
-
-          await group.update({ state: "deleted" });
-
-          // do not create a run- it will be created by `group:destroy` task
-          const runB = await destination.unTrackGroup();
-          expect(runB).toBeFalsy();
-
-          await runA.reload();
-          expect(runA.state).toBe("running");
         });
 
         test("when the group being tracked is changed, the previous group should be exported one last time", async () => {

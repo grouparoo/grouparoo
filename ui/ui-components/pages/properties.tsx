@@ -115,6 +115,8 @@ export default function Page(props) {
     );
   }
 
+  const readySources = sources.filter((s) => s.state === "ready");
+
   return (
     <>
       <Head>
@@ -212,7 +214,7 @@ export default function Page(props) {
         onPress={setOffset}
       />
 
-      {sources.length > 0 &&
+      {readySources.length > 0 &&
       process.env.GROUPAROO_UI_EDITION !== "community" ? (
         <>
           <hr />
@@ -228,7 +230,7 @@ export default function Page(props) {
                   setNewRuleSourceId(e.target.value);
                 }}
               >
-                {sources.map((source) => (
+                {readySources.map((source) => (
                   <option key={`opt-source-${source.id}`} value={source.id}>
                     {source.name}
                   </option>
@@ -258,6 +260,8 @@ Page.getInitialProps = async (ctx) => {
     limit,
     offset,
   });
-  const { sources } = await execApi("get", "/sources", { state: "ready" });
+  const { sources } = await execApi("get", "/sources", {
+    state: ["ready", "deleted"],
+  });
   return { properties, total, examples, sources };
 };

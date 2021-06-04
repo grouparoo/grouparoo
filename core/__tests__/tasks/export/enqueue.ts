@@ -13,9 +13,13 @@ describe("tasks/export:enqueue", () => {
   });
 
   describe("with exports", () => {
-    let run: Run, profile: Profile, destination: Destination;
+    let run: Run,
+      profile: Profile,
+      destination: Destination,
+      deletedDestination: Destination;
     let pendingExportA: Export,
       pendingExportB: Export,
+      pendingExportC: Export,
       recentStartedExport: Export,
       stuckStartedExport: Export,
       newCompleteExport: Export,
@@ -32,6 +36,14 @@ describe("tasks/export:enqueue", () => {
         type: "test-plugin-export-batch",
       });
 
+      const deletedApp = await helper.factories.app({ state: "deleted" });
+      deletedDestination = await helper.factories.destination(deletedApp, {
+        type: "test-plugin-export-batch",
+      });
+
+      await deletedDestination.update({ state: "deleted" });
+      await deletedApp.update({ state: "deleted" });
+
       pendingExportA = await Export.create({
         profileId: profile.id,
         destinationId: destination.id,
@@ -46,6 +58,17 @@ describe("tasks/export:enqueue", () => {
       pendingExportB = await Export.create({
         profileId: profile.id,
         destinationId: destination.id,
+        oldProfileProperties: {},
+        newProfileProperties: {},
+        newGroups: [],
+        oldGroups: [],
+        sendAt: new Date(),
+        state: "pending",
+      });
+
+      pendingExportC = await Export.create({
+        profileId: profile.id,
+        destinationId: deletedDestination.id,
         oldProfileProperties: {},
         newProfileProperties: {},
         newGroups: [],
@@ -171,6 +194,7 @@ describe("tasks/export:enqueue", () => {
     afterAll(async () => {
       await profile.destroy();
       await destination.destroy();
+      await deletedDestination.destroy();
     });
 
     afterEach(async () => {
@@ -181,10 +205,9 @@ describe("tasks/export:enqueue", () => {
       await specHelper.runTask("export:enqueue", {});
 
       const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(1);
+      expect(foundTasks.length).toBe(2);
       const exportIds = foundTasks[0].args[0].exportIds;
 
-      // expect(exportIds.length).toBe(5);
       expect(exportIds).toContain(pendingExportA.id);
       expect(exportIds).toContain(pendingExportB.id);
       expect(exportIds).toContain(stuckStartedExport.id);
@@ -198,6 +221,15 @@ describe("tasks/export:enqueue", () => {
       expect(exportIds).not.toContain(oldErrorExport.id);
     });
 
+    test("pending exports for deleted destinations/apps will be enqueued", async () => {
+      await specHelper.runTask("export:enqueue", {});
+
+      const foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
+      expect(foundTasks.length).toBe(2);
+      const exportIds = foundTasks[1].args[0].exportIds;
+      expect(exportIds).toContain(pendingExportC.id);
+    });
+
     test("checking again will find no results as the exports should now have a startedAt", async () => {
       await specHelper.runTask("export:enqueue", {}); // call first time
       await api.resque.queue.connection.redis.flushdb();
@@ -209,7 +241,7 @@ describe("tasks/export:enqueue", () => {
 
     test("batch size is variable", async () => {
       await plugin.updateSetting("core", "exports-profile-batch-size", 1);
-      await specHelper.runTask("export:enqueue", {}); // first batch
+      await specHelper.runTask("export:enqueue", {}); // first batch (1 for each destination)
 
       // another instance of the task should have been enqueued
       let foundTasks = await specHelper.findEnqueuedTasks("export:enqueue");
@@ -220,7 +252,7 @@ describe("tasks/export:enqueue", () => {
       await specHelper.runTask("export:enqueue", {}); // no one
 
       foundTasks = await specHelper.findEnqueuedTasks("export:sendBatch");
-      expect(foundTasks.length).toBe(3); // 1 + 2
+      expect(foundTasks.length).toBe(4); // (1 + 1) + 2
     });
   });
 });
