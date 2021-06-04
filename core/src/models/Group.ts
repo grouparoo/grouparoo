@@ -435,7 +435,8 @@ export class Group extends LoggedModel<Group> {
    */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType,
+    profileState?: string
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
@@ -444,8 +445,10 @@ export class Group extends LoggedModel<Group> {
     if (!rules) rules = await this.getRules();
 
     const include = [];
-    const wheres: WhereAttributeHash[] = [{ state: "ready" }];
+    const wheres: WhereAttributeHash[] = [];
     const localNumbers = [].concat(numbers);
+
+    if (profileState) wheres.push({ state: profileState });
 
     for (const i in rules) {
       const rule = rules[i];
