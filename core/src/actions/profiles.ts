@@ -20,6 +20,11 @@ export class ProfilesList extends AuthenticatedAction {
       searchKey: { required: false },
       searchValue: { required: false },
       state: { required: false },
+      caseSensitive: {
+        required: false,
+        formatter: (p: string | boolean) =>
+          p.toString().toLowerCase() === "true",
+      },
       limit: { required: true, default: 100 },
       offset: { required: true, default: 0 },
       order: {
