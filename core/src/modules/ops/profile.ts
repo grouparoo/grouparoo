@@ -197,6 +197,7 @@ export namespace ProfileOps {
 
     const profiles = await Profile.findAll({
       where: { id: profileIds },
+      order,
       include: [ProfileProperty],
     });
 
