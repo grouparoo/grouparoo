@@ -3,9 +3,6 @@
 const fs = require("fs-extra");
 const path = require("path");
 
-const {
-  buildPropertyOpsDictionary,
-} = require("../dist/modules/ruleOpsDictionary");
 const { enumerateCLICommands } = require("../dist/utils/cli");
 
 const data = [

@@ -2,8 +2,6 @@
 // import { RunCLI } from "../../src/bin/run";
 // import { Run } from "../../src";
 
-import { buildPropertyOpsDictionary } from "../../src/modules/ruleOpsDictionary";
-
 import fs from "fs";
 import cp from "child_process";
 import path from "path";
