@@ -141,9 +141,9 @@ export class Run extends Model {
   @HasMany(() => Import, "creatorId")
   imports: Import[];
 
-  async determinePercentComplete(logPercentMessage = true) {
+  async determinePercentComplete(logPercentMessage = true, write = true) {
     const percentComplete = await RunOps.determinePercentComplete(this);
-    await this.update({ percentComplete });
+    if (write) await this.update({ percentComplete });
     if (logPercentMessage) {
       log(`run ${this.id} is ${this.percentComplete}% complete`);
     }
