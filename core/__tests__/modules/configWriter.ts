@@ -40,11 +40,38 @@ describe("modules/configWriter", () => {
     test("it returns undefined when no name is passed", () => {
       expect(ConfigWriter.generateId(null)).toBeUndefined();
     });
+    test("it returns undefined when name is an empty string", () => {
+      expect(ConfigWriter.generateId("")).toBeUndefined();
+    });
+    test("it returns undefined when name does not have url-friendly characters", () => {
+      expect(ConfigWriter.generateId("!")).toBeUndefined();
+    });
     test("it returns a slugified, lowercase name", () => {
       let res = ConfigWriter.generateId("Hello World");
       expect(res).toEqual("hello-world");
       res = ConfigWriter.generateId("!@#$%^&*(){}[]:\";'<>,./? Hello  World");
       expect(res).toEqual("hello-world");
+    });
+  });
+
+  // ---------------------------------------- | ConfigWriter.generateFilePath()
+
+  describe("generateFilePath()", () => {
+    afterEach(async () => {
+      await App.destroy({ truncate: true });
+    });
+
+    test("provides a url-friendly path from the name in the object", async () => {
+      const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
+      const configObject = await app.getConfigObject();
+      const res = ConfigWriter.generateFilePath(configObject);
+      expect(res).toEqual("hello-world.json");
+    });
+    test("adds a prefix, if specified", async () => {
+      const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
+      const configObject = await app.getConfigObject();
+      const res = ConfigWriter.generateFilePath(configObject, "apps");
+      expect(res).toEqual("apps/hello-world.json");
     });
   });
 
@@ -270,6 +297,20 @@ describe("modules/configWriter", () => {
       const configObjects = await ConfigWriter.getConfigObjects();
       expect(configObjects).toEqual([]);
     });
+    test("skips objects without an id", async () => {
+      let app: App = await helper.factories.app();
+      let configObjects = await ConfigWriter.getConfigObjects();
+      expect(configObjects).toEqual([
+        {
+          filePath: `apps/${app.getConfigId()}.json`,
+          object: await app.getConfigObject(),
+        },
+      ]);
+      app.name = "$";
+      await app.save();
+      configObjects = await ConfigWriter.getConfigObjects();
+      expect(configObjects).toEqual([]);
+    });
     test("lists the formatted config objects, ready to be written", async () => {
       const app: App = await helper.factories.app();
       const source: Source = await helper.factories.source(app);
@@ -314,7 +355,7 @@ describe("modules/configWriter", () => {
     let property: Property;
     let group: Group;
 
-    beforeAll(async () => {
+    beforeEach(async () => {
       source = await helper.factories.source();
       await source.setOptions({ table: "test-table-02" });
       await source.bootstrapUniqueProperty(
@@ -338,6 +379,15 @@ describe("modules/configWriter", () => {
       ]);
     });
 
+    afterEach(async () => {
+      await App.destroy({ truncate: true });
+      await Source.destroy({ truncate: true });
+      await Schedule.destroy({ truncate: true });
+      await Property.destroy({ truncate: true });
+      await Destination.destroy({ truncate: true });
+      await Group.destroy({ truncate: true });
+    });
+
     test("apps can provide their config objects", async () => {
       const app: App = await helper.factories.app();
       const config = await app.getConfigObject();
@@ -353,6 +403,12 @@ describe("modules/configWriter", () => {
         type,
         options,
       });
+    });
+
+    test("apps without a name will not provide a config object", async () => {
+      const app: App = await helper.factories.app({ name: undefined });
+      const config = await app.getConfigObject();
+      expect(config).toBeUndefined();
     });
 
     test("sources can provide their config objects", async () => {
@@ -374,6 +430,14 @@ describe("modules/configWriter", () => {
         mapping,
         options,
       });
+    });
+
+    test("sources without a name will not provide a config object", async () => {
+      const source: Source = await helper.factories.source(undefined, {
+        name: undefined,
+      });
+      const config = await source.getConfigObject();
+      expect(config).toBeUndefined();
     });
 
     test("sources will also bring their own schedule", async () => {
@@ -400,9 +464,7 @@ describe("modules/configWriter", () => {
     });
 
     test("schedules can provide their config objects", async () => {
-      // The previous test created a schedule, which we can use here, since
-      // sources can only have one schedule.
-      const schedule: Schedule = await source.$get("schedule");
+      const schedule: Schedule = await helper.factories.schedule(source);
       const config = await schedule.getConfigObject();
 
       expect(config.id).toBeTruthy();
@@ -417,6 +479,45 @@ describe("modules/configWriter", () => {
         sourceId: source.getConfigId(),
         recurring,
         recurringFrequency,
+        options,
+      });
+    });
+
+    test("schedules without a name will not provide a config object", async () => {
+      const schedule: Schedule = await helper.factories.schedule(source);
+      schedule.name = undefined;
+      // There's no need to save here because getConfigObject is reading the
+      // attributes from memory.
+      const config = await schedule.getConfigObject();
+      expect(config).toBeUndefined();
+    });
+
+    test("sources with a nameless schedule provide a single object", async () => {
+      const source = await helper.factories.source();
+      await source.setOptions({ table: "test-table-05" });
+      await source.bootstrapUniqueProperty("uId05", "integer", "id", "uid05");
+      await source.setMapping({ id: "uId05" });
+      await source.update({ state: "ready" });
+      property = await helper.factories.property(
+        source,
+        { key: "firstName05" },
+        { column: "firstName05" }
+      );
+      await helper.factories.schedule(source, { name: "!" });
+      const config = await source.getConfigObject();
+
+      const { name, type } = source;
+      const app = await source.$get("app");
+      const options = await source.getOptions();
+      const mapping = await MappingHelper.getConfigMapping(source);
+
+      expect(config).toEqual({
+        class: "Source",
+        id: source.getConfigId(),
+        name,
+        type,
+        appId: app.getConfigId(),
+        mapping,
         options,
       });
     });
@@ -445,6 +546,12 @@ describe("modules/configWriter", () => {
       });
     });
 
+    test("properties without a name will not provide a config object", async () => {
+      property.key = undefined;
+      const config = await property.getConfigObject();
+      expect(config).toBeUndefined();
+    });
+
     test("groups can provide their config objects", async () => {
       const config = await group.getConfigObject();
 
@@ -468,6 +575,12 @@ describe("modules/configWriter", () => {
           },
         ],
       });
+    });
+
+    test("groups without a name will not provide a config object", async () => {
+      group.name = undefined;
+      const config = await group.getConfigObject();
+      expect(config).toBeUndefined();
     });
 
     test("destinations can provide their config objects", async () => {
@@ -505,6 +618,16 @@ describe("modules/configWriter", () => {
           "My Dest Tag": group.getConfigId(),
         },
       });
+    });
+
+    test("destinations without a name will not provide a config object", async () => {
+      const destination: Destination = await helper.factories.destination(
+        undefined,
+        { groupId: group.id }
+      );
+      destination.name = undefined;
+      const config = await destination.getConfigObject();
+      expect(config).toBeUndefined();
     });
 
     test("profiles can provide their config objects", async () => {

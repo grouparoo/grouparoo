@@ -28,38 +28,6 @@ type CachedConfigFile = {
 };
 
 /**
- * TODO:
- *
- * - [✔] Add slugify method to ConfigWriter
- * - [✔] Add specs for slugify method (simple, since we're using another lib)
- * - [✔] Use slugify method within the App model
- * - [✔] Extend to the other model (including profile)
- * - [✔] Work through associations - e.g. how does a source find its appId?
- *       Should it use the app's config object?
- * - [ ] Check specs and fix for the shape of these objects, if necessary
- * - [ ] Write specs for all test cases (below)
- *
- *
- * Test cases:
- *
- * - [ ] App requires certain associations and columns
- * - [ ] Source requires certain associations and columns
- * - [ ] Schedule (through a Source) requires certain associations and columns
- * - [ ] Property requires certain associations and columns
- * - [ ] Destination requires certain associations and columns
- * - [ ] Group requires certain associations and columns
- * - [ ] The ID values generated for all cases above are from getConfigId() and
- *       differ from the primary id for each object.
- * - [ ] ConfigWriter skips objects that don't have ID values
- * - [ ] If Source exists and is valid, but its Schedule doesn't have a name,
- *       the object is still just a single object.
- * - [ ] MappingHelper.generateFilePath()
- * - [ ] MappingHelper.getConfigMapping(), including that it returns null
- *       without a valid object, and that it works for arrays.
- *
- */
-
-/**
  * Loading
  * ----------------------------------------
  * 1. Loader tells Writer to cache all files it read.
@@ -87,7 +55,9 @@ export namespace ConfigWriter {
   export function generateId(name): string {
     if (!name) return;
     slugify.extend({ $: "", "%": "", "&": "", "<": "", ">": "" });
-    return slugify(name, { lower: true, strict: true });
+    const id = slugify(name, { lower: true, strict: true });
+    if (id.length === 0) return;
+    return id;
   }
 
   export function generateFilePath(
