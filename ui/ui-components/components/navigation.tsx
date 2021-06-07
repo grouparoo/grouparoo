@@ -174,7 +174,7 @@ export default function Navigation(props) {
           </span>
         </div>
 
-        {navigationMode !== "unauthenticated" && (
+        {navigationMode.indexOf("unauthenticated") === -1 && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}

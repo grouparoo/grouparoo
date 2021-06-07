@@ -6,24 +6,23 @@ import { Row, Col, Image, Button } from "react-bootstrap";
 export default function Page(props) {
   const router = useRouter();
   const { navigationMode, navigation } = props;
-  const currentStep = props.setupSteps.find(
-    (step) => !step.complete && !step.skipped
-  );
+  // const currentStep = props.setupSteps.find(
+  //   (step) => !step.complete && !step.skipped
+  // );
+
+  const currentStep = null;
 
   let CTALink = "/session/sign-in";
   let CTAMessage = "Sign In";
   let CTATarget: string;
 
-  if (navigationMode === "config" && currentStep) {
+  if (navigationMode.indexOf("config") >= 0 && currentStep) {
     CTAMessage = "Set Up Grouparoo";
     CTALink = "/setup";
-  } else if (navigationMode === "config" && !currentStep) {
+  } else if (navigationMode === "config:authenticated" && !currentStep) {
     CTAMessage = "Configure Your Profiles";
     CTALink = "/profile";
-  } else if (
-    process.env.GROUPAROO_UI_EDITION !== "config" &&
-    navigationMode === "authenticated"
-  ) {
+  } else if (navigationMode === "authenticated") {
     CTAMessage = "View Dashboard";
     CTALink = "/dashboard";
   } else if (
@@ -82,8 +81,8 @@ export default function Page(props) {
   );
 }
 
-Page.getInitialProps = async (ctx) => {
-  const { execApi } = useApi(ctx);
-  const { setupSteps } = await execApi("get", `/setupSteps`);
-  return { setupSteps };
-};
+// Page.getInitialProps = async (ctx) => {
+//   const { execApi } = useApi(ctx);
+//   const { setupSteps } = await execApi("get", `/setupSteps`);
+//   return { setupSteps };
+// };
