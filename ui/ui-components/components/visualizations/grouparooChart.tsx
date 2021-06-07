@@ -57,7 +57,7 @@ export function GrouparooChart({
     <ContainerWidthSizer>
       {({ width, height }) => (
         <VictoryChart
-          width={width}
+          width={width > 15 ? width - 14 : width} // needed to fid large numbers (up to 1M)
           height={height}
           domainPadding={{ x: 25 }}
           theme={VictoryTheme.material}

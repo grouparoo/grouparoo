@@ -8,7 +8,7 @@ import {
 } from "./statusReporters";
 
 export namespace Status {
-  export const maxSamples = 100;
+  export const maxSamples = 1000;
   export const sampleFrequencyMS = 1000 * 5;
   export const cachePrefix = `${config.general.cachePrefix}status:samples:`;
 
@@ -17,51 +17,44 @@ export namespace Status {
     metrics: StatusMetric[];
   }
 
-  export async function sample() {
-    const metrics: StatusMetric[] = [];
-
+  export const statusSampleReporters = [
     // information about how Grouparoo is being operated
-    metrics.push(await StatusReporters.Cluster.Workers.countWorkers());
-    metrics.push(await StatusReporters.Cluster.Workers.countErrors());
-    metrics.push(await StatusReporters.Cluster.Workers.details());
-    metrics.push(await StatusReporters.Cluster.OS.exact());
-    metrics.push(await StatusReporters.Cluster.NODE_ENV.exact());
-    metrics.push(await StatusReporters.Cluster.NOTIFICATIONS.unread());
+    async () => StatusReporters.Cluster.Workers.countWorkers(),
+    async () => StatusReporters.Cluster.Workers.countErrors(),
+    async () => StatusReporters.Cluster.Workers.details(),
+    async () => StatusReporters.Cluster.OS.exact(),
+    async () => StatusReporters.Cluster.NODE_ENV.exact(),
+    async () => StatusReporters.Cluster.NOTIFICATIONS.unread(),
 
     // usage counts (we only care about some of the models)
-    metrics.push(...(await StatusReporters.Totals.Models([Profile, Group])));
+    async () => StatusReporters.Totals.Models([Profile, Group]),
 
     // thing in progress
-    metrics.push(await StatusReporters.Pending.pendingImports());
-    metrics.push(...(await StatusReporters.Pending.pendingImportsBySource()));
-    metrics.push(await StatusReporters.Pending.pendingExports());
-    metrics.push(
-      ...(await StatusReporters.Pending.pendingExportsByDestination())
-    );
-    metrics.push(await StatusReporters.Pending.pendingProfiles());
-    metrics.push(...(await StatusReporters.Pending.pendingRuns()));
+    async () => StatusReporters.Pending.pendingImports(),
+    async () => StatusReporters.Pending.pendingImportsBySource(),
+    async () => StatusReporters.Pending.pendingExports(),
+    async () => StatusReporters.Pending.pendingExportsByDestination(),
+    async () => StatusReporters.Pending.pendingProfiles(),
+    async () => StatusReporters.Pending.pendingRuns(),
 
     // additional things
-    metrics.push(...(await StatusReporters.Groups.byNewestMember()));
-    metrics.push(...(await StatusReporters.Sources.nextRuns()));
+    async () => StatusReporters.Groups.byNewestMember(),
+    async () => StatusReporters.Sources.nextRuns(),
+  ];
 
-    const { timestamp } = await set(metrics);
-
-    await chatRoom.broadcast({}, "system:status", {
-      timestamp,
-      metrics,
-    });
-
-    return metrics;
-  }
+  export type StatusGetResponse = {
+    [topic: string]: {
+      [collection: string]: { timestamp: number; metrics: StatusMetric[] }[];
+    };
+  };
 
   export async function get(limit = maxSamples) {
     const redis = getRedis();
     const keyMatch = `${cachePrefix}*`;
     const keys = await redis.keys(keyMatch);
-    if (keys.length === 0) return [];
+    if (keys.length === 0) return {};
 
-    const values = (await redis.mget(keys))
+    const samples = (await redis.mget(keys))
       .slice(0, limit)
       .map((v) => {
         let parsed: StatusObject;
@@ -70,18 +63,43 @@ export namespace Status {
         } catch {}
         return parsed;
       })
-      .filter((v) => v && v.timestamp)
-      .sort((a, b) => {
-        return b.timestamp - a.timestamp;
-      });
+      .filter((v) => v && v.timestamp);
 
-    return values;
+    const response: StatusGetResponse = {};
+
+    samples.forEach((sample) => {
+      sample.metrics.forEach((metric) => {
+        if (!response[metric.topic]) response[metric.topic] = {};
+        if (!response[metric.topic][metric.collection])
+          response[metric.topic][metric.collection] = [];
+
+        const existingSample = response[metric.topic][metric.collection].find(
+          (s) => s.timestamp === sample.timestamp
+        );
+
+        if (existingSample) {
+          existingSample.metrics.push(metric);
+        } else {
+          response[metric.topic][metric.collection].push({
+            timestamp: sample.timestamp,
+            metrics: [metric],
+          });
+        }
+
+        response[metric.topic][metric.collection].sort(
+          (a, b) => a.timestamp - b.timestamp
+        );
+      });
+    });
+
+    return response;
   }
 
   export async function set(
-    metrics: StatusMetric[],
+    metrics: StatusMetric | StatusMetric[],
     ttl = Math.ceil((sampleFrequencyMS / 1000) * maxSamples * 2)
   ) {
+    if (!Array.isArray(metrics)) metrics = [metrics];
     const now = new Date();
     const status: StatusObject = {
       timestamp: now.getTime(),
@@ -89,7 +107,9 @@ export namespace Status {
     };
 
     const redis = getRedis();
-    const key = `${cachePrefix}${now.getTime()}`;
+    const key = `${cachePrefix}${now.getTime()}:${metrics
+      .map((m) => `${m.collection}-${m.aggregation}`)
+      .join(":")}`;
     await redis.set(key, JSON.stringify(status));
     await redis.expire(key, ttl);
 

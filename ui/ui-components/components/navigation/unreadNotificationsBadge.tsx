@@ -1,6 +1,7 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { StatusHandler } from "../../utils/statusHandler";
+import { Misc } from "../../utils/apiData";
 
 export default function UnreadNotificationCountBadge({
   statusHandler,
@@ -12,13 +13,13 @@ export default function UnreadNotificationCountBadge({
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
-    statusHandler.subscribe("unread-notifications-badge", ({ metrics }) => {
-      const _unreadCount =
-        metrics.find(
-          (m) => m.collection === "cluster" && m.topic === "unreadNotifications"
-        )?.count ?? -1;
-      setUnreadCount(_unreadCount);
-    });
+    statusHandler.subscribe(
+      "unread-notifications-badge",
+      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
+        setUnreadCount(metrics[0].count);
+      },
+      { topic: "unreadNotifications", collection: "cluster" }
+    );
 
     return () => {
       statusHandler.unsubscribe("unread-notifications-badge");

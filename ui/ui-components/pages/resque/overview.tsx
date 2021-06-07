@@ -22,8 +22,9 @@ export default function ResqueOverview(props) {
   const [chartData, setChartData] = useState<ChartLinData>([]);
 
   useEffect(() => {
-    statusHandler.subscribe("resque-overview", () => {
-      load();
+    statusHandler.subscribe("resque-overview", () => load(), {
+      topic: "resqueErrors",
+      collection: "cluster",
     });
 
     return () => {
@@ -33,7 +34,6 @@ export default function ResqueOverview(props) {
 
   function load() {
     const _chartData: ChartLinData = [];
-    const samples = statusHandler.samples;
 
     let _queues = {};
     let _workers = {};
@@ -41,23 +41,15 @@ export default function ResqueOverview(props) {
     let _leader = "";
     let _failedCount = 0;
 
-    samples.forEach(({ metrics, timestamp }) => {
+    const resqueCollection = statusHandler.metrics["resqueDetails"];
+    if (!resqueCollection) return;
+    resqueCollection["cluster"].forEach(({ metrics, timestamp }) => {
       const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] =
-        JSON.parse(
-          metrics.find(
-            (m) => m.collection === "cluster" && m.topic === "resqueDetails"
-          ).metadata
-        );
+        JSON.parse(metrics[0].metadata);
 
-      _queues = resqueDetails?.queues || _queues;
       _workers = resqueDetails?.workers || _workers;
       _stats = resqueDetails?.stats || _stats;
       _leader = resqueDetails?.leader || _leader;
-
-      _failedCount =
-        metrics.find(
-          (m) => m.collection === "cluster" && m.topic === "resqueErrors"
-        )?.count ?? _failedCount;
 
       Object.keys(_workers).forEach((workerName) => {
         const worker = _workers[workerName];
@@ -81,15 +73,26 @@ export default function ResqueOverview(props) {
         }
       });
 
+      _queues = resqueDetails?.queues || _queues;
       const queueNames = Object.keys(_queues);
       for (const i in queueNames) {
         if (!_chartData[i]) _chartData[i] = [];
-        _chartData[i].push({ x: timestamp, y: _queues[queueNames[i]].length });
-        if (_chartData[i].length > maxSampleLength) {
-          _chartData[i].shift();
-        }
+        _chartData[i].push({
+          x: timestamp,
+          y: _queues[queueNames[i]].length,
+        });
       }
     });
+
+    for (const i in _chartData) {
+      if (_chartData[i].length > maxSampleLength) _chartData[i].shift();
+    }
+
+    const failedCollection = statusHandler.metrics["resqueErrors"];
+    if (!resqueCollection) return;
+    _failedCount =
+      failedCollection["cluster"][failedCollection["cluster"].length - 1]
+        ?.metrics[0].count;
 
     setWorkers(_workers);
     setStats(_stats);

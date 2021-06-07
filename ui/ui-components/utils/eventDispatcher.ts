@@ -30,7 +30,7 @@ export class EventDispatcher {
   async beforePublish(data) {}
   async afterPublish(data) {}
 
-  async subscribe(name: string, handler: Function) {
+  async subscribe(name: string, handler: Function, matcher?: any) {
     if (typeof this.beforeSubscribe === "function") {
       await this.beforeSubscribe(name, handler);
     }

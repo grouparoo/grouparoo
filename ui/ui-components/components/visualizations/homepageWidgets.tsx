@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import EnterpriseLink from "../enterpriseLink";
 import { Card, Table, ProgressBar } from "react-bootstrap";
-import { Models } from "../../utils/apiData";
+import { Misc, Models } from "../../utils/apiData";
 import Moment from "react-moment";
 import { GrouparooChart, ChartLinData } from "../visualizations/grouparooChart";
 import { StatusHandler } from "../../utils/statusHandler";
 import Loading from "../loader";
 
-const maxSampleLength = 20;
+const maxSampleLength = 30;
 
 export function BigTotalNumber({
   statusHandler,
@@ -25,12 +25,13 @@ export function BigTotalNumber({
   const subscriptionName = `big-total-number-${title}`;
 
   useEffect(() => {
-    statusHandler.subscribe(subscriptionName, ({ metrics }) => {
-      const _total =
-        metrics.find((m) => m.collection === "totals" && m.topic === model)
-          ?.count ?? -1;
-      setTotal(_total);
-    });
+    statusHandler.subscribe(
+      subscriptionName,
+      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
+        setTotal(metrics[0].count);
+      },
+      { topic: model, collection: "totals" }
+    );
 
     return () => {
       statusHandler.unsubscribe(subscriptionName);
@@ -71,10 +72,10 @@ export function GroupsByNewestMember({
   const [groups, setGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(`groups-by-newest-member`, ({ metrics }) => {
-      const _groups: GroupType[] = metrics
-        .filter((s) => s.topic === "Group" && s.collection === "byNewestMember")
-        .map((s) => {
+    statusHandler.subscribe(
+      `groups-by-newest-member`,
+      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
+        const _groups = metrics.map((s) => {
           return {
             id: s.key,
             name: s.value,
@@ -83,8 +84,10 @@ export function GroupsByNewestMember({
           };
         });
 
-      setGroups(_groups);
-    });
+        setGroups(_groups);
+      },
+      { topic: "Group", collection: "byNewestMember" }
+    );
 
     return () => {
       statusHandler.unsubscribe(`groups-by-newest-member`);
@@ -154,10 +157,16 @@ export function RunningRuns({
   const [runs, setRuns] = useState<Models.RunType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(`running-runs-chart`, ({ metrics }) => {
-      const _runs: Models.RunType[] = metrics
-        .filter((s) => s.topic === "Run" && s.collection === "percentComplete")
-        .map((s) => {
+    statusHandler.subscribe(
+      `running-runs-chart`,
+      ({
+        metrics,
+        timestamp,
+      }: {
+        timestamp: number;
+        metrics: Misc.StatusMetricType[];
+      }) => {
+        const _runs = metrics.map((s) => {
           return {
             id: s.key,
             creatorName: s.value,
@@ -166,8 +175,11 @@ export function RunningRuns({
           };
         });
 
-      setRuns(_runs);
-    });
+        //@ts-ignore
+        setRuns(_runs);
+      },
+      { topic: "Run", collection: "percentComplete" }
+    );
 
     return () => {
       statusHandler.unsubscribe(`running-runs-chart`);
@@ -238,10 +250,10 @@ export function ScheduleRuns({
   const [sources, setSources] = useState<SourceScheduleType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(`schedule-next-runs-chart`, ({ metrics }) => {
-      const _sources: SourceScheduleType[] = metrics
-        .filter((s) => s.topic === "Source" && s.collection === "nextRun")
-        .map((s) => {
+    statusHandler.subscribe(
+      `schedule-next-runs-chart`,
+      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
+        const _sources = metrics.map((s) => {
           return {
             id: s.key,
             name: s.value,
@@ -250,8 +262,10 @@ export function ScheduleRuns({
           };
         });
 
-      setSources(_sources);
-    });
+        setSources(_sources);
+      },
+      { topic: "Source", collection: "nextRun" }
+    );
 
     return () => {
       statusHandler.unsubscribe(`schedule-next-runs-chart`);
@@ -327,8 +341,9 @@ export function PendingImports({
   const [pendingImportKeys, setPendingImportKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(`pending-imports-chart`, () => {
-      load();
+    statusHandler.subscribe(`pending-imports-chart`, () => load(), {
+      topic: "Import",
+      collection: "pendingBySource",
     });
 
     return () => {
@@ -337,49 +352,55 @@ export function PendingImports({
   }, []);
 
   function load() {
+    const pendingProfileCollection = statusHandler.metrics["Profile"];
+    if (!pendingProfileCollection) return;
+    const pendingProfileMetrics =
+      pendingProfileCollection["pending"][
+        pendingProfileCollection["pending"].length - 1
+      ].metrics;
+    setPendingProfilesCount(pendingProfileMetrics[0].count);
+
     const _chartData: ChartLinData = [];
     const _pendingImportKeys: string[] = [];
-    const samples = statusHandler.samples;
-    let _sources: ImportsBySource[] = [];
-    let _pendingProfilesCount = -1;
+    const _sources: ImportsBySource[] = [];
 
-    samples.forEach(({ metrics, timestamp }) => {
-      _sources = metrics
-        .filter(
-          (s) => s.topic === "Import" && s.collection === "pendingBySource"
-        )
-        .map((s) => {
-          if (!_pendingImportKeys.includes(s.value)) {
-            _pendingImportKeys.push(s.value);
-          }
+    const pendingSourceCollection = statusHandler.metrics["Import"];
+    if (!pendingSourceCollection) return;
+    const pendingSourceMetrics = pendingSourceCollection["pendingBySource"];
 
-          const idx = _pendingImportKeys.indexOf(s.value);
+    pendingSourceMetrics.forEach(({ metrics, timestamp }) => {
+      metrics.forEach((metric) => {
+        if (!_pendingImportKeys.includes(metric.value)) {
+          _pendingImportKeys.push(metric.value);
+        }
 
-          if (!_chartData[idx]) _chartData[idx] = [];
-          _chartData[idx].push({
-            x: timestamp,
-            y: s.count,
-          });
-          if (_chartData[idx].length > maxSampleLength) {
-            _chartData[idx].shift();
-          }
+        const idx = _pendingImportKeys.indexOf(metric.value);
+        if (!_chartData[idx]) _chartData[idx] = [];
 
-          _pendingProfilesCount = metrics.find(
-            (s) => s.topic === "Profile" && s.collection === "pending"
-          ).count;
-
-          return {
-            id: s.key,
-            name: s.value,
-            pending: s.count,
-          };
+        _chartData[idx].push({
+          x: timestamp,
+          y: metric.count,
         });
+
+        if (!_sources.find((s) => s.id === metric.key)) {
+          _sources.push({
+            id: metric.key,
+            name: metric.value,
+            pending: metric.count,
+          });
+        }
+      });
     });
 
-    setSources(_sources);
-    setPendingImportKeys(_pendingImportKeys);
-    setPendingProfilesCount(_pendingProfilesCount);
-    setChartData(_chartData);
+    for (const idx in _chartData) {
+      while (_chartData[idx].length > maxSampleLength) {
+        _chartData[idx].shift();
+      }
+    }
+
+    if (_sources) setSources(_sources);
+    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys);
+    if (_chartData) setChartData(_chartData);
   }
 
   if (sources.length === 0) {
@@ -407,8 +428,6 @@ export function PendingImports({
   );
 }
 
-// const pendingExportSamples: ChartLinData = [];
-// const pendingExportKeys: string[] = [];
 export function PendingExports({
   statusHandler,
 }: {
@@ -426,54 +445,62 @@ export function PendingExports({
   const [pendingExportKeys, setPendingExportKeys] = useState<string[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(`pending-exports-chart`, () => {
-      load();
+    statusHandler.subscribe(`pending-exports-chart`, () => load(), {
+      topic: "Export",
+      collection: "pending",
     });
 
     function load() {
+      const pendingExportCountCollection = statusHandler.metrics["Export"];
+      if (!pendingExportCountCollection) return;
+      const pendingExportCountMetrics =
+        pendingExportCountCollection["pending"][
+          pendingExportCountCollection["pending"].length - 1
+        ].metrics;
+      setPendingExportsCount(pendingExportCountMetrics[0].count);
+
       const _chartData: ChartLinData = [];
       const _pendingExportKeys: string[] = [];
-      const samples = statusHandler.samples;
       let _destinations: ExportsByDestination[] = [];
-      let _pendingExportsCount = -1;
 
-      samples.forEach(({ metrics, timestamp }) => {
-        _destinations = metrics
-          .filter(
-            (s) =>
-              s.topic === "Export" && s.collection === "pendingByDestination"
-          )
-          .map((s) => {
-            if (!_pendingExportKeys.includes(s.value)) {
-              _pendingExportKeys.push(s.value);
-            }
+      const pendingExportCollection = statusHandler.metrics["Export"];
+      if (!pendingExportCollection) return;
+      const pendingExportMetrics =
+        pendingExportCollection["pendingByDestination"];
 
-            const idx = _pendingExportKeys.indexOf(s.value);
+      pendingExportMetrics.forEach(({ metrics, timestamp }) => {
+        metrics.forEach((metric) => {
+          if (!_pendingExportKeys.includes(metric.value)) {
+            _pendingExportKeys.push(metric.value);
+          }
 
-            if (!_chartData[idx]) _chartData[idx] = [];
-            _chartData[idx].push({
-              x: timestamp,
-              y: s.count,
-            });
-            if (_chartData[idx].length > maxSampleLength) {
-              _chartData[idx].shift();
-            }
+          const idx = _pendingExportKeys.indexOf(metric.value);
+          if (!_chartData[idx]) _chartData[idx] = [];
 
-            _pendingExportsCount = metrics.find(
-              (s) => s.topic === "Export" && s.collection === "pending"
-            ).count;
-
-            return {
-              id: s.key,
-              name: s.value,
-              pending: s.count,
-            };
+          _chartData[idx].push({
+            x: timestamp,
+            y: metric.count,
           });
+
+          if (!_destinations.find((s) => s.id === metric.key)) {
+            _destinations.push({
+              id: metric.key,
+              name: metric.value,
+              pending: metric.count,
+            });
+          }
+        });
       });
+
+      for (const idx in _chartData) {
+        while (_chartData[idx].length > maxSampleLength) {
+          _chartData[idx].shift();
+        }
+      }
 
       setDestinations(_destinations);
       setPendingExportKeys(_pendingExportKeys);
-      setPendingExportsCount(_pendingExportsCount);
+      // setPendingExportsCount(_pendingExportsCount);
       setChartData(_chartData);
     }
 

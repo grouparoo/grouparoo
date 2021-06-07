@@ -29,7 +29,12 @@ export class StatusCLI extends CLI {
         "cluster-name"
       );
 
-      const samples = await Status.sample();
+      // calculate status now
+      for (const i in Status.statusSampleReporters) {
+        await Status.statusSampleReporters[i]();
+      }
+
+      const samples = await Status.get();
 
       const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(
         100
@@ -49,38 +54,50 @@ export class StatusCLI extends CLI {
 
       const overview = {
         ClusterName: [clusterName, env ? `${env}` : undefined],
-        TotalProfiles: [
-          samples.find(
-            (s) => s.collection === "totals" && s.topic === "Profile"
-          ).count,
-        ],
-        TotalGroups: [
-          samples.find((s) => s.collection === "totals" && s.topic === "Group")
-            .count,
-        ],
+        TotalProfiles: [getLatestMetric(samples, "Profile", "totals").count],
+        TotalGroups: [getLatestMetric(samples, "Group", "totals").count],
       };
 
-      const pendingItems = samples
-        .filter((s) => s.collection === "pending")
-        .map((s) => {
-          return { [s.topic]: [s.count] };
-        })
-        .reduce((s, arr) => Object.assign(s, arr), {});
+      const pendingItems = [];
+      const pendingRuns = [];
 
-      const pendingRuns = samples
-        .filter((s) => s.topic === "Run" && s.collection === "percentComplete")
-        .map((s) => {
-          return {
-            [s.value]: [`${s.count}%${s.metadata ? ` (${s.metadata})` : ""}`],
-          };
-        })
-        .reduce((s, arr) => Object.assign(s, arr), {});
+      for (const topic in samples) {
+        for (const collection in samples[topic]) {
+          const collectionSample = samples[topic][collection][0];
+          for (const metric of collectionSample.metrics) {
+            if (metric.collection === "pending") {
+              pendingItems.push({
+                [metric.topic]: [metric.count],
+              });
+            }
+
+            if (
+              metric.topic === "Run" &&
+              metric.collection === "percentComplete"
+            ) {
+              pendingRuns.push({
+                [metric.value]: [
+                  `${metric.count}%${
+                    metric.metadata ? ` (${metric.metadata})` : ""
+                  }`,
+                ],
+              });
+            }
+          }
+        }
+      }
 
       const data = [
         { header: "Overview", status: overview },
         { header: "Groups", status: groupsStatus },
-        { header: "Pending Items", status: pendingItems },
-        { header: "Active Runs", status: pendingRuns },
+        {
+          header: "Pending Items",
+          status: pendingItems.reduce((s, arr) => Object.assign(s, arr), {}),
+        },
+        {
+          header: "Active Runs",
+          status: pendingRuns.reduce((s, arr) => Object.assign(s, arr), {}),
+        },
       ];
 
       if (params.json) {
@@ -96,4 +113,13 @@ export class StatusCLI extends CLI {
 
     return true;
   }
+}
+
+function getLatestMetric(
+  samples: Status.StatusGetResponse,
+  topic: string,
+  collection: string
+) {
+  return samples[topic][collection][samples[topic][collection].length - 1]
+    .metrics[0];
 }
