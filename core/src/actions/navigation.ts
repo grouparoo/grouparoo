@@ -25,7 +25,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     let navigationMode =
       process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? "config"
+        ? "config:unauthenticated"
         : "unauthenticated";
     let showSystemLinks = false;
     if (teamMember) {
@@ -192,48 +192,53 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       });
     }
 
-    if (navigationMode === "config") {
+    if (navigationMode === "config:unauthenticated") {
       const user = await ConfigUser.get();
+
       if (user) {
-        navigationItems = [
-          {
-            type: "link",
-            title: "Apps",
-            href: "/apps",
-            icon: "th-large",
-          },
-          {
-            type: "link",
-            title: "Sources",
-            href: "/sources",
-            icon: "file-import",
-          },
-          {
-            type: "link",
-            title: "Properties",
-            href: "/properties",
-            icon: "address-card",
-          },
-          {
-            type: "link",
-            title: "Profiles",
-            href: "/profiles",
-            icon: "user",
-          },
-          {
-            type: "link",
-            title: "Groups",
-            href: "/groups",
-            icon: "users",
-          },
-          {
-            type: "link",
-            title: "Destinations",
-            href: "/destinations",
-            icon: "file-export",
-          },
-        ];
+        navigationMode = "config:authenticated";
       }
+    }
+
+    if (navigationMode.indexOf("config") >= 0) {
+      navigationItems = [
+        {
+          type: "link",
+          title: "Apps",
+          href: "/apps",
+          icon: "th-large",
+        },
+        {
+          type: "link",
+          title: "Sources",
+          href: "/sources",
+          icon: "file-import",
+        },
+        {
+          type: "link",
+          title: "Properties",
+          href: "/properties",
+          icon: "address-card",
+        },
+        {
+          type: "link",
+          title: "Profiles",
+          href: "/profiles",
+          icon: "user",
+        },
+        {
+          type: "link",
+          title: "Groups",
+          href: "/groups",
+          icon: "users",
+        },
+        {
+          type: "link",
+          title: "Destinations",
+          href: "/destinations",
+          icon: "file-export",
+        },
+      ];
     }
 
     const clusterNameSetting = await Setting.findOne({
