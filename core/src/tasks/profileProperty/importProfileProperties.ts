@@ -10,6 +10,7 @@ import { CLS } from "../../modules/cls";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class ImportProfileProperties extends RetryableTask {
   constructor() {
@@ -101,10 +102,20 @@ export class ImportProfileProperties extends RetryableTask {
       return log(error, "error");
     }
 
+    const orderedProfiles: Profile[] = [];
+    const orderedHashes: any[] = [];
     for (const profileId in propertyValuesBatch) {
       const profile = profilesToImport.find((p) => p.id === profileId);
       const hash = { [property.id]: propertyValuesBatch[profileId] };
-      await profile.addOrUpdateProperties(hash, false); // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+      orderedProfiles.push(profile);
+      orderedHashes.push(hash);
+    }
+    if (orderedProfiles.length > 0) {
+      await ProfileOps.addOrUpdateProperties(
+        orderedProfiles,
+        orderedHashes,
+        false // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+      );
     }
 
     // update the properties that got no data back
