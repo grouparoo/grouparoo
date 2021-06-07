@@ -560,7 +560,7 @@ export class Destination extends LoggedModel<Destination> {
     const options = await this.getOptions();
     const mapping = await MappingHelper.getMapping(this, "id");
 
-    if (!name || !appId || !groupId) return;
+    if (!name || !appId) return;
 
     return {
       class: "Destination",

@@ -363,7 +363,7 @@ describe("modules/configWriter", () => {
       const { name, type } = source;
       const app = await source.$get("app");
       const options = await source.getOptions();
-      const mapping = await MappingHelper.getMapping(source, "id");
+      const mapping = await MappingHelper.getConfigMapping(source);
 
       expect(config).toEqual({
         class: "Source",
@@ -384,7 +384,7 @@ describe("modules/configWriter", () => {
       const { name, type } = source;
       const app = await source.$get("app");
       const options = await source.getOptions();
-      const mapping = await MappingHelper.getMapping(source, "id");
+      const mapping = await MappingHelper.getConfigMapping(source);
 
       expect(config.length).toEqual(2);
       expect(config[0]).toEqual({
@@ -471,7 +471,10 @@ describe("modules/configWriter", () => {
     });
 
     test("destinations can provide their config objects", async () => {
-      const destination: Destination = await helper.factories.destination();
+      const destination: Destination = await helper.factories.destination(
+        undefined,
+        { groupId: group.id }
+      );
       const app: App = await destination.$get("app");
 
       const destinationGroupMemberships = {};
@@ -485,7 +488,7 @@ describe("modules/configWriter", () => {
       const { name, type, syncMode } = destination;
 
       const options = await destination.getOptions();
-      const mapping = await MappingHelper.getMapping(destination, "id");
+      const mapping = await MappingHelper.getConfigMapping(destination);
 
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
@@ -499,7 +502,7 @@ describe("modules/configWriter", () => {
         options,
         mapping,
         destinationGroupMemberships: {
-          "My Dest Tag": group.id,
+          "My Dest Tag": group.getConfigId(),
         },
       });
     });

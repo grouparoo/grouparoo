@@ -641,7 +641,7 @@ export class Group extends LoggedModel<Group> {
     for (const rule of convenientRules) {
       const property = await Property.findOneWithCache(rule.key, "key");
       rules.push({
-        propertyId: property.id,
+        propertyId: property.getConfigId(),
         operation: { op: rule.operation.op },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
