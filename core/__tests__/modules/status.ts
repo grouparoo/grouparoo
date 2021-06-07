@@ -225,35 +225,41 @@ describe("modules/status", () => {
         expect(sourceReport).toEqual([]);
       });
 
-      it("shows sources that ran", async () => {
-        const source = await helper.factories.source();
-        await source.setOptions({ table: "users_table" });
-        await source.setMapping({ id: "userId" });
-        await source.update({ state: "ready" });
+      it.each(["ready", "deleted"])(
+        "shows %p sources that ran",
+        async (sourceState) => {
+          const source: Source = await helper.factories.source();
+          await source.setOptions({ table: "users_table" });
+          await source.setMapping({ id: "userId" });
+          await source.update({ state: "ready" });
 
-        const schedule = await helper.factories.schedule(source);
-        const run = await helper.factories.run(schedule);
+          const schedule = await helper.factories.schedule(source);
+          const run = await helper.factories.run(schedule);
 
-        const _import = await helper.factories.import(
-          run,
-          undefined,
-          oldProfile.id
-        );
-        const now = new Date();
-        await _import.update({
-          profileAssociatedAt: now,
-          profileUpdatedAt: now,
-          groupsUpdatedAt: now,
-        });
+          const _import = await helper.factories.import(
+            run,
+            undefined,
+            oldProfile.id
+          );
+          const now = new Date();
+          await _import.update({
+            profileAssociatedAt: now,
+            profileUpdatedAt: now,
+            groupsUpdatedAt: now,
+          });
 
-        const sources = await FinalSummaryReporters.Sources.getData();
-        expect(sources[0].name).toEqual(source.name);
-        expect(sources[0].importsCreated).toEqual(1);
-        expect(sources[0].profilesCreated).toEqual(0);
-        expect(sources[0].profilesImported).toEqual(1);
-        expect(sources[0].error).toEqual(null);
-      });
+          await source.update({ state: sourceState });
+
+          const sources = await FinalSummaryReporters.Sources.getData();
+          expect(sources[0].name).toEqual(source.name);
+          expect(sources[0].importsCreated).toEqual(1);
+          expect(sources[0].profilesCreated).toEqual(0);
+          expect(sources[0].profilesImported).toEqual(1);
+          expect(sources[0].error).toEqual(null);
+        }
+      );
     });
+
     describe("it gathers destinations", () => {
       it("does not show destinations without an export", async () => {
         const destination = await helper.factories.destination();
@@ -264,38 +270,44 @@ describe("modules/status", () => {
         expect(destinationReport).toEqual([]);
       });
 
-      it("shows destinations that ran", async () => {
-        const destination = await helper.factories.destination();
+      it.each(["ready", "deleted"])(
+        "shows %p destinations that ran",
+        async (destinationState) => {
+          const destination: Destination = await helper.factories.destination();
 
-        const _export = await helper.factories.export(
-          undefined,
-          destination,
-          undefined
-        );
-        const _export2 = await helper.factories.export(
-          undefined,
-          destination,
-          undefined
-        );
-        const _export3 = await helper.factories.export(
-          undefined,
-          destination,
-          undefined
-        );
-        await helper.changeTimestamps(_export3, true);
+          const _export = await helper.factories.export(
+            undefined,
+            destination,
+            undefined
+          );
+          const _export2 = await helper.factories.export(
+            undefined,
+            destination,
+            undefined
+          );
+          const _export3 = await helper.factories.export(
+            undefined,
+            destination,
+            undefined
+          );
+          await helper.changeTimestamps(_export3, true);
 
-        const now = new Date();
-        await _export.update({
-          completedAt: new Date(now),
-          state: "complete",
-        });
+          const now = new Date();
+          await _export.update({
+            completedAt: new Date(now),
+            state: "complete",
+          });
 
-        const destinations = await FinalSummaryReporters.Destinations.getData();
-        expect(destinations[0].name).toEqual(destination.name);
-        expect(destinations[0].exportsCreated).toEqual(2);
-        expect(destinations[0].exportsFailed).toEqual(0);
-        expect(destinations[0].exportsComplete).toEqual(1);
-      });
+          await destination.update({ state: destinationState });
+
+          const destinations =
+            await FinalSummaryReporters.Destinations.getData();
+          expect(destinations[0].name).toEqual(destination.name);
+          expect(destinations[0].exportsCreated).toEqual(2);
+          expect(destinations[0].exportsFailed).toEqual(0);
+          expect(destinations[0].exportsComplete).toEqual(1);
+        }
+      );
     });
   });
 });
