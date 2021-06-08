@@ -114,6 +114,7 @@ export namespace RunOps {
     });
 
     const percentComplete = await run.determinePercentComplete(false, false);
+
     await run.update({
       importsCreated,
       profilesCreated,
