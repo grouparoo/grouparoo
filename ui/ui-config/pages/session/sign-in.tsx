@@ -84,7 +84,11 @@ export default function SignInPage(props) {
                 disabled={loading}
               />
             </Form.Group>
-
+            <p>
+              <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+                Privacy Policy
+              </a>
+            </p>
             <LoadingButton disabled={loading} variant="primary" type="submit">
               Register
             </LoadingButton>

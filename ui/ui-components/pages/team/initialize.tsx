@@ -154,6 +154,11 @@ export default function TeamInitializePage(props) {
                 ref={register}
               />
             </Form.Group>
+            <p>
+              <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+                Privacy Policy
+              </a>
+            </p>
           </Card.Body>
         </Card>
 

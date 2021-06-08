@@ -136,8 +136,11 @@ export default function Page(props) {
             disabled={loading}
           />
         </Form.Group>
-
-        <br />
+        <p>
+          <a href="https://www.grouparoo.com/legal/privacy" target="_blank">
+            Privacy Policy
+          </a>
+        </p>
 
         <LoadingButton variant="primary" type="submit" disabled={loading}>
           Submit
