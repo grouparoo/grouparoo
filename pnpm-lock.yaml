@@ -95,6 +95,7 @@ importers:
       '@grouparoo/spec-helper': 0.4.0-alpha.1
       '@grouparoo/sqlite': 0.4.0-alpha.1
       '@grouparoo/ui-config': 0.4.0-alpha.1
+      grouparoo: 0.4.0-alpha.1
       jest: 26.6.3
     dependencies:
       '@grouparoo/core': link:../../core
@@ -104,6 +105,7 @@ importers:
     devDependencies:
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
       '@grouparoo/ui-config': link:../../ui/ui-config
+      grouparoo: link:../../cli
       jest: 26.6.3
 
   apps/staging-enterprise:
@@ -14447,7 +14449,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@10.0.0
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21

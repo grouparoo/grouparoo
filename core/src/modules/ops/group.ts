@@ -18,6 +18,7 @@ export namespace GroupOps {
     destinationId?: string
   ) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
 
     await group.stopPreviousRuns();
 

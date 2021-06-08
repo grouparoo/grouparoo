@@ -60,6 +60,44 @@ describe("models/group", () => {
     expect(log.message).toBe('group "doomed group" destroyed');
   });
 
+  describe("run()", () => {
+    const getRuns = async (group) => {
+      const runs = await Run.findAll({
+        where: { creatorId: group.id, creatorType: "group" },
+      });
+      return runs;
+    };
+
+    afterEach(async () => {
+      process.env.GROUPAROO_RUN_MODE = undefined;
+    });
+    test("creates a run and sets state to initialized", async () => {
+      const group = await Group.create({
+        name: "group that will create a run",
+        type: "manual",
+      });
+      let runs = await getRuns(group);
+      expect(runs.length).toEqual(0);
+      await group.run();
+      runs = await getRuns(group);
+      expect(runs.length).toEqual(1);
+      expect(runs[0].state).toEqual("running");
+    });
+    test("does not create a group when in config mode", async () => {
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+
+      const group = await Group.create({
+        name: "group that will not create a run",
+        type: "manual",
+      });
+      let runs = await getRuns(group);
+      expect(runs.length).toEqual(0);
+      await group.run();
+      runs = await getRuns(group);
+      expect(runs.length).toEqual(0);
+    });
+  });
+
   describe("validations", () => {
     test("a new group will have a '' name", async () => {
       const group = await Group.create({
