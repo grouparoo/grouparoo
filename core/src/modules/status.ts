@@ -6,16 +6,23 @@ import {
   StatusMetric,
   FinalSummaryReporters,
 } from "./statusReporters";
+import * as uuid from "uuid";
 
 export namespace Status {
-  export const maxSamples = 1000;
+  export const maxSamples = 500;
   export const sampleFrequencyMS = 1000 * 5;
   export const cachePrefix = `${config.general.cachePrefix}status:samples:`;
 
   export interface StatusObject {
     timestamp: number;
-    metrics: StatusMetric[];
+    metric: StatusMetric;
   }
+
+  export type StatusGetResponse = {
+    [topic: string]: {
+      [collection: string]: StatusObject[];
+    };
+  };
 
   export const statusSampleReporters = [
     // information about how Grouparoo is being operated
@@ -42,20 +49,13 @@ export namespace Status {
     async () => StatusReporters.Sources.nextRuns(),
   ];
 
-  export type StatusGetResponse = {
-    [topic: string]: {
-      [collection: string]: { timestamp: number; metrics: StatusMetric[] }[];
-    };
-  };
-
-  export async function get(limit = maxSamples) {
+  export async function get() {
     const redis = getRedis();
     const keyMatch = `${cachePrefix}*`;
     const keys = await redis.keys(keyMatch);
     if (keys.length === 0) return {};
 
     const samples = (await redis.mget(keys))
-      .slice(0, limit)
       .map((v) => {
         let parsed: StatusObject;
         try {
@@ -68,28 +68,18 @@ export namespace Status {
     const response: StatusGetResponse = {};
 
     samples.forEach((sample) => {
-      sample.metrics.forEach((metric) => {
-        if (!response[metric.topic]) response[metric.topic] = {};
-        if (!response[metric.topic][metric.collection])
-          response[metric.topic][metric.collection] = [];
+      if (!response[sample.metric.topic]) response[sample.metric.topic] = {};
+      if (!response[sample.metric.topic][sample.metric.collection])
+        response[sample.metric.topic][sample.metric.collection] = [];
 
-        const existingSample = response[metric.topic][metric.collection].find(
-          (s) => s.timestamp === sample.timestamp
-        );
+      response[sample.metric.topic][sample.metric.collection].push(sample);
 
-        if (existingSample) {
-          existingSample.metrics.push(metric);
-        } else {
-          response[metric.topic][metric.collection].push({
-            timestamp: sample.timestamp,
-            metrics: [metric],
-          });
-        }
-
-        response[metric.topic][metric.collection].sort(
-          (a, b) => a.timestamp - b.timestamp
-        );
-      });
+      response[sample.metric.topic][sample.metric.collection] = response[
+        sample.metric.topic
+      ][sample.metric.collection]
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, maxSamples)
+        .sort((a, b) => a.timestamp - b.timestamp);
     });
 
     return response;
@@ -100,20 +90,25 @@ export namespace Status {
     ttl = Math.ceil((sampleFrequencyMS / 1000) * maxSamples * 2)
   ) {
     if (!Array.isArray(metrics)) metrics = [metrics];
+
+    const setMetrics: StatusObject[] = [];
     const now = new Date();
-    const status: StatusObject = {
-      timestamp: now.getTime(),
-      metrics,
-    };
-
     const redis = getRedis();
-    const key = `${cachePrefix}${now.getTime()}:${metrics
-      .map((m) => `${m.collection}-${m.aggregation}`)
-      .join(":")}`;
-    await redis.set(key, JSON.stringify(status));
-    await redis.expire(key, ttl);
 
-    return status;
+    for (const metric of metrics) {
+      const status: StatusObject = {
+        timestamp: now.getTime(),
+        metric,
+      };
+      const key = `${cachePrefix}${now.getTime()}:${metric.topic}:${
+        metric.collection
+      }:${uuid.v4()}`;
+      await redis.set(key, JSON.stringify(status));
+      await redis.expire(key, ttl);
+      setMetrics.push(status);
+    }
+
+    return setMetrics;
   }
 
   function getRedis() {

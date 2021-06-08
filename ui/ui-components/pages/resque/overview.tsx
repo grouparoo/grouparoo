@@ -43,9 +43,9 @@ export default function ResqueOverview(props) {
 
     const resqueCollection = statusHandler.metrics["resqueDetails"];
     if (!resqueCollection) return;
-    resqueCollection["cluster"].forEach(({ metrics, timestamp }) => {
+    resqueCollection["cluster"].forEach(({ metric, timestamp }) => {
       const resqueDetails: Actions.ResqueResqueDetails["resqueDetails"] =
-        JSON.parse(metrics[0].metadata);
+        JSON.parse(metric.metadata);
 
       _workers = resqueDetails?.workers || _workers;
       _stats = resqueDetails?.stats || _stats;
@@ -92,7 +92,7 @@ export default function ResqueOverview(props) {
     if (!resqueCollection) return;
     _failedCount =
       failedCollection["cluster"][failedCollection["cluster"].length - 1]
-        ?.metrics[0].count;
+        ?.metric.count;
 
     setWorkers(_workers);
     setStats(_stats);

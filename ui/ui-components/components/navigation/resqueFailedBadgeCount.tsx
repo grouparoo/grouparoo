@@ -15,8 +15,8 @@ export default function ResqueFailedCountBadge({
   useEffect(() => {
     statusHandler.subscribe(
       "resque-failed-badge",
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        setResqueFailedCount(metrics[0].count);
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setResqueFailedCount(metric.count);
       },
       { topic: "resqueErrors", collection: "cluster" }
     );

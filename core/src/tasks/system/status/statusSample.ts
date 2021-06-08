@@ -20,9 +20,9 @@ export class StatusSample extends CLSTask {
     if (!method) return;
 
     const response = await method();
-    const { timestamp, metrics } = await Status.set(response);
+    const metrics = await Status.set(response);
+
     await chatRoom.broadcast({}, "system:status", {
-      timestamp,
       metrics,
     });
   }

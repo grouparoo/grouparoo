@@ -2,13 +2,13 @@ import { EventDispatcher } from "./eventDispatcher";
 import { Actions, Misc } from "../utils/apiData";
 
 export class StatusHandler extends EventDispatcher {
-  maxSamples: 50;
+  maxSamples: number;
   matchers: { [name: string]: { topic: string; collection: string } } = {};
   metrics: {
     [topic: string]: {
       [collection: string]: {
+        metric: Misc.StatusMetricType;
         timestamp: number;
-        metrics: Misc.StatusMetricType[];
       }[];
     };
   };
@@ -27,6 +27,7 @@ export class StatusHandler extends EventDispatcher {
   ) {
     this.subscriptions[name] = handler;
     this.matchers[name] = matcher;
+    await this.afterSubscribe(name, handler, matcher);
   }
 
   unsubscribe(name: string) {
@@ -35,18 +36,21 @@ export class StatusHandler extends EventDispatcher {
   }
 
   async beforePublish(sample: {
-    timestamp: number;
-    metrics: Misc.StatusMetricType[];
+    timestamp?: number;
+    metric?: Misc.StatusMetricType;
+    metrics?: { timestamp: number; metric: Misc.StatusMetricType }[];
   }) {
-    const { timestamp, metrics } = sample;
-    metrics.forEach((metric) => {
+    let { timestamp, metrics, metric } = sample;
+    if (!metrics) metrics = [{ timestamp, metric }];
+
+    metrics.forEach(({ metric, timestamp }) => {
       const { topic, collection } = metric;
       if (!this.metrics[topic]) this.metrics[topic] = {};
       if (!this.metrics[topic][collection]) {
         this.metrics[topic][collection] = [];
       }
 
-      this.metrics[topic][collection].push({ timestamp, metrics: [metric] });
+      this.metrics[topic][collection].push({ timestamp, metric });
       while (this.metrics[topic][collection].length > this.maxSamples) {
         this.metrics[topic][collection].shift();
       }
@@ -54,36 +58,64 @@ export class StatusHandler extends EventDispatcher {
   }
 
   async publish(
-    data: { timestamp: number; metrics: Misc.StatusMetricType[] },
+    sample: {
+      timestamp?: number;
+      metric?: Misc.StatusMetricType;
+      metrics?: { timestamp: number; metric: Misc.StatusMetricType }[];
+    },
     toStore = true
   ) {
-    if (toStore) await this.beforePublish(data);
+    if (toStore) await this.beforePublish(sample);
+
+    let { timestamp, metrics, metric } = sample;
+    if (!metrics) metrics = [{ timestamp, metric }];
+
+    const debounceKeys: string[] = [];
 
     for (const key of Object.keys(this.subscriptions)) {
-      const matcher = this.matchers[key];
-      const subscription = this.subscriptions[key];
-      const matchedMetrics = data.metrics.filter(
-        (metric) =>
+      for (const { metric, timestamp } of metrics) {
+        const matcher = this.matchers[key];
+        const subscription = this.subscriptions[key];
+        const match =
           metric.topic === matcher.topic &&
-          metric.collection === matcher.collection
-      );
+          metric.collection === matcher.collection;
 
-      if (matchedMetrics.length > 0)
-        await subscription({
-          timestamp: data.timestamp,
-          metrics: matchedMetrics,
-        });
+        if (match && !debounceKeys.includes(key)) {
+          debounceKeys.push(key);
+          await subscription({ metric, timestamp });
+        }
+      }
     }
   }
 
-  // async afterSubscribe(name, handler: Function) {
-  //   for (const topic of Object.keys(this.metrics)) {
-  //     for (const collection of Object.keys(this.metrics[topic])) {
-  //       const mostRecentSample = this.metrics[topic][collection][0];
-  //       handler(mostRecentSample);
-  //     }
-  //   }
-  // }
+  async afterSubscribe(
+    name,
+    handler: Function,
+    matcher: { topic: string; collection: string }
+  ) {
+    let debounce = false;
+    for (const topic of Object.keys(this.metrics)) {
+      for (const collection of Object.keys(this.metrics[topic])) {
+        const latestTimestamp =
+          this.metrics[topic][collection][
+            this.metrics[topic][collection].length - 1
+          ].timestamp;
+
+        const latestMetrics = this.metrics[topic][collection].filter(
+          (m) => m.timestamp === latestTimestamp
+        );
+
+        const match =
+          latestMetrics[0].metric.topic === matcher.topic &&
+          latestMetrics[0].metric.collection === matcher.collection;
+
+        if (match && !debounce) {
+          debounce = true;
+          await handler(latestMetrics[0]);
+        }
+      }
+    }
+  }
 
   async getSamples(execApi) {
     const { metrics }: Actions.PrivateStatus = await execApi(
@@ -95,13 +127,19 @@ export class StatusHandler extends EventDispatcher {
 
     for (const topic of Object.keys(this.metrics)) {
       for (const collection of Object.keys(this.metrics[topic])) {
-        this.publish(
+        const latestTimestamp =
           this.metrics[topic][collection][
             this.metrics[topic][collection].length - 1
-          ],
-          false
+          ].timestamp;
+
+        const latestMetrics = this.metrics[topic][collection].filter(
+          (m) => m.timestamp === latestTimestamp
         );
+
+        this.publish({ metrics: latestMetrics }, false);
       }
     }
   }
+
+  publishLatest() {}
 }

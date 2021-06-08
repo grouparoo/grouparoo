@@ -27,8 +27,8 @@ export function BigTotalNumber({
   useEffect(() => {
     statusHandler.subscribe(
       subscriptionName,
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        setTotal(metrics[0].count);
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setTotal(metric.count);
       },
       { topic: model, collection: "totals" }
     );
@@ -72,27 +72,31 @@ export function GroupsByNewestMember({
   const [groups, setGroups] = useState<GroupType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(
-      `groups-by-newest-member`,
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        const _groups = metrics.map((s) => {
-          return {
-            id: s.key,
-            name: s.value,
-            profilesCount: s.count,
-            newestMembersAdded: s.metadata,
-          };
-        });
-
-        setGroups(_groups);
-      },
-      { topic: "Group", collection: "byNewestMember" }
-    );
+    statusHandler.subscribe(`groups-by-newest-member`, () => load(), {
+      topic: "Group",
+      collection: "byNewestMember",
+    });
 
     return () => {
       statusHandler.unsubscribe(`groups-by-newest-member`);
     };
   }, []);
+
+  function load() {
+    const collection = statusHandler.metrics["Group"]["byNewestMember"];
+    const latestTimestamp = collection[collection.length - 1].timestamp;
+    const metrics = collection.filter((m) => m.timestamp === latestTimestamp);
+    setGroups(
+      metrics.map(({ metric }) => {
+        return {
+          id: metric.key,
+          name: metric.value,
+          profilesCount: metric.count,
+          newestMembersAdded: metric.metadata,
+        };
+      })
+    );
+  }
 
   if (groups.length === 0) {
     return (
@@ -157,34 +161,32 @@ export function RunningRuns({
   const [runs, setRuns] = useState<Models.RunType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(
-      `running-runs-chart`,
-      ({
-        metrics,
-        timestamp,
-      }: {
-        timestamp: number;
-        metrics: Misc.StatusMetricType[];
-      }) => {
-        const _runs = metrics.map((s) => {
-          return {
-            id: s.key,
-            creatorName: s.value,
-            percentComplete: s.count,
-            highWaterMark: s.metadata,
-          };
-        });
-
-        //@ts-ignore
-        setRuns(_runs);
-      },
-      { topic: "Run", collection: "percentComplete" }
-    );
+    statusHandler.subscribe(`running-runs-chart`, () => load(), {
+      topic: "Run",
+      collection: "percentComplete",
+    });
 
     return () => {
       statusHandler.unsubscribe(`running-runs-chart`);
     };
   }, []);
+
+  function load() {
+    const collection = statusHandler.metrics["Run"]["percentComplete"];
+    const latestTimestamp = collection[collection.length - 1].timestamp;
+    const metrics = collection.filter((m) => m.timestamp === latestTimestamp);
+    setRuns(
+      //@ts-ignore
+      metrics.map(({ metric }) => {
+        return {
+          id: metric.key,
+          creatorName: metric.value,
+          percentComplete: metric.count,
+          highWaterMark: metric.metadata,
+        };
+      })
+    );
+  }
 
   if (runs.length === 0) {
     return (
@@ -250,27 +252,33 @@ export function ScheduleRuns({
   const [sources, setSources] = useState<SourceScheduleType[]>([]);
 
   useEffect(() => {
-    statusHandler.subscribe(
-      `schedule-next-runs-chart`,
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        const _sources = metrics.map((s) => {
-          return {
-            id: s.key,
-            name: s.value,
-            recurring: s.count === 1,
-            nextRunAt: parseInt(s.metadata),
-          };
-        });
-
-        setSources(_sources);
-      },
-      { topic: "Source", collection: "nextRun" }
-    );
+    statusHandler.subscribe(`schedule-next-runs-chart`, () => load(), {
+      topic: "Source",
+      collection: "nextRun",
+    });
 
     return () => {
       statusHandler.unsubscribe(`schedule-next-runs-chart`);
     };
   }, []);
+
+  function load() {
+    const collection = statusHandler.metrics["Source"]["nextRun"];
+    const latestTimestamp = collection[collection.length - 1].timestamp;
+    const metrics = collection.filter((m) => m.timestamp === latestTimestamp);
+    setSources(
+      metrics
+        .map(({ metric }) => {
+          return {
+            id: metric.key,
+            name: metric.value,
+            recurring: metric.count === 1,
+            nextRunAt: parseInt(metric.metadata),
+          };
+        })
+        .sort((a, b) => a.id.localeCompare(b.id))
+    );
+  }
 
   if (sources.length === 0) {
     return (
@@ -354,11 +362,12 @@ export function PendingImports({
   function load() {
     const pendingProfileCollection = statusHandler.metrics["Profile"];
     if (!pendingProfileCollection) return;
-    const pendingProfileMetrics =
+
+    const pendingProfileMetric =
       pendingProfileCollection["pending"][
         pendingProfileCollection["pending"].length - 1
-      ].metrics;
-    setPendingProfilesCount(pendingProfileMetrics[0].count);
+      ].metric;
+    setPendingProfilesCount(pendingProfileMetric.count);
 
     const _chartData: ChartLinData = [];
     const _pendingImportKeys: string[] = [];
@@ -366,40 +375,38 @@ export function PendingImports({
 
     const pendingSourceCollection = statusHandler.metrics["Import"];
     if (!pendingSourceCollection) return;
+
     const pendingSourceMetrics = pendingSourceCollection["pendingBySource"];
+    pendingSourceMetrics.forEach(({ metric, timestamp }) => {
+      if (!_pendingImportKeys.includes(metric.value)) {
+        _pendingImportKeys.push(metric.value);
+      }
+      const idx = _pendingImportKeys.indexOf(metric.value);
 
-    pendingSourceMetrics.forEach(({ metrics, timestamp }) => {
-      metrics.forEach((metric) => {
-        if (!_pendingImportKeys.includes(metric.value)) {
-          _pendingImportKeys.push(metric.value);
-        }
-
-        const idx = _pendingImportKeys.indexOf(metric.value);
-        if (!_chartData[idx]) _chartData[idx] = [];
-
-        _chartData[idx].push({
-          x: timestamp,
-          y: metric.count,
-        });
-
-        if (!_sources.find((s) => s.id === metric.key)) {
-          _sources.push({
-            id: metric.key,
-            name: metric.value,
-            pending: metric.count,
-          });
-        }
+      if (!_chartData[idx]) _chartData[idx] = [];
+      _chartData[idx].push({
+        x: timestamp,
+        y: metric.count,
       });
+
+      if (!_sources.find((s) => s.id === metric.key)) {
+        _sources.push({
+          id: metric.key,
+          name: metric.value,
+          pending: metric.count,
+        });
+      }
     });
 
     for (const idx in _chartData) {
-      while (_chartData[idx].length > maxSampleLength) {
-        _chartData[idx].shift();
-      }
+      while (_chartData[idx].length > maxSampleLength) _chartData[idx].shift();
     }
 
     if (_sources) setSources(_sources);
-    if (_pendingImportKeys) setPendingImportKeys(_pendingImportKeys);
+    if (_pendingImportKeys)
+      setPendingImportKeys(
+        _pendingImportKeys.sort((a, b) => a.localeCompare(b))
+      );
     if (_chartData) setChartData(_chartData);
   }
 
@@ -453,11 +460,12 @@ export function PendingExports({
     function load() {
       const pendingExportCountCollection = statusHandler.metrics["Export"];
       if (!pendingExportCountCollection) return;
-      const pendingExportCountMetrics =
+
+      const pendingExportCountMetric =
         pendingExportCountCollection["pending"][
           pendingExportCountCollection["pending"].length - 1
-        ].metrics;
-      setPendingExportsCount(pendingExportCountMetrics[0].count);
+        ].metric;
+      setPendingExportsCount(pendingExportCountMetric.count);
 
       const _chartData: ChartLinData = [];
       const _pendingExportKeys: string[] = [];
@@ -465,42 +473,40 @@ export function PendingExports({
 
       const pendingExportCollection = statusHandler.metrics["Export"];
       if (!pendingExportCollection) return;
+
       const pendingExportMetrics =
         pendingExportCollection["pendingByDestination"];
+      pendingExportMetrics.forEach(({ metric, timestamp }) => {
+        if (!_pendingExportKeys.includes(metric.value)) {
+          _pendingExportKeys.push(metric.value);
+        }
 
-      pendingExportMetrics.forEach(({ metrics, timestamp }) => {
-        metrics.forEach((metric) => {
-          if (!_pendingExportKeys.includes(metric.value)) {
-            _pendingExportKeys.push(metric.value);
-          }
+        const idx = _pendingExportKeys.indexOf(metric.value);
+        if (!_chartData[idx]) _chartData[idx] = [];
 
-          const idx = _pendingExportKeys.indexOf(metric.value);
-          if (!_chartData[idx]) _chartData[idx] = [];
-
-          _chartData[idx].push({
-            x: timestamp,
-            y: metric.count,
-          });
-
-          if (!_destinations.find((s) => s.id === metric.key)) {
-            _destinations.push({
-              id: metric.key,
-              name: metric.value,
-              pending: metric.count,
-            });
-          }
+        _chartData[idx].push({
+          x: timestamp,
+          y: metric.count,
         });
+
+        if (!_destinations.find((s) => s.id === metric.key)) {
+          _destinations.push({
+            id: metric.key,
+            name: metric.value,
+            pending: metric.count,
+          });
+        }
       });
 
       for (const idx in _chartData) {
-        while (_chartData[idx].length > maxSampleLength) {
+        while (_chartData[idx].length > maxSampleLength)
           _chartData[idx].shift();
-        }
       }
 
       setDestinations(_destinations);
-      setPendingExportKeys(_pendingExportKeys);
-      // setPendingExportsCount(_pendingExportsCount);
+      setPendingExportKeys(
+        _pendingExportKeys.sort((a, b) => a.localeCompare(b))
+      );
       setChartData(_chartData);
     }
 

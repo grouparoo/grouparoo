@@ -63,26 +63,25 @@ export class StatusCLI extends CLI {
 
       for (const topic in samples) {
         for (const collection in samples[topic]) {
-          const collectionSample = samples[topic][collection][0];
-          for (const metric of collectionSample.metrics) {
-            if (metric.collection === "pending") {
-              pendingItems.push({
-                [metric.topic]: [metric.count],
-              });
-            }
+          const metrics = samples[topic][collection];
+          const { metric } = metrics[metrics.length - 1];
+          if (metric.collection === "pending") {
+            pendingItems.push({
+              [metric.topic]: [metric.count],
+            });
+          }
 
-            if (
-              metric.topic === "Run" &&
-              metric.collection === "percentComplete"
-            ) {
-              pendingRuns.push({
-                [metric.value]: [
-                  `${metric.count}%${
-                    metric.metadata ? ` (${metric.metadata})` : ""
-                  }`,
-                ],
-              });
-            }
+          if (
+            metric.topic === "Run" &&
+            metric.collection === "percentComplete"
+          ) {
+            pendingRuns.push({
+              [metric.value]: [
+                `${metric.count}%${
+                  metric.metadata ? ` (${metric.metadata})` : ""
+                }`,
+              ],
+            });
           }
         }
       }
@@ -121,5 +120,5 @@ function getLatestMetric(
   collection: string
 ) {
   return samples[topic][collection][samples[topic][collection].length - 1]
-    .metrics[0];
+    .metric;
 }

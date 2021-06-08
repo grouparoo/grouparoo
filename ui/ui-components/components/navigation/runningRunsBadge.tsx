@@ -13,8 +13,8 @@ export default function RunningRunsBadge({
   useEffect(() => {
     statusHandler.subscribe(
       "navigation-runs-badge",
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        setPendingRuns(metrics[0].count);
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setPendingRuns(metric.count);
       },
       { topic: "Run", collection: "pending" }
     );

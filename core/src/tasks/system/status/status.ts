@@ -49,11 +49,10 @@ export class StatusTask extends Task {
 
     for (const topic in samples) {
       for (const collection in samples[topic]) {
-        const collectionSample = samples[topic][collection][0];
-        for (const metric of collectionSample.metrics) {
-          if (metric.collection === "pending") {
-            pendingItems += metric.count;
-          }
+        const metrics = samples[topic][collection];
+        const { metric } = metrics[metrics.length - 1];
+        if (metric.collection === "pending") {
+          pendingItems += metric.count;
         }
       }
     }
@@ -90,26 +89,22 @@ export class StatusTask extends Task {
 
     for (const topic in samples) {
       for (const collection in samples[topic]) {
-        const collectionSample = samples[topic][collection][0];
-        for (const metric of collectionSample.metrics) {
-          if (metric.collection === "pending") {
-            pendingItems.push({
-              [metric.topic]: [metric.count],
-            });
-          }
+        const metrics = samples[topic][collection];
+        const { metric } = metrics[metrics.length - 1];
+        if (metric.collection === "pending") {
+          pendingItems.push({
+            [metric.topic]: [metric.count],
+          });
+        }
 
-          if (
-            metric.topic === "Run" &&
-            metric.collection === "percentComplete"
-          ) {
-            pendingRuns.push({
-              [metric.value]: [
-                `${metric.count}%${
-                  metric.metadata ? ` (${metric.metadata})` : ""
-                }`,
-              ],
-            });
-          }
+        if (metric.topic === "Run" && metric.collection === "percentComplete") {
+          pendingRuns.push({
+            [metric.value]: [
+              `${metric.count}%${
+                metric.metadata ? ` (${metric.metadata})` : ""
+              }`,
+            ],
+          });
         }
       }
     }

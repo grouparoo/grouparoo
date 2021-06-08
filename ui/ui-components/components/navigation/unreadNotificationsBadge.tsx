@@ -15,8 +15,8 @@ export default function UnreadNotificationCountBadge({
   useEffect(() => {
     statusHandler.subscribe(
       "unread-notifications-badge",
-      ({ metrics }: { metrics: Misc.StatusMetricType[] }) => {
-        setUnreadCount(metrics[0].count);
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setUnreadCount(metric.count);
       },
       { topic: "unreadNotifications", collection: "cluster" }
     );
