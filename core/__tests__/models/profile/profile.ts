@@ -985,15 +985,14 @@ describe("models/profile", () => {
       expect(events.map((e) => e.type)).toEqual(["purchase"]);
     });
 
-    test("when a profile is deleted, it will enqueue a task to delete events", async () => {
-      await api.resque.queue.connection.redis.flushdb();
+    test("when a profile is deleted, it will delete events", async () => {
+      const startingCount = await profile.$count("events");
+      expect(startingCount).toBeGreaterThan(0);
 
       await profile.destroy();
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "profile:destroyEvents"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0].profileId).toBe(profile.id);
+
+      const endingCount = await profile.$count("events");
+      expect(endingCount).toBe(0);
     });
   });
 
