@@ -163,7 +163,7 @@ export function RunningRuns({
   useEffect(() => {
     statusHandler.subscribe(`running-runs-chart`, () => load(), {
       topic: "Run",
-      collection: "percentComplete",
+      collection: "pending",
     });
 
     return () => {
@@ -172,19 +172,34 @@ export function RunningRuns({
   }, []);
 
   function load() {
-    const collection = statusHandler.metrics["Run"]["percentComplete"];
-    const latestTimestamp = collection[collection.length - 1].timestamp;
-    const metrics = collection.filter((m) => m.timestamp === latestTimestamp);
+    const pendingCollection = statusHandler.metrics["Run"]["pending"];
+    if (!pendingCollection) return;
+    const activeRunIds: string[] =
+      JSON.parse(
+        pendingCollection[pendingCollection.length - 1]?.metric?.value
+      ) ?? [];
+
+    if (pendingCollection.length === 0) return setRuns([]);
+
+    const percentCollection = statusHandler.metrics["Run"]["percentComplete"];
+    if (!percentCollection) return;
+    const latestTimestamp =
+      percentCollection[percentCollection.length - 1].timestamp;
+    const metrics = percentCollection.filter(
+      (m) => m.timestamp === latestTimestamp
+    );
     setRuns(
       //@ts-ignore
-      metrics.map(({ metric }) => {
-        return {
-          id: metric.key,
-          creatorName: metric.value,
-          percentComplete: metric.count,
-          highWaterMark: metric.metadata,
-        };
-      })
+      metrics
+        .filter(({ metric }) => activeRunIds.includes(metric.key))
+        .map(({ metric }) => {
+          return {
+            id: metric.key,
+            creatorName: metric.value,
+            percentComplete: metric.count,
+            highWaterMark: metric.metadata,
+          };
+        })
     );
   }
 
@@ -377,6 +392,7 @@ export function PendingImports({
     if (!pendingSourceCollection) return;
 
     const pendingSourceMetrics = pendingSourceCollection["pendingBySource"];
+    if (!pendingSourceMetrics) return;
     pendingSourceMetrics.forEach(({ metric, timestamp }) => {
       if (!_pendingImportKeys.includes(metric.value)) {
         _pendingImportKeys.push(metric.value);
@@ -476,6 +492,7 @@ export function PendingExports({
 
       const pendingExportMetrics =
         pendingExportCollection["pendingByDestination"];
+      if (!pendingExportMetrics) return;
       pendingExportMetrics.forEach(({ metric, timestamp }) => {
         if (!_pendingExportKeys.includes(metric.value)) {
           _pendingExportKeys.push(metric.value);

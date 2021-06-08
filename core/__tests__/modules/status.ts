@@ -184,6 +184,7 @@ describe("modules/status", () => {
                 collection: "pending",
                 count: 1,
                 topic: "Run",
+                value: expect.any(String),
               },
               timestamp: expect.any(Number),
             },

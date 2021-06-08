@@ -22,9 +22,15 @@ export class StatusTask extends Task {
     return APM.wrap(this.name, "task", worker, async () => {
       const runMode = process.env.GROUPAROO_RUN_MODE;
 
-      Status.statusSampleReporters.forEach(async (_, idx) => {
-        await task.enqueue("status:sample", { index: idx });
-      });
+      if (runMode === "cli:run") {
+        // calculate stats inline
+        await Status.setAll();
+      } else {
+        // distribute stats calculation
+        Status.statusSampleReporters.forEach(async (_, idx) => {
+          await task.enqueue("status:sample", { index: idx });
+        });
+      }
 
       const samples = await this.getSamples();
       if (runMode === "cli:run") this.logSamples(samples);
@@ -91,10 +97,20 @@ export class StatusTask extends Task {
     const pendingItems = [];
     const pendingRuns = [];
 
+    const pendingCollection = samples["Run"]
+      ? samples["Run"]["pending"]
+      : undefined;
+    const activeRunIds: string[] = pendingCollection
+      ? JSON.parse(
+          pendingCollection[pendingCollection.length - 1]?.metric?.value
+        ) ?? []
+      : [];
+
     for (const topic in samples) {
       for (const collection in samples[topic]) {
         const metrics = samples[topic][collection];
-        const { metric: latestMetric } = metrics[metrics.length - 1];
+        const { metric: latestMetric, timestamp: latestTimestamp } =
+          metrics[metrics.length - 1];
 
         if (latestMetric.collection === "totals") {
           totalItems.push({
@@ -112,14 +128,19 @@ export class StatusTask extends Task {
           latestMetric.topic === "Run" &&
           latestMetric.collection === "percentComplete"
         ) {
-          metrics.forEach(({ metric }) => {
-            pendingRuns.push({
-              [metric.value]: [
-                `${metric.count}%${
-                  metric.metadata ? ` (${metric.metadata})` : ""
-                }`,
-              ],
-            });
+          metrics.forEach(({ metric, timestamp }) => {
+            if (
+              activeRunIds.includes(metric.key) &&
+              latestTimestamp === timestamp
+            ) {
+              pendingRuns.push({
+                [metric.value]: [
+                  `${metric.count}%${
+                    metric.metadata ? ` (${metric.metadata})` : ""
+                  }`,
+                ],
+              });
+            }
           });
         }
       }

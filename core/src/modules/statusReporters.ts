@@ -232,6 +232,7 @@ export namespace StatusReporters {
         topic: "Run",
         aggregation: "count",
         count: activeRuns.length,
+        value: JSON.stringify(activeRuns.map((r) => r.id)),
       });
 
       for (const i in activeRuns) {
