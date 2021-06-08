@@ -118,7 +118,7 @@ export default function ResqueOverview(props) {
             <GrouparooChart
               data={chartData}
               keys={Object.keys(queues)}
-              minPoints={maxSampleLength}
+              minPoints={3}
             />
           </Card>
         </Col>
