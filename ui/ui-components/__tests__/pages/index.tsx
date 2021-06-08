@@ -69,11 +69,29 @@ describe("pages/index", () => {
   });
 
   describe("Config UI Edition", () => {
-    test("it prompts users to complete steps in config mode", async () => {
+    test("it prompts the user to sign in", async () => {
       wrapper = mount(
         <Page
           {...commonProps}
-          navigationMode="config"
+          navigationMode="config:unauthenticated"
+          navigation={{ bottomMenuItems: [] }}
+          setupSteps={[
+            { complete: false, skipped: false },
+            { complete: true, skipped: false },
+          ]}
+        />
+      );
+
+      const html = wrapper.html();
+      expect(html).toContain("Sign In");
+      expect(html).not.toContain("Set Up");
+    });
+
+    test("it prompts the user to complete steps", async () => {
+      wrapper = mount(
+        <Page
+          {...commonProps}
+          navigationMode="config:authenticated"
           navigation={{ bottomMenuItems: [] }}
           setupSteps={[
             { complete: false, skipped: false },
@@ -86,14 +104,12 @@ describe("pages/index", () => {
       expect(html).not.toContain("Sign In");
       expect(html).toContain("Set Up");
     });
-  });
 
-  describe("Config UI Edition", () => {
-    test("it prompts users to configure profiles after steps", async () => {
+    test("it prompts the user to configure profiles", async () => {
       wrapper = mount(
         <Page
           {...commonProps}
-          navigationMode="config"
+          navigationMode="config:authenticated"
           navigation={{ bottomMenuItems: [] }}
           setupSteps={[
             { complete: true, skipped: false },

@@ -26,9 +26,27 @@ export default function SignInPage(props) {
     setLoading(false);
 
     if (response?.user?.email) {
-      router.push(nextPage ? nextPage.toString() : "/");
+      if (nextPage) {
+        router.push(nextPage.toString());
+      } else {
+        const { setupSteps, toDisplay } = await getSetupSteps();
+        const isSetupComplete = setupSteps.every((step) => step.complete);
+        if (isSetupComplete || !toDisplay) {
+          router.push("/profiles");
+        } else {
+          router.push("/setup");
+        }
+      }
     }
   };
+
+  async function getSetupSteps() {
+    const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
+      "get",
+      `/setupSteps`
+    );
+    return { setupSteps, toDisplay };
+  }
 
   return (
     <>

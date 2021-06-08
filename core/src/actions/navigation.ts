@@ -193,14 +193,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     }
 
     if (navigationMode === "config:unauthenticated") {
-      const user = await ConfigUser.get();
-
-      if (user) {
-        navigationMode = "config:authenticated";
-      }
-    }
-
-    if (navigationMode.indexOf("config") >= 0) {
       navigationItems = [
         {
           type: "link",
@@ -239,6 +231,12 @@ export class NavigationList extends OptionallyAuthenticatedAction {
           icon: "file-export",
         },
       ];
+
+      const user = await ConfigUser.get();
+
+      if (user) {
+        navigationMode = "config:authenticated";
+      }
     }
 
     const clusterNameSetting = await Setting.findOne({

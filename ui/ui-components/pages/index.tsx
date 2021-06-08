@@ -2,49 +2,70 @@ import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import Loader from "../components/loader";
 
 export default function Page(props) {
   const router = useRouter();
   const { navigationMode, navigation } = props;
-
+  const [shouldRender, setShouldRender] = useState(false);
+  const [CTAs, setCTAs] = useState({
+    CTALink: "/session/sign-in",
+    CTAMessage: "Sign In",
+    CTATarget: null,
+  });
   let currentStep = null;
 
   useEffect(() => {
-    async function getCurrentStep(props) {
-      if (navigationMode === "config:authenticated") {
-        const { execApi } = useApi(props);
-        const { setupSteps } = await execApi("get", `/setupSteps`);
-        const foundStep = setupSteps.find(
-          (step) => !step.complete && !step.skipped
-        );
-        currentStep = foundStep;
-        console.log(currentStep);
+    if (navigationMode === "config:authenticated") {
+      getSetupSteps(props);
+    }
+
+    async function getSetupSteps(props) {
+      console.log(`fetching steps`);
+      const { execApi } = useApi(props);
+      const { setupSteps } = await execApi("get", `/setupSteps`);
+      const foundStep = await setupSteps.find(
+        (step) => !step.complete && !step.skipped
+      );
+      currentStep = foundStep;
+
+      if (navigationMode === "config:authenticated" && currentStep) {
+        setCTAs({
+          CTAMessage: "Set Up Grouparoo",
+          CTALink: "/setup",
+          CTATarget: null,
+        });
+      } else if (navigationMode === "config:authenticated" && !currentStep) {
+        setCTAs({
+          CTAMessage: "Configure Profiles",
+          CTALink: "/profiles",
+          CTATarget: null,
+        });
       }
     }
-    getCurrentStep(props);
-    console.log(currentStep);
+    if (navigationMode === "authenticated") {
+      setCTAs({
+        CTAMessage: "View Dashboard",
+        CTALink: "/dashboard",
+        CTATarget: null,
+      });
+    } else if (
+      navigation?.bottomMenuItems[0] &&
+      navigation?.bottomMenuItems[0].href === "/team/initialize"
+    ) {
+      setCTAs({
+        CTAMessage: "Create Team",
+        CTALink: "/team/initialize",
+        CTATarget: null,
+      });
+    }
+    setShouldRender(true);
   }, []);
 
-  let CTALink = "/session/sign-in";
-  let CTAMessage = "Sign In";
-  let CTATarget: string;
-
-  if (navigationMode.indexOf("config") >= 0 && currentStep) {
-    CTAMessage = "Set Up Grouparoo";
-    CTALink = "/setup";
-  } else if (navigationMode === "config:authenticated" && !currentStep) {
-    CTAMessage = "Configure Your Profiles";
-    CTALink = "/profiles";
-  } else if (navigationMode === "authenticated") {
-    CTAMessage = "View Dashboard";
-    CTALink = "/dashboard";
-  } else if (
-    navigation?.bottomMenuItems[0] &&
-    navigation?.bottomMenuItems[0].href === "/team/initialize"
-  ) {
-    CTAMessage = "Create Team";
-    CTALink = "/team/initialize";
+  console.log(navigationMode);
+  if (shouldRender === false) {
+    return <Loader />;
   }
 
   return (
@@ -80,12 +101,12 @@ export default function Page(props) {
                 variant="primary"
                 size="lg"
                 onClick={() => {
-                  CTATarget
-                    ? window.open(CTALink, CTATarget)
-                    : router.push(CTALink);
+                  CTAs.CTATarget
+                    ? window.open(CTAs.CTALink, CTAs.CTATarget)
+                    : router.push(CTAs.CTALink);
                 }}
               >
-                {CTAMessage}
+                {CTAs.CTAMessage}
               </Button>
             </div>
           </Col>
@@ -94,9 +115,3 @@ export default function Page(props) {
     </>
   );
 }
-
-// Page.getInitialProps = async (ctx) => {
-//   const { execApi } = useApi(ctx);
-//   const { setupSteps } = await execApi("get", `/setupSteps`);
-//   return { setupSteps };
-// };
