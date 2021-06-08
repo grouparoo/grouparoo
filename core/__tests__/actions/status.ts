@@ -3,6 +3,9 @@ import { specHelper } from "actionhero";
 import os from "os";
 import fs from "fs";
 import { ConfigUser } from "../../src/modules/configUser";
+import { Status } from "../../src/modules/status";
+import { AsyncReturnType } from "type-fest";
+import { PrivateStatus } from "../../src/actions/status";
 
 const workerId = process.env.JEST_WORKER_ID;
 const configDir = `${os.tmpdir()}/test/${workerId}/configUser/config`;
@@ -56,7 +59,7 @@ describe("actions/status", () => {
             "status:private"
           );
           expect(error).toBeUndefined();
-          expect(metrics).toEqual([]);
+          expect(metrics).toEqual({});
         });
       });
     });
@@ -129,16 +132,16 @@ describe("actions/status", () => {
       });
 
       test("includes status metrics", async () => {
-        const { metrics } = await specHelper.runAction(
-          "status:private",
-          connection
-        );
+        await Status.setAll();
 
-        expect(metrics.length).toBeGreaterThanOrEqual(1);
-        const firstSamples = metrics[0];
-        const nodeEnvMetric = firstSamples.metrics.find(
-          (s) => s.collection === "cluster" && s.topic === "node_env"
-        );
+        const {
+          metrics,
+        }: AsyncReturnType<
+          typeof PrivateStatus.prototype.runWithinTransaction
+        > = await specHelper.runAction("status:private", connection);
+
+        expect(Object.keys(metrics).length).toBeGreaterThanOrEqual(1);
+        const nodeEnvMetric = metrics["node_env"]["cluster"][0].metric;
         expect(nodeEnvMetric.value).toBe("test");
       });
     });

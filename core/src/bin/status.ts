@@ -29,11 +29,7 @@ export class StatusCLI extends CLI {
         "cluster-name"
       );
 
-      // calculate status now
-      for (const i in Status.statusSampleReporters) {
-        await Status.statusSampleReporters[i]();
-      }
-
+      await Status.setAll();
       const samples = await Status.get();
 
       const { groups, newestMembersAdded } = await GroupOps.newestGroupMembers(

@@ -49,7 +49,7 @@ export namespace Status {
     async () => StatusReporters.Sources.nextRuns(),
   ];
 
-  export async function get() {
+  export async function get(limit = maxSamples) {
     const redis = getRedis();
     const keyMatch = `${cachePrefix}*`;
     const keys = await redis.keys(keyMatch);
@@ -78,7 +78,7 @@ export namespace Status {
         sample.metric.topic
       ][sample.metric.collection]
         .sort((a, b) => b.timestamp - a.timestamp)
-        .slice(0, maxSamples)
+        .slice(0, limit)
         .sort((a, b) => a.timestamp - b.timestamp);
     });
 
@@ -109,6 +109,16 @@ export namespace Status {
     }
 
     return setMetrics;
+  }
+
+  export async function setAll() {
+    for (const method of statusSampleReporters) {
+      const response = await method();
+      const metrics = await Status.set(response);
+      await chatRoom.broadcast({}, "system:status", {
+        metrics,
+      });
+    }
   }
 
   function getRedis() {

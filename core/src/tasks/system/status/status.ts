@@ -46,6 +46,7 @@ export class StatusTask extends Task {
 
   async checkForComplete(samples: Status.StatusGetResponse) {
     let pendingItems = 0;
+    let pendingCollections = 0;
 
     for (const topic in samples) {
       for (const collection in samples[topic]) {
@@ -53,10 +54,12 @@ export class StatusTask extends Task {
         const { metric } = metrics[metrics.length - 1];
         if (metric.collection === "pending") {
           pendingItems += metric.count;
+          pendingCollections++;
         }
       }
     }
 
+    if (pendingCollections < 4) return false; // not every model has been checked yet (profile, runs, import, export)
     return pendingItems > 0 ? false : true;
   }
 
