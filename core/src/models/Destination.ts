@@ -558,7 +558,7 @@ export class Destination extends LoggedModel<Destination> {
     );
 
     const options = await this.getOptions();
-    const mapping = await MappingHelper.getMapping(this, "id");
+    const mapping = await MappingHelper.getConfigMapping(this);
 
     if (!name || !appId) return;
 
