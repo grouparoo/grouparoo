@@ -2,6 +2,7 @@ import fs from "fs";
 import glob from "glob";
 import path from "path";
 import os from "os";
+import faker from "faker";
 import { helper } from "@grouparoo/spec-helper";
 
 import { App } from "../../src/models/App";
@@ -355,27 +356,34 @@ describe("modules/configWriter", () => {
     let property: Property;
     let group: Group;
 
+    let sourceOptions = { table: "test-table-02" };
+    let bsPropertyCol: string = faker.database.column();
+    let bsPropertyKey: string = faker.random.alphaNumeric(12);
+    let bsPropertyId: string = faker.datatype.uuid();
+    let propertyKey: string = faker.random.alphaNumeric(8);
+    let propertyCol: string = faker.database.column();
+
     beforeEach(async () => {
       source = await helper.factories.source();
-      await source.setOptions({ table: "test-table-02" });
+      await source.setOptions(sourceOptions);
       await source.bootstrapUniqueProperty(
-        "userId_02",
+        bsPropertyKey,
         "integer",
-        "id",
-        "user_id_02"
+        bsPropertyCol,
+        bsPropertyId
       );
-      await source.setMapping({ id: "userId_02" });
+      await source.setMapping({ [bsPropertyCol]: bsPropertyKey });
       await source.update({ state: "ready" });
 
       property = await helper.factories.property(
         source,
-        { key: "firstName02" },
-        { column: "firstName02" }
+        { key: propertyKey },
+        { column: propertyCol }
       );
 
       group = await helper.factories.group({ type: "calculated" });
       await group.setRules([
-        { key: "firstName02", match: "nobody", operation: { op: "eq" } },
+        { key: propertyKey, match: "nobody", operation: { op: "eq" } },
       ]);
     });
 
@@ -393,15 +401,16 @@ describe("modules/configWriter", () => {
       const config = await app.getConfigObject();
 
       expect(config.id).toBeTruthy();
+      const options = await app.$get("__options");
+      expect(options.length).toEqual(1);
 
       const { name, type } = app;
-      const options = await app.getOptions();
       expect(config).toEqual({
         class: "App",
         id: app.getConfigId(),
         name,
         type,
-        options,
+        options: Object.fromEntries(options.map((o) => [o.key, o.value])),
       });
     });
 
@@ -418,8 +427,9 @@ describe("modules/configWriter", () => {
 
       const { name, type } = source;
       const app = await source.$get("app");
-      const options = await source.getOptions();
-      const mapping = await MappingHelper.getConfigMapping(source);
+      const options = await source.$get("__options");
+      expect(options.length).toEqual(1);
+      const mappingProperty = await Property.findByPk(bsPropertyId);
 
       expect(config).toEqual({
         class: "Source",
@@ -427,8 +437,8 @@ describe("modules/configWriter", () => {
         name,
         type,
         appId: app.getConfigId(),
-        mapping,
-        options,
+        mapping: { [bsPropertyCol]: mappingProperty.getConfigId() },
+        options: Object.fromEntries(options.map((o) => [o.key, o.value])),
       });
     });
 
@@ -470,7 +480,8 @@ describe("modules/configWriter", () => {
       expect(config.id).toBeTruthy();
 
       const { name, recurring, recurringFrequency } = schedule;
-      const options = await schedule.getOptions();
+      const options = await schedule.$get("__options");
+      expect(options.length).toEqual(1);
 
       expect(config).toEqual({
         class: "Schedule",
@@ -479,7 +490,7 @@ describe("modules/configWriter", () => {
         sourceId: source.getConfigId(),
         recurring,
         recurringFrequency,
-        options,
+        options: Object.fromEntries(options.map((o) => [o.key, o.value])),
       });
     });
 
@@ -523,14 +534,16 @@ describe("modules/configWriter", () => {
     });
 
     test("properties can provide their config objects", async () => {
-      const config = await property.getConfigObject();
+      const filterObj = { key: "id", match: "0", op: "greater than" };
+      await property.setFilters([filterObj]);
 
+      const config = await property.getConfigObject();
       expect(config.id).toBeTruthy();
 
       const { key, type, unique, identifying, isArray } = property;
 
-      const options = await property.getOptions();
-      const filters = await property.getFilters();
+      const options = await property.$get("__options");
+      expect(options.length).toEqual(1);
 
       expect(config).toEqual({
         class: "Property",
@@ -541,8 +554,15 @@ describe("modules/configWriter", () => {
         unique,
         identifying,
         isArray,
-        options,
-        filters,
+        options: Object.fromEntries(options.map((o) => [o.key, o.value])),
+        filters: [
+          {
+            ...filterObj,
+            relativeMatchDirection: null,
+            relativeMatchNumber: null,
+            relativeMatchUnit: null,
+          },
+        ],
       });
     });
 
@@ -596,12 +616,16 @@ describe("modules/configWriter", () => {
         destinationGroupMemberships
       );
 
+      await destination.setMapping({ "primary-id": bsPropertyKey });
+      const mappingProperty = await Property.findByPk(bsPropertyId);
+      await MappingHelper.getConfigMapping(destination);
+
       const config = await destination.getConfigObject();
 
       const { name, type, syncMode } = destination;
 
-      const options = await destination.getOptions();
-      const mapping = await MappingHelper.getConfigMapping(destination);
+      const options = await destination.$get("__options");
+      expect(options.length).toEqual(1);
 
       expect(config.id).toBeTruthy();
       expect(config).toEqual({
@@ -612,8 +636,8 @@ describe("modules/configWriter", () => {
         appId: app.getConfigId(),
         groupId: group.getConfigId(),
         syncMode,
-        options,
-        mapping,
+        options: Object.fromEntries(options.map((o) => [o.key, o.value])),
+        mapping: { "primary-id": mappingProperty.getConfigId() },
         destinationGroupMemberships: {
           "My Dest Tag": group.getConfigId(),
         },
@@ -632,7 +656,7 @@ describe("modules/configWriter", () => {
 
     test("profiles can provide their config objects", async () => {
       const profile: Profile = await helper.factories.profile();
-      const properties = { user_id_02: [12] };
+      const properties = { [bsPropertyId]: [12] };
 
       await profile.addOrUpdateProperties({
         ...properties,
