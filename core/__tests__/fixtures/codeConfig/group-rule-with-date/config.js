@@ -46,13 +46,11 @@ module.exports = async function getConfig() {
           propertyId: "last_purchase_date",
           operation: { op: "lt" },
           match: "2020-03-01", // date only
-          type: "date",
         },
         {
           propertyId: "last_appointment_date",
           operation: { op: "gte" },
           match: "2019-10-10T14:48:00.000+09:00", //date with time and timezone
-          type: "date",
         },
         {
           propertyId: "last_email_date",
