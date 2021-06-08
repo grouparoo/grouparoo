@@ -21,7 +21,7 @@ export default function Page(props) {
     CTALink = "/setup";
   } else if (navigationMode === "config:authenticated" && !currentStep) {
     CTAMessage = "Configure Your Profiles";
-    CTALink = "/profile";
+    CTALink = "/profiles";
   } else if (navigationMode === "authenticated") {
     CTAMessage = "View Dashboard";
     CTALink = "/dashboard";
