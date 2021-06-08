@@ -87,41 +87,65 @@ export class StatusTask extends Task {
   logSamples(samples: Status.StatusGetResponse) {
     if (process.env.NODE_ENV === "test") return;
 
+    const totalItems = [];
     const pendingItems = [];
     const pendingRuns = [];
 
     for (const topic in samples) {
       for (const collection in samples[topic]) {
         const metrics = samples[topic][collection];
-        const { metric } = metrics[metrics.length - 1];
-        if (metric.collection === "pending") {
-          pendingItems.push({
-            [metric.topic]: [metric.count],
+        const { metric: latestMetric } = metrics[metrics.length - 1];
+
+        if (latestMetric.collection === "totals") {
+          totalItems.push({
+            [latestMetric.topic]: [latestMetric.count],
           });
         }
 
-        if (metric.topic === "Run" && metric.collection === "percentComplete") {
-          pendingRuns.push({
-            [metric.value]: [
-              `${metric.count}%${
-                metric.metadata ? ` (${metric.metadata})` : ""
-              }`,
-            ],
+        if (latestMetric.collection === "pending") {
+          pendingItems.push({
+            [latestMetric.topic]: [latestMetric.count],
+          });
+        }
+
+        if (
+          latestMetric.topic === "Run" &&
+          latestMetric.collection === "percentComplete"
+        ) {
+          metrics.forEach(({ metric }) => {
+            pendingRuns.push({
+              [metric.value]: [
+                `${metric.count}%${
+                  metric.metadata ? ` (${metric.metadata})` : ""
+                }`,
+              ],
+            });
           });
         }
       }
     }
 
-    GrouparooCLI.logger.status("Status", [
-      {
+    const logItems = [];
+    if (totalItems.length > 0) {
+      logItems.push({
+        header: "Total Items",
+        status: totalItems.reduce((s, arr) => Object.assign(s, arr), {}),
+      });
+    }
+    if (pendingItems.length > 0) {
+      logItems.push({
         header: "Pending Items",
         status: pendingItems.reduce((s, arr) => Object.assign(s, arr), {}),
-      },
-      {
+      });
+    }
+    if (pendingRuns.length > 0) {
+      logItems.push({
         header: "Active Runs",
         status: pendingRuns.reduce((s, arr) => Object.assign(s, arr), {}),
-      },
-    ]);
+      });
+    }
+
+    if (logItems.length > 0) GrouparooCLI.logger.status("Status", logItems);
   }
 
   async updateTaskFrequency() {
