@@ -57,7 +57,7 @@ export async function loadGroup(
         rules[i].key = property.key;
 
         // if calculating based on a date, parse to unix timestamp
-        if (calculatesWithDate.indexOf(rules[i]["operation"]["op"]) >= 0) {
+        if (calculatesWithDate.includes(rules[i]["operation"]["op"])) {
           if (property.type === "date") {
             rules[i]["match"] = Date.parse(rules[i]["match"].toString());
           }
