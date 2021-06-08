@@ -30,20 +30,20 @@ export class EventDispatcher {
   async beforePublish(data) {}
   async afterPublish(data) {}
 
-  async subscribe(name: string, handler: Function) {
+  async subscribe(name: string, handler: Function, matcher?: any) {
     if (typeof this.beforeSubscribe === "function") {
-      await this.beforeSubscribe(name, handler);
+      await this.beforeSubscribe(name, handler, matcher);
     }
 
     this.subscriptions[name] = handler;
 
     if (typeof this.afterSubscribe === "function") {
-      await this.afterSubscribe(name, handler);
+      await this.afterSubscribe(name, handler, matcher);
     }
   }
 
-  async beforeSubscribe(name, handler) {}
-  async afterSubscribe(name, handler) {}
+  async beforeSubscribe(name, handler, matcher) {}
+  async afterSubscribe(name, handler, matcher) {}
 
   unsubscribe(name) {
     delete this.subscriptions[name];

@@ -1,6 +1,7 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { StatusHandler } from "../../utils/statusHandler";
+import { Misc } from "../../utils/apiData";
 
 export default function RunningRunsBadge({
   statusHandler,
@@ -10,12 +11,13 @@ export default function RunningRunsBadge({
   const [pendingRuns, setPendingRuns] = useState(0);
 
   useEffect(() => {
-    statusHandler.subscribe("navigation-runs-badge", ({ metrics }) => {
-      const _pendingRuns =
-        metrics.find((m) => m.collection === "pending" && m.topic === "Run")
-          ?.count ?? -1;
-      setPendingRuns(_pendingRuns);
-    });
+    statusHandler.subscribe(
+      "navigation-runs-badge",
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setPendingRuns(metric.count);
+      },
+      { topic: "Run", collection: "pending" }
+    );
 
     return () => {
       statusHandler.unsubscribe("navigation-runs-badge");
