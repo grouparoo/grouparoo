@@ -50,7 +50,7 @@ export class SentryInitializer extends Initializer {
     // configure APM transaction tracing
     plugin.setApmWrap(async function apmWrap(
       name: string,
-      type: string,
+      type: "action" | "task",
       data: any,
       run: Function
     ) {
@@ -64,7 +64,10 @@ export class SentryInitializer extends Initializer {
         const transaction = Sentry.startTransaction({
           op: type,
           name,
-          tags: { action: name },
+          tags: {
+            action: type === "action" ? name : undefined,
+            task: type === "task" ? name : undefined,
+          },
         });
 
         Sentry.configureScope((scope) => scope.setSpan(transaction));
