@@ -49,9 +49,9 @@ describe("modules/configWriter", () => {
     });
     test("it returns a slugified, lowercase name", () => {
       let res = ConfigWriter.generateId("Hello World");
-      expect(res).toEqual("hello-world");
+      expect(res).toEqual("hello_world");
       res = ConfigWriter.generateId("!@#$%^&*(){}[]:\";'<>,./? Hello  World");
-      expect(res).toEqual("hello-world");
+      expect(res).toEqual("hello_world");
     });
   });
 
@@ -66,13 +66,13 @@ describe("modules/configWriter", () => {
       const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
       const configObject = await app.getConfigObject();
       const res = ConfigWriter.generateFilePath(configObject);
-      expect(res).toEqual("hello-world.json");
+      expect(res).toEqual("hello_world.json");
     });
     test("adds a prefix, if specified", async () => {
       const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
       const configObject = await app.getConfigObject();
       const res = ConfigWriter.generateFilePath(configObject, "apps");
-      expect(res).toEqual("apps/hello-world.json");
+      expect(res).toEqual("apps/hello_world.json");
     });
   });
 

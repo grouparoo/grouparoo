@@ -55,7 +55,7 @@ export namespace ConfigWriter {
   export function generateId(name): string {
     if (!name) return;
     slugify.extend({ $: "", "%": "", "&": "", "<": "", ">": "" });
-    const id = slugify(name, { lower: true, strict: true });
+    const id = slugify(name, { lower: true, strict: true, replacement: "_" });
     if (id.length === 0) return;
     return id;
   }
