@@ -17,11 +17,12 @@
   "devDependencies": {
     "@grouparoo/spec-helper": "0.4.0-alpha.1",
     "@grouparoo/ui-config": "0.4.0-alpha.1",
+    "grouparoo": "0.4.0-alpha.1",
     "jest": "26.6.3"
   },
   "scripts": {
-    "config": "rm grouparoo_config.sqlite; rm -rf .local; CONFIG_DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true ./node_modules/@grouparoo/core/node_modules/.bin/grouparoo config",
-    "demo": "./node_modules/@grouparoo/core/node_modules/.bin/grouparoo demo purchases --config"
+    "config": "rm grouparoo_config.sqlite; rm -rf .local; CONFIG_DATABASE_URL=\"sqlite://grouparoo_config.sqlite\" NEXT_DEVELOPMENT_MODE=true ./node_modules/.bin/grouparoo config",
+    "demo": "./node_modules/.bin/grouparoo demo purchases --config"
   },
   "grouparoo": {
     "grouparoo_monorepo_app": "staging-config",
