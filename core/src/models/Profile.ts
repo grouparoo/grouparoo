@@ -10,7 +10,6 @@ import {
   Default,
   AfterCreate,
 } from "sequelize-typescript";
-import { CLS } from "../modules/cls";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
 import { Group } from "./Group";
@@ -23,6 +22,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
+import { EventData } from "./EventData";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -263,9 +263,24 @@ export class Profile extends LoggedModel<Profile> {
 
   @AfterDestroy
   static async destroyEvents(instance: Profile) {
-    await CLS.enqueueTask("profile:destroyEvents", {
-      profileId: instance.id,
-    });
+    const limit = 1000;
+    let count = -1;
+
+    while (count !== 0) {
+      const events = await Event.findAll({
+        attributes: ["id"],
+        where: { profileId: instance.id },
+        limit,
+      });
+
+      if (events.length > 0) {
+        await EventData.destroy({
+          where: { eventId: events.map((e) => e.id) },
+        });
+        await Event.destroy({ where: { id: events.map((e) => e.id) } });
+      }
+      count = events.length;
+    }
   }
 
   @AfterDestroy
