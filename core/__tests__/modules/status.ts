@@ -238,7 +238,7 @@ describe("modules/status", () => {
                 aggregation: "exact",
                 collection: "cluster",
                 topic: "os",
-                value: "darwin/20.5.0",
+                value: expect.any(String),
               },
               timestamp: expect.any(Number),
             },

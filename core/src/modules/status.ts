@@ -115,9 +115,7 @@ export namespace Status {
     for (const method of statusSampleReporters) {
       const response = await method();
       const metrics = await Status.set(response);
-      await chatRoom.broadcast({}, "system:status", {
-        metrics,
-      });
+      await chatRoom.broadcast({}, "system:status", { metrics });
     }
   }
 
