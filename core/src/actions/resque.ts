@@ -1,8 +1,10 @@
 import os from "os";
 import { ErrorPayload } from "node-resque";
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
-import { api, task } from "actionhero";
+import { api, task, chatRoom } from "actionhero";
 import { CLS } from "../modules/cls";
+import { StatusReporters } from "../modules/statusReporters";
+import { Status } from "../modules/status";
 
 // Helper Classes for Permissions
 
@@ -17,6 +19,22 @@ abstract class ResqueActionWrite extends AuthenticatedAction {
   isWriteTransaction() {
     // because it doesn't use the database
     return false;
+  }
+
+  async calculateResqueMetrics() {
+    const resqueStatusReporters = [
+      async () => await StatusReporters.Cluster.Workers.countWorkers(),
+      async () => await StatusReporters.Cluster.Workers.countErrors(),
+      async () => await StatusReporters.Cluster.Workers.details(),
+    ];
+
+    for (const method of resqueStatusReporters) {
+      const response = await method();
+      const metrics = await Status.set(response);
+      await chatRoom.broadcast({}, "system:status", {
+        metrics,
+      });
+    }
   }
 }
 
@@ -84,6 +102,7 @@ export class ResqueForceCleanWorker extends ResqueActionWrite {
   async runWithinTransaction({ params }) {
     const generatedErrorPayload: ErrorPayload =
       await api.resque.queue.forceCleanWorker(params.workerName);
+    await this.calculateResqueMetrics();
     return { generatedErrorPayload };
   }
 }
@@ -198,6 +217,7 @@ export class ResqueRemoveFailed extends ResqueActionWrite {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw Error("failed job not found");
     await task.removeFailed(failed[0]);
+    await this.calculateResqueMetrics();
   }
 }
 
@@ -216,6 +236,7 @@ export class ResqueRemoveAllFailed extends ResqueActionWrite {
       await task.removeFailed(failedJob);
       return this.runWithinTransaction();
     }
+    await this.calculateResqueMetrics();
   }
 }
 
@@ -236,6 +257,7 @@ export class ResqueRetryAndRemoveFailed extends ResqueActionWrite {
     const failed = await task.failed(params.id, params.id);
     if (!failed) throw new Error("failed job not found");
     await task.retryAndRemoveFailed(failed[0]);
+    await this.calculateResqueMetrics();
   }
 }
 
@@ -254,6 +276,7 @@ export class ResqueRetryAndRemoveAllFailed extends ResqueActionWrite {
       await task.retryAndRemoveFailed(failedJob);
       return this.runWithinTransaction();
     }
+    await this.calculateResqueMetrics();
   }
 }
 
