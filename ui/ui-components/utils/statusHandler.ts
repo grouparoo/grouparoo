@@ -127,6 +127,10 @@ export class StatusHandler extends EventDispatcher {
 
     for (const topic of Object.keys(this.metrics)) {
       for (const collection of Object.keys(this.metrics[topic])) {
+        while (this.metrics[topic][collection].length > this.maxSamples) {
+          this.metrics[topic][collection].shift();
+        }
+
         const latestTimestamp =
           this.metrics[topic][collection][
             this.metrics[topic][collection].length - 1
@@ -140,6 +144,4 @@ export class StatusHandler extends EventDispatcher {
       }
     }
   }
-
-  publishLatest() {}
 }
