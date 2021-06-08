@@ -14,7 +14,6 @@ import {
 } from "sequelize-typescript";
 import { api, redis } from "actionhero";
 import { Op } from "sequelize";
-import slugify from "slugify";
 import { LoggedModel } from "../classes/loggedModel";
 import { Source } from "./Source";
 import { Option } from "./Option";
