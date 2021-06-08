@@ -22,7 +22,9 @@ export namespace GroupOps {
     await group.stopPreviousRuns();
 
     if (group.state !== "deleted") {
-      await group.update({ state: "updating" });
+      const state =
+        process.env.GROUPAROO_RUN_MODE === "cli:config" ? "ready" : "updating";
+      await group.update({ state });
     }
 
     const run = await Run.create({
