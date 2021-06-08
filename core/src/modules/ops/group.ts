@@ -18,13 +18,12 @@ export namespace GroupOps {
     destinationId?: string
   ) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
 
     await group.stopPreviousRuns();
 
     if (group.state !== "deleted") {
-      const state =
-        process.env.GROUPAROO_RUN_MODE === "cli:config" ? "ready" : "updating";
-      await group.update({ state });
+      await group.update({ state: "updating" });
     }
 
     const run = await Run.create({
