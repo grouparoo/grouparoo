@@ -10,6 +10,11 @@ To get started running config mode:
 
     $ npm run config
 
+This command will delete and recreate your SQLite config database. But it will leave user authentication in place. If you want a completely fresh start, you can manually delete your `.local` directory.
+
+    $ rm -rf .local
+    $ npm run config
+
 ## Seeding Configuration
 
 You can pre-populate a set of configuration files using our demo command. First, ensure the `DEMO_DATABASE_URL` environment variable is set in your `.env` file in this project and points to a local Postgres database. Here's an example:
