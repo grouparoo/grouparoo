@@ -2,15 +2,29 @@ import { useRouter } from "next/router";
 import { useApi } from "../hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
+import { useEffect } from "react";
 
 export default function Page(props) {
   const router = useRouter();
   const { navigationMode, navigation } = props;
-  // const currentStep = props.setupSteps.find(
-  //   (step) => !step.complete && !step.skipped
-  // );
 
-  const currentStep = null;
+  let currentStep = null;
+
+  useEffect(() => {
+    async function getCurrentStep(props) {
+      if (navigationMode === "config:authenticated") {
+        const { execApi } = useApi(props);
+        const { setupSteps } = await execApi("get", `/setupSteps`);
+        const foundStep = setupSteps.find(
+          (step) => !step.complete && !step.skipped
+        );
+        currentStep = foundStep;
+        console.log(currentStep);
+      }
+    }
+    getCurrentStep(props);
+    console.log(currentStep);
+  }, []);
 
   let CTALink = "/session/sign-in";
   let CTAMessage = "Sign In";
