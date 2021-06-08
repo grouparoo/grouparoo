@@ -152,7 +152,6 @@ export class Run extends Model {
   }
 
   async afterBatch(newSate?: string) {
-    await this.determinePercentComplete();
     await this.reload();
 
     if (
@@ -160,6 +159,7 @@ export class Run extends Model {
       this.state !== newSate &&
       !["complete", "stopped"].includes(this.state)
     ) {
+      await this.determinePercentComplete();
       await this.update({ state: newSate });
     }
 
