@@ -26,7 +26,7 @@ export class NewRelic extends Initializer {
     // configure APM transaction tracing
     plugin.setApmWrap(async function apmWrap(
       name: string,
-      type: string,
+      type: "action" | "task",
       data: any,
       run: Function
     ) {
