@@ -2,6 +2,7 @@ import { MustacheUtils } from "../modules/mustacheUtils";
 import path from "path";
 import fs from "fs-extra";
 import glob from "glob";
+import slugify from "slugify";
 
 export interface ConfigTemplateParams {
   id?: string;
@@ -106,7 +107,8 @@ export abstract class ConfigTemplate {
   }
 
   formatId(s: string) {
-    return s.toLowerCase().replace(/[^a-zA-Z0-9-_\/.]/gi, "_");
+    slugify.extend({ $: "", "%": "", "&": "", "<": "", ">": "" });
+    return slugify(s, { lower: true, replacement: "_", strict: true });
   }
 
   /**
