@@ -104,7 +104,7 @@ async function fillTable(tableName, fileName) {
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   for (const i in rows) {
     const row = rows[i];
-    const q = `INSERT INTO ${tableName} (${Object.keys(row).join(
+    const q = `INSERT INTO "${tableName}" (${Object.keys(row).join(
       ", "
     )}) VALUES ('${Object.values(row).join("', '")}')`;
 

@@ -54,7 +54,7 @@ export const getPropertyValue: GetPropertyValueMethod = async ({
       throw new Error(`${aggregationMethod} is not a known aggregation method`);
   }
 
-  let query = `SELECT ${aggSelect} as __result FROM ${tableName} WHERE`;
+  let query = `SELECT ${aggSelect} as __result FROM "${tableName}" WHERE`;
   let addAnd = false;
 
   for (const condition of matchConditions) {
