@@ -269,7 +269,7 @@ export async function processConfigObjects(
       }
     } catch (error) {
       // Normally, we can can keep going after an error and keep checking the other config objects
-      // but, there's some types of errors (like unique key duplicates and casting incorrect types) which pollute the transaction and we need to stop
+      // but, there's some types of errors (like unique key duplicates) which pollute or abort the transaction and we need to stop
 
       const { message, fields } = GrouparooErrorSerializer(error);
 
