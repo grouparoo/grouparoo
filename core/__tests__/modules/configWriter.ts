@@ -363,9 +363,9 @@ describe("modules/configWriter", () => {
     let group: Group;
 
     let sourceOptions = { table: "test-table-02" };
-    let bsPropertyCol: string = faker.database.column();
-    let bsPropertyKey: string = faker.random.alphaNumeric(12);
-    let bsPropertyId: string = faker.datatype.uuid();
+    let bootstrapPropertyCol: string = faker.database.column();
+    let bootstrapPropertyKey: string = faker.random.alphaNumeric(12);
+    let bootstrapPropertyId: string = faker.datatype.uuid();
     let propertyKey: string = faker.random.alphaNumeric(8);
     let propertyCol: string = faker.database.column();
 
@@ -373,12 +373,12 @@ describe("modules/configWriter", () => {
       source = await helper.factories.source();
       await source.setOptions(sourceOptions);
       await source.bootstrapUniqueProperty(
-        bsPropertyKey,
+        bootstrapPropertyKey,
         "integer",
-        bsPropertyCol,
-        bsPropertyId
+        bootstrapPropertyCol,
+        bootstrapPropertyId
       );
-      await source.setMapping({ [bsPropertyCol]: bsPropertyKey });
+      await source.setMapping({ [bootstrapPropertyCol]: bootstrapPropertyKey });
       await source.update({ state: "ready" });
 
       property = await helper.factories.property(
@@ -435,7 +435,7 @@ describe("modules/configWriter", () => {
       const app = await source.$get("app");
       const options = await source.$get("__options");
       expect(options.length).toEqual(1);
-      const mappingProperty = await Property.findByPk(bsPropertyId);
+      const mappingProperty = await Property.findByPk(bootstrapPropertyId);
 
       expect(config).toEqual({
         class: "Source",
@@ -443,7 +443,7 @@ describe("modules/configWriter", () => {
         name,
         type,
         appId: app.getConfigId(),
-        mapping: { [bsPropertyCol]: mappingProperty.getConfigId() },
+        mapping: { [bootstrapPropertyCol]: mappingProperty.getConfigId() },
         options: Object.fromEntries(options.map((o) => [o.key, o.value])),
       });
     });
@@ -622,8 +622,8 @@ describe("modules/configWriter", () => {
         destinationGroupMemberships
       );
 
-      await destination.setMapping({ "primary-id": bsPropertyKey });
-      const mappingProperty = await Property.findByPk(bsPropertyId);
+      await destination.setMapping({ "primary-id": bootstrapPropertyKey });
+      const mappingProperty = await Property.findByPk(bootstrapPropertyId);
       await MappingHelper.getConfigMapping(destination);
 
       const config = await destination.getConfigObject();
@@ -662,7 +662,7 @@ describe("modules/configWriter", () => {
 
     test.skip("profiles can provide their config objects", async () => {
       const profile: Profile = await helper.factories.profile();
-      const properties = { [bsPropertyId]: [12] };
+      const properties = { [bootstrapPropertyId]: [12] };
 
       await profile.addOrUpdateProperties({
         ...properties,
