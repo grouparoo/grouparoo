@@ -39,7 +39,7 @@ export const getColumns: GetColumnDefinitionsMethod = async ({
   connection,
   tableName,
 }) => {
-  const query = `SELECT name, type from pragma_table_info('${tableName}')`;
+  const query = `SELECT name, type from pragma_table_info("${tableName}")`;
   const rows = await connection.asyncQuery(query);
 
   const map: ColumnDefinitionMap = {};

@@ -411,13 +411,13 @@ describe("integration/runs/sqlite", () => {
 
       // check the destination
       const userRows = await client.asyncQuery(
-        `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
+        `SELECT * FROM "${profilesDestinationTableName}" ORDER BY id ASC`
       );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
       const groupRows = await client.asyncQuery(
-        `SELECT * FROM ${groupsDestinationTableName}`
+        `SELECT * FROM "${groupsDestinationTableName}"`
       );
       expect(groupRows.length).toBe(10);
       expect(groupRows[0].group).toBe(group.name);
@@ -532,13 +532,13 @@ describe("integration/runs/sqlite", () => {
 
       // check the destination
       const userRows = await client.asyncQuery(
-        `SELECT * FROM ${profilesDestinationTableName} ORDER BY id ASC`
+        `SELECT * FROM "${profilesDestinationTableName}" ORDER BY id ASC`
       );
       expect(userRows.length).toBe(10);
       expect(userRows[0].customer_email).toBe("ejervois0@example.com");
 
       const groupRows = await client.asyncQuery(
-        `SELECT * FROM ${groupsDestinationTableName}`
+        `SELECT * FROM "${groupsDestinationTableName}"`
       );
       expect(groupRows.length).toBe(10);
       expect(groupRows[0].group).toBe(group.name);
