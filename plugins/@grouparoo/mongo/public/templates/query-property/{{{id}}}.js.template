@@ -11,20 +11,25 @@ exports.default = async function buildConfig() {
       isArray: false, // Is this an Array Property?
       options: {
         query: [
-          {
-            "$match": {
-              "user_id": 1 //You can use mustache variables here instead.
-            }
-          },
-          {
-            "$project": {
-              "total": {
-                "$sum": "$price",
-                "_id": 0
-              }
-            }
-          }
-        ], // The query to extract the property. You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.
+             {
+               $match: {
+                 user_id: 1, //You can use mustache variables here instead.
+               },
+             },
+             {
+               $group: {
+                 _id: null,
+                 total: {
+                   $sum: "$amount",
+                 },
+               },
+             },
+             {
+               $project: {
+                 _id: 0,
+               },
+             },
+           ], // The query to extract the property. You can use mustache variables (https://github.com/janl/mustache.js#variables) to represent the keys of other properties in the system.
       },
     },
   ];
