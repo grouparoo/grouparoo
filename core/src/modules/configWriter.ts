@@ -3,10 +3,10 @@ import fs from "fs";
 import path from "path";
 
 import { App } from "../models/App";
-import { Source } from "../models/Source";
-import { Property } from "../models/Property";
-import { Group } from "../models/Group";
 import { Destination } from "../models/Destination";
+import { Group } from "../models/Group";
+import { Property } from "../models/Property";
+import { Source } from "../models/Source";
 
 import {
   ConfigurationObject,
@@ -49,6 +49,36 @@ type CachedConfigFile = {
 let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
 
 export namespace ConfigWriter {
+  // ---------------------------------------- | Helpers
+
+  export function generateId(name, separator: string = "_"): string {
+    if (!name) return;
+    const id = name
+      .toLowerCase()
+      // replace bad characters with a space
+      .replace(/[^a-zA-Z0-9\-_ ]/g, " ")
+      // remove spaces from beginning and end
+      .trim()
+      // replace spaces with underscore
+      .replace(/[ ]/g, separator)
+      // replace multiple word separators with an underscore
+      .replace(/[\-_ ][\-_ ]+/g, separator);
+    if (id.length === 0) return;
+    return id;
+  }
+
+  export function generateFilePath(
+    object: ConfigurationObject,
+    prefix?: string
+  ): string {
+    const name = Array.isArray(object) ? object[0].name : object.name;
+    let filePath = `${generateId(name)}.json`;
+    if (prefix) filePath = `${prefix}/${filePath}`;
+    return filePath;
+  }
+
+  // ---------------------------------------- | Controllers
+
   export async function run() {
     // If we're not in config mode, do nothing.
     if (process.env.GROUPAROO_RUN_MODE !== "cli:config") return;
@@ -78,7 +108,13 @@ export namespace ConfigWriter {
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {
         const object = await instance.getConfigObject();
-        const filePath = `${type}/${instance.id}.json`;
+        // Don't process arrays that have objects missing id values.
+        if (Array.isArray(object) && object.filter((o) => !o.id).length > 0) {
+          continue;
+        }
+        // Don't process objects that have missing id values.
+        if (!Array.isArray(object) && !object?.id) continue;
+        const filePath = generateFilePath(object, type);
         objects.push({ filePath, object });
       }
     }

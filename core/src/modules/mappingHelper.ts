@@ -37,6 +37,27 @@ export namespace MappingHelper {
     return MappingObject;
   }
 
+  export async function getConfigMapping(instance: Source | Destination) {
+    const MappingObject: Mappings = {};
+
+    const mappings = await Mapping.findAll({
+      where: { ownerId: instance.id },
+      include: [Property],
+    });
+
+    for (const mapping of mappings) {
+      const property = await mapping.property;
+      if (!property) {
+        throw new Error(
+          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
+        );
+      }
+      MappingObject[mapping.remoteKey] = property.getConfigId();
+    }
+
+    return MappingObject;
+  }
+
   export async function setMapping(
     instance: Source | Destination,
     mappings: Mappings

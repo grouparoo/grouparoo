@@ -28,6 +28,7 @@ import { OptionHelper } from "./../modules/optionHelper";
 import { StateMachine } from "./../modules/stateMachine";
 import { ScheduleOps } from "../modules/ops/schedule";
 import { LockableHelper } from "../modules/lockableHelper";
+import { ConfigWriter } from "../modules/configWriter";
 import { CLS } from "../modules/cls";
 import { APIData } from "../modules/apiData";
 
@@ -182,12 +183,22 @@ export class Schedule extends LoggedModel<Schedule> {
     return ScheduleOps.run(this, run);
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, name, sourceId, recurring, recurringFrequency } = this;
+    const { name, recurring, recurringFrequency } = this;
+
+    this.source = await this.$get("source");
+    const sourceId = this.source?.getConfigId();
+
+    if (!sourceId || !name) return;
+
     const options = await this.getOptions();
     return {
       class: "Schedule",
-      id,
+      id: this.getConfigId(),
       name,
       sourceId,
       recurring,

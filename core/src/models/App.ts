@@ -22,6 +22,7 @@ import { StateMachine } from "./../modules/stateMachine";
 import { Destination } from "./Destination";
 import { AppOps } from "../modules/ops/app";
 import { LockableHelper } from "../modules/lockableHelper";
+import { ConfigWriter } from "../modules/configWriter";
 import { APIData } from "../modules/apiData";
 import { PluginOptionTypes } from "../classes/plugin";
 
@@ -230,12 +231,20 @@ export class App extends LoggedModel<App> {
     return { source, destination };
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, type, name } = this;
+    const { type, name } = this;
+
     const options = await this.getOptions();
+
+    if (!name) return;
+
     return {
       class: "App",
-      id,
+      id: this.getConfigId(),
       name,
       type,
       options,
