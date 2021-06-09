@@ -193,49 +193,50 @@ export class NavigationList extends OptionallyAuthenticatedAction {
     }
 
     if (navigationMode === "config:unauthenticated") {
-      navigationItems = [
-        {
-          type: "link",
-          title: "Apps",
-          href: "/apps",
-          icon: "th-large",
-        },
-        {
-          type: "link",
-          title: "Sources",
-          href: "/sources",
-          icon: "file-import",
-        },
-        {
-          type: "link",
-          title: "Properties",
-          href: "/properties",
-          icon: "address-card",
-        },
-        {
-          type: "link",
-          title: "Profiles",
-          href: "/profiles",
-          icon: "user",
-        },
-        {
-          type: "link",
-          title: "Groups",
-          href: "/groups",
-          icon: "users",
-        },
-        {
-          type: "link",
-          title: "Destinations",
-          href: "/destinations",
-          icon: "file-export",
-        },
-      ];
-
+      navigationItems = [{ type: "link", title: "Home", href: "/" }];
       const user = await ConfigUser.get();
 
       if (user) {
         navigationMode = "config:authenticated";
+
+        navigationItems = [
+          {
+            type: "link",
+            title: "Apps",
+            href: "/apps",
+            icon: "th-large",
+          },
+          {
+            type: "link",
+            title: "Sources",
+            href: "/sources",
+            icon: "file-import",
+          },
+          {
+            type: "link",
+            title: "Properties",
+            href: "/properties",
+            icon: "address-card",
+          },
+          {
+            type: "link",
+            title: "Profiles",
+            href: "/profiles",
+            icon: "user",
+          },
+          {
+            type: "link",
+            title: "Groups",
+            href: "/groups",
+            icon: "users",
+          },
+          {
+            type: "link",
+            title: "Destinations",
+            href: "/destinations",
+            icon: "file-export",
+          },
+        ];
       }
     }
 

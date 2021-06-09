@@ -1,71 +1,24 @@
 import { useRouter } from "next/router";
-import { useApi } from "../hooks/useApi";
 import Head from "next/head";
 import { Row, Col, Image, Button } from "react-bootstrap";
-import { useState, useEffect } from "react";
-import Loader from "../components/loader";
 
 export default function Page(props) {
   const router = useRouter();
   const { navigationMode, navigation } = props;
-  const [shouldRender, setShouldRender] = useState(false);
-  const [CTAs, setCTAs] = useState({
-    CTALink: "/session/sign-in",
-    CTAMessage: "Sign In",
-    CTATarget: null,
-  });
-  let currentStep = null;
 
-  useEffect(() => {
-    if (navigationMode === "config:authenticated") {
-      getSetupSteps(props);
-    }
+  let CTALink = "/session/sign-in";
+  let CTAMessage = "Sign In";
+  let CTATarget = null;
 
-    async function getSetupSteps(props) {
-      console.log(`fetching steps`);
-      const { execApi } = useApi(props);
-      const { setupSteps } = await execApi("get", `/setupSteps`);
-      const foundStep = await setupSteps.find(
-        (step) => !step.complete && !step.skipped
-      );
-      currentStep = foundStep;
-
-      if (navigationMode === "config:authenticated" && currentStep) {
-        setCTAs({
-          CTAMessage: "Set Up Grouparoo",
-          CTALink: "/setup",
-          CTATarget: null,
-        });
-      } else if (navigationMode === "config:authenticated" && !currentStep) {
-        setCTAs({
-          CTAMessage: "Configure Profiles",
-          CTALink: "/profiles",
-          CTATarget: null,
-        });
-      }
-    }
-    if (navigationMode === "authenticated") {
-      setCTAs({
-        CTAMessage: "View Dashboard",
-        CTALink: "/dashboard",
-        CTATarget: null,
-      });
-    } else if (
-      navigation?.bottomMenuItems[0] &&
-      navigation?.bottomMenuItems[0].href === "/team/initialize"
-    ) {
-      setCTAs({
-        CTAMessage: "Create Team",
-        CTALink: "/team/initialize",
-        CTATarget: null,
-      });
-    }
-    setShouldRender(true);
-  }, []);
-
-  console.log(navigationMode);
-  if (shouldRender === false) {
-    return <Loader />;
+  if (navigationMode === "authenticated") {
+    CTAMessage = "View Dashboard";
+    CTALink = "/dashboard";
+  } else if (
+    navigation?.bottomMenuItems[0] &&
+    navigation?.bottomMenuItems[0].href === "/team/initialize"
+  ) {
+    CTAMessage = "Create Team";
+    CTALink = "/team/initialize";
   }
 
   return (
@@ -101,12 +54,12 @@ export default function Page(props) {
                 variant="primary"
                 size="lg"
                 onClick={() => {
-                  CTAs.CTATarget
-                    ? window.open(CTAs.CTALink, CTAs.CTATarget)
-                    : router.push(CTAs.CTALink);
+                  CTATarget
+                    ? window.open(CTALink, CTATarget)
+                    : router.push(CTALink);
                 }}
               >
-                {CTAs.CTAMessage}
+                {CTAMessage}
               </Button>
             </div>
           </Col>

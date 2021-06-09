@@ -159,22 +159,28 @@ export default function Navigation(props) {
               </a>
             </Link>
             <br />
-            <Link href={settingsLink} as={settingsLinkAs}>
-              <a>
-                <Badge variant="secondary">
-                  {clusterName
-                    ? truncate(clusterName.value, 30)
-                    : "Name not set"}
-                </Badge>
-              </a>
-            </Link>
+            {navigationMode.includes("config") ? (
+              <Badge variant="secondary">
+                {truncate(clusterName.value, 30)}
+              </Badge>
+            ) : (
+              <Link href="/settings/[tab]" as="/settings/core">
+                <a>
+                  <Badge variant="secondary">
+                    {clusterName
+                      ? truncate(clusterName.value, 30)
+                      : "Name not set"}
+                  </Badge>
+                </a>
+              </Link>
+            )}
           </div>
           <span style={{ color: "lightgray", paddingLeft: 3, fontSize: 10 }}>
             {uiPlugin}
           </span>
         </div>
 
-        {navigationMode.indexOf("unauthenticated") === -1 && (
+        {!navigationMode.includes("unauthenticated") && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}

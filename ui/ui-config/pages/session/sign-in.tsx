@@ -5,7 +5,6 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import { Actions } from "@grouparoo/ui-components/utils/apiData";
-
 import LoadingButton from "@grouparoo/ui-components/components/loadingButton";
 
 export default function SignInPage(props) {
@@ -55,27 +54,6 @@ export default function SignInPage(props) {
       </Head>
 
       <div style={{ width: "100%", height: "100%" }}>
-        <Row>
-          <Col style={{ textAlign: "center" }}>
-            <Image
-              style={{ maxHeight: 50, margin: 40 }}
-              src="/public/images/logo/logo-and-wordmark-black-words.svg"
-            />
-            <br />
-            <h2>Sync, Segment, and Send your Product Data Everywhere</h2>
-            <p>
-              Grouparoo is open source data infrastructure to keep customer data
-              in-sync between your data warehouse and 3rd party tools.
-            </p>
-            <p>
-              Learn more at{" "}
-              <a target="_blank" href="https://www.grouparoo.com">
-                www.grouparoo.com
-              </a>
-            </p>
-            <br />
-          </Col>
-        </Row>
         <h1>Register</h1>
 
         <Row className="border-between-columns">
