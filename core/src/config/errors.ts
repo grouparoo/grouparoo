@@ -154,9 +154,10 @@ export function GrouparooErrorSerializer(error) {
   let fields = [];
 
   if (error.errors) {
-    // a Sequelize Error https://sequelize.readthedocs.io/en/latest/api/errors
+    // a Sequelize Error https://sequelize.org/master/identifiers.html#errors
     const selectedError = error.errors[0];
     message = selectedError.message;
+
     if (!code) code = selectedError.type;
     if (error.fields)
       fields = Array.isArray(error.fields)

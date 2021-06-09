@@ -269,16 +269,22 @@ export async function processConfigObjects(
       }
     } catch (error) {
       // Normally, we can can keep going after an error and keep checking the other config objects
-      // but, there's some types of errors (like unique key duplicates) which pollute the transaction and we need to stop
+      // but, there's some types of errors (like unique key duplicates and casting incorrect types) which pollute the transaction and we need to stop
 
       const { message, fields } = GrouparooErrorSerializer(error);
 
       const errorMessage = `[ config ] error with ${configObject?.class} \`${
         configObject.key || configObject.name
       }\` (${configObject.id}): ${message}`;
+
       errors.push(errorMessage);
+
       log(error?.stack || error, "debug");
-      if (fields.length === 0) {
+
+      if (errorMessage.includes("current transaction is aborted")) {
+        log(errorMessage, "warning");
+        throw new Error(`Cannot validate additional objects.`);
+      } else if (fields.length === 0) {
         log(errorMessage, "warning");
         continue;
       } else {
