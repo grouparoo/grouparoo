@@ -8,9 +8,9 @@ on:
       app:
         description: "app to test?"
         required: true
-        default: "staging_community"
+        default: "staging-community"
       scale:
-        description: "scale of sample data?"
+        description: "scale of sample data (*1000)?"
         required: true
         default: "100"
       log_level:
@@ -21,7 +21,7 @@ on:
 jobs:
   test-timed-run:
     env:
-      APP: "staging_community"
+      APP: "staging-community"
       SCALE: "100"
       LOG_LEVEL: "notice"
 
