@@ -1,7 +1,6 @@
 import { api } from "actionhero";
 import fs from "fs";
 import path from "path";
-import slugify from "slugify";
 
 import { App } from "../models/App";
 import { Destination } from "../models/Destination";
@@ -52,10 +51,18 @@ let CONFIG_FILE_CACHE: CachedConfigFile[] = [];
 export namespace ConfigWriter {
   // ---------------------------------------- | Helpers
 
-  export function generateId(name): string {
+  export function generateId(name, separator: string = "_"): string {
     if (!name) return;
-    slugify.extend({ $: "", "%": "", "&": "", "<": "", ">": "" });
-    const id = slugify(name, { lower: true, strict: true, replacement: "_" });
+    const id = name
+      .toLowerCase()
+      // replace bad characters with a space
+      .replace(/[^a-zA-Z0-9\-_ ]/g, " ")
+      // remove spaces from beginning and end
+      .trim()
+      // replace spaces with underscore
+      .replace(/[ ]/g, separator)
+      // replace multiple word separators with an underscore
+      .replace(/[\-_ ][\-_ ]+/g, separator);
     if (id.length === 0) return;
     return id;
   }

@@ -273,7 +273,6 @@ importers:
       reflect-metadata: 0.1.13
       sequelize: 6.6.2
       sequelize-typescript: 2.1.0
-      slugify: ^1.5.3
       sqlite3: 5.0.2
       ts-jest: 26.5.6
       ts-node: 10.0.0
@@ -321,7 +320,6 @@ importers:
       reflect-metadata: 0.1.13
       sequelize: 6.6.2_4805d29a365866739fa3d4ea3781136c
       sequelize-typescript: 2.1.0_d6ed65e8d32e5aa7feb8bcfec9a9219c
-      slugify: 1.5.3
       sqlite3: 5.0.2
       ts-node: 10.0.0_b89ec6c4eb73802631cbe54606dd8cdb
       uuid: 8.3.2
@@ -13463,11 +13461,6 @@ packages:
   /slide/1.1.6:
     resolution: {integrity: sha1-VusCfWW00tzmyy4tMsTUr8nh1wc=}
     dev: true
-
-  /slugify/1.5.3:
-    resolution: {integrity: sha512-/HkjRdwPY3yHJReXu38NiusZw2+LLE2SrhkWJtmlPDB1fqFSvioYj62NkPcrKiNCgRLeGcGK7QBvr1iQwybeXw==}
-    engines: {node: '>=8.0.0'}
-    dev: false
 
   /smart-buffer/4.1.0:
     resolution: {integrity: sha512-iVICrxOzCynf/SNaBQCw34eM9jROU/s5rzIhpOvzhzuYHfJR/DhZfDkXiZSgKXfgv26HT3Yni3AV/DGw0cGnnw==}
