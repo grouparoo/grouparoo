@@ -66,6 +66,23 @@ export namespace IntegrationSpecHelper {
     }
   }
 
+  export async function eraseConfigUser(projectPath: string) {
+    const testConfigDir = path.join(projectPath + ".local");
+    if (fs.existsSync(testConfigDir)) {
+      fs.rmdirSync(testConfigDir, { recursive: true });
+    }
+  }
+
+  export async function createConfigUser(projectPath: string) {
+    // const testUserFilePath = projectPath + "../.local/user.json";
+    // const testFileDir = path.dirname(testUserFilePath);
+    // if (!fs.existsSync(testFileDir)) {
+    //   fs.mkdirSync(testFileDir, { recursive: true });
+    // }
+    // const fileContent = { email: true };
+    // fs.writeFileSync(testUserFilePath, JSON.stringify(fileContent, null, 2));
+  }
+
   export async function prepareForIntegrationTest(
     projectPath: string,
     disableCodeConfig = false,
@@ -93,6 +110,9 @@ export namespace IntegrationSpecHelper {
     // clear the database
     const db = path.join(projectPath, "grouparoo_test.sqlite");
     if (fs.existsSync(db)) fs.unlinkSync(db);
+
+    // ensure that we have no .local files
+    await eraseConfigUser(projectPath);
 
     // start the api server
     const serverEnv = Object.assign(
