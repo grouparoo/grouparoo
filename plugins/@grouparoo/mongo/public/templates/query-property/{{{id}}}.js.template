@@ -13,7 +13,7 @@ exports.default = async function buildConfig() {
         query: [
           {
             "$match": {
-              "user_id": 1 //You can use mustache variables here (e.g. {{user_id}}).
+              "user_id": 1 //You can use mustache variables here instead.
             }
           },
           {
