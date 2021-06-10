@@ -24,6 +24,7 @@ import { expandSyncTable } from "./syncTable";
 import { loadDestination, deleteDestinations } from "./destination";
 import { ConfigWriter } from "../configWriter";
 import { loadProfile } from "./profile";
+import Sequelize from "sequelize";
 
 export async function loadConfigDirectory(
   configDir: string,
@@ -270,6 +271,19 @@ export async function processConfigObjects(
     } catch (error) {
       // Normally, we can can keep going after an error and keep checking the other config objects
       // but, there's some types of errors (like unique key duplicates) which pollute or abort the transaction and we need to stop
+      if (error instanceof Sequelize.DatabaseError) {
+        log(
+          `TRANSACTION ABORTED at SequelizeDatabaseError at query: ${error.sql}`,
+          "debug"
+        );
+        throw new Error(
+          `Sequelize Database Error with Config object for ${
+            configObject?.class
+          } \`${configObject.key || configObject.name}\`(${
+            configObject.id
+          }).  Cannot validate additional objects.`
+        );
+      }
 
       const { message, fields } = GrouparooErrorSerializer(error);
 
@@ -281,10 +295,11 @@ export async function processConfigObjects(
 
       log(error?.stack || error, "debug");
 
-      if (errorMessage.includes("current transaction is aborted")) {
-        log(errorMessage, "warning");
-        throw new Error(`Cannot validate additional objects.`);
-      } else if (fields.length === 0) {
+      // if (errorMessage.includes("current transaction is aborted")) {
+      //   log(errorMessage, "warning");
+      //   throw new Error(`Cannot validate additional objects.`);
+      // } else
+      if (fields.length === 0) {
         log(errorMessage, "warning");
         continue;
       } else {
