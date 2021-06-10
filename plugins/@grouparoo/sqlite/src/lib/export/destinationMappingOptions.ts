@@ -5,7 +5,7 @@ import {
 
 export const destinationMappingOptions: DestinationMappingOptionsMethod =
   async ({ connection, destinationOptions }) => {
-    const query = `SELECT name from pragma_table_info('${destinationOptions.table}')`;
+    const query = `SELECT name from pragma_table_info("${destinationOptions.table}")`;
     const rows = await connection.asyncQuery(query);
 
     const columns: Array<{

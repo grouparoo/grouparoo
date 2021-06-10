@@ -49,7 +49,7 @@ const { appOptions, usersTableName, groupsDestinationTableName } = getConfig();
 
 async function getUser(userId) {
   const result = await client.asyncQuery(
-    `SELECT * FROM ${usersTableName} WHERE "id" = ${userId}`
+    `SELECT * FROM "${usersTableName}" WHERE "id" = ${userId}`
   );
   if (result.length > 0) {
     return result[0];
@@ -61,7 +61,7 @@ async function getUserGroups(userId) {
   let { groupsTable, groupForeignKey, groupColumnName } =
     await destination.parameterizedOptions();
   const result = await client.asyncQuery(
-    `SELECT "${groupColumnName}" FROM ${groupsTable} WHERE ${groupForeignKey} = ${userId}`
+    `SELECT "${groupColumnName}" FROM "${groupsTable}" WHERE ${groupForeignKey} = ${userId}`
   );
   return result.map((groupEntry) => Object.values(groupEntry)[0]);
 }

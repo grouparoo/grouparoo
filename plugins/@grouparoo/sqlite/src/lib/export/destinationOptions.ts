@@ -8,7 +8,7 @@ export const destinationOptions: DestinationOptionsMethod = async ({
   destinationOptions,
 }) => {
   async function getColumns(tableName: string) {
-    const query = `SELECT name from pragma_table_info('${tableName}')`;
+    const query = `SELECT name from pragma_table_info("${tableName}")`;
     const colRows = await connection.asyncQuery(query);
     return colRows.map((row) => row.name).sort();
   }

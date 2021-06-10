@@ -86,7 +86,7 @@ describe("sqlite/query/profiles", () => {
       where: { key: "userId" },
     });
     const options = {
-      query: `SELECT id FROM ${usersTableName}`,
+      query: `SELECT id FROM "${usersTableName}"`,
       propertyId: userIdProperty.id,
     };
     schedule = await helper.factories.schedule(source, { options });
