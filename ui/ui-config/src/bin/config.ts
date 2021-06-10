@@ -1,4 +1,4 @@
-import { GrouparooCLI } from "../modules/cli";
+import { GrouparooCLI } from "@grouparoo/core/dist/modules/cli";
 import { CLI } from "actionhero";
 
 export class Apply extends CLI {
@@ -31,7 +31,7 @@ export class Apply extends CLI {
   async run({ params }) {
     GrouparooCLI.logCLI(this.name, false);
 
-    const { main } = await import("../grouparoo"); // run the server
+    const { main } = await import("@grouparoo/core/dist/grouparoo"); // run the server
     await main();
 
     return false;

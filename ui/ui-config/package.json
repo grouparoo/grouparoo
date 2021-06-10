@@ -21,7 +21,7 @@
     "directory": "ui/ui-config"
   },
   "scripts": {
-    "prepare": "next build",
+    "prepare": "next build && tsc --project src --declaration",
     "start": "next start --port $PORT",
     "dev": "next dev",
     "pretest": "npm run lint && npm run prepare",
@@ -34,6 +34,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@zeit/next-source-maps": "0.0.3",
+    "actionhero": "^26.0.6",
     "ansi-to-html": "0.6.15",
     "axios": "0.21.1",
     "date-fns": "2.22.1",

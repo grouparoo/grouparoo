@@ -1551,6 +1551,7 @@ importers:
       '@types/react-dom': '*'
       '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
       '@zeit/next-source-maps': 0.0.3
+      actionhero: ^26.0.6
       ansi-to-html: 0.6.15
       axios: 0.21.1
       date-fns: 2.22.1
@@ -1586,6 +1587,7 @@ importers:
       '@fortawesome/free-solid-svg-icons': 5.15.3
       '@fortawesome/react-fontawesome': 0.1.14_ec0af2bc0907a851e3e0afc4708fd0f0
       '@zeit/next-source-maps': 0.0.3
+      actionhero: 26.0.6
       ansi-to-html: 0.6.15
       axios: 0.21.1
       date-fns: 2.22.1
@@ -3643,7 +3645,7 @@ packages:
   /@types/ioredis/4.26.4:
     resolution: {integrity: sha512-QFbjNq7EnOGw6d1gZZt2h26OFXjx7z+eqEnbCHSrDI1OOLEgOHMKdtIajJbuCr9uO+X9kQQRe7Lz6uxqxl5XKg==}
     dependencies:
-      '@types/node': 15.6.1
+      '@types/node': 15.12.2
 
   /@types/istanbul-lib-coverage/2.0.3:
     resolution: {integrity: sha512-sz7iLqvVUg1gIedBOvlkxPlc8/uVzyS5OwGz1cKjXzkl3FpL3al0crU8YGU1WoHkxn0Wxbw5tyi6hvzJKNzFsw==}
@@ -3701,6 +3703,9 @@ packages:
       '@types/node': 15.6.1
       form-data: 3.0.1
     dev: true
+
+  /@types/node/15.12.2:
+    resolution: {integrity: sha512-zjQ69G564OCIWIOHSXyQEEDpdpGl+G348RAKY0XXy9Z5kU9Vzv1GMNnkar/ZJ8dzXB3COzD9Mo9NtRZ4xfgUww==}
 
   /@types/node/15.6.1:
     resolution: {integrity: sha512-7EIraBEyRHEe7CH+Fm1XvgqU6uwZN8Q7jppJGcqjROMT29qhAuuOxYB1uEY5UMYQKEmA5D+5tBnhdaPXSsLONA==}
@@ -4073,15 +4078,15 @@ packages:
       formidable: 1.2.2
       glob: 7.1.7
       i18n: 0.13.3
-      ioredis: 4.27.3
-      ioredis-mock: 5.6.0_ioredis@4.27.3
+      ioredis: 4.27.5
+      ioredis-mock: 5.6.0_ioredis@4.27.5
       is-running: 2.1.0
       mime: 2.5.2
-      node-resque: 9.0.1
+      node-resque: 9.0.2
       optimist: 0.6.1
       primus: 8.0.3
       qs: 6.10.1
-      uglify-js: 3.13.8
+      uglify-js: 3.13.9
       uuid: 8.3.2
       winston: 3.3.3
       ws: 7.4.6
@@ -8039,9 +8044,41 @@ packages:
       ioredis: 4.27.3
       lodash: 4.17.21
       standard-as-callback: 2.1.0
+    dev: false
+
+  /ioredis-mock/5.6.0_ioredis@4.27.5:
+    resolution: {integrity: sha512-Ow+tyKdijg/gA2gSEv7lq8dLp6bO7FnwDXbJ9as37NF23XNRGMLzBc7ITaqMydfrbTodWnLcE2lKEaBs7SBpyA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      ioredis: 4.x
+      redis-commands: 1.x
+    dependencies:
+      fengari: 0.1.4
+      fengari-interop: 0.1.2_fengari@0.1.4
+      ioredis: 4.27.5
+      lodash: 4.17.21
+      standard-as-callback: 2.1.0
 
   /ioredis/4.27.3:
     resolution: {integrity: sha512-eAirtUIljFkHJwuKQhbGajVrdCUMNKRuOrhzRFeYZRvXnLs4757Oss1S8aiheB4NSO1RsLeG+2RUjY/0/XiSig==}
+    engines: {node: '>=6'}
+    dependencies:
+      cluster-key-slot: 1.1.0
+      debug: 4.3.1
+      denque: 1.5.0
+      lodash.defaults: 4.2.0
+      lodash.flatten: 4.4.0
+      p-map: 2.1.0
+      redis-commands: 1.7.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /ioredis/4.27.5:
+    resolution: {integrity: sha512-JJ3HzOzU6kgUk3gKhpx8kxEYn9ruI5TkpOtGvbw/hLyWxfC19T9uCZTgmw4Mci4al4aOCCMfAjYzJ7aqQkLbJg==}
     engines: {node: '>=6'}
     dependencies:
       cluster-key-slot: 1.1.0
@@ -10821,6 +10858,15 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       ioredis: 4.27.3
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /node-resque/9.0.2:
+    resolution: {integrity: sha512-YeLv4M20XuBY4GHwgOJRy6LA1R/0FShazNi8l9m9pIA2I7xl8Z/7SrqvZAsfaG4mn/f/SWOF5lvPzXZbp8Ep7g==}
+    engines: {node: '>=12.0.0'}
+    dependencies:
+      ioredis: 4.27.5
     transitivePeerDependencies:
       - supports-color
 
@@ -14627,6 +14673,13 @@ packages:
 
   /uglify-js/3.13.8:
     resolution: {integrity: sha512-PvFLMFIQHfIjFFlvAch69U2IvIxK9TNzNWt1SxZGp9JZ/v70yvqIQuiJeVPPtUMOzoNt+aNRDk4wgxb34wvEqA==}
+    engines: {node: '>=0.8.0'}
+    hasBin: true
+    dev: true
+    optional: true
+
+  /uglify-js/3.13.9:
+    resolution: {integrity: sha512-wZbyTQ1w6Y7fHdt8sJnHfSIuWeDgk6B5rCb4E/AM6QNNPbOMIZph21PW5dRB3h7Df0GszN+t7RuUH6sWK5bF0g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
 
