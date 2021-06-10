@@ -66,10 +66,10 @@ export namespace IntegrationSpecHelper {
     }
   }
 
-  export async function eraseConfigUser(projectPath: string) {
-    const testConfigDir = path.join(projectPath + ".local");
-    if (fs.existsSync(testConfigDir)) {
-      fs.rmdirSync(testConfigDir, { recursive: true });
+  export async function eraseConfigUser(configDir: string) {
+    const userFile = path.join(configDir, "../.local/user.json");
+    if (fs.existsSync(userFile)) {
+      fs.unlinkSync(userFile);
     }
   }
 
@@ -112,7 +112,8 @@ export namespace IntegrationSpecHelper {
     if (fs.existsSync(db)) fs.unlinkSync(db);
 
     // ensure that we have no .local files
-    await eraseConfigUser(projectPath);
+    const configDir = extraEnv?.GROUPAROO_CONFIG_DIR || projectPath;
+    await eraseConfigUser(configDir);
 
     // start the api server
     const serverEnv = Object.assign(

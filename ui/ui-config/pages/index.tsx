@@ -19,6 +19,8 @@ export default function Page(props) {
   useEffect(() => {
     if (navigationMode === "config:authenticated") {
       getSetupSteps(props);
+    } else {
+      setShouldRender(true);
     }
 
     async function getSetupSteps(props) {
@@ -43,8 +45,8 @@ export default function Page(props) {
           CTATarget: null,
         });
       }
+      setShouldRender(true);
     }
-    setShouldRender(true);
   }, []);
 
   if (shouldRender === false) {
@@ -55,6 +57,8 @@ export default function Page(props) {
     <>
       <Head>
         <title>Grouparoo</title>
+        <p>NAV MODE: {navigationMode}</p>
+        <p>{JSON.stringify(CTAs, null, 2)}</p>
       </Head>
 
       <div style={{ width: "100%", height: "100%" }}>
