@@ -377,23 +377,30 @@ export class Source extends LoggedModel<Source> {
   }
 
   @BeforeDestroy
-  static async ensureNotInUse(
-    instance: Source,
-    excludeDirectlyMapped: boolean = false
-  ) {
+  static async ensureNotInUse(instance: Source) {
     const schedule = await instance.$get("schedule", { scope: null });
     if (schedule) {
       throw new Error("cannot delete a source that has a schedule");
     }
 
-    const propertyOptions: AssociationGetOptions = { scope: null };
-    if (excludeDirectlyMapped) {
-      propertyOptions.where = { directlyMapped: false };
-    }
-    const properties = await instance.$get("properties", propertyOptions);
+    const properties = await instance.$get("properties", {
+      scope: null,
+      where: { directlyMapped: false },
+    });
 
     if (properties.length > 0) {
       throw new Error("cannot delete a source that has a property");
+    }
+  }
+
+  @BeforeDestroy
+  static async ensureDirectlyMappedPropertyNotInUse(instance: Source) {
+    const directlyMappedProperty = await Property.findOne({
+      where: { sourceId: instance.id, directlyMapped: true },
+    });
+
+    if (directlyMappedProperty) {
+      await Property.ensureNotInUse(directlyMappedProperty, [instance.id]);
     }
   }
 
@@ -414,5 +421,16 @@ export class Source extends LoggedModel<Source> {
     return Mapping.destroy({
       where: { ownerId: instance.id },
     });
+  }
+
+  @AfterDestroy
+  static async destroyDirectlyMappedProperty(instance: Source) {
+    const directlyMappedProperty = await Property.findOne({
+      where: { sourceId: instance.id, directlyMapped: true },
+    });
+
+    if (directlyMappedProperty) {
+      await directlyMappedProperty.destroy();
+    }
   }
 }

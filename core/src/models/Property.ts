@@ -17,7 +17,7 @@ import {
   BeforeCreate,
   AfterSave,
 } from "sequelize-typescript";
-import { Op } from "sequelize";
+import { Op, WhereOptions } from "sequelize";
 import { env, api, redis, config } from "actionhero";
 import { plugin } from "../modules/plugin";
 import { LoggedModel } from "../classes/loggedModel";
@@ -607,7 +607,10 @@ export class Property extends LoggedModel<Property> {
   }
 
   @BeforeDestroy
-  static async ensureNotInUse(instance: Property) {
+  static async ensureNotInUse(
+    instance: Property,
+    excludeMappingOwnerIds?: string[]
+  ) {
     const groupRule = await GroupRule.findOne({
       where: { propertyId: instance.id },
     });
@@ -619,8 +622,12 @@ export class Property extends LoggedModel<Property> {
       );
     }
 
+    const mappingWhere: WhereOptions = { propertyId: instance.id };
+    if (excludeMappingOwnerIds) {
+      mappingWhere.ownerId = { [Op.notIn]: excludeMappingOwnerIds };
+    }
     const mapping = await Mapping.findOne({
-      where: { propertyId: instance.id },
+      where: mappingWhere,
     });
     if (mapping) {
       throw new Error(
