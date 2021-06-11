@@ -21,7 +21,7 @@
     "directory": "ui/ui-config"
   },
   "scripts": {
-    "prepare": "next build && tsc --project src --declaration",
+    "prepare": "next build",
     "start": "next start --port $PORT",
     "dev": "next dev",
     "pretest": "npm run lint && npm run prepare",
@@ -34,7 +34,6 @@
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@zeit/next-source-maps": "0.0.3",
-    "actionhero": "^26.0.6",
     "ansi-to-html": "0.6.15",
     "axios": "0.21.1",
     "date-fns": "2.22.1",
@@ -66,6 +65,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.1",
+    "actionhero": "^26.0.6",
     "enzyme": "3.11.0",
     "jest": "26.6.3",
     "jest-environment-webdriver": "0.2.0",
