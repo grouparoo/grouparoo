@@ -4,10 +4,11 @@ import fs from "fs";
 import os from "os";
 import parse from "csv-parse/lib/sync";
 import { config } from "actionhero";
+import { ConfigWriter } from "@grouparoo/core/dist/modules/configWriter";
 
 const workerId = process.env.JEST_WORKER_ID || 1;
 export const usersTableName = `USERS - '${workerId}'`;
-export const usersTableSlug = `users_-__${workerId}_`;
+export const usersTableSlug = ConfigWriter.generateId(usersTableName);
 export const purchasesTableName = `Purchases - '${workerId}'`;
 export const profilesDestinationTableName = `OUTPUT_USERS - '${workerId}'`;
 export const groupsDestinationTableName = `output_groups - '${workerId}'`;
