@@ -60,8 +60,6 @@ export default function Navigation(props) {
   const [expandAccountMenu, setExpandAccountMenu] = useState(false);
   const subMenuGreeting = `Hello ${teamMember ? teamMember.firstName : ""} »`;
   const logoLink = teamMember?.id ? "/dashboard" : "/";
-  const settingsLink = navigationMode === "config" ? "/" : "/settings/[tab]";
-  const settingsLinkAs = navigationMode === "config" ? "/" : "/settings/core";
 
   useEffect(() => {
     sessionHandler.subscribe("navigation", (_teamMember) =>

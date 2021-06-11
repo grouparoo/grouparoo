@@ -1,4 +1,4 @@
-import { Row, Col, Image } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import Head from "next/head";
 import { useApi } from "@grouparoo/ui-components/hooks/useApi";
 import SignIn from "@grouparoo/ui-components/components/session/signIn";

@@ -58,9 +58,7 @@ export namespace IntegrationSpecHelper {
     const actionUrl = `${url}/api/1/status/public`;
     try {
       await axios.get(actionUrl);
-      // console.log(`API up and running @ ${url}`);
     } catch (error) {
-      // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
       await sleep(1000);
       await waitForAPI(url, count + 1);
     }
@@ -71,16 +69,6 @@ export namespace IntegrationSpecHelper {
     if (fs.existsSync(userFile)) {
       fs.unlinkSync(userFile);
     }
-  }
-
-  export async function createConfigUser(projectPath: string) {
-    // const testUserFilePath = projectPath + "../.local/user.json";
-    // const testFileDir = path.dirname(testUserFilePath);
-    // if (!fs.existsSync(testFileDir)) {
-    //   fs.mkdirSync(testFileDir, { recursive: true });
-    // }
-    // const fileContent = { email: true };
-    // fs.writeFileSync(testUserFilePath, JSON.stringify(fileContent, null, 2));
   }
 
   export async function prepareForIntegrationTest(

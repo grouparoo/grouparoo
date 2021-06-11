@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Row, Col, Form, Image } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import Head from "next/head";
 import { useRouter } from "next/router";

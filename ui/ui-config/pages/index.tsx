@@ -24,7 +24,6 @@ export default function Page(props) {
     }
 
     async function getSetupSteps(props) {
-      console.log(`fetching steps`);
       const { execApi } = useApi(props);
       const { setupSteps } = await execApi("get", `/setupSteps`);
       const foundStep = await setupSteps.find(
@@ -57,8 +56,6 @@ export default function Page(props) {
     <>
       <Head>
         <title>Grouparoo</title>
-        <p>NAV MODE: {navigationMode}</p>
-        <p>{JSON.stringify(CTAs, null, 2)}</p>
       </Head>
 
       <div style={{ width: "100%", height: "100%" }}>
