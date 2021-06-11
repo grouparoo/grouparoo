@@ -1,4 +1,4 @@
-import { Initializer, api } from "actionhero";
+import { Initializer, api, ExceptionReporter } from "actionhero";
 import { plugin } from "@grouparoo/core";
 const packageJSON = require("./../../package.json");
 
@@ -19,9 +19,11 @@ export class NewRelic extends Initializer {
     });
 
     // load the newrelic error reporter into actionhero
-    api.exceptionHandlers.reporters.push((error) => {
+    const newRelicExceptionReporter: ExceptionReporter = (error) => {
       newrelic.noticeError(error);
-    });
+    };
+
+    api.exceptionHandlers.reporters.push(newRelicExceptionReporter);
 
     // configure APM transaction tracing
     plugin.setApmWrap(async function apmWrap(
