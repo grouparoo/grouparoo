@@ -301,7 +301,10 @@ export default function Page(props) {
                       })
                       .map((group) => (
                         <option key={`grp-${group.id}`} value={group.id}>
-                          {group.name} ({group.profilesCount} members)
+                          {group.name}
+                          {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                            <>&nbsp;{group.profilesCount} members</>
+                          )}
                         </option>
                       ))}
                   </Form.Control>

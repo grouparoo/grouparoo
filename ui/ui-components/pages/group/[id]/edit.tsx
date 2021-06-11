@@ -167,7 +167,8 @@ export default function Page(props) {
             </fieldset>
           </Form>
         </Col>
-        {group.type === "calculated" ? (
+        {group.type === "calculated" &&
+        process.env.GROUPAROO_UI_EDITION !== "config" ? (
           <Col>
             <p>
               {group.calculatedAt ? (

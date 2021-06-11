@@ -160,12 +160,14 @@ export default function Page(props) {
       <GroupTabs group={group} />
       <h1>{group.name} - Rules</h1>
       <StateBadge state={group.state} /> <LockedBadge object={group} />
-      <p>
-        Total Profiles in this group: &nbsp;
-        <Badge style={{ fontSize: 16 }} variant="info">
-          {countPotentialMembers}
-        </Badge>
-      </p>
+      {process.env.GROUPAROO_UI_EDITION !== "config" && (
+        <p>
+          Total Profiles in this group: &nbsp;
+          <Badge style={{ fontSize: 16 }} variant="info">
+            {countPotentialMembers}
+          </Badge>
+        </p>
+      )}
       <p>
         Define the profile properties that you want to segment by. Profiles in
         this Group will match <Badge variant="success">{group.matchType}</Badge>{" "}
@@ -183,9 +185,11 @@ export default function Page(props) {
                 <th>
                   <strong>Operation</strong>
                 </th>
-                <th>
-                  <strong># of Profiles</strong>
-                </th>
+                {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                  <th>
+                    <strong># of Profiles</strong>
+                  </th>
+                )}
                 <th>&nbsp;</th>
               </tr>
             </thead>
@@ -440,9 +444,11 @@ export default function Page(props) {
                       </Form.Group>
                     </td>
 
-                    <td>
-                      <Badge variant="info">{componentCounts[idx]}</Badge>
-                    </td>
+                    {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                      <td>
+                        <Badge variant="info">{componentCounts[idx]}</Badge>
+                      </td>
+                    )}
 
                     <td>
                       <Button
@@ -469,16 +475,18 @@ export default function Page(props) {
             Add Rule
           </Button>
           &nbsp;
-          <LoadingButton
-            disabled={loading}
-            variant="outline-dark"
-            size="sm"
-            onClick={async () => {
-              await getCounts(false);
-            }}
-          >
-            Count Potential Group Members
-          </LoadingButton>
+          {process.env.GROUPAROO_UI_EDITION !== "config" && (
+            <LoadingButton
+              disabled={loading}
+              variant="outline-dark"
+              size="sm"
+              onClick={async () => {
+                await getCounts(false);
+              }}
+            >
+              Count Potential Group Members
+            </LoadingButton>
+          )}
           <br />
           <br />{" "}
           {group.locked ? (
