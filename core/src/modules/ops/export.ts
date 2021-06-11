@@ -7,6 +7,7 @@ import { Export, ExportStates } from "../../models/Export";
 import { Destination } from "../../models/Destination";
 import { CLS } from "../../modules/cls";
 import { Op } from "sequelize";
+import { Option } from "../../models/Option";
 
 export namespace ExportOps {
   const defaultExportProcessingDelay = 1000 * 60 * 5;
@@ -77,7 +78,10 @@ export namespace ExportOps {
       delayMs = defaultExportProcessingDelay;
     }
 
-    const app = await destination.$get("app");
+    const app = await destination.$get("app", {
+      scope: null,
+      include: [Option],
+    });
     const { pluginConnection } = await destination.getPlugin();
 
     let _exports: Export[];

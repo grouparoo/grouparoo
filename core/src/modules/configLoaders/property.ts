@@ -73,7 +73,6 @@ export async function deleteProperties(ids: string[]) {
 
   for (const i in properties) {
     const property = properties[i];
-    if (property.directlyMapped) continue;
     await property.update({ state: "deleted", locked: null });
     logModel(property, "deleted");
   }

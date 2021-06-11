@@ -4,7 +4,6 @@ import { connect } from "./connect";
 export const test: TestPluginMethod = async ({ appOptions }) => {
   const client = await connect(appOptions);
   const { body } = await client.counts.appCounts();
-  console.log({ body });
 
   const success = body["type"] == "count.hash";
   if (!success) {

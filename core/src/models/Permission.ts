@@ -99,7 +99,7 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   @BeforeSave
-  static async ensureOneownerIdPerTopic(instance: Permission) {
+  static async ensureOneOwnerIdPerTopic(instance: Permission) {
     const existing = await Permission.scope(null).findOne({
       where: {
         id: { [Op.ne]: instance.id },
@@ -115,20 +115,29 @@ export class Permission extends LoggedModel<Permission> {
   }
 
   static async authorizeAction(
-    ownerId: string,
     topic: string,
-    mode: "read" | "write"
+    mode: "read" | "write",
+    instance: Team | ApiKey
   ) {
     Permission.validateTopic(topic);
 
     if (topic === "*") return true;
 
-    const permission = await Permission.findOne({
-      where: { ownerId: ownerId, topic: topic },
-    });
+    let permission: Permission;
+    if (instance.permissions) {
+      permission = instance.permissions.find(
+        (p) => p.ownerId === instance.id && p.topic === topic
+      );
+    } else {
+      permission = await Permission.findOne({
+        where: { ownerId: instance.id, topic: topic },
+      });
+    }
 
     if (!permission) {
-      throw new Error(`cannot find permission set for ${ownerId} - ${topic}`);
+      throw new Error(
+        `cannot find permission set for ${instance.id} - ${topic}`
+      );
     }
 
     return permission[mode];

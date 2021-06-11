@@ -253,6 +253,35 @@ describe("models/schedule", () => {
       expect(optionsCount).toBe(0);
     });
 
+    test("deleting a schedule deletes the previous runs", async () => {
+      const schedule = await Schedule.create({
+        name: "incoming schedule A",
+        type: "test-plugin-import",
+        sourceId: source.id,
+      });
+
+      await schedule.setOptions({ maxColumn: "col" });
+      await schedule.update({ state: "ready" });
+
+      await Run.create({
+        creatorId: schedule.id,
+        creatorType: "schedule",
+        state: "running",
+      });
+
+      let runCount = await Run.scope(null).count({
+        where: { creatorId: schedule.id },
+      });
+      expect(runCount).toBe(1);
+
+      await schedule.destroy();
+
+      runCount = await Run.scope(null).count({
+        where: { creatorId: schedule.id },
+      });
+      expect(runCount).toBe(0);
+    });
+
     test("providing invalid options will result in an error", async () => {
       const schedule = await Schedule.create({
         name: "incoming schedule A",
@@ -347,28 +376,36 @@ describe("models/schedule", () => {
       await source.update({ state: "ready" });
     });
 
-    test("schedules can retrieve their options from the source", async () => {
-      const schedule = await Schedule.create({
-        name: "test plugin schedule",
-        sourceId: source.id,
-      });
+    test.each(["ready", "deleted"])(
+      "schedules can retrieve their options from a %p source",
+      async (state) => {
+        const schedule = await Schedule.create({
+          name: "test plugin schedule",
+          sourceId: source.id,
+        });
 
-      const pluginOptions = await schedule.pluginOptions();
-      expect(pluginOptions).toEqual([
-        {
-          description: "the column to choose",
-          key: "maxColumn",
-          options: [
-            { examples: [1, 2, 3], key: "created_at" },
-            { key: "updated_at", examples: [1, 2, 3] },
-          ],
-          required: true,
-          type: "list",
-        },
-      ]);
+        await app.update({ state });
+        await source.update({ state });
 
-      await schedule.destroy();
-    });
+        const pluginOptions = await schedule.pluginOptions();
+        expect(pluginOptions).toEqual([
+          {
+            description: "the column to choose",
+            key: "maxColumn",
+            options: [
+              { examples: [1, 2, 3], key: "created_at" },
+              { key: "updated_at", examples: [1, 2, 3] },
+            ],
+            required: true,
+            type: "list",
+          },
+        ]);
+
+        await schedule.destroy();
+        await source.update({ state: "ready" });
+        await app.update({ state: "ready" });
+      }
+    );
 
     test("running a schedule that isn't ready will throw", async () => {
       const schedule = await Schedule.create({

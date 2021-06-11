@@ -1,36 +1,59 @@
 #!/bin/bash
 
+set -e
+
 cd "$(dirname "$0")/.."
 
 if [ -z "$1" ]
   then
-    echo "No app provided, eg 'timed_run staging-community'"
+    echo "No app provided, eg 'timed_run staging-community 10'"
     exit 1
+fi
+
+if [[ "$1" == *"help"* ]]; then
+  echo "timed_run: A utility to time a run of Grouparoo"
+  echo ""
+  echo "usage: timed_run {app} {scale=1} {log_level=notice}"
+  exit 0
 fi
 
 APP=$1
 ROOT=`pwd`
 ROO="$ROOT/cli/dist/grouparoo.js"
 PROJECT_DIR="$ROOT/apps/$APP"
+SCALE=${2:-1}
+LOG_LEVEL=${3:-notice}
 
 cd $PROJECT_DIR
-echo "Testing in: $PROJECT_DIR"
+echo "Testing in: $PROJECT_DIR with scale $SCALE at log level $LOG_LEVEL"
 
+echo ""
 echo "-----> RECOMPILING CORE"
+echo ""
+
 cd ../../core
 npm run prepare
 cd $PROJECT_DIR
 
-echo "-----> CLEARING REDIS\r\n"
-redis-cli flushall
+echo ""
+echo "-----> REBUILDING CONFIG FROM DEMO"
+echo ""
 
-echo "-----> REBUILDING CONFIG FROM DEMO\r\n"
-$ROO demo purchases -c
+$ROO demo purchases -c --scale $SCALE
 
+echo ""
 echo "-----> STARTING TEST"
+echo ""
+
 SECONDS=0
 
-$ROO run
+
+GROUPAROO_LOG_LEVEL=$LOG_LEVEL \
+  $ROO run
+
+echo ""
+echo "-----> COMPLETE!"
+echo ""
 
 ELAPSED="$(($SECONDS / 3600))hrs $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
 echo "🎉 Complete in $ELAPSED [$SECONDS seconds]"

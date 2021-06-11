@@ -27,7 +27,7 @@ export class EnqueueExportProcessors extends RetryableTask {
       ) * 1000;
 
     let totalEnqueued = 0;
-    const destinations = await Destination.findAll();
+    const destinations = await Destination.scope(null).findAll();
 
     for (const i in destinations) {
       const enqueuedProcessorsCount =

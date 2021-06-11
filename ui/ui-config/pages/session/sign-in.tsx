@@ -91,7 +91,6 @@ export default function SignInPage(props) {
                   Email is required
                 </Form.Control.Feedback>
               </Form.Group>
-
               <Form.Group>
                 <Form.Check
                   type="checkbox"

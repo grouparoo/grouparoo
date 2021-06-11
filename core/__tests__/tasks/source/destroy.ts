@@ -1,6 +1,6 @@
 import { helper } from "@grouparoo/spec-helper";
 import { api, task, specHelper } from "actionhero";
-import { Source } from "./../../../src";
+import { Property, Source } from "./../../../src";
 
 describe("tasks/source:destroy", () => {
   helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
@@ -64,7 +64,39 @@ describe("tasks/source:destroy", () => {
 
       // run it again
       await specHelper.runTask("source:destroy", foundTasks[0].args[0]);
-      await expect(source.reload()).rejects.toThrow(/does not exist anymore/);
+      await expect(Source.findById(source.id)).rejects.toThrow(
+        /cannot find Source/
+      );
+    });
+
+    test("will also destroy its directly mapped property", async () => {
+      const source: Source = await helper.factories.source();
+      const myUserIdProp = await source.bootstrapUniqueProperty(
+        "myUserId",
+        "string",
+        "id"
+      );
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await Property.determineDirectlyMapped(myUserIdProp);
+      expect(myUserIdProp.directlyMapped).toBe(true);
+
+      await source.update({ state: "deleted" });
+      await task.enqueue("source:destroy", { sourceId: source.id });
+
+      const foundTasks = await specHelper.findEnqueuedTasks("source:destroy");
+      expect(foundTasks.length).toBe(1);
+
+      await specHelper.runTask("source:destroy", foundTasks[0].args[0]);
+
+      await expect(Source.findById(source.id)).rejects.toThrow(
+        /cannot find Source/
+      );
+      await expect(Property.findById(myUserIdProp.id)).rejects.toThrow(
+        /cannot find Property/
+      );
     });
   });
 });

@@ -113,8 +113,14 @@ export namespace RunOps {
       col: "profileId",
     });
 
-    await run.update({ importsCreated, profilesCreated, profilesImported });
-    await run.determinePercentComplete(false);
+    const percentComplete = await run.determinePercentComplete(false, false);
+
+    await run.update({
+      importsCreated,
+      profilesCreated,
+      profilesImported,
+      percentComplete,
+    });
   }
 
   /**
@@ -160,22 +166,22 @@ export namespace RunOps {
           100 *
             ((latestProfilesCount - totalGroupMembers) / latestProfilesCount)
         );
-      }
-
-      // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
-      let percentComplete = Math.floor(
-        100 *
-          (membersAlreadyUpdated /
-            (totalGroupMembers > 0 ? totalGroupMembers : 1))
-      );
-
-      if (!run.groupMethod.match(/remove/i)) {
-        percentComplete = Math.floor(percentComplete / 2);
       } else {
-        percentComplete = 49 + Math.floor(percentComplete / 2);
-      }
+        // there are 3 phases to group runs, but only 2 really could have work, so we attribute 1/2 to each phase
+        let percentComplete = Math.floor(
+          100 *
+            (membersAlreadyUpdated /
+              (totalGroupMembers > 0 ? totalGroupMembers : 1))
+        );
 
-      return percentComplete;
+        if (!run.groupMethod.match(/remove/i)) {
+          percentComplete = Math.floor(percentComplete / 2);
+        } else {
+          percentComplete = 49 + Math.floor(percentComplete / 2);
+        }
+
+        return percentComplete;
+      }
     } else if (run.creatorType === "schedule") {
       const schedule = await Schedule.findById(run.creatorId);
       try {

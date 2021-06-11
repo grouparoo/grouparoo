@@ -20,7 +20,7 @@ export const getChangedRows: GetChangedRowsMethod = async ({
   [key: string]: any;
 }) => {
   // Begin with SELECT statement.
-  let query = `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM ${tableName}`;
+  let query = `SELECT *, ${highWaterMarkAndSortColumnASC} AS ${highWaterMarkKey} FROM "${tableName}"`;
 
   // Add WHERE clause, if there is a condition for the HWM.
   if (highWaterMarkCondition) {

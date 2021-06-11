@@ -12,6 +12,7 @@ newrelic_agent.log
 coverage
 *.sqlite
 *.sqlite-*
+apps/customer
 apps/*/config/*
 apps/*/*.log
 apps/*/.local
@@ -21,7 +22,7 @@ apps/*/.local
 log
 logs
 pids
-dist
+**/dist
 core/files/*
 core/report.*.json
 core/docs
@@ -31,6 +32,7 @@ core/bin/static_refs
 # Web
 .next
 !ui/*/*/log
+!ui/ui-config/dist
 web/out
 core/public/javascript/*
 ui/*/public/javascript/*

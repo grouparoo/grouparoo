@@ -147,86 +147,92 @@ export default function Page(props) {
                       />
                     </Form.Group>
                   </Col>
-                  <Col>
-                    <Alert variant="success">
-                      <strong>Most Recent Run</strong>
-                      {run ? (
-                        <>
-                          <br /> State: {run.state}
-                          <br />
-                          {run.createdAt ? (
-                            <>
-                              Started <Moment fromNow>{run.createdAt}</Moment>
-                              <ul>
-                                <li>Imports Created: {run.importsCreated}</li>
-                                <li>Profiles Created: {run.profilesCreated}</li>
-                                <li>
-                                  Profiles Imported: {run.profilesImported}
-                                </li>
-                              </ul>
-                            </>
-                          ) : (
-                            <span>never run</span>
-                          )}
-                          {run.completedAt ? (
-                            <p>
-                              Completed{" "}
-                              <Moment fromNow>{run.completedAt}</Moment>
-                            </p>
-                          ) : null}
-                          <p>
-                            <Link
-                              href="/run/[id]/edit"
-                              as={`/run/${run.id}/edit`}
-                            >
-                              <a>See More</a>
-                            </Link>
-                          </p>
-                        </>
-                      ) : (
-                        <p>no runs yet</p>
-                      )}{" "}
-                    </Alert>
-                  </Col>
-                  <Col>
-                    <Alert variant="info">
-                      <p>
-                        <strong>Next Run</strong>
-                        <br />
-                        {run?.updatedAt &&
-                        new Date(run.updatedAt).getTime() +
-                          schedule.recurringFrequency >
-                          new Date().getTime() &&
-                        recurringFrequencyMinutes > 0 ? (
+                  {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                    <Col>
+                      <Alert variant="success">
+                        <strong>Most Recent Run</strong>
+                        {run ? (
                           <>
-                            in{" "}
-                            <Moment
-                              add={{
-                                minutes: recurringFrequencyMinutes,
-                              }}
-                              toNow
-                              ago
-                            >
-                              {run.updatedAt}
-                            </Moment>
+                            <br /> State: {run.state}
+                            <br />
+                            {run.createdAt ? (
+                              <>
+                                Started <Moment fromNow>{run.createdAt}</Moment>
+                                <ul>
+                                  <li>Imports Created: {run.importsCreated}</li>
+                                  <li>
+                                    Profiles Created: {run.profilesCreated}
+                                  </li>
+                                  <li>
+                                    Profiles Imported: {run.profilesImported}
+                                  </li>
+                                </ul>
+                              </>
+                            ) : (
+                              <span>never run</span>
+                            )}
+                            {run.completedAt ? (
+                              <p>
+                                Completed{" "}
+                                <Moment fromNow>{run.completedAt}</Moment>
+                              </p>
+                            ) : null}
+                            <p>
+                              <Link
+                                href="/run/[id]/edit"
+                                as={`/run/${run.id}/edit`}
+                              >
+                                <a>See More</a>
+                              </Link>
+                            </p>
                           </>
-                        ) : null}
-
-                        {(run?.updatedAt &&
+                        ) : (
+                          <p>no runs yet</p>
+                        )}{" "}
+                      </Alert>
+                    </Col>
+                  )}
+                  {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                    <Col>
+                      <Alert variant="info">
+                        <p>
+                          <strong>Next Run</strong>
+                          <br />
+                          {run?.updatedAt &&
                           new Date(run.updatedAt).getTime() +
-                            schedule.recurringFrequency <=
+                            schedule.recurringFrequency >
                             new Date().getTime() &&
-                          recurringFrequencyMinutes) ||
-                        !run ? (
-                          schedule.recurring ? (
-                            <strong>Soon</strong>
-                          ) : (
-                            "N/A"
-                          )
-                        ) : null}
-                      </p>
-                    </Alert>
-                  </Col>
+                          recurringFrequencyMinutes > 0 ? (
+                            <>
+                              in{" "}
+                              <Moment
+                                add={{
+                                  minutes: recurringFrequencyMinutes,
+                                }}
+                                toNow
+                                ago
+                              >
+                                {run.updatedAt}
+                              </Moment>
+                            </>
+                          ) : null}
+
+                          {(run?.updatedAt &&
+                            new Date(run.updatedAt).getTime() +
+                              schedule.recurringFrequency <=
+                              new Date().getTime() &&
+                            recurringFrequencyMinutes) ||
+                          !run ? (
+                            schedule.recurring ? (
+                              <strong>Soon</strong>
+                            ) : (
+                              "N/A"
+                            )
+                          ) : null}
+                        </p>
+                      </Alert>
+                    </Col>
+                  )}
                 </Row>
               ) : null}
               <>

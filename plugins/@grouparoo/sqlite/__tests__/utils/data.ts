@@ -4,16 +4,18 @@ import fs from "fs";
 import os from "os";
 import parse from "csv-parse/lib/sync";
 import { config } from "actionhero";
+import { ConfigWriter } from "@grouparoo/core/dist/modules/configWriter";
 
 const workerId = process.env.JEST_WORKER_ID || 1;
-export const usersTableName = `users_${workerId}`;
-export const purchasesTableName = `purchases_${workerId}`;
-export const profilesDestinationTableName = `output_users_${workerId}`;
-export const groupsDestinationTableName = `output_groups_${workerId}`;
+export const usersTableName = `USERS - '${workerId}'`;
+export const usersTableSlug = ConfigWriter.generateId(usersTableName);
+export const purchasesTableName = `Purchases - '${workerId}'`;
+export const profilesDestinationTableName = `OUTPUT_USERS - '${workerId}'`;
+export const groupsDestinationTableName = `output_groups - '${workerId}'`;
 
 const allTables = {
   [usersTableName]: `
-CREATE TABLE ${usersTableName} (
+CREATE TABLE "${usersTableName}" (
   "id" integer PRIMARY KEY,
   "first_name" text,
   "last_name" text,
@@ -29,7 +31,7 @@ CREATE TABLE ${usersTableName} (
 )
 `,
   [purchasesTableName]: `
-CREATE TABLE ${purchasesTableName} (
+CREATE TABLE "${purchasesTableName}" (
   "id" integer PRIMARY KEY,
   "profile_id" integer,
   "purchase" text,
@@ -39,7 +41,7 @@ CREATE TABLE ${purchasesTableName} (
 )
 `,
   [profilesDestinationTableName]: `
-CREATE TABLE ${profilesDestinationTableName} (
+CREATE TABLE "${profilesDestinationTableName}" (
   "id" integer PRIMARY KEY,
   "customer_email" text,
   "fname" text,
@@ -48,7 +50,7 @@ CREATE TABLE ${profilesDestinationTableName} (
 )
 `,
   [groupsDestinationTableName]: `
-CREATE TABLE ${groupsDestinationTableName}(
+CREATE TABLE "${groupsDestinationTableName}" (
   "id" integer PRIMARY KEY,
   "userId" integer NOT NULL,
   "group" text NOT NULL,
@@ -88,7 +90,7 @@ export async function endClient() {
 }
 async function dropTables() {
   for (const tableName in allTables) {
-    await client.asyncQuery(`DROP TABLE IF EXISTS ${tableName}`);
+    await client.asyncQuery(`DROP TABLE IF EXISTS "${tableName}"`);
   }
 }
 
@@ -104,7 +106,7 @@ async function fillTable(tableName, fileName) {
   const rows = parse(fs.readFileSync(filePath), { columns: true });
   for (const i in rows) {
     const row = rows[i];
-    const q = `INSERT INTO ${tableName} (${Object.keys(row).join(
+    const q = `INSERT INTO "${tableName}" (${Object.keys(row).join(
       ", "
     )}) VALUES ('${Object.values(row).join("', '")}')`;
 

@@ -14,6 +14,7 @@ import {
   DataType,
   DefaultScope,
   BeforeDestroy,
+  Scopes,
 } from "sequelize-typescript";
 import { LoggedModel } from "../classes/loggedModel";
 import { App } from "./App";
@@ -29,12 +30,14 @@ import { Op } from "sequelize";
 import { OptionHelper } from "./../modules/optionHelper";
 import { MappingHelper } from "./../modules/mappingHelper";
 import { StateMachine } from "./../modules/stateMachine";
+import { ConfigWriter } from "./../modules/configWriter";
 import { Property } from "./Property";
 import { DestinationOps } from "./../modules/ops/destination";
 import { ExportOps } from "../modules/ops/export";
 import { destinationTypeConversions } from "../modules/destinationTypeConversions";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
+import { GroupRule } from "./GroupRule";
 
 export interface DestinationMapping extends MappingHelper.Mappings {}
 export interface SimpleDestinationGroupMembership {
@@ -113,6 +116,13 @@ const STATE_TRANSITIONS = [
 @DefaultScope(() => ({
   where: { state: "ready" },
 }))
+@Scopes(() => ({
+  notDraft: {
+    where: {
+      state: { [Op.notIn]: ["draft"] },
+    },
+  },
+}))
 @Table({ tableName: "destinations", paranoid: false })
 export class Destination extends LoggedModel<Destination> {
   idPrefix() {
@@ -161,7 +171,7 @@ export class Destination extends LoggedModel<Destination> {
   mappings: Mapping[];
 
   @HasMany(() => Option, "ownerId")
-  _options: Option[]; // the underscore is needed as "options" is an internal method on sequelize instances
+  __options: Option[]; // the underscores are needed as "options" is an internal method on sequelize instances
 
   @HasMany(() => Export)
   exports: Export[];
@@ -173,9 +183,10 @@ export class Destination extends LoggedModel<Destination> {
   async apiData(includeApp = true, includeGroup = true) {
     let app: App;
     let group: Group;
-    if (includeApp) app = await this.$get("app", { scope: null });
+    if (includeApp)
+      app = await this.$get("app", { scope: null, include: [Option] });
     if (includeGroup) {
-      group = await this.$get("group", { scope: null });
+      group = await this.$get("group", { scope: null, include: [GroupRule] });
     }
 
     const mapping = await this.getMapping();
@@ -527,22 +538,33 @@ export class Destination extends LoggedModel<Destination> {
     }
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, name, type, appId, groupId, syncMode } = this;
+    const { name, type, syncMode } = this;
 
-    const options = await this.getOptions();
-    const mapping = await MappingHelper.getMapping(this, "id");
-
-    const dgm = await DestinationGroupMembership.findAll({
-      where: { destinationId: id },
+    this.app = await this.$get("app");
+    const appId = this.app?.getConfigId();
+    this.group = await this.$get("group");
+    const groupId = this.group?.getConfigId();
+    const dgms = await DestinationGroupMembership.findAll({
+      where: { destinationId: this.id },
+      include: [Group],
     });
     const destinationGroupMemberships = Object.fromEntries(
-      dgm.map((dgm) => [dgm.remoteKey, dgm.groupId])
+      dgms.map((dgm) => [dgm.remoteKey, dgm.group.getConfigId()])
     );
+
+    const options = await this.getOptions();
+    const mapping = await MappingHelper.getConfigMapping(this);
+
+    if (!name || !appId) return;
 
     return {
       class: "Destination",
-      id,
+      id: this.getConfigId(),
       name,
       type,
       appId,
@@ -629,7 +651,7 @@ export class Destination extends LoggedModel<Destination> {
   static async cannotDeleteDestinationWithTrackedGroup(instance: Destination) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
     if (instance.groupId) {
-      const group = await Group.findOne({
+      const group = await Group.scope("notDraft").findOne({
         where: { id: instance.groupId },
       });
       if (group) {

@@ -156,6 +156,8 @@ describe("models/group", () => {
       await helper.sleep(1001);
 
       // second time
+      await mario.reload();
+      await mario.update({ state: "ready" }); // the import would have made the state 'pending'
       await group.runAddGroupMembers(run);
       await groupMember.reload();
       expect(groupMember.updatedAt.getTime()).toBeGreaterThan(
@@ -164,17 +166,46 @@ describe("models/group", () => {
       expect(groupMember.updatedAt.getTime()).toBeGreaterThan(firstTime);
     });
 
+    test("group#runAddGroupMembers will include ready profiles", async () => {
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
+
+      await group.runAddGroupMembers(run);
+
+      const _import = await Import.findOne({
+        where: { creatorId: run.id },
+      });
+      expect(_import.profileId).toBe(mario.id);
+    });
+
+    test("group#runAddGroupMembers will ignore not-ready profiles", async () => {
+      await group.setRules([
+        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+      ]);
+
+      await mario.update({ state: "pending" });
+      await group.runAddGroupMembers(run);
+
+      const _import = await Import.findOne({
+        where: { creatorId: run.id },
+      });
+      expect(_import).toBe(null);
+    });
+
     test("group#runRemoveGroupMembers will create imports for profiles which should no longer be part of the group and mark removedAt on the group member", async () => {
       await group.setRules([
-        { key: "lastName", match: "Mario", operation: { op: "eq" } },
+        { key: "lastName", match: "Mario", operation: { op: "eq" } }, // mario and luigi
       ]);
-      const response = await group.runAddGroupMembers(run);
-      expect(response).toEqual(
+      const firstAddResponse = await group.runAddGroupMembers(run);
+      const firstRemoveResponse = await group.runRemoveGroupMembers(run);
+      expect(firstAddResponse).toEqual(
         expect.objectContaining({
           groupMembersCount: 2,
           nextOffset: 0,
         })
       );
+      expect(firstRemoveResponse).toEqual(0);
 
       // create the groupMembers
       await mario.updateGroupMembership();
@@ -184,13 +215,26 @@ describe("models/group", () => {
       });
       expect(firstGroupMembers.length).toBe(2);
 
+      await mario.reload();
+      await luigi.reload();
+      await mario.update({ state: "ready" });
+      await luigi.update({ state: "ready" });
+
       // next run
       await group.setRules([
-        { key: "firstName", match: "Mario", operation: { op: "eq" } },
+        { key: "firstName", match: "Mario", operation: { op: "eq" } }, // just mario
       ]);
       const nextRun = await helper.factories.run();
-      await group.runAddGroupMembers(nextRun);
-      await group.runRemoveGroupMembers(nextRun);
+      const secondAddResponse = await group.runAddGroupMembers(nextRun);
+      const secondRemoveResponse = await group.runRemoveGroupMembers(nextRun);
+      expect(secondAddResponse).toEqual(
+        expect.objectContaining({
+          groupMembersCount: 1,
+          nextOffset: 0,
+        })
+      );
+      expect(secondRemoveResponse).toEqual(1);
+
       const imports = await Import.findAll({
         where: { creatorId: nextRun.id },
       });

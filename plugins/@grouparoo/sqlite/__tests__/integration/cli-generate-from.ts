@@ -15,6 +15,7 @@ import {
   afterData,
   appOptions,
   usersTableName,
+  usersTableSlug,
 } from "../utils/data";
 
 process.env.GROUPAROO_CONFIG_DIR = `${os.tmpdir()}/test/${
@@ -99,14 +100,14 @@ describe("sqlite cli tests", () => {
       },
     });
 
-    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/${usersTableName}.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/${usersTableSlug}.js`;
     const output = messages.join(" ");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
     expect(contents).toContain('class: "source"');
-    expect(contents).toContain(`id: "${usersTableName}"`);
-    expect(contents).toContain(`name: "${usersTableName}"`);
+    expect(contents).toContain(`id: "${usersTableSlug}"`);
+    expect(contents).toContain(`name: "${usersTableSlug}"`);
 
     fs.unlinkSync(file);
   });
@@ -152,14 +153,14 @@ describe("sqlite cli tests", () => {
       },
     });
 
-    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/${usersTableName}.js`;
+    const file = `${process.env.GROUPAROO_CONFIG_DIR}/sources/${usersTableSlug}.js`;
     const output = messages.join("\n");
     expect(output).toContain(`wrote ${file}`);
 
     const contents = fs.readFileSync(file).toString();
     expect(contents).toContain('class: "source"');
-    expect(contents).toContain(`id: "${usersTableName}"`);
-    expect(contents).toContain(`name: "${usersTableName}"`);
+    expect(contents).toContain(`id: "${usersTableSlug}"`);
+    expect(contents).toContain(`name: "${usersTableSlug}"`);
 
     expect(contents).toContain(`id: "user_id",`); // mapping
     expect(contents).toContain(`column: "stamp",`); // schedule

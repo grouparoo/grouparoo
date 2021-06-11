@@ -1,6 +1,7 @@
 import { Destination } from "../../models/Destination";
 import { Export } from "../../models/Export";
-import { App } from "../../models/App";
+import { Option } from "../../models/Option";
+import { Mapping } from "../../models/Mapping";
 import { CLSTask } from "../../classes/tasks/clsTask";
 
 export class ExportSend extends CLSTask {
@@ -17,13 +18,11 @@ export class ExportSend extends CLSTask {
   }
 
   async runWithinTransaction(params) {
-    let app: App;
-
     const destination = await Destination.scope(null).findOne({
       where: { id: params.destinationId },
+      include: [Option, Mapping],
     });
     if (!destination) return;
-    app = await destination.$get("app");
     const _export = await Export.findOne({
       where: { id: params.exportId },
     });

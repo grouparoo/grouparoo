@@ -85,9 +85,12 @@ export class ProfileExport extends RetryableTask {
         );
       }
 
-      await Promise.all(
-        imports.map((e) => e.update({ exportedAt: new Date() }))
-      );
+      if (imports.length > 0) {
+        await Import.update(
+          { exportedAt: new Date() },
+          { where: { id: imports.map((i) => i.id) } }
+        );
+      }
     } catch (error) {
       if (env !== "test") log(`[EXPORT ERROR] ${error}`, "alert");
       await Promise.all(imports.map((e) => e.setError(error, this.name)));

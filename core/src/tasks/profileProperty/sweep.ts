@@ -10,7 +10,7 @@ export class ProfilePropertySweep extends CLSTask {
     this.name = "profileProperties:sweep";
     this.description =
       "Double check that all profile properties are removed that don't belong to a profile or property";
-    this.frequency = 1000 * 30;
+    this.frequency = 1000 * 60 * 60;
     this.queue = "profileProperties";
     this.inputs = {};
   }
@@ -41,16 +41,20 @@ export class ProfilePropertySweep extends CLSTask {
       limit,
     });
 
-    for (const i in profilePropertiesMissingProfile) {
-      await profilePropertiesMissingProfile[i].destroy();
-    }
-
-    for (const i in profilePropertiesMissingRule) {
-      await profilePropertiesMissingRule[i].destroy();
-    }
-
     count += profilePropertiesMissingProfile.length;
     count += profilePropertiesMissingRule.length;
+
+    if (count > 0) {
+      await ProfileProperty.destroy({
+        where: {
+          id: [].concat(
+            profilePropertiesMissingProfile.map((p) => p.id),
+            profilePropertiesMissingRule.map((p) => p.id)
+          ),
+        },
+      });
+    }
+
     return count;
   }
 }

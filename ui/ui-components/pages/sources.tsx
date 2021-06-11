@@ -152,22 +152,26 @@ export default function Page(props) {
                         {schedule.recurring
                           ? `Every ${recurringFrequencyMinutes} minutes`
                           : "Not recurring"}
-                        <br />
-                        Last Run:{" "}
-                        {run ? (
-                          <Moment fromNow>{run?.createdAt}</Moment>
-                        ) : (
-                          "Never"
+                        {process.env.GROUPAROO_UI_EDITION !== "config" && (
+                          <>
+                            <br />
+                            Last Run:{" "}
+                            {run ? (
+                              <Moment fromNow>{run?.createdAt}</Moment>
+                            ) : (
+                              "Never"
+                            )}
+                            <br />
+                            <Button
+                              variant="outline-success"
+                              size="sm"
+                              disabled={run?.state === "running"}
+                              onClick={() => enqueueScheduleRun(source)}
+                            >
+                              Run Now
+                            </Button>
+                          </>
                         )}
-                        <br />
-                        <Button
-                          variant="outline-success"
-                          size="sm"
-                          disabled={run?.state === "running"}
-                          onClick={() => enqueueScheduleRun(source)}
-                        >
-                          Run Now
-                        </Button>
                       </>
                     ) : (
                       "No Schedule"

@@ -1,6 +1,7 @@
 import { Badge } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { StatusHandler } from "../../utils/statusHandler";
+import { Misc } from "../../utils/apiData";
 
 export default function ResqueFailedCountBadge({
   statusHandler,
@@ -12,13 +13,13 @@ export default function ResqueFailedCountBadge({
   const [resqueFailedCount, setResqueFailedCount] = useState(0);
 
   useEffect(() => {
-    statusHandler.subscribe("resque-failed-badge", ({ metrics }) => {
-      const _failedCount =
-        metrics.find(
-          (m) => m.collection === "cluster" && m.topic === "resqueErrors"
-        )?.count ?? -1;
-      setResqueFailedCount(_failedCount);
-    });
+    statusHandler.subscribe(
+      "resque-failed-badge",
+      ({ metric }: { metric: Misc.StatusMetricType }) => {
+        setResqueFailedCount(metric.count);
+      },
+      { topic: "resqueErrors", collection: "cluster" }
+    );
 
     return () => {
       statusHandler.unsubscribe("resque-failed-badge");

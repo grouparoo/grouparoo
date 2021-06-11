@@ -15,15 +15,17 @@ export namespace MappingHelper {
     propertyColumn?: "key" | "id"
   ) {
     const MappingObject: Mappings = {};
-    const mappings = await Mapping.findAll({
-      where: { ownerId: instance.id },
-    });
+    const mappings =
+      instance.mappings ??
+      (await Mapping.findAll({
+        where: { ownerId: instance.id },
+      }));
+
+    if (!instance.mappings) instance.mappings = mappings;
 
     for (const i in mappings) {
       const mapping = mappings[i];
-      const property = await mapping.$get("property", {
-        scope: null,
-      });
+      const property = await Property.findOneWithCache(mapping.propertyId);
       if (!property) {
         throw new Error(
           `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
@@ -35,16 +37,39 @@ export namespace MappingHelper {
     return MappingObject;
   }
 
+  export async function getConfigMapping(instance: Source | Destination) {
+    const MappingObject: Mappings = {};
+
+    const mappings = await Mapping.findAll({
+      where: { ownerId: instance.id },
+      include: [Property],
+    });
+
+    for (const mapping of mappings) {
+      const property = await mapping.property;
+      if (!property) {
+        throw new Error(
+          `cannot find property or this source/destination not ready (remoteKey: ${mapping.remoteKey})`
+        );
+      }
+      MappingObject[mapping.remoteKey] = property.getConfigId();
+    }
+
+    return MappingObject;
+  }
+
   export async function setMapping(
     instance: Source | Destination,
     mappings: Mappings
   ) {
+    delete instance.mappings;
     await LockableHelper.beforeUpdateOptions(instance);
 
     await Mapping.destroy({
       where: { ownerId: instance.id },
     });
 
+    let newMappings: Mapping[] = [];
     const keys = Object.keys(mappings);
     for (const i in keys) {
       const remoteKey = keys[i];
@@ -57,14 +82,16 @@ export namespace MappingHelper {
         throw new Error(`cannot find property ${key}`);
       }
 
-      await Mapping.create({
+      const mapping = await Mapping.create({
         ownerId: instance.id,
         ownerType: instance.constructor.name.toLowerCase(),
         propertyId: property.id,
         remoteKey,
       });
+      newMappings.push(mapping);
     }
 
+    instance.mappings = newMappings;
     await instance.touch();
     await LoggedModel.logUpdate(instance);
 

@@ -141,9 +141,9 @@ export class Run extends Model {
   @HasMany(() => Import, "creatorId")
   imports: Import[];
 
-  async determinePercentComplete(logPercentMessage = true) {
+  async determinePercentComplete(logPercentMessage = true, write = true) {
     const percentComplete = await RunOps.determinePercentComplete(this);
-    await this.update({ percentComplete });
+    if (write) await this.update({ percentComplete });
     if (logPercentMessage) {
       log(`run ${this.id} is ${this.percentComplete}% complete`);
     }
@@ -152,7 +152,6 @@ export class Run extends Model {
   }
 
   async afterBatch(newSate?: string) {
-    await this.determinePercentComplete();
     await this.reload();
 
     if (
@@ -160,6 +159,7 @@ export class Run extends Model {
       this.state !== newSate &&
       !["complete", "stopped"].includes(this.state)
     ) {
+      await this.determinePercentComplete();
       await this.update({ state: newSate });
     }
 
@@ -302,7 +302,7 @@ export class Run extends Model {
         name = property.key;
       } else if (this.creatorType === "schedule") {
         const schedule = await Schedule.findById(this.creatorId);
-        const source = await schedule.$get("source");
+        const source = await schedule.$get("source", { scope: null });
         name = source.name;
       } else if (this.creatorType === "teamMember") {
         const teamMember = await TeamMember.findById(this.creatorId);

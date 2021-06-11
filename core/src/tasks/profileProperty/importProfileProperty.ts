@@ -2,6 +2,8 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { ProfileProperty } from "../../models/ProfileProperty";
+import { Mapping } from "../../models/Mapping";
+import { Option } from "../../models/Option";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
 
@@ -36,7 +38,10 @@ export class ImportProfileProperty extends RetryableTask {
     const property = await Property.findOneWithCache(params.propertyId);
     if (!property) return;
     const profileProperties = await profile.properties();
-    const source = await property.$get("source");
+    const source = await property.$get("source", {
+      scope: null,
+      include: [Option, Mapping],
+    });
     const dependencies = await PropertyOps.dependencies(property);
 
     let ok = true;

@@ -2,12 +2,15 @@ import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { Profile } from "../../models/Profile";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Property } from "../../models/Property";
+import { Mapping } from "../../models/Mapping";
+import { Option } from "../../models/Option";
 import { Op } from "sequelize";
 import { log } from "actionhero";
 import { CLS } from "../../modules/cls";
 import { ProfilePropertiesPluginMethodResponse } from "../../classes/plugin";
 import { PropertyOps } from "../../modules/ops/property";
 import { ImportOps } from "../../modules/ops/import";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class ImportProfileProperties extends RetryableTask {
   constructor() {
@@ -31,7 +34,10 @@ export class ImportProfileProperties extends RetryableTask {
 
     const property = await Property.findOneWithCache(params.propertyId);
     if (!property) return;
-    const source = await property.$get("source");
+    const source = await property.$get("source", {
+      include: [Option, Mapping],
+      scope: null,
+    });
 
     const profilesToImport: Profile[] = [];
     const profilesNotReady: Profile[] = [];
@@ -96,10 +102,20 @@ export class ImportProfileProperties extends RetryableTask {
       return log(error, "error");
     }
 
+    const orderedProfiles: Profile[] = [];
+    const orderedHashes: any[] = [];
     for (const profileId in propertyValuesBatch) {
       const profile = profilesToImport.find((p) => p.id === profileId);
       const hash = { [property.id]: propertyValuesBatch[profileId] };
-      await profile.addOrUpdateProperties(hash, false); // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+      orderedProfiles.push(profile);
+      orderedHashes.push(hash);
+    }
+    if (orderedProfiles.length > 0) {
+      await ProfileOps.addOrUpdateProperties(
+        orderedProfiles,
+        orderedHashes,
+        false // we are disabling the profile lock here because the transaction will be saved out-of-band from the lock check
+      );
     }
 
     // update the properties that got no data back

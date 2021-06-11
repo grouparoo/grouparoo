@@ -10,10 +10,18 @@ describe("models/property", () => {
 
   beforeAll(async () => {
     await helper.factories.properties();
-    originalPropertyCount = await Property.scope(null).count({
-      where: { state: "ready" },
-    });
     source = await Source.findOne({ where: { state: "ready" } });
+
+    const deletedProperty = await helper.factories.property(
+      source,
+      { key: "deletedProp" },
+      { column: "col" }
+    );
+    await deletedProperty.update({ state: "deleted" });
+
+    originalPropertyCount = await Property.scope(null).count({
+      where: { state: ["ready", "deleted"] },
+    });
   });
 
   describe("#findAllWithCache", () => {
@@ -22,13 +30,12 @@ describe("models/property", () => {
       expect(instances.length).toBe(originalPropertyCount);
     });
 
-    test("it only includes ready properties", async () => {
-      const property = await helper.factories.property(
-        source,
-        {},
-        { column: "foo" }
-      );
-      await property.update({ state: "deleted" });
+    test("it only includes ready and deleted properties", async () => {
+      const property = await Property.create({
+        type: "string",
+        sourceId: source.id,
+      });
+      expect(property.state).toBe("draft");
 
       const instances = await Property.findAllWithCache();
       expect(instances.length).toBe(originalPropertyCount);

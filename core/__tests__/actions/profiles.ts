@@ -348,7 +348,7 @@ describe("actions/profiles", () => {
         expect(groups[0].name).toBe("new group");
       });
 
-      test("the profiles in the group can be listed, and then include when the profile joined the group", async () => {
+      test("the profiles in the group can be listed", async () => {
         connection.params = {
           csrfToken,
           groupId: group.id,
@@ -361,7 +361,6 @@ describe("actions/profiles", () => {
         expect(error).toBeUndefined();
         expect(profiles.length).toBe(1);
         expect(total).toBe(1);
-        expect(profiles[0].joinedAt).toBeTruthy();
       });
 
       test("a writer can remove a profile from a manual group", async () => {
@@ -517,7 +516,7 @@ describe("actions/profiles", () => {
         expect(total).toBe(2);
       });
 
-      test("returns exact matches when there is a search (all), returning searched property", async () => {
+      test("returns exact matches when there is a search (all), returning all properties", async () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
@@ -536,11 +535,12 @@ describe("actions/profiles", () => {
         expect(total).toBe(1);
       });
 
-      test("returns case-insensitive matches when there is a search (all), returning searched property", async () => {
+      test("returns case-insensitive matches when there is a search (all), returning all properties", async () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
           searchValue: "PEACH@MushRoom-kingdom.gov",
+          caseSensitive: false,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -553,16 +553,28 @@ describe("actions/profiles", () => {
         ]);
         expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
         expect(total).toBe(1);
+
+        connection.params = {
+          csrfToken,
+          searchKey: "email",
+          searchValue: "PEACH@MushRoom-kingdom.gov",
+          caseSensitive: true,
+        };
+        const { total: caseSensitiveTotal } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(caseSensitiveTotal).toBe(0);
       });
 
-      test("returns exact matches when there is a search (group), returning searched property", async () => {
+      test("returns exact matches when there is a search (group), returning all properties", async () => {
         connection.params = {
           csrfToken,
           groupId: group.id,
           searchKey: "email",
           searchValue: "peach@mushroom-kingdom.gov",
         };
-        const { error, profiles } = await specHelper.runAction(
+        const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
           connection
         );
@@ -571,22 +583,19 @@ describe("actions/profiles", () => {
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
-
-        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
-        // expect(total).toBe(1)
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
+        expect(total).toBe(1);
       });
 
-      test("returns case-insensitive matches when there is a search (group), returning searched property", async () => {
+      test("returns case-insensitive matches when there is a search (group), returning all properties", async () => {
         connection.params = {
           csrfToken,
           groupId: group.id,
           searchKey: "email",
           searchValue: "PEACH@MUSHroom-kingdom.gov",
+          caseSensitive: false,
         };
-        const { error, profiles } = await specHelper.runAction(
+        const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
           connection
         );
@@ -595,15 +604,24 @@ describe("actions/profiles", () => {
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
+        expect(total).toBe(1);
 
-        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
-        // expect(total).toBe(1)
+        connection.params = {
+          csrfToken,
+          groupId: group.id,
+          searchKey: "email",
+          searchValue: "PEACH@MushRoom-kingdom.gov",
+          caseSensitive: true,
+        };
+        const { total: caseSensitiveTotal } = await specHelper.runAction(
+          "profiles:list",
+          connection
+        );
+        expect(caseSensitiveTotal).toBe(0);
       });
 
-      test("returns fuzzy matching profiles and counts when there is a search (all), returning searched property", async () => {
+      test("returns fuzzy matching profiles and counts when there is a search (all), returning all properties", async () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
@@ -618,11 +636,12 @@ describe("actions/profiles", () => {
         expect(total).toBe(2);
       });
 
-      test("returns fuzzy matching profiles and counts when there is a search (all) ignoring case, returning searched property", async () => {
+      test("returns fuzzy matching profiles and counts when there is a search (all) ignoring case, returning all properties", async () => {
         connection.params = {
           csrfToken,
           searchKey: "email",
           searchValue: "%@MuShRoom-kingdom.GOV",
+          caseSensitive: false,
         };
         const { error, profiles, total } = await specHelper.runAction(
           "profiles:list",
@@ -633,7 +652,7 @@ describe("actions/profiles", () => {
         expect(total).toBe(2);
       });
 
-      test("returns fuzzy matching profiles and counts when there is no search (group), returning searched property", async () => {
+      test("returns fuzzy matching profiles and counts when there is no search (group), returning all properties", async () => {
         connection.params = {
           csrfToken,
           groupId: group.id,
@@ -649,12 +668,8 @@ describe("actions/profiles", () => {
         expect(simpleProfileValues(profiles[0].properties).email).toEqual([
           "peach@mushroom-kingdom.gov",
         ]);
-        expect(
-          simpleProfileValues(profiles[0].properties).userId
-        ).toBeUndefined();
-
-        // TODO: we need to do a double join to check group member's properties.  The profiles returned are good, but not the total counts
-        // expect(total).toBe(1)
+        expect(simpleProfileValues(profiles[0].properties).userId).toEqual([4]);
+        expect(total).toBe(1);
       });
 
       test("without a search, profiles without properties are returned", async () => {

@@ -50,7 +50,7 @@ export namespace ExportProcessorOps {
       // in SQLite this isn't possible, but contention is far less likely
       if (updateResponse[1]) exportProcessors = updateResponse[1];
 
-      const app = await destination.$get("app");
+      const app = await destination.$get("app", { scope: null });
 
       await Promise.all(
         exportProcessors.map((processor) =>

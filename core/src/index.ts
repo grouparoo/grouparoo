@@ -49,6 +49,8 @@ export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";
 export { Team } from "./models/Team";
 export { TeamMember } from "./models/TeamMember";
 
+export { StatusMetric } from "./modules/statusReporters";
+
 export { waitForLock } from "./modules/locks";
 export { Errors } from "./modules/errors";
 export * from "./modules/cache";

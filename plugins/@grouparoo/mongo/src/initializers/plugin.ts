@@ -40,7 +40,9 @@ export class Plugins extends Initializer {
         ]),
         new TableSourceTemplate("mongo", { getTables, getColumns }),
         new TablePropertyTemplate("mongo"),
-        new QueryPropertyTemplate("mongo"),
+        new QueryPropertyTemplate("mongo", [
+          path.join(templateRoot, "query-property", "*.template"),
+        ]),
         new QuerySourceTemplate("mongo", [
           path.join(templateRoot, "query-source", "*.template"),
         ]),

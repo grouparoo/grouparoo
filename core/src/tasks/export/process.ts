@@ -1,5 +1,7 @@
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ExportProcessor } from "../../models/ExportProcessor";
+import { Mapping } from "../../models/Mapping";
+import { Option } from "../../models/Option";
 
 export class ProcessExports extends CLSTask {
   constructor() {
@@ -20,7 +22,10 @@ export class ProcessExports extends CLSTask {
 
     if (!exportProcessor) return; // may have been processed
 
-    const destination = await exportProcessor.$get("destination");
+    const destination = await exportProcessor.$get("destination", {
+      include: [Option, Mapping],
+      scope: null,
+    });
     await destination.runExportProcessor(exportProcessor);
   }
 }

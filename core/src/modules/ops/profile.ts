@@ -5,9 +5,10 @@ import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
 import { Event } from "../../models/Event";
+import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
-import { Op, QueryTypes } from "sequelize";
+import { Op, OrderItem, WhereAttributeHash, QueryTypes } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { CLS } from "../../modules/cls";
@@ -94,6 +95,119 @@ export namespace ProfileOps {
     }
 
     return hash;
+  }
+
+  /**
+   * Search & List Profiles
+   */
+  export async function search({
+    limit,
+    offset,
+    state,
+    groupId,
+    searchKey,
+    searchValue,
+    order,
+    caseSensitive,
+  }: {
+    limit?: number;
+    offset?: number;
+    state?: string;
+    groupId?: string;
+    searchKey?: string | number;
+    searchValue?: string;
+    order?: OrderItem[];
+    caseSensitive?: boolean;
+  }) {
+    if (!limit) limit = 100;
+    if (!offset) offset = 0;
+    if (!order) order = [["createdAt", "asc"]];
+    if (caseSensitive === undefined || caseSensitive === null)
+      caseSensitive = true;
+
+    const ands: WhereAttributeHash[] = [];
+    const include: Array<any> = [];
+    let countRequiresIncludes = false;
+
+    // Are we searching for Profiles in a specific state?
+    if (state) ands.push({ state });
+
+    // Are we searching for a specific ProfileProperty?
+    if (searchKey && searchValue) {
+      countRequiresIncludes = true;
+      include.push(ProfileProperty);
+      countRequiresIncludes = true;
+
+      const property = await Property.findOneWithCache(`${searchKey}`, "key");
+      if (!property) throw new Error(`cannot find a property for ${searchKey}`);
+
+      ands.push(
+        api.sequelize.where(
+          api.sequelize.col("profileProperties.propertyId"),
+          property.id
+        )
+      );
+      if (searchValue.toLowerCase() === "null" || searchValue === "") {
+        ands.push(
+          api.sequelize.where(api.sequelize.col("profileProperties.rawValue"), {
+            [Op.eq]: null,
+          })
+        );
+      } else {
+        const op = searchValue.includes("%") ? Op.like : Op.eq;
+        ands.push(
+          api.sequelize.where(
+            !caseSensitive
+              ? api.sequelize.fn(
+                  "LOWER",
+                  api.sequelize.col("profileProperties.rawValue")
+                )
+              : api.sequelize.col("profileProperties.rawValue"),
+            {
+              [op]: !caseSensitive
+                ? api.sequelize.fn("LOWER", searchValue)
+                : searchValue,
+            }
+          )
+        );
+      }
+    }
+
+    // Are we limiting the search for only members of a Specific Group?
+    if (groupId) {
+      countRequiresIncludes = true;
+      include.push(GroupMember);
+      ands.push(
+        api.sequelize.where(api.sequelize.col("groupMembers.groupId"), groupId)
+      );
+    }
+
+    // Load the profiles in full now that we know the relevant profiles
+    const profileIds = (
+      await Profile.findAll({
+        attributes: ["id"],
+        include,
+        where: { [Op.and]: ands },
+        limit,
+        offset,
+        order,
+        subQuery: false,
+      })
+    ).map((p) => p.id);
+
+    const profiles = await Profile.findAll({
+      where: { id: profileIds },
+      order,
+      include: [ProfileProperty],
+    });
+
+    const total = await Profile.count({
+      include: countRequiresIncludes ? include : undefined,
+      where: { [Op.and]: ands },
+      distinct: true,
+    });
+
+    return { profiles, total };
   }
 
   /**
@@ -572,54 +686,19 @@ export namespace ProfileOps {
    * Task `profile:completeImport` will be enqueued for each Profile.
    */
   export async function makeReady(limit = 100, toExport = true) {
-    // let profiles: Profile[] = await api.sequelize.query(
-    //   `SELECT
-    //       profiles.id as id
-    //     FROM profiles
-    //     JOIN
-    //       "profileProperties" on "profileProperties"."profileId" = profiles.id
-    //     WHERE
-    //       profiles.state = 'pending'
-    //     GROUP BY profiles.id
-    //     HAVING
-    //       MAX("profileProperties".state) = 'ready'
-    //       AND COUNT(DISTINCT "profileProperties".state) = 1
-    //     LIMIT ${limit}
-    //     ;`,
-    //   { type: QueryTypes.SELECT }
-    // );
-
-    let profiles = await Profile.findAll({
-      subQuery: false,
-      attributes: ["id"],
-      where: { state: "pending" },
-      include: [{ model: ProfileProperty, required: true, attributes: [] }],
-      group: "Profile.id",
-      limit,
-      having: {
-        [Op.and]: [
-          api.sequelize.where(
-            api.sequelize.fn(
-              "MAX",
-              api.sequelize.col("profileProperties.state")
-            ),
-            "=",
-            "ready"
-          ),
-          api.sequelize.where(
-            api.sequelize.fn(
-              "COUNT",
-              api.sequelize.fn(
-                "DISTINCT",
-                api.sequelize.col("profileProperties.state")
-              )
-            ),
-            "=",
-            1
-          ),
-        ],
-      },
-    });
+    let profiles: Profile[] = await api.sequelize.query(
+      `
+    SELECT "id" from "profiles" where "state" = 'pending'
+    EXCEPT
+    SELECT DISTINCT("profileId") FROM "profileProperties" WHERE "state" = 'pending'
+    LIMIT ${limit}
+    ;
+    `,
+      {
+        type: QueryTypes.SELECT,
+        model: Profile,
+      }
+    );
 
     const updateResponse = await Profile.update(
       { state: "ready" },

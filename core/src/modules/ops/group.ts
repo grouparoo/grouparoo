@@ -18,9 +18,13 @@ export namespace GroupOps {
     destinationId?: string
   ) {
     if (process.env.GROUPAROO_RUN_MODE === "cli:validate") return;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") return;
 
     await group.stopPreviousRuns();
-    await group.update({ state: "updating" });
+
+    if (group.state !== "deleted") {
+      await group.update({ state: "updating" });
+    }
 
     const run = await Run.create({
       creatorId: group.id,
@@ -228,7 +232,11 @@ export namespace GroupOps {
         return { groupMembersCount: 0, nextHighWaterMark: 0, nextOffset: 0 };
       }
 
-      const { where, include } = await group._buildGroupMemberQueryParts(rules);
+      const { where, include } = await group._buildGroupMemberQueryParts(
+        rules,
+        group.matchType,
+        "ready"
+      );
 
       where["createdAt"] = { [Op.and]: [{ [Op.lt]: run.createdAt }] };
       if (highWaterMark) {

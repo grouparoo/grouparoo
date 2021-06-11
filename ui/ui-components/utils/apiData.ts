@@ -28,6 +28,7 @@ import {
   Team,
   TeamMember,
   Event,
+  StatusMetric,
 } from "@grouparoo/core";
 
 export namespace Models {
@@ -68,6 +69,12 @@ export namespace Models {
   export type SourceType = Partial<AsyncReturnType<Source["apiData"]>>;
   export type TeamType = Partial<AsyncReturnType<Team["apiData"]>>;
   export type TeamMemberType = Partial<AsyncReturnType<TeamMember["apiData"]>>;
+}
+
+// -----------------------------------------
+
+export namespace Misc {
+  export type StatusMetricType = StatusMetric;
 }
 
 // -----------------------------------------

@@ -15,7 +15,7 @@ import {
   Scopes,
 } from "sequelize-typescript";
 import { api, config } from "actionhero";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import Moment from "moment";
 import { LoggedModel } from "../classes/loggedModel";
 import { GroupMember } from "./GroupMember";
@@ -30,6 +30,7 @@ import { Property, propertyJSToSQLType } from "./Property";
 import { PropertyOpsDictionary } from "../modules/ruleOpsDictionary";
 import { StateMachine } from "./../modules/stateMachine";
 import { GroupOps } from "../modules/ops/group";
+import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -164,11 +165,11 @@ export class Group extends LoggedModel<Group> {
     if (this.state === "deleted") return [];
 
     const rulesWithKey: GroupRuleWithKey[] = [];
-    const rules =
-      this.groupRules?.sort((a, b) => a.position - b.position) ??
-      (await this.$get("groupRules", {
-        order: [["position", "asc"]],
-      }));
+    const rules = this.groupRules
+      ? this.groupRules.sort((a, b) => a.position - b.position)
+      : await this.$get("groupRules", {
+          order: [["position", "asc"]],
+        });
 
     for (const i in rules) {
       const rule: GroupRule = rules[i];
@@ -435,7 +436,8 @@ export class Group extends LoggedModel<Group> {
    */
   async _buildGroupMemberQueryParts(
     rules?: GroupRuleWithKey[],
-    matchType: typeof matchTypes[number] = this.matchType
+    matchType: typeof matchTypes[number] = this.matchType,
+    profileState?: string
   ) {
     if (this.type !== "calculated") {
       throw new Error("only calculated groups can be calculated");
@@ -444,8 +446,10 @@ export class Group extends LoggedModel<Group> {
     if (!rules) rules = await this.getRules();
 
     const include = [];
-    const wheres = [];
+    const wheres: WhereAttributeHash[] = [];
     const localNumbers = [].concat(numbers);
+
+    if (profileState) wheres.push({ state: profileState });
 
     for (const i in rules) {
       const rule = rules[i];
@@ -622,8 +626,12 @@ export class Group extends LoggedModel<Group> {
     return { where: whereContainer, include };
   }
 
+  getConfigId() {
+    return ConfigWriter.generateId(this.name);
+  }
+
   async getConfigObject() {
-    const { id, name, type } = this;
+    const { name, type } = this;
 
     let rules = [];
 
@@ -633,7 +641,7 @@ export class Group extends LoggedModel<Group> {
     for (const rule of convenientRules) {
       const property = await Property.findOneWithCache(rule.key, "key");
       rules.push({
-        propertyId: property.id,
+        propertyId: property.getConfigId(),
         operation: { op: rule.operation.op },
         match: rule.match,
         relativeMatchNumber: rule.relativeMatchNumber,
@@ -642,8 +650,10 @@ export class Group extends LoggedModel<Group> {
       });
     }
 
+    if (!name) return;
+
     return {
-      id,
+      id: this.getConfigId(),
       class: "Group",
       type,
       name,
@@ -691,7 +701,8 @@ export class Group extends LoggedModel<Group> {
 
   @BeforeDestroy
   static async ensureNotInUse(instance: Group) {
-    const count = await instance.$count("destinations");
+    const count = await instance.$count("destinations", { scope: "notDraft" });
+
     if (count > 0) {
       throw new Error(
         `this group still in use by ${count} destinations, cannot delete`
@@ -727,7 +738,10 @@ export class Group extends LoggedModel<Group> {
         "destination"
       );
       await destinationGroupMemberships[i].destroy();
-      await destination.exportGroupMembers(false);
+
+      if (destination) {
+        await destination.exportGroupMembers(false);
+      }
     }
   }
 

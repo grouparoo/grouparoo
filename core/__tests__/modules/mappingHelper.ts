@@ -24,17 +24,27 @@ describe("module/MappingHelper", () => {
     property = await Property.findOne();
   });
 
-  test("returns a mapping using the property's key by default", async () => {
-    const mapping = await MappingHelper.getMapping(source);
+  describe("getMapping()", () => {
+    test("returns a mapping using the property's key by default", async () => {
+      const mapping = await MappingHelper.getMapping(source);
 
-    expect(property.key).toEqual(propertyKey);
-    expect(mapping).toEqual({ [remoteKey]: property.key });
+      expect(property.key).toEqual(propertyKey);
+      expect(mapping).toEqual({ [remoteKey]: property.key });
+    });
+
+    test("will optionally return the property's id as the value", async () => {
+      const mapping = await MappingHelper.getMapping(source, "id");
+
+      expect(property.id).not.toEqual(propertyKey);
+      expect(mapping).toEqual({ [remoteKey]: property.id });
+    });
   });
 
-  test("will optionally return the property's id as the value", async () => {
-    const mapping = await MappingHelper.getMapping(source, "id");
-
-    expect(property.id).not.toEqual(propertyKey);
-    expect(mapping).toEqual({ [remoteKey]: property.id });
+  describe("getConfigMapping()", () => {
+    test("returns a mapping built for a config object", async () => {
+      const mapping = await MappingHelper.getConfigMapping(source);
+      expect(property.getConfigId()).not.toEqual(propertyKey);
+      expect(mapping).toEqual({ [remoteKey]: property.getConfigId() });
+    });
   });
 });

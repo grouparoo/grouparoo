@@ -5,7 +5,7 @@ import { useSecondaryEffect } from "../../hooks/useSecondaryEffect";
 import { AsyncTypeahead } from "react-bootstrap-typeahead";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Form, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
+import { Form, Row, Col, Badge, Button, ButtonGroup } from "react-bootstrap";
 import Moment from "react-moment";
 import Pagination from "../pagination";
 import LoadingTable from "../loadingTable";
@@ -36,11 +36,14 @@ export default function ProfilesList(props) {
     router.query.searchValue || props.searchValue || ""
   );
   const [state, setState] = useState(router.query.state?.toString() || null);
+  const [caseSensitive, setCaseSensitive] = useState(
+    router.query.caseSensitive ? router.query.caseSensitive === "true" : true
+  );
   const states = ["pending", "ready"];
 
   useSecondaryEffect(() => {
     load();
-  }, [offset, limit, state]);
+  }, [offset, limit, state, caseSensitive]);
 
   let groupId: string;
   if (router.query.id) {
@@ -62,6 +65,7 @@ export default function ProfilesList(props) {
       offset,
       state,
       groupId,
+      caseSensitive,
     });
     setLoading(false);
     if (response?.profiles) {
@@ -72,7 +76,13 @@ export default function ProfilesList(props) {
       }
     }
 
-    updateURLParams(router, { offset, searchKey, searchValue, state });
+    updateURLParams(router, {
+      offset,
+      searchKey,
+      searchValue,
+      state,
+      caseSensitive: caseSensitive.toString(),
+    });
   }
 
   async function autocompleteProfilePropertySearch(
@@ -142,41 +152,53 @@ export default function ProfilesList(props) {
             </Col>
             {searchKey !== "" ? (
               <Col md={7}>
-                <>
-                  <Form.Label>
-                    Search Term (use <code>%</code> for wildcards and{" "}
-                    <code>null</code> for empty values)
-                  </Form.Label>
-                  <AsyncTypeahead
-                    key={`typeahead-search-${searchKey}`}
-                    id={`typeahead-search-${searchKey}`}
-                    minLength={0}
-                    disabled={props.searchKey || loading ? true : false}
-                    isLoading={searchLoading}
-                    allowNew={true}
-                    onChange={(selected) => {
-                      if (!selected[0]) {
-                        return;
-                      }
+                <Row>
+                  <Col>
+                    <Form.Label>
+                      Search Term (use <code>%</code> for wildcards and{" "}
+                      <code>null</code> for empty values)
+                    </Form.Label>
+                    <AsyncTypeahead
+                      key={`typeahead-search-${searchKey}`}
+                      id={`typeahead-search-${searchKey}`}
+                      minLength={0}
+                      disabled={props.searchKey || loading ? true : false}
+                      isLoading={searchLoading}
+                      allowNew={true}
+                      onChange={(selected) => {
+                        if (!selected[0]) {
+                          return;
+                        }
 
-                      setSearchValue(
-                        selected[0].label
-                          ? selected[0].label // when a new custom option is set
-                          : selected[0] // when a list option is chosen);
-                      );
-                    }}
-                    onBlur={(e) => {
-                      const value = e.target.value;
-                      if (value && value.length > 0) setSearchValue(value);
-                    }}
-                    options={autocompleteResults}
-                    onSearch={autocompleteProfilePropertySearch}
-                    placeholder={`name@example.com`}
-                    defaultSelected={
-                      searchValue ? [searchValue.toString()] : undefined
-                    }
-                  />
-                </>
+                        setSearchValue(
+                          selected[0].label
+                            ? selected[0].label // when a new custom option is set
+                            : selected[0] // when a list option is chosen);
+                        );
+                      }}
+                      onBlur={(e) => {
+                        const value = e.target.value;
+                        if (value && value.length > 0) setSearchValue(value);
+                      }}
+                      options={autocompleteResults}
+                      onSearch={autocompleteProfilePropertySearch}
+                      placeholder={`name@example.com`}
+                      defaultSelected={
+                        searchValue ? [searchValue.toString()] : undefined
+                      }
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Check
+                      defaultChecked={caseSensitive}
+                      onClick={() => setCaseSensitive(!caseSensitive)}
+                      type="checkbox"
+                      label="Case Sensitive?"
+                    />
+                  </Col>
+                </Row>
               </Col>
             ) : null}
 
@@ -341,7 +363,8 @@ ProfilesList.hydrate = async (
   _searchValue?: string
 ) => {
   const { execApi } = useApi(ctx);
-  const { id, limit, offset, state, searchKey, searchValue } = ctx.query;
+  const { id, limit, offset, state, searchKey, searchValue, caseSensitive } =
+    ctx.query;
 
   let groupId: string;
   if (id) {
@@ -356,6 +379,7 @@ ProfilesList.hydrate = async (
     searchValue: searchValue || _searchValue,
     groupId,
     state,
+    caseSensitive,
   });
   const { properties } = await execApi("get", `/properties`);
   return { profiles, total, properties };

@@ -232,6 +232,7 @@ export namespace StatusReporters {
         topic: "Run",
         aggregation: "count",
         count: activeRuns.length,
+        value: JSON.stringify(activeRuns.map((r) => r.id)),
       });
 
       for (const i in activeRuns) {
@@ -437,9 +438,7 @@ export namespace FinalSummaryReporters {
         await run.updateTotals();
         const schedule = await Schedule.findByPk(run.creatorId);
 
-        if (schedule) {
-          source = await schedule.$get("source");
-        }
+        if (schedule) source = await schedule.$get("source", { scope: null });
 
         const currentSource = sources[source.id] || {
           name: source.name,
@@ -513,9 +512,7 @@ export namespace FinalSummaryReporters {
         group: ["destinationId"],
       });
       for (const exp of exports) {
-        const destination = await Destination.findOne({
-          where: { id: exp.destinationId },
-        });
+        const destination = await Destination.findById(exp.destinationId);
 
         const exportsFailed = await Export.count({
           where: {

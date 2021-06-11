@@ -37,11 +37,11 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         );
       }
       // delete
-      const query = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+      const query = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
       await connection.asyncQuery(query);
     } else if (newProfileProperties[primaryKey]) {
-      const query = `SELECT * FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+      const query = `SELECT * FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
       validateQuery(query);
       const existingRecords = await connection.asyncQuery(query);
       if (existingRecords.length === 1) {
@@ -51,7 +51,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
           );
         }
         // update
-        let updateStatement = `UPDATE ${table} SET`;
+        let updateStatement = `UPDATE "${table}" SET`;
         const maxIdx = Object.keys(newProfileProperties).length - 1;
         Object.keys(newProfileProperties).map((key, idx) => {
           updateStatement += ` ${key} = "${newProfileProperties[key]}"`;
@@ -71,7 +71,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         );
 
         if (columnsToErase.length > 0) {
-          let eraseStatement = `UPDATE ${table} SET`;
+          let eraseStatement = `UPDATE "${table}" SET`;
           const maxIdx = columnsToErase.length - 1;
           columnsToErase.map((col, idx) => {
             eraseStatement += ` ${col} = NULL`;
@@ -83,7 +83,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         }
       } else {
         // delete
-        const deleteQuery = `DELETE FROM ${table} WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
+        const deleteQuery = `DELETE FROM "${table}" WHERE ${primaryKey} = ${newProfileProperties[primaryKey]}`;
         validateQuery(deleteQuery);
         await connection.asyncQuery(deleteQuery);
 
@@ -98,7 +98,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
     // --- Groups --- //
 
     // delete existing groups
-    const deleteGroupsQuery = `DELETE FROM ${groupsTable} WHERE ${groupForeignKey} = ${newProfileProperties[primaryKey]}`;
+    const deleteGroupsQuery = `DELETE FROM "${groupsTable}" WHERE ${groupForeignKey} = ${newProfileProperties[primaryKey]}`;
     validateQuery(deleteGroupsQuery);
     await connection.asyncQuery(deleteGroupsQuery);
 
@@ -109,7 +109,7 @@ export const exportProfile: ExportProfilePluginMethod = async ({
         data[groupForeignKey] = newProfileProperties[primaryKey];
         data[groupColumnName] = newGroups[i];
 
-        const groupInsertQuery = `INSERT INTO ${groupsTable} (${buildKeyList(
+        const groupInsertQuery = `INSERT INTO "${groupsTable}" (${buildKeyList(
           data
         )}) VALUES (${buildValueList(data)}) ON CONFLICT DO NOTHING`;
         validateQuery(groupInsertQuery);
@@ -139,7 +139,7 @@ const insert = async (
     );
   }
   // insert
-  const query = `INSERT INTO ${table} (${buildKeyList(
+  const query = `INSERT INTO "${table}" (${buildKeyList(
     newProfileProperties
   )}) VALUES (${buildValueList(newProfileProperties)})`;
   validateQuery(query);
