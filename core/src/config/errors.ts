@@ -152,11 +152,13 @@ export function GrouparooErrorSerializer(error) {
   let message = "";
   let code = error.code || undefined;
   let fields = [];
+  let sql = error.sql || null;
 
   if (error.errors) {
-    // a Sequelize Error https://sequelize.readthedocs.io/en/latest/api/errors
+    // a Sequelize Error https://sequelize.org/master/identifiers.html#errors
     const selectedError = error.errors[0];
     message = selectedError.message;
+
     if (!code) code = selectedError.type;
     if (error.fields)
       fields = Array.isArray(error.fields)
@@ -168,5 +170,5 @@ export function GrouparooErrorSerializer(error) {
     message = `${error}`;
   }
 
-  return { message, code, fields };
+  return { message, code, fields, sql };
 }

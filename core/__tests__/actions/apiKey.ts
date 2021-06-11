@@ -106,6 +106,7 @@ describe("actions/apiKeys", () => {
         code: "AUTHORIZATION_ERROR",
         fields: [],
         message: 'Not authorized for mode "read" on topic "apiKey"',
+        sql: null,
       });
     });
 
