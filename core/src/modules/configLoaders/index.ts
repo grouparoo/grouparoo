@@ -295,10 +295,6 @@ export async function processConfigObjects(
 
       log(error?.stack || error, "debug");
 
-      // if (errorMessage.includes("current transaction is aborted")) {
-      //   log(errorMessage, "warning");
-      //   throw new Error(`Cannot validate additional objects.`);
-      // } else
       if (fields.length === 0) {
         log(errorMessage, "warning");
         continue;
