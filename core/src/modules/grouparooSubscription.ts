@@ -19,7 +19,7 @@ const campaign = `v${packageJSON.version}`;
  */
 export async function GrouparooSubscription({
   teamMember,
-  email,
+  email: subscriberEmail,
   subscribed = true,
 }: {
   teamMember?: TeamMember;
@@ -28,7 +28,9 @@ export async function GrouparooSubscription({
 }) {
   if (process.env.NODE_ENV === "test") return;
   if (!config.telemetry.enabled) return;
-  if (!teamMember && !email) return;
+  if (!teamMember && !subscriberEmail) return;
+
+  const email = teamMember?.email || subscriberEmail;
 
   CLS.afterCommit(async () => {
     const setting = await plugin.readSetting("telemetry", "customer-id");
@@ -39,7 +41,7 @@ export async function GrouparooSubscription({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: teamMember?.email || email,
+          email,
           firstName: teamMember?.firstName,
           lastName: teamMember?.lastName,
           source,
@@ -51,9 +53,7 @@ export async function GrouparooSubscription({
       }).then((r) => r.json());
 
       if (response.error) throw response.error;
-      log(
-        `Registered ${teamMember.email} for Grouparoo subscription to ${customerId}`
-      );
+      log(`Registered ${email} for Grouparoo subscription to ${customerId}`);
     } catch (error) {
       log(`Error subscribing to Grouparoo Subscription: ${error}`, "error");
     }
