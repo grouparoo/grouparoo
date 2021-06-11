@@ -58,11 +58,16 @@ export namespace IntegrationSpecHelper {
     const actionUrl = `${url}/api/1/status/public`;
     try {
       await axios.get(actionUrl);
-      // console.log(`API up and running @ ${url}`);
     } catch (error) {
-      // console.log(`cannot reach api: ${error}, sleeping and trying again...`);
       await sleep(1000);
       await waitForAPI(url, count + 1);
+    }
+  }
+
+  export async function eraseConfigUser(configDir: string) {
+    const userFile = path.join(configDir, "../.local/user.json");
+    if (fs.existsSync(userFile)) {
+      fs.unlinkSync(userFile);
     }
   }
 
@@ -93,6 +98,10 @@ export namespace IntegrationSpecHelper {
     // clear the database
     const db = path.join(projectPath, "grouparoo_test.sqlite");
     if (fs.existsSync(db)) fs.unlinkSync(db);
+
+    // ensure that we have no .local files
+    const configDir = extraEnv?.GROUPAROO_CONFIG_DIR || projectPath;
+    await eraseConfigUser(configDir);
 
     // start the api server
     const serverEnv = Object.assign(

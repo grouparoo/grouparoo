@@ -7,16 +7,15 @@ export default function SignInPage(props) {
   return (
     <>
       <Head>
-        <title>Grouparoo: Sign In</title>
+        <title>Grouparoo</title>
       </Head>
-
-      <h1>Sign In</h1>
-
-      <Row className="border-between-columns">
-        <Col>
-          <SignIn {...props} useApi={useApi} />
-        </Col>
-      </Row>
+      <div style={{ width: "100%", height: "100%" }}>
+        <Row className="border-between-columns">
+          <Col>
+            <SignIn {...props} useApi={useApi} />
+          </Col>
+        </Row>
+      </div>
     </>
   );
 }

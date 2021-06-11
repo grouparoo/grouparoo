@@ -25,7 +25,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     let navigationMode =
       process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? "config"
+        ? "config:unauthenticated"
         : "unauthenticated";
     let showSystemLinks = false;
     if (teamMember) {
@@ -192,9 +192,13 @@ export class NavigationList extends OptionallyAuthenticatedAction {
       });
     }
 
-    if (navigationMode === "config") {
+    if (navigationMode === "config:unauthenticated") {
+      navigationItems = [{ type: "link", title: "Home", href: "/" }];
       const user = await ConfigUser.get();
+
       if (user) {
+        navigationMode = "config:authenticated";
+
         navigationItems = [
           {
             type: "link",

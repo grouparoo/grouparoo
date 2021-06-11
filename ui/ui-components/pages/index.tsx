@@ -8,7 +8,7 @@ export default function Page(props) {
 
   let CTALink = "/session/sign-in";
   let CTAMessage = "Sign In";
-  let CTATarget: string;
+  let CTATarget: string | null = null;
 
   if (navigationMode === "authenticated") {
     CTAMessage = "View Dashboard";

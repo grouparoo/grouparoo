@@ -108,7 +108,6 @@ export default function Navigation(props) {
   if (!navExpanded && !hasBeenCollapsed) setHasBeenCollapsed(true);
 
   const uiPlugin = `@grouparoo/ui-${process.env.GROUPAROO_UI_EDITION}`;
-
   return (
     <div
       id="navigation"
@@ -158,22 +157,28 @@ export default function Navigation(props) {
               </a>
             </Link>
             <br />
-            <Link href="/settings/[tab]" as="/settings/core">
-              <a>
-                <Badge variant="secondary">
-                  {clusterName
-                    ? truncate(clusterName.value, 30)
-                    : "Name not set"}
-                </Badge>
-              </a>
-            </Link>
+            {navigationMode.includes("config") ? (
+              <Badge variant="secondary">
+                {truncate(clusterName.value, 30)}
+              </Badge>
+            ) : (
+              <Link href="/settings/[tab]" as="/settings/core">
+                <a>
+                  <Badge variant="secondary">
+                    {clusterName
+                      ? truncate(clusterName.value, 30)
+                      : "Name not set"}
+                  </Badge>
+                </a>
+              </Link>
+            )}
           </div>
           <span style={{ color: "lightgray", paddingLeft: 3, fontSize: 10 }}>
             {uiPlugin}
           </span>
         </div>
 
-        {navigationMode === "authenticated" && (
+        {!navigationMode.includes("unauthenticated") && (
           <SetupStepsNavProgressBar
             execApi={execApi}
             setupStepHandler={setupStepHandler}
@@ -301,7 +306,11 @@ export default function Navigation(props) {
           </ul>
         </div>
       </div>
-      <div>
+      <div
+        className={
+          process.env.GROUPAROO_UI_EDITION === "config" ? "mb-5" : null
+        }
+      >
         <div
           id="bottomNavigationMenuCTA"
           style={{
