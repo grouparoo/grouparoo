@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  update-lockfile:
     runs-on: ubuntu-latest
     if: ${{ github.repository == 'grouparoo/grouparoo' }}
     steps:

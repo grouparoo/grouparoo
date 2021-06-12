@@ -11,7 +11,7 @@ on:
         default: "alpha"
 
 jobs:
-  build:
+  publish:
     env:
       RELEASE_TYPE: alpha
     runs-on: ubuntu-latest
@@ -37,3 +37,23 @@ jobs:
         env:
           GITHUB_AUTH: ${{ secrets.GH_ACCESS_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  update-lockfile:
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'grouparoo/grouparoo' }}
+    needs: publish
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+      - name: Update PNPM lockfile
+        run: |
+          cd tools/merger && ./lockfile
+      - uses: stefanzweifel/git-auto-commit-action@v4.1.2
+        with:
+          commit_message: Updating lockfile [ci skip]
+          commit_user_name: Grouparoo Bot
+          commit_user_email: hello@grouparoo.com
+          commit_author: Grouparoo Bot <hello@grouparoo.com>
+          branch: ${{ github.head_ref }}
