@@ -36,15 +36,15 @@ exports.default = async function buildConfig() {
     //   options: {
     //     query: JSON.stringify([
     //          {
-    //            $match: {
-    //              updatedAt: {
-    //                $gt: new Date(ISODate().getTime() - 1000 * 60 * 60 * 24 * 2),
+    //            "$match": {
+    //              "updatedAt": {
+    //                "$gt": new Date(ISODate().getTime() - 1000 * 60 * 60 * 24 * 2),
     //              },
     //            },
     //          },
     //          {
-    //            $project: {
-    //              _id: 1,
+    //            "$project": {
+    //              "_id": 1,
     //            },
     //          },
     //        ]), // A MongoDB query to return that includes only the IDs of properties to check.
