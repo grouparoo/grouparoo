@@ -9,7 +9,6 @@ const projectDir = `${os.tmpdir()}/test/${
 }/uiConfig/config`;
 process.env.GROUPAROO_RUN_MODE = "cli:config";
 process.env.GROUPAROO_CONFIG_DIR = `${projectDir}/config`;
-process.env.DB_DIALECT = "sqlite";
 
 import path from "path";
 import fs from "fs";
