@@ -1,5 +1,6 @@
 import { env } from "actionhero";
 import { getPluginManifest } from "../utils/pluginDetails";
+import InjectedPlugins from "./pluginInjection";
 
 // learn more about the next.js app options here https://nextjs.org/docs/advanced-features/custom-server
 
@@ -34,8 +35,16 @@ function getNextRootPath() {
             p.name === "@grouparoo/ui-community" ||
             p.name === "@grouparoo/ui-enterprise"
         );
-
   if (uiPlugin) nextRootPath = uiPlugin.path;
+
+  if (!nextRootPath && Object.keys(InjectedPlugins).length > 0) {
+    const injectedUiPlugin = Object.keys(InjectedPlugins).find((k) =>
+      k.match("@grouparoo/ui")
+    );
+    if (injectedUiPlugin) {
+      nextRootPath = InjectedPlugins[injectedUiPlugin].path;
+    }
+  }
 
   return nextRootPath;
 }

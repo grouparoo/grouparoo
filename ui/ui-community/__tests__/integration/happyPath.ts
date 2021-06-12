@@ -3,39 +3,25 @@
  */
 
 import path from "path";
-import { IntegrationSpecHelper, helper } from "@grouparoo/spec-helper";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
+});
+import { helper } from "@grouparoo/spec-helper";
+import { config } from "actionhero";
 
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let env: { url: string; port: number; subProcess: any };
-
-const projectPath = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "..",
-  "apps",
-  "staging-community"
-);
+let url: string;
 
 describe("integration", () => {
-  beforeAll(async () => {
-    env = await IntegrationSpecHelper.prepareForIntegrationTest(
-      projectPath,
-      true
-    );
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await IntegrationSpecHelper.shutdown(env.subProcess);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  beforeAll(() => (url = `http://localhost:${config.servers.web.port}`));
 
   test(
     "it renders the home page",
     async () => {
-      await browser.get(env.url);
+      await browser.get(url);
       const header = await browser.findElement(by.tagName("h2")).getText();
       expect(header).toContain(
         "Sync, Segment, and Send your Product Data Everywhere"

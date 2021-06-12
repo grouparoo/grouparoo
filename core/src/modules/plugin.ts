@@ -27,6 +27,7 @@ import { PropertyFilter } from "../models/PropertyFilter";
 import { ProfileMultipleAssociationShim } from "../models/ProfileMultipleAssociationShim";
 import { Run } from "../models/Run";
 import { Schedule } from "../models/Schedule";
+import { Session } from "../models/Session";
 import { Setting, settingTypes } from "../models/Setting";
 import { SetupStep } from "../models/SetupStep";
 import { Source } from "../models/Source";
@@ -64,6 +65,7 @@ const models = [
   Mapping,
   Notification,
   Setting,
+  Session,
   SetupStep,
   Team,
   TeamMember,
