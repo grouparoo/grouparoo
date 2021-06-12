@@ -8,6 +8,7 @@ import {
 export class GrouparooExceptionReporter extends Initializer {
   constructor() {
     super();
+    this.loadPriority = 1;
     this.name = "grouparooExceptionReporter";
   }
 
@@ -15,6 +16,7 @@ export class GrouparooExceptionReporter extends Initializer {
     // log the SQL statement which cause the error if we have a Sequelize Error
     const grouparooExceptionReporter: ExceptionReporter = (error: Error) => {
       if (!["development", "test"].includes(env)) return;
+
       if (
         error instanceof DatabaseError ||
         error instanceof ValidationError ||
