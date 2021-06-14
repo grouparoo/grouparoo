@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/node";
 import * as Tracing from "@sentry/tracing";
-import { Initializer, api, env } from "actionhero";
+import { Initializer, api, env, ExceptionReporter } from "actionhero";
 import { ApiKey, plugin, TeamMember } from "@grouparoo/core";
 import domain from "domain";
 const packageJSON = require("./../../package.json");
@@ -43,9 +43,11 @@ export class SentryInitializer extends Initializer {
     });
 
     // load the error reporter into actionhero
-    api.exceptionHandlers.reporters.push((error: Error) => {
+    const sentryExceptionReporter: ExceptionReporter = (error: Error) => {
       Sentry.captureException(error);
-    });
+    };
+
+    api.exceptionHandlers.reporters.push(sentryExceptionReporter);
 
     // configure APM transaction tracing
     plugin.setApmWrap(async function apmWrap(
