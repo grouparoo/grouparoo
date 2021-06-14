@@ -627,7 +627,7 @@ export class Group extends LoggedModel<Group> {
   }
 
   getConfigId() {
-    return ConfigWriter.generateId(this.name);
+    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
   async getConfigObject() {
