@@ -557,7 +557,7 @@ export class Destination extends LoggedModel<Destination> {
       dgms.map((dgm) => [dgm.remoteKey, dgm.group.getConfigId()])
     );
 
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
     const mapping = await MappingHelper.getConfigMapping(this);
 
     if (!name || !appId) return;
