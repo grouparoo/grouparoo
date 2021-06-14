@@ -296,7 +296,7 @@ export class Source extends LoggedModel<Source> {
 
     this.app = await this.$get("app");
     const appId = this.app?.getConfigId();
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
     const mapping = await MappingHelper.getConfigMapping(this);
 
     if (!appId || !name) return;

@@ -426,6 +426,17 @@ describe("modules/configWriter", () => {
       expect(config).toBeUndefined();
     });
 
+    test("apps don't transform env vars", async () => {
+      process.env.GROUPAROO_OPTION__APP__CONFIG_WRITER_ENV_VAR = "my_file_123";
+      const app: App = await helper.factories.app({
+        options: { fileId: "CONFIG_WRITER_ENV_VAR" },
+      });
+      const config = await app.getConfigObject();
+      expect(config.options.fileId).toEqual("CONFIG_WRITER_ENV_VAR");
+      const options = await app.getOptions();
+      expect(options.fileId).toEqual("my_file_123");
+    });
+
     test("sources can provide their config objects", async () => {
       const config = await source.getConfigObject();
 
@@ -477,6 +488,16 @@ describe("modules/configWriter", () => {
         options,
       });
       expect(config[1]).toEqual(scheduleConfig);
+    });
+
+    test("sources don't transform env vars", async () => {
+      process.env.GROUPAROO_OPTION__SOURCE__CONFIG_WRITER_ENV_VAR =
+        "my_table_123";
+      await source.setOptions({ table: "CONFIG_WRITER_ENV_VAR" });
+      const config = await source.getConfigObject();
+      expect(config.options.table).toEqual("CONFIG_WRITER_ENV_VAR");
+      const options = await source.getOptions();
+      expect(options.table).toEqual("my_table_123");
     });
 
     test("schedules can provide their config objects", async () => {
@@ -537,6 +558,20 @@ describe("modules/configWriter", () => {
         mapping,
         options,
       });
+    });
+
+    test("schedules don't transform env vars", async () => {
+      process.env.GROUPAROO_OPTION__SCHEDULE__CONFIG_WRITER_ENV_VAR =
+        faker.database.column();
+      const schedule: Schedule = await helper.factories.schedule(source, {
+        options: { maxColumn: "CONFIG_WRITER_ENV_VAR" },
+      });
+      const config = await schedule.getConfigObject();
+      expect(config.options.maxColumn).toEqual("CONFIG_WRITER_ENV_VAR");
+      const options = await schedule.getOptions();
+      expect(options.maxColumn).toEqual(
+        process.env.GROUPAROO_OPTION__SCHEDULE__CONFIG_WRITER_ENV_VAR
+      );
     });
 
     test("properties can provide their config objects", async () => {
@@ -603,6 +638,18 @@ describe("modules/configWriter", () => {
       });
     });
 
+    test("properties don't transform env vars", async () => {
+      process.env.GROUPAROO_OPTION__PROPERTY__CONFIG_WRITER_ENV_VAR =
+        faker.database.column();
+      await property.setOptions({ column: "CONFIG_WRITER_ENV_VAR" });
+      const config = await property.getConfigObject();
+      expect(config.options.column).toEqual("CONFIG_WRITER_ENV_VAR");
+      const options = await property.getOptions();
+      expect(options.column).toEqual(
+        process.env.GROUPAROO_OPTION__PROPERTY__CONFIG_WRITER_ENV_VAR
+      );
+    });
+
     test("groups without a name will not provide a config object", async () => {
       group.name = undefined;
       const config = await group.getConfigObject();
@@ -658,6 +705,19 @@ describe("modules/configWriter", () => {
       destination.name = undefined;
       const config = await destination.getConfigObject();
       expect(config).toBeUndefined();
+    });
+
+    test("destinations don't transform env vars", async () => {
+      process.env.GROUPAROO_OPTION__DESTINATION__CONFIG_WRITER_ENV_VAR =
+        "my_table_456";
+      const destination: Destination = await helper.factories.destination(
+        undefined,
+        { groupId: group.id, options: { table: "CONFIG_WRITER_ENV_VAR" } }
+      );
+      const config = await destination.getConfigObject();
+      expect(config.options.table).toEqual("CONFIG_WRITER_ENV_VAR");
+      const options = await destination.getOptions();
+      expect(options.table).toEqual("my_table_456");
     });
 
     test("profiles can provide their config objects", async () => {

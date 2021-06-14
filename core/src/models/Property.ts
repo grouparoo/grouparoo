@@ -389,7 +389,7 @@ export class Property extends LoggedModel<Property> {
 
     this.source = await this.$get("source");
     const sourceId = this.source?.getConfigId();
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
     const filters = await this.getFilters();
 
     if (!key || !sourceId) return;

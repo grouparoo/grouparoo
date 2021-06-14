@@ -195,7 +195,7 @@ export class Schedule extends LoggedModel<Schedule> {
 
     if (!sourceId || !name) return;
 
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
     return {
       class: "Schedule",
       id: this.getConfigId(),

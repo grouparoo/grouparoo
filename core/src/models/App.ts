@@ -238,7 +238,7 @@ export class App extends LoggedModel<App> {
   async getConfigObject() {
     const { type, name } = this;
 
-    const options = await this.getOptions();
+    const options = await this.getOptions(false);
 
     if (!name) return;
 
