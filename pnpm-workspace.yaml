@@ -2,6 +2,5 @@ packages:
   - "core"
   - "cli"
   - "ui/**"
-  - "clients/**"
   - "plugins/**"
   - "apps/**"
