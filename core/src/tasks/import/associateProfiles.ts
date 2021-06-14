@@ -1,4 +1,3 @@
-import { log } from "actionhero";
 import { plugin } from "../../modules/plugin";
 import { CLSTask } from "../../classes/tasks/clsTask";
 import { ImportOps } from "../../modules/ops/import";
@@ -27,9 +26,5 @@ export class ImportAssociateProfiles extends CLSTask {
       limit,
       delayMs
     );
-
-    if (imports.length > 0) {
-      log(`enqueued ${imports.length} imports for association`);
-    }
   }
 }

@@ -3,6 +3,7 @@ import { CLS } from "../../modules/cls";
 import { Property } from "../../models/Property";
 import { plugin } from "../../modules/plugin";
 import { ProfilePropertyOps } from "../../modules/ops/profileProperty";
+import { api } from "actionhero";
 
 export class ProfilePropertiesEnqueue extends CLSTask {
   constructor() {
@@ -29,13 +30,18 @@ export class ProfilePropertiesEnqueue extends CLSTask {
     const properties = await Property.findAllWithCache();
 
     for (const property of properties) {
-      const pendingProfileProperties =
-        await ProfilePropertyOps.processPendingProfileProperties(
-          property,
-          limit
-        );
+      try {
+        const pendingProfileProperties =
+          await ProfilePropertyOps.processPendingProfileProperties(
+            property,
+            limit
+          );
 
-      count = count + pendingProfileProperties.length;
+        count = count + pendingProfileProperties.length;
+      } catch (error) {
+        // this is a periodic task, and will be retried
+        api.exceptionHandlers.report(error, "task", this.name);
+      }
     }
 
     // re-enqueue if there is more to do
