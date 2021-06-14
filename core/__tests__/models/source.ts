@@ -9,6 +9,7 @@ import {
   Schedule,
   Option,
   ProfileProperty,
+  Destination,
 } from "../../src";
 import { Op } from "sequelize";
 import { SourceOps } from "../../src/modules/ops/source";
@@ -206,6 +207,22 @@ describe("models/source", () => {
       await source.destroy();
     });
 
+    test("a source with a directly mapped property that's being used cannot be deleted", async () => {
+      const source: Source = await helper.factories.source();
+      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      const destination: Destination = await helper.factories.destination();
+      await destination.setMapping({ "primary-id": "myUserId" });
+
+      await expect(source.destroy()).rejects.toThrow(/cannot delete property/);
+
+      await destination.destroy();
+      await source.destroy();
+    });
+
     test("options can be set and retrieved", async () => {
       const source = await Source.create({
         type: "test-plugin-import",
@@ -262,6 +279,20 @@ describe("models/source", () => {
         where: { ownerId: source.id },
       });
       expect(optionsCount).toBe(0);
+    });
+
+    test("deleting a source deleted its directly mapped property", async () => {
+      const source: Source = await helper.factories.source();
+      await source.bootstrapUniqueProperty("myUserId", "integer", "id");
+      await source.setOptions({ table: "some table" });
+      await source.setMapping({ id: "myUserId" });
+      await source.update({ state: "ready" });
+
+      await source.destroy();
+      const directlyMappedCount = await Property.count({
+        where: { sourceId: source.id, directlyMapped: true },
+      });
+      expect(directlyMappedCount).toBe(0);
     });
   });
 
