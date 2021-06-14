@@ -1,6 +1,20 @@
 name: timed-run
 
-on: pull_request
+on:
+  v0.3.0-timed-run:
+    inputs:
+      app:
+        description: "app to test?"
+        required: true
+        default: "staging-community"
+      scale:
+        description: "scale of sample data (*1000)?"
+        required: true
+        default: "100"
+      log_level:
+        description: "log level?"
+        required: true
+        default: "notice"
 
 jobs:
   test-timed-run:
