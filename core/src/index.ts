@@ -43,6 +43,7 @@ export {
   SimpleScheduleOptions,
   PluginConnectionScheduleOption,
 } from "./models/Schedule";
+export { Session } from "./models/Session";
 export { Setting } from "./models/Setting";
 export { SetupStep } from "./models/SetupStep";
 export { Source, SimpleSourceOptions, SourceMapping } from "./models/Source";

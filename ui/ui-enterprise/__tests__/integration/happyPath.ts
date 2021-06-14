@@ -3,22 +3,17 @@
  */
 
 import path from "path";
-import { IntegrationSpecHelper, helper } from "@grouparoo/spec-helper";
+process.env.GROUPAROO_INJECTED_PLUGINS = JSON.stringify({
+  "@grouparoo/ui-enterprise": { path: path.join(__dirname, "..", "..") },
+});
+import { helper } from "@grouparoo/spec-helper";
+import { config } from "actionhero";
+import { TeamMember, Session } from "@grouparoo/core";
 
 declare var browser: any;
 declare var by: any;
 declare var until: any;
-let env: { url: string; port: number; subProcess: any };
-
-const projectPath = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "..",
-  "apps",
-  "staging-enterprise"
-);
+let url: string;
 
 const firstName = "mario";
 const lastName = "mario";
@@ -27,21 +22,13 @@ const password = "P@ssw0rd";
 const companyName = "Mario Bros. Plumbing";
 
 describe("integration", () => {
-  beforeAll(async () => {
-    env = await IntegrationSpecHelper.prepareForIntegrationTest(
-      projectPath,
-      true
-    );
-  }, helper.setupTime);
-
-  afterAll(async () => {
-    await IntegrationSpecHelper.shutdown(env.subProcess);
-  });
+  helper.grouparooTestServer({ truncate: true });
+  beforeAll(() => (url = `http://localhost:${config.servers.web.port}`));
 
   test(
     "it renders the home page",
     async () => {
-      await browser.get(env.url);
+      await browser.get(url);
       const header = await browser.findElement(by.tagName("h2")).getText();
       expect(header).toContain(
         "Sync, Segment, and Send your Product Data Everywhere"
@@ -71,7 +58,7 @@ describe("integration", () => {
   test(
     "it can create the first team",
     async () => {
-      await browser.get(`${env.url}/team/initialize`);
+      await browser.get(`${url}/team/initialize`);
 
       await browser.findElement(by.name("companyName")).sendKeys(companyName);
 
@@ -90,21 +77,30 @@ describe("integration", () => {
     "I was taken to the setup page after creating the first team",
     async () => {
       await browser.wait(until.elementLocated(by.id("setup")));
-      const url = await browser.getCurrentUrl();
-      expect(url).toMatch(/\/setup/);
-      await browser.get(url);
+      const currentURL = await browser.getCurrentUrl();
+      expect(currentURL).toEqual(`${url}/setup`);
     },
     helper.mediumTime
   );
 
+  test("The new user was saved to the database and session created", async () => {
+    const teamMembers = await TeamMember.findAll();
+    expect(teamMembers.length).toBe(1);
+    expect(teamMembers[0].email).toBe(email);
+
+    const sessions = await Session.findAll();
+    expect(sessions.length).toBe(1);
+    expect(sessions[0].teamMemberId).toBe(teamMembers[0].id);
+  });
+
   test(
     "I can sign out",
     async () => {
-      await browser.get(`${env.url}/session/sign-out`);
+      await browser.get(`${url}/session/sign-out`);
       await browser.wait(until.elementLocated(by.tagName("p")));
-      const url = await browser.getCurrentUrl();
-      expect(url).toMatch(/\//);
-      await browser.get(url);
+      await helper.sleep(1000 * 2);
+      const currentURL = await browser.getCurrentUrl();
+      expect(currentURL).toEqual(`${url}/`);
     },
     helper.mediumTime
   );
@@ -112,7 +108,7 @@ describe("integration", () => {
   test(
     "it can sign in",
     async () => {
-      await browser.get(`${env.url}/session/sign-in`);
+      await browser.get(`${url}/session/sign-in`);
       await browser.wait(until.elementLocated(by.tagName("p")));
 
       await browser.findElement(by.name("email")).sendKeys(email);
@@ -137,7 +133,9 @@ describe("integration", () => {
   test(
     "it can change account information and see it reflected in the sidebar",
     async () => {
-      await browser.get(`${env.url}/account`);
+      await browser.get(`${url}/account`);
+      await browser.wait(until.elementLocated(by.id("firstName")), 1000 * 4);
+
       await browser.findElement(by.id("firstName")).clear();
       await browser.findElement(by.id("firstName")).sendKeys("Super Mario");
 
@@ -145,7 +143,7 @@ describe("integration", () => {
       await button.click();
       await helper.sleep(1 * 1000);
 
-      await browser.get(`${env.url}/dashboard`);
+      await browser.get(`${url}/dashboard`);
 
       const element = await browser.wait(
         until.elementLocated(by.id("navigation-greeting")),

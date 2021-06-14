@@ -1,7 +1,12 @@
+const { helper } = require("@grouparoo/spec-helper");
+
 module.exports = {
-  setupFiles: ["<rootDir>/jest.setup.js"],
-  testTimeout: 1000 * 10,
+  testTimeout: helper.defaultTime,
   maxWorkers: "50%",
+  setupFiles: ["<rootDir>/jest.setup.ts"],
+  transform: {
+    "^.+\\.ts?$": "ts-jest",
+  },
   testPathIgnorePatterns: [
     "<rootDir>/.next/",
     "<rootDir>/__tests__/utils",
