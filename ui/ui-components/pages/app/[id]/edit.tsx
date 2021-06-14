@@ -174,9 +174,22 @@ export default function Page(props) {
               {typeOptions.length > 0 ? (
                 <>
                   <hr />
-                  <strong>Options for a {app.type} app</strong>
-                  <br />
-                  <br />
+                  <p>
+                    <strong>Options for a {app.type} app</strong>
+                    {process.env.GROUPAROO_UI_EDITION === "config" && (
+                      <>
+                        <br />
+                        You can use environment variables for secret values.{" "}
+                        <a
+                          target="_blank"
+                          href="https://www.grouparoo.com/docs/support/secrets"
+                        >
+                          Learn more
+                        </a>
+                        .
+                      </>
+                    )}
+                  </p>
 
                   {typeOptions.map((opt) => {
                     return (
