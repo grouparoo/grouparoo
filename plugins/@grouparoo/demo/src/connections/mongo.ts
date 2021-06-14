@@ -13,6 +13,9 @@ const TYPES = {
           id: {
             bsonType: "int",
           },
+          account_id: {
+            bsonType: "int",
+          },
           first_name: {
             bsonType: "string",
           },
@@ -47,6 +50,7 @@ const TYPES = {
       },
     },
   },
+
   purchases: {
     validationLevel: "off",
     validator: {
@@ -67,6 +71,90 @@ const TYPES = {
             bsonType: "string",
           },
           price: {
+            bsonType: "double",
+          },
+          state: {
+            bsonType: "string",
+          },
+          created_at: {
+            bsonType: "date",
+          },
+        },
+      },
+    },
+  },
+
+  accounts: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          name: {
+            bsonType: "string",
+          },
+          domain: {
+            bsonType: "string",
+          },
+          plan_id: {
+            bsonType: "int",
+          },
+          state: {
+            bsonType: "string",
+          },
+          created_at: {
+            bsonType: "date",
+          },
+          updated_at: {
+            bsonType: "date",
+          },
+        },
+      },
+    },
+  },
+
+  plans: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          name: {
+            bsonType: "string",
+          },
+          seats: {
+            bsonType: "int",
+          },
+          monthly_rate: {
+            bsonType: "int",
+          },
+        },
+      },
+    },
+  },
+
+  payments: {
+    validationLevel: "off",
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["account_id"],
+        properties: {
+          id: {
+            bsonType: "int",
+          },
+          account_id: {
+            bsonType: "int",
+          },
+          amount: {
             bsonType: "double",
           },
           state: {
@@ -115,7 +203,7 @@ function castValue(
   const type = TYPES[collectionName]?.validator?.$jsonSchema?.properties[field];
   if (!type) {
     throw new Error(
-      `The jsonSchema is required for the proper data insertion.`
+      `The jsonSchema is required for the proper data insertion: ${field}`
     );
   }
   switch (type.bsonType) {
@@ -145,6 +233,10 @@ export default class Mongo extends Connection {
     this.conn = null;
   }
 
+  name() {
+    return "mongo";
+  }
+
   getAppOptions() {
     return Object.assign({}, this.config);
   }
@@ -169,7 +261,7 @@ export default class Mongo extends Connection {
     return this.conn;
   }
 
-  async createTable(tableName: string, userId: string, keys: string[]) {
+  async createTable(tableName: string, typeColumn: string, keys: string[]) {
     const collectionName = tableName;
     const typeData = TYPES[collectionName];
     if (!typeData) {

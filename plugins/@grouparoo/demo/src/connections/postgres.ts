@@ -1,4 +1,4 @@
-import { Client } from "pg";
+import { Client, ClientConfig } from "pg";
 import { log } from "../util/shared";
 import { api, config } from "actionhero";
 import Connection from "../util/connection";
@@ -8,6 +8,7 @@ export const SCHEMA_NAME = "demo";
 const TYPES = {
   users: {
     id: "INT NOT NULL PRIMARY KEY",
+    account_id: "INT",
     first_name: "VARCHAR(191) NOT NULL",
     last_name: "VARCHAR(191) NOT NULL",
     email: "VARCHAR(191) NOT NULL",
@@ -19,6 +20,7 @@ const TYPES = {
     created_at: "TIMESTAMP NOT NULL",
     updated_at: "TIMESTAMP NOT NULL",
   },
+
   purchases: {
     id: "INT NOT NULL PRIMARY KEY",
     user_id: "INT NOT NULL",
@@ -28,16 +30,55 @@ const TYPES = {
     state: "VARCHAR(191)",
     created_at: "TIMESTAMP NOT NULL",
   },
+
+  accounts: {
+    id: "INT NOT NULL PRIMARY KEY",
+    name: "VARCHAR(191) NOT NULL",
+    domain: "VARCHAR(191) NOT NULL",
+    plan_id: "INT",
+    created_at: "TIMESTAMP NOT NULL",
+    updated_at: "TIMESTAMP NOT NULL",
+  },
+
+  plans: {
+    id: "INT NOT NULL PRIMARY KEY",
+    name: "VARCHAR(191) NOT NULL",
+    seats: "INT NOT NULL",
+    monthly_rate: "INT NOT NULL",
+  },
+
+  payments: {
+    id: "INT NOT NULL PRIMARY KEY",
+    account_id: "INT NOT NULL",
+    amount: "DECIMAL",
+    state: "VARCHAR(191)",
+    created_at: "TIMESTAMP NOT NULL",
+  },
 };
 
-function findConfig() {
+function findConfig(): ClientConfig {
   const connectionURL = process.env.DEMO_DATABASE_URL;
   if (!connectionURL) {
     // return the default
     if (config.sequelize.dialect !== "postgres") {
       throw new Error("Set DEMO_DATABASE_URL to a Postgres database.");
     }
-    return api.sequelize.config;
+    const {
+      username: user,
+      password,
+      host,
+      database,
+      port,
+      ssl,
+    } = api.sequelize.config;
+    return {
+      user,
+      password,
+      host,
+      database,
+      port,
+      ssl,
+    };
   }
 
   let dialect = null;
@@ -84,6 +125,10 @@ export default class Postgres extends Connection {
     this.client = null;
   }
 
+  name() {
+    return "postgres";
+  }
+
   getAppOptions() {
     const { host, port, database, schema, user, password } = this.config;
     const appOptions = { host, port, database, schema, user, password };
@@ -112,7 +157,7 @@ export default class Postgres extends Connection {
     return this.client;
   }
 
-  async createTable(tableName: string, userId: string, keys: string[]) {
+  async createTable(tableName: string, typeColumn: string, keys: string[]) {
     const sqlTable = `${this.config.schema}."${tableName}"`;
 
     const typeData = TYPES[tableName];
@@ -133,8 +178,8 @@ export default class Postgres extends Connection {
     const createQuery = `CREATE TABLE ${sqlTable} (${columnTypes.join(", ")})`;
     await this.query(1, createQuery);
 
-    if (userId !== "id") {
-      const indexQuery = `CREATE INDEX "${tableName}_userId" ON ${sqlTable} ("${userId}");`;
+    if (typeColumn !== "id") {
+      const indexQuery = `CREATE INDEX "${tableName}_${typeColumn}" ON ${sqlTable} ("${typeColumn}");`;
       await this.query(1, indexQuery);
     }
   }

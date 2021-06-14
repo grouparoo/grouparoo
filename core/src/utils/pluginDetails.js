@@ -144,6 +144,12 @@ function getNodeVersion() {
   return process.version;
 }
 
+function getConfigDir() {
+  const configDir =
+    process.env.GROUPAROO_CONFIG_DIR || path.join(getParentPath(), "config");
+  return configDir;
+}
+
 exports.grouparooMonorepoApp = grouparooMonorepoApp;
 exports.readPackageJson = readPackageJson;
 exports.getParentPath = getParentPath;
@@ -152,3 +158,4 @@ exports.runningCoreDirectly = runningCoreDirectly;
 exports.getCoreVersion = getCoreVersion;
 exports.getCoreRootPath = getCoreRootPath;
 exports.getNodeVersion = getNodeVersion;
+exports.getConfigDir = getConfigDir;

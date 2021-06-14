@@ -1,0 +1,13 @@
+{
+  "id": "demo_payments",
+  "name": "Payments",
+  "class": "Source",
+  "type": "postgres-table-import",
+  "appId": "demo_db",
+  "options": {
+    "table": "payments"
+  },
+  "mapping": {
+    "account_id": "account_id"
+  }
+}

@@ -2,10 +2,8 @@ import path from "path";
 import fs from "fs-extra";
 import os from "os";
 import { api } from "actionhero";
-import {
-  loadConfigDirectory,
-  getConfigDir,
-} from "@grouparoo/core/dist/modules/configLoaders";
+import { loadConfigDirectory } from "@grouparoo/core/dist/modules/configLoaders";
+import { getConfigDir } from "@grouparoo/core/dist/utils/pluginDetails";
 import { prettier, log } from "./shared";
 import Connection from "./connection";
 import { updateEnvVariables } from "./env";
@@ -15,19 +13,30 @@ export async function deleteConfigDir() {
   deleteDir(configDir);
 }
 
-export async function writeConfigFiles(db: Connection, subDirs: string[]) {
+export async function writeConfigFiles(
+  dataset: string,
+  db: Connection,
+  subDirs: string[]
+) {
   const configDir = getConfigDir();
-  await generateConfig(db, configDir, subDirs);
+  await generateConfig(dataset, db, configDir, subDirs);
   if (subDirs.length > 0) {
     await prettier(configDir);
   }
 }
 
-export async function loadConfigFiles(db: Connection, subDirs: string[]) {
+export async function loadConfigFiles(
+  dataset: string,
+  db: Connection,
+  subDirs: string[]
+) {
   subDirs = [...new Set(subDirs)]; // unique
 
-  const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", "demo"));
-  await generateConfig(db, configDir, subDirs);
+  const demoDir = process.env.JEST_WORKER_ID
+    ? `demo-${process.env.JEST_WORKER_ID}`
+    : "demo";
+  const configDir = path.resolve(path.join(os.tmpdir(), "grouparoo", demoDir));
+  await generateConfig(dataset, db, configDir, subDirs);
 
   const locked = api.codeConfig.allowLockedModelChanges;
   api.codeConfig.allowLockedModelChanges = true;
@@ -39,12 +48,17 @@ export async function loadConfigFiles(db: Connection, subDirs: string[]) {
   await unlockAll();
 }
 
-async function generateConfig(db: Connection, configDir, subDirs: string[]) {
+async function generateConfig(
+  dataset: string,
+  db: Connection,
+  configDir,
+  subDirs: string[]
+) {
   log(1, `Config Directory: ${configDir}`);
   deleteDir(configDir);
 
   for (const subDir of subDirs) {
-    copyDir(configDir, subDir);
+    copyDir(configDir, dataset, db, subDir);
   }
   updateDatabase(db, configDir);
   await updateEnvVariables(configDir);
@@ -56,12 +70,31 @@ function deleteDir(configDir) {
   }
 }
 
-function copyDir(configDir, subDir: string) {
-  let dirPath = path.resolve(
-    path.join(__dirname, "..", "..", "config", subDir)
-  );
+function copyDir(configDir, dataset: string, db: any, subDir: string) {
+  const rootPath = path.resolve(path.join(__dirname, "..", "..", "config"));
   fs.mkdirpSync(configDir);
-  fs.copySync(dirPath, configDir);
+
+  copyDirIfExists(configDir, rootPath, "shared", "all", subDir);
+  copyDirIfExists(configDir, rootPath, "shared", db, subDir);
+  copyDirIfExists(configDir, rootPath, dataset, "all", subDir);
+  copyDirIfExists(configDir, rootPath, dataset, db, subDir);
+}
+
+function copyDirIfExists(
+  toConfigDir: string,
+  rootPath: string,
+  dataset: string,
+  db: any,
+  subDir: string
+) {
+  if (!dataset || !db) {
+    return;
+  }
+  const dbName = typeof db === "string" ? db : db.name();
+  const from = path.join(rootPath, dataset, dbName, subDir);
+  if (fs.existsSync(from)) {
+    fs.copySync(from, toConfigDir);
+  }
 }
 
 function updateDatabase(db: Connection, configDir) {

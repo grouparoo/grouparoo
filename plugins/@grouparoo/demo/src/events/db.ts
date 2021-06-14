@@ -41,7 +41,7 @@ export async function dbPurchaseCategories() {
 }
 
 export async function csvPurchaseCategories() {
-  const rows = readCsvTable("purchases");
+  const rows = readCsvTable("b2c", "purchases");
   const categories = {};
   for (const row of rows) {
     if (row.category) {
