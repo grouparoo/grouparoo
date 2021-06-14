@@ -1,4 +1,4 @@
-import { Initializer, ExceptionReporter, api, log, env } from "actionhero";
+import { Initializer, ExceptionReporter, api, log } from "actionhero";
 import {
   DatabaseError,
   ValidationError,
@@ -15,8 +15,6 @@ export class GrouparooExceptionReporter extends Initializer {
   async initialize() {
     // log the SQL statement which cause the error if we have a Sequelize Error
     const grouparooExceptionReporter: ExceptionReporter = (error: Error) => {
-      if (!["development", "test"].includes(env)) return;
-
       if (
         error instanceof DatabaseError ||
         error instanceof ValidationError ||
