@@ -1,7 +1,7 @@
 name: timed-run
 
 on:
-  v0.3.0-timed-run:
+  workflow_dispatch:
     inputs:
       app:
         description: "app to test?"
