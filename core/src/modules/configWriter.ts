@@ -71,8 +71,7 @@ export namespace ConfigWriter {
     object: ConfigurationObject,
     prefix?: string
   ): string {
-    const name = Array.isArray(object) ? object[0].name : object.name;
-    let filePath = `${generateId(name)}.json`;
+    let filePath = `${object.id}.json`;
     if (prefix) filePath = `${prefix}/${filePath}`;
     return filePath;
   }
