@@ -1,0 +1,61 @@
+name: timed-run
+
+on: pull_request
+
+jobs:
+  test-timed-run:
+    env:
+      APP: "staging-community"
+      SCALE: "100"
+      LOG_LEVEL: "notice"
+
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis
+        ports:
+          - 6379/tcp
+        options: --entrypoint redis-server
+
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'grouparoo/grouparoo' }}
+    steps:
+      - uses: actions/checkout@master
+        with:
+          ref: ${{ github.head_ref }}
+      - name: Update APP ENV
+        if: github.event.inputs.app != ''
+        run: echo "APP=${{ github.event.inputs.app }}" >> $GITHUB_ENV
+      - name: Update SCALE ENV
+        if: github.event.inputs.scale != ''
+        run: echo "SCALE=${{ github.event.inputs.scale }}" >> $GITHUB_ENV
+      - name: Update LOG_LEVEL ENV
+        if: github.event.inputs.log_level != ''
+        run: echo "LOG_LEVEL=${{ github.event.inputs.log_level }}" >> $GITHUB_ENV
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - run: npm install -g pnpm
+      - run: pnpm install --frozen-lockfile=false
+      - name: timed-run
+        run: ./bin/timed_run $APP $SCALE $LOG_LEVEL
+        env:
+          SERVER_TOKEN: foo
+          DATABASE_URL: postgresql://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres
+          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}/0
+          PORT: 3000
+          WEB_SERVER: false
+          WORKERS: 5
+          GROUPAROO_TELEMETRY_ENABLED: false
+          SENTRY_TRACE_SAMPLE_RATE: 0.1
+          SENTRY_DSN: ${{ secrets.GROUPAROO_TIMED_RUN_SENTRY_DSN }}
