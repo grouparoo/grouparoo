@@ -29,8 +29,7 @@
     "plugins": [
       "@grouparoo/demo",
       "@grouparoo/postgres",
-      "@grouparoo/sqlite",
-      "@grouparoo/ui-config"
+      "@grouparoo/sqlite"
     ]
   }
 }

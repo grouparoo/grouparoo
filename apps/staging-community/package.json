@@ -77,8 +77,6 @@
       "@grouparoo/sendgrid",
       "@grouparoo/snowflake",
       "@grouparoo/sqlite",
-      "@grouparoo/ui-config",
-      "@grouparoo/ui-community",
       "@grouparoo/zendesk"
     ]
   }
