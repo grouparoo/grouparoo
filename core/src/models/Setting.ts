@@ -8,6 +8,7 @@ import {
 } from "sequelize-typescript";
 import { Op } from "sequelize";
 import { LoggedModel } from "../classes/loggedModel";
+import { ConfigWriter } from "../modules/configWriter";
 import { LockableHelper } from "../modules/lockableHelper";
 import { APIData } from "../modules/apiData";
 
@@ -78,6 +79,22 @@ export class Setting extends LoggedModel<Setting> {
       locked: this.locked,
       createdAt: APIData.formatDate(this.createdAt),
       updatedAt: APIData.formatDate(this.updatedAt),
+    };
+  }
+
+  getConfigId() {
+    return this.idIsDefault() ? ConfigWriter.generateId(this.key) : this.id;
+  }
+
+  async getConfigObject() {
+    const { pluginName, key, value } = this;
+
+    return {
+      id: this.getConfigId(),
+      class: "Setting",
+      pluginName,
+      key,
+      value,
     };
   }
 
