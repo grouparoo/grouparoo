@@ -81,6 +81,8 @@ function getPluginManifest() {
     }
   }
 
+  pluginNames = [...new Set(pluginNames)];
+
   for (const pluginName of pluginNames) {
     if (pluginName === "@grouparoo/core") continue;
 
