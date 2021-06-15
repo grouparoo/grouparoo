@@ -4,7 +4,6 @@ import { Property } from "../../models/Property";
 import { Source } from "../../models/Source";
 import { Group } from "../../models/Group";
 import { Destination } from "../../models/Destination";
-import { Event } from "../../models/Event";
 import { GroupMember } from "../../models/GroupMember";
 import { Log } from "../../models/Log";
 import { api } from "actionhero";
@@ -625,12 +624,6 @@ export namespace ProfileOps {
     );
 
     try {
-      // transfer events
-      await Event.update(
-        { profileId: profile.id },
-        { where: { profileId: otherProfile.id } }
-      );
-
       // transfer properties, keeping the newest values
       const properties = await profile.properties();
       const otherProperties = await otherProfile.properties();

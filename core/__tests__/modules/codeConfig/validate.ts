@@ -76,7 +76,7 @@ describe("modules/codeConfig", () => {
           expect(errors).toEqual([]);
           expect(seenIds).toEqual({
             apikey: ["website_key"],
-            app: expect.arrayContaining(["data_warehouse", "events"]),
+            app: expect.arrayContaining(["data_warehouse"]),
             destination: ["test_destination"],
             group: ["email_group", "high_value"],
             property: expect.arrayContaining([

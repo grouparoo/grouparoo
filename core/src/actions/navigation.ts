@@ -92,12 +92,6 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         { type: "link", title: "Groups", href: "/groups", icon: "users" },
         {
           type: "link",
-          title: "Events",
-          href: "/events/overview",
-          icon: "stream",
-        },
-        {
-          type: "link",
           title: "Sources",
           href: "/sources",
           icon: "file-import",

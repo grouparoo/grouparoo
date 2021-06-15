@@ -28,7 +28,6 @@ import nock from "nock";
 import LogFactory from "./factories/log";
 import GroupFactory from "./factories/group";
 import ImportFactory from "./factories/import";
-import EventFactory from "./factories/event";
 import TeamFactory from "./factories/team";
 import TeamMemberFactory from "./factories/teamMember";
 import NotificationFactory from "./factories/notification";
@@ -65,8 +64,6 @@ const {
   File,
   Export,
   ExportProcessor,
-  Event,
-  EventData,
   Group,
   GroupMember,
   GroupRule,
@@ -99,8 +96,6 @@ const models = [
   GroupRule,
   Export,
   ExportProcessor,
-  Event,
-  EventData,
   Log,
   Notification,
   Permission,
@@ -126,7 +121,6 @@ export namespace helper {
     apiKey: ApiKeyFactory,
     app: AppFactory,
     destination: DestinationFactory,
-    event: EventFactory,
     export: ExportFactory,
     exportProcessor: ExportProcessorFactory,
     group: GroupFactory,

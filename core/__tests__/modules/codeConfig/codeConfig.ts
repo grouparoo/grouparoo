@@ -46,7 +46,7 @@ describe("modules/codeConfig", () => {
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
           apikey: ["website_key"],
-          app: expect.arrayContaining(["data_warehouse", "events"]),
+          app: expect.arrayContaining(["data_warehouse"]),
           destination: ["test_destination"],
           group: ["email_group", "high_value"],
           property: expect.arrayContaining([
@@ -85,22 +85,13 @@ describe("modules/codeConfig", () => {
         const apps = await App.findAll({
           order: [["type", "asc"]],
         });
-        expect(apps.length).toBe(2);
+        expect(apps.length).toBe(1);
 
-        expect(apps[0].id).toBe("events");
-        expect(apps[0].name).toBe("Grouparoo Events");
+        expect(apps[0].id).toBe("data_warehouse");
+        expect(apps[0].name).toBe("Data Warehouse");
         expect(apps[0].state).toBe("ready");
         expect(apps[0].locked).toBe("config:code");
-        let options = await apps[0].getOptions();
-        expect(options).toEqual({
-          identifyingPropertyId: "user_id",
-        });
-
-        expect(apps[1].id).toBe("data_warehouse");
-        expect(apps[1].name).toBe("Data Warehouse");
-        expect(apps[1].state).toBe("ready");
-        expect(apps[1].locked).toBe("config:code");
-        options = await apps[1].getOptions();
+        const options = await apps[0].getOptions();
         expect(options).toEqual({ fileId: "test-file-path.db" });
       });
 
@@ -281,7 +272,7 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: ["website_key"],
-        app: expect.arrayContaining(["data_warehouse", "events"]),
+        app: expect.arrayContaining(["data_warehouse"]),
         destination: [],
         group: ["email_group"],
         property: expect.arrayContaining([
@@ -316,9 +307,7 @@ describe("modules/codeConfig", () => {
     });
 
     test("changes to an app setting will be updated", async () => {
-      const apps = await App.findAll({
-        where: { type: { [Op.ne]: "events" } },
-      });
+      const apps = await App.findAll();
       expect(apps.length).toBe(1);
       expect(apps[0].id).toBe("data_warehouse");
       expect(apps[0].name).toBe("Data Warehouse");
@@ -469,7 +458,7 @@ describe("modules/codeConfig", () => {
       });
       expect(deletedIds).toEqual({
         apikey: ["website_key"],
-        app: ["events"],
+        app: [],
         destination: [],
         group: ["email_group"],
         property: expect.arrayContaining(["last_name", "first_name"]),
@@ -494,14 +483,6 @@ describe("modules/codeConfig", () => {
 
     test("settings remain", async () => {
       expect(await Setting.count()).toBeGreaterThan(1);
-    });
-
-    test("a removed app will be deleted", async () => {
-      const app = await App.scope(null).findOne({
-        where: { id: "events" },
-      });
-      expect(app.state).toBe("deleted");
-      expect(app.locked).toBeNull();
     });
 
     test("a removed group will be deleted", async () => {
@@ -570,6 +551,12 @@ describe("modules/codeConfig", () => {
         teammember: [],
         profile: [],
       });
+    });
+
+    test("a removed app will be deleted", async () => {
+      const app = await App.scope(null).findOne();
+      expect(app.state).toBe("deleted");
+      expect(app.locked).toBeNull();
     });
 
     test("all objects will be deleted with an empty config file", async () => {
@@ -682,7 +669,7 @@ describe("modules/codeConfig", () => {
       expect(errors).toEqual([]);
       expect(seenIds).toEqual({
         apikey: ["website_key"],
-        app: expect.arrayContaining(["data_warehouse", "events"]),
+        app: expect.arrayContaining(["data_warehouse"]),
         destination: ["test_destination"],
         group: ["email_group", "high_value"],
         property: expect.arrayContaining([
@@ -715,22 +702,13 @@ describe("modules/codeConfig", () => {
       const apps = await App.findAll({
         order: [["type", "asc"]],
       });
-      expect(apps.length).toBe(2);
+      expect(apps.length).toBe(1);
 
-      expect(apps[0].id).toBe("events");
-      expect(apps[0].name).toBe("Grouparoo Events");
+      expect(apps[0].id).toBe("data_warehouse");
+      expect(apps[0].name).toBe("Data Warehouse");
       expect(apps[0].state).toBe("ready");
       expect(apps[0].locked).toBe("config:code");
-      let options = await apps[0].getOptions();
-      expect(options).toEqual({
-        identifyingPropertyId: "user_id",
-      });
-
-      expect(apps[1].id).toBe("data_warehouse");
-      expect(apps[1].name).toBe("Data Warehouse");
-      expect(apps[1].state).toBe("ready");
-      expect(apps[1].locked).toBe("config:code");
-      options = await apps[1].getOptions();
+      const options = await apps[0].getOptions();
       expect(options).toEqual({ fileId: "test-file-path.db" });
     });
 
@@ -1063,7 +1041,7 @@ describe("modules/codeConfig", () => {
         expect(errors).toEqual([]);
         expect(seenIds).toEqual({
           apikey: ["website_key"],
-          app: expect.arrayContaining(["data_warehouse", "events"]),
+          app: expect.arrayContaining(["data_warehouse"]),
           destination: ["test_destination"],
           group: ["email_group", "high_value"],
           property: expect.arrayContaining([
@@ -1108,11 +1086,8 @@ describe("modules/codeConfig", () => {
           order: [["type", "asc"]],
         });
 
-        expect(apps.length).toBe(2);
-        expect(apps.map((r) => r.locked).sort()).toEqual([
-          "config:writer",
-          "config:writer",
-        ]);
+        expect(apps.length).toBe(1);
+        expect(apps.map((r) => r.locked).sort()).toEqual(["config:writer"]);
       });
 
       test('sources are locked with "config:writer"', async () => {

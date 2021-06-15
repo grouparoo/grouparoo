@@ -13,8 +13,6 @@ export {
   DestinationSyncOperations,
 } from "./models/Destination";
 export { DestinationGroupMembership } from "./models/DestinationGroupMembership";
-export { Event } from "./models/Event";
-export { EventData } from "./models/EventData";
 export { Export } from "./models/Export";
 export { ExportProcessor } from "./models/ExportProcessor";
 export { File } from "./models/File";

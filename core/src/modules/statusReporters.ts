@@ -12,7 +12,6 @@ import { File } from "../models/File";
 import { Group } from "../models/Group";
 import { GroupRule } from "../models/GroupRule";
 import { Export } from "../models/Export";
-import { Event } from "../models/Event";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Property } from "../models/Property";
@@ -150,7 +149,6 @@ export namespace StatusReporters {
         Group,
         GroupRule,
         Export,
-        Event,
         Profile,
         ProfileProperty,
         Property,

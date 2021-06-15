@@ -6,7 +6,6 @@ import { GroupMember } from "../models/GroupMember";
 import { Log } from "../models/Log";
 import { Import } from "../models/Import";
 import { Export } from "../models/Export";
-import { Event } from "../models/Event";
 import { Profile } from "../models/Profile";
 import { ProfileProperty } from "../models/ProfileProperty";
 import { Run } from "../models/Run";
@@ -18,7 +17,6 @@ const modelClasses = {
   GroupMember,
   Import,
   Export,
-  Event,
   Log,
   Profile,
   ProfileProperty,

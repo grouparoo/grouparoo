@@ -5,8 +5,6 @@ import { App } from "../models/App";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
 import { Export } from "../models/Export";
-import { Event } from "../models/Event";
-import { EventData } from "../models/EventData";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
 import { GroupRule } from "../models/GroupRule";
@@ -40,8 +38,6 @@ export namespace Reset {
       App,
       Destination,
       DestinationGroupMembership,
-      Event,
-      EventData,
       Export,
       Group,
       GroupMember,
@@ -91,10 +87,6 @@ export namespace Reset {
     await Export.truncate();
     await Run.truncate();
     await Log.truncate();
-    await Event.update(
-      { profileId: null, userId: null, profileAssociatedAt: null },
-      { where: { profileId: { [Op.ne]: null } } }
-    );
 
     await clearLocalCaches();
     await clearRedis();

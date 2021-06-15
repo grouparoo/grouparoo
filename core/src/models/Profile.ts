@@ -17,12 +17,10 @@ import { Log } from "./Log";
 import { ProfileProperty } from "./ProfileProperty";
 import { Import } from "./Import";
 import { Export } from "./Export";
-import { Event } from "./Event";
 import { StateMachine } from "./../modules/stateMachine";
 import { ProfileOps } from "../modules/ops/profile";
 import { APIData } from "../modules/apiData";
 import { GroupRule } from "./GroupRule";
-import { EventData } from "./EventData";
 
 const STATES = ["draft", "pending", "ready"] as const;
 
@@ -70,9 +68,6 @@ export class Profile extends LoggedModel<Profile> {
 
   @HasMany(() => Export)
   exports: Export[];
-
-  @HasMany(() => Event, "profileId")
-  events: Event[];
 
   async apiData() {
     const properties = await this.properties();
@@ -259,28 +254,6 @@ export class Profile extends LoggedModel<Profile> {
     await GroupMember.destroy({
       where: { profileId: instance.id },
     });
-  }
-
-  @AfterDestroy
-  static async destroyEvents(instance: Profile) {
-    const limit = 1000;
-    let count = -1;
-
-    while (count !== 0) {
-      const events = await Event.findAll({
-        attributes: ["id"],
-        where: { profileId: instance.id },
-        limit,
-      });
-
-      if (events.length > 0) {
-        await EventData.destroy({
-          where: { eventId: events.map((e) => e.id) },
-        });
-        await Event.destroy({ where: { id: events.map((e) => e.id) } });
-      }
-      count = events.length;
-    }
   }
 
   @AfterDestroy

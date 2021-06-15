@@ -9,8 +9,6 @@ import { ApiKey } from "../models/ApiKey";
 import { Destination } from "../models/Destination";
 import { DestinationGroupMembership } from "../models/DestinationGroupMembership";
 import { File } from "../models/File";
-import { Event } from "../models/Event";
-import { EventData } from "../models/EventData";
 import { Export } from "../models/Export";
 import { Group } from "../models/Group";
 import { GroupMember } from "../models/GroupMember";
@@ -46,8 +44,6 @@ const models = [
   DestinationGroupMembership,
   Option,
   Import,
-  Event,
-  EventData,
   Run,
   Export,
   ExportProcessor,

@@ -19,7 +19,6 @@ export class ObjectFind extends AuthenticatedAction {
       "apiKeys",
       "apps",
       "destinations",
-      "events",
       "exports",
       "files",
       "groups",

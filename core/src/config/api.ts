@@ -99,7 +99,6 @@ export const DEFAULT = {
         "system:status": {},
         "system:cli": {},
         "model:log": {},
-        "model:event": {},
       },
     };
   },

@@ -27,7 +27,6 @@ import {
   Source,
   Team,
   TeamMember,
-  Event,
   StatusMetric,
 } from "@grouparoo/core";
 
@@ -45,7 +44,6 @@ export namespace Models {
   export type ExportProcessorType = Partial<
     AsyncReturnType<ExportProcessor["apiData"]>
   >;
-  export type EventType = Partial<AsyncReturnType<Event["apiData"]>>;
   export type GroupType = Partial<AsyncReturnType<Group["apiData"]>>;
   export type GroupMemberType = Partial<
     AsyncReturnType<GroupMember["apiData"]>
@@ -115,15 +113,6 @@ import {
   DestinationProfilePreview,
   DestinationView,
 } from "@grouparoo/core/src/actions/destinations";
-import {
-  EventAutocompleteType,
-  EventCreate,
-  EventDestroy,
-  EventView,
-  EventsCounts,
-  EventsList,
-  EventsTypes,
-} from "@grouparoo/core/src/actions/events";
 import {
   ExportView,
   ExportsTotals,
@@ -369,28 +358,6 @@ export namespace Actions {
   >;
   export type DestinationView = AsyncReturnType<
     typeof DestinationView.prototype.runWithinTransaction
-  >;
-
-  export type EventAutocompleteType = AsyncReturnType<
-    typeof EventAutocompleteType.prototype.runWithinTransaction
-  >;
-  export type EventCreate = AsyncReturnType<
-    typeof EventCreate.prototype.runWithinTransaction
-  >;
-  export type EventView = AsyncReturnType<
-    typeof EventView.prototype.runWithinTransaction
-  >;
-  export type EventDestroy = AsyncReturnType<
-    typeof EventDestroy.prototype.runWithinTransaction
-  >;
-  export type EventsCounts = AsyncReturnType<
-    typeof EventsCounts.prototype.runWithinTransaction
-  >;
-  export type EventsList = AsyncReturnType<
-    typeof EventsList.prototype.runWithinTransaction
-  >;
-  export type EventsTypes = AsyncReturnType<
-    typeof EventsTypes.prototype.runWithinTransaction
   >;
 
   export type ExportView = AsyncReturnType<
