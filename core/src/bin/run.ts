@@ -1,6 +1,5 @@
 import { GrouparooCLI } from "../modules/cli";
 import { CLI, Task, api, config } from "actionhero";
-import { Schedule } from "..";
 import { Reset } from "../modules/reset";
 
 export class RunCLI extends CLI {
@@ -59,7 +58,6 @@ export class RunCLI extends CLI {
     const { main } = await import("../grouparoo");
     await main();
 
-    await this.checkSchedules();
     await this.runTasks(params);
 
     return false;
@@ -68,15 +66,6 @@ export class RunCLI extends CLI {
   checkWorkers() {
     if (config.tasks.minTaskProcessors < 1) {
       return GrouparooCLI.logger.fatal(`No Task Workers are enabled`);
-    }
-  }
-
-  async checkSchedules() {
-    const scheduleCount = await Schedule.count();
-    if (scheduleCount === 0) {
-      return GrouparooCLI.logger.fatal(`No schedules found.
-The run command uses schedules to know what profiles to import.
-See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`);
     }
   }
 
