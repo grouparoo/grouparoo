@@ -4,6 +4,19 @@ import { Team } from "../models/Team";
 import { TeamMember } from "../models/TeamMember";
 import { ConfigUser } from "../modules/configUser";
 
+type NavigationMode =
+  | "authenticated"
+  | "unauthenticated"
+  | "config:authenticated"
+  | "config:unauthenticated";
+
+type NavigationItem = {
+  type: string;
+  title?: string;
+  icon?: string;
+  href?: string;
+};
+
 export class NavigationList extends OptionallyAuthenticatedAction {
   constructor() {
     super();
@@ -19,225 +32,39 @@ export class NavigationList extends OptionallyAuthenticatedAction {
   }: {
     session: { teamMember: TeamMember };
   }) {
-    let navigationItems = [];
-    let bottomMenuItems = [];
-    let platformItems = [];
+    let configUser: boolean;
+    if (process.env.GROUPAROO_RUN_MODE === "cli:config") {
+      configUser = await ConfigUser.get();
+    }
 
-    let navigationMode =
+    const navigationMode: NavigationMode =
       process.env.GROUPAROO_RUN_MODE === "cli:config"
-        ? "config:unauthenticated"
+        ? configUser
+          ? "config:authenticated"
+          : "config:unauthenticated"
+        : teamMember
+        ? "authenticated"
         : "unauthenticated";
-    let showSystemLinks = false;
-    if (teamMember) {
-      navigationMode = "authenticated";
-      const permissions = await teamMember.team.$get("permissions");
-      permissions.map((prm) => {
-        if (prm.topic === "system" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "app" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "file" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "log" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "import" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "export" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "run" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "notifications" && prm.read) {
-          showSystemLinks = true;
-        } else if (prm.topic === "resque" && prm.read) {
-          showSystemLinks = true;
-        }
-      });
-    }
 
-    if (navigationMode === "unauthenticated") {
-      navigationItems = [
-        { type: "link", title: "Home", href: "/" },
-        { type: "link", title: "About", href: "/about" },
-      ];
+    let navResponse: {
+      navigationItems: NavigationItem[];
+      platformItems: NavigationItem[];
+      bottomMenuItems: NavigationItem[];
+    };
 
-      const teamsCount = await Team.count();
-
-      if (teamsCount > 0) {
-        bottomMenuItems = [
-          { type: "link", title: "Sign In", href: "/session/sign-in" },
-        ];
-      } else {
-        bottomMenuItems = [
-          { type: "link", title: "Create Team", href: "/team/initialize" },
-        ];
-      }
-      bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
-    }
-
-    if (navigationMode === "authenticated") {
-      navigationItems = [
-        {
-          type: "link",
-          title: "Dashboard",
-          href: "/dashboard",
-          icon: "home",
-        },
-        { type: "link", title: "Profiles", href: "/profiles", icon: "user" },
-        {
-          type: "link",
-          title: "Properties",
-          href: "/properties",
-          icon: "address-card",
-        },
-        { type: "link", title: "Groups", href: "/groups", icon: "users" },
-        {
-          type: "link",
-          title: "Events",
-          href: "/events/overview",
-          icon: "stream",
-        },
-        {
-          type: "link",
-          title: "Sources",
-          href: "/sources",
-          icon: "file-import",
-        },
-        {
-          type: "link",
-          title: "Destinations",
-          href: "/destinations",
-          icon: "file-export",
-        },
-        {
-          type: "link",
-          title: "Runs",
-          href: "/runs",
-          icon: "exchange-alt",
-        },
-        { type: "subNavMenu", title: "Platform", icon: "terminal" },
-      ];
-
-      platformItems.push(
-        { type: "link", title: "Apps", href: "/apps" },
-        { type: "link", title: "Imports", href: "/imports" },
-        { type: "link", title: "Exports", href: "/exports" },
-        { type: "link", title: "Export Processors", href: "/exportProcessors" }
-      );
-
-      if (showSystemLinks) {
-        platformItems.push({
-          type: "link",
-          title: "Settings",
-          href: "/settings",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "Files",
-          href: "/files",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "Logs",
-          href: "/logs/list",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "Teams and Members",
-          href: "/teams",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "API Keys",
-          href: "/apiKeys",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "API Documentation",
-          href: "/swagger",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "Notifications",
-          href: "/notifications",
-        });
-
-        platformItems.push({
-          type: "link",
-          title: "Resque",
-          href: "/resque",
-        });
-      }
-
-      bottomMenuItems = [];
-      bottomMenuItems.push({
-        type: "link",
-        title: "Account",
-        href: "/account",
-      });
-      bottomMenuItems.push({ type: "link", title: "About", href: "/about" });
-      bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
-
-      bottomMenuItems.push({ type: "divider" });
-
-      bottomMenuItems.push({
-        type: "link",
-        title: "Sign Out",
-        href: "/session/sign-out",
-      });
-    }
-
-    if (navigationMode === "config:unauthenticated") {
-      navigationItems = [{ type: "link", title: "Home", href: "/" }];
-      const user = await ConfigUser.get();
-
-      if (user) {
-        navigationMode = "config:authenticated";
-
-        navigationItems = [
-          {
-            type: "link",
-            title: "Apps",
-            href: "/apps",
-            icon: "th-large",
-          },
-          {
-            type: "link",
-            title: "Sources",
-            href: "/sources",
-            icon: "file-import",
-          },
-          {
-            type: "link",
-            title: "Properties",
-            href: "/properties",
-            icon: "address-card",
-          },
-          {
-            type: "link",
-            title: "Profiles",
-            href: "/profiles",
-            icon: "user",
-          },
-          {
-            type: "link",
-            title: "Groups",
-            href: "/groups",
-            icon: "users",
-          },
-          {
-            type: "link",
-            title: "Destinations",
-            href: "/destinations",
-            icon: "file-export",
-          },
-        ];
-      }
+    switch (navigationMode) {
+      case "authenticated":
+        navResponse = await this.authenticatedNav(teamMember);
+        break;
+      case "unauthenticated":
+        navResponse = await this.unauthenticatedNav(teamMember);
+        break;
+      case "config:authenticated":
+        navResponse = await this.authenticatedConfigNav(configUser);
+        break;
+      case "config:unauthenticated":
+        navResponse = await this.unauthenticatedConfigNav(configUser);
+        break;
     }
 
     const clusterNameSetting = await Setting.findOne({
@@ -246,6 +73,7 @@ export class NavigationList extends OptionallyAuthenticatedAction {
 
     return {
       navigationMode,
+      navigation: navResponse,
       clusterName: {
         default:
           clusterNameSetting?.value &&
@@ -253,11 +81,226 @@ export class NavigationList extends OptionallyAuthenticatedAction {
         value: clusterNameSetting?.value || "",
       },
       teamMember: teamMember ? await teamMember.apiData() : undefined,
-      navigation: {
-        navigationItems,
-        platformItems,
-        bottomMenuItems,
-      },
     };
+  }
+
+  async authenticatedNav(teamMember: TeamMember) {
+    const systemPermissionsCount = await teamMember.team.$count("permissions", {
+      where: {
+        read: true,
+        topic: [
+          "system",
+          "app",
+          "file",
+          "log",
+          "import",
+          "export",
+          "run",
+          "notifications",
+          "resque",
+        ],
+      },
+    });
+    const showSystemLinks = systemPermissionsCount > 0;
+
+    const navigationItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Dashboard",
+        href: "/dashboard",
+        icon: "home",
+      },
+      { type: "link", title: "Profiles", href: "/profiles", icon: "user" },
+      {
+        type: "link",
+        title: "Properties",
+        href: "/properties",
+        icon: "address-card",
+      },
+      { type: "link", title: "Groups", href: "/groups", icon: "users" },
+      {
+        type: "link",
+        title: "Events",
+        href: "/events/overview",
+        icon: "stream",
+      },
+      {
+        type: "link",
+        title: "Sources",
+        href: "/sources",
+        icon: "file-import",
+      },
+      {
+        type: "link",
+        title: "Destinations",
+        href: "/destinations",
+        icon: "file-export",
+      },
+      {
+        type: "link",
+        title: "Runs",
+        href: "/runs",
+        icon: "exchange-alt",
+      },
+      { type: "subNavMenu", title: "Platform", icon: "terminal" },
+    ];
+
+    const platformItems: NavigationItem[] = [
+      { type: "link", title: "Apps", href: "/apps" },
+      { type: "link", title: "Imports", href: "/imports" },
+      { type: "link", title: "Exports", href: "/exports" },
+      { type: "link", title: "Export Processors", href: "/exportProcessors" },
+    ];
+
+    if (showSystemLinks) {
+      platformItems.push({
+        type: "link",
+        title: "Settings",
+        href: "/settings",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "Files",
+        href: "/files",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "Logs",
+        href: "/logs/list",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "Teams and Members",
+        href: "/teams",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "API Keys",
+        href: "/apiKeys",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "API Documentation",
+        href: "/swagger",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "Notifications",
+        href: "/notifications",
+      });
+
+      platformItems.push({
+        type: "link",
+        title: "Resque",
+        href: "/resque",
+      });
+    }
+
+    const bottomMenuItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Account",
+        href: "/account",
+      },
+
+      { type: "link", title: "About", href: "/about" },
+
+      { type: "link", title: "Help", href: "/help" },
+
+      { type: "divider" },
+
+      {
+        type: "link",
+        title: "Sign Out",
+        href: "/session/sign-out",
+      },
+    ];
+
+    return { navigationItems, platformItems, bottomMenuItems };
+  }
+
+  async unauthenticatedNav(teamMember: TeamMember) {
+    const navigationItems: NavigationItem[] = [
+      { type: "link", title: "Home", href: "/" },
+      { type: "link", title: "About", href: "/about" },
+    ];
+
+    let platformItems: NavigationItem[] = [];
+
+    let bottomMenuItems: NavigationItem[] = [];
+    const teamsCount = await Team.count();
+    if (teamsCount > 0) {
+      bottomMenuItems = [
+        { type: "link", title: "Sign In", href: "/session/sign-in" },
+      ];
+    } else {
+      bottomMenuItems = [
+        { type: "link", title: "Create Team", href: "/team/initialize" },
+      ];
+    }
+    bottomMenuItems.push({ type: "link", title: "Help", href: "/help" });
+
+    return { navigationItems, platformItems, bottomMenuItems };
+  }
+
+  async authenticatedConfigNav(configUser: boolean) {
+    const navigationItems: NavigationItem[] = [
+      {
+        type: "link",
+        title: "Apps",
+        href: "/apps",
+        icon: "th-large",
+      },
+      {
+        type: "link",
+        title: "Sources",
+        href: "/sources",
+        icon: "file-import",
+      },
+      {
+        type: "link",
+        title: "Properties",
+        href: "/properties",
+        icon: "address-card",
+      },
+      {
+        type: "link",
+        title: "Profiles",
+        href: "/profiles",
+        icon: "user",
+      },
+      {
+        type: "link",
+        title: "Groups",
+        href: "/groups",
+        icon: "users",
+      },
+      {
+        type: "link",
+        title: "Destinations",
+        href: "/destinations",
+        icon: "file-export",
+      },
+    ];
+    const platformItems: NavigationItem[] = [];
+    const bottomMenuItems: NavigationItem[] = [];
+
+    return { navigationItems, platformItems, bottomMenuItems };
+  }
+
+  async unauthenticatedConfigNav(configUser: boolean) {
+    const navigationItems: NavigationItem[] = [
+      { type: "link", title: "Home", href: "/" },
+    ];
+    const platformItems: NavigationItem[] = [];
+    const bottomMenuItems: NavigationItem[] = [];
+
+    return { navigationItems, platformItems, bottomMenuItems };
   }
 }
