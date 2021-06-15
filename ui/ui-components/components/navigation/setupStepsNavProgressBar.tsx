@@ -15,23 +15,23 @@ export default function SetupStepsNavProgressBar({
 
   useEffect(() => {
     getSetupSteps();
-    router?.events?.on("routeChangeStart", (url) => {
-      if (url !== "/" && !url.match(/^\/session\//)) getSetupSteps();
-    });
+    router?.events?.on("routeChangeStart", getSetupSteps);
 
     setupStepHandler?.subscribe("setup-steps-nav-progress-bar", getSetupSteps);
 
     return () => {
+      router?.events?.off("routeChangeStart", getSetupSteps);
       setupStepHandler?.unsubscribe(
         "setup-steps-nav-progress-bar",
         getSetupSteps
       );
-      router?.events?.off("routeChangeStart", getSetupSteps);
     };
   }, []);
 
-  async function getSetupSteps() {
-    if (router.pathname.match(/^\/session/)) return;
+  async function getSetupSteps(newUrl?: string) {
+    if (router.pathname.match(/^\/session\//)) return;
+    if (newUrl && newUrl.match(/^\/session\//)) return;
+    if (newUrl && newUrl === "/") return;
 
     const { setupSteps, toDisplay }: Actions.SetupStepsList = await execApi(
       "get",
