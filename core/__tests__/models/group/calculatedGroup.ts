@@ -31,6 +31,7 @@ describe("models/group", () => {
 
     afterEach(async () => {
       await SharedGroupTests.afterEach();
+      process.env.GROUPAROO_RUN_MODE = undefined;
     });
 
     test("an empty calculated group can be created", async () => {
@@ -79,6 +80,15 @@ describe("models/group", () => {
       expect(run.groupMethod).toBe("complete");
 
       await group.reload();
+      expect(group.state).toBe("ready");
+    });
+
+    test("groups with at least one rule are set to ready in config mode", async () => {
+      process.env.GROUPAROO_RUN_MODE = "cli:config";
+      expect(group.state).toBe("draft");
+      await group.setRules([
+        { key: "firstName", match: "nobody", operation: { op: "eq" } },
+      ]);
       expect(group.state).toBe("ready");
     });
 
