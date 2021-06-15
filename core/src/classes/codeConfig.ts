@@ -1,7 +1,6 @@
 import { log } from "actionhero";
 import { PropertyFiltersWithKey } from "../models/Property";
 import { GroupRuleWithKey } from "../models/Group";
-import extractDuplicates from "../modules/validators/extractDuplicates";
 import { topologicalSort, Graph } from "../modules/topologicalSort";
 import { DestinationSyncMode } from "../models/Destination";
 import { MustacheUtils } from "../modules/mustacheUtils";
@@ -153,7 +152,7 @@ export function getAutoBootstrappedProperty(
   sourceConfigObject: ConfigurationObject,
   otherConfigObjects: ConfigurationObject[]
 ) {
-  if (sourceConfigObject.class?.toLowerCase() !== "source") return null;
+  if (cleanClass(sourceConfigObject) !== "source") return null;
   if (!sourceConfigObject.mapping) return null;
 
   const mappingValues = Object.values(sourceConfigObject["mapping"]);
@@ -161,7 +160,7 @@ export function getAutoBootstrappedProperty(
     // If this source id == its mapped property's sourceId, we should bootstrap the property
     const autoBootstrappedProperty = otherConfigObjects.find(
       (o) =>
-        o.class.toLowerCase() === "property" &&
+        cleanClass(o) === "property" &&
         o.id === value &&
         o.sourceId === sourceConfigObject.id
     );
@@ -195,7 +194,7 @@ export async function sortConfigurationObjects(
 }
 
 /**
- * Check a set of config objects for duplicate IDs.
+ * Check a set of config objects for duplicate IDs within the same type.
  *
  * @param configObjects ConfigurationObject[]
  */
@@ -203,18 +202,29 @@ export function validateConfigObjects(configObjects: ConfigurationObject[]): {
   configObjects: ConfigurationObject[];
   errors: string[];
 } {
-  let errors = [];
-  configObjects
-    .filter((c) => !c.id || c.id === "")
-    .map((c) => {
+  let errors: string[] = [];
+  const idTypes: { [type: string]: string[] } = {};
+
+  for (const configObject of configObjects) {
+    if (!configObject.id || configObject.id === "") {
       errors.push(
-        (c.name ? `"${c.name}"` : c.key ? `"${c.key}"` : "A config object") +
-          " is missing an ID"
+        (configObject.name
+          ? `"${configObject.name}"`
+          : configObject.key
+          ? `"${configObject.key}"`
+          : "A config object") + " is missing an ID"
       );
-    });
-  const duplicates = extractDuplicates(configObjects, "id");
-  if (duplicates.length > 0) {
-    errors.push(`Duplicate ID values found: ${duplicates.join(",")}`);
+    }
+
+    const _class = cleanClass(configObject);
+    if (!idTypes[_class]) idTypes[_class] = [];
+    if (idTypes[_class].includes(configObject.id)) {
+      errors.push(
+        `Duplicate ID values found for ${configObject.id} of class ${_class}`
+      );
+    } else {
+      idTypes[_class].push(configObject.id);
+    }
   }
 
   return { configObjects, errors };
@@ -225,8 +235,7 @@ export async function getConfigObjectsWithIds(
 ) {
   const configObjectsWithIds: ConfigObjectWithReferenceIDs[] = [];
 
-  for (const i in configObjects) {
-    const configObject = configObjects[i];
+  for (const configObject of configObjects) {
     const { providedIds, prerequisiteIds } = await getParentIds(
       configObject,
       configObjects
@@ -249,8 +258,7 @@ export async function getDirectParentId(configObject: ConfigurationObject) {
     teammember: "teamId",
   };
 
-  const objectClass = configObject.class?.toLowerCase();
-  const parentKey = parentKeys[objectClass];
+  const parentKey = parentKeys[cleanClass(configObject)];
   if (!parentKey) return null;
 
   const parentId = configObject[parentKey];
@@ -264,38 +272,42 @@ export async function getParentIds(
   otherConfigObjects: Array<ConfigurationObject> = []
 ) {
   const keys = Object.keys(configObject);
+  // IDs here are prepended with the class of the object to allow for ID duplication between classes, but not of the same type
   const prerequisiteIds: string[] = [];
   const providedIds: string[] = [];
 
-  providedIds.push(configObject.id);
+  providedIds.push(`${cleanClass(configObject)}:${configObject.id}`);
 
   // special cases
   // - Bootstrapped property
   if (
-    configObject.class?.toLowerCase() === "source" &&
+    cleanClass(configObject) === "source" &&
     configObject?.bootstrappedProperty?.id
   ) {
-    providedIds.push(configObject.bootstrappedProperty.id);
+    providedIds.push(`property:${configObject.bootstrappedProperty.id}`);
   }
 
   // - query property with mustache dependency
-  if (
-    configObject.class?.toLowerCase() === "property" &&
-    configObject?.options?.query
-  ) {
+  if (cleanClass(configObject) === "property" && configObject?.options?.query) {
     const mustachePrerequisiteIds =
       await MustacheUtils.getMustacheVariablesAsPropertyIds(
         configObject?.options?.query,
         otherConfigObjects
       );
-    prerequisiteIds.push(...mustachePrerequisiteIds);
+    prerequisiteIds.push(
+      ...mustachePrerequisiteIds.map((p) => `property:${p}`)
+    );
   }
 
   // prerequisites
   for (const i in keys) {
-    if (keys[i].match(/.+Id$/)) {
-      prerequisiteIds.push(configObject[keys[i]]);
-    }
+    const value = configObject[keys[i]];
+    if (keys[i] === "teamId") prerequisiteIds.push(`team:${value}`);
+    if (keys[i] === "appId") prerequisiteIds.push(`app:${value}`);
+    if (keys[i] === "sourceId") prerequisiteIds.push(`source:${value}`);
+    if (keys[i] === "propertyId") prerequisiteIds.push(`property:${value}`);
+    if (keys[i] === "destinationId")
+      prerequisiteIds.push(`destination:${value}`);
   }
 
   const objectContainers = ["options", "source", "destination"];
@@ -305,7 +317,9 @@ export async function getParentIds(
       const containerKeys = Object.keys(configObject[_container]);
       for (const i in containerKeys) {
         if (validContainerKeys.includes(containerKeys[i])) {
-          prerequisiteIds.push(configObject[_container][containerKeys[i]]);
+          prerequisiteIds.push(
+            `property:${configObject[_container][containerKeys[i]]}`
+          );
         }
       }
     }
@@ -318,7 +332,7 @@ export async function getParentIds(
       const recordKeys = Object.keys(record);
       for (const j in recordKeys) {
         if (recordKeys[j].match(/.+Id$/)) {
-          prerequisiteIds.push(record[recordKeys[j]]);
+          prerequisiteIds.push(`property:${record[recordKeys[j]]}`);
         }
       }
     }
@@ -331,7 +345,7 @@ export async function getParentIds(
     const mappingValues = Object.values(configObject["mapping"]);
     for (const value of mappingValues) {
       if (!autoBootstrappedProperty || value !== autoBootstrappedProperty.id)
-        prerequisiteIds.push(value);
+        prerequisiteIds.push(`property:${value}`);
     }
   }
 
@@ -339,12 +353,12 @@ export async function getParentIds(
     const groupIds: string[] = Object.values(
       configObject["destinationGroupMemberships"]
     );
-    groupIds.forEach((v) => prerequisiteIds.push(v));
+    groupIds.forEach((v) => prerequisiteIds.push(`group:${v}`));
   }
 
   if (configObject["properties"]) {
     const propertyIds: string[] = Object.keys(configObject["properties"]);
-    propertyIds.forEach((v) => prerequisiteIds.push(v));
+    propertyIds.forEach((v) => prerequisiteIds.push(`property:${v}`));
   }
 
   return {
@@ -369,12 +383,14 @@ export function sortConfigObjectsWithIds(
 
   const sortedKeys = topologicalSort(dependencyGraph);
 
-  sortedKeys.forEach((id) => {
+  sortedKeys.forEach((typeAndId) => {
+    const [_class, id] = typeAndId.split(":");
     sortedConfigObjectsWithIds.push(
       configObjectsWithIds.find(
         (o) =>
-          o.configObject.id === id ||
-          o.configObject?.bootstrappedProperty?.id === id
+          cleanClass(o.configObject) === _class &&
+          (o.configObject.id === id ||
+            o.configObject?.bootstrappedProperty?.id === id)
       )
     );
   });
@@ -384,4 +400,8 @@ export function sortConfigObjectsWithIds(
 
 function uniqueArrayValues(value, index, self) {
   return self.indexOf(value) === index;
+}
+
+function cleanClass(configObject: ConfigurationObject) {
+  return configObject.class?.trim().toLowerCase() ?? undefined;
 }
