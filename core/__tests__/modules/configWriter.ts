@@ -74,6 +74,16 @@ describe("modules/configWriter", () => {
       const res = ConfigWriter.generateFilePath(configObject);
       expect(res).toEqual("hello_world.json");
     });
+    test("returns undefined if the object has no id value", async () => {
+      const res = ConfigWriter.generateFilePath({ name: "Hello World" });
+      expect(res).toBeUndefined();
+    });
+    test("supports objects as arrays, and uses the first one to build the name", async () => {
+      const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
+      const configObject = await app.getConfigObject();
+      const res = ConfigWriter.generateFilePath([configObject]);
+      expect(res).toEqual("hello_world.json");
+    });
     test("adds a prefix, if specified", async () => {
       const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
       const configObject = await app.getConfigObject();
