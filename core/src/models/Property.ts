@@ -381,7 +381,7 @@ export class Property extends LoggedModel<Property> {
   }
 
   getConfigId() {
-    return ConfigWriter.generateId(this.key);
+    return this.idIsDefault() ? ConfigWriter.generateId(this.key) : this.id;
   }
 
   async getConfigObject() {

@@ -184,7 +184,7 @@ export class Schedule extends LoggedModel<Schedule> {
   }
 
   getConfigId() {
-    return ConfigWriter.generateId(this.name);
+    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
   async getConfigObject() {

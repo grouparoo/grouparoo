@@ -288,7 +288,7 @@ export class Source extends LoggedModel<Source> {
   }
 
   getConfigId() {
-    return ConfigWriter.generateId(this.name);
+    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
   async getConfigObject() {

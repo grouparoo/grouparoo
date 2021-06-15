@@ -11,6 +11,7 @@ import {
   Length,
   BeforeBulkCreate,
 } from "sequelize-typescript";
+import validator from "validator";
 import * as uuid from "uuid";
 import { Log } from "../models/Log";
 import { config, chatRoom } from "actionhero";
@@ -137,6 +138,11 @@ export abstract class LoggedModel<T> extends Model {
     }
 
     return message;
+  }
+
+  idIsDefault(): boolean {
+    const uuid = this.id.split("_").pop();
+    return this.id.startsWith(`${this.idPrefix()}_`) && validator.isUUID(uuid);
   }
 
   abstract apiData(): Promise<{ [key: string]: any }>;
