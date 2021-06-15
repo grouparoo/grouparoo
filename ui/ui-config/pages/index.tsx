@@ -11,7 +11,7 @@ export default function Page(props) {
   const [shouldRender, setShouldRender] = useState(false);
   const [CTAs, setCTAs] = useState({
     CTALink: "/session/sign-in",
-    CTAMessage: "Sign In",
+    CTAMessage: "Register",
     CTATarget: null,
   });
   let currentStep = null;
