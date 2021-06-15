@@ -2,7 +2,10 @@ import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Image, Accordion, Button, Badge } from "react-bootstrap";
 import Link from "next/link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from "@fortawesome/react-fontawesome";
 import { useApi } from "../hooks/useApi";
 import SetupStepsNavProgressBar from "./navigation/setupStepsNavProgressBar";
 import RunningRunsBadge from "./navigation/runningRunsBadge";
@@ -231,7 +234,7 @@ export default function Navigation(props) {
                           {nav.icon ? (
                             <FontAwesomeIcon
                               style={iconConstrainedStyle}
-                              icon={nav.icon}
+                              icon={nav.icon as FontAwesomeIconProps["icon"]}
                               size="xs"
                             />
                           ) : null}{" "}
