@@ -16,8 +16,6 @@
     "start": "cd node_modules/@grouparoo/core && ./bin/start"
   },
   "grouparoo": {
-    "plugins": [
-      "@grouparoo/ui-community"
-    ]
+    "plugins": []
   }
 }
