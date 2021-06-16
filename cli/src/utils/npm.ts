@@ -15,7 +15,7 @@ export namespace NPM {
   ) {
     let args = ["install"];
 
-    if (devDependency) args.push("-D");
+    if (devDependency) args.push("--save-dev");
 
     const npmCheck = await spawnPromise(NPM, ["--version"]);
     const npmVersion = npmCheck.stdout.trim();
