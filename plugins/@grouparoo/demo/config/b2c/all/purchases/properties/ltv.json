@@ -1,15 +1,21 @@
 {
-  "id": "ltv",
-  "name": "LTV",
   "class": "Property",
+  "id": "ltv",
   "type": "float",
-  "unique": false,
-  "isArray": false,
+  "name": "LTV",
   "sourceId": "demo_purchases",
+  "unique": false,
+  "identifying": false,
+  "isArray": false,
   "options": {
     "column": "price",
-    "aggregationMethod": "sum",
-    "sortColumn": null
+    "aggregationMethod": "sum"
   },
-  "filters": [{ "key": "state", "op": "equals", "match": "successful" }]
+  "filters": [
+    {
+      "key": "state",
+      "op": "equals",
+      "match": "successful"
+    }
+  ]
 }

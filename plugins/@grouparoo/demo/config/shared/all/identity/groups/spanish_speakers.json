@@ -1,12 +1,14 @@
 {
   "id": "spanish_speakers",
-  "name": "Spanish Speakers",
   "class": "Group",
   "type": "calculated",
+  "name": "Spanish Speakers",
   "rules": [
     {
       "propertyId": "language",
-      "operation": { "op": "eq" },
+      "operation": {
+        "op": "eq"
+      },
       "match": "Spanish"
     }
   ]

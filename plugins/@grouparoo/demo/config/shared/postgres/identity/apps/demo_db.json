@@ -1,14 +1,14 @@
 {
+  "class": "App",
   "id": "demo_db",
   "name": "Demo Database",
-  "class": "App",
   "type": "postgres",
   "options": {
-    "host": "127.0.0.1",
     "port": "5432",
-    "user": "postgres",
-    "password": null,
+    "schema": "demo",
+    "host": "localhost",
     "database": "grouparoo_development",
-    "schema": "demo"
+    "user": "",
+    "password": ""
   }
 }
