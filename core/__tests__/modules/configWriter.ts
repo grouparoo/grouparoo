@@ -74,6 +74,16 @@ describe("modules/configWriter", () => {
       const res = ConfigWriter.generateFilePath(configObject);
       expect(res).toEqual("hello_world.json");
     });
+    test("returns undefined if the object has no id value", async () => {
+      const res = ConfigWriter.generateFilePath({ name: "Hello World" });
+      expect(res).toBeUndefined();
+    });
+    test("supports objects as arrays, and uses the first one to build the name", async () => {
+      const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
+      const configObject = await app.getConfigObject();
+      const res = ConfigWriter.generateFilePath([configObject]);
+      expect(res).toEqual("hello_world.json");
+    });
     test("adds a prefix, if specified", async () => {
       const app: App = await helper.factories.app({ name: "HELLO @#$ WORLD" });
       const configObject = await app.getConfigObject();
@@ -402,6 +412,19 @@ describe("modules/configWriter", () => {
       await Group.destroy({ truncate: true });
     });
 
+    // --- App ---
+
+    test("apps should only humanize their ID if it matches default pattern", async () => {
+      let app: App = await helper.factories.app();
+      expect(app.getConfigId()).toEqual(ConfigWriter.generateId(app.name));
+      expect(app.getConfigId()).not.toEqual(app.id);
+
+      app = await helper.factories.app({ id: "hello-world" });
+      expect(app.id).toEqual("hello-world");
+      expect(app.getConfigId()).not.toEqual(ConfigWriter.generateId(app.name));
+      expect(app.getConfigId()).toEqual(app.id);
+    });
+
     test("apps can provide their config objects", async () => {
       const app: App = await helper.factories.app();
       const config = await app.getConfigObject();
@@ -435,6 +458,23 @@ describe("modules/configWriter", () => {
       expect(config.options.fileId).toEqual("CONFIG_WRITER_ENV_VAR");
       const options = await app.getOptions();
       expect(options.fileId).toEqual("my_file_123");
+    });
+
+    // --- Source ---
+
+    test("sources should only humanize their ID if it matches default pattern", async () => {
+      let source: Source = await helper.factories.source();
+      expect(source.getConfigId()).toEqual(
+        ConfigWriter.generateId(source.name)
+      );
+      expect(source.getConfigId()).not.toEqual(source.id);
+
+      source = await helper.factories.source(undefined, { id: "hello-world" });
+      expect(source.id).toEqual("hello-world");
+      expect(source.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(source.name)
+      );
+      expect(source.getConfigId()).toEqual(source.id);
     });
 
     test("sources can provide their config objects", async () => {
@@ -498,6 +538,27 @@ describe("modules/configWriter", () => {
       expect(config.options.table).toEqual("CONFIG_WRITER_ENV_VAR");
       const options = await source.getOptions();
       expect(options.table).toEqual("my_table_123");
+    });
+
+    // --- Schedule ---
+
+    test("schedules should only humanize their ID if it matches default pattern", async () => {
+      let schedule: Schedule = await helper.factories.schedule(source);
+      expect(schedule.getConfigId()).toEqual(
+        ConfigWriter.generateId(schedule.name)
+      );
+      expect(schedule.getConfigId()).not.toEqual(schedule.id);
+      await schedule.destroy();
+      await source.reload();
+
+      schedule = await helper.factories.schedule(source, {
+        id: "hello-world",
+      });
+      expect(schedule.id).toEqual("hello-world");
+      expect(schedule.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(schedule.name)
+      );
+      expect(schedule.getConfigId()).toEqual(schedule.id);
     });
 
     test("schedules can provide their config objects", async () => {
@@ -574,6 +635,34 @@ describe("modules/configWriter", () => {
       );
     });
 
+    // --- Property ---
+
+    test("properties should only humanize their ID if it matches default pattern", async () => {
+      let property: Property = await helper.factories.property(
+        source,
+        { key: faker.lorem.word() },
+        { column: faker.database.column() }
+      );
+      expect(property.getConfigId()).toEqual(
+        ConfigWriter.generateId(property.key)
+      );
+      expect(property.getConfigId()).not.toEqual(property.id);
+
+      property = await helper.factories.property(
+        source,
+        {
+          id: "hello-world",
+          key: faker.lorem.word(),
+        },
+        { column: faker.database.column() }
+      );
+      expect(property.id).toEqual("hello-world");
+      expect(property.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(property.key)
+      );
+      expect(property.getConfigId()).toEqual(property.id);
+    });
+
     test("properties can provide their config objects", async () => {
       const filterObj = { key: "id", match: "0", op: "greater than" };
       await property.setFilters([filterObj]);
@@ -611,6 +700,21 @@ describe("modules/configWriter", () => {
       property.key = undefined;
       const config = await property.getConfigObject();
       expect(config).toBeUndefined();
+    });
+
+    // --- Group ---
+
+    test("groups should only humanize their ID if it matches default pattern", async () => {
+      let group: Group = await helper.factories.group();
+      expect(group.getConfigId()).toEqual(ConfigWriter.generateId(group.name));
+      expect(group.getConfigId()).not.toEqual(group.id);
+
+      group = await helper.factories.group({ id: "hello-world" });
+      expect(group.id).toEqual("hello-world");
+      expect(group.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(group.name)
+      );
+      expect(group.getConfigId()).toEqual(group.id);
     });
 
     test("groups can provide their config objects", async () => {
@@ -654,6 +758,25 @@ describe("modules/configWriter", () => {
       group.name = undefined;
       const config = await group.getConfigObject();
       expect(config).toBeUndefined();
+    });
+
+    // --- Destination ---
+
+    test("destinations should only humanize their ID if it matches default pattern", async () => {
+      let destination: Destination = await helper.factories.destination();
+      expect(destination.getConfigId()).toEqual(
+        ConfigWriter.generateId(destination.name)
+      );
+      expect(destination.getConfigId()).not.toEqual(destination.id);
+
+      destination = await helper.factories.destination(undefined, {
+        id: "hello-world",
+      });
+      expect(destination.id).toEqual("hello-world");
+      expect(destination.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(destination.name)
+      );
+      expect(destination.getConfigId()).toEqual(destination.id);
     });
 
     test("destinations can provide their config objects", async () => {

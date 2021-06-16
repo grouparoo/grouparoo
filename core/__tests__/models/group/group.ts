@@ -83,7 +83,7 @@ describe("models/group", () => {
       expect(runs.length).toEqual(1);
       expect(runs[0].state).toEqual("running");
     });
-    test("does not create a group when in config mode", async () => {
+    test("does not create a run when in config mode", async () => {
       process.env.GROUPAROO_RUN_MODE = "cli:config";
 
       const group = await Group.create({

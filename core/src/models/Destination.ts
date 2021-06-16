@@ -539,7 +539,7 @@ export class Destination extends LoggedModel<Destination> {
   }
 
   getConfigId() {
-    return ConfigWriter.generateId(this.name);
+    return this.idIsDefault() ? ConfigWriter.generateId(this.name) : this.id;
   }
 
   async getConfigObject() {

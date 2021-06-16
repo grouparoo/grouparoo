@@ -68,11 +68,12 @@ export namespace ConfigWriter {
   }
 
   export function generateFilePath(
-    object: ConfigurationObject,
+    object: ConfigurationObject | [ConfigurationObject],
     prefix?: string
   ): string {
-    const name = Array.isArray(object) ? object[0].name : object.name;
-    let filePath = `${generateId(name)}.json`;
+    const id = Array.isArray(object) ? object[0]?.id : object?.id;
+    if (!id) return;
+    let filePath = `${id}.json`;
     if (prefix) filePath = `${prefix}/${filePath}`;
     return filePath;
   }

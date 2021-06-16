@@ -54,7 +54,7 @@ export default function SignInPage(props) {
       </Head>
 
       <div style={{ width: "100%", height: "100%" }}>
-        <h1>Sign In</h1>
+        <h1>Register</h1>
 
         <Row className="border-between-columns">
           <Col>
