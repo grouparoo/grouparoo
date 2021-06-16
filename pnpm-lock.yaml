@@ -210,7 +210,6 @@ importers:
 
   core:
     specifiers:
-      '@grouparoo/client-web': 0.4.0-alpha.3
       '@grouparoo/spec-helper': 0.4.0-alpha.3
       '@types/fs-extra': '*'
       '@types/jest': '*'
@@ -265,7 +264,6 @@ importers:
       winston: 3.3.3
       ws: 7.4.6
     dependencies:
-      '@grouparoo/client-web': 0.4.0-alpha.3
       '@types/fs-extra': 9.0.11
       '@types/node': 15.12.2
       '@types/validator': 13.1.4
@@ -2128,11 +2126,6 @@ packages:
   /@google-cloud/promisify/2.0.3:
     resolution: {integrity: sha512-d4VSA86eL/AFTe5xtyZX+ePUjE8dIFu2T8zmdeNBSa5/kNgXPCx/o/wbFNHAGLJdGnk1vddRuMESD9HbOC8irw==}
     engines: {node: '>=10'}
-    dev: false
-
-  /@grouparoo/client-web/0.4.0-alpha.3:
-    resolution: {integrity: sha512-SfNpdZwRLXGV7/djfHLlO6KBMQ0DSMQ3ClFWXgPuv/Ur/mKQNfZ1H3zM1aERmey9NI6i5/F794UqRrltp1dVlw==}
-    engines: {node: '>=12.0.0 <16.0.0'}
     dev: false
 
   /@grouparoo/node-marketo-rest/0.7.10:
@@ -14196,7 +14189,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3_ts-node@10.0.0
+      jest: 26.6.3
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
