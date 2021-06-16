@@ -7,7 +7,6 @@ import {
   Run,
   HighWaterMark,
 } from "@grouparoo/core";
-import { sleep } from "../shared/sleep";
 
 export async function parseProfiles({
   localPath,
@@ -49,27 +48,19 @@ export async function parseProfiles({
     : 0;
 
   await new Promise((resolve, reject) => {
-    parser.once("readable", async () => {
-      let row = parser.read();
-      while (row) {
-        rowId++;
-        try {
-          const inRange = rowId >= offset && rowId < offset + limit;
-          if (inRange) {
-            validRows.push(row);
-          } else {
-            await sleep(); // we need to ensure this method is async
-          }
-        } catch (error) {
-          return reject(error);
-        }
-        row = parser.read();
+    parser.on("data", (row) => {
+      rowId++;
+      const inRange = rowId >= offset && rowId < offset + limit;
+      if (inRange) validRows.push(row);
+      if (rowId > offset + limit) {
+        stream.destroy();
+        return resolve(null);
       }
-
-      return resolve(null);
     });
 
-    parser.on("error", reject);
+    parser.once("end", () => resolve(null));
+    parser.once("close", () => resolve(null));
+    parser.once("error", (error) => reject(error));
   });
 
   await plugin.createImports(combinedMapping, run, validRows);
