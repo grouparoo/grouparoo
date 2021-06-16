@@ -950,7 +950,6 @@ describe("models/profile", () => {
 
       profileB = await helper.factories.profile();
       await profileB.import();
-      await profileB.update({ anonymousId: "abc123" });
 
       // disable the test plugin import so we can explicitly set profile properties
       helper.disableTestPluginImport();
@@ -967,11 +966,6 @@ describe("models/profile", () => {
       const propertiesB = await profileB.properties();
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(9);
-    });
-
-    test("only profile B has an anonymousId", async () => {
-      expect(profileA.anonymousId).toBeFalsy();
-      expect(profileB.anonymousId).toEqual("abc123");
     });
 
     test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
@@ -1048,11 +1042,6 @@ describe("models/profile", () => {
       });
       expect(logs.length).toEqual(1);
       expect(logs[0].message).toEqual(`merged with profile ${profileB.id}`);
-    });
-
-    test("merging profiles moved the anonymousId", async () => {
-      await profileA.reload();
-      expect(profileA.anonymousId).toEqual("abc123");
     });
 
     test("after merging the other profile is deleted", async () => {

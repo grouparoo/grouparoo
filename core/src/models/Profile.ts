@@ -48,9 +48,6 @@ export class Profile extends LoggedModel<Profile> {
   @Column(DataType.ENUM(...STATES))
   state: typeof STATES[number];
 
-  @Column
-  anonymousId: string;
-
   @HasMany(() => ProfileProperty)
   profileProperties: ProfileProperty[];
 
@@ -74,7 +71,6 @@ export class Profile extends LoggedModel<Profile> {
 
     return {
       id: this.id,
-      anonymousId: this.anonymousId,
       state: this.state,
       properties,
       createdAt: APIData.formatDate(this.createdAt),

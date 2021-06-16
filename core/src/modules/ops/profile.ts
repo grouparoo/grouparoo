@@ -648,11 +648,6 @@ export namespace ProfileOps {
       await otherProfile.destroy();
       await addOrUpdateProperties([profile], [newProperties], false);
 
-      // transfer anonymousId
-      if (!profile.anonymousId && otherProfile.anonymousId) {
-        await profile.update({ anonymousId: otherProfile.anonymousId });
-      }
-
       // log the merge
       await Log.create({
         topic: "profile",
