@@ -101,7 +101,7 @@ export class Plugins extends Initializer {
               type: "password",
               displayName: "Password",
               required: false,
-              description: "The Postgres user's password.",
+              description: "The Redshift user's password.",
             },
             {
               key: "ssl",
