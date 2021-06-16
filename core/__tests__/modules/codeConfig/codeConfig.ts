@@ -1181,7 +1181,9 @@ describe("modules/codeConfig", () => {
         )
       );
 
-      expect(errors[0]).toEqual("Duplicate ID values found: data_warehouse_a");
+      expect(errors[0]).toEqual(
+        "Duplicate ID values found for data_warehouse_a of class app"
+      );
     });
   });
 

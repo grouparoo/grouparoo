@@ -385,14 +385,14 @@ export function sortConfigObjectsWithIds(
 
   sortedKeys.forEach((typeAndId) => {
     const [_class, id] = typeAndId.split(":");
-    sortedConfigObjectsWithIds.push(
-      configObjectsWithIds.find(
-        (o) =>
-          cleanClass(o.configObject) === _class &&
-          (o.configObject.id === id ||
-            o.configObject?.bootstrappedProperty?.id === id)
-      )
+
+    const parent = configObjectsWithIds.find(
+      (o) =>
+        (cleanClass(o.configObject) === _class && o.configObject.id === id) ||
+        o.configObject?.bootstrappedProperty?.id === id
     );
+
+    if (parent) sortedConfigObjectsWithIds.push(parent);
   });
 
   return sortedConfigObjectsWithIds.filter(uniqueArrayValues);

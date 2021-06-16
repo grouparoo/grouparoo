@@ -161,7 +161,7 @@ export async function processConfigObjects(
     // doing it in the right order.
     error.message.split("\n").map((msg) => {
       if (msg.startsWith("unknownNodeId")) {
-        msg = `Could not find object with ID: ${msg.slice(14)}`;
+        msg = `Could not find object with ID: ${msg.slice(14).split(":")[1]}`;
       }
       const err = new Error(msg);
       errors.push(err.message);
