@@ -10,6 +10,7 @@ import { Destination } from "../../src/models/Destination";
 import { Group } from "../../src/models/Group";
 import { Property } from "../../src/models/Property";
 import { Schedule } from "../../src/models/Schedule";
+import { Setting } from "../../src/models/Setting";
 import { Source } from "../../src/models/Source";
 import { Profile } from "../../src/models/Profile";
 
@@ -24,8 +25,31 @@ const configFilePattern = path.join(configDir, "**/*.{json,js}");
 
 process.env.GROUPAROO_CONFIG_DIR = configDir;
 
+const getClusterNameSetting = async (): Promise<Setting> => {
+  const setting = await Setting.findOne({
+    where: { key: "cluster-name" },
+  });
+  return setting;
+};
+
+const changeClusterNameSetting = async () => {
+  const setting: Setting = await getClusterNameSetting();
+  await setting.update({ value: faker.lorem.words(3) });
+  return setting;
+};
+
+const resetClusterNameSetting = async () => {
+  const setting: Setting = await getClusterNameSetting();
+  await setting.update({ value: setting.defaultValue });
+  return setting;
+};
+
 describe("modules/configWriter", () => {
-  helper.grouparooTestServer({ truncate: true, enableTestPlugin: true });
+  helper.grouparooTestServer({
+    truncate: true,
+    enableTestPlugin: true,
+    resetSettings: true,
+  });
 
   beforeEach(async () => {
     process.env.GROUPAROO_RUN_MODE = "cli:config";
@@ -208,6 +232,7 @@ describe("modules/configWriter", () => {
 
     afterEach(async () => {
       await App.destroy({ truncate: true });
+      await resetClusterNameSetting();
       ConfigWriter.resetConfigFileCache();
     });
 
@@ -338,6 +363,7 @@ describe("modules/configWriter", () => {
       const property: Property = await Property.findOne();
       const profile: Profile = await helper.factories.profile();
       const profile2: Profile = await helper.factories.profile();
+      const setting: Setting = await changeClusterNameSetting();
 
       const configObjects = await ConfigWriter.getConfigObjects();
 
@@ -353,6 +379,10 @@ describe("modules/configWriter", () => {
         {
           filePath: `properties/${property.getConfigId()}.json`,
           object: await property.getConfigObject(),
+        },
+        {
+          filePath: `settings/${setting.getConfigId()}.json`,
+          object: await setting.getConfigObject(),
         },
         {
           filePath: `development/profiles.json`,
@@ -858,6 +888,48 @@ describe("modules/configWriter", () => {
         class: "Profile",
         id: profile.id,
         properties,
+      });
+    });
+
+    // --- Setting ---
+
+    test("settings should only humanize their ID if it matches default pattern", async () => {
+      const setting: Setting = await changeClusterNameSetting();
+      expect(setting.getConfigId()).toEqual(
+        ConfigWriter.generateId(setting.key)
+      );
+      expect(setting.getConfigId()).not.toEqual(setting.id);
+      await setting.update({ key: "cluster-name--bak" });
+
+      const newSetting = await Setting.create({
+        id: "hello-world",
+        pluginName: "core",
+        key: "cluster-name",
+        value: "My Grouparoo Cluster",
+        defaultValue: "My Grouparoo Cluster",
+        type: "string",
+      });
+      expect(newSetting.id).toEqual("hello-world");
+      expect(newSetting.getConfigId()).not.toEqual(
+        ConfigWriter.generateId(newSetting.key)
+      );
+      expect(newSetting.getConfigId()).toEqual(newSetting.id);
+      await newSetting.destroy();
+      await setting.update({ key: "cluster-name" });
+    });
+
+    test("settings can provide their config objects", async () => {
+      const setting: Setting = await changeClusterNameSetting();
+      const config = await setting.getConfigObject();
+      expect(config.id).toBeTruthy();
+
+      const { pluginName, key, value } = setting;
+      expect(config).toEqual({
+        class: "Setting",
+        id: setting.getConfigId(),
+        pluginName,
+        key,
+        value,
       });
     });
   });

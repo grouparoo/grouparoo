@@ -6,6 +6,7 @@ import { App } from "../models/App";
 import { Destination } from "../models/Destination";
 import { Group } from "../models/Group";
 import { Property } from "../models/Property";
+import { Setting } from "../models/Setting";
 import { Source } from "../models/Source";
 
 import {
@@ -98,13 +99,20 @@ export namespace ConfigWriter {
     let objects = [];
 
     const queryParams = { where: { locked: null } };
-    const queries = {
+    let queries = {
       apps: await App.findAll(queryParams),
       sources: await Source.findAll(queryParams),
       properties: await Property.findAll(queryParams),
       groups: await Group.findAll(queryParams),
       destinations: await Destination.findAll(queryParams),
     };
+
+    const clusterNameSetting: Setting = await Setting.findOne({
+      where: { pluginName: "core", key: "cluster-name" },
+    });
+    if (clusterNameSetting.value !== clusterNameSetting.defaultValue) {
+      queries["settings"] = [clusterNameSetting];
+    }
 
     for (let [type, instances] of Object.entries(queries)) {
       for (let instance of instances) {
