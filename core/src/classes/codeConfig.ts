@@ -379,8 +379,6 @@ export function sortConfigObjectsWithIds(
     });
   });
 
-  console.log(dependencyGraph);
-
   const sortedKeys = topologicalSort(dependencyGraph);
 
   sortedKeys.forEach((typeAndId) => {
@@ -394,21 +392,8 @@ export function sortConfigObjectsWithIds(
 
     if (parent) {
       sortedConfigObjectsWithIds.push(parent);
-    } else {
-      console.log(typeAndId);
     }
   });
-
-  console.log(
-    "missing",
-    configObjectsWithIds.filter((o) => {
-      !sortedConfigObjectsWithIds
-        .map((s) => s.configObject.id)
-        .includes(o.configObject.id);
-    }),
-    configObjectsWithIds.length,
-    sortedConfigObjectsWithIds.length
-  );
 
   return sortedConfigObjectsWithIds.filter(uniqueArrayValues);
 }
