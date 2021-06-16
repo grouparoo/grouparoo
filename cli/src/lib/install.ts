@@ -30,15 +30,12 @@ export default async function Update(pkg: string) {
     process.exit(1);
   }
 
-  const installedPackages = Object.keys(
-    pkgJSONContents?.devDependencies || []
-  ).concat(Object.keys(pkgJSONContents?.dependencies || []));
-
+  const dependencyList = Object.keys(pkgJSONContents?.dependencies || []);
   const availableUiPackages = [
     "@grouparoo/ui-community",
     "@grouparoo/ui-enterprise",
   ];
-  const existingUiPackage = installedPackages.find((p) =>
+  const existingUiPackage = dependencyList.find((p) =>
     availableUiPackages.includes(p)
   );
 
