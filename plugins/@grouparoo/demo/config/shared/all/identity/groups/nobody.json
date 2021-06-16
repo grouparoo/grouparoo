@@ -1,12 +1,14 @@
 {
   "id": "nobody",
-  "name": "Nobody",
   "class": "Group",
   "type": "calculated",
+  "name": "Nobody",
   "rules": [
     {
       "propertyId": "user_id",
-      "operation": { "op": "lt" },
+      "operation": {
+        "op": "lt"
+      },
       "match": "0"
     }
   ]

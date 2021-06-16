@@ -1,21 +1,21 @@
 [
   {
+    "class": "Source",
     "id": "demo_users",
     "name": "Product Users",
-    "class": "Source",
     "type": "postgres-table-import",
     "appId": "demo_db",
-    "options": {
-      "table": "users"
-    },
     "mapping": {
       "id": "user_id"
+    },
+    "options": {
+      "table": "users"
     }
   },
   {
+    "class": "Schedule",
     "id": "demo_users_schedule",
     "name": "Users Schedule",
-    "class": "Schedule",
     "sourceId": "demo_users",
     "recurring": true,
     "recurringFrequency": 900000,
