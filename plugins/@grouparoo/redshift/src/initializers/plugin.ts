@@ -18,8 +18,6 @@ import { destinationMappingOptions } from "@grouparoo/postgres/dist/lib/export/d
 import { getTables } from "@grouparoo/postgres/dist/lib/table-import/getTables";
 import { getColumns } from "@grouparoo/postgres/dist/lib/table-import/getColumns";
 
-const packageJSON = require("./../../package.json");
-
 const templateRoot = path.join(__dirname, "..", "..", "public", "templates");
 import { AppTemplate } from "@grouparoo/app-templates/dist/app";
 import { DestinationTemplate } from "@grouparoo/app-templates/dist/destination/templates";
@@ -31,6 +29,8 @@ import {
   QuerySourceTemplate,
   QueryPropertyTemplate,
 } from "@grouparoo/app-templates/dist/source/query";
+
+const packageJSON = require("./../../package.json");
 
 export class Plugins extends Initializer {
   constructor() {
@@ -68,6 +68,7 @@ export class Plugins extends Initializer {
               displayName: "Host",
               required: false,
               description: "The Redshift host.",
+              placeholder: "example.abc123xyz789.us-west-2.redshift.aws.com",
             },
             {
               key: "port",
@@ -97,9 +98,35 @@ export class Plugins extends Initializer {
             },
             {
               key: "password",
+              type: "password",
               displayName: "Password",
               required: false,
               description: "The Redshift user's password.",
+            },
+            {
+              key: "ssl",
+              displayName: "SSL",
+              required: false,
+              description:
+                "Require the use of a SSL connection (default: false).  If you need custom SSL certificates paste in their values below.",
+            },
+            {
+              key: "ssl_cert",
+              displayName: "SSL Certificate",
+              required: false,
+              description: "The ssl certificate.",
+            },
+            {
+              key: "ssl_key",
+              displayName: "SSL Key",
+              required: false,
+              description: "The ssl certificate's key.",
+            },
+            {
+              key: "ssl_ca",
+              displayName: "SSL Certificate Authority",
+              required: false,
+              description: "The ssl certificate authority (CA).",
             },
           ],
           methods: { test, connect, disconnect },
