@@ -80,7 +80,6 @@ export default function SignInPage(props) {
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
                   disabled={loading}
-                  autoFocus
                   required
                   name="email"
                   type="email"
