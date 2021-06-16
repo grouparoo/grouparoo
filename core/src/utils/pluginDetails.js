@@ -110,6 +110,9 @@ function getPluginManifest() {
     }
 
     pluginPath = fs.realpathSync(pluginPath);
+
+    if (!fs.existsSync(pluginPath)) continue;
+
     const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
 
     if (pluginPkg.name) {
