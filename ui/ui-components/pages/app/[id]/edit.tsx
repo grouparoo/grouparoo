@@ -173,23 +173,35 @@ export default function Page(props) {
 
               {typeOptions.length > 0 ? (
                 <>
-                  <hr />
-                  <p>
-                    <strong>Options for a {app.type} app</strong>
+                  <div className="mb-3">
+                    <hr />
+                    <p className="mb-3">
+                      <strong>Options for a {app.type} app</strong>
+                    </p>
+
+                    {environmentVariableOptions.length > 0 && (
+                      <p className="mb-0">
+                        Available environment variables for apps:{" "}
+                        {environmentVariableOptions.sort().map((envOpt) => (
+                          <Badge key={`envOpt-${envOpt}`} variant="info">
+                            {envOpt}
+                          </Badge>
+                        ))}
+                      </p>
+                    )}
                     {process.env.GROUPAROO_UI_EDITION === "config" && (
-                      <>
-                        <br />
-                        You can use environment variables for secret values.{" "}
+                      <p className="mb-0">
                         <a
                           target="_blank"
                           href="https://www.grouparoo.com/docs/support/secrets"
                         >
-                          Learn more
-                        </a>
-                        .
-                      </>
+                          See the docs
+                        </a>{" "}
+                        for more information on using environment variables for
+                        secret option values.
+                      </p>
                     )}
-                  </p>
+                  </div>
 
                   {typeOptions.map((opt) => {
                     return (
@@ -329,22 +341,6 @@ export default function Page(props) {
                 </>
               ) : null}
             </fieldset>
-
-            {environmentVariableOptions.length > 0 ? (
-              <Row>
-                <Col>
-                  <p>
-                    Environment Variable Options for Apps:{" "}
-                    {environmentVariableOptions.sort().map((envOpt) => (
-                      <Badge key={`envOpt-${envOpt}`} variant="info">
-                        {envOpt}
-                      </Badge>
-                    ))}
-                  </p>
-                  <br />
-                </Col>
-              </Row>
-            ) : null}
 
             <Row>
               <Col md={3}>
