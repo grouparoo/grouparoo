@@ -63,60 +63,79 @@ function getPluginManifest() {
   manifest.parent = { grouparoo: parentPkg.grouparoo, path: parentPath };
 
   // plugins
-  if (manifest.parent.grouparoo && manifest.parent.grouparoo.plugins) {
-    for (const i in manifest.parent.grouparoo.plugins) {
-      const pluginName = manifest.parent.grouparoo.plugins[i];
+  let pluginNames = [...(manifest?.parent?.grouparoo?.plugins || [])];
 
-      if (pluginName === "@grouparoo/core") continue;
+  const availableUiPlugins = [
+    "@grouparoo/ui-enterprise",
+    "@grouparoo/ui-community",
+    "@grouparoo/ui-config",
+  ];
 
-      let pluginPath = "";
-      try {
-        pluginPath = require.resolve(pluginName);
-      } catch {
-        pluginPath = path.join(parentPath, "node_modules", pluginName);
-        if (!fs.existsSync(pluginPath)) {
-          pluginPath = path.join(
-            grouparooMonorepoApp
-              ? path.join(
-                  __dirname,
-                  "..",
-                  "..",
-                  "..",
-                  "apps",
-                  grouparooMonorepoApp
-                )
-              : path.join(__dirname, "..", "..", "..", "..", "..", ".."),
-            "node_modules",
-            pluginName
-          );
-        }
-      }
+  const installedPackages = Object.keys(
+    parentPkg?.devDependencies || []
+  ).concat(Object.keys(parentPkg?.dependencies || []));
 
-      pluginPath = fs.realpathSync(pluginPath);
-      const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
+  for (let availableUiPlugin of availableUiPlugins) {
+    if (installedPackages.includes(availableUiPlugin)) {
+      pluginNames.push(availableUiPlugin);
+    }
+  }
 
-      if (pluginPkg.name) {
-        manifest.plugins.push({
-          name: pluginPkg.name,
-          version: pluginPkg.version,
-          license: pluginPkg.license,
-          url:
-            pluginPkg.url ||
-            (pluginPkg.repository && pluginPkg.repository.url
-              ? pluginPkg.repository.url
-              : null) ||
-            pluginPkg.homepage,
-          path: pluginPath,
-          grouparoo: pluginPkg.grouparoo || null,
-        });
+  pluginNames = [...new Set(pluginNames)];
+
+  for (const pluginName of pluginNames) {
+    if (pluginName === "@grouparoo/core") continue;
+
+    let pluginPath = "";
+    try {
+      pluginPath = require.resolve(pluginName);
+    } catch {
+      pluginPath = path.join(parentPath, "node_modules", pluginName);
+      if (!fs.existsSync(pluginPath)) {
+        pluginPath = path.join(
+          grouparooMonorepoApp
+            ? path.join(
+                __dirname,
+                "..",
+                "..",
+                "..",
+                "apps",
+                grouparooMonorepoApp
+              )
+            : path.join(__dirname, "..", "..", "..", "..", "..", ".."),
+          "node_modules",
+          pluginName
+        );
       }
     }
 
-    manifest.plugins.sort((a, b) => {
-      if (a.name > b.name) return 1;
-      if (a.name < b.name) return -1;
-    });
+    pluginPath = fs.realpathSync(pluginPath);
+
+    if (!fs.existsSync(pluginPath)) continue;
+
+    const pluginPkg = readPackageJson(path.join(pluginPath, "package.json"));
+
+    if (pluginPkg.name) {
+      manifest.plugins.push({
+        name: pluginPkg.name,
+        version: pluginPkg.version,
+        license: pluginPkg.license,
+        url:
+          pluginPkg.url ||
+          (pluginPkg.repository && pluginPkg.repository.url
+            ? pluginPkg.repository.url
+            : null) ||
+          pluginPkg.homepage,
+        path: pluginPath,
+        grouparoo: pluginPkg.grouparoo || null,
+      });
+    }
   }
+
+  manifest.plugins.sort((a, b) => {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
+  });
 
   return manifest;
 }

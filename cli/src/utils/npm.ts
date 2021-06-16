@@ -10,9 +10,12 @@ export namespace NPM {
     workDir: string,
     pkg?: string,
     exact = true,
-    npm_config_loglevel = "error"
+    npm_config_loglevel = "error",
+    devDependency = false
   ) {
-    const args = ["install"];
+    let args = ["install"];
+
+    if (devDependency) args.push("--save-dev");
 
     const npmCheck = await spawnPromise(NPM, ["--version"]);
     const npmVersion = npmCheck.stdout.trim();

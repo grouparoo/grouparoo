@@ -24,18 +24,29 @@ export default async function Update(pkg: string) {
   let plugins: string[] = pkgJSONContents?.grouparoo?.plugins;
 
   if (!plugins) {
-    logger.fail("There is no `grouparoo` section in this package.json.");
+    logger.fail(
+      "There is no `grouparoo.plugins` section in this package.json."
+    );
     process.exit(1);
   }
 
-  if (pkg && pkg?.match("@grouparoo/ui-")) {
-    const existingUIPackage = plugins.find((p) => p.match(/@grouparoo\/ui.*/));
-    if (existingUIPackage) {
-      logger.fail(
-        "There is already a ui package in this project. Uninstall the existing ui package before adding another."
-      );
-      process.exit(1);
-    }
+  const dependencyList = Object.keys(pkgJSONContents?.dependencies || []);
+  const availableUiPackages = [
+    "@grouparoo/ui-community",
+    "@grouparoo/ui-enterprise",
+  ];
+  const existingUiPackage = dependencyList.find((p) =>
+    availableUiPackages.includes(p)
+  );
+
+  const isUiPackage =
+    availableUiPackages.filter((p) => pkg?.includes(p)).length > 0;
+  const isConfigUiPackage = pkg?.includes("@grouparoo/ui-config");
+  if (existingUiPackage && isUiPackage) {
+    logger.fail(
+      "There is already a ui package in this project. Uninstall the existing ui package before adding another."
+    );
+    process.exit(1);
   }
 
   if (pkg && !(await isGrouparooPlugin(pkg))) {
@@ -43,13 +54,13 @@ export default async function Update(pkg: string) {
     process.exit(1);
   }
 
-  await NPM.install(logger, workDir, pkg);
+  await NPM.install(logger, workDir, pkg, true, "error", isConfigUiPackage);
 
   // reload after npm install
   pkgJSONContents = readPackageJSON(packageFile);
   plugins = pkgJSONContents?.grouparoo?.plugins;
 
-  if (pkg) {
+  if (pkg && !isConfigUiPackage && !isUiPackage) {
     let cleanedPackageName =
       pkg.split("@").length === 3 ? "@" + pkg.split("@")[1] : pkg.split("@")[0];
     if (!plugins.includes(cleanedPackageName)) {
