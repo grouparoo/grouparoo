@@ -83,14 +83,14 @@ describe("bin/config-apply", () => {
       expect(toStop).toBe(true);
 
       const output = messages.join(" ");
-      expect(output).toContain("Applying 15 objects...");
+      expect(output).toContain("Applying 14 objects...");
       expect(output).toContain(
-        "✅ Config applied - 15 config objects up-to-date!"
+        "✅ Config applied - 14 config objects up-to-date!"
       );
     });
 
     test("models should be created", async () => {
-      expect(await App.count()).toBe(2);
+      expect(await App.count()).toBe(1);
       expect(await Source.count()).toBe(1);
       expect(await Schedule.count()).toBe(1);
       expect(await Destination.count()).toBe(1);
@@ -100,7 +100,7 @@ describe("bin/config-apply", () => {
       expect(await ApiKey.count()).toBe(1);
       expect(await Team.count()).toBe(1);
       expect(await TeamMember.count()).toBe(1);
-      expect(await Option.count()).toBe(9);
+      expect(await Option.count()).toBe(8);
       expect(await Mapping.count()).toBe(3);
     });
   });

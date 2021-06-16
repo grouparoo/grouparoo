@@ -59,7 +59,7 @@ export class Plugins extends CLSInitializer {
         title: "Runs: Profile Batch Size",
         defaultValue: 1000,
         description:
-          "How many Imports and should a Run enqueue in each batch before deferring to associate those Imports already enqueued? Also applies to un-associated Events.",
+          "How many Imports and should a Run enqueue in each batch before deferring to associate those Imports already enqueued?",
         type: "number",
       },
       {

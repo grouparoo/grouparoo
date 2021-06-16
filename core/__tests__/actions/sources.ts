@@ -97,13 +97,8 @@ describe("actions/sources", () => {
         connection
       );
       expect(error).toBeUndefined();
-      expect(
-        connectionApps.filter((ca) => ca.app.type !== "events")[0].app.id
-      ).toBe(app.id);
-      expect(
-        connectionApps.filter((ca) => ca.app.type !== "events")[0].connection
-          .app
-      ).toBe("test-plugin-app");
+      expect(connectionApps[0].app.id).toBe(app.id);
+      expect(connectionApps[0].connection.app).toBe("test-plugin-app");
     });
 
     describe("options from environment variables", () => {

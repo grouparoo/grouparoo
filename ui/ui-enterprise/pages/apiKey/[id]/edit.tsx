@@ -122,17 +122,6 @@ export default function Page(props) {
             />
           </Form.Group>
 
-          <p>
-            Try this API Key in the browser{" "}
-            <a
-              href={`/public/@grouparoo/examples/events.html?apiKey=${apiKey.apiKey}`}
-              target="_new"
-            >
-              here
-            </a>
-            .
-          </p>
-
           <h3>Permissions</h3>
           <PermissionsList
             permissions={apiKey.permissions}

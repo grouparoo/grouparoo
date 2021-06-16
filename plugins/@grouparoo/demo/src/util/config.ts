@@ -71,13 +71,6 @@ class Config {
         this.setDataset("b2c", type);
         this.addDir("purchases");
         break;
-      case "events":
-        // only works on postgres for now
-        this.setDb("postgres", type);
-        this.setDataset("b2c", type);
-        this.addDir("purchases");
-        this.addDir("events");
-        break;
       case "b2b":
       case "accounts":
         this.setDataset("b2b", type);

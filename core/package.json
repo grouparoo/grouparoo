@@ -35,7 +35,6 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@grouparoo/client-web": "0.4.0-alpha.3",
     "@types/fs-extra": "*",
     "@types/node": "*",
     "@types/validator": "*",

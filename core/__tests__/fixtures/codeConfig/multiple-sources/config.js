@@ -19,16 +19,6 @@ module.exports = async function getConfig() {
     },
 
     {
-      id: "events", // id -> `events`
-      name: "Grouparoo Events",
-      class: "App",
-      type: "events",
-      options: {
-        identifyingPropertyId: "user_id",
-      },
-    },
-
-    {
       id: "users_table", // id -> `data_warehouse`
       name: "Users Table",
       class: "Source",

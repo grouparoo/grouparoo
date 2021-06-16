@@ -11,15 +11,7 @@ export const DEFAULT = {
       // what queues should the taskProcessors work?
       queues: async () => {
         return [].concat(
-          [
-            "system",
-            "imports",
-            "events",
-            "runs",
-            "schedules",
-            "groups",
-            "exports",
-          ],
+          ["system", "imports", "runs", "schedules", "groups", "exports"],
           api?.plugins?.plugins
             .filter((plugin) => plugin.apps?.length > 0)
             .map((plugin) => plugin.apps.map((app) => `exports:${app.name}`)),
@@ -94,7 +86,6 @@ export const test = {
     return {
       queues: [
         "imports",
-        "events",
         "profiles",
         "exports",
         "runs",

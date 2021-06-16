@@ -97,7 +97,6 @@ echo ""
 
 # Clear build caches
 rm -rf core/dist
-rm -rf clients/*/*/dist
 rm -rf cli/dist
 rm -rf plugins/*/*/dist
 rm -rf ui/*/.next

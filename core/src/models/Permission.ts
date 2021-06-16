@@ -17,7 +17,6 @@ export const PermissionTopics = [
   "apiKey",
   "app",
   "destination",
-  "event",
   "export",
   "export",
   "file",

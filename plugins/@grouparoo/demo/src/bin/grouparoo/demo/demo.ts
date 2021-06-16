@@ -12,7 +12,6 @@ import {
   loadConfigFiles,
   writeConfigFiles,
 } from "../../../util/configFiles";
-import { events } from "../../../events/events";
 import { init, finalize } from "../../../util/shared";
 import { getConfig } from "../../../util/config";
 
@@ -21,7 +20,7 @@ export class Demo extends CLI {
     super();
     this.name = "demo [type] [type]";
     this.description =
-      "Load eCommerce users and purchases into a source database and create properties including events.";
+      "Load eCommerce users and purchases into a source database and create properties";
     this.inputs = {
       scale: { required: false, default: "1" },
       config: { required: false, letter: "c", flag: true },
@@ -59,7 +58,7 @@ export class Demo extends CLI {
     }
     await init({ reset: true });
 
-    if (hasDir(subDirs, ["events", "purchases"])) {
+    if (hasDir(subDirs, ["purchases"])) {
       await consumers(db, { scale });
       await purchases(db, { scale });
     }
@@ -68,10 +67,6 @@ export class Demo extends CLI {
       await accounts(db, { scale });
       await payments(db, { scale });
       await employees(db, { scale });
-    }
-
-    if (hasDir(subDirs, ["events"])) {
-      await events({ scale });
     }
 
     if (config) {

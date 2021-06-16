@@ -936,66 +936,6 @@ describe("models/profile", () => {
     });
   });
 
-  describe("events", () => {
-    let profile: Profile;
-
-    beforeAll(async () => {
-      profile = await helper.factories.profile();
-      await helper.factories.event({
-        profileId: profile.id,
-        type: "pageview",
-        data: { page: "/" },
-        occurredAt: new Date(1000),
-      });
-
-      helper.sleep(1001);
-      await helper.factories.event({
-        profileId: profile.id,
-        type: "pageview",
-        data: { page: "/about" },
-        occurredAt: new Date(2000),
-      });
-      helper.sleep(1001);
-
-      await helper.factories.event({
-        profileId: profile.id,
-        type: "purchase",
-        data: { item: "red-shirt", value: 10 },
-        occurredAt: new Date(3000),
-      });
-    });
-
-    test("a profile can get events (all)", async () => {
-      const events = await profile.$get("events", {
-        order: [["occurredAt", "asc"]],
-      });
-      expect(events.length).toBe(3);
-      expect(events.map((e) => e.type)).toEqual([
-        "pageview",
-        "pageview",
-        "purchase",
-      ]);
-    });
-
-    test("a profile can get events (type)", async () => {
-      const events = await profile.$get("events", {
-        where: { type: "purchase" },
-      });
-      expect(events.length).toBe(1);
-      expect(events.map((e) => e.type)).toEqual(["purchase"]);
-    });
-
-    test("when a profile is deleted, it will delete events", async () => {
-      const startingCount = await profile.$count("events");
-      expect(startingCount).toBeGreaterThan(0);
-
-      await profile.destroy();
-
-      const endingCount = await profile.$count("events");
-      expect(endingCount).toBe(0);
-    });
-  });
-
   describe("merging", () => {
     let profileA: Profile;
     let profileB: Profile;
@@ -1004,40 +944,12 @@ describe("models/profile", () => {
       await Profile.truncate();
       await helper.factories.properties();
 
-      // create the profiles and events
+      // create the profiles
       profileA = await helper.factories.profile();
       await profileA.import();
 
       profileB = await helper.factories.profile();
       await profileB.import();
-      await profileB.update({ anonymousId: "abc123" });
-
-      await helper.factories.event({
-        profileId: profileA.id,
-        type: "pageview",
-        data: { page: "/" },
-      });
-      await helper.factories.event({
-        profileId: profileA.id,
-        type: "pageview",
-        data: { page: "/sign-in" },
-      });
-      await helper.factories.event({
-        profileId: profileA.id,
-        type: "pageview",
-        data: { page: "/sign-purchase" },
-      });
-
-      await helper.factories.event({
-        profileId: profileB.id,
-        type: "pageview",
-        data: { page: "/about" },
-      });
-      await helper.factories.event({
-        profileId: profileB.id,
-        type: "pageview",
-        data: { page: "/item-1" },
-      });
 
       // disable the test plugin import so we can explicitly set profile properties
       helper.disableTestPluginImport();
@@ -1049,20 +961,11 @@ describe("models/profile", () => {
       await App.truncate();
     });
 
-    test("the profiles both have properties and events", async () => {
+    test("the profiles both have properties", async () => {
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.$get("events");
-      const eventsB = await profileB.$get("events");
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(9);
-      expect(eventsA.length).toBe(3);
-      expect(eventsB.length).toBe(2);
-    });
-
-    test("only profile B has an anonymousId", async () => {
-      expect(profileA.anonymousId).toBeFalsy();
-      expect(profileB.anonymousId).toEqual("abc123");
     });
 
     test("profile A has newer email, profile B has newer userId, profile B has a newer ltv but it is null", async () => {
@@ -1099,17 +1002,13 @@ describe("models/profile", () => {
       await profileB.addOrUpdateProperties({ purchases: ["shoe"] });
     });
 
-    test("merging profiles moved the events & properties", async () => {
+    test("merging profiles moved the properties", async () => {
       await ProfileOps.merge(profileA, profileB);
 
       const propertiesA = await profileA.properties();
       const propertiesB = await profileB.properties();
-      const eventsA = await profileA.$get("events");
-      const eventsB = await profileB.$get("events");
       expect(Object.keys(propertiesA).length).toBe(9);
       expect(Object.keys(propertiesB).length).toBe(0);
-      expect(eventsA.length).toBe(5);
-      expect(eventsB.length).toBe(0);
     });
 
     test("the merged profile kept the newer non-null properties", async () => {
@@ -1143,11 +1042,6 @@ describe("models/profile", () => {
       });
       expect(logs.length).toEqual(1);
       expect(logs[0].message).toEqual(`merged with profile ${profileB.id}`);
-    });
-
-    test("merging profiles moved the anonymousId", async () => {
-      await profileA.reload();
-      expect(profileA.anonymousId).toEqual("abc123");
     });
 
     test("after merging the other profile is deleted", async () => {

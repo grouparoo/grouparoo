@@ -6,6 +6,7 @@ export class GrouparooRPC extends Initializer {
   constructor() {
     super();
     this.name = "grouparooRPC";
+    this.loadPriority = 10;
   }
 
   async initialize() {
