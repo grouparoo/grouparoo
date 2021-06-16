@@ -301,13 +301,11 @@ export async function getParentIds(
 
   // prerequisites
   for (const i in keys) {
-    const value = configObject[keys[i]];
-    if (keys[i] === "teamId") prerequisiteIds.push(`team:${value}`);
-    if (keys[i] === "appId") prerequisiteIds.push(`app:${value}`);
-    if (keys[i] === "sourceId") prerequisiteIds.push(`source:${value}`);
-    if (keys[i] === "propertyId") prerequisiteIds.push(`property:${value}`);
-    if (keys[i] === "destinationId")
-      prerequisiteIds.push(`destination:${value}`);
+    if (keys[i].match(/.+Id$/)) {
+      const _class = keys[i].replace(/Id$/, "");
+      const value = configObject[keys[i]];
+      prerequisiteIds.push(`${_class}:${value}`);
+    }
   }
 
   const objectContainers = ["options", "source", "destination"];
@@ -381,6 +379,8 @@ export function sortConfigObjectsWithIds(
     });
   });
 
+  console.log(dependencyGraph);
+
   const sortedKeys = topologicalSort(dependencyGraph);
 
   sortedKeys.forEach((typeAndId) => {
@@ -392,8 +392,23 @@ export function sortConfigObjectsWithIds(
         o.configObject?.bootstrappedProperty?.id === id
     );
 
-    if (parent) sortedConfigObjectsWithIds.push(parent);
+    if (parent) {
+      sortedConfigObjectsWithIds.push(parent);
+    } else {
+      console.log(typeAndId);
+    }
   });
+
+  console.log(
+    "missing",
+    configObjectsWithIds.filter((o) => {
+      !sortedConfigObjectsWithIds
+        .map((s) => s.configObject.id)
+        .includes(o.configObject.id);
+    }),
+    configObjectsWithIds.length,
+    sortedConfigObjectsWithIds.length
+  );
 
   return sortedConfigObjectsWithIds.filter(uniqueArrayValues);
 }
