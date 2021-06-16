@@ -39,17 +39,5 @@ describe("bin/run", () => {
       instance.checkWorkers();
       expect(messages.join(" ")).toContain("❌ No Task Workers are enabled");
     });
-
-    test("fails with no schedules", async () => {
-      await instance.checkSchedules();
-      expect(messages.join(" ")).toContain("❌ No schedules found.");
-    });
-
-    test("will run if there is a schedule present", async () => {
-      const schedule = await helper.factories.schedule();
-      await instance.checkSchedules();
-      expect(messages.join(" ")).not.toContain("❌ No schedules found.");
-      await schedule.destroy();
-    });
   });
 });
