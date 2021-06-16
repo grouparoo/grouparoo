@@ -44,7 +44,9 @@ describe("modules/codeConfig", () => {
       ];
 
       const { errors } = validateConfigObjects(objs);
-      expect(errors).toContain("Duplicate ID values found: marketing_team");
+      expect(errors).toContain(
+        "Duplicate ID values found for marketing_team of class team"
+      );
     });
 
     test("catches missing IDs ", async () => {

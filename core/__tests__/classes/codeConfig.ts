@@ -25,7 +25,7 @@ describe("classes/codeConfig", () => {
         ({ id }) => id === "test_destination"
       );
       const { providedIds } = await getParentIds(destination);
-      expect(providedIds).toEqual(["test_destination"]);
+      expect(providedIds).toEqual(["destination:test_destination"]);
     });
 
     test("includes the values of mappings", async () => {
@@ -33,8 +33,8 @@ describe("classes/codeConfig", () => {
         ({ id }) => id === "test_destination"
       );
       const { prerequisiteIds } = await getParentIds(destination);
-      expect(prerequisiteIds).toContain("user_id");
-      expect(prerequisiteIds).toContain("email");
+      expect(prerequisiteIds).toContain("property:user_id");
+      expect(prerequisiteIds).toContain("property:email");
     });
 
     test("does not include the value of bootstrapped properties as prerequisite", async () => {
@@ -43,8 +43,8 @@ describe("classes/codeConfig", () => {
         source,
         configObjects.filter((c) => c.id !== source.id)
       );
-      expect(prerequisiteIds).toEqual(["data_warehouse"]);
-      expect(providedIds).toEqual(["users_table"]);
+      expect(prerequisiteIds).toEqual(["app:data_warehouse"]);
+      expect(providedIds).toEqual(["source:users_table"]);
     });
 
     describe("with bootstrapped property included in source", () => {
@@ -69,8 +69,11 @@ describe("classes/codeConfig", () => {
           source,
           manualConfigObjects.filter((c) => c.id !== source.id)
         );
-        expect(prerequisiteIds).toEqual(["data_warehouse", "user_id"]);
-        expect(providedIds).toEqual(["users_table", "user_id"]);
+        expect(prerequisiteIds).toEqual([
+          "app:data_warehouse",
+          "property:user_id",
+        ]);
+        expect(providedIds).toEqual(["source:users_table", "property:user_id"]);
       });
     });
 
@@ -102,8 +105,11 @@ describe("classes/codeConfig", () => {
           configObjects.concat([source, property])
         );
 
-        expect(prerequisiteIds).toEqual(["user_id", "query_source"]);
-        expect(providedIds).toEqual(["ltv"]);
+        expect(prerequisiteIds).toEqual([
+          "property:user_id",
+          "source:query_source",
+        ]);
+        expect(providedIds).toEqual(["property:ltv"]);
       });
     });
   });
@@ -149,12 +155,14 @@ describe("classes/codeConfig", () => {
         ({ configObject }) => configObject.id === "test_destination"
       );
       expect(destination.prerequisiteIds.sort()).toEqual([
-        "data_warehouse",
-        "email",
-        "email_group",
-        "user_id",
+        "app:data_warehouse",
+        "group:email_group",
+        "property:email",
+        "property:user_id",
       ]);
-      expect(destination.providedIds.sort()).toEqual(["test_destination"]);
+      expect(destination.providedIds.sort()).toEqual([
+        "destination:test_destination",
+      ]);
     });
 
     test("options are not included", async () => {
@@ -163,7 +171,7 @@ describe("classes/codeConfig", () => {
         ({ configObject }) => configObject.id === "data_warehouse"
       );
       expect(app.prerequisiteIds).toEqual([]);
-      expect(app.providedIds).toEqual(["data_warehouse"]);
+      expect(app.providedIds).toEqual(["app:data_warehouse"]);
     });
   });
 
