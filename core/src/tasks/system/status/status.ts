@@ -1,11 +1,11 @@
-import { Task, api, log, task } from "actionhero";
+import { api, log, task } from "actionhero";
 import { GrouparooCLI } from "../../../modules/cli";
-import { CLS } from "../../../modules/cls";
 import { APM } from "../../../modules/apm";
 import { Status, FinalSummary } from "../../../modules/status";
 import { plugin } from "../../../modules/plugin";
+import { CLSTask } from "../../../classes/tasks/clsTask";
 
-export class StatusTask extends Task {
+export class StatusTask extends CLSTask {
   constructor() {
     super();
     this.name = "status";
@@ -18,7 +18,7 @@ export class StatusTask extends Task {
     };
   }
 
-  async run({ toStop }: { toStop: boolean }, worker) {
+  async runWithinTransaction({ toStop }: { toStop: boolean }, worker) {
     return APM.wrap(this.name, "task", worker, async () => {
       const runMode = process.env.GROUPAROO_RUN_MODE;
 
@@ -82,11 +82,7 @@ export class StatusTask extends Task {
   }
 
   async getSamples() {
-    let samples: Status.StatusGetResponse;
-    await CLS.wrap(async () => {
-      samples = await Status.get();
-    });
-
+    const samples = await Status.get();
     return samples;
   }
 
