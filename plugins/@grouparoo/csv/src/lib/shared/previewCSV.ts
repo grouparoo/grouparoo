@@ -1,7 +1,6 @@
 import fs from "fs-extra";
 import csvParser from "csv-parser";
 import { SourcePreviewMethodResponseRow } from "@grouparoo/core";
-import { sleep } from "../shared/sleep";
 
 export async function previewCSV(localPath: string) {
   const response: Array<SourcePreviewMethodResponseRow> = [];
@@ -9,22 +8,18 @@ export async function previewCSV(localPath: string) {
   const parser = stream.pipe(csvParser());
 
   await new Promise((resolve, reject) => {
-    parser.on("readable", async () => {
-      let row = parser.read();
-      while (row) {
-        response.push(row);
-        row = parser.read();
-        if (response.length >= 10) {
-          stream.destroy();
-          break;
-        }
-        await sleep(); // we need to ensure this method is async
-      }
+    parser.on("data", (row) => {
+      if (response.length < 10) response.push(row);
 
-      return resolve(null);
+      if (response.length >= 10) {
+        stream.destroy();
+        return resolve(null);
+      }
     });
 
-    parser.on("error", reject);
+    parser.once("end", () => resolve(null));
+    parser.once("close", () => resolve(null));
+    parser.once("error", (error) => reject(error));
   });
 
   return response;
