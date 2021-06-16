@@ -1168,7 +1168,7 @@ describe("modules/codeConfig", () => {
   });
 
   describe("duplicate IDs", () => {
-    test("config with duplicate IDs will not be applied", async () => {
+    test("config with duplicate IDs and the same class will not be applied", async () => {
       api.codeConfig.allowLockedModelChanges = true;
       const { errors } = await loadConfigDirectory(
         path.join(
@@ -1184,6 +1184,15 @@ describe("modules/codeConfig", () => {
       expect(errors[0]).toEqual(
         "Duplicate ID values found for data_warehouse_a of class app"
       );
+    });
+
+    test("config with duplicate IDs and differing classes are OK", async () => {
+      api.codeConfig.allowLockedModelChanges = true;
+      const { errors } = await loadConfigDirectory(
+        path.join(__dirname, "..", "..", "fixtures", "codeConfig", "similar-id")
+      );
+
+      expect(errors.length).toEqual(0);
     });
   });
 
