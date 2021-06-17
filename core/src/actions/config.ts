@@ -2,6 +2,7 @@ import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { OptionallyAuthenticatedAction } from "../classes/actions/optionallyAuthenticatedAction";
 import { spawnPromise } from "../modules/spawnPromise";
 import { ConfigUser } from "../modules/configUser";
+import { ConfigWriter } from "../modules/configWriter";
 
 export class ConfigValidate extends AuthenticatedAction {
   constructor() {
@@ -92,6 +93,7 @@ export class ConfigUserCreate extends OptionallyAuthenticatedAction {
     }
     await ConfigUser.create(params);
     const user = await ConfigUser.get();
+    await ConfigWriter.run();
     return { user };
   }
 }
