@@ -28,8 +28,8 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "@sentry/node": "6.5.0",
-    "@sentry/tracing": "6.5.0"
+    "@sentry/node": "6.7.1",
+    "@sentry/tracing": "6.7.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.4.0-alpha.3",
