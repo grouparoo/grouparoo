@@ -9,14 +9,14 @@ importers:
       lerna-changelog: 1.0.1
       license-checker: github:grouparoo/license-checker
       npm-check-updates: 11.6.0
-      prettier: 2.3.0
+      prettier: 2.3.1
     devDependencies:
       glob: 7.1.7
       lerna: 4.0.0
       lerna-changelog: 1.0.1
       license-checker: github.com/grouparoo/license-checker/1054593024d6f7e50ad47feb3b61d52c9506c274
       npm-check-updates: 11.6.0
-      prettier: 2.3.0
+      prettier: 2.3.1
 
   apps/staging-community:
     specifiers:
@@ -188,7 +188,7 @@ importers:
       isomorphic-fetch: 3.0.0
       npm-check-updates: 11.6.0
       ora: 5.4.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       semver: 7.3.5
       ts-node: 10.0.0
       typescript: 4.3.2
@@ -204,7 +204,7 @@ importers:
     devDependencies:
       '@types/fs-extra': 9.0.11
       '@types/node': 15.12.2
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-node: 10.0.0_e3fb3700f8b176f300f1b7e599dc9c29
       typescript: 4.3.2
 
@@ -248,7 +248,7 @@ importers:
       pg: 8.6.0
       pg-hstore: 2.3.3
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       reflect-metadata: 0.1.13
       sequelize: 6.6.2
       sequelize-typescript: 2.1.0
@@ -294,7 +294,7 @@ importers:
       pg: 8.6.0
       pg-hstore: 2.3.3
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       reflect-metadata: 0.1.13
       sequelize: 6.6.2_4805d29a365866739fa3d4ea3781136c
       sequelize-typescript: 2.1.0_3de8b9262965c79b5c374215825201bd
@@ -329,7 +329,7 @@ importers:
       actionhero: 26.0.8
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
       uuid: 8.3.2
@@ -342,7 +342,7 @@ importers:
       actionhero: 26.0.8
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
       uuid: 8.3.2
@@ -360,7 +360,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -376,7 +376,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -391,7 +391,7 @@ importers:
       csv-parser: 3.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -405,7 +405,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -423,7 +423,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -440,7 +440,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -454,7 +454,7 @@ importers:
       jest: 26.6.3
       js-yaml: 4.1.0
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -467,7 +467,7 @@ importers:
       actionhero: 26.0.8
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -485,7 +485,7 @@ importers:
       jest: 26.6.3
       mongodb: 3.6.9
       pg: 8.6.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       replace-in-files: 3.0.0
       sequelize: 6.6.2
       ts-jest: 26.5.6
@@ -498,7 +498,7 @@ importers:
       isomorphic-fetch: 3.0.0
       mongodb: 3.6.9
       pg: 8.6.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       replace-in-files: 3.0.0
       sequelize: 6.6.2_pg@8.6.0
       uuid: 8.3.2
@@ -528,7 +528,7 @@ importers:
       jest: 26.6.3
       js-sha256: 0.9.0
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -547,7 +547,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -559,7 +559,7 @@ importers:
       actionhero: 26.0.8
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -570,7 +570,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -583,7 +583,7 @@ importers:
       aws-sdk: 2.930.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -595,7 +595,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -611,7 +611,7 @@ importers:
       google-spreadsheet: 3.1.15
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -626,7 +626,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -644,7 +644,7 @@ importers:
       hubspot-api: 2.15.3
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -661,7 +661,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -678,7 +678,7 @@ importers:
       intercom-client: 2.11.2
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -694,7 +694,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -711,7 +711,7 @@ importers:
       jest: 26.6.3
       nock: 13.1.0
       node-iterable-api: 1.0.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -727,7 +727,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -740,7 +740,7 @@ importers:
       '@types/node': '*'
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -752,7 +752,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -769,7 +769,7 @@ importers:
       jest: 26.6.3
       mailchimp-api-v3: 1.15.0
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -785,7 +785,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -802,7 +802,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -818,7 +818,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -834,7 +834,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       mongodb: 3.6.9
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -849,7 +849,7 @@ importers:
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -865,7 +865,7 @@ importers:
       csv-parse: 4.16.0
       jest: 26.6.3
       mysql: 2.18.1
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -880,7 +880,7 @@ importers:
       actionhero: 26.0.8
       csv-parse: 4.16.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -893,7 +893,7 @@ importers:
       actionhero: 26.0.8
       jest: 26.6.3
       newrelic: 7.5.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -905,7 +905,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -922,7 +922,7 @@ importers:
       jest: 26.6.3
       nock: 13.1.0
       onesignal-node: 3.2.1
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -938,7 +938,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -957,7 +957,7 @@ importers:
       jest: 26.6.3
       jsforce: 1.10.1
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -975,7 +975,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -992,7 +992,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1008,7 +1008,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1028,7 +1028,7 @@ importers:
       pg-format: 1.0.4
       pg-hstore: 2.3.3
       postgres-date: 2.0.1
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1047,7 +1047,7 @@ importers:
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1062,7 +1062,7 @@ importers:
       '@types/pg': '*'
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1076,7 +1076,7 @@ importers:
       '@types/pg': 8.6.0
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1092,7 +1092,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       sailthru-client: 3.0.5
       ts-jest: 26.5.6
       typescript: 4.3.2
@@ -1109,7 +1109,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1126,7 +1126,7 @@ importers:
       jest: 26.6.3
       jsforce: 1.10.1
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1142,7 +1142,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1159,7 +1159,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1175,7 +1175,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1189,7 +1189,7 @@ importers:
       '@types/node': '*'
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1202,7 +1202,7 @@ importers:
       '@types/node': 15.12.2
       actionhero: 26.0.8
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1218,7 +1218,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       snowflake-promise: 4.5.0
       snowflake-sdk: 1.6.0
       ts-jest: 26.5.6
@@ -1237,7 +1237,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1253,7 +1253,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       sequelize: 6.6.2
       ts-jest: 26.5.6
       typescript: 4.3.2
@@ -1272,7 +1272,7 @@ importers:
       actionhero: 26.0.8
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1289,7 +1289,7 @@ importers:
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       sqlite3: 5.0.2
       ts-jest: 26.5.6
       typescript: 4.3.2
@@ -1307,7 +1307,7 @@ importers:
       csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1324,7 +1324,7 @@ importers:
       jest: 26.6.3
       nock: 13.1.0
       node-zendesk: 2.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
@@ -1340,7 +1340,7 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
 
@@ -1371,7 +1371,7 @@ importers:
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.1
@@ -1424,7 +1424,7 @@ importers:
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
@@ -1455,7 +1455,7 @@ importers:
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.1
@@ -1495,7 +1495,7 @@ importers:
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.1_react-dom@17.0.2+react@17.0.2
@@ -1539,7 +1539,7 @@ importers:
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.1
@@ -1593,7 +1593,7 @@ importers:
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
@@ -1625,7 +1625,7 @@ importers:
       node-sass: 5.0.0
       nprogress: 0.2.0
       pluralize: 8.0.0
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       react: 17.0.2
       react-bootstrap: 1.6.1
@@ -1678,7 +1678,7 @@ importers:
       enzyme: 3.11.0
       jest: 26.6.3
       jest-environment-webdriver: 0.2.0_jest@26.6.3
-      prettier: 2.3.0
+      prettier: 2.3.1
       prop-types: 15.7.2
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       typescript: 4.3.2
@@ -11818,8 +11818,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /prettier/2.3.0:
-    resolution: {integrity: sha512-kXtO4s0Lz/DW/IJ9QdWhAf7/NmPWQXkFr/r/WkR3vyI+0v8amTDxiaQSLzs8NBlytfLWX/7uQUMIW677yLKl4w==}
+  /prettier/2.3.1:
+    resolution: {integrity: sha512-p+vNbgpLjif/+D+DwAZAbndtRrR0md0MwfmOVN9N+2RgyACMT+7tfaRnT+WDPkqnuVwleyuBIG2XBxKDme3hPA==}
     engines: {node: '>=10.13.0'}
     hasBin: true
 
