@@ -16,7 +16,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
     this.inputs = {};
   }
 
-  async runWithinTransaction() {
+  async runWithinTransaction(worker) {
     let count = 0;
     const limit = parseInt(
       (
@@ -40,7 +40,7 @@ export class ProfilePropertiesEnqueue extends CLSTask {
         count = count + pendingProfileProperties.length;
       } catch (error) {
         // this is a periodic task, and will be retried
-        api.exceptionHandlers.report(error, "task", this.name);
+        api.exceptionHandlers.task(error, this.queue, worker.job, worker.id);
       }
     }
 
