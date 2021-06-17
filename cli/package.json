@@ -45,7 +45,7 @@
     "@types/node": "*",
     "prettier": "2.3.0",
     "ts-node": "10.0.0",
-    "typescript": "4.3.2"
+    "typescript": "4.3.3"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }

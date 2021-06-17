@@ -47,7 +47,7 @@
     "actionhero": "26.0.8",
     "jest": "26.6.3",
     "ts-jest": "26.5.6",
-    "typescript": "4.3.2"
+    "typescript": "4.3.3"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
