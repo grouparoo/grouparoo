@@ -187,7 +187,7 @@ importers:
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
       npm-check-updates: 11.6.0
-      ora: 5.4.0
+      ora: 5.4.1
       prettier: 2.3.1
       semver: 7.3.5
       ts-node: 10.0.0
@@ -199,7 +199,7 @@ importers:
       glob: 7.1.7
       isomorphic-fetch: 3.0.0
       npm-check-updates: 11.6.0
-      ora: 5.4.0
+      ora: 5.4.1
       semver: 7.3.5
     devDependencies:
       '@types/fs-extra': 9.0.11
@@ -4967,14 +4967,6 @@ packages:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
-  /chalk/4.1.0:
-    resolution: {integrity: sha512-qwx12AxXe2Q5xQ43Ac//I6v5aXTipYrSESdOgzrN+9XjgEpyjpKuvSGaN4qE93f7TQTlerQQ8S+EQ0EyDoVL1A==}
-    engines: {node: '>=10'}
-    dependencies:
-      ansi-styles: 4.3.0
-      supports-color: 7.2.0
-    dev: false
-
   /chalk/4.1.1:
     resolution: {integrity: sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==}
     engines: {node: '>=10'}
@@ -9636,7 +9628,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.0
+      chalk: 4.1.1
       is-unicode-supported: 0.1.0
     dev: false
 
@@ -11172,12 +11164,12 @@ packages:
       type-check: 0.3.2
       word-wrap: 1.2.3
 
-  /ora/5.4.0:
-    resolution: {integrity: sha512-1StwyXQGoU6gdjYkyVcqOLnVlbKj+6yPNNOxJVgpt9t4eksKjiriiHuxktLYkgllwk+D6MbC4ihH84L1udRXPg==}
+  /ora/5.4.1:
+    resolution: {integrity: sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==}
     engines: {node: '>=10'}
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.0
+      chalk: 4.1.1
       cli-cursor: 3.1.0
       cli-spinners: 2.6.0
       is-interactive: 1.0.0
