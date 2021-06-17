@@ -1382,7 +1382,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.8.6
@@ -1410,7 +1410,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1465,7 +1465,7 @@ importers:
       react-markdown: 6.0.2
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       ts-jest: 26.5.6
       type-fest: 1.2.1
       typescript: 4.3.2
@@ -1505,7 +1505,7 @@ importers:
       react-markdown: 6.0.2_189cc19b8edfe5959338b863f6e5c247
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       type-fest: 1.2.1
       typescript: 4.3.2
@@ -1550,7 +1550,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.8.6
@@ -1579,7 +1579,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -1636,7 +1636,7 @@ importers:
       react-moment: 1.1.1
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       ts-jest: 26.5.6
       typescript: 4.3.2
       victory: 35.8.6
@@ -1664,7 +1664,7 @@ importers:
       react-moment: 1.1.1_e2de3c42c851e0688dbd2109b79845c7
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
-      swagger-ui-dist: 3.49.0
+      swagger-ui-dist: 3.50.0
       victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
@@ -13941,8 +13941,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /swagger-ui-dist/3.49.0:
-    resolution: {integrity: sha512-R1+eT16XNP1bBLfacISifZAkFJlpwvWsS2vVurF5pbIFZnmCasD/hj+9r/q7urYdQyb0B6v11mDnuYU7rUpfQg==}
+  /swagger-ui-dist/3.50.0:
+    resolution: {integrity: sha512-BklniOBPlvZ6M9oGkhUwOf5HvxhkHBIycXN3ndju8WlLmi1xfMSdOA2AR6pNswlwURzsZUe1rh80aUyjnpD+Zw==}
 
   /symbol-tree/3.2.4:
     resolution: {integrity: sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==}
