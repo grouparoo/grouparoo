@@ -255,7 +255,7 @@ importers:
       sqlite3: 5.0.2
       ts-jest: 26.5.6
       ts-node: 10.0.0
-      type-fest: 1.2.0
+      type-fest: 1.2.1
       typedoc: 0.20.37
       typescript: 4.3.2
       umzug: v3.0.0-beta.5
@@ -314,7 +314,7 @@ importers:
       jest-fetch-mock: 3.0.3
       nock: 13.1.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
-      type-fest: 1.2.0
+      type-fest: 1.2.1
       typedoc: 0.20.37_typescript@4.3.2
       typescript: 4.3.2
       umzug: 3.0.0-beta.5
@@ -1467,7 +1467,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
-      type-fest: 1.2.0
+      type-fest: 1.2.1
       typescript: 4.3.2
       victory: 35.8.6
     devDependencies:
@@ -1507,7 +1507,7 @@ importers:
       stacktrace-js: 2.0.2
       swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
-      type-fest: 1.2.0
+      type-fest: 1.2.1
       typescript: 4.3.2
       victory: 35.8.6
 
@@ -14351,8 +14351,8 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
 
-  /type-fest/1.2.0:
-    resolution: {integrity: sha512-++0N6KyAj0t2webXst0PE0xuXb4Dv3z1Z+4SGzK+j/epeWBZCfkQbkW/ezscZwpinmBQ5wu/l4TqagKSVcAGCA==}
+  /type-fest/1.2.1:
+    resolution: {integrity: sha512-SbmIRuXhJs8KTneu77Ecylt9zuqL683tuiLYpTRil4H++eIhqCmx6ko6KAFem9dty8sOdnEiX7j4K1nRE628fQ==}
     engines: {node: '>=10'}
     dev: true
 
