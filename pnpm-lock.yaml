@@ -224,7 +224,7 @@ importers:
       cls-hooked: 4.2.2
       colors: 1.4.0
       compare-versions: 3.6.0
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       csv-stringify: 5.6.2
       date-fns: 2.22.1
       dotenv: 10.0.0
@@ -309,7 +309,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/pacote': 11.1.0
       '@types/pluralize': 0.0.29
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       jest: 26.6.3_ts-node@10.0.0
       jest-fetch-mock: 3.0.3
       nock: 13.1.0
@@ -478,7 +478,7 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
@@ -492,7 +492,7 @@ importers:
       typescript: 4.3.2
       uuid: 8.3.2
     dependencies:
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       dotenv: 10.0.0
       fs-extra: 10.0.0
       isomorphic-fetch: 3.0.0
@@ -862,7 +862,7 @@ importers:
       '@types/mysql': '*'
       '@types/node': '*'
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       jest: 26.6.3
       mysql: 2.18.1
       prettier: 2.3.0
@@ -878,7 +878,7 @@ importers:
       '@types/mysql': 2.15.18
       '@types/node': 15.12.2
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       jest: 26.6.3
       prettier: 2.3.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
@@ -1021,7 +1021,7 @@ importers:
       '@types/node': '*'
       '@types/pg': '*'
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
       pg: 8.6.0
@@ -1044,7 +1044,7 @@ importers:
       '@types/node': 15.12.2
       '@types/pg': 8.6.0
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.0
@@ -1286,7 +1286,7 @@ importers:
       '@types/pg': '*'
       '@types/sqlite3': 3.1.7
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.0
@@ -1304,7 +1304,7 @@ importers:
       '@types/node': 15.12.2
       '@types/pg': 8.6.0
       actionhero: 26.0.8
-      csv-parse: 4.15.4
+      csv-parse: 4.16.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.0
@@ -1356,7 +1356,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
       actionhero: 26.0.8
       axios: 0.21.1
@@ -1419,7 +1419,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.7
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_fae758709a8810ba97b4c03852dde4d0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
       actionhero: 26.0.8
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1440,7 +1440,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       axios: 0.21.1
       bootstrap: 4.6.0
       date-fns: 2.22.1
@@ -1480,7 +1480,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.7
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_fae758709a8810ba97b4c03852dde4d0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
       axios: 0.21.1
       bootstrap: 4.6.0
       date-fns: 2.22.1
@@ -1523,7 +1523,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
       actionhero: 26.0.8
       ansi-to-html: 0.6.15
@@ -1588,7 +1588,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.7
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_fae758709a8810ba97b4c03852dde4d0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
       actionhero: 26.0.8
       enzyme: 3.11.0
       jest: 26.6.3
@@ -1610,7 +1610,7 @@ importers:
       '@types/jest': '*'
       '@types/react': '*'
       '@types/react-dom': '*'
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2
       '@zeit/next-source-maps': 0.0.3
       actionhero: 26.0.8
       axios: 0.21.1
@@ -1673,7 +1673,7 @@ importers:
       '@types/jest': 26.0.23
       '@types/react': 17.0.11
       '@types/react-dom': 17.0.7
-      '@wojtekmaj/enzyme-adapter-react-17': 0.6.1_fae758709a8810ba97b4c03852dde4d0
+      '@wojtekmaj/enzyme-adapter-react-17': 0.6.2_fae758709a8810ba97b4c03852dde4d0
       actionhero: 26.0.8
       enzyme: 3.11.0
       jest: 26.6.3
@@ -3801,8 +3801,8 @@ packages:
     resolution: {integrity: sha512-bYuSNomfn4hu2tPiDN+JZtnzCpSpbJ/PNeulmocDy3xN2X5OkJL65zo6rPZp65cPPhLF9vfT/dgE+RtFRCSxOA==}
     dev: false
 
-  /@wojtekmaj/enzyme-adapter-react-17/0.6.1_fae758709a8810ba97b4c03852dde4d0:
-    resolution: {integrity: sha512-xgPfzLVpN0epIHeZofahwr5qwpukEDNAbrufgeDWN6vZPtfblGCC+OZG5TlfK+A6ePVy8sBkD8S2X4tO17JKjg==}
+  /@wojtekmaj/enzyme-adapter-react-17/0.6.2_fae758709a8810ba97b4c03852dde4d0:
+    resolution: {integrity: sha512-9STl8ZKp8VPJgtr6jEAv9IThX0PAJ1JXKv6IlXzq22Ejyk1bhSxJ6RfJCJT9A9+8JlDIf3BX5CC4s0Bs4/1wFQ==}
     peerDependencies:
       enzyme: ^3.0.0
       react: ^17.0.0-0
@@ -5613,12 +5613,8 @@ packages:
   /csstype/3.0.8:
     resolution: {integrity: sha512-jXKhWqXPmlUeoQnF/EhTtTl4C9SnrxSH/jZUih3jmO6lBKr99rP3/+FmrMj4EFpOXzMtXHAZkd3x0E6h6Fgflw==}
 
-  /csv-parse/4.15.4:
-    resolution: {integrity: sha512-OdBbFc0yZhOm17lSxqkirrHlFFVpKRT0wp4DAGoJelsP3LbGzV9LNr7XmM/lrr0uGkCtaqac9UhP8PDHXOAbMg==}
-
   /csv-parse/4.16.0:
     resolution: {integrity: sha512-Zb4tGPANH4SW0LgC9+s9Mnequs9aqn7N3/pCqNbVjs2XhEF6yWNU2Vm4OGl1v2Go9nw8rXt87Cm2QN/o6Vpqgg==}
-    dev: false
 
   /csv-parser/3.0.0:
     resolution: {integrity: sha512-s6OYSXAK3IdKqYO33y09jhypG/bSDHPuyCme/IdEHfWpLf/jKcpitVFyOC6UemgGk8v7Q5u2XE0vvwmanxhGlQ==}
@@ -14189,7 +14185,7 @@ packages:
       bs-logger: 0.2.6
       buffer-from: 1.1.1
       fast-json-stable-stringify: 2.1.0
-      jest: 26.6.3
+      jest: 26.6.3_ts-node@10.0.0
       jest-util: 26.6.2
       json5: 2.2.0
       lodash: 4.17.21
