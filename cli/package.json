@@ -31,7 +31,7 @@
     "watch": "tsc --watch"
   },
   "dependencies": {
-    "chalk": "4.1.0",
+    "chalk": "4.1.1",
     "commander": "7.2.0",
     "fs-extra": "10.0.0",
     "glob": "7.1.7",
