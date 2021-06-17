@@ -74,8 +74,10 @@ describe("modules/configWriter", () => {
     test("it returns undefined when name is an empty string", () => {
       expect(ConfigWriter.generateId("")).toBeUndefined();
     });
-    test("it returns undefined when name does not have url-friendly characters", () => {
-      expect(ConfigWriter.generateId("!")).toBeUndefined();
+    test("it throws an error when name does not have url-friendly characters", () => {
+      expect(() => {
+        ConfigWriter.generateId("!");
+      }).toThrow("Could not generate ID from name.");
     });
     test("it preserves hyphens", () => {
       expect(ConfigWriter.generateId("hello-world")).toEqual("hello-world");
@@ -348,7 +350,7 @@ describe("modules/configWriter", () => {
           object: await app.getConfigObject(),
         },
       ]);
-      app.name = "$";
+      app.name = "";
       await app.save();
       configObjects = await ConfigWriter.getConfigObjects();
       expect(configObjects).toEqual([]);
@@ -632,7 +634,9 @@ describe("modules/configWriter", () => {
         { key: "firstName05" },
         { column: "firstName05" }
       );
-      await helper.factories.schedule(source, { name: "!" });
+      const schedule: Schedule = await helper.factories.schedule(source);
+      await schedule.update({ name: "" }, { hooks: false });
+
       const config = await source.getConfigObject();
 
       const { name, type } = source;

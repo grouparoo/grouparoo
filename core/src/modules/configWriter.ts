@@ -53,7 +53,7 @@ export namespace ConfigWriter {
   // ---------------------------------------- | Helpers
 
   export function generateId(name, separator: string = "_"): string {
-    if (!name) return;
+    if (!name || name.length === 0) return;
     const id = name
       .toLowerCase()
       // replace bad characters with a space
@@ -64,7 +64,7 @@ export namespace ConfigWriter {
       .replace(/[ ]/g, separator)
       // replace multiple word separators with an underscore
       .replace(/[\-_ ][\-_ ]+/g, separator);
-    if (id.length === 0) return;
+    if (id.length === 0) throw new Error("Could not generate ID from name.");
     return id;
   }
 
