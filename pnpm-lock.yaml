@@ -231,7 +231,7 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: 0.4.0-alpha.3
-      ioredis: 4.27.3
+      ioredis: 4.27.6
       ioredis-mock: 5.6.0
       isomorphic-fetch: 3.0.0
       jest: 26.6.3
@@ -280,8 +280,8 @@ importers:
       fs-extra: 10.0.0
       glob: 7.1.7
       grouparoo: link:../cli
-      ioredis: 4.27.3
-      ioredis-mock: 5.6.0_ioredis@4.27.3
+      ioredis: 4.27.6
+      ioredis-mock: 5.6.0_ioredis@4.27.6
       isomorphic-fetch: 3.0.0
       json5: 2.2.0
       libphonenumber-js: 1.9.19
@@ -7840,6 +7840,20 @@ packages:
       lodash: 4.17.21
       standard-as-callback: 2.1.0
 
+  /ioredis-mock/5.6.0_ioredis@4.27.6:
+    resolution: {integrity: sha512-Ow+tyKdijg/gA2gSEv7lq8dLp6bO7FnwDXbJ9as37NF23XNRGMLzBc7ITaqMydfrbTodWnLcE2lKEaBs7SBpyA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      ioredis: 4.x
+      redis-commands: 1.x
+    dependencies:
+      fengari: 0.1.4
+      fengari-interop: 0.1.2_fengari@0.1.4
+      ioredis: 4.27.6
+      lodash: 4.17.21
+      standard-as-callback: 2.1.0
+    dev: false
+
   /ioredis/4.27.3:
     resolution: {integrity: sha512-eAirtUIljFkHJwuKQhbGajVrdCUMNKRuOrhzRFeYZRvXnLs4757Oss1S8aiheB4NSO1RsLeG+2RUjY/0/XiSig==}
     engines: {node: '>=6'}
@@ -7856,6 +7870,24 @@ packages:
       standard-as-callback: 2.1.0
     transitivePeerDependencies:
       - supports-color
+
+  /ioredis/4.27.6:
+    resolution: {integrity: sha512-6W3ZHMbpCa8ByMyC1LJGOi7P2WiOKP9B3resoZOVLDhi+6dDBOW+KNsRq3yI36Hmnb2sifCxHX+YSarTeXh48A==}
+    engines: {node: '>=6'}
+    dependencies:
+      cluster-key-slot: 1.1.0
+      debug: 4.3.1
+      denque: 1.5.0
+      lodash.defaults: 4.2.0
+      lodash.flatten: 4.4.0
+      p-map: 2.1.0
+      redis-commands: 1.7.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /ip/1.1.5:
     resolution: {integrity: sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=}
