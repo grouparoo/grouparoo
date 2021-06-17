@@ -256,7 +256,7 @@ importers:
       ts-jest: 26.5.6
       ts-node: 10.0.0
       type-fest: 1.2.0
-      typedoc: 0.20.36
+      typedoc: 0.20.37
       typescript: 4.3.2
       umzug: v3.0.0-beta.5
       uuid: 8.3.2
@@ -315,7 +315,7 @@ importers:
       nock: 13.1.0
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       type-fest: 1.2.0
-      typedoc: 0.20.36_typescript@4.3.2
+      typedoc: 0.20.37_typescript@4.3.2
       typescript: 4.3.2
       umzug: 3.0.0-beta.5
 
@@ -418,7 +418,7 @@ importers:
       '@types/node': '*'
       actionhero: 26.0.8
       axios: 0.21.1
-      customerio-node: 2.1.0
+      customerio-node: 2.1.1
       dotenv: 10.0.0
       fs-extra: 10.0.0
       jest: 26.6.3
@@ -428,7 +428,7 @@ importers:
       typescript: 4.3.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      customerio-node: 2.1.0
+      customerio-node: 2.1.1
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -580,14 +580,14 @@ importers:
       '@types/jest': '*'
       '@types/node': '*'
       actionhero: 26.0.8
-      aws-sdk: 2.919.0
+      aws-sdk: 2.930.0
       fs-extra: 10.0.0
       jest: 26.6.3
       prettier: 2.3.0
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
-      aws-sdk: 2.919.0
+      aws-sdk: 2.930.0
       fs-extra: 10.0.0
     devDependencies:
       '@grouparoo/core': link:../../../core
@@ -710,13 +710,13 @@ importers:
       fs-extra: 10.0.0
       jest: 26.6.3
       nock: 13.1.0
-      node-iterable-api: 1.0.2
+      node-iterable-api: 1.0.3
       prettier: 2.3.0
       ts-jest: 26.5.6
       typescript: 4.3.2
     dependencies:
       '@grouparoo/app-templates': link:../app-templates
-      node-iterable-api: 1.0.2
+      node-iterable-api: 1.0.3
     devDependencies:
       '@grouparoo/core': link:../../../core
       '@grouparoo/spec-helper': link:../spec-helper
@@ -1374,7 +1374,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.6.0
+      react-bootstrap: 1.6.1
       react-bootstrap-typeahead: 5.1.4
       react-dom: 17.0.2
       react-hook-form: 6.15.5
@@ -1385,7 +1385,7 @@ importers:
       swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
-      victory: 35.5.1
+      victory: 35.8.6
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1402,7 +1402,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.1_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
@@ -1411,7 +1411,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.49.0
-      victory: 35.5.1
+      victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1458,7 +1458,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.6.0
+      react-bootstrap: 1.6.1
       react-bootstrap-typeahead: 5.1.4
       react-dom: 17.0.2
       react-hook-form: 6.15.5
@@ -1469,7 +1469,7 @@ importers:
       ts-jest: 26.5.6
       type-fest: 1.2.0
       typescript: 4.3.2
-      victory: 35.5.1
+      victory: 35.8.6
     devDependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1498,7 +1498,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.1_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
@@ -1509,7 +1509,7 @@ importers:
       ts-jest: 26.5.6_jest@26.6.3+typescript@4.3.2
       type-fest: 1.2.0
       typescript: 4.3.2
-      victory: 35.5.1
+      victory: 35.8.6
 
   ui/ui-config:
     specifiers:
@@ -1542,7 +1542,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.6.0
+      react-bootstrap: 1.6.1
       react-bootstrap-typeahead: 5.1.4
       react-dom: 17.0.2
       react-hook-form: 6.15.5
@@ -1553,7 +1553,7 @@ importers:
       swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
-      victory: 35.5.1
+      victory: 35.8.6
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1571,7 +1571,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.1_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
@@ -1580,7 +1580,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.49.0
-      victory: 35.5.1
+      victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -1628,7 +1628,7 @@ importers:
       prettier: 2.3.0
       prop-types: 15.7.2
       react: 17.0.2
-      react-bootstrap: 1.6.0
+      react-bootstrap: 1.6.1
       react-bootstrap-typeahead: 5.1.4
       react-dom: 17.0.2
       react-hook-form: 6.15.5
@@ -1639,7 +1639,7 @@ importers:
       swagger-ui-dist: 3.49.0
       ts-jest: 26.5.6
       typescript: 4.3.2
-      victory: 35.5.1
+      victory: 35.8.6
     dependencies:
       '@fortawesome/fontawesome-svg-core': 1.2.35
       '@fortawesome/free-brands-svg-icons': 5.15.3
@@ -1656,7 +1656,7 @@ importers:
       nprogress: 0.2.0
       pluralize: 8.0.0
       react: 17.0.2
-      react-bootstrap: 1.6.0_react-dom@17.0.2+react@17.0.2
+      react-bootstrap: 1.6.1_react-dom@17.0.2+react@17.0.2
       react-bootstrap-typeahead: 5.1.4_react-dom@17.0.2+react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-hook-form: 6.15.5_react@17.0.2
@@ -1665,7 +1665,7 @@ importers:
       stacktrace-js: 2.0.2
       styled-jsx: 3.4.4_react@17.0.2
       swagger-ui-dist: 3.49.0
-      victory: 35.5.1
+      victory: 35.8.6
     devDependencies:
       '@grouparoo/core': link:../../core
       '@grouparoo/spec-helper': link:../../plugins/@grouparoo/spec-helper
@@ -3592,11 +3592,9 @@ packages:
       '@babel/types': 7.14.5
     dev: true
 
-  /@types/classnames/2.3.1:
-    resolution: {integrity: sha512-zeOWb0JGBoVmlQoznvqXbE0tEC/HONsnoUNH19Hc96NFsTAwTXbTqb8FMYkru1F/iqp7a18Ws3nWJvtA1sHD1A==}
-    deprecated: This is a stub types definition. classnames provides its own type definitions, so you do not need this installed.
-    dependencies:
-      classnames: 2.3.1
+  /@types/caseless/0.12.2:
+    resolution: {integrity: sha512-6ckxMjBBD8URvjB6J3NcnuAn5Pkl7t3TizAg+xdlzzQGSPSmBcXf8KoIH0ua/i+tio+ZRUHEXp0HEmvaR4kt0w==}
+    dev: false
 
   /@types/faker/5.5.6:
     resolution: {integrity: sha512-UCRj0kLg4sXs2XFVm48OU/wIjyJZkpRkwxhRGVQb5l5GmemkeW22WTz9iiDhYPBUqTzDsIWzhFRuF/4DD5+q2Q==}
@@ -3754,6 +3752,15 @@ packages:
       '@types/scheduler': 0.16.1
       csstype: 3.0.8
 
+  /@types/request/2.48.5:
+    resolution: {integrity: sha512-/LO7xRVnL3DxJ1WkPGDQrp4VTV1reX9RkC85mJ+Qzykj2Bdw+mG15aAfDahc76HtknjzE16SX/Yddn6MxVbmGQ==}
+    dependencies:
+      '@types/caseless': 0.12.2
+      '@types/node': 15.12.2
+      '@types/tough-cookie': 4.0.0
+      form-data: 2.5.1
+    dev: false
+
   /@types/scheduler/0.16.1:
     resolution: {integrity: sha512-EaCxbanVeyxDRTQBkdLb3Bvl/HK7PBK6UJjsSixB0iHKoWxE5uu2Q/DgtpOhPIojN0Zl1whvOd7PoHs2P0s5eA==}
 
@@ -3772,6 +3779,10 @@ packages:
   /@types/stack-utils/2.0.0:
     resolution: {integrity: sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==}
     dev: true
+
+  /@types/tough-cookie/4.0.0:
+    resolution: {integrity: sha512-I99sngh224D0M7XgW1s120zxCt3VYQ3IQsuw3P3jbq5GG4yc79+ZjyKznyOGIQrflfylLgcfekeZW/vk0yng6A==}
+    dev: false
 
   /@types/unist/2.0.3:
     resolution: {integrity: sha512-FvUupuM3rlRsRtCN+fDudtmytGO6iHJuuRKS1Ss0pG5z8oX0diNEw94UEL7hgDbpN94rgaK5R7sWm6RrSkZuAQ==}
@@ -4328,8 +4339,8 @@ packages:
     resolution: {integrity: sha512-SA5mXJWrId1TaQjfxUYghbqQ/hYioKmLJvPJyDuYRtXXenFNMjj4hSSt1Cf1xsuXSXrtxrVC5Ot4eU6cOtBDdA==}
     engines: {node: '>= 0.4'}
 
-  /aws-sdk/2.919.0:
-    resolution: {integrity: sha512-9hPKuw3w7iDeDByIeoMspKgmiljTtYGM3bDkICEIDeJuPAlEMu+z3jOTFu5gHzZ95noXRqhRL1eeXI7o1F/hpQ==}
+  /aws-sdk/2.930.0:
+    resolution: {integrity: sha512-g8fPOy7Skh2Pqpz2SaDI+M9re2rjTWBQUirAMgtUD/6I/Lf6CR1Q0amsjtQU8WqRQH06kNGwuLtc8Tt6wAux3Q==}
     engines: {node: '>= 0.8.0'}
     requiresBuild: true
     dependencies:
@@ -4748,7 +4759,7 @@ packages:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
 
   /buffer/5.6.0:
@@ -5654,9 +5665,10 @@ packages:
     dependencies:
       array-find-index: 1.0.2
 
-  /customerio-node/2.1.0:
-    resolution: {integrity: sha512-xLI1pk7tIIVLUDfSIOLddskfZ6Ua0AtKFXgBsTIYz1PrAdL9UbQDScHZHBmkafUYmthbCvV6UysMG6dbx/zIdw==}
+  /customerio-node/2.1.1:
+    resolution: {integrity: sha512-dGwN9PRvEOjKIw4nikP8zE6fPfH5NxTpDYqth1FikO7VW4XY41a0zNWiHQvLEu2enFZ+OxavTGI1W9YZjW7o7A==}
     dependencies:
+      '@types/request': 2.48.5
       request: 2.88.2
     dev: false
 
@@ -6780,6 +6792,15 @@ packages:
       combined-stream: 1.0.8
       mime-types: 2.1.31
 
+  /form-data/2.5.1:
+    resolution: {integrity: sha512-m21N3WOmEEURgk6B9GLOE4RuWOFf28Lhh9qGYeNlGq4VDXUlJy2th2slBNU8Gp8EzloYZOibZJ7t5ecIrFSjVA==}
+    engines: {node: '>= 0.12'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.31
+    dev: false
+
   /form-data/3.0.1:
     resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
     engines: {node: '>= 6'}
@@ -7646,6 +7667,7 @@ packages:
 
   /ieee754/1.1.13:
     resolution: {integrity: sha512-4vf7I2LYV/HaWerSo3XmlMkp5eZ83i+/CDluXi/IGTs/O1sejBNhTtnxzmRZfvOUqj7lZjqHkeTvpgSFDlWZTg==}
+    dev: false
 
   /ieee754/1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -10543,8 +10565,8 @@ packages:
     resolution: {integrity: sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=}
     dev: true
 
-  /node-iterable-api/1.0.2:
-    resolution: {integrity: sha512-WNiOl2VFMhoAhGwNL7dOzSueAI5t40+MV+MkN7hETERSOPylKx+xvrYIMkcuUA42bctIiCH2ZIO9AcmJRpn3gA==}
+  /node-iterable-api/1.0.3:
+    resolution: {integrity: sha512-mzDGaTiStBE+hCT1X8lexK9VK/3s8oZgHvIc3Fz1IiVWN+u3trZGv4BugzF3AtQkYCrcecqODW4Nu+9bOwB2TA==}
     engines: {node: '>=8'}
     dependencies:
       axios: 0.21.1
@@ -12093,8 +12115,8 @@ packages:
       scroll-into-view-if-needed: 2.2.28
       warning: 4.0.3
 
-  /react-bootstrap/1.6.0_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-PaeOGeRC2+JH9Uf1PukJgXcIpfGlrKKHEBZIArymjenYzSJ/RhO2UdNX+e7nalsCFFZLRRgQ0/FKkscW2LmmRg==}
+  /react-bootstrap/1.6.1_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-ojEPQ6OtyIMdLg0Smofk+85PKN6MLKQX3bU0Vwmok/4yNa8DQ2vCGhO2IgHJvT+ERQZ4X+gAQcdn6msAHSwLBg==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -12102,7 +12124,6 @@ packages:
       '@babel/runtime': 7.14.5
       '@restart/context': 2.1.4_react@17.0.2
       '@restart/hooks': 0.3.26_react@17.0.2
-      '@types/classnames': 2.3.1
       '@types/invariant': 2.2.34
       '@types/prop-types': 15.7.3
       '@types/react': 17.0.11
@@ -14319,8 +14340,8 @@ packages:
     engines: {node: '>= 8'}
     dev: true
 
-  /typedoc/0.20.36_typescript@4.3.2:
-    resolution: {integrity: sha512-qFU+DWMV/hifQ9ZAlTjdFO9wbUIHuUBpNXzv68ZyURAP9pInjZiO4+jCPeAzHVcaBCHER9WL/+YzzTt6ZlN/Nw==}
+  /typedoc/0.20.37_typescript@4.3.2:
+    resolution: {integrity: sha512-9+qDhdc4X00qTNOtii6QX2z7ndAeWVOso7w3MPSoSJdXlVhpwPfm1yEp4ooKuWA9fiQILR8FKkyjmeqa13hBbw==}
     engines: {node: '>= 10.8.0'}
     hasBin: true
     peerDependencies:
@@ -14907,8 +14928,8 @@ packages:
       prop-types: 15.7.2
       victory-core: 35.8.1
 
-  /victory/35.5.1:
-    resolution: {integrity: sha512-kjUl4gmvdFVQsuoo+gIm2A6tEHyPhrNYzF6RLA2hxQnWCuTnK2Jf0JV6rRE3D4Z68JbDCnnucnQ2BPT3nxeVLw==}
+  /victory/35.8.6:
+    resolution: {integrity: sha512-v40AvZZpXelxV5KyLdrs5/zsk2KtgnFpXsOF/EzwiRcpY3XSjuvVxEB5mHQoQTd9hoCN+MGrqeSxwPYHrMR2wQ==}
     dependencies:
       victory-area: 35.8.2
       victory-axis: 35.8.3
