@@ -1,6 +1,7 @@
 import { api, config, chatRoom } from "actionhero";
 import { Group } from "../models/Group";
 import { Profile } from "../models/Profile";
+import { Schedule } from "../models/Schedule";
 import {
   StatusReporters,
   StatusMetric,
@@ -129,6 +130,7 @@ export namespace FinalSummary {
     | FinalSummaryReporters.Sources.SourceData[]
     | FinalSummaryReporters.Profiles.ProfileData[]
     | FinalSummaryReporters.Destinations.DestinationData[]
+    | FinalSummaryReporters.Warnings.WarningData[]
   >;
 
   export async function getFinalSummary() {
@@ -137,7 +139,12 @@ export namespace FinalSummary {
     finalSummaryLogs.push(await FinalSummaryReporters.Profiles.getData());
     finalSummaryLogs.push(await FinalSummaryReporters.Sources.getData());
     finalSummaryLogs.push(await FinalSummaryReporters.Destinations.getData());
+    finalSummaryLogs.push(await FinalSummaryReporters.Warnings.getWarnings());
 
     return finalSummaryLogs;
+  }
+
+  export async function checkSchedules() {
+    return await Schedule.count();
   }
 }

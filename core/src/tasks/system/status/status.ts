@@ -39,7 +39,6 @@ export class StatusTask extends CLSTask {
       const complete = await this.checkForComplete(samples);
       if (runMode === "cli:run" && complete) {
         await this.logFinalSummary();
-        await this.checkSchedules();
         await this.stopServer(toStop);
       }
 
@@ -50,18 +49,6 @@ export class StatusTask extends CLSTask {
   async logFinalSummary() {
     const finalSummaryLog = await FinalSummary.getFinalSummary();
     GrouparooCLI.logger.finalSummary(finalSummaryLog);
-  }
-
-  async checkSchedules() {
-    const scheduleCount = await Schedule.count();
-    if (scheduleCount === 0) {
-      return log(
-        `No schedules found.
-The run command uses schedules to know what profiles to import.
-See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`,
-        "warning"
-      );
-    }
   }
 
   async checkForComplete(samples: Status.StatusGetResponse) {

@@ -21,6 +21,7 @@ import { TeamMember } from "../models/TeamMember";
 import { Notification } from "../models/Notification";
 import { GroupOps } from "../modules/ops/group";
 import { SourceOps } from "../modules/ops/source";
+import { SchedulesList } from "../actions/schedules";
 
 export interface StatusMetric {
   // the possible attributes for a metric are:
@@ -537,6 +538,29 @@ export namespace FinalSummaryReporters {
 
         out.push(currentDestination);
       }
+      return out;
+    }
+  }
+
+  export namespace Warnings {
+    export interface WarningData {
+      name: string;
+      message: string;
+      link: string;
+    }
+
+    export async function getWarnings() {
+      const out: WarningData[] = [];
+
+      const schedules = await Schedule.findAll();
+      if (schedules.length === 0) {
+        out.push({
+          name: "Schedules",
+          message: `No schedules found.  The run command uses schedules to know what profiles to import.`,
+          link: `See this link for more info: https://www.grouparoo.com/docs/getting-started/product-concepts#schedule`,
+        });
+      }
+
       return out;
     }
   }
