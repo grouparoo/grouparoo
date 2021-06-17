@@ -118,7 +118,10 @@ export class GroupMember extends Model {
 
   @AfterBulkCreate
   static async logsCreate(instances: GroupMember[]) {
-    const groupIds = [...new Set(instances.map((gm) => gm.groupId))];
+    const groupIds = instances
+      .map((gm) => gm.groupId)
+      .filter(uniqueArrayValues);
+
     for (const groupId of groupIds) {
       const group = await Group.findById(groupId);
       const groupMembers = instances.filter((gm) => gm.groupId === group.id);
@@ -157,8 +160,10 @@ export class GroupMember extends Model {
 
   static async destroyWithLogs(q: { where: WhereAttributeHash }) {
     const instances = await GroupMember.findAll(q);
+    const groupIds = instances
+      .map((gm) => gm.groupId)
+      .filter(uniqueArrayValues);
 
-    const groupIds = [...new Set(instances.map((gm) => gm.groupId))];
     for (const groupId of groupIds) {
       const group = await Group.findById(groupId);
       const groupMembers = instances.filter((gm) => gm.groupId === group.id);
@@ -181,4 +186,8 @@ export class GroupMember extends Model {
 
     await GroupMember.destroy(q);
   }
+}
+
+function uniqueArrayValues(value, index, self) {
+  return self.indexOf(value) === index;
 }
