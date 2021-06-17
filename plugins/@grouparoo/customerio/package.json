@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@grouparoo/app-templates": "0.4.0-alpha.3",
-    "customerio-node": "2.1.0"
+    "customerio-node": "2.1.1"
   },
   "devDependencies": {
     "@grouparoo/core": "0.4.0-alpha.3",
