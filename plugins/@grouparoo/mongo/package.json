@@ -42,7 +42,7 @@
     "jest": "26.6.3",
     "prettier": "2.3.1",
     "ts-jest": "26.5.6",
-    "typescript": "4.3.2"
+    "typescript": "4.3.4"
   },
   "gitHead": "d87e6adcefcc3e55d671121157b8eda1ae89f22a"
 }
