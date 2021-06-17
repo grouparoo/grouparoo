@@ -100,22 +100,31 @@ describe("tasks/profile:completeImport", () => {
     test("it updates the imports new data and updates the run counts", async () => {
       const run = await helper.factories.run();
 
-      const _import = await helper.factories.import(run, {
+      const _importA = await helper.factories.import(run, {
         email: "mario@example.com",
-        firstName: "Mario",
+        firstName: "Super",
         noExist: "here",
+      });
+      const _importB = await helper.factories.import(run, {
+        email: "mario@example.com",
+        lastName: "Mario",
       });
 
       await specHelper.runTask("import:associateProfile", {
-        importId: _import.id,
+        importId: _importA.id,
+      });
+      await specHelper.runTask("import:associateProfile", {
+        importId: _importB.id,
       });
 
       const profile = await Profile.findOne();
       await profile.import();
       await profile.update({ state: "ready" });
 
-      expect(_import.newGroupIds).toEqual([]);
-      expect(_import.newProfileProperties).toEqual({});
+      expect(_importA.newGroupIds).toEqual([]);
+      expect(_importA.newProfileProperties).toEqual({});
+      expect(_importB.newGroupIds).toEqual([]);
+      expect(_importB.newProfileProperties).toEqual({});
 
       expect(run.profilesCreated).toEqual(0);
       expect(run.profilesImported).toEqual(0);
@@ -125,13 +134,22 @@ describe("tasks/profile:completeImport", () => {
         toExport: true,
       });
 
-      await _import.reload();
+      await _importA.reload();
+      await _importB.reload();
       await run.updateTotals();
 
-      expect(_import.newProfileProperties.email).toEqual(["mario@example.com"]);
-      expect(_import.newProfileProperties.firstName).toEqual(["Mario"]);
-      expect(_import.newProfileProperties.lastName).toEqual(["Mario"]);
-      expect(_import.newGroupIds).toEqual([group.id]);
+      expect(_importA.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importA.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importA.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importA.newGroupIds).toEqual([group.id]);
+      expect(_importB.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importB.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importB.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importB.newGroupIds).toEqual([group.id]);
 
       expect(run.profilesCreated).toEqual(1);
       expect(run.profilesImported).toEqual(1);
