@@ -13,8 +13,11 @@ export class OnboardingSteps extends CLSInitializer {
 
   async startWithinTransaction() {
     // insert or update the setup steps we want
-    for (const i in SetupStepOps.setupStepDescriptions) {
-      const ssd = SetupStepOps.setupStepDescriptions[i];
+    const setupSteps =
+      process.env.GROUPAROO_RUN_MODE === "cli:config"
+        ? SetupStepOps.configSetupStepDescriptions
+        : SetupStepOps.setupStepDescriptions;
+    for (const ssd of setupSteps) {
       const onboardingStep = await SetupStep.findOne({
         where: { key: ssd.key },
       });
@@ -35,7 +38,7 @@ export class OnboardingSteps extends CLSInitializer {
     await SetupStep.destroy({
       where: {
         key: {
-          [Op.notIn]: SetupStepOps.setupStepDescriptions.map((ssd) => ssd.key),
+          [Op.notIn]: setupSteps.map((ssd) => ssd.key),
         },
       },
     });

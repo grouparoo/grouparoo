@@ -15,7 +15,7 @@ const configURL = "https://www.grouparoo.com/docs/config";
 
 export namespace SetupStepOps {
   export type setupStepDescription = {
-    position: number;
+    position?: number;
     key: string;
     title: string;
     description: string;
@@ -27,9 +27,20 @@ export namespace SetupStepOps {
     outcome?: () => Promise<string>;
   };
 
-  export const setupStepDescriptions: Array<setupStepDescription> = [
-    {
-      position: 1,
+  const allSetupStepDescriptions: { [key: string]: setupStepDescription } = {
+    install_grouparoo: {
+      key: "install_grouparoo",
+      title: "Install Grouparoo",
+      description: "Install the Grouparoo package.",
+      href: undefined,
+      cta: undefined,
+      showCtaOnCommunity: false,
+      helpLink: `https://www.grouparoo.com/docs/installation`,
+      check: async () => {
+        return true;
+      },
+    },
+    name_your_grouparoo_instance: {
       key: "name_your_grouparoo_instance",
       title: "Name your Grouparoo Instance",
       description: "Give your Grouparoo cluster a name.",
@@ -42,8 +53,7 @@ export namespace SetupStepOps {
         return setting.value !== setting.defaultValue;
       },
     },
-    {
-      position: 2,
+    add_an_app: {
       key: "add_an_app",
       title: "Add an App",
       description:
@@ -56,8 +66,7 @@ export namespace SetupStepOps {
         return count > 0;
       },
     },
-    {
-      position: 3,
+    create_a_source: {
       key: "create_a_source",
       title: "Create a Source",
       description:
@@ -70,8 +79,7 @@ export namespace SetupStepOps {
         return count > 0;
       },
     },
-    {
-      position: 4,
+    create_a_unique_profile_property: {
       key: "create_a_unique_profile_property",
       title: "Create a Unique Profile Property",
       description:
@@ -90,8 +98,7 @@ export namespace SetupStepOps {
         return `${count} Profiles created`;
       },
     },
-    {
-      position: 5,
+    create_a_schedule: {
       key: "create_a_schedule",
       title: "Create a Schedule",
       description:
@@ -108,8 +115,7 @@ export namespace SetupStepOps {
         return `${count} Runs created`;
       },
     },
-    {
-      position: 6,
+    create_a_group: {
       key: "create_a_group",
       title: "Create a Group",
       description:
@@ -126,8 +132,7 @@ export namespace SetupStepOps {
         return `${count} Group Memberships created`;
       },
     },
-    {
-      position: 7,
+    create_a_destination: {
       key: "create_a_destination",
       title: "Create a Destination",
       description:
@@ -143,6 +148,68 @@ export namespace SetupStepOps {
         const count = await Export.count();
         return `${count} Profiles exported to a Destination`;
       },
+    },
+  };
+
+  export const setupStepDescriptions: Array<setupStepDescription> = [
+    {
+      ...allSetupStepDescriptions.name_your_grouparoo_instance,
+      position: 1,
+    },
+    {
+      ...allSetupStepDescriptions.add_an_app,
+      position: 2,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_source,
+      position: 3,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_unique_profile_property,
+      position: 4,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_schedule,
+      position: 5,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_group,
+      position: 6,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_destination,
+      position: 7,
+    },
+  ];
+
+  export const configSetupStepDescriptions: Array<setupStepDescription> = [
+    {
+      ...allSetupStepDescriptions.install_grouparoo,
+      position: 1,
+    },
+    {
+      ...allSetupStepDescriptions.add_an_app,
+      position: 2,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_source,
+      position: 3,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_unique_profile_property,
+      position: 4,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_schedule,
+      position: 5,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_group,
+      position: 6,
+    },
+    {
+      ...allSetupStepDescriptions.create_a_destination,
+      position: 7,
     },
   ];
 }
