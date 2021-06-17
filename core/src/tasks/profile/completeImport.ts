@@ -55,7 +55,7 @@ export class ProfileCompleteImport extends RetryableTask {
 
       if (Object.keys(mergedValues).length > 0) {
         await profile.addOrUpdateProperties(mergedValues);
-        await profile.reload({ include: [ProfileProperty] });
+        delete profile.profileProperties; // will be reloaded
       }
     }
 
