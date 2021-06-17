@@ -690,7 +690,7 @@ export namespace ProfileOps {
 
   /**
    * Find profiles that are not ready but whose properties are and make them ready.
-   * Task `profile:completeImport` will be enqueued for each Profile.
+   * Task `profile:completeImport` will then process the profiles.
    */
   export async function makeReady(limit = 100, toExport = true) {
     let profiles: Profile[] = await api.sequelize.query(
@@ -730,10 +730,4 @@ export namespace ProfileOps {
 
     return profiles;
   }
-
-  // function arraysAreEqual(a: Array<any>, b: Array<any>) {
-  //   return (
-  //     a.length === b.length && a.every((value, index) => value === b[index])
-  //   );
-  // }
 }
