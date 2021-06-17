@@ -33,9 +33,7 @@ export class ProfileCompleteImport extends RetryableTask {
       (p) => p.state !== "ready" // a property may have gone back into the pending state
     );
 
-    if (profile.state !== "ready" || pendingProfileProperty) {
-      return CLS.enqueueTaskIn(config.tasks.timeout + 1, this.name, params);
-    }
+    if (profile.state !== "ready" || pendingProfileProperty) return;
 
     const mergedValues = {};
     const imports = await profile.$get("imports", {
