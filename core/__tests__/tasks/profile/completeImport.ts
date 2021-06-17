@@ -27,7 +27,7 @@ describe("tasks/profile:completeImport", () => {
   describe("profile:completeImport", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profile:completeImport", {
-        profileId: "abc123",
+        profileIds: ["abc123"],
         toExport: true,
       });
       const found = await specHelper.findEnqueuedTasks(
@@ -36,32 +36,26 @@ describe("tasks/profile:completeImport", () => {
       expect(found.length).toEqual(1);
     });
 
-    test("it re-enqueues the task if the profile is not ready", async () => {
+    test("it will not export the profile if it is not ready", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
       await profile.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
       await profile.reload();
       expect(profile.state).toBe("pending");
 
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        profileId: profile.id,
-        toExport: true,
-      });
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
 
       await profile.destroy();
     });
 
-    test("it re-enqueues the task if a profile property becomes pending", async () => {
+    test("it will not export the profile if a profile property is not ready", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
       await profile.update({ state: "ready" });
@@ -73,18 +67,12 @@ describe("tasks/profile:completeImport", () => {
       await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        profileId: profile.id,
-        toExport: true,
-      });
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
 
       await profile.destroy();
     });
@@ -99,7 +87,7 @@ describe("tasks/profile:completeImport", () => {
       expect(groups.length).toBe(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
@@ -133,7 +121,7 @@ describe("tasks/profile:completeImport", () => {
       expect(run.profilesImported).toEqual(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
@@ -155,7 +143,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
@@ -173,7 +161,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: false,
       });
 

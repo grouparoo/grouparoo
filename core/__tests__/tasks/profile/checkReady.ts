@@ -70,7 +70,7 @@ describe("tasks/profile:checkReady", () => {
       expect(peach.state).toBe("pending");
       expect(bowser.state).toBe("pending");
 
-      expect(found.map((t) => t.args[0].profileId).sort()).toEqual(
+      expect(found[0].args[0].profileIds.sort()).toEqual(
         [mario.id, luigi.id].sort() // no toad, no peach, no bowser
       );
 

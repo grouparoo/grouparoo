@@ -416,8 +416,8 @@ export class Group extends LoggedModel<Group> {
     return GroupOps.removePreviousRunGroupMembers(this, run, limit);
   }
 
-  async updateProfileMembership(profile: Profile) {
-    return GroupOps.updateProfileMembership(this, profile);
+  async updateProfilesMembership(profiles: Profile[]) {
+    return GroupOps.updateProfilesMembership(this, profiles);
   }
 
   async countPotentialMembers(

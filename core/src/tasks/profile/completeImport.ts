@@ -1,11 +1,11 @@
 import { CLS } from "../../modules/cls";
-import { config } from "actionhero";
 import { Profile } from "../../models/Profile";
 import { Property } from "../../models/Property";
 import { RetryableTask } from "../../classes/tasks/retryableTask";
 import { ProfileProperty } from "../../models/ProfileProperty";
 import { Import } from "../../models/Import";
 import { Op } from "sequelize";
+import { ProfileOps } from "../../modules/ops/profile";
 
 export class ProfileCompleteImport extends RetryableTask {
   constructor() {
@@ -16,55 +16,60 @@ export class ProfileCompleteImport extends RetryableTask {
     this.frequency = 0;
     this.queue = "profiles";
     this.inputs = {
-      profileId: { required: true },
+      profileIds: { required: true },
       toExport: { required: true },
     };
   }
 
   async runWithinTransaction(params) {
-    const profile = await Profile.findOne({
-      where: { id: params.profileId },
-      include: [ProfileProperty],
-    });
-    if (!profile) return; // the profile may have been deleted or merged by the time this task ran
-
     const properties = await Property.findAllWithCache();
-    const pendingProfileProperty = profile.profileProperties.find(
-      (p) => p.state !== "ready" // a property may have gone back into the pending state
-    );
-
-    if (profile.state !== "ready" || pendingProfileProperty) return;
-
-    const mergedValues = {};
-    const imports = await profile.$get("imports", {
-      where: { profileUpdatedAt: null },
-      order: [["createdAt", "asc"]],
+    const profiles = await Profile.findAll({
+      where: { id: { [Op.in]: params.profileIds } },
+      include: [
+        { model: ProfileProperty, required: true },
+        { model: Import, required: false, where: { profileUpdatedAt: null } },
+      ],
     });
+    if (profiles.length === 0) return;
 
-    for (const i in imports) {
-      const data = imports[i].data;
-      for (const key in data) {
-        // only if we still have property
-        if (properties.find((r) => r.key === key)) {
-          mergedValues[key] = data[key];
+    const readyProfiles = profiles.filter(
+      (profile) =>
+        profile.state === "ready" &&
+        !profile.profileProperties.find((p) => p.state !== "ready")
+    );
+    if (readyProfiles.length === 0) return;
+
+    for (const profile of readyProfiles) {
+      const mergedValues = {};
+      const imports = profile.imports;
+
+      for (const _import of imports) {
+        const data = _import.data;
+        for (const key in data) {
+          // only if we still have property
+          if (properties.find((r) => r.key === key)) {
+            mergedValues[key] = data[key];
+          }
         }
       }
-    }
 
-    try {
       if (Object.keys(mergedValues).length > 0) {
         await profile.addOrUpdateProperties(mergedValues);
         await profile.reload({ include: [ProfileProperty] });
       }
+    }
 
-      await profile.updateGroupMembership();
+    const memberships = await ProfileOps.updateGroupMemberships(readyProfiles);
+    const now = new Date();
 
-      const newProfileProperties = await profile.simplifiedProperties();
-      const newGroups = await profile.$get("groups");
-      const newGroupIds = newGroups.map((g) => g.id);
-      const now = new Date();
-
+    for (const profile of readyProfiles) {
+      const imports = profile.imports;
       if (imports.length > 0) {
+        const newProfileProperties = await profile.simplifiedProperties();
+        const newGroupIds = Object.keys(memberships[profile.id]).filter(
+          (groupId) => memberships[profile.id][groupId] === true
+        );
+
         await Import.update(
           {
             newProfileProperties: newProfileProperties,
@@ -85,9 +90,6 @@ export class ProfileCompleteImport extends RetryableTask {
           force: false,
         });
       }
-    } catch (error) {
-      await Promise.all(imports.map((e) => e.setError(error, this.name)));
-      throw error;
     }
   }
 }

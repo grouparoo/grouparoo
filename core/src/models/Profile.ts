@@ -139,17 +139,8 @@ export class Profile extends LoggedModel<Profile> {
   }
 
   async updateGroupMembership() {
-    const results: { [groupId: string]: boolean } = {};
-    const groups = await Group.scope("notDraft").findAll({
-      include: [GroupRule],
-    });
-
-    for (const group of groups) {
-      const belongs = await group.updateProfileMembership(this);
-      results[group.id] = belongs;
-    }
-
-    return results;
+    const data = await ProfileOps.updateGroupMemberships([this]);
+    return data[this.id];
   }
 
   async import(toSave = true, toLock = true) {

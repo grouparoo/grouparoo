@@ -610,7 +610,7 @@ describe("models/group", () => {
       });
     });
 
-    describe("#updateProfileMembership", () => {
+    describe("#updateProfilesMembership", () => {
       describe("manual group", () => {
         test("manual groups leave memberships where they are", async () => {
           await group.update({ type: "manual" });
@@ -619,11 +619,11 @@ describe("models/group", () => {
           let members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
 
-          let belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(true);
+          let belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: true });
 
-          belongs = await group.updateProfileMembership(luigi);
-          expect(belongs).toBe(false);
+          belongs = await group.updateProfilesMembership([luigi]);
+          expect(belongs).toEqual({ [luigi.id]: false });
         });
 
         test("manual groups will remove members if the group is deleted", async () => {
@@ -633,11 +633,11 @@ describe("models/group", () => {
           let members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
 
-          let belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(false);
+          let belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: false });
 
-          belongs = await group.updateProfileMembership(luigi);
-          expect(belongs).toBe(false);
+          belongs = await group.updateProfilesMembership([luigi]);
+          expect(belongs).toEqual({ [luigi.id]: false });
 
           members = await group.$get("groupMembers");
           expect(members.length).toBe(0);
@@ -647,8 +647,8 @@ describe("models/group", () => {
       describe("calculated group", () => {
         test("groups with no rules will not have members added", async () => {
           await group.setRules([]);
-          const belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(false);
+          const belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: false });
         });
 
         test("it will add a profile not yet in the group", async () => {
@@ -661,12 +661,23 @@ describe("models/group", () => {
             { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
-          const belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(true);
+          const belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: true });
 
           members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
           expect(members[0].profileId).toBe(mario.id);
+        });
+
+        test("it works with multiple profiles", async () => {
+          await group.update({ matchType: "all" });
+          await group.setRules([
+            { key: "lastName", match: "Mario", operation: { op: "eq" } },
+            { key: "firstName", match: "Mario", operation: { op: "eq" } },
+          ]);
+
+          const belongs = await group.updateProfilesMembership([mario, luigi]);
+          expect(belongs).toEqual({ [mario.id]: true, [luigi.id]: false });
         });
 
         test("it will leave a group member in the group", async () => {
@@ -676,11 +687,11 @@ describe("models/group", () => {
             { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
-          const belongsA = await group.updateProfileMembership(mario);
-          expect(belongsA).toBe(true);
+          const belongsA = await group.updateProfilesMembership([mario]);
+          expect(belongsA).toEqual({ [mario.id]: true });
 
-          const belongsB = await group.updateProfileMembership(mario);
-          expect(belongsB).toBe(true);
+          const belongsB = await group.updateProfilesMembership([mario]);
+          expect(belongsB).toEqual({ [mario.id]: true });
 
           const members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
@@ -694,8 +705,8 @@ describe("models/group", () => {
             { key: "firstName", match: "Mario", operation: { op: "eq" } },
           ]);
 
-          let belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(true);
+          let belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: true });
 
           let members = await group.$get("groupMembers");
           expect(members.length).toBe(1);
@@ -705,8 +716,8 @@ describe("models/group", () => {
             { key: "lastName", match: "Lakitu", operation: { op: "eq" } },
           ]);
 
-          belongs = await group.updateProfileMembership(mario);
-          expect(belongs).toBe(false);
+          belongs = await group.updateProfilesMembership([mario]);
+          expect(belongs).toEqual({ [mario.id]: false });
 
           members = await group.$get("groupMembers");
           expect(members.length).toBe(0);

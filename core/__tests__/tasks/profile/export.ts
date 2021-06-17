@@ -316,8 +316,9 @@ describe("tasks/profile:export", () => {
 
           await profile.import();
           await profile.updateGroupMembership();
+
           await specHelper.runTask("profile:completeImport", {
-            profileId: profile.id,
+            profileIds: [profile.id],
           });
 
           // I don't throw, but append the error to the Export

@@ -11,6 +11,7 @@ import { Op, OrderItem, WhereAttributeHash, QueryTypes } from "sequelize";
 import { waitForLock } from "../locks";
 import { ProfilePropertyOps } from "./profileProperty";
 import { CLS } from "../../modules/cls";
+import { GroupRule } from "../../models/GroupRule";
 
 export interface ProfilePropertyType {
   [key: string]: {
@@ -397,6 +398,24 @@ export namespace ProfileOps {
     return bulkArgs.length;
   }
 
+  export async function updateGroupMemberships(profiles: Profile[]) {
+    const results: { [profileId: string]: { [groupId: string]: boolean } } = {};
+    const groups = await Group.scope("notDraft").findAll({
+      include: [GroupRule],
+    });
+
+    for (const profile of profiles) results[profile.id] = {};
+
+    for (const group of groups) {
+      const belongs = await group.updateProfilesMembership(profiles);
+      for (const profileId of Object.keys(belongs)) {
+        results[profileId][group.id] = belongs[profileId];
+      }
+    }
+
+    return results;
+  }
+
   /**
    * Import the properties of this Profile
    */
@@ -702,16 +721,12 @@ export namespace ProfileOps {
     // in SQLite this isn't possible, but contention is far less likely
     if (updateResponse[1]) profiles = updateResponse[1];
 
-    if (!profiles) return [];
+    if (profiles.length === 0) return [];
 
-    await Promise.all(
-      profiles.map((profile) =>
-        CLS.enqueueTask("profile:completeImport", {
-          profileId: profile.id,
-          toExport,
-        })
-      )
-    );
+    await CLS.enqueueTask("profile:completeImport", {
+      profileIds: profiles.map((p) => p.id),
+      toExport,
+    });
 
     return profiles;
   }
