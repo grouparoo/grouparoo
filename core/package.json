@@ -2,7 +2,7 @@
   "author": "Grouparoo Inc <hello@grouparoo.com>",
   "name": "@grouparoo/core",
   "description": "The Grouparoo Core",
-  "version": "0.4.0-alpha.3",
+  "version": "0.4.0-alpha.4",
   "license": "MPL-2.0",
   "private": false,
   "publishConfig": {
@@ -50,7 +50,7 @@
     "dotenv": "10.0.0",
     "fs-extra": "10.0.0",
     "glob": "7.1.7",
-    "grouparoo": "0.4.0-alpha.3",
+    "grouparoo": "0.4.0-alpha.4",
     "ioredis": "4.27.6",
     "ioredis-mock": "5.6.0",
     "isomorphic-fetch": "3.0.0",
@@ -77,7 +77,7 @@
     "ws": "7.4.6"
   },
   "devDependencies": {
-    "@grouparoo/spec-helper": "0.4.0-alpha.3",
+    "@grouparoo/spec-helper": "0.4.0-alpha.4",
     "@types/jest": "*",
     "@types/pacote": "11.1.0",
     "@types/pluralize": "0.0.29",
