@@ -6,14 +6,16 @@ import {
   UpdatedAt,
   AllowNull,
   BeforeCreate,
+  BeforeBulkCreate,
   BeforeSave,
   BelongsTo,
   ForeignKey,
   AfterCreate,
+  AfterBulkCreate,
   AfterDestroy,
 } from "sequelize-typescript";
 import * as uuid from "uuid";
-import { Op } from "sequelize";
+import { Op, WhereAttributeHash } from "sequelize";
 import { Group } from "./Group";
 import { Profile } from "./Profile";
 import { Log } from "./Log";
@@ -72,10 +74,15 @@ export class GroupMember extends Model {
   }
 
   @BeforeCreate
-  static generateId(instance) {
+  static generateId(instance: GroupMember) {
     if (!instance.id) {
       instance.id = `${instance.idPrefix()}_${uuid.v4()}`;
     }
+  }
+
+  @BeforeBulkCreate
+  static generateIds(instances: GroupMember[]) {
+    instances.forEach((instance) => this.generateId(instance));
   }
 
   @BeforeSave
@@ -109,6 +116,33 @@ export class GroupMember extends Model {
     });
   }
 
+  @AfterBulkCreate
+  static async logsCreate(instances: GroupMember[]) {
+    const groupIds = instances
+      .map((gm) => gm.groupId)
+      .filter(uniqueArrayValues);
+
+    for (const groupId of groupIds) {
+      const group = await Group.findById(groupId);
+      const groupMembers = instances.filter((gm) => gm.groupId === group.id);
+      await Log.bulkCreate(
+        await Promise.all(
+          groupMembers.map(async (instance) => {
+            return {
+              topic: "groupMember",
+              verb: "create",
+              data: await instance.apiData(),
+              ownerId: instance.profileId,
+              message: `added to group ${group ? group.name : ""} (${
+                instance.groupId
+              })`,
+            };
+          })
+        )
+      );
+    }
+  }
+
   @AfterDestroy
   static async logDestroy(instance: GroupMember) {
     const group = await instance.$get("group");
@@ -123,4 +157,37 @@ export class GroupMember extends Model {
       })`,
     });
   }
+
+  static async destroyWithLogs(q: { where: WhereAttributeHash }) {
+    const instances = await GroupMember.findAll(q);
+    const groupIds = instances
+      .map((gm) => gm.groupId)
+      .filter(uniqueArrayValues);
+
+    for (const groupId of groupIds) {
+      const group = await Group.findById(groupId);
+      const groupMembers = instances.filter((gm) => gm.groupId === group.id);
+      await Log.bulkCreate(
+        await Promise.all(
+          groupMembers.map(async (instance) => {
+            return {
+              topic: "groupMember",
+              verb: "destroy",
+              data: await instance.apiData(),
+              ownerId: instance.profileId,
+              message: `removed from group ${group ? group.name : ""} (${
+                instance.groupId
+              })`,
+            };
+          })
+        )
+      );
+    }
+
+    await GroupMember.destroy(q);
+  }
+}
+
+function uniqueArrayValues(value, index, self) {
+  return self.indexOf(value) === index;
 }

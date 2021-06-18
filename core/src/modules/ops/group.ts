@@ -87,32 +87,42 @@ export namespace GroupOps {
   /**
    * Check if the profile should be in this Group
    */
-  export async function updateProfileMembership(
+  export async function updateProfilesMembership(
     group: Group,
-    profile: Profile
+    profiles: Profile[]
   ) {
-    const existingMembership = await GroupMember.findOne({
+    const response: { [profileId: string]: boolean } = {};
+    profiles.forEach((p) => (response[p.id] = false));
+    const existingMemberships = await GroupMember.findAll({
       where: {
         groupId: group.id,
-        profileId: profile.id,
+        profileId: { [Op.in]: profiles.map((p) => p.id) },
       },
     });
 
     if (group.type === "manual") {
       if (group.state === "deleted") {
-        if (existingMembership) {
-          await existingMembership.destroy();
-        }
-        return false;
+        await GroupMember.destroy({
+          where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
+        });
       } else {
-        return existingMembership ? true : false;
+        for (const profile of profiles) {
+          response[profile.id] = existingMemberships.find(
+            (gm) => gm.profileId === profile.id
+          )
+            ? true
+            : false;
+        }
       }
+      return response;
     } else {
       const rules = await group.getRules();
 
       if (Object.keys(rules).length == 0) {
-        if (existingMembership) await existingMembership.destroy();
-        return false;
+        await GroupMember.destroy({
+          where: { id: { [Op.in]: existingMemberships.map((gm) => gm.id) } },
+        });
+        return response;
       } else {
         const { where, include } = await group._buildGroupMemberQueryParts(
           rules,
@@ -121,7 +131,7 @@ export namespace GroupOps {
 
         // and includes this profile
         if (!where[Op.and]) where[Op.and] = [];
-        where[Op.and].push({ id: profile.id });
+        where[Op.and].push({ id: { [Op.in]: profiles.map((p) => p.id) } });
 
         const matchedProfiles = await ProfileMultipleAssociationShim.findAll({
           attributes: ["id"],
@@ -129,20 +139,43 @@ export namespace GroupOps {
           include,
         });
 
-        const belongs = matchedProfiles.length === 1;
+        const bulkCreateProfileIds: string[] = [];
+        const bulkDestroyProfileIds: string[] = [];
+        for (const profile of profiles) {
+          const belongs = matchedProfiles.find((p) => p.id === profile.id)
+            ? true
+            : false;
+          response[profile.id] = belongs;
+          const existingMembership = existingMemberships.find(
+            (gm) => gm.profileId === profile.id
+          );
 
-        if (belongs && !existingMembership) {
-          await GroupMember.create({
-            groupId: group.id,
-            profileId: profile.id,
+          if (belongs && !existingMembership) {
+            bulkCreateProfileIds.push(profile.id);
+          }
+          if (!belongs && existingMembership) {
+            bulkDestroyProfileIds.push(profile.id);
+          }
+        }
+
+        if (bulkCreateProfileIds.length > 0) {
+          await GroupMember.bulkCreate(
+            bulkCreateProfileIds.map((profileId) => {
+              return { profileId, groupId: group.id };
+            })
+          );
+        }
+
+        if (bulkDestroyProfileIds.length > 0) {
+          await GroupMember.destroyWithLogs({
+            where: {
+              profileId: { [Op.in]: bulkDestroyProfileIds },
+              groupId: group.id,
+            },
           });
         }
 
-        if (!belongs && existingMembership) {
-          await existingMembership.destroy();
-        }
-
-        return belongs;
+        return response;
       }
     }
   }

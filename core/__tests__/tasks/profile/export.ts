@@ -183,6 +183,12 @@ describe("tasks/profile:export", () => {
 
         await ImportWorkflow();
 
+        await profiles[0].reload();
+        const properties = await profiles[0].simplifiedProperties();
+        expect(properties.email).toEqual(["mario@example.com"]);
+        expect(properties.firstName).toEqual(["Super"]);
+        expect(properties.lastName).toEqual(["Mario"]);
+
         const foundExportTasks = await specHelper.findEnqueuedTasks(
           "profile:export"
         );
@@ -316,8 +322,9 @@ describe("tasks/profile:export", () => {
 
           await profile.import();
           await profile.updateGroupMembership();
+
           await specHelper.runTask("profile:completeImport", {
-            profileId: profile.id,
+            profileIds: [profile.id],
           });
 
           // I don't throw, but append the error to the Export

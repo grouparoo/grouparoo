@@ -27,7 +27,7 @@ describe("tasks/profile:completeImport", () => {
   describe("profile:completeImport", () => {
     test("can be enqueued", async () => {
       await task.enqueue("profile:completeImport", {
-        profileId: "abc123",
+        profileIds: ["abc123"],
         toExport: true,
       });
       const found = await specHelper.findEnqueuedTasks(
@@ -36,32 +36,26 @@ describe("tasks/profile:completeImport", () => {
       expect(found.length).toEqual(1);
     });
 
-    test("it re-enqueues the task if the profile is not ready", async () => {
+    test("it will not export the profile if it is not ready", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
       await profile.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
       await profile.reload();
       expect(profile.state).toBe("pending");
 
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        profileId: profile.id,
-        toExport: true,
-      });
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
 
       await profile.destroy();
     });
 
-    test("it re-enqueues the task if a profile property becomes pending", async () => {
+    test("it will not export the profile if a profile property is not ready", async () => {
       const profile = await helper.factories.profile();
       await profile.import();
       await profile.update({ state: "ready" });
@@ -73,18 +67,12 @@ describe("tasks/profile:completeImport", () => {
       await profileProperty.update({ state: "pending" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
-      const foundTasks = await specHelper.findEnqueuedTasks(
-        "profile:completeImport"
-      );
-      expect(foundTasks.length).toBe(1);
-      expect(foundTasks[0].args[0]).toEqual({
-        profileId: profile.id,
-        toExport: true,
-      });
+      const foundTasks = await specHelper.findEnqueuedTasks("profile:export");
+      expect(foundTasks.length).toBe(0);
 
       await profile.destroy();
     });
@@ -99,7 +87,7 @@ describe("tasks/profile:completeImport", () => {
       expect(groups.length).toBe(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
@@ -112,38 +100,57 @@ describe("tasks/profile:completeImport", () => {
     test("it updates the imports new data and updates the run counts", async () => {
       const run = await helper.factories.run();
 
-      const _import = await helper.factories.import(run, {
+      const _importA = await helper.factories.import(run, {
         email: "mario@example.com",
         firstName: "Mario",
         noExist: "here",
       });
+      const _importB = await helper.factories.import(run, {
+        email: "mario@example.com",
+        firstName: "Super",
+        lastName: "Mario",
+      });
 
       await specHelper.runTask("import:associateProfile", {
-        importId: _import.id,
+        importId: _importA.id,
+      });
+      await specHelper.runTask("import:associateProfile", {
+        importId: _importB.id,
       });
 
       const profile = await Profile.findOne();
       await profile.import();
       await profile.update({ state: "ready" });
 
-      expect(_import.newGroupIds).toEqual([]);
-      expect(_import.newProfileProperties).toEqual({});
+      expect(_importA.newGroupIds).toEqual([]);
+      expect(_importA.newProfileProperties).toEqual({});
+      expect(_importB.newGroupIds).toEqual([]);
+      expect(_importB.newProfileProperties).toEqual({});
 
       expect(run.profilesCreated).toEqual(0);
       expect(run.profilesImported).toEqual(0);
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
-      await _import.reload();
+      await _importA.reload();
+      await _importB.reload();
       await run.updateTotals();
 
-      expect(_import.newProfileProperties.email).toEqual(["mario@example.com"]);
-      expect(_import.newProfileProperties.firstName).toEqual(["Mario"]);
-      expect(_import.newProfileProperties.lastName).toEqual(["Mario"]);
-      expect(_import.newGroupIds).toEqual([group.id]);
+      expect(_importA.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importA.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importA.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importA.newGroupIds).toEqual([group.id]);
+      expect(_importB.newProfileProperties.email).toEqual([
+        "mario@example.com",
+      ]);
+      expect(_importB.newProfileProperties.firstName).toEqual(["Super"]);
+      expect(_importB.newProfileProperties.lastName).toEqual(["Mario"]);
+      expect(_importB.newGroupIds).toEqual([group.id]);
 
       expect(run.profilesCreated).toEqual(1);
       expect(run.profilesImported).toEqual(1);
@@ -155,7 +162,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: true,
       });
 
@@ -173,7 +180,7 @@ describe("tasks/profile:completeImport", () => {
       await profile.update({ state: "ready" });
 
       await specHelper.runTask("profile:completeImport", {
-        profileId: profile.id,
+        profileIds: [profile.id],
         toExport: false,
       });
 
