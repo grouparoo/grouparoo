@@ -43,7 +43,9 @@ export class ProfileCompleteImport extends RetryableTask {
       const mergedValues = {};
       const imports = profile.imports;
 
-      for (const _import of imports) {
+      for (const _import of imports.sort(
+        (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
+      )) {
         const data = _import.data;
         for (const key in data) {
           // only if we still have property

@@ -102,11 +102,12 @@ describe("tasks/profile:completeImport", () => {
 
       const _importA = await helper.factories.import(run, {
         email: "mario@example.com",
-        firstName: "Super",
+        firstName: "Mario",
         noExist: "here",
       });
       const _importB = await helper.factories.import(run, {
         email: "mario@example.com",
+        firstName: "Super",
         lastName: "Mario",
       });
 
