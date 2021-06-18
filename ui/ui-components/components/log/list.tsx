@@ -30,7 +30,6 @@ export default function LogsList(props) {
   let topics = [
     "app",
     "destination",
-    "event",
     "file",
     "group",
     "groupMember",
