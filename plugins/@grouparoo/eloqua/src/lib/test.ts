@@ -5,10 +5,11 @@ export const test: TestPluginMethod = async ({ appOptions }) => {
   const client = await connect(appOptions);
 
   try {
-    const user = await client.contacts.getAll();
+    const lists = await client.lists.getAll();
+    console.log(lists);
     return {
       success: true,
-      message: `Logged in as ${user.name} at ${user}.`,
+      message: `Found ${lists.elements.length} lists`,
     };
   } catch (err) {
     throw err.errorMessage || err;

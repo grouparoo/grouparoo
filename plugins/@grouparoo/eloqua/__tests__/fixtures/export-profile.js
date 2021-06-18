@@ -16,7 +16,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-N2U1OWJmM2M3ZmVjNGE0ZTliNTgwMTBlOGE4NmE1OGY=';style-src 'self' 'nonce-MGY0Y2NkNDIxMjZlNDE4ZGIwYjRiNjNhNjYxNzhlYmY=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NjQ1ZmQwZDA5MzAwNDM3YmI2ZTNjOTQ2MTY3OGNlYzQ=';style-src 'self' 'nonce-ZGI5MWM4ZWRjN2ZhNDE2NjkwNGRjMThhODNmYzk2OWI=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -26,15 +26,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:47 GMT',
+  'Fri, 18 Jun 2021 02:42:36 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -45,7 +45,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '1d3e66113ddf4a49a214a679649cdf8f/22982672358',
+  'bb44940da87c44f08bbee0d887afa3f7/23325665374',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -55,7 +55,36 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:49 GMT',
+  'Fri, 18 Jun 2021 02:42:36 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '72c5af88b6c34e24be9a436a304304be/23325665633',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:36 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -63,7 +92,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"lucas.nogueira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -74,7 +103,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b48e8b558ffb4cfd847bbe9bc1eb557c/22982672845',
+  'c363f8fd502c48aa82ded5d7b96a74fa/23325665834',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -84,7 +113,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:50 GMT',
+  'Fri, 18 Jun 2021 02:42:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -92,7 +121,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"sandro.arturo%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -103,7 +132,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'a10c7271aa6343d3854bb481a6583eb8/22982673164',
+  '8d9e3a1465364a30b08425b9da0a8d6d/23325666114',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -113,7 +142,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:51 GMT',
+  'Fri, 18 Jun 2021 02:42:37 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -121,7 +150,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"carlos.solimoes%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -132,7 +161,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '36ad384e9ff7450b80aa784ece78dfcf/22982673487',
+  '9b23a0ad525c4924b6de7a5d23aea9f2/23325666381',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -142,7 +171,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:51 GMT',
+  'Fri, 18 Jun 2021 02:42:39 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -150,7 +179,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"jake.jill%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -161,7 +190,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'deeadb2f8e954d5f92551baaa0d3a8ad/22982673799',
+  'ee3fb55689fd4e549ce7a03fd27aa446/23325666611',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -171,7 +200,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:52 GMT',
+  'Fri, 18 Jun 2021 02:42:40 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -179,7 +208,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -190,7 +219,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '997d5605006b4c76a731a33e544c5feb/22982674116',
+  '84f88c3ac0734f7b8953bdeb05ddb102/23325667035',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -200,47 +229,15 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:52 GMT',
+  'Fri, 18 Jun 2021 02:42:40 GMT',
   'Connection',
   'close',
   'Content-Length',
   '50'
 ]);
-nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/id')
-  .once().reply(200, {"site":{"id":734972267,"name":"e703652c38bf92ec484832c95344d3be765d58b5"},"user":{"id":222,"username":"t3st","displayName":"t3st","firstName":"Brian","lastName":"Leonard","emailAddress":"t3st@grouparoo.com"},"urls":{"base":"https://secure.p04.eloqua.com","apis":{"soap":{"standard":"https://secure.p04.eloqua.com/API/{version}/Service.svc","dataTransfer":"https://secure.p04.eloqua.com/API/{version}/DataTransferService.svc","email":"https://secure.p04.eloqua.com/API/{version}/EmailService.svc","externalAction":"https://secure.p04.eloqua.com/API/{version}/ExternalActionService.svc"},"rest":{"standard":"https://secure.p04.eloqua.com/API/REST/{version}/","bulk":"https://secure.p04.eloqua.com/API/Bulk/{version}/"}}}}, [
-  'Cache-Control',
-  'no-store',
-  'Pragma',
-  'no-cache',
-  'Content-Type',
-  'application/json; charset=utf-8',
-  'Expires',
-  '-1',
-  'X-Frame-Options',
-  'DENY',
-  'Set-Cookie',
-  'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
-  'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NDI1NDRjOGEwZGVhNDFjNGFlOTQ3NDc4ZTFlZjU0NzE=';style-src 'self' 'nonce-ZjYyOWVlYzNhNWRlNGIxZTgzYzZkNzlmNTg2MzNhMTU=';upgrade-insecure-requests",
-  'P3P',
-  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
-  'X-XSS-Protection',
-  '1; mode=block',
-  'X-Content-Type-Options',
-  'nosniff',
-  'Strict-Transport-Security',
-  'max-age=31536000; includeSubDomains; preload',
-  'Date',
-  'Tue, 08 Jun 2021 15:55:52 GMT',
-  'Connection',
-  'close',
-  'Content-Length',
-  '732'
-]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -251,7 +248,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd9c42a0a2846400299360e69c36b5393/22982675089',
+  '82abbe303e0f461ba89f88e0efe923a2/23325667262',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -261,7 +258,94 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:54 GMT',
+  'Fri, 18 Jun 2021 02:42:41 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b107170c42d64912b2c6cdac1cdc2222/23325671604',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd43dd0bbd0534c448e95dac5ecc4257b/23325671845',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '136b0bfec4764b5c91d206e337e9b8ec/23325672059',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:53 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -279,7 +363,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c15692620a6547539600801cc85d4323/22982675446',
+  '514b4f4288da445c87e5387e7e8b1410/23325672284',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -289,15 +373,182 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:55 GMT',
+  'Fri, 18 Jun 2021 02:42:53 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984174619","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984174619","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/865","createdBy":"t3st","createdAt":"2021-06-18T02:42:55.0812516Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:42:55.0812516Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cd95f80b72ed4af3a1f3cbf0f313c839/23325672725',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:54 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '459'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/865/data', {"emailAddress":"grouparoo@demo.com","profileId":"pro1","firstName":"John"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '517dd32ee95940ee8a1a2e895b54b2c8/23325672977',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:55 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/865"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/865","status":"pending","createdAt":"2021-06-18T02:42:56.2555452Z","createdBy":"t3st","uri":"/syncs/684"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'de07e8ac7f774830baf4e9bf397d080a/23325673217',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:42:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7f21a95742ec4bae9ef1fecf53b27a4c/23325677531',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:06 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '881d7eb3a39f4f87aa67aea31c4ce3e8/23325677898',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:07 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4117cafaa0c04b939f6fb13eb01e6373/23325682322',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -308,7 +559,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c3e1c03321c7496e9ed7d3a3fc3b4c97/22982676080',
+  'e15fd19f9c544527a7aaa7ed42852687/23325682567',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -318,29 +569,26 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:55 GMT',
+  'Fri, 18 Jun 2021 02:43:18 GMT',
   'Connection',
   'close',
   'Content-Length',
   '50'
 ]);
-nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/id')
-  .once().reply(200, {"site":{"id":734972267,"name":"e703652c38bf92ec484832c95344d3be765d58b5"},"user":{"id":222,"username":"t3st","displayName":"t3st","firstName":"Brian","lastName":"Leonard","emailAddress":"t3st@grouparoo.com"},"urls":{"base":"https://secure.p04.eloqua.com","apis":{"soap":{"standard":"https://secure.p04.eloqua.com/API/{version}/Service.svc","dataTransfer":"https://secure.p04.eloqua.com/API/{version}/DataTransferService.svc","email":"https://secure.p04.eloqua.com/API/{version}/EmailService.svc","externalAction":"https://secure.p04.eloqua.com/API/{version}/ExternalActionService.svc"},"rest":{"standard":"https://secure.p04.eloqua.com/API/REST/{version}/","bulk":"https://secure.p04.eloqua.com/API/Bulk/{version}/"}}}}, [
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984177","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
   'Content-Type',
-  'application/json; charset=utf-8',
+  'application/json',
   'Expires',
   '-1',
-  'X-Frame-Options',
-  'DENY',
-  'Set-Cookie',
-  'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
-  'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-MGE1OGViYWM3MzY0NDk5MmIxMGI5Yzc1YzFlYWI0YjI=';style-src 'self' 'nonce-ODhmYWQ4YWFiOWMwNDlkMWEwOGNmZWUxNWE5YWU1NWM=';upgrade-insecure-requests",
+  'X-Request-Id',
+  '2b210a12cbcb44c99593a813a109e430/23325682770',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -350,15 +598,15 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:56 GMT',
+  'Fri, 18 Jun 2021 02:43:18 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '732'
+  '383'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -369,7 +617,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '90e2ce3e0b7f4b1d98ac1f10043e5474/22982677025',
+  '6be2abd8d97b45689257fbdc24c72695/23325683013',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -379,7 +627,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:57 GMT',
+  'Fri, 18 Jun 2021 02:43:19 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -397,7 +645,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd35a7ca5ad184ba692b3afde3b0ea81c/22982677328',
+  '650f86187dd3416694baea7961a7468d/23325683240',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -407,25 +655,25 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:58 GMT',
+  'Fri, 18 Jun 2021 02:43:20 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .post('/api/REST/1.0/data/contact', {"emailAddress":"caio.silveira@mailinator.com","firstName":"Caio"})
-  .once().reply(201, {"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"complete","name":"caio.silveira@mailinator.com","updatedAt":"1623167759","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","fieldValues":[{"type":"FieldValue","id":"100005"},{"type":"FieldValue","id":"100017"},{"type":"FieldValue","id":"100023"},{"type":"FieldValue","id":"100024"},{"type":"FieldValue","id":"100032","value":"C1LIH000001983649"},{"type":"FieldValue","id":"100033"},{"type":"FieldValue","id":"100034"},{"type":"FieldValue","id":"100035"},{"type":"FieldValue","id":"100036"},{"type":"FieldValue","id":"100041"},{"type":"FieldValue","id":"100043"},{"type":"FieldValue","id":"100044"},{"type":"FieldValue","id":"100045"},{"type":"FieldValue","id":"100046"},{"type":"FieldValue","id":"100047"},{"type":"FieldValue","id":"100048"},{"type":"FieldValue","id":"100049"},{"type":"FieldValue","id":"100051"},{"type":"FieldValue","id":"100065"},{"type":"FieldValue","id":"100066"},{"type":"FieldValue","id":"100068"},{"type":"FieldValue","id":"100069"},{"type":"FieldValue","id":"100072"},{"type":"FieldValue","id":"100081"},{"type":"FieldValue","id":"100171","value":"mailinator.com"},{"type":"FieldValue","id":"100172","value":"Caio"},{"type":"FieldValue","id":"100174"},{"type":"FieldValue","id":"100175"},{"type":"FieldValue","id":"100176"},{"type":"FieldValue","id":"100177"},{"type":"FieldValue","id":"100178"},{"type":"FieldValue","id":"100179"},{"type":"FieldValue","id":"100180"},{"type":"FieldValue","id":"100184"},{"type":"FieldValue","id":"100187"},{"type":"FieldValue","id":"100188"},{"type":"FieldValue","id":"100189"},{"type":"FieldValue","id":"100190"},{"type":"FieldValue","id":"100191"},{"type":"FieldValue","id":"100192"},{"type":"FieldValue","id":"100193"},{"type":"FieldValue","id":"100194","value":"CaioLLMNYJ"},{"type":"FieldValue","id":"100195"},{"type":"FieldValue","id":"100196"},{"type":"FieldValue","id":"100197"},{"type":"FieldValue","id":"100198"},{"type":"FieldValue","id":"100199"},{"type":"FieldValue","id":"100200"},{"type":"FieldValue","id":"100201"},{"type":"FieldValue","id":"100202"},{"type":"FieldValue","id":"100203"},{"type":"FieldValue","id":"100204"},{"type":"FieldValue","id":"100205"},{"type":"FieldValue","id":"100206"},{"type":"FieldValue","id":"100221"},{"type":"FieldValue","id":"100222"},{"type":"FieldValue","id":"100223"},{"type":"FieldValue","id":"100225"},{"type":"FieldValue","id":"100226"},{"type":"FieldValue","id":"100227"},{"type":"FieldValue","id":"100228"},{"type":"FieldValue","id":"100229"},{"type":"FieldValue","id":"100230"},{"type":"FieldValue","id":"100232"},{"type":"FieldValue","id":"100233"},{"type":"FieldValue","id":"100234"},{"type":"FieldValue","id":"100235"},{"type":"FieldValue","id":"100236"},{"type":"FieldValue","id":"100237"},{"type":"FieldValue","id":"100238"},{"type":"FieldValue","id":"100239"},{"type":"FieldValue","id":"100240"},{"type":"FieldValue","id":"100241"},{"type":"FieldValue","id":"100242"},{"type":"FieldValue","id":"100243"},{"type":"FieldValue","id":"100244"},{"type":"FieldValue","id":"100245"},{"type":"FieldValue","id":"100246"},{"type":"FieldValue","id":"100247"},{"type":"FieldValue","id":"100248"},{"type":"FieldValue","id":"100249"},{"type":"FieldValue","id":"100251"},{"type":"FieldValue","id":"100252"},{"type":"FieldValue","id":"100254"},{"type":"FieldValue","id":"100255"},{"type":"FieldValue","id":"100256"},{"type":"FieldValue","id":"100257"},{"type":"FieldValue","id":"100258"},{"type":"FieldValue","id":"100259"},{"type":"FieldValue","id":"100260"},{"type":"FieldValue","id":"100262"},{"type":"FieldValue","id":"100263"},{"type":"FieldValue","id":"100264"},{"type":"FieldValue","id":"100265"},{"type":"FieldValue","id":"100266"},{"type":"FieldValue","id":"100267"},{"type":"FieldValue","id":"100268"},{"type":"FieldValue","id":"100269"},{"type":"FieldValue","id":"100270"},{"type":"FieldValue","id":"100271"},{"type":"FieldValue","id":"100272"},{"type":"FieldValue","id":"100273"},{"type":"FieldValue","id":"100274"},{"type":"FieldValue","id":"100276"},{"type":"FieldValue","id":"100277"},{"type":"FieldValue","id":"100278"},{"type":"FieldValue","id":"100279"},{"type":"FieldValue","id":"100280"},{"type":"FieldValue","id":"100281"},{"type":"FieldValue","id":"100282"},{"type":"FieldValue","id":"100283"},{"type":"FieldValue","id":"100284"},{"type":"FieldValue","id":"100285"},{"type":"FieldValue","id":"100286"},{"type":"FieldValue","id":"100287"},{"type":"FieldValue","id":"100288"},{"type":"FieldValue","id":"100289"},{"type":"FieldValue","id":"100290"},{"type":"FieldValue","id":"100291"},{"type":"FieldValue","id":"100293"},{"type":"FieldValue","id":"100294"},{"type":"FieldValue","id":"100295"},{"type":"FieldValue","id":"100296"},{"type":"FieldValue","id":"100297"},{"type":"FieldValue","id":"100298"},{"type":"FieldValue","id":"100299"},{"type":"FieldValue","id":"100300"},{"type":"FieldValue","id":"100301"},{"type":"FieldValue","id":"100302"},{"type":"FieldValue","id":"100303"},{"type":"FieldValue","id":"100305"},{"type":"FieldValue","id":"100306"}],"firstName":"Caio","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623127589"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984200889","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984200889","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/866","createdBy":"t3st","createdAt":"2021-06-18T02:43:21.3731523Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:21.3731523Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
   'Content-Type',
-  'application/json',
+  'application/json; charset=utf-8',
   'Expires',
   '-1',
   'X-Request-Id',
-  '28bf6e32b9c74f96ad0b6188ddf1d478/22982677843',
+  '89f122c4c91e4130aea1d762098ce40b/23325683624',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -435,16 +683,92 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:59 GMT',
+  'Fri, 18 Jun 2021 02:43:20 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '5211'
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/866/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":"Doe"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '83fd6f888fb0400aa6b43b498bd9a039/23325683824',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:21 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/866/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Pete"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1641e91bc0fe4342a5f9d16a57f840be/23325684113',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:22 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/866"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/866","status":"pending","createdAt":"2021-06-18T02:43:23.1720630Z","createdBy":"t3st","uri":"/syncs/685"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6c625c0aeb844447b36eb055820cd272/23325684333',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:22 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167759","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -454,7 +778,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '03fb7a57bc8245668f59934f3e68a675/22982678345',
+  '1bd915d543a9462ab4e989047f5aaf41/23325688627',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -464,11 +788,372 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:55:59 GMT',
+  'Fri, 18 Jun 2021 02:43:32 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '403'
+  '400'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5cd583dda63e4b098e206fcbe3b23ebb/23325688838',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:33 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '385'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Doe","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'fb03b6fb746f43a1853148485c4473d6/23325689098',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:33 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '400'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2a9d0f86d10b4d5a9c58ba072e262133/23325689325',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:34 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984216054","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984216054","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/867","createdBy":"t3st","createdAt":"2021-06-18T02:43:36.5246973Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:36.5246973Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9c568541832542abb9ca49e5f0ce06ee/23325689775',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/867/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":""})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1c5007f33bf749da917eca7fd42e2a4c/23325689992',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:36 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/867"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/867","status":"pending","createdAt":"2021-06-18T02:43:37.7214114Z","createdBy":"t3st","uri":"/syncs/686"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2773b78cf29b4538918c322a0ad78ea8/23325690273',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:36 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '16e470c2d2da411a84455a48ed3b9e5e/23325694495',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eb79a32a2f8e4407a817cb8c58d0c155/23325694716',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'acc9fd57604d4e698606a5bc6af4eae2/23325694931',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'de1c5073714b4897bf0aa9db458779de/23325695170',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984230492","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984230492","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/868","createdBy":"t3st","createdAt":"2021-06-18T02:43:50.9537011Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:43:50.9537011Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e47a34b187ef43c5a40a391eb3420cc3/23325695605',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/868/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '31a909e522e242b3a3333ed8dda2ad5e/23325695834',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:51 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/868"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/868","status":"pending","createdAt":"2021-06-18T02:43:52.1451711Z","createdBy":"t3st","uri":"/syncs/687"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '10c52dcd4c2d4b509d769ba530fb9323/23325696070',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:43:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
 ]);
 nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   .get('/id')
@@ -486,7 +1171,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ODFlNmMxNjM2M2M2NGRhZjhlNmFmZTJhZDdmMjA2MDE=';style-src 'self' 'nonce-NjM2NzEzMDE0MWZlNDRiOTljOGM1MDIxYTY2NDQ4MTY=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-OTBhZTg1Y2VjYWNmNDc5Njg4MDY5NDBjOTM3OGY0NGU=';style-src 'self' 'nonce-ODlhYjQ1MDk1Y2U0NDhiNDk4ZDg4Y2YxYTA5ZmVkYjI=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -496,16 +1181,44 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:00 GMT',
+  'Fri, 18 Jun 2021 02:44:02 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167759","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .get('/api/bulk/2.0/syncs/687')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/868","syncStartedAt":"2021-06-18T02:43:52.0430000Z","syncEndedAt":"2021-06-18T02:43:52.7800000Z","status":"warning","createdAt":"2021-06-18T02:43:51.9200000Z","createdBy":"t3st","uri":"/syncs/687"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e008e61423a147dbb40bfbd45a7adc6b/23325700862',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:02 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '246'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -515,7 +1228,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '9d0a3c06739c4a128117a39847afa8ff/22982679176',
+  '9d93167e970b4ff6ab713bc61916ac71/23325701075',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -525,11 +1238,240 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:01 GMT',
+  'Fri, 18 Jun 2021 02:44:03 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '403'
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/REST/1.0/assets/contact/list', {"name":"(test) High Value"})
+  .once().reply(201, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984244","updatedBy":"222","count":"0","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eb91a26ddac34da4a2762892d7e4d096/23325701292',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:04 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '293'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd37b50c0d5584db6a4f405185f24950d/23325701665',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:05 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '31a249c2cde9475db08247b6b5072950/23325701874',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:05 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '293'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '511f7443155545f68ab2818b8f6616c6/23325702100',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:06 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984312/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '11d8c994c60e4a08ab5c020f36a04192/23325702350',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:06 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '63'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e3264f4b5f064bf08b61fb6f6dcb7eae/23325702532',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:07 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ff7774c83cd540b6bcf62140390d9ec8/23325702776',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:07 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984204","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Pete","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd1eba0f383114b3f8980cdc9884c485d/23325703029',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:08 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '385'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -543,7 +1485,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'd22a89ccea144a64b4fa3687ce151781/22982679457',
+  '7196fa11be954d04b441ff46cb5c0ab2/23325703254',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -553,25 +1495,25 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:02 GMT',
+  'Fri, 18 Jun 2021 02:44:09 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/data/contact/1983649', {"emailAddress":"caio.silveira@mailinator.com","firstName":"Caio","lastName":"Silveira","mobilePhone":"+5583999999999","id":"1983649"})
-  .once().reply(200, {"type":"Contact","currentStatus":"Awaiting action","id":"1983649","initialId":"1983649","createdAt":"1623167759","depth":"complete","name":"caio.silveira@mailinator.com","updatedAt":"1623167763","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","fieldValues":[{"type":"FieldValue","id":"100005"},{"type":"FieldValue","id":"100017"},{"type":"FieldValue","id":"100023"},{"type":"FieldValue","id":"100024"},{"type":"FieldValue","id":"100032","value":"C1LIH000001983649"},{"type":"FieldValue","id":"100033"},{"type":"FieldValue","id":"100034"},{"type":"FieldValue","id":"100035"},{"type":"FieldValue","id":"100036"},{"type":"FieldValue","id":"100041"},{"type":"FieldValue","id":"100043"},{"type":"FieldValue","id":"100044"},{"type":"FieldValue","id":"100045"},{"type":"FieldValue","id":"100046"},{"type":"FieldValue","id":"100047"},{"type":"FieldValue","id":"100048"},{"type":"FieldValue","id":"100049"},{"type":"FieldValue","id":"100051"},{"type":"FieldValue","id":"100065"},{"type":"FieldValue","id":"100066"},{"type":"FieldValue","id":"100068"},{"type":"FieldValue","id":"100069"},{"type":"FieldValue","id":"100072"},{"type":"FieldValue","id":"100081"},{"type":"FieldValue","id":"100171","value":"mailinator.com"},{"type":"FieldValue","id":"100172","value":"Caio Silveira"},{"type":"FieldValue","id":"100174"},{"type":"FieldValue","id":"100175"},{"type":"FieldValue","id":"100176"},{"type":"FieldValue","id":"100177"},{"type":"FieldValue","id":"100178"},{"type":"FieldValue","id":"100179"},{"type":"FieldValue","id":"100180"},{"type":"FieldValue","id":"100184"},{"type":"FieldValue","id":"100187"},{"type":"FieldValue","id":"100188"},{"type":"FieldValue","id":"100189"},{"type":"FieldValue","id":"100190"},{"type":"FieldValue","id":"100191"},{"type":"FieldValue","id":"100192"},{"type":"FieldValue","id":"100193"},{"type":"FieldValue","id":"100194","value":"CaioLLMNYJ"},{"type":"FieldValue","id":"100195"},{"type":"FieldValue","id":"100196"},{"type":"FieldValue","id":"100197"},{"type":"FieldValue","id":"100198"},{"type":"FieldValue","id":"100199"},{"type":"FieldValue","id":"100200"},{"type":"FieldValue","id":"100201"},{"type":"FieldValue","id":"100202"},{"type":"FieldValue","id":"100203","value":"0"},{"type":"FieldValue","id":"100204"},{"type":"FieldValue","id":"100205","value":"0"},{"type":"FieldValue","id":"100206","value":"0"},{"type":"FieldValue","id":"100221"},{"type":"FieldValue","id":"100222"},{"type":"FieldValue","id":"100223"},{"type":"FieldValue","id":"100225"},{"type":"FieldValue","id":"100226"},{"type":"FieldValue","id":"100227"},{"type":"FieldValue","id":"100228"},{"type":"FieldValue","id":"100229"},{"type":"FieldValue","id":"100230"},{"type":"FieldValue","id":"100232","value":"0"},{"type":"FieldValue","id":"100233","value":"0"},{"type":"FieldValue","id":"100234"},{"type":"FieldValue","id":"100235"},{"type":"FieldValue","id":"100236"},{"type":"FieldValue","id":"100237"},{"type":"FieldValue","id":"100238"},{"type":"FieldValue","id":"100239"},{"type":"FieldValue","id":"100240"},{"type":"FieldValue","id":"100241"},{"type":"FieldValue","id":"100242"},{"type":"FieldValue","id":"100243"},{"type":"FieldValue","id":"100244","value":"0"},{"type":"FieldValue","id":"100245","value":"0"},{"type":"FieldValue","id":"100246","value":"0"},{"type":"FieldValue","id":"100247","value":"0"},{"type":"FieldValue","id":"100248"},{"type":"FieldValue","id":"100249"},{"type":"FieldValue","id":"100251"},{"type":"FieldValue","id":"100252"},{"type":"FieldValue","id":"100254"},{"type":"FieldValue","id":"100255"},{"type":"FieldValue","id":"100256"},{"type":"FieldValue","id":"100257"},{"type":"FieldValue","id":"100258"},{"type":"FieldValue","id":"100259"},{"type":"FieldValue","id":"100260","value":"False"},{"type":"FieldValue","id":"100262"},{"type":"FieldValue","id":"100263"},{"type":"FieldValue","id":"100264"},{"type":"FieldValue","id":"100265"},{"type":"FieldValue","id":"100266"},{"type":"FieldValue","id":"100267"},{"type":"FieldValue","id":"100268"},{"type":"FieldValue","id":"100269"},{"type":"FieldValue","id":"100270"},{"type":"FieldValue","id":"100271"},{"type":"FieldValue","id":"100272"},{"type":"FieldValue","id":"100273"},{"type":"FieldValue","id":"100274"},{"type":"FieldValue","id":"100276"},{"type":"FieldValue","id":"100277"},{"type":"FieldValue","id":"100278"},{"type":"FieldValue","id":"100279"},{"type":"FieldValue","id":"100280"},{"type":"FieldValue","id":"100281"},{"type":"FieldValue","id":"100282"},{"type":"FieldValue","id":"100283"},{"type":"FieldValue","id":"100284"},{"type":"FieldValue","id":"100285"},{"type":"FieldValue","id":"100286"},{"type":"FieldValue","id":"100287"},{"type":"FieldValue","id":"100288"},{"type":"FieldValue","id":"100289"},{"type":"FieldValue","id":"100290"},{"type":"FieldValue","id":"100291"},{"type":"FieldValue","id":"100293"},{"type":"FieldValue","id":"100294"},{"type":"FieldValue","id":"100295"},{"type":"FieldValue","id":"100296"},{"type":"FieldValue","id":"100297"},{"type":"FieldValue","id":"100298"},{"type":"FieldValue","id":"100299"},{"type":"FieldValue","id":"100300"},{"type":"FieldValue","id":"100301","value":"0"},{"type":"FieldValue","id":"100302"},{"type":"FieldValue","id":"100303"},{"type":"FieldValue","id":"100305"},{"type":"FieldValue","id":"100306"}],"firstName":"Caio","isBounceback":"false","isSubscribed":"true","lastName":"Silveira","mobilePhone":"+5583999999999","subscriptionDate":"1623127589"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984250332","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984250332","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/869","createdBy":"t3st","createdAt":"2021-06-18T02:44:11.0988739Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:11.0988739Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
   'Content-Type',
-  'application/json',
+  'application/json; charset=utf-8',
   'Expires',
   '-1',
   'X-Request-Id',
-  '410d1dce716f4aa488c39704e5df0de9/22982679913',
+  'ab4e954e45eb4456bed504a403fd93e5/23325703687',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -581,26 +1523,23 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:03 GMT',
+  'Fri, 18 Jun 2021 02:44:10 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '5431'
+  '502'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167763","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","lastName":"Silveira","mobilePhone":"+5583999999999","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .post('/api/bulk/2.0/contacts/imports/869/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .once().reply(204, "", [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
-  'Content-Type',
-  'application/json',
   'Expires',
   '-1',
   'X-Request-Id',
-  'bf000c4d7d264f52a1498f952089221f/22982680299',
+  '7048fe14b2a34236b0281ff78dce24a9/23325704084',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -610,11 +1549,61 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:04 GMT',
+  'Fri, 18 Jun 2021 02:44:10 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/869/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Sally"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3a8c27bec87540a5bd0809b125f41818/23325704335',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:11 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/869"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/869","status":"pending","createdAt":"2021-06-18T02:44:12.9748031Z","createdBy":"t3st","uri":"/syncs/688"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8893f00582c241929073f4558d3f682c/23325704543',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:12 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '154'
 ]);
 nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   .get('/id')
@@ -632,7 +1621,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ODIxOGE5MzcwZGY0NDI2MDg5ZjVlNGQzNzVhNjMxNDI=';style-src 'self' 'nonce-N2JjYjg2Y2FjZDc0NDJhMThjYWZiYjk5OWY5NzIyNjE=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-NWM1ZjkyNGVjYTZiNDBkZmI1ZWIxMDliNGM1YWZlYTI=';style-src 'self' 'nonce-ZGRlMWI1YTgzOTY1NDZhYjljZTQzZDljYWQ5OWFhZjg=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -642,16 +1631,44 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:04 GMT',
+  'Fri, 18 Jun 2021 02:44:22 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167763","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","lastName":"Silveira","mobilePhone":"+5583999999999","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .get('/api/bulk/2.0/syncs/688')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/869","syncStartedAt":"2021-06-18T02:44:13.1730000Z","syncEndedAt":"2021-06-18T02:44:14.4700000Z","status":"warning","createdAt":"2021-06-18T02:44:12.7500000Z","createdBy":"t3st","uri":"/syncs/688"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cc25fccc318b4c9d913e22df0478b293/23325709380',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:24 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '246'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -661,7 +1678,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3bb45f3230384625a642f7955a7bc7be/22982681271',
+  'e9a58cf37183436cacc0ca815aae6d1f/23325709614',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -671,11 +1688,412 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:05 GMT',
+  'Fri, 18 Jun 2021 02:44:24 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c5c302d4603e4ccb89e80eebdf379df5/23325709908',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:24 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c2965f561bdb4fda93bfb4c0278e6a39/23325710175',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:25 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/REST/1.0/assets/contact/list', {"name":"(test) Churned"})
+  .once().reply(201, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984266","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b39ccb13ab5940b08770959790da67e2/23325710490',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:26 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '290'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8a8ea5ea1d09441a8cf09fbb6915917c/23325710788',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:26 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984246","updatedBy":"222","count":"1","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4fbca78810314c84ac74e3ae0df55dd7/23325711009',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:27 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cb231e0d967f40a4876cfccfe37ef72c/23325711207',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:27 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312","1984313"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ccf3b59b0dcc4922af4eb7d1a86bc1eb/23325711476',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:28 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '293'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":["1984312"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0ad9d184d247425ebbb91d5ffbb54165/23325711709',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:30 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '290'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '276583d544d54c10bad7edafdd73ee24/23325711965',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:30 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '339'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984312/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"},{"type":"ContactList","id":"5991","name":"(test) Churned"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '025407c89e6a473787a9eb8a7161e994/23325712177',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '122'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '90e8b8dcf58f4e8084566c7168082583/23325712378',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984313/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '58fadb38578c43b88ad6af88873f4dbd/23325712664',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:32 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '63'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '467ed95206e545be971247506f0675e6/23325712850',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:32 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5d0fceba8cde4f7da20ea07f909151e2/23325713062',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:33 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -689,7 +2107,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '7aefc9d3a746435a81d7a4e641323e09/22982681593',
+  '41d37f3eda3d480b9a88609542aa9d46/23325713277',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -699,26 +2117,25 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:06 GMT',
+  'Fri, 18 Jun 2021 02:44:33 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167763","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","lastName":"Silveira","mobilePhone":"+5583999999999","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984274773","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984274773","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/870","createdBy":"t3st","createdAt":"2021-06-18T02:44:35.2643526Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:35.2643526Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
   'Content-Type',
-  'application/json',
+  'application/json; charset=utf-8',
   'Expires',
   '-1',
   'X-Request-Id',
-  '885e649650f44ab99ad636288924a3a5/22982682132',
+  '1990038ce7eb448885df39a5167f0ce3/23325713668',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -728,11 +2145,87 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:07 GMT',
+  'Fri, 18 Jun 2021 02:44:34 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/870/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c12f5299d37e49e7b4dddd5223b01b6f/23325713977',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:35 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/870/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Sally"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '56a44d7677f94f7d9fb3e11d627b2b84/23325714527',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:36 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/870"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/870","status":"pending","createdAt":"2021-06-18T02:44:37.6147740Z","createdBy":"t3st","uri":"/syncs/689"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5c9057d6bb1a4111a7a92e564d5061ed/23325714816',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:37 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
 ]);
 nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   .get('/id')
@@ -750,7 +2243,7 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Set-Cookie',
   'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
   'Content-Security-Policy',
-  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-ZDU0MDZlZjM1OGJmNDA5Nzk5OThmZTgzNTAxYjc1OGY=';style-src 'self' 'nonce-NDBiOGM0N2RkM2EyNGIwM2IwOTJmM2EwNTM1NjVkN2E=';upgrade-insecure-requests",
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-N2JiMDY4MzYxOWFhNGVjMzk2NmNlZDZjMjE2OGU3YjU=';style-src 'self' 'nonce-YmQ3NGFjMTAwYjYxNDAyODg3MjE4YTQ4ZGQwN2FmM2Q=';upgrade-insecure-requests",
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -760,16 +2253,44 @@ nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:08 GMT',
+  'Fri, 18 Jun 2021 02:44:48 GMT',
   'Connection',
   'close',
   'Content-Length',
   '732'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167763","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Caio","isBounceback":"false","isSubscribed":"true","lastName":"Silveira","mobilePhone":"+5583999999999","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .get('/api/bulk/2.0/syncs/689')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/870","syncStartedAt":"2021-06-18T02:44:38.1100000Z","syncEndedAt":"2021-06-18T02:44:38.9230000Z","status":"warning","createdAt":"2021-06-18T02:44:37.3900000Z","createdBy":"t3st","uri":"/syncs/689"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b430ed7be96649a99488fd4bb131983b/23325719352',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '246'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -779,7 +2300,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'db50a429f4b44c26839d4771f83361fd/22982682989',
+  '5e34c716d02c4461888fb20da58faaff/23325719565',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -789,11 +2310,384 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:08 GMT',
+  'Fri, 18 Jun 2021 02:44:49 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ffc7146e455a4c77bece83e4c7b5226c/23325719804',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3b0941852bbd4d628207ffa3f8f16ebb/23325720056',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '339'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1d12f50af0bd4d17bd2c444f4ace6193/23325720296',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd3d2a84fd48b470182e497448bdf6847/23325720525',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e3f651d842a34c33a024590975abd6d6/23325720719',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984269","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1a312d959a7e4bb8ab949579f3c60212/23325720937',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '339'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'f02ef9a69d4d4b8ba4384bbace23bda0/23325721120',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984312","1984313"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '54493c8f857c42288511d5e4faeee6b6/23325721332',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '293'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":[],"membershipDeletions":["1984312","1984313"]})
+  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2e46ea3fa4584fa98ca7f542d37f00ad/23325721576',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:54 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '290'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984312/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '97b10a84c7cb4cb198f2351e45921da2/23325721826',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:54 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '63'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984313/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '379eb8810fb047dc93c0e7580b60187c/23325722027',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '63'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '244cd45ee2df4a63ab292f11a86347b3/23325722266',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '407'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984254","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Sally","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '00df027150e047128638c1d23d0ece5a/23325722513',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:57 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '386'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/bulk/2.0/contacts/fields')
@@ -807,7 +2701,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'ac44968aa1f04b8396b7e7594bba0bea/22982683291',
+  '02f3abd9b60344eca830118fd83a205d/23325722720',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -817,25 +2711,25 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:09 GMT',
+  'Fri, 18 Jun 2021 02:44:57 GMT',
   'Connection',
   'close',
   'Content-Length',
   '56547'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .put('/api/REST/1.0/data/contact/1983649', {"emailAddress":"caio.silveira@mailinator.com","firstName":"Evan","lastName":"Podolsky","mobilePhone":"+5583999999998","id":"1983649"})
-  .once().reply(200, {"type":"Contact","currentStatus":"Awaiting action","id":"1983649","initialId":"1983649","createdAt":"1623167759","depth":"complete","name":"caio.silveira@mailinator.com","updatedAt":"1623167770","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","fieldValues":[{"type":"FieldValue","id":"100005"},{"type":"FieldValue","id":"100017"},{"type":"FieldValue","id":"100023"},{"type":"FieldValue","id":"100024"},{"type":"FieldValue","id":"100032","value":"C1LIH000001983649"},{"type":"FieldValue","id":"100033"},{"type":"FieldValue","id":"100034"},{"type":"FieldValue","id":"100035"},{"type":"FieldValue","id":"100036"},{"type":"FieldValue","id":"100041"},{"type":"FieldValue","id":"100043"},{"type":"FieldValue","id":"100044"},{"type":"FieldValue","id":"100045"},{"type":"FieldValue","id":"100046"},{"type":"FieldValue","id":"100047"},{"type":"FieldValue","id":"100048"},{"type":"FieldValue","id":"100049"},{"type":"FieldValue","id":"100051"},{"type":"FieldValue","id":"100065"},{"type":"FieldValue","id":"100066"},{"type":"FieldValue","id":"100068"},{"type":"FieldValue","id":"100069"},{"type":"FieldValue","id":"100072"},{"type":"FieldValue","id":"100081"},{"type":"FieldValue","id":"100171","value":"mailinator.com"},{"type":"FieldValue","id":"100172","value":"Evan Podolsky"},{"type":"FieldValue","id":"100174"},{"type":"FieldValue","id":"100175"},{"type":"FieldValue","id":"100176"},{"type":"FieldValue","id":"100177"},{"type":"FieldValue","id":"100178"},{"type":"FieldValue","id":"100179"},{"type":"FieldValue","id":"100180"},{"type":"FieldValue","id":"100184"},{"type":"FieldValue","id":"100187"},{"type":"FieldValue","id":"100188"},{"type":"FieldValue","id":"100189"},{"type":"FieldValue","id":"100190"},{"type":"FieldValue","id":"100191"},{"type":"FieldValue","id":"100192"},{"type":"FieldValue","id":"100193"},{"type":"FieldValue","id":"100194","value":"CaioLLMNYJ"},{"type":"FieldValue","id":"100195"},{"type":"FieldValue","id":"100196"},{"type":"FieldValue","id":"100197"},{"type":"FieldValue","id":"100198"},{"type":"FieldValue","id":"100199"},{"type":"FieldValue","id":"100200"},{"type":"FieldValue","id":"100201"},{"type":"FieldValue","id":"100202"},{"type":"FieldValue","id":"100203","value":"0"},{"type":"FieldValue","id":"100204"},{"type":"FieldValue","id":"100205","value":"0"},{"type":"FieldValue","id":"100206","value":"0"},{"type":"FieldValue","id":"100221"},{"type":"FieldValue","id":"100222"},{"type":"FieldValue","id":"100223"},{"type":"FieldValue","id":"100225"},{"type":"FieldValue","id":"100226"},{"type":"FieldValue","id":"100227"},{"type":"FieldValue","id":"100228"},{"type":"FieldValue","id":"100229"},{"type":"FieldValue","id":"100230"},{"type":"FieldValue","id":"100232","value":"0"},{"type":"FieldValue","id":"100233","value":"0"},{"type":"FieldValue","id":"100234"},{"type":"FieldValue","id":"100235"},{"type":"FieldValue","id":"100236"},{"type":"FieldValue","id":"100237"},{"type":"FieldValue","id":"100238"},{"type":"FieldValue","id":"100239"},{"type":"FieldValue","id":"100240"},{"type":"FieldValue","id":"100241"},{"type":"FieldValue","id":"100242"},{"type":"FieldValue","id":"100243"},{"type":"FieldValue","id":"100244","value":"0"},{"type":"FieldValue","id":"100245","value":"0"},{"type":"FieldValue","id":"100246","value":"0"},{"type":"FieldValue","id":"100247","value":"0"},{"type":"FieldValue","id":"100248"},{"type":"FieldValue","id":"100249"},{"type":"FieldValue","id":"100251"},{"type":"FieldValue","id":"100252"},{"type":"FieldValue","id":"100254"},{"type":"FieldValue","id":"100255"},{"type":"FieldValue","id":"100256"},{"type":"FieldValue","id":"100257"},{"type":"FieldValue","id":"100258"},{"type":"FieldValue","id":"100259"},{"type":"FieldValue","id":"100260","value":"False"},{"type":"FieldValue","id":"100262"},{"type":"FieldValue","id":"100263"},{"type":"FieldValue","id":"100264"},{"type":"FieldValue","id":"100265"},{"type":"FieldValue","id":"100266"},{"type":"FieldValue","id":"100267"},{"type":"FieldValue","id":"100268"},{"type":"FieldValue","id":"100269"},{"type":"FieldValue","id":"100270"},{"type":"FieldValue","id":"100271"},{"type":"FieldValue","id":"100272"},{"type":"FieldValue","id":"100273"},{"type":"FieldValue","id":"100274"},{"type":"FieldValue","id":"100276"},{"type":"FieldValue","id":"100277"},{"type":"FieldValue","id":"100278"},{"type":"FieldValue","id":"100279"},{"type":"FieldValue","id":"100280"},{"type":"FieldValue","id":"100281"},{"type":"FieldValue","id":"100282"},{"type":"FieldValue","id":"100283"},{"type":"FieldValue","id":"100284"},{"type":"FieldValue","id":"100285"},{"type":"FieldValue","id":"100286"},{"type":"FieldValue","id":"100287"},{"type":"FieldValue","id":"100288"},{"type":"FieldValue","id":"100289"},{"type":"FieldValue","id":"100290"},{"type":"FieldValue","id":"100291"},{"type":"FieldValue","id":"100293"},{"type":"FieldValue","id":"100294"},{"type":"FieldValue","id":"100295"},{"type":"FieldValue","id":"100296"},{"type":"FieldValue","id":"100297"},{"type":"FieldValue","id":"100298"},{"type":"FieldValue","id":"100299"},{"type":"FieldValue","id":"100300"},{"type":"FieldValue","id":"100301","value":"0"},{"type":"FieldValue","id":"100302"},{"type":"FieldValue","id":"100303"},{"type":"FieldValue","id":"100305"},{"type":"FieldValue","id":"100306"}],"firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Podolsky","mobilePhone":"+5583999999998","subscriptionDate":"1623127589"}, [
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984298162","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984298162","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/871","createdBy":"t3st","createdAt":"2021-06-18T02:44:58.6297565Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:44:58.6297565Z"}, [
   'Cache-Control',
   'no-store',
   'Pragma',
   'no-cache',
   'Content-Type',
-  'application/json',
+  'application/json; charset=utf-8',
   'Expires',
   '-1',
   'X-Request-Id',
-  '75d913ef16434986a94129234f66b086/22982683737',
+  '13e311dd3bc445b282a9595cc3346745/23325723037',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -845,16 +2739,181 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:10 GMT',
+  'Fri, 18 Jun 2021 02:44:58 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '5431'
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/871/data', {"emailAddress":"notgrouparoo@demo.com","id":"1984184","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '880fe6772e92412eac7d0d5b118adfd9/23325723239',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:58 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/871/data', {"emailAddress":"grouparoo2@demo.com","id":"1984313","profileId":"pro2","firstName":"Evan"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '463be7064ba4477db2e1bf7ce2e33848/23325723433',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:59 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/871"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/871","status":"pending","createdAt":"2021-06-18T02:45:00.3918968Z","createdBy":"t3st","uri":"/syncs/690"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '87b86eab8e264372b070e34c8b2e9a02/23325723652',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:44:59 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://login.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/id')
+  .once().reply(200, {"site":{"id":734972267,"name":"e703652c38bf92ec484832c95344d3be765d58b5"},"user":{"id":222,"username":"t3st","displayName":"t3st","firstName":"Brian","lastName":"Leonard","emailAddress":"t3st@grouparoo.com"},"urls":{"base":"https://secure.p04.eloqua.com","apis":{"soap":{"standard":"https://secure.p04.eloqua.com/API/{version}/Service.svc","dataTransfer":"https://secure.p04.eloqua.com/API/{version}/DataTransferService.svc","email":"https://secure.p04.eloqua.com/API/{version}/EmailService.svc","externalAction":"https://secure.p04.eloqua.com/API/{version}/ExternalActionService.svc"},"rest":{"standard":"https://secure.p04.eloqua.com/API/REST/{version}/","bulk":"https://secure.p04.eloqua.com/API/Bulk/{version}/"}}}}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Frame-Options',
+  'DENY',
+  'Set-Cookie',
+  'culture=en-US; domain=login.eloqua.com; path=/; SameSite=None; secure; HttpOnly',
+  'Content-Security-Policy',
+  "connect-src 'self';default-src 'self';script-src 'self' secure.p02.eloqua.com 'nonce-YjZhNTY1ODMwMDg1NGRkYzkyMWQ1ZGY5OTFjMDQ2Yjc=';style-src 'self' 'nonce-N2JkNjg0NjRjODNkNGMyZTk0YjgyNGY1NWFjNGZkZWY=';upgrade-insecure-requests",
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:10 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '732'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/syncs/690')
+  .once().reply(200, {"syncedInstanceUri":"/contacts/imports/871","syncStartedAt":"2021-06-18T02:45:00.5830000Z","syncEndedAt":"2021-06-18T02:45:01.7230000Z","status":"warning","createdAt":"2021-06-18T02:45:00.1630000Z","createdBy":"t3st","uri":"/syncs/690"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'f41ff9268de44c499534d677fb7365a9/23325728354',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:11 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '246'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cd825298c40e4681bf9f6629dd33316c/23325728631',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:12 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167770","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Podolsky","mobilePhone":"+5583999999998","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -864,7 +2923,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8758d027f7694bca9754ae2525555fa2/22982684119',
+  '07e07b3058b44a05bbde8e1b2dc18b9f/23325728802',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -874,16 +2933,45 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:11 GMT',
+  'Fri, 18 Jun 2021 02:45:12 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '407'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"0","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'bfc831adbda443548d268b9c634e181f/23325729021',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:13 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '339'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"caio.silveira%40mailinator.com","depth":"partial"})
-  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1983649","createdAt":"1623167759","depth":"partial","name":"caio.silveira@mailinator.com","updatedAt":"1623167770","emailAddress":"caio.silveira@mailinator.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Podolsky","mobilePhone":"+5583999999998","subscriptionDate":"1623127589"}],"page":1,"pageSize":1000,"total":1}, [
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
   'Cache-Control',
   'no-store',
   'Pragma',
@@ -893,7 +2981,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '6ad3ea9e9ab740c09531d1adf410f2c8/22982684476',
+  'ea3a201a22a9426aa8551798823c1624/23325729242',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -903,14 +2991,387 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:11 GMT',
+  'Fri, 18 Jun 2021 02:45:13 GMT',
   'Connection',
   'close',
   'Content-Length',
-  '456'
+  '407'
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
-  .delete('/api/REST/1.0/data/contact/1983649')
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984294","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '112c524c00ee40d5889023d28aa2e19a/23325729467',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:14 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0914b9ed2ca14575a4a7a3fadd90f305/23325729676',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:14 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '385'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5990', {"id":"5990","name":"(test) High Value","membershipAdditions":["1984184"],"membershipDeletions":["1984313"]})
+  .once().reply(200, {"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"complete","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984315","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e48f2247db5c4f2f8a118605eff7bd06/23325729973',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:15 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '293'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .put('/api/REST/1.0/assets/contact/list/5991', {"id":"5991","name":"(test) Churned","membershipAdditions":["1984184"],"membershipDeletions":[]})
+  .once().reply(200, {"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"complete","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984316","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ed6431f5e28e4325813db309b0568896/23325730219',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:16 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '290'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4059adf9728140fcbe8995ad7853b71f/23325730536',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:16 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ea2123d0c1234c028dc86dd34c6ac163/23325730765',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '407'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '613583df8dd34033b3005b62f83dfe80/23325730986',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '385'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984184/membership')
+  .once().reply(200, [{"type":"ContactList","id":"5990","name":"(test) High Value"},{"type":"ContactList","id":"5991","name":"(test) Churned"}], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '428a1b1d49c841fb868b1cd30e14ce74/23325731186',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:18 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '122'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/2.0/data/contact/1984313/membership')
+  .once().reply(200, [], [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9b82cfac0dcb488ab24edaf41ce9af6a/23325731401',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:18 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '2'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3cc066bbffe74e03aa8ccf83318f13d7/23325731599',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:19 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '407'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984184","createdAt":"1623960611","depth":"partial","name":"notgrouparoo@demo.com","updatedAt":"1623969152","emailAddress":"notgrouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623960611"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6c0d75095d4e4c45b45bb7c5062f71f9/23325731865',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:19 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '407'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984219","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '428bbdd0c7ba47ffbc300baae9025599/23325732081',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '383'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984313","createdAt":"1623984204","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984301","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '59ca928e4a1e4384a7799e259a3b24b9/23325732320',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '385'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984313')
   .once().reply(200, "", [
   'Cache-Control',
   'no-store',
@@ -919,7 +3380,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'b8f88655892e4faaa92d835cd86910f2/22982684819',
+  '1d94bb4e06db46788b1c62ed81800458/23325732565',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -929,7 +3390,1338 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:12 GMT',
+  'Fri, 18 Jun 2021 02:45:21 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7b66af56a6b54b6a9c5371f870d980cb/23325732822',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:22 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984323184","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984323184","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/872","createdBy":"t3st","createdAt":"2021-06-18T02:45:23.6461514Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:23.6461514Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2cfa82a86d60408ebf7b6c8ca3f4ee6e/23325733177',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:22 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '502'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/872/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"John","lastName":"Test"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0d2d7e326041483e86d8068e7bdb87ac/23325733422',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:23 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/872"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/872","status":"pending","createdAt":"2021-06-18T02:45:24.8482622Z","createdBy":"t3st","uri":"/syncs/691"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2b7b567891304557ba17797abdbb2469/23325733652',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:24 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984325","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '15cb61dd8a0247058f99abfe0e0a2584/23325737803',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:34 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '401'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8f2c0db52c684398b839b7e2e0099f09/23325738021',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '98030cc97a374e788f48dc873089b026/23325738239',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '249d34f9cca34b51ab90e37ece239e30/23325738462',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:36 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984337558","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984337558","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/873","createdBy":"t3st","createdAt":"2021-06-18T02:45:38.0437912Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:38.0437912Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '239dafa82f01496ca74268cf68308846/23325738836',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:37 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/873/data', {"emailAddress":"grouparoo2@demo.com","profileId":"pro2","firstName":"Evan","lastName":"Saran","mobilePhone":"+5583999999999"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd56c8cc1d5fc451582096516cae0e463/23325739039',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:38 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/873"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/873","status":"pending","createdAt":"2021-06-18T02:45:39.2659400Z","createdBy":"t3st","uri":"/syncs/692"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'f85adfe0424b46c883d9acc648f64beb/23325739297',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:38 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b1ae599f2eaa42d6aad49972e51cedb4/23325743516',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '435'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dnotanemail"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1d68b38be1a84a9f83c0052a02e7f907/23325743770',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '480ea332c1ae414ca1de9cf7cf48498c/23325743999',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984351528","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984351528","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/874","createdBy":"t3st","createdAt":"2021-06-18T02:45:52.0070305Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:45:52.0070305Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eba2a4a75ea748dfbef30bdec67ffbbe/23325744388',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/874/data', {"emailAddress":"notanemail","profileId":"pro2","firstName":"Maria"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'cfbeb38c9c6b47aa93f35f1fd04fdb35/23325744615',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:52 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/874"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/874","status":"pending","createdAt":"2021-06-18T02:45:53.2837315Z","createdBy":"t3st","uri":"/syncs/693"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c792a63cd58b460b85c4dea5b6717238/23325744875',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:45:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '084348bddd094678b71af5c031068ee5/23325749026',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:02 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '435'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '045cf418d1674805bd6020dd8e3548ec/23325749257',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:03 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c24537de7182405f8c219b1a9a6a0b2d/23325749482',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:03 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd9f3857b54b64260a032937610b51097/23325754020',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:15 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '435'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4840b65d439f438c925953c163f402e0/23325754260',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:15 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984325","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"John","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1c9081fc7e0b40ffb3665f74989cd658/23325754486',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:16 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '401'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dbademail"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4776771555624c4e9ff9f99610888134/23325754716',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5ada8bef60f3452cbab7726acdf9be4c/23325754938',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ae2eb9e69e064ee485b61b49f08bc1b2/23325755158',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984378881","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984378881","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/875","createdBy":"t3st","createdAt":"2021-06-18T02:46:19.3632731Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:19.3632731Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2f4cc4c824f5420889e45311c0462776/23325755578',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:18 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"grouparoo@demo.com","id":"1984312","profileId":"pro1","firstName":"Sam","lastName":"Test"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '799c73ae3f004ba18cb2effa30296c25/23325755795',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:20 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"bademail","profileId":"pro2","firstName":"William"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '76de7cd9fa2746a2846ea1d1243c3cb7/23325756049',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:20 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/875/data', {"emailAddress":"grouparoo3@demo.com","profileId":"pro3","firstName":"Liz"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a96f2f478e6b48179117e83b9679acf2/23325756306',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:21 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/875"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/875","status":"pending","createdAt":"2021-06-18T02:46:21.7363884Z","createdBy":"t3st","uri":"/syncs/694"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b0fc3b638bed4142a0eac799c216adfa/23325756552',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:21 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5ff0771d70534ceda6d40d3f6fcc7b26/23325760849',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '400'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c5625967108543e4a6800a6c42553917/23325761062',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:31 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '435'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984315","createdAt":"1623984382","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eb98eb93ad4948dbb62465ec2621fce8/23325761270',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:32 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '384'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'db1a4bf34b064c8f8f7b3a874481ec6f/23325761501',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:33 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8b0658ce62b04c0c8f135bb72f22f927/23325761759',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:34 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984395109","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984395109","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/876","createdBy":"t3st","createdAt":"2021-06-18T02:46:35.7395275Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:35.7395275Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e5f1811ce5fb412ea44d3d8c59e4d1cb/23325762162',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:35 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/876/data', {"emailAddress":"grouparoo+test@demo.com","profileId":"pro4","firstName":"Special"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '340ec8c1f47b48d392d650095d83c0f9/23325762625',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:36 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/876"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/876","status":"pending","createdAt":"2021-06-18T02:46:37.1907953Z","createdBy":"t3st","uri":"/syncs/695"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a8fa3aecbf7646ea83f042224a45a96d/23325763039',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:37 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984398","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '79c2a8cf72914fc190e89a9d18c1160d/23325767568',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:46 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '396'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984398","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '69e6a8a078ee45eb9fdba5d23aa6f605/23325767786',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '396'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6d5c58ea9407473a957ed286a3e59f75/23325768015',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984409305","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984409305","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/877","createdBy":"t3st","createdAt":"2021-06-18T02:46:49.7819653Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:46:49.7819653Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '65bb7c4b704d4dae9a7d81bc931428a5/23325768377',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/877/data', {"emailAddress":"grouparoo+test@demo.com","id":"1984316","profileId":"pro4","firstName":"Special","lastName":"User"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6d14c203ba0e47b8a353465e5fb1293d/23325768626',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:50 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/877"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/877","status":"pending","createdAt":"2021-06-18T02:46:50.9901905Z","createdBy":"t3st","uri":"/syncs/696"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '86c9d0b382ef407a89e231409e3f71c6/23325768884',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:46:50 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984412","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '34203d04439449c0a7bf708b48d88d27/23325773299',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:00 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '414'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984316","createdAt":"1623984398","depth":"partial","name":"grouparoo+test@demo.com","updatedAt":"1623984412","emailAddress":"grouparoo+test@demo.com","emailFormatPreference":"unspecified","firstName":"Special","isBounceback":"false","isSubscribed":"true","lastName":"User","subscriptionDate":"1623981334"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8b9a38783410414eb8afd68e874e22ae/23325773522',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:01 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '414'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984316')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a61dd15c7b84466da63d12d4cd2c3634/23325773756',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:01 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -937,7 +4729,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"lucas.nogueira%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -948,7 +4740,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '227d9a99e56f4b21b486e807fdd41eda/22982685220',
+  '07f1b99412c54f3aa53084c7c0c78384/23325778516',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -958,7 +4750,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:12 GMT',
+  'Fri, 18 Jun 2021 02:47:12 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -966,7 +4758,1186 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"sandro.arturo%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser0%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984257","createdAt":"1623982688","depth":"partial","name":"user0@demo.com","updatedAt":"1623982688","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'bc4e37c76d3e4e6d94254d8e71971c42/23325778749',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:13 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser1%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984258","createdAt":"1623982688","depth":"partial","name":"user1@demo.com","updatedAt":"1623982688","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '696fae7e3eb34163b676b824f21a750c/23325779099',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:14 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984259","createdAt":"1623982688","depth":"partial","name":"user2@demo.com","updatedAt":"1623982688","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'faac77029fcf46b9b910167cbc505390/23325779352',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:14 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser3%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984260","createdAt":"1623982688","depth":"partial","name":"user3@demo.com","updatedAt":"1623982688","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '5ef91c316d734138ae8ef736974add84/23325779623',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:15 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser4%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984261","createdAt":"1623982688","depth":"partial","name":"user4@demo.com","updatedAt":"1623982688","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '35eeb60e049e4a068e53433d3fde09b9/23325779933',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:16 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser5%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984262","createdAt":"1623982688","depth":"partial","name":"user5@demo.com","updatedAt":"1623982688","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'fe59311256cf486097dee2697985ed77/23325780319',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:16 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser6%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984263","createdAt":"1623982688","depth":"partial","name":"user6@demo.com","updatedAt":"1623982688","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ed6bf94c82ad421d9b4b4dd00a223728/23325780723',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:17 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser7%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984264","createdAt":"1623982688","depth":"partial","name":"user7@demo.com","updatedAt":"1623982688","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '209b48cdf2d74ff08104b0ba013d5586/23325781073',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:18 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser8%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984265","createdAt":"1623982688","depth":"partial","name":"user8@demo.com","updatedAt":"1623982688","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8ba4fb24bbba49dfad2a06ec82b71dbb/23325781385',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:18 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser9%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984266","createdAt":"1623982688","depth":"partial","name":"user9@demo.com","updatedAt":"1623982688","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'f55f553e5df249e0b1ae9a3f014f761d/23325781617',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:19 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/bulk/2.0/contacts/fields')
+  .once().reply(200, {"items":[{"name":"Email Address","internalName":"C_EmailAddress","dataType":"emailAddress","hasReadOnlyConstraint":false,"hasNotNullConstraint":true,"hasUniquenessConstraint":true,"statement":"{{Contact.Field(C_EmailAddress)}}","uri":"/contacts/fields/100001","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First Name","internalName":"C_FirstName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstName)}}","uri":"/contacts/fields/100002","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6270000Z"},{"name":"Last Name","internalName":"C_LastName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastName)}}","uri":"/contacts/fields/100003","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6300000Z"},{"name":"Company","internalName":"C_Company","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company)}}","uri":"/contacts/fields/100004","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6200000Z"},{"name":"Email Display Name","internalName":"C_EmailDisplayName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailDisplayName)}}","uri":"/contacts/fields/100005","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Address 1","internalName":"C_Address1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address1)}}","uri":"/contacts/fields/100006","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6070000Z"},{"name":"Address 2","internalName":"C_Address2","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address2)}}","uri":"/contacts/fields/100007","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6100000Z"},{"name":"Address 3","internalName":"C_Address3","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Address3)}}","uri":"/contacts/fields/100008","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"City","internalName":"C_City","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_City)}}","uri":"/contacts/fields/100009","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6170000Z"},{"name":"State or Province","internalName":"C_State_Prov","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_State_Prov)}}","uri":"/contacts/fields/100010","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-01-18T18:44:17.5630000Z"},{"name":"Zip or Postal Code","internalName":"C_Zip_Postal","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Zip_Postal)}}","uri":"/contacts/fields/100011","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6370000Z"},{"name":"Country","internalName":"C_Country","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Country)}}","uri":"/contacts/fields/100012","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6230000Z"},{"name":"Business Phone","internalName":"C_BusPhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_BusPhone)}}","uri":"/contacts/fields/100013","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6130000Z"},{"name":"Mobile Phone","internalName":"C_MobilePhone","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MobilePhone)}}","uri":"/contacts/fields/100014","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Fax","internalName":"C_Fax","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Fax)}}","uri":"/contacts/fields/100015","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Title","internalName":"C_Title","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Title)}}","uri":"/contacts/fields/100016","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6330000Z"},{"name":"salutation_sfdc","internalName":"C_Salutation","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salutation)}}","uri":"/contacts/fields/100017","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:42.0370000Z"},{"name":"Salesperson","internalName":"C_Salesperson","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Salesperson)}}","uri":"/contacts/fields/100022","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Contact ID","internalName":"C_SFDCContactID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCContactID)}}","uri":"/contacts/fields/100023","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Lead ID","internalName":"C_SFDCLeadID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLeadID)}}","uri":"/contacts/fields/100024","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Created","internalName":"C_DateCreated","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateCreated)}}","uri":"/contacts/fields/100026","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Date Modified","internalName":"C_DateModified","dataType":"date","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_DateModified)}}","uri":"/contacts/fields/100027","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Eloqua Contact ID","internalName":"ContactIDExt","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(ContactIDExt)}}","uri":"/contacts/fields/100032","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Account ID","internalName":"C_SFDCAccountID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCAccountID)}}","uri":"/contacts/fields/100033","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last Modified by CRM System","internalName":"C_LastModifiedByExtIntegrateSystem","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LastModifiedByExtIntegrateSystem)}}","uri":"/contacts/fields/100034","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Last SFDC Campaign ID","internalName":"C_SFDCLastCampaignID","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignID)}}","uri":"/contacts/fields/100035","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6000000Z"},{"name":"Last SFDC Campaign Status","internalName":"C_SFDCLastCampaignStatus","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignStatus)}}","uri":"/contacts/fields/100036","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6030000Z"},{"name":"Company Revenue","internalName":"C_Company_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Revenue1)}}","uri":"/contacts/fields/100041","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SFDC Email Opt Out","internalName":"C_SFDC_EmailOptOut1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_EmailOptOut1)}}","uri":"/contacts/fields/100043","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Source - Most Recent","internalName":"C_Lead_Source___Most_Recent1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Most_Recent1)}}","uri":"/contacts/fields/100044","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6470000Z"},{"name":"Lead Source - Original","internalName":"C_Lead_Source___Original1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Source___Original1)}}","uri":"/contacts/fields/100045","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-09-04T22:38:01.9400000Z"},{"name":"industry_sfdc","internalName":"C_Industry1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Industry1)}}","uri":"/contacts/fields/100046","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:47.2370000Z"},{"name":"annual_revenue_sfdc","internalName":"C_Annual_Revenue1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue1)}}","uri":"/contacts/fields/100047","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:40:02.5230000Z"},{"name":"lead_status_sfdc","internalName":"C_Lead_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Status1)}}","uri":"/contacts/fields/100048","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:59.4500000Z"},{"name":"Job Role","internalName":"C_Job_Role1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Job_Role1)}}","uri":"/contacts/fields/100049","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Mgr1LifeHealthcareInc","updatedAt":"2016-05-06T09:22:59.6400000Z"},{"name":"Lead Score - High Value Website Content","internalName":"C_LS___High_Value_Website_Content1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LS___High_Value_Website_Content1)}}","uri":"/contacts/fields/100051","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Lead Score Date - Engagement - Most Recent","internalName":"C_Lead_Score_Date___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Most_Recent1)}}","uri":"/contacts/fields/100065","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"2010-03-12T23:45:43.8670000Z"},{"name":"Integrated Marketing and Sales Funnel Stage","internalName":"C_Integrated_Marketing_and_Sales_Funnel_Stage","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Integrated_Marketing_and_Sales_Funnel_Stage)}}","uri":"/contacts/fields/100066","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Product/Solution of Interest","internalName":"C_Product_Solution_of_Interest1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Product_Solution_of_Interest1)}}","uri":"/contacts/fields/100068","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"Region","internalName":"C_Region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Region1)}}","uri":"/contacts/fields/100069","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name (Default Hypersite)","internalName":"C_elqPURLName1","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_elqPURLName1)}}","uri":"/contacts/fields/100072","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"lead_rating_combined_sfdc","internalName":"C_Lead_Rating___Combined1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Combined1)}}","uri":"/contacts/fields/100081","createdAt":"1900-01-01T05:00:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:24.7570000Z"},{"name":"Email Address Domain","internalName":"C_EmailAddressDomain","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_EmailAddressDomain)}}","uri":"/contacts/fields/100171","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"First and Last Name","internalName":"C_FirstAndLastName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_FirstAndLastName)}}","uri":"/contacts/fields/100172","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"company_size_sfdc","internalName":"C_Company_Size1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Company_Size1)}}","uri":"/contacts/fields/100174","createdAt":"2010-02-24T16:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-13T16:47:15.1830000Z"},{"name":"Lead Score - Last High Touch Event Date","internalName":"C_Lead_Score___Last_High_Touch_Event_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Last_High_Touch_Event_Date1)}}","uri":"/contacts/fields/100175","createdAt":"2010-02-24T16:11:00.0000000Z","updatedAt":"2010-02-24T16:11:00.0000000Z"},{"name":"Lead Rating - Profile (Explicit)","internalName":"C_Lead_Rating___Explicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Explicit1)}}","uri":"/contacts/fields/100176","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-04T22:51:34.9600000Z"},{"name":"Lead Rating - Engagement (Implicit)","internalName":"C_Lead_Rating___Implicit1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Rating___Implicit1)}}","uri":"/contacts/fields/100177","createdAt":"2010-02-27T16:26:00.0000000Z","updatedAt":"2010-03-22T16:47:47.9130000Z"},{"name":"Lead Score - Profile (Explicit)","internalName":"C_Lead_Score___Explicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Explicit1)}}","uri":"/contacts/fields/100178","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T01:18:27.8500000Z"},{"name":"Lead Score - Engagement (Implicit)","internalName":"C_Lead_Score___Implicit1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score___Implicit1)}}","uri":"/contacts/fields/100179","createdAt":"2010-02-27T16:27:00.0000000Z","updatedAt":"2010-03-04T22:19:18.9770000Z"},{"name":"Lead Score Date - Profile - Most Recent","internalName":"C_Lead_Score_Date___Profile___Most_Recent1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Lead_Score_Date___Profile___Most_Recent1)}}","uri":"/contacts/fields/100180","createdAt":"2010-03-12T23:46:00.0000000Z","updatedAt":"2010-03-12T23:47:19.1900000Z"},{"name":"employees_sfdc","internalName":"C_Employees1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employees1)}}","uri":"/contacts/fields/100184","createdAt":"2011-05-27T17:24:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:44:19.4670000Z"},{"name":"Territory","internalName":"C_Territory","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Territory)}}","uri":"/contacts/fields/100187","createdAt":"2012-09-09T09:25:43.7430000Z","updatedAt":"2012-09-09T09:25:43.7430000Z"},{"name":"MD5 Hashed Email Address","internalName":"C_MD5HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedEmailAddress)}}","uri":"/contacts/fields/100188","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Email Address","internalName":"C_SHA256HashedEmailAddress","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedEmailAddress)}}","uri":"/contacts/fields/100189","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Business Phone","internalName":"C_MD5HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedBusPhone)}}","uri":"/contacts/fields/100190","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Business Phone","internalName":"C_SHA256HashedBusPhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedBusPhone)}}","uri":"/contacts/fields/100191","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"MD5 Hashed Mobile Phone","internalName":"C_MD5HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MD5HashedMobilePhone)}}","uri":"/contacts/fields/100192","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"SHA256 Hashed Mobile Phone","internalName":"C_SHA256HashedMobilePhone","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SHA256HashedMobilePhone)}}","uri":"/contacts/fields/100193","createdAt":"1900-01-01T05:00:00.0000000Z","updatedAt":"1900-01-01T05:00:00.0000000Z"},{"name":"PURL Name","internalName":"C_ElqPURLName","dataType":"string","hasReadOnlyConstraint":true,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqPURLName)}}","uri":"/contacts/fields/100194","createdAt":"2016-05-06T09:23:00.0000000Z","updatedAt":"2016-05-06T09:23:00.0000000Z"},{"name":"Last SFDC Campaign Name","internalName":"C_SFDCLastCampaignName","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDCLastCampaignName)}}","uri":"/contacts/fields/100195","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"SFDC Lead Rating","internalName":"C_SFDC_Lead_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_SFDC_Lead_Rating1)}}","uri":"/contacts/fields/100196","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Most Recent Activity Date","internalName":"C_ElqDiscover__MostRecentActivityDate","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__MostRecentActivityDate)}}","uri":"/contacts/fields/100197","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Total Inbound Activity","internalName":"C_ElqDiscover__TotalInboundActivity","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__TotalInboundActivity)}}","uri":"/contacts/fields/100198","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"Discover Lead Buy Signals","internalName":"C_ElqDiscover__BuySignals","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_ElqDiscover__BuySignals)}}","uri":"/contacts/fields/100199","createdBy":"Laura.Marty","createdAt":"2016-06-20T21:28:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-06-20T21:28:00.0000000Z"},{"name":"description_sfdc","internalName":"C_description_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_description_sfdc1)}}","uri":"/contacts/fields/100200","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:42:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:42:00.0000000Z"},{"name":"lead_rating_sfdc","internalName":"C_lead_rating_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lead_rating_sfdc1)}}","uri":"/contacts/fields/100201","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:49:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:49:00.0000000Z"},{"name":"website_sfdc","internalName":"C_website_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_sfdc1)}}","uri":"/contacts/fields/100202","createdBy":"Laura.Marty","createdAt":"2016-07-05T22:51:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T22:51:00.0000000Z"},{"name":"client_newsletter_sfdc","internalName":"C_client_newsletter_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_client_newsletter_sfdc1)}}","uri":"/contacts/fields/100203","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:08:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:08:00.0000000Z"},{"name":"department_sfdc","internalName":"C_department_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_department_sfdc1)}}","uri":"/contacts/fields/100204","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:10:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:10:00.0000000Z"},{"name":"jumbo_account_contact_sfdc","internalName":"C_jumbo_account_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_jumbo_account_contact_sfdc1)}}","uri":"/contacts/fields/100205","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:17:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:17:00.0000000Z"},{"name":"primary_contact_sfdc","internalName":"C_primary_contact_sfdc1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_primary_contact_sfdc1)}}","uri":"/contacts/fields/100206","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:18:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:18:00.0000000Z"},{"name":"Account ID","internalName":"C_Account_ID1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_ID1)}}","uri":"/contacts/fields/100221","createdBy":"Laura.Marty","createdAt":"2016-07-05T23:55:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-05T23:55:00.0000000Z"},{"name":"Annual Revenue","internalName":"C_Annual_Revenue11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Annual_Revenue11)}}","uri":"/contacts/fields/100222","createdBy":"Laura.Marty","createdAt":"2016-07-06T00:01:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-06T00:01:00.0000000Z"},{"name":"Rating","internalName":"C_Rating1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Rating1)}}","uri":"/contacts/fields/100223","createdBy":"Laura.Marty","createdAt":"2016-07-07T16:26:00.0000000Z","updatedBy":"Laura.Marty","updatedAt":"2016-07-07T16:26:00.0000000Z"},{"name":"Employment Status","internalName":"C_Employment_Status1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Employment_Status1)}}","uri":"/contacts/fields/100225","createdBy":"Rob.Lopez","createdAt":"2016-07-11T21:05:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-11T21:05:00.0000000Z"},{"name":"patient_id","internalName":"C_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_patient_id1)}}","uri":"/contacts/fields/100226","createdAt":"2016-07-22T18:18:00.0000000Z","updatedAt":"2016-07-22T18:18:00.0000000Z"},{"name":"middle_name","internalName":"C_middle_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_middle_name1)}}","uri":"/contacts/fields/100227","createdAt":"2016-07-22T18:22:00.0000000Z","updatedAt":"2016-07-22T18:22:00.0000000Z"},{"name":"preferred_name_1life","internalName":"C_preferred_name_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_preferred_name_1life1)}}","uri":"/contacts/fields/100228","createdAt":"2016-07-22T18:23:00.0000000Z","updatedAt":"2016-07-22T18:23:00.0000000Z"},{"name":"suffix_1life","internalName":"C_suffix_1lfe1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_suffix_1lfe1)}}","uri":"/contacts/fields/100229","createdAt":"2016-07-22T18:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-02T21:49:30.7770000Z"},{"name":"gender_1life","internalName":"C_gender_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_gender_1life1)}}","uri":"/contacts/fields/100230","createdAt":"2016-07-22T18:24:00.0000000Z","updatedAt":"2016-07-22T18:24:00.0000000Z"},{"name":"deceased_1life","internalName":"C_deceased_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_deceased_1life1)}}","uri":"/contacts/fields/100232","createdAt":"2016-07-22T18:27:00.0000000Z","updatedAt":"2016-07-22T18:27:00.0000000Z"},{"name":"is_member_1life","internalName":"C_is_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_is_member_1life1)}}","uri":"/contacts/fields/100233","createdAt":"2016-07-22T18:28:00.0000000Z","updatedAt":"2016-07-22T18:28:00.0000000Z"},{"name":"member_type_1life","internalName":"C_member_type_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_member_type_1life1)}}","uri":"/contacts/fields/100234","createdAt":"2016-07-22T18:29:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:20.7930000Z"},{"name":"membership_status_1life","internalName":"C_membership_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_membership_status_1life1)}}","uri":"/contacts/fields/100235","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:34:25.8970000Z"},{"name":"renewal_date_1life","internalName":"C_renewal_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_date_1life1)}}","uri":"/contacts/fields/100236","createdAt":"2016-07-22T18:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-05-14T19:11:51.7000000Z"},{"name":"date_of_birth_1life","internalName":"C_date_of_birth_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_date_of_birth_1life1)}}","uri":"/contacts/fields/100237","createdAt":"2016-07-22T18:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-25T23:11:07.1270000Z"},{"name":"renewal_status_1life","internalName":"C_renewal_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_renewal_status_1life1)}}","uri":"/contacts/fields/100238","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"payment_status_1life","internalName":"C_payment_status_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_payment_status_1life1)}}","uri":"/contacts/fields/100239","createdAt":"2016-07-22T18:32:00.0000000Z","updatedAt":"2016-07-22T18:32:00.0000000Z"},{"name":"home_office","internalName":"C_home_office1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_home_office1)}}","uri":"/contacts/fields/100240","createdAt":"2016-07-22T18:33:00.0000000Z","updatedAt":"2016-07-22T18:33:00.0000000Z"},{"name":"service_area","internalName":"C_service_area1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_service_area1)}}","uri":"/contacts/fields/100241","createdAt":"2016-07-22T18:33:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-25T18:36:41.6100000Z"},{"name":"district","internalName":"C_district1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_district1)}}","uri":"/contacts/fields/100242","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pcp","internalName":"C_pcp1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pcp1)}}","uri":"/contacts/fields/100243","createdAt":"2016-07-22T18:34:00.0000000Z","updatedAt":"2016-07-22T18:34:00.0000000Z"},{"name":"pi_customer","internalName":"C_pi_customer1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pi_customer1)}}","uri":"/contacts/fields/100244","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"test_account_1life","internalName":"C_test_account_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_test_account_1life1)}}","uri":"/contacts/fields/100245","createdAt":"2016-07-22T18:35:00.0000000Z","updatedAt":"2016-07-22T18:35:00.0000000Z"},{"name":"seed_contact","internalName":"C_seed_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_seed_contact1)}}","uri":"/contacts/fields/100246","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"proof_contact","internalName":"C_proof_contact1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_proof_contact1)}}","uri":"/contacts/fields/100247","createdAt":"2016-07-22T18:36:00.0000000Z","updatedAt":"2016-07-22T18:36:00.0000000Z"},{"name":"current_period_start_1life","internalName":"C_current_period_start_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_current_period_start_1life1)}}","uri":"/contacts/fields/100248","createdAt":"2016-07-22T18:38:00.0000000Z","updatedAt":"2016-07-22T18:38:00.0000000Z"},{"name":"waived_1life","internalName":"C_waived_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_waived_1life1)}}","uri":"/contacts/fields/100249","createdBy":"Rob.Lopez","createdAt":"2016-07-26T23:36:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-07-26T23:36:00.0000000Z"},{"name":"sfdc_sync","internalName":"C_sfdc_sync1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_sfdc_sync1)}}","uri":"/contacts/fields/100251","createdAt":"2016-07-29T16:34:00.0000000Z","updatedAt":"2016-07-29T16:34:00.0000000Z"},{"name":"Headquarter State","internalName":"C_Headquarter_State1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Headquarter_State1)}}","uri":"/contacts/fields/100252","createdBy":"Rob.Lopez","createdAt":"2016-08-03T21:31:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-03T21:31:00.0000000Z"},{"name":"import_date_1life","internalName":"C_import_date_1life1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_date_1life1)}}","uri":"/contacts/fields/100254","createdBy":"Rob.Lopez","createdAt":"2016-08-29T17:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-29T17:49:00.0000000Z"},{"name":"pk_login_email_1life","internalName":"C_pk_login_email_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_pk_login_email_1life1)}}","uri":"/contacts/fields/100255","createdBy":"Rob.Lopez","createdAt":"2016-08-30T21:24:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-08-30T21:24:00.0000000Z"},{"name":"import_source","internalName":"C_import_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_import_source1)}}","uri":"/contacts/fields/100256","createdBy":"Rob.Lopez","createdAt":"2016-09-14T18:09:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-08-21T15:58:20.4900000Z"},{"name":"contacts_client_services_owner_sfdc","internalName":"C_contacts_client_services_owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_contacts_client_services_owner_sfdc1)}}","uri":"/contacts/fields/100257","createdBy":"Rob.Lopez","createdAt":"2016-09-27T15:09:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-09-27T15:09:00.0000000Z"},{"name":"age","internalName":"C_age1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_age1)}}","uri":"/contacts/fields/100258","createdBy":"Rob.Lopez","createdAt":"2016-10-07T20:27:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-10-07T20:27:00.0000000Z"},{"name":"lname_dob","internalName":"C_lname_dob1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_lname_dob1)}}","uri":"/contacts/fields/100259","createdBy":"Rob.Lopez","createdAt":"2016-12-27T18:14:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2016-12-27T18:14:00.0000000Z"},{"name":"Hard Bounce","internalName":"C_Hard_Bounce1","dataType":"string","defaultValue":"False","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Hard_Bounce1)}}","uri":"/contacts/fields/100260","createdBy":"Laura.Marty","createdAt":"2017-01-27T20:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-09-20T22:25:40.2100000Z"},{"name":"chart_link_eloqua","internalName":"C_chart_link_eloqua1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_eloqua1)}}","uri":"/contacts/fields/100262","createdBy":"Rob.Lopez","createdAt":"2017-02-21T21:32:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-21T21:32:00.0000000Z"},{"name":"washing_machine_staging","internalName":"C_chart_link_clean1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_chart_link_clean1)}}","uri":"/contacts/fields/100263","createdBy":"Rob.Lopez","createdAt":"2017-02-22T01:25:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-02-22T01:26:02.3670000Z"},{"name":"birthday_current_year","internalName":"C_birthday_current_year1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_birthday_current_year1)}}","uri":"/contacts/fields/100264","createdBy":"Rob.Lopez","createdAt":"2017-03-11T00:49:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-11T00:49:00.0000000Z"},{"name":"archived_account_1life","internalName":"C_archived_account_1life1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_archived_account_1life1)}}","uri":"/contacts/fields/100265","createdBy":"Rob.Lopez","createdAt":"2017-03-30T14:22:00.0000000Z","updatedBy":"Rob.Lopez","updatedAt":"2017-03-30T14:22:00.0000000Z"},{"name":"MixPanel CDO Name","internalName":"C_MixPanel_CDO_Name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_MixPanel_CDO_Name1)}}","uri":"/contacts/fields/100266","createdBy":"Kim.Amato","createdAt":"2017-06-26T22:09:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-26T22:09:00.0000000Z"},{"name":"mixpanel_event_name","internalName":"C_event_name1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_name1)}}","uri":"/contacts/fields/100267","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:47:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:43:49.0500000Z"},{"name":"mixpanel_event_time","internalName":"C_event_time1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_event_time1)}}","uri":"/contacts/fields/100268","createdBy":"Kim.Amato","createdAt":"2017-06-29T14:49:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.3800000Z"},{"name":"mixpanel_external_id","internalName":"C_mixpanel_external_id1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_external_id1)}}","uri":"/contacts/fields/100269","createdBy":"Kim.Amato","createdAt":"2017-06-29T16:02:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T16:02:00.0000000Z"},{"name":"mixpanel_patient_id","internalName":"C_mixpanel_patient_id1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_patient_id1)}}","uri":"/contacts/fields/100270","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:44:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:44:00.0000000Z"},{"name":"mixpanel_app_version","internalName":"C_mixpanel_app_version1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_app_version1)}}","uri":"/contacts/fields/100271","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_city","internalName":"C_mixpanel_city1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_city1)}}","uri":"/contacts/fields/100272","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:45:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:45:00.0000000Z"},{"name":"mixpanel_os","internalName":"C_mixpanel_os1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_os1)}}","uri":"/contacts/fields/100273","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"mixpanel_region","internalName":"C_mixpanel_region1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_mixpanel_region1)}}","uri":"/contacts/fields/100274","createdBy":"Kim.Amato","createdAt":"2017-06-29T18:46:00.0000000Z","updatedBy":"Kim.Amato","updatedAt":"2017-06-29T18:46:00.0000000Z"},{"name":"HealthFusion_Amount","internalName":"C_HealthFusion_Amount1","dataType":"number","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_HealthFusion_Amount1)}}","uri":"/contacts/fields/100276","createdBy":"Frank.Chan","createdAt":"2017-11-09T21:57:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-11-09T21:57:00.0000000Z"},{"name":"utm_campaign","internalName":"C_utm_campaign1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_campaign1)}}","uri":"/contacts/fields/100277","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:07.4600000Z"},{"name":"utm_source","internalName":"C_utm_source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_source1)}}","uri":"/contacts/fields/100278","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:34:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:22.4800000Z"},{"name":"utm_medium","internalName":"C_utm_medium1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_medium1)}}","uri":"/contacts/fields/100279","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:16.8800000Z"},{"name":"utm_content","internalName":"C_utm_content1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_content1)}}","uri":"/contacts/fields/100280","createdBy":"Mark.Gopez","createdAt":"2017-11-30T00:35:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:11.7830000Z"},{"name":"B2B_Company_CF","internalName":"C_B2B_Company_CF1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Company_CF1)}}","uri":"/contacts/fields/100281","createdBy":"Frank.Chan","createdAt":"2017-12-01T00:12:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-01T00:12:00.0000000Z"},{"name":"LP_Source","internalName":"C_LP_Source1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_LP_Source1)}}","uri":"/contacts/fields/100282","createdBy":"Frank.Chan","createdAt":"2017-12-23T02:44:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2017-12-23T02:44:00.0000000Z"},{"name":"B2B_Targeting_Filter","internalName":"C_B2B_Targeting_Filter1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter1)}}","uri":"/contacts/fields/100283","createdBy":"Frank.Chan","createdAt":"2018-01-12T19:28:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-01-12T19:28:00.0000000Z"},{"name":"utm_term","internalName":"C_utm_term1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_utm_term1)}}","uri":"/contacts/fields/100284","createdBy":"Mark.Gopez","createdAt":"2018-02-13T18:36:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:55:37.9170000Z"},{"name":"B2B_Comment","internalName":"C_b2b_comment1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_b2b_comment1)}}","uri":"/contacts/fields/100285","createdBy":"Mark.Gopez","createdAt":"2018-02-14T21:29:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:51:52.5270000Z"},{"name":"Adhoc_Field_1","internalName":"C_Adhoc_Field_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_11)}}","uri":"/contacts/fields/100286","createdBy":"Frank.Chan","createdAt":"2018-05-04T20:22:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-04T20:22:00.0000000Z"},{"name":"B2B_Comment_long","internalName":"C_B2B_Comment_long1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Comment_long1)}}","uri":"/contacts/fields/100287","createdBy":"Jason.Ferrier","createdAt":"2018-05-05T01:37:00.0000000Z","updatedBy":"Mark.Gopez","updatedAt":"2018-05-17T04:53:30.9900000Z"},{"name":"Adhoc_Filter_1","internalName":"C_Adhoc_Filter_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Filter_11)}}","uri":"/contacts/fields/100288","createdBy":"Frank.Chan","createdAt":"2018-05-08T17:16:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-08T17:16:00.0000000Z"},{"name":"B2B_Targeting_Filter_2","internalName":"C_B2B_Targeting_Filter_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Targeting_Filter_21)}}","uri":"/contacts/fields/100289","createdBy":"Frank.Chan","createdAt":"2018-05-11T20:58:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-11T20:58:00.0000000Z"},{"name":"Contact_Role_sfdc","internalName":"C_Untitled_Contact_Field1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Untitled_Contact_Field1)}}","uri":"/contacts/fields/100290","createdBy":"Frank.Chan","createdAt":"2018-05-21T17:38:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-05-21T17:38:50.2770000Z"},{"name":"Account_Owner_sfdc","internalName":"C_Account_Owner_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Owner_sfdc1)}}","uri":"/contacts/fields/100291","createdBy":"Nadim.Fetaih","createdAt":"2018-05-22T16:27:00.0000000Z","updatedBy":"Nadim.Fetaih","updatedAt":"2018-05-22T16:27:00.0000000Z"},{"name":"Adhoc_URL_1","internalName":"C_Adhoc_URL_11","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_URL_11)}}","uri":"/contacts/fields/100293","createdBy":"Frank.Chan","createdAt":"2018-06-13T16:15:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-06-13T16:15:00.0000000Z"},{"name":"website_contactus_picklist","internalName":"C_website_contactus_picklist1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_website_contactus_picklist1)}}","uri":"/contacts/fields/100294","createdBy":"Frank.Chan","createdAt":"2018-10-08T21:50:00.0000000Z","updatedBy":"Frank.Chan","updatedAt":"2018-10-08T21:50:00.0000000Z"},{"name":"Account Manager","internalName":"C_Account_Manager1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Account_Manager1)}}","uri":"/contacts/fields/100295","createdBy":"Henry.Tran","createdAt":"2019-05-06T19:13:00.0000000Z","updatedBy":"Henry.Tran","updatedAt":"2019-05-06T19:13:00.0000000Z"},{"name":"B2B_Conversion_Flag","internalName":"C_TEST_B2B_Conversion_Flag1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_TEST_B2B_Conversion_Flag1)}}","uri":"/contacts/fields/100296","createdBy":"Andy.Shaw","createdAt":"2019-10-05T15:18:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:44:25.1670000Z"},{"name":"B2B Discount Code","internalName":"C_B2B_Discount_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_B2B_Discount_Code1)}}","uri":"/contacts/fields/100297","createdBy":"Andy.Shaw","createdAt":"2019-10-07T19:45:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-10-07T19:45:00.0000000Z"},{"name":"Adhoc_Field_2","internalName":"C_Adhoc_Field_21","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_21)}}","uri":"/contacts/fields/100298","createdBy":"Andy.Shaw","createdAt":"2019-11-22T16:30:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-11-22T16:30:00.0000000Z"},{"name":"type_sfdc","internalName":"C_type_sfdc1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_type_sfdc1)}}","uri":"/contacts/fields/100299","createdBy":"Jesse.Nobbe","createdAt":"2019-12-05T23:04:00.0000000Z","updatedBy":"Jesse.Nobbe","updatedAt":"2019-12-05T23:04:00.0000000Z"},{"name":"T7 Date","internalName":"C_T7_Date1","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_T7_Date1)}}","uri":"/contacts/fields/100300","createdBy":"Andy.Shaw","createdAt":"2019-12-16T18:03:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2019-12-16T18:03:00.0000000Z"},{"name":"virtual_member_1life","internalName":"C_virtual_member_1life1","dataType":"string","defaultValue":"0","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_virtual_member_1life1)}}","uri":"/contacts/fields/100301","createdBy":"Jesse.Nobbe","createdAt":"2020-01-28T17:48:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-02-20T18:20:04.3000000Z"},{"name":"Adhoc_Date_1","internalName":"C_Adhoc_Date_11","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Date_11)}}","uri":"/contacts/fields/100302","createdBy":"Andy.Shaw","createdAt":"2020-03-03T23:40:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-09T18:50:14.4200000Z"},{"name":"send_date_plus10","internalName":"C_send_date_plus101","dataType":"date","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_send_date_plus101)}}","uri":"/contacts/fields/100303","createdBy":"Andy.Shaw","createdAt":"2020-03-10T17:05:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-03-10T17:05:00.0000000Z"},{"name":"Adhoc_Field_3","internalName":"C_Adhoc_Field_31","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Adhoc_Field_31)}}","uri":"/contacts/fields/100305","createdBy":"Andy.Shaw","createdAt":"2020-11-12T19:01:00.0000000Z","updatedBy":"Andy.Shaw","updatedAt":"2020-11-12T19:01:00.0000000Z"},{"name":"Webinar Redemption Code","internalName":"C_Webinar_Redemption_Code1","dataType":"string","hasReadOnlyConstraint":false,"hasNotNullConstraint":false,"hasUniquenessConstraint":false,"statement":"{{Contact.Field(C_Webinar_Redemption_Code1)}}","uri":"/contacts/fields/100306","createdBy":"Peter.Chen","createdAt":"2020-12-08T03:44:00.0000000Z","updatedBy":"Peter.Chen","updatedAt":"2020-12-08T03:44:00.0000000Z"}],"totalResults":150,"limit":1000,"offset":0,"count":150,"hasMore":false}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '9fa0988807c94eb7af181cf6dad54bc0/23325781919',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:20 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '56547'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports', {"name":"grouparoo-import-1623984441116","identifierFieldName":"emailAddress","areSystemTimestampsInUTC":true,"isSyncTriggeredOnImport":false,"isUpdatingMultipleMatchedRecords":true,"fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"}})
+  .once().reply(201, {"name":"grouparoo-import-1623984441116","fields":{"emailAddress":"{{Contact.Field(C_EmailAddress)}}","firstName":"{{Contact.Field(C_FirstName)}}","lastName":"{{Contact.Field(C_LastName)}}","mobilePhone":"{{Contact.Field(C_MobilePhone)}}"},"identifierFieldName":"emailAddress","isSyncTriggeredOnImport":false,"dataRetentionDuration":"P7D","isUpdatingMultipleMatchedRecords":true,"uri":"/contacts/imports/878","createdBy":"t3st","createdAt":"2021-06-18T02:47:21.5995319Z","updatedBy":"t3st","updatedAt":"2021-06-18T02:47:21.5995319Z"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'a7e4339aff88493b97c6d9cfa61eeba7/23325782342',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:21 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '551'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user0@demo.com","id":"1984257","profileId":"pro0","firstName":"User0","lastName":"Demo0"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'ce9a19c1eb78427fb597ecc2415e9629/23325782631',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:22 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user1@demo.com","id":"1984258","profileId":"pro1","firstName":"User1","lastName":"Demo1"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '0f621f8c9e4143f3a64acd43c2dd76be/23325782930',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:22 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user2@demo.com","id":"1984259","profileId":"pro2","firstName":"User2","lastName":"Demo2"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'd9a93b79fa8c48eda4c013e74ac98702/23325783208',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:23 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user3@demo.com","id":"1984260","profileId":"pro3","firstName":"User3","lastName":"Demo3"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'dd01b0db935d423ebd519acaef490384/23325783472',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:23 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user4@demo.com","id":"1984261","profileId":"pro4","firstName":"User4","lastName":"Demo4"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '91e8cb1e19664f5f96eb005546040e25/23325783770',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:24 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user5@demo.com","id":"1984262","profileId":"pro5","firstName":"User5","lastName":"Demo5"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '38fa8187d60f463986283969c2ccfaf1/23325784034',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:24 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user6@demo.com","id":"1984263","profileId":"pro6","firstName":"User6","lastName":"Demo6"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '91a90e3a7de6478c9877303582c35d23/23325784328',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:25 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user7@demo.com","id":"1984264","profileId":"pro7","firstName":"User7","lastName":"Demo7"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'af979de0451a4f6baf137d0aa2b03fcc/23325784578',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:26 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user8@demo.com","id":"1984265","profileId":"pro8","firstName":"User8","lastName":"Demo8"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '4c37085fdd024273ac56ea4c62b301a1/23325784970',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:26 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/contacts/imports/878/data', {"emailAddress":"user9@demo.com","id":"1984266","profileId":"pro9","firstName":"User9","lastName":"Demo9"})
+  .once().reply(204, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '05f5507a0cec4128a3a3be110f8499bf/23325785234',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:27 GMT',
+  'Connection',
+  'close'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .post('/api/bulk/2.0/syncs', {"syncedInstanceUri":"/contacts/imports/878"})
+  .once().reply(201, {"syncedInstanceUri":"/contacts/imports/878","status":"pending","createdAt":"2021-06-18T02:47:28.4060170Z","createdBy":"t3st","uri":"/syncs/697"}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json; charset=utf-8',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '881a9c5a9f584b26938aa9f41158d8de/23325785501',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:28 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '154'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser0%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984257","createdAt":"1623982688","depth":"partial","name":"user0@demo.com","updatedAt":"1623982688","emailAddress":"user0@demo.com","emailFormatPreference":"unspecified","firstName":"User0","isBounceback":"false","isSubscribed":"true","lastName":"Demo0","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '796be6c6c12f416d98f211f4631c14ca/23325790275',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:38 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser1%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984258","createdAt":"1623982688","depth":"partial","name":"user1@demo.com","updatedAt":"1623982688","emailAddress":"user1@demo.com","emailFormatPreference":"unspecified","firstName":"User1","isBounceback":"false","isSubscribed":"true","lastName":"Demo1","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '8f2c4068c482432a9ea95ecc8466fc7c/23325790575',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:38 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984259","createdAt":"1623982688","depth":"partial","name":"user2@demo.com","updatedAt":"1623982688","emailAddress":"user2@demo.com","emailFormatPreference":"unspecified","firstName":"User2","isBounceback":"false","isSubscribed":"true","lastName":"Demo2","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '30169ebd525a4964af8379334ece1d54/23325790787',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:39 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser3%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984260","createdAt":"1623982688","depth":"partial","name":"user3@demo.com","updatedAt":"1623982688","emailAddress":"user3@demo.com","emailFormatPreference":"unspecified","firstName":"User3","isBounceback":"false","isSubscribed":"true","lastName":"Demo3","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '36e0f344045a4fe9b52f58e24900607d/23325791036',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:39 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser4%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984261","createdAt":"1623982688","depth":"partial","name":"user4@demo.com","updatedAt":"1623982688","emailAddress":"user4@demo.com","emailFormatPreference":"unspecified","firstName":"User4","isBounceback":"false","isSubscribed":"true","lastName":"Demo4","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c355d16ebcb046278162ca48f55466a2/23325791263',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:40 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser5%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984262","createdAt":"1623982688","depth":"partial","name":"user5@demo.com","updatedAt":"1623982688","emailAddress":"user5@demo.com","emailFormatPreference":"unspecified","firstName":"User5","isBounceback":"false","isSubscribed":"true","lastName":"Demo5","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '09b66980e63a4e3a923af628d0fee55b/23325791492',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:40 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser6%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984263","createdAt":"1623982688","depth":"partial","name":"user6@demo.com","updatedAt":"1623982688","emailAddress":"user6@demo.com","emailFormatPreference":"unspecified","firstName":"User6","isBounceback":"false","isSubscribed":"true","lastName":"Demo6","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '7a67389b34f94b4cb84fa0db785667f6/23325791760',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:42 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser7%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984264","createdAt":"1623982688","depth":"partial","name":"user7@demo.com","updatedAt":"1623982688","emailAddress":"user7@demo.com","emailFormatPreference":"unspecified","firstName":"User7","isBounceback":"false","isSubscribed":"true","lastName":"Demo7","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3569fa7765b84283aff88fe648342128/23325791974',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:42 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser8%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984265","createdAt":"1623982688","depth":"partial","name":"user8@demo.com","updatedAt":"1623982688","emailAddress":"user8@demo.com","emailFormatPreference":"unspecified","firstName":"User8","isBounceback":"false","isSubscribed":"true","lastName":"Demo8","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '497e18d7f0444e2b9c95cd8e1ebaee46/23325792179',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:43 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Duser9%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984266","createdAt":"1623982688","depth":"partial","name":"user9@demo.com","updatedAt":"1623982688","emailAddress":"user9@demo.com","emailFormatPreference":"unspecified","firstName":"User9","isBounceback":"false","isSubscribed":"true","lastName":"Demo9","subscriptionDate":"1623982688"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6ca52de72b744b46856b52ace8dd92f1/23325792440',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:43 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '395'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20High%20Value%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5990","createdAt":"1623984244","createdBy":"222","depth":"partial","folderId":"48","name":"(test) High Value","permissions":"fullControl","updatedAt":"1623984315","updatedBy":"222","count":"2","dataLookupId":"b411de2f-91b6-4276-b1cb-b2128aab738b","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'adb94c2abd504cab950c59a705076a11/23325792747',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:44 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '342'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/assets/contact/list/5990')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '6429e2b3a1644ef2aec76c926dc29a5d/23325793026',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:45 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/assets/contact/lists')
+  .query({"search":"name%3D%27%28test%29%20Churned%27","depth":"partial"})
+  .once().reply(200, {"elements":[{"type":"ContactList","id":"5991","createdAt":"1623984266","createdBy":"222","depth":"partial","folderId":"48","name":"(test) Churned","permissions":"fullControl","updatedAt":"1623984316","updatedBy":"222","count":"1","dataLookupId":"1a31fa90-517b-4a6c-a44f-be514333dc99","scope":"global"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '28dbe5bec8c84f19a90690a078a97184/23325793402',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:45 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '339'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/assets/contact/list/5991')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b304bbdb7afe4ebfabe01403fb0b11ad/23325793602',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:46 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984312","createdAt":"1623984177","depth":"partial","name":"grouparoo@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo@demo.com","emailFormatPreference":"unspecified","firstName":"Sam","isBounceback":"false","isSubscribed":"true","lastName":"Test","subscriptionDate":"1623791476"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '3bfc8c6ea58242e89edf143b72e1b2ba/23325793956',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:46 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '400'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984312')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2f831a3498b0485f98a75630d858925b/23325794206',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo2%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984314","createdAt":"1623984339","depth":"partial","name":"grouparoo2@demo.com","updatedAt":"1623984339","emailAddress":"grouparoo2@demo.com","emailFormatPreference":"unspecified","firstName":"Evan","isBounceback":"false","isSubscribed":"true","lastName":"Saran","mobilePhone":"+5583999999999","subscriptionDate":"1623957288"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '197d5ffaf196442cb8fde645f43ce903/23325794448',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:47 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '435'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984314')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '985fbb62e75044da8204420cfb0cf145/23325794718',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo3%40demo.com"})
+  .once().reply(200, {"elements":[{"type":"Contact","currentStatus":"Awaiting action","id":"1984315","createdAt":"1623984382","depth":"partial","name":"grouparoo3@demo.com","updatedAt":"1623984382","emailAddress":"grouparoo3@demo.com","emailFormatPreference":"unspecified","firstName":"Liz","isBounceback":"false","isSubscribed":"true","subscriptionDate":"1623980518"}],"page":1,"pageSize":1000,"total":1}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '2fb3eaba23904d688195219a64ba7488/23325794970',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:48 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '384'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .delete('/api/REST/1.0/data/contact/1984315')
+  .once().reply(200, "", [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'c878f53023574740b2b03aa2cb421125/23325795204',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:49 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '0'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dgrouparoo%2Btest%40demo.com"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -977,7 +5948,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  'c2c15e6d0ed84f8cbce4eda04d79a79d/22982685517',
+  '9229348784f1430da7f74b53dbc8bbc8/23325795571',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -987,7 +5958,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:13 GMT',
+  'Fri, 18 Jun 2021 02:47:50 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -995,7 +5966,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"carlos.solimoes%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -1006,7 +5977,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '8a821b72919443958984e8734f042fa5/22982685737',
+  'c92a92613d984f73bbd569e7d2c862c2/23325795780',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1016,7 +5987,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:14 GMT',
+  'Fri, 18 Jun 2021 02:47:50 GMT',
   'Connection',
   'close',
   'Content-Length',
@@ -1024,7 +5995,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
 ]);
 nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   .get('/api/REST/1.0/data/contacts')
-  .query({"search":"jake.jill%40mailinator.com","depth":"partial"})
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
   .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
   'Cache-Control',
   'no-store',
@@ -1035,7 +6006,7 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Expires',
   '-1',
   'X-Request-Id',
-  '3aaa99ef472d48f09ba0b881d1dfc3ca/22982685978',
+  '9bad627f9c0d4315800d688b9b38dbbe/23325796007',
   'P3P',
   'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
   'X-XSS-Protection',
@@ -1045,7 +6016,239 @@ nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
   'Strict-Transport-Security',
   'max-age=31536000; includeSubDomains; preload',
   'Date',
-  'Tue, 08 Jun 2021 15:56:14 GMT',
+  'Fri, 18 Jun 2021 02:47:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'eae0e01a126c411aaea4fbff51786775/23325796299',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:51 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'e2dc92677fea411e8f049873dc952401/23325796502',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '06b2bfe4a3f8487e849f53a06092cc27/23325796730',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:52 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '50b3278bf9e14a1f96bc911ca2c4dc73/23325796953',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '68a29806e2f24a44a72f3cb420781e42/23325797177',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:53 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '1dc26fb4c0e1434181ae4d809869dc56/23325797433',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  '85c84e0ca8934510b3d5530a68d0c418/23325797704',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:55 GMT',
+  'Connection',
+  'close',
+  'Content-Length',
+  '50'
+]);
+nock('https://secure.p04.eloqua.com:443', {"encodedQueryParams":true})
+  .get('/api/REST/1.0/data/contacts')
+  .query({"depth":"partial","search":"C_EmailAddress%3Dundefined"})
+  .once().reply(200, {"elements":[],"page":1,"pageSize":1000,"total":0}, [
+  'Cache-Control',
+  'no-store',
+  'Pragma',
+  'no-cache',
+  'Content-Type',
+  'application/json',
+  'Expires',
+  '-1',
+  'X-Request-Id',
+  'b27c50db860045258927b78841203da9/23325797949',
+  'P3P',
+  'CP="IDC DSP COR DEVa TAIa OUR BUS PHY ONL UNI COM NAV CNT STA",',
+  'X-XSS-Protection',
+  '1; mode=block',
+  'X-Content-Type-Options',
+  'nosniff',
+  'Strict-Transport-Security',
+  'max-age=31536000; includeSubDomains; preload',
+  'Date',
+  'Fri, 18 Jun 2021 02:47:56 GMT',
   'Connection',
   'close',
   'Content-Length',

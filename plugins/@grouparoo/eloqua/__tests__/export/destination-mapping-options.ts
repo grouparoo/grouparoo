@@ -11,6 +11,8 @@ import {
 } from "../../src/lib/export/destinationMappingOptions";
 import { connect } from "../../src/lib/connect";
 import { loadAppOptions, updater } from "../utils/nockHelper";
+import { exportBatch } from "../../../pardot/src/lib/export/exportProfiles";
+import { DestinationSyncModeData } from "@grouparoo/core/dist/models/Destination";
 
 const nockFile = path.join(
   __dirname,
@@ -20,11 +22,11 @@ const nockFile = path.join(
 );
 
 // these comments to use nock
-// const newNock = false;
-// require("./../fixtures/destination-mapping-options");
+const newNock = false;
+require("./../fixtures/destination-mapping-options");
 // or these to make it true
-const newNock = true;
-helper.recordNock(nockFile, updater);
+// const newNock = true;
+// helper.recordNock(nockFile, updater);
 
 const appOptions = loadAppOptions(newNock);
 const appId = "app_789-po09-EOEP-HKp8-3039";
@@ -45,7 +47,6 @@ describe("eloqua/destinationMappingOptions", () => {
   test("can fetch user fields", async () => {
     const client = await connect(appOptions);
     const fields = await getContactFields(client);
-    console.log(fields);
 
     const businessPhone = fields.find((f) => f.key === "businessPhone");
     const mobilePhone = fields.find((f) => f.key === "mobilePhone");

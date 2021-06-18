@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import Bulk from "./bulk";
 import Contact from "./contact";
+import ContactList from "./contactList";
 
 export default class EloquaClient {
   auth: {
@@ -11,13 +12,15 @@ export default class EloquaClient {
   baseUrl: string;
   bulk: Bulk;
   contacts: Contact;
+  lists: ContactList;
 
   constructor(options: any) {
     this.auth = { username: undefined, password: undefined };
     this.setAuth(options);
     this.loginUrl = options.loginUrl || "https://login.eloqua.com/id";
     this.contacts = new Contact(this);
-    this.bulk = new Bulk(this);
+    this.lists = new ContactList(this);
+    this.bulk = new Bulk(this, "contacts");
   }
 
   setAuth(options: any) {
@@ -77,7 +80,7 @@ export default class EloquaClient {
       const { data = {} } = response;
       return data;
     } catch (err) {
-      console.log(err.response.data);
+      console.log(err);
       throw new Error(err);
     }
   }

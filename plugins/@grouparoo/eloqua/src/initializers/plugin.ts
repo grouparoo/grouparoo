@@ -2,9 +2,10 @@ import path from "path";
 import { Initializer } from "actionhero";
 import { plugin, DestinationSyncMode } from "@grouparoo/core";
 
-import { test } from "./../lib/test";
+import { test } from "../lib/test";
 
-import { exportProfile } from "../lib/export/exportProfile";
+import { exportProfiles } from "../lib/export/exportProfiles";
+import { processExportedProfiles } from "../lib/export/processExportedProfiles";
 import { destinationOptions } from "../lib/export/destinationOptions";
 import { destinationMappingOptions } from "../lib/export/destinationMappingOptions";
 import { exportArrayProperties } from "../lib/export/exportArrayProperties";
@@ -27,13 +28,13 @@ export class Plugins extends Initializer {
 
     plugin.registerPlugin({
       name: packageJSON.name,
-      icon: "/public/@grouparoo/pipedrive/pipedrive.png",
+      icon: "/public/@grouparoo/eloqua/eloqua.png",
       templates: [
-        new AppTemplate("pipedrive", [
+        new AppTemplate("eloqua", [
           path.join(templateRoot, "app", "*.template"),
         ]),
         new DestinationTemplate(
-          "pipedrive",
+          "eloqua",
           [path.join(templateRoot, "destination", "*.template")],
           syncModes,
           defaultSyncMode
@@ -41,14 +42,26 @@ export class Plugins extends Initializer {
       ],
       apps: [
         {
-          name: "pipedrive",
+          name: "eloqua",
           options: [
             {
-              key: "apiToken",
-              displayName: "API Token",
+              key: "siteName",
+              displayName: "Site Name",
+              required: true,
+              description: "Eloqua Site Name",
+            },
+            {
+              key: "userName",
+              displayName: "User Name",
+              required: true,
+              description: "Eloqua User Name",
+            },
+            {
+              key: "password",
+              displayName: "Password",
               type: "password",
               required: true,
-              description: "Pipedrive API token",
+              description: "Eloqua Password",
             },
           ],
           methods: { test },
@@ -56,15 +69,16 @@ export class Plugins extends Initializer {
       ],
       connections: [
         {
-          name: "pipedrive-export",
+          name: "eloqua-export",
           direction: "export",
-          description: "Export profiles to Pipedrive as Person contacts",
-          app: "pipedrive",
+          description: "Export profiles to Eloqua as Contacts",
+          app: "eloqua",
           syncModes,
           defaultSyncMode,
           options: [],
           methods: {
-            exportProfile,
+            exportProfiles,
+            processExportedProfiles,
             destinationOptions,
             destinationMappingOptions,
             exportArrayProperties,

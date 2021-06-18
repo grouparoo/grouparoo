@@ -76,12 +76,31 @@ export const getContactFields = async (
     important?: boolean;
   }>
 > => {
-  const fields = await client.contacts.fields.getAll();
+  const out = await getAllContactFields(client);
+  return out.filter((field, index, arr) => {
+    return field.key !== "emailAddress";
+  });
+};
 
+export const getAllContactFields = async (
+  client: any
+): Promise<
+  Array<{
+    key: string;
+    type: DestinationMappingOptionsResponseTypes;
+    statement: string;
+    important?: boolean;
+  }>
+> => {
+  const fields = await client.contacts.fields.getAll();
   const out = [];
   for (const field of fields["items"]) {
     const key = camelize(field["name"]);
-    if (key !== "emailAddress" && !field["hasReadOnlyConstraint"]) {
+    const keyValidation = new RegExp("^[_a-zA-Z][_0-9a-zA-Z]*$");
+    if (!keyValidation.test(key)) {
+      continue;
+    }
+    if (!field["hasReadOnlyConstraint"]) {
       const type: DestinationMappingOptionsResponseTypes = mapTypesToGrouparoo(
         field["dataType"],
         key
@@ -101,7 +120,7 @@ export const getContactFields = async (
   return out;
 };
 
-function isPrimaryField(field: string) {
+export const isPrimaryField = (field: string) => {
   const primaryFields = [
     "emailAddress",
     "currentStatus",
@@ -124,7 +143,7 @@ function isPrimaryField(field: string) {
     "salesPerson",
   ];
   return primaryFields.includes(field);
-}
+};
 
 function camelize(str) {
   return str.replace(/^\w|[A-Z]|\b\w|\s+/g, function (match, index) {

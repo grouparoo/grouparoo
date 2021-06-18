@@ -6,7 +6,9 @@ exports.default = async function buildConfig() {
       name: {{{id}}},
       type: "{{{__pluginName}}}",
       options: {
-        apiToken: "..." // Pipedrive API token
+        siteName: "...", // Eloqua Site Name
+        userName: "...", // Eloqua User Name
+        password: "..." // Eloqua Password
       }
     },
   ];

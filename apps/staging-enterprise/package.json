@@ -55,6 +55,7 @@
       "@grouparoo/csv",
       "@grouparoo/customerio",
       "@grouparoo/demo",
+      "@grouparoo/eloqua",
       "@grouparoo/facebook",
       "@grouparoo/files-s3",
       "@grouparoo/google-sheets",

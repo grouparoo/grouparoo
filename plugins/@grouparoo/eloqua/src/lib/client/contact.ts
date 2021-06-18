@@ -14,8 +14,10 @@ export default class Contact {
     if (!options) {
       options = {};
     }
-    options.search = email;
-    options.depth = "partial";
+    if (!options.depth) {
+      options.depth = "partial";
+    }
+    options.search = `C_EmailAddress=${email}`;
     const response = await this.client._request({
       method: "GET",
       url: `/api/REST/1.0/data/contacts`,
@@ -25,6 +27,14 @@ export default class Contact {
       return response.elements[0];
     }
     return null;
+  }
+
+  get(ids, options?: any) {
+    return this.client._request({
+      method: "GET",
+      url: "/api/REST/2.0/data/contacts",
+      params: options,
+    });
   }
 
   getAll(options?: any) {
@@ -40,6 +50,14 @@ export default class Contact {
       method: "GET",
       url: `/api/REST/2.0/data/contacts/segment/${segmentId}`,
       // somehow, this call seems to be undocumented (https://community.oracle.com/thread/3900099)
+      params: options,
+    });
+  }
+
+  getLists(contactId: number, options?: any) {
+    return this.client._request({
+      method: "GET",
+      url: `/api/REST/2.0/data/contact/${contactId}/membership`,
       params: options,
     });
   }
