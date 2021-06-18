@@ -3,7 +3,7 @@ export default {
     await migration.sequelize.transaction(async () => {
       await migration.dropTable("eventData");
       await migration.dropTable("events");
-      await migration.removeColumnIfExists("profiles", "anonymousId");
+      await migration.removeColumn("profiles", "anonymousId");
       await migration.sequelize.query(
         `DELETE FROM "permissions" WHERE topic = 'event'`
       );
