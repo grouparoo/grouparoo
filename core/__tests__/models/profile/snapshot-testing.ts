@@ -96,7 +96,9 @@ describe("test grouparoo profiles", () => {
 
     test("potential exports match the snapshot", async () => {
       const _exports = await profile.export(true, [], false);
-      const exportApiData = await Promise.all(_exports.map((e) => e.apiData()));
+      const exportApiData = await Promise.all(
+        _exports.map((e) => e.apiData(false))
+      );
       expect(exportApiData.length).toEqual(1);
 
       expect(exportApiData[0]).toMatchSnapshot({

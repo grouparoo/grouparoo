@@ -35,12 +35,7 @@ exports[`test grouparoo profiles within a mock environment potential exports mat
 Object {
   "completedAt": null,
   "createdAt": null,
-  "destination": Object {
-    "groupId": "grp_0533fe0a-ecb7-45ea-abd2-01b541476620",
-    "id": "dst_18931a34-b9e3-491c-9e6c-934258f4368a",
-    "name": "test destination",
-    "state": "ready",
-  },
+  "destination": undefined,
   "destinationName": "test destination",
   "errorLevel": undefined,
   "errorMessage": undefined,
@@ -115,12 +110,7 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": Object {
-        "groupId": "grp_0533fe0a-ecb7-45ea-abd2-01b541476620",
-        "id": "dst_18931a34-b9e3-491c-9e6c-934258f4368a",
-        "name": "test destination",
-        "state": "ready",
-      },
+      "destination": undefined,
       "destinationName": "test destination",
       "errorLevel": undefined,
       "errorMessage": undefined,
