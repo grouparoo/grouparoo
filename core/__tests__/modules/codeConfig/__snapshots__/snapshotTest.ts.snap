@@ -6,7 +6,7 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": null,
+      "destination": undefined,
       "destinationName": "Test Destination",
       "errorLevel": undefined,
       "errorMessage": undefined,
@@ -157,7 +157,7 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": null,
+      "destination": undefined,
       "destinationName": "Test Destination",
       "errorLevel": undefined,
       "errorMessage": undefined,

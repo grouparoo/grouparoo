@@ -241,17 +241,19 @@ export class Export extends Model {
   }
 
   async apiData(includeDestination = true) {
-    const destination = await this.$get("destination", {
-      include: includeDestination ? [Option, Mapping] : undefined,
-      scope: null,
-    });
+    const destination =
+      this.destination ?? (await this.$get("destination", { scope: null }));
 
     return {
       id: this.id,
-      destination:
-        destination && includeDestination
-          ? await destination.apiData(false, false)
-          : null,
+      destination: includeDestination
+        ? {
+            id: destination.id,
+            state: destination.state,
+            name: destination.name,
+            groupId: destination.groupId,
+          }
+        : undefined,
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
       exportProcessorId: this.exportProcessorId,

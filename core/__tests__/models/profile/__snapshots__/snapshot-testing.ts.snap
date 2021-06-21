@@ -35,7 +35,7 @@ exports[`test grouparoo profiles within a mock environment potential exports mat
 Object {
   "completedAt": null,
   "createdAt": null,
-  "destination": null,
+  "destination": undefined,
   "destinationName": "test destination",
   "errorLevel": undefined,
   "errorMessage": undefined,
@@ -110,7 +110,7 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": null,
+      "destination": undefined,
       "destinationName": "test destination",
       "errorLevel": undefined,
       "errorMessage": undefined,
