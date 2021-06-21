@@ -37,7 +37,7 @@ export class ImportsList extends AuthenticatedAction {
 
     return {
       total,
-      imports: await Promise.all(imports.map((e) => e.apiData())),
+      imports: await Promise.all(imports.map((i) => i.apiData())),
     };
   }
 }

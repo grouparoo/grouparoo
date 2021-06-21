@@ -240,18 +240,18 @@ export class Export extends Model {
     await this.save();
   }
 
-  async apiData(includeDestination = true) {
-    const destination = await this.$get("destination", {
-      include: includeDestination ? [Option, Mapping] : undefined,
-      scope: null,
-    });
+  async apiData() {
+    const destination =
+      this.destination ?? (await this.$get("destination", { scope: null }));
 
     return {
       id: this.id,
-      destination:
-        destination && includeDestination
-          ? await destination.apiData(false, false)
-          : null,
+      destination: {
+        id: destination.id,
+        state: destination.state,
+        name: destination.name,
+        groupId: destination.groupId,
+      },
       destinationName: destination ? destination.name : null,
       profileId: this.profileId,
       exportProcessorId: this.exportProcessorId,

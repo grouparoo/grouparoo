@@ -6,7 +6,12 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": null,
+      "destination": Object {
+        "groupId": "email_group",
+        "id": "test_destination",
+        "name": "Test Destination",
+        "state": "ready",
+      },
       "destinationName": "Test Destination",
       "errorLevel": undefined,
       "errorMessage": undefined,
@@ -157,7 +162,12 @@ Object {
     Object {
       "completedAt": null,
       "createdAt": null,
-      "destination": null,
+      "destination": Object {
+        "groupId": "email_group",
+        "id": "test_destination",
+        "name": "Test Destination",
+        "state": "ready",
+      },
       "destinationName": "Test Destination",
       "errorLevel": undefined,
       "errorMessage": undefined,

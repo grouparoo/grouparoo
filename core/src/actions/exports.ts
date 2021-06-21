@@ -1,6 +1,8 @@
 import { AuthenticatedAction } from "../classes/actions/authenticatedAction";
 import { Export } from "../models/Export";
 import { ExportOps } from "../modules/ops/export";
+import { Destination } from "../models/Destination";
+import { Op } from "sequelize";
 
 export class ExportsList extends AuthenticatedAction {
   constructor() {
@@ -40,6 +42,7 @@ export class ExportsList extends AuthenticatedAction {
 
     const _exports = await Export.findAll({
       where,
+      include: [{ model: Destination, where: { state: { [Op.ne]: "draft" } } }],
       limit: params.limit,
       offset: params.offset,
       order: params.order,
