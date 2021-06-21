@@ -31,7 +31,7 @@ class Apply extends actionhero.CLI {
     await main(); // run the server
     try {
       log("Opening Grouparoo Config in web browser", "info");
-      open(`http://localhost:${process.env.PORT}`);
+      await open(`http://localhost:${process.env.PORT}`);
     } catch (err) {
       log(err.message, "error");
     }
