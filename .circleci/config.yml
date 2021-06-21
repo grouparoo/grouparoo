@@ -64,6 +64,7 @@ jobs:
             - plugins/@grouparoo/customerio/node_modules
             - plugins/@grouparoo/dbt/node_modules
             - plugins/@grouparoo/demo/node_modules
+            - plugins/@grouparoo/eloqua/node_modules
             - plugins/@grouparoo/facebook/node_modules
             - plugins/@grouparoo/files-local/node_modules
             - plugins/@grouparoo/files-s3/node_modules
@@ -109,6 +110,7 @@ jobs:
             - plugins/@grouparoo/customerio/dist
             - plugins/@grouparoo/dbt/dist
             - plugins/@grouparoo/demo/dist
+            - plugins/@grouparoo/eloqua/dist
             - plugins/@grouparoo/facebook/dist
             - plugins/@grouparoo/files-local/dist
             - plugins/@grouparoo/files-s3/dist
@@ -1393,6 +1395,53 @@ jobs:
       - run:
           name: test
           command: cd plugins/@grouparoo/demo && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
+  test-plugin-eloqua:
+    docker:
+      - image: circleci/node:14
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: redis:latest
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+      - image: circleci/postgres:9
+        auth:
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_PASSWORD: password
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *module-other-cache-options
+      - restore_cache:
+          <<: *plugin-1-cache-options
+      - restore_cache:
+          <<: *plugin-2-cache-options
+      - restore_cache:
+          <<: *plugin-3-cache-options
+      - restore_cache:
+          <<: *plugin-4-cache-options
+      - restore_cache:
+          <<: *dist-cache-options
+      - restore_cache:
+          <<: *core-cache-options
+      - run:
+          name: update apt
+          command: sudo apt update
+      - run:
+          name: install postgresql client
+          command: sudo apt install -y postgresql-client
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      - run:
+          name: create test databases
+          command: cd core && ./bin/create_test_databases
+      - run:
+          name: test
+          command: cd plugins/@grouparoo/eloqua && ./node_modules/.bin/jest  --ci --passWithNoTests --runInBand
   test-plugin-facebook:
     docker:
       - image: circleci/node:14
@@ -2818,6 +2867,11 @@ workflows:
             <<: *ignored-branches
           requires:
             - build
+      - test-plugin-eloqua:
+          filters:
+            <<: *ignored-branches
+          requires:
+            - build
       - test-plugin-facebook:
           filters:
             <<: *ignored-branches
@@ -2985,6 +3039,7 @@ workflows:
             - test-plugin-customerio
             - test-plugin-dbt
             - test-plugin-demo
+            - test-plugin-eloqua
             - test-plugin-facebook
             - test-plugin-files-local
             - test-plugin-files-s3
