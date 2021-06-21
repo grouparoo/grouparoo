@@ -71,12 +71,13 @@ export default function SetupStepCard({
                       Learn More
                     </Button>
                     &nbsp;&nbsp;
-                    {process.env.GROUPAROO_UI_EDITION !== "community" ||
-                    step.showCtaOnCommunity ? (
-                      <Button size="sm" href={step.href}>
-                        {step.cta}
-                      </Button>
-                    ) : null}
+                    {(process.env.GROUPAROO_UI_EDITION !== "community" ||
+                      step.showCtaOnCommunity) &&
+                      step.cta && (
+                        <Button size="sm" href={step.href}>
+                          {step.cta}
+                        </Button>
+                      )}
                   </Col>
                   {process.env.GROUPAROO_UI_EDITION === "config" ? null : (
                     <Col md={6} style={{ textAlign: "right" }}>

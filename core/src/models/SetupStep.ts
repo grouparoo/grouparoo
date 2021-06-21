@@ -112,9 +112,8 @@ export class SetupStep extends LoggedModel<SetupStep> {
   }
 
   getSetupStepDescription() {
-    const ssdFilteredArray = SetupStepOps.setupStepDescriptions.filter(
-      (ssd) => ssd.key === this.key
-    );
+    const setupSteps = SetupStepOps.setupStepDescriptions();
+    const ssdFilteredArray = setupSteps.filter((ssd) => ssd.key === this.key);
 
     if (ssdFilteredArray.length === 1) return ssdFilteredArray[0];
 

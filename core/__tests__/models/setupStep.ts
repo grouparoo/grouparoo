@@ -9,6 +9,10 @@ describe("models/setupStep", () => {
     resetSettings: true,
   });
 
+  afterEach(async () => {
+    process.env.GROUPAROO_RUN_MODE = undefined;
+  });
+
   test("setupSteps will be created when the server boots", async () => {
     const setupSteps = await SetupStep.findAll({
       order: [["position", "asc"]],
@@ -20,15 +24,25 @@ describe("models/setupStep", () => {
   });
 
   test("setupSteps can return the related title and description", async () => {
-    const setupStep = await await SetupStep.findOne({ where: { position: 1 } });
+    const setupStep = await SetupStep.findOne({ where: { position: 1 } });
     expect(setupStep.getTitle()).toEqual(
-      SetupStepOps.setupStepDescriptions.filter((ssd) => ssd.position === 1)[0]
-        .title
+      SetupStepOps.setupStepDescriptions().filter(
+        (ssd) => ssd.position === 1
+      )[0].title
     );
     expect(setupStep.getDescription()).toEqual(
-      SetupStepOps.setupStepDescriptions.filter((ssd) => ssd.position === 1)[0]
-        .description
+      SetupStepOps.setupStepDescriptions().filter(
+        (ssd) => ssd.position === 1
+      )[0].description
     );
+  });
+
+  test("setupSteps ops returns config versions when in config mode", async () => {
+    let setupSteps = SetupStepOps.setupStepDescriptions();
+    expect(setupSteps[0].key).toEqual("name_your_grouparoo_instance");
+    process.env.GROUPAROO_RUN_MODE = "cli:config";
+    setupSteps = SetupStepOps.setupStepDescriptions();
+    expect(setupSteps[0].key).toEqual("install_grouparoo");
   });
 
   test("setup steps have unique keys", async () => {
