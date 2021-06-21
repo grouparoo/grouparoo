@@ -39,7 +39,7 @@ export namespace OptionHelper {
     const options =
       instance.__options ??
       (await Option.findAll({
-        where: { ownerId: instance.id },
+        where: { ownerId: instance.id, ownerType: modelName(instance) },
       }));
 
     if (!instance.__options) instance.__options = options;
@@ -96,7 +96,7 @@ export namespace OptionHelper {
     await LockableHelper.beforeUpdateOptions(instance, hasChanges);
 
     await Option.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: modelName(instance) },
     });
 
     const newOptions: Option[] = [];

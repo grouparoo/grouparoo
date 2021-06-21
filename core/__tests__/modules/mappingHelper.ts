@@ -2,6 +2,7 @@ import { helper } from "@grouparoo/spec-helper";
 import { App } from "../../src/models/App";
 import { Property } from "../../src/models/Property";
 import { Source } from "../../src/models/Source";
+import { Mapping } from "../../src/models/Mapping";
 import { MappingHelper } from "../../src/modules/mappingHelper";
 
 describe("module/MappingHelper", () => {
@@ -38,9 +39,40 @@ describe("module/MappingHelper", () => {
       expect(property.id).not.toEqual(propertyKey);
       expect(mapping).toEqual({ [remoteKey]: property.id });
     });
+
+    test("mapping owners are referenced by the instance type", async () => {
+      const userId = await Property.findOne({ where: { key: "userId" } });
+      await source.setMapping({});
+
+      const randomMapping = await Mapping.create({
+        ownerId: source.id,
+        ownerType: "foo",
+        propertyId: userId.id,
+        remoteKey: "user_id",
+      });
+
+      await source.setMapping({
+        ["newValue"]: userId.key,
+      });
+
+      expect((await randomMapping.reload()).remoteKey).toEqual("user_id");
+
+      expect(await source.getMapping()).toEqual({
+        ["newValue"]: userId.key,
+      });
+      await source.setOptions({});
+
+      expect((await randomMapping.reload()).remoteKey).toEqual("user_id");
+
+      await randomMapping.destroy();
+    });
   });
 
   describe("getConfigMapping()", () => {
+    beforeAll(
+      async () => await source.setMapping({ [remoteKey]: propertyKey })
+    );
+
     test("returns a mapping built for a config object", async () => {
       const mapping = await MappingHelper.getConfigMapping(source);
       expect(property.getConfigId()).not.toEqual(propertyKey);

@@ -88,12 +88,13 @@ export class Option extends LoggedModel<Option> {
       where: {
         id: { [Op.ne]: instance.id },
         ownerId: instance.ownerId,
+        ownerType: instance.ownerType,
         key: instance.key,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Option for ${instance.ownerId} and ${instance.key}`
+        `There is already a Option for ${instance.ownerId} (${instance.ownerType}) and ${instance.key}`
       );
     }
   }

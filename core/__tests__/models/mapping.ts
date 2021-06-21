@@ -46,5 +46,25 @@ describe("models/mapping", () => {
       const mappings = await source.getMapping();
       expect(mappings["bla"]).toBe(userId.key);
     });
+
+    test("a source cannot have 2 mappings with the same remoteKey", async () => {
+      await expect(
+        source.setMapping({ foo: "userId", bar: "userId" })
+      ).rejects.toThrow(/There is already a Mapping for/);
+    });
+
+    test("a source cannot have 2 mappings with the same profileId", async () => {
+      const userId = await Property.findOne({ where: { key: "userId" } });
+
+      await source.setMapping({ foo: "userId" });
+      await expect(
+        Mapping.create({
+          ownerId: source.id,
+          ownerType: "source",
+          propertyId: userId.id,
+          remoteKey: "bar",
+        })
+      ).rejects.toThrow(/There is already a Mapping for/);
+    });
   });
 });
