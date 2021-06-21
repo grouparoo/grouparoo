@@ -75,12 +75,13 @@ export class Mapping extends LoggedModel<Mapping> {
       where: {
         id: { [Op.ne]: instance.id },
         ownerId: instance.ownerId,
+        ownerType: instance.ownerType,
         propertyId: instance.propertyId,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Mapping for ${instance.ownerId} and ${instance.propertyId}`
+        `There is already a Mapping for ${instance.ownerId} (${instance.ownerType}) and ${instance.propertyId}`
       );
     }
   }
@@ -91,12 +92,13 @@ export class Mapping extends LoggedModel<Mapping> {
       where: {
         id: { [Op.ne]: instance.id },
         ownerId: instance.ownerId,
+        ownerType: instance.ownerType,
         remoteKey: instance.remoteKey,
       },
     });
     if (existing) {
       throw new Error(
-        `There is already a Mapping for to ${instance.ownerId} and ${instance.remoteKey}`
+        `There is already a Mapping for to ${instance.ownerId} (${instance.ownerType}) and ${instance.remoteKey}`
       );
     }
   }

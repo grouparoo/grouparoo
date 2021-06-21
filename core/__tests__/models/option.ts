@@ -257,6 +257,31 @@ describe("models/option", () => {
         expect(appWithOptions.__options[0].value).toBe("foo");
       });
 
+      test("option owners are referenced by the instance type", async () => {
+        const randomOption = await Option.create({
+          ownerId: appWithOptions.id,
+          ownerType: "foo",
+          type: "string",
+          key: "test_default_key",
+          value: "foo",
+        });
+
+        await appWithOptions.setOptions({
+          test_default_key: "newValue",
+        });
+
+        expect((await randomOption.reload()).value).toEqual("foo");
+
+        expect(await appWithOptions.getOptions()).toEqual({
+          test_default_key: "newValue",
+        });
+        await appWithOptions.setOptions({});
+
+        expect((await randomOption.reload()).value).toEqual("foo");
+
+        await randomOption.destroy();
+      });
+
       test("it will use memoized options if they exist", async () => {
         await appWithOptions.setOptions({
           test_default_key: "foo",

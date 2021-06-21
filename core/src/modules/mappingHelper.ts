@@ -5,6 +5,12 @@ import { Destination } from "./../models/Destination";
 import { LockableHelper } from "./lockableHelper";
 import { LoggedModel } from "../classes/loggedModel";
 
+function modelName(instance): string {
+  let name = instance.constructor.name;
+  name = name[0].toLowerCase() + name.substr(1);
+  return name;
+}
+
 export namespace MappingHelper {
   export interface Mappings {
     [remoteKey: string]: any;
@@ -18,7 +24,7 @@ export namespace MappingHelper {
     const mappings =
       instance.mappings ??
       (await Mapping.findAll({
-        where: { ownerId: instance.id },
+        where: { ownerId: instance.id, ownerType: modelName(instance) },
       }));
 
     if (!instance.mappings) instance.mappings = mappings;
@@ -66,7 +72,7 @@ export namespace MappingHelper {
     await LockableHelper.beforeUpdateOptions(instance);
 
     await Mapping.destroy({
-      where: { ownerId: instance.id },
+      where: { ownerId: instance.id, ownerType: modelName(instance) },
     });
 
     let newMappings: Mapping[] = [];
@@ -78,13 +84,11 @@ export namespace MappingHelper {
         where: { key },
       });
 
-      if (!property) {
-        throw new Error(`cannot find property ${key}`);
-      }
+      if (!property) throw new Error(`cannot find property ${key}`);
 
       const mapping = await Mapping.create({
         ownerId: instance.id,
-        ownerType: instance.constructor.name.toLowerCase(),
+        ownerType: modelName(instance),
         propertyId: property.id,
         remoteKey,
       });
